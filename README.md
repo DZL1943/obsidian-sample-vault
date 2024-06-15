@@ -5,7 +5,7 @@ tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
 
-# Obsidian_Sample_Vault
+# obsidian-sample-vault
 
 > [!attention]+ 适用性说明
 > 1. 本库源自本人在 macOS 上的 Obsidian(1.6.3) 实践, 对其他系统未做适配, 请自行调整相关设置.
