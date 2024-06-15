@@ -1,0 +1,266 @@
+{
+  "version": 2,
+  "projects": [
+    {
+      "fieldConfig": {},
+      "defaultName": "",
+      "templates": [
+        "900_misc/templates/people-template.md"
+      ],
+      "excludedNotes": [],
+      "isDefault": false,
+      "dataSource": {
+        "kind": "folder",
+        "config": {
+          "path": "100_private/contacts",
+          "recursive": true
+        }
+      },
+      "newNotesFolder": "100_private/contacts",
+      "views": [
+        {
+          "config": {
+            "fieldConfig": {
+              "姓名": {
+                "hide": true
+              },
+              "关系": {
+                "hide": true
+              },
+              "tags": {
+                "hide": true
+              },
+              "aliases": {
+                "hide": true
+              },
+              "政治面貌": {
+                "hide": true
+              },
+              "生日": {
+                "hide": true
+              },
+              "民族": {
+                "hide": true
+              },
+              "爱好特长": {
+                "hide": true
+              },
+              "path": {
+                "hide": true
+              },
+              "备注": {
+                "hide": true
+              },
+              "联系方式": {
+                "hide": true
+              },
+              "籍贯": {
+                "hide": true
+              },
+              "婚育": {
+                "hide": true
+              },
+              "性别": {
+                "hide": true
+              },
+              "年龄": {
+                "width": 114
+              },
+              "学历": {
+                "width": 235
+              },
+              "name": {
+                "width": 131
+              },
+              "职业": {
+                "width": 155
+              }
+            },
+            "orderFields": [
+              "name",
+              "年龄",
+              "现居地",
+              "学历",
+              "职业",
+              "工作单位"
+            ]
+          },
+          "filter": {
+            "conditions": []
+          },
+          "colors": {
+            "conditions": []
+          },
+          "sort": {
+            "criteria": []
+          },
+          "id": "846d37b6-98d9-4e90-a8b6-753b01315a14",
+          "name": "表格",
+          "type": "table"
+        },
+        {
+          "config": {
+            "groupByField": "关系"
+          },
+          "filter": {
+            "conditions": []
+          },
+          "colors": {
+            "conditions": []
+          },
+          "sort": {
+            "criteria": []
+          },
+          "id": "4557cdd6-1c3f-4a6d-ad25-9ad5a9653a69",
+          "name": "看板",
+          "type": "board"
+        }
+      ],
+      "id": "c31dbf9f-53cc-4e4f-9822-3ada7d8e4c9e",
+      "name": "contacts"
+    },
+    {
+      "fieldConfig": {
+        "姓名": {
+          "richText": true
+        }
+      },
+      "defaultName": "",
+      "templates": [
+        "900_misc/templates/people-template.md"
+      ],
+      "excludedNotes": [],
+      "isDefault": false,
+      "dataSource": {
+        "kind": "dataview",
+        "config": {
+          "query": "table\nfile.link as 姓名, 年龄, 籍贯, 工作单位, 职业, 学历, string(联系方式.手机) as 手机, 关系, 备注\nfrom \"100_private/contacts\""
+        }
+      },
+      "newNotesFolder": "100_private/contacts",
+      "views": [
+        {
+          "config": {
+            "fieldConfig": {
+              "姓名": {
+                "hide": false,
+                "width": 112
+              },
+              "关系": {
+                "hide": true
+              },
+              "tags": {
+                "hide": true
+              },
+              "aliases": {
+                "hide": true
+              },
+              "政治面貌": {
+                "hide": true
+              },
+              "生日": {
+                "hide": true
+              },
+              "民族": {
+                "hide": true
+              },
+              "爱好特长": {
+                "hide": true
+              },
+              "path": {
+                "hide": true
+              },
+              "备注": {
+                "hide": true
+              },
+              "联系方式": {
+                "hide": false,
+                "width": 164
+              },
+              "籍贯": {
+                "hide": false,
+                "width": 131
+              },
+              "婚育": {
+                "hide": true
+              },
+              "性别": {
+                "hide": true
+              },
+              "年龄": {
+                "width": 110
+              },
+              "学历": {
+                "width": 235
+              },
+              "name": {
+                "width": 131
+              },
+              "职业": {
+                "width": 114
+              },
+              "File": {
+                "hide": true
+              },
+              "工作单位": {
+                "width": 150
+              },
+              "手机": {
+                "width": 140
+              }
+            },
+            "orderFields": [
+              "姓名",
+              "年龄",
+              "籍贯",
+              "工作单位",
+              "职业",
+              "学历",
+              "手机"
+            ]
+          },
+          "filter": {
+            "conditions": []
+          },
+          "colors": {
+            "conditions": []
+          },
+          "sort": {
+            "criteria": []
+          },
+          "id": "c3144606-41c0-46e9-ab27-8e0e2bbe83e6",
+          "name": "表格",
+          "type": "table"
+        },
+        {
+          "config": {
+            "groupByField": "关系"
+          },
+          "filter": {
+            "conditions": []
+          },
+          "colors": {
+            "conditions": []
+          },
+          "sort": {
+            "criteria": []
+          },
+          "id": "ff4605d8-be9f-442c-8670-3b1b9c55db6f",
+          "name": "看板",
+          "type": "board"
+        }
+      ],
+      "id": "f6dd2972-a2a9-49a2-8c36-0d5b545b73e6",
+      "name": "contacts-dv"
+    }
+  ],
+  "archives": [],
+  "preferences": {
+    "projectSizeLimit": 1000,
+    "frontmatter": {
+      "quoteStrings": "PLAIN"
+    },
+    "commands": [],
+    "linkBehavior": "open-editor"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "pluginList": [
+    "aidan-gibson/obsidian-opener",
+    "platon-ivanov/obsidian-visually-numbered-headings",
+    "xhuajin/obsidian-immersive-translate",
+    "Quorafind/Obsidian-Legacy-Vault-Switcher",
+    "deathau/sliding-panes-obsidian",
+    "sunbooshi/note-to-mp",
+    "Fevol/obsidian-criticmarkup",
+    "Yaozhuwa/AttachFlow",
+    "Quorafind/Outliner.MD"
+  ],
+  "pluginSubListFrozenVersion": [],
+  "themesList": [],
+  "updateAtStartup": true,
+  "updateThemesAtStartup": true,
+  "enableAfterInstall": false,
+  "loggingEnabled": false,
+  "loggingPath": "BRAT-log",
+  "loggingVerboseEnabled": false,
+  "debuggingMode": false,
+  "notificationsEnabled": true,
+  "personalAccessToken": ""
+}

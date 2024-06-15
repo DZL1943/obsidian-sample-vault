@@ -1,0 +1,23 @@
+{
+  "runAtStartup": false,
+  "addRibbonIcon": false,
+  "promptUser": true,
+  "promptForBigFiles": true,
+  "attachmentsExtensions": ".jpg|.jpeg|.png|.gif|.svg|.pdf",
+  "defaultOperation": "trash",
+  "expiredAttribute": "expires",
+  "expiredDateFormat": "YYYY-MM-DD",
+  "sizeLimitKb": 1024,
+  "processOrphans": true,
+  "processEmpty": false,
+  "processExpired": false,
+  "processBig": false,
+  "honorObsidianExcludedFiles": false,
+  "excludedFilesFilters": [
+    "70_Resources/",
+    ".doc",
+    ".canvas",
+    "90_Misc/Scripts/",
+    ".icns"
+  ]
+}

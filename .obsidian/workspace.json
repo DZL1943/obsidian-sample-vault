@@ -1,0 +1,319 @@
+{
+  "main": {
+    "id": "cb2377fb020a1ff9",
+    "type": "split",
+    "children": [
+      {
+        "id": "54abdfbcf06a53b1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e6075a699d7cbb0a",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "_canvas.canvas",
+                "viewState": {
+                  "x": -1290,
+                  "y": 650,
+                  "zoom": -0.3349495879561522
+                }
+              },
+              "pinned": true
+            }
+          },
+          {
+            "id": "dd0c724920d6ce07",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "preview",
+                "source": false
+              },
+              "pinned": true
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "df0546e6361ce644",
+    "type": "split",
+    "children": [
+      {
+        "id": "20e00c13dbcc0e6c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b360e5bd0828bad7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "82484834b6c769a0",
+            "type": "leaf",
+            "state": {
+              "type": "file-tree-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "2bcc6a6135bb4140",
+            "type": "leaf",
+            "state": {
+              "type": "mk-path-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "4bebf0e7282d48b0",
+            "type": "leaf",
+            "state": {
+              "type": "tagfolder-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "2236c43629aff91d",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#task",
+                "matchingCase": false,
+                "explainSearch": true,
+                "collapseAll": true,
+                "extraContext": true,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "497cf6303a58e2ef",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              }
+            }
+          },
+          {
+            "id": "48ad16c6f8073260",
+            "type": "leaf",
+            "state": {
+              "type": "trash-explorer",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 215.5,
+    "collapsed": true
+  },
+  "right": {
+    "id": "6af7bc7b0804df6c",
+    "type": "split",
+    "children": [
+      {
+        "id": "9bbb39ce85738cff",
+        "type": "tabs",
+        "dimension": 46.69867947178872,
+        "children": [
+          {
+            "id": "e3ab673e1ce52da5",
+            "type": "leaf",
+            "state": {
+              "type": "calendar-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "bd8ff2c295701feb",
+            "type": "leaf",
+            "state": {
+              "type": "chronology-calendar-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "b9d37edd91968223",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          },
+          {
+            "id": "117a823cb947b7cb",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 3
+      },
+      {
+        "id": "dda52860917a3c25",
+        "type": "tabs",
+        "dimension": 53.30132052821128,
+        "children": [
+          {
+            "id": "89b0519e275999ee",
+            "type": "leaf",
+            "state": {
+              "type": "file-properties",
+              "state": {
+                "file": "README.md"
+              }
+            }
+          },
+          {
+            "id": "8dee6768aa08510c",
+            "type": "leaf",
+            "state": {
+              "type": "quiet-outline",
+              "state": {}
+            }
+          },
+          {
+            "id": "224027cad3cf3690",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "README.md",
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          },
+          {
+            "id": "2658dc0f9dc3a97b",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "README.md",
+                "linksCollapsed": true,
+                "unlinkedCollapsed": false
+              }
+            }
+          },
+          {
+            "id": "0138c207d1a3a827",
+            "type": "leaf",
+            "state": {
+              "type": "localgraph",
+              "state": {
+                "file": "README.md",
+                "options": {
+                  "collapse-filter": true,
+                  "search": "",
+                  "localJumps": 1,
+                  "localBacklinks": true,
+                  "localForelinks": true,
+                  "localInterlinks": false,
+                  "showTags": false,
+                  "showAttachments": false,
+                  "hideUnresolved": false,
+                  "collapse-color-groups": true,
+                  "colorGroups": [],
+                  "collapse-display": true,
+                  "showArrow": true,
+                  "textFadeMultiplier": 0,
+                  "nodeSizeMultiplier": 1,
+                  "lineSizeMultiplier": 1.53474934895833,
+                  "collapse-forces": true,
+                  "centerStrength": 1,
+                  "repelStrength": 4.10074869791667,
+                  "linkStrength": 0.52294921875,
+                  "linkDistance": 106,
+                  "scale": 0.8276068547580308,
+                  "close": true
+                }
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 255.5,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "obsidian42-brat:BRAT": true,
+      "obsidian-shellcommands:Shell commands: Custom variables": true,
+      "workspaces:管理工作区布局": false,
+      "quick-plugin-switcher:Quick Plugin Switcher": false,
+      "obsidian-trash-explorer:Open trash explorer": true,
+      "darlal-switcher-plus:Open in Headings Mode": false,
+      "switcher:打开快速切换": true,
+      "command-palette:打开命令面板": true,
+      "fuzzy-chinese-pinyin:FuzzySearch": true,
+      "float-search:Search Obsidian In Modal": true,
+      "privacy-glasses:Hide all": true,
+      "privacy-glasses:Reveal non-private": true,
+      "privacy-glasses:Reveal headlines only": true,
+      "privacy-glasses:Reveal all": true,
+      "obsidian-projects:Open projects": true,
+      "obsidian-kanban:创建新看板": true,
+      "graph:查看关系图谱": true,
+      "canvas:新建白板": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "daily-notes:打开/创建今天的日记": true,
+      "cmdr:新建笔记": true,
+      "cmdr:更换主题": false,
+      "cmdr:Style Settings: Show style settings view": false,
+      "cmdr:QuickAdd: Run QuickAdd": false,
+      "cmdr:Shell commands: Execute: gcam": true,
+      "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
+      "cmdr:打开设置": true
+    }
+  },
+  "active": "dd0c724920d6ce07",
+  "lastOpenFiles": [
+    "tmp1",
+    "temp1",
+    "tmpxx",
+    "atest.c",
+    "10_Private",
+    "1private",
+    "_canvas.canvas",
+    "README.md",
+    "Local/temp.md",
+    "20_Journals/context.md",
+    "draft.md",
+    "quicknotes.md",
+    "20_Journals/tasks.md",
+    "All.md"
+  ]
+}

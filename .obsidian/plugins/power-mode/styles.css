@@ -1,0 +1,41 @@
+.power-mode-combo {
+  position: absolute;
+  display: flex;
+  right: 5%;
+  top: 20px;
+  font-weight: 900;
+  pointer-events: none;
+  z-index: 1;
+  font-size: 40px;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: monospace;
+}
+.power-mode-combo-progress {
+  height: 12px;
+  background-color: white;
+  border: solid 1px white;
+}
+.power-mode-combo-text {
+  color: white;
+}
+.power-mode-combo-exclamation {
+  font-size: 24px;
+}
+.power-mode-explosion {
+  position: fixed;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.power-mode-explosion-mask {
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  filter: saturate(150%);
+}
+
+.power-mode-explosion-image {
+  background-repeat: no-repeat;
+  background-size: contain;
+}

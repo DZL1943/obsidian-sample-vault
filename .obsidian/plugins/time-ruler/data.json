@@ -1,0 +1,33 @@
+{
+  "calendars": [],
+  "fieldFormat": "dataview",
+  "muted": false,
+  "inbox": null,
+  "search": "",
+  "taskSearch": "#task",
+  "fileOrder": [
+    "000_inbox/markdown.md",
+    "100_journals/context.md",
+    "100_journals/tasks.md",
+    "100_private/context.md",
+    "100_private/tasks.md",
+    "300_pages/笔记管理.md",
+    "400_snippets/银行.md",
+    "600_areas/工学/计算机/编程语言/编程语言.md",
+    "600_areas/工学/计算机/软件/Obsidian/Obsidian-插件.md",
+    "600_areas/工学/计算机/软件/Obsidian/Obsidian-设置.md",
+    "600_areas/工学/计算机/软件/RIME.md",
+    "600_areas/工学/计算机/软件/VSCode.md",
+    "800_archives/Obsidian交流分享.md",
+    "800_archives/tasks.md"
+  ],
+  "customStatus": {
+    "include": false,
+    "statuses": "-"
+  },
+  "showCompleted": false,
+  "dayStartEnd": [
+    0,
+    24
+  ]
+}

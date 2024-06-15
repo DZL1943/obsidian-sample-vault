@@ -1,0 +1,36 @@
+{
+  "defaultViewMode": "preview",
+  "readableLineLength": true,
+  "strictLineBreaks": true,
+  "showFrontmatter": true,
+  "spellcheck": true,
+  "promptDelete": false,
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "current",
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "showUnsupportedFiles": true,
+  "showInlineTitle": false,
+  "attachmentFolderPath": "90_Misc/Attachments",
+  "useTab": false,
+  "userIgnoreFilters": [
+    "80_archives/",
+    "90_misc/attachments/",
+    "80_Archives/",
+    "90_Misc/Attachments/"
+  ],
+  "pdfExportSettings": {
+    "includeName": true,
+    "pageSize": "A4",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  },
+  "showLineNumber": false,
+  "tabSize": 4,
+  "trashOption": "local",
+  "propertiesInDocument": "source",
+  "newFileFolderPath": "100_inbox",
+  "vimMode": false,
+  "showRibbon": true
+}

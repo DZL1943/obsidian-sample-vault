@@ -1,0 +1,12 @@
+/* hide right sidebar */
+.workspace-split.mod-horizontal.mod-right-split {
+width: 1px !important;
+transition: 0s;
+transition-delay: 50ms;
+}
+
+/* reveal right sidebar on hover */
+.workspace-split.mod-horizontal.mod-right-split:hover {
+width: 255px !important;
+transition: 0s;
+}

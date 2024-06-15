@@ -1,0 +1,16 @@
+{
+  "accentColor": "",
+  "theme": "system",
+  "cssTheme": "Minimal",
+  "baseFontSize": 20,
+  "enabledCssSnippets": [
+    "S - Embed Adjustments",
+    "he",
+    "bullet-list-live-preview-highlight",
+    "bullet-list-live-preview-threading",
+    "indent-line"
+  ],
+  "showViewHeader": true,
+  "textFontFamily": "Monaco,Menlo",
+  "interfaceFontFamily": "Menlo"
+}

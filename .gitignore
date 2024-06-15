@@ -1,0 +1,10 @@
+*.key
+/.trash/
+/.makemd/
+*[pP]rivate/
+/[lL]ocal/
+未命名*
+[uU]ntitled*
+draft*
+temp*
+test*

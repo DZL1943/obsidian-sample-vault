@@ -1,0 +1,11 @@
+{
+  "folder": [],
+  "customVariables": [
+    {
+      "name": "date",
+      "value": "YYYY-MM-DD",
+      "type": "date"
+    }
+  ],
+  "timeOutForInlineTitle": 50
+}

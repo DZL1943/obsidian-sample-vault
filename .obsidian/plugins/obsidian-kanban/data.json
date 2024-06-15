@@ -1,0 +1,11 @@
+{
+  "show-checkboxes": true,
+  "hide-tags-in-title": true,
+  "hide-date-display": true,
+  "hide-date-in-title": true,
+  "show-relative-date": true,
+  "archive-with-date": true,
+  "lane-width": 220,
+  "hide-tags-display": true,
+  "full-list-lane-width": true
+}

@@ -1,0 +1,23 @@
+{
+  "version": 3,
+  "homepages": {
+    "Main Homepage": {
+      "value": "200_private/summary",
+      "kind": "File",
+      "openOnStartup": false,
+      "hasRibbonIcon": true,
+      "openMode": "Keep open notes",
+      "manualOpenMode": "Keep open notes",
+      "view": "Default view",
+      "revertView": false,
+      "openWhenEmpty": false,
+      "refreshDataview": false,
+      "autoCreate": true,
+      "autoScroll": false,
+      "pin": false,
+      "commands": [],
+      "alwaysApply": false
+    }
+  },
+  "separateMobile": false
+}

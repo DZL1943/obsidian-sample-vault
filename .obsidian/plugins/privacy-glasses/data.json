@@ -1,0 +1,9 @@
+{
+  "blurOnStartup": "reveal-all",
+  "blurLevel": 0.6,
+  "blurOnIdleTimeoutSeconds": -1,
+  "hoverToReveal": true,
+  "revealUnderCaret": true,
+  "privateDirs": "20_Journals",
+  "privateNoteMarker": "#private"
+}
