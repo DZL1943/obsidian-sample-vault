@@ -8,7 +8,7 @@
   "showFilesFromSubFoldersButton": true,
   "revealActiveFileButton": true,
   "excludedExtensions": "kdbx",
-  "excludedFolders": "Context, Spaces, Spaces, Spaces, Spaces, Spaces, Spaces, Spaces, Spaces, 90_Misc/Configs, 90_Misc/Scripts",
+  "excludedFolders": "Context, Spaces, Spaces, Spaces, Spaces, Spaces, Spaces, Spaces, Spaces, 90_Misc/Configs, 90_Misc/Scripts, 90_Misc/Configs, 90_Misc/Code",
   "hideAttachments": false,
   "attachmentsFolderName": "attachments",
   "folderIcon": "default",

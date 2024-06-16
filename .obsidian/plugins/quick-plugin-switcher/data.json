@@ -613,7 +613,7 @@
       "authorUrl": "https://www.github.com/twibiral",
       "isDesktopOnly": true,
       "dir": ".obsidian/plugins/execute-code",
-      "enabled": false,
+      "enabled": true,
       "switched": 0,
       "groupInfo": {
         "hidden": false,
