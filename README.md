@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-15 17:02"
+modified: "2024-06-16 08:24"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -36,6 +36,7 @@ for _dir in $top_dirs;do touch $_dir/.gitkeep;done
 - 90_Misc/: 杂项(比如附件、模版等)
     - Attachments/
     - Templates/
+- Vaults/: 可通过 `ln -s source_path Vaults/` 的方式临时处理其他位置的文件
 - Local/: 本地目录, 不进行同步
 - draft: (进行中的)草稿, 可以每个设备单独一个文件, 互不冲突
 - quicknotes: 快速记录

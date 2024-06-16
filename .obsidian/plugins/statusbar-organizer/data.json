@@ -85,7 +85,7 @@
       "plugin-obsidian-git-obsidian-git-statusbar-failed-init-obsidian-git-statusbar-idle-obsidian-git-statusbar-status;1": {
         "position": 17,
         "visible": true,
-        "exists": false
+        "exists": true
       },
       "plugin-obsidian-git;1": {
         "position": 18,
@@ -100,7 +100,7 @@
       "plugin-obsidian-git-obsidian-git-statusbar-failed-init-obsidian-git-statusbar-idle-obsidian-git-statusbar-status-obsidian-git-statusbar-message;1": {
         "position": 20,
         "visible": true,
-        "exists": true
+        "exists": false
       }
     }
   },
