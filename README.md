@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-16 08:24"
+modified: "2024-06-16 11:25"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -212,6 +212,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 - 加密
     - Cryptomator
     - VeraCrypt
+    - Encrypto
     - git-crypt
 ## 剪藏、发布、导出
 
@@ -246,6 +247,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
     - [2021年新教程 - Obsidian中文教程 - Obsidian Publish](https://publish.obsidian.md/chinesehelp/01+2021%E6%96%B0%E6%95%99%E7%A8%8B/2021%E5%B9%B4%E6%96%B0%E6%95%99%E7%A8%8B)
     - [Basic writing and formatting syntax - GitHub Docs](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
     - [Markdown Cheat Sheet | Markdown Guide](https://www.markdownguide.org/cheat-sheet/)
+    - [GitHub - Yakitrak/obsidian-cli: Interact with Obsidian in the terminal. Open, search, create, update, move and delete notes!](https://github.com/Yakitrak/obsidian-cli)
 - Themes & CSS Snippets
     - [Home - Minimal Documentation](https://minimal.guide/)
     - [GitHub - Dmytro-Shulha/obsidian-css-snippets: Most common appearance solutions for Obsidian now in a single place. Initially collected by Klaas: https://forum.obsidian.md/t/how-to-achieve-css-code-snippets/8474](https://github.com/Dmytro-Shulha/obsidian-css-snippets)
