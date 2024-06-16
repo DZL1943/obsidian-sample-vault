@@ -85,5 +85,7 @@
   "sheets",
   "hotkey-helper",
   "plugin-reloader",
-  "create-note-in-folder"
+  "create-note-in-folder",
+  "embed-code-file",
+  "execute-code"
 ]
