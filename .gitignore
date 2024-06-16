@@ -1,6 +1,7 @@
 *.key
 /.trash/
 /.makemd/
+/Vaults/
 *[pP]rivate/
 /[lL]ocal/
 未命名*
