@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-17 10:05"
+modified: "2024-06-17 15:56"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -194,7 +194,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 
 ## 主题
 
-- 桌面端: 推荐 Minimal 主题
+- 桌面端: 推荐 [Minimal](https://minimal.guide/) 主题
 - 移动端: 推荐 Things 主题
 ## 同步、备份、加密
 
@@ -203,8 +203,8 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
     - Obsidian 自带的文件恢复功能
     - rsync/FreeFileSync
     - Local Backup 插件
-    - Kopia: 推荐
-    - macOS Time Machine
+    - [Kopia](https://github.com/kopia/kopia): 推荐
+    - macOS 时间机器
 - 同步到其他设备
     - 官方同步
     - Syncthing: 推荐
@@ -217,7 +217,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 - 加密
     - Cryptomator
     - VeraCrypt
-    - Encrypto
+    - [Encrypto](https://macpaw.com/encrypto)
     - git-crypt
 ## 剪藏、发布、导出
 
@@ -229,7 +229,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 - [obsidian-clipper](https://github.com/jplattel/obsidian-clipper): 无需插件, 相比 markdownload 更简单.(但可能剪藏不到内容)
 
 发布
-- Notion
+- [Notion](https://www.notion.so/)
 - 飞书
 - 语雀
 - 微信
