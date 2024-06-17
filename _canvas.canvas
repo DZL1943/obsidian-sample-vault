@@ -26,18 +26,18 @@
       "type": "file",
       "file": "20_Journals/context.md",
       "x": -1920,
-      "y": 740,
-      "width": 380,
+      "y": 720,
+      "width": 360,
       "height": 420
     },
     {
-      "id": "cb77a38118b58785",
-      "type": "file",
-      "file": "Local/temp.md",
+      "id": "7906c8996add2e11",
       "x": -1500,
-      "y": 740,
-      "width": 520,
-      "height": 420
+      "y": 720,
+      "width": 500,
+      "height": 420,
+      "type": "file",
+      "file": "draft.md"
     }
   ],
   "edges": [],
