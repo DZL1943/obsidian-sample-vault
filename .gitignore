@@ -1,6 +1,8 @@
 *.key
 /.trash/
 /.makemd/
+/.space/
+/Spaces/
 /Vaults/
 *[pP]rivate/
 /[lL]ocal/
