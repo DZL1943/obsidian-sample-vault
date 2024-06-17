@@ -112,7 +112,14 @@
   ],
   "rightRibbon": [],
   "titleBar": [],
-  "statusBar": [],
+  "statusBar": [
+    {
+      "id": "obsidian-minimal-settings:toggle-minimal-focus-mode",
+      "icon": "view",
+      "name": "Minimal Theme Settings: Toggle focus mode",
+      "mode": "any"
+    }
+  ],
   "pageHeader": [
     {
       "id": "open-with-default-app:open",
