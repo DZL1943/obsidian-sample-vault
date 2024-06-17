@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-17 16:57"
+modified: "2024-06-17 20:14"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -33,9 +33,9 @@ for _dir in $top_dirs;do touch $_dir/.gitkeep;done
     - journals
     - context
 - 30_Jottings/: 非正式笔记
-- 40_Pages/: 原创笔记
+- 40_Pages/: 原创笔记、主题笔记
 - 50_Projects/: 项目笔记
-- 60_Areas/: 领域知识笔记
+- 60_Areas/: 领域知识笔记、卡片笔记[^1]
 - 70_Resources/: 附件以外的资源文件
 - 80_Archives/: 归档
 - 90_Misc/: 杂项(比如附件、模版等)
@@ -283,3 +283,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 > [!faq] 报错找不到文件  
 > 比如 Various Complements 的配置文件, QuickAdd、Dataview 的相关脚本文件.  
 > 到对应的插件设置页面先关闭相关功能.
+
+#
+
+[^1]: 比如记录学习 xxx 的笔记, 可以先在 Projects 目录下建立一个 xxx 的目录, 在学习的过程中给每个知识点建立卡片笔记, 完事后归档到对应领域目录.
