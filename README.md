@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-17 09:31"
+modified: "2024-06-17 10:05"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -13,6 +13,11 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 
 ![](90_Misc/Attachments/README-20240611204632938.png)  
 ![](90_Misc/Attachments/README-20240611203835624.png)
+
+## 安装
+
+[Download - Obsidian](https://obsidian.md/download)  
+[Releases · obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases/releases)
 
 ## 目录结构说明
 
@@ -114,28 +119,27 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 64. obsidian-tagfolder
 65. obsidian-tasks-plugin
 66. obsidian-trash-explorer
-67. obsidian-visually-numbered-headings
-68. obsidian-zoom
-69. obsidian42-brat
-70. plugin-reloader
-71. privacy-glasses
-72. quick-explorer
-73. quick-plugin-switcher
-74. quickadd
-75. root-folder-context-menu
-76. settings-search
-77. show-whitespace-cm6
-78. solve
-79. statusbar-organizer
-80. surfing
-81. table-editor-obsidian
-82. tabs
-83. tag-wrangler
-84. templater-obsidian
-85. typewriter-mode
-86. unicode-search
-87. url-into-selection
-88. various-complements
+67. obsidian-zoom
+68. obsidian42-brat
+69. plugin-reloader
+70. privacy-glasses
+71. quick-explorer
+72. quick-plugin-switcher
+73. quickadd
+74. root-folder-context-menu
+75. settings-search
+76. show-whitespace-cm6
+77. solve
+78. statusbar-organizer
+79. surfing
+80. table-editor-obsidian
+81. tabs
+82. tag-wrangler
+83. templater-obsidian
+84. typewriter-mode
+85. unicode-search
+86. url-into-selection
+87. various-complements
 
 
 ## 快捷键设置
@@ -234,7 +238,6 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 ## Resources
 
 - Official
-    - [Obsidian - Sharpen your thinking](https://obsidian.md/)
     - [Home - Obsidian Help](https://help.obsidian.md/)
     - [Home - Developer Documentation](https://docs.obsidian.md/Home)
     - [Obsidian Changelog - Obsidian](https://obsidian.md/changelog)

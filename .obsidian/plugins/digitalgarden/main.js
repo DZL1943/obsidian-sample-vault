@@ -18489,7 +18489,7 @@ var Octokit = (_a = class {
 var import_js_logger3 = __toESM(require_logger());
 var logger = import_js_logger3.default.get("repository-connection");
 var oktokitLogger = import_js_logger3.default.get("octokit");
-var IMAGE_PATH_BASE = "src/site/img/user/";
+var IMAGE_PATH_BASE = "src/site/";
 var NOTE_PATH_BASE = "src/site/notes/";
 var RepositoryConnection = class {
   constructor({

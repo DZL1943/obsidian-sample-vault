@@ -7918,6 +7918,8 @@ var MAX_DOC_SIZE_BIN = 102400, VER = 10, LEAF_WAIT_TIMEOUT = 9e4, REPLICATION_BU
   doNotDeleteFolder: false,
   resolveConflictsByNewerFile: false,
   batchSave: false,
+  batchSaveMinimumDelay: 5,
+  batchSaveMaximumDelay: 60,
   deviceAndVaultName: "",
   usePluginSettings: false,
   showOwnPlugins: false,
@@ -8059,7 +8061,7 @@ var MAX_DOC_SIZE_BIN = 102400, VER = 10, LEAF_WAIT_TIMEOUT = 9e4, REPLICATION_BU
   useEden: {
     name: "Incubate Chunks in Document",
     desc: "If enabled, newly created chunks are temporarily kept within the document, and graduated to become independent chunks once stabilised.",
-    status: "ALPHA"
+    status: "BETA"
   },
   customChunkSize: {
     name: "Enhance chunk size"
@@ -8093,7 +8095,7 @@ function confName(_, ee = "") {
 var TweakValuesTemplate = {
   ...TweakValuesRecommendedTemplate,
   ...TweakValuesShouldMatchedTemplate
-}, PREFIXMD_LOGFILE = "LIVESYNC_LOG_", FLAGMD_REDFLAG = "redflag.md", FLAGMD_REDFLAG2 = "redflag2.md", FLAGMD_REDFLAG2_HR = "flag_rebuild.md", FLAGMD_REDFLAG3 = "redflag3.md", FLAGMD_REDFLAG3_HR = "flag_fetch.md", SYNCINFO_ID = "syncinfo", SALT_OF_PASSPHRASE = "rHGMPtr6oWw7VSa3W3wpa8fT8U", PREFIX_OBFUSCATED = "f:", PREFIX_CHUNK = "h:", PREFIX_ENCRYPTED_CHUNK = "h:+", import_obsidian = require("obsidian"), import_obsidian2 = require("obsidian"), import_diff_match_patch = __toESM(require_diff_match_patch(), 1), normalizePath = import_obsidian2.normalizePath, PERIODIC_PLUGIN_SWEEP = 60, CHeader = "h:", PSCHeader = "ps:", ICHeader = "i:", ICHeaderEnd = "i;", ICHeaderLength = ICHeader.length, ICXHeader = "ix:", FileWatchEventQueueMax = 10, configURIBase = "obsidian://setuplivesync?settings=", LEVEL_INFO = LOG_LEVEL_INFO, defaultLoggerEnv = {
+}, PREFIXMD_LOGFILE = "LIVESYNC_LOG_", FLAGMD_REDFLAG = "redflag.md", FLAGMD_REDFLAG2 = "redflag2.md", FLAGMD_REDFLAG2_HR = "flag_rebuild.md", FLAGMD_REDFLAG3 = "redflag3.md", FLAGMD_REDFLAG3_HR = "flag_fetch.md", SYNCINFO_ID = "syncinfo", SALT_OF_PASSPHRASE = "rHGMPtr6oWw7VSa3W3wpa8fT8U", PREFIX_OBFUSCATED = "f:", PREFIX_CHUNK = "h:", PREFIX_ENCRYPTED_CHUNK = "h:+", import_obsidian = require("obsidian"), import_obsidian2 = require("obsidian"), import_diff_match_patch = __toESM(require_diff_match_patch(), 1), normalizePath = import_obsidian2.normalizePath, PERIODIC_PLUGIN_SWEEP = 60, CHeader = "h:", PSCHeader = "ps:", ICHeader = "i:", ICHeaderEnd = "i;", ICHeaderLength = ICHeader.length, ICXHeader = "ix:", configURIBase = "obsidian://setuplivesync?settings=", LEVEL_INFO = LOG_LEVEL_INFO, defaultLoggerEnv = {
   minLogLevel: LOG_LEVEL_INFO
 }, defaultLogger = function defaultLogger2(_, ee = LEVEL_INFO, ne) {
   if (ee < defaultLoggerEnv.minLogLevel) return;
@@ -10175,20 +10177,20 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
       }
     }
     if (le) cbuf(he + 131072);
-    for (var je = (1 << me) - 1, $e = (1 << ye) - 1, Ve = fe; ;Ve = fe) {
-      var Ge = (Be = pe[bits16(_, fe) & je]) >> 4;
+    for (var je = (1 << me) - 1, $e = (1 << ye) - 1, Ge = fe; ;Ge = fe) {
+      var Ve = (Be = pe[bits16(_, fe) & je]) >> 4;
       if ((fe += 15 & Be) > ve) {
         if (ue) err(0);
         break;
       }
       if (!Be) err(2);
-      if (Ge < 256) ne[he++] = Ge; else if (256 == Ge) {
-        Ve = fe, pe = null;
+      if (Ve < 256) ne[he++] = Ve; else if (256 == Ve) {
+        Ge = fe, pe = null;
         break;
       } else {
-        var Ue = Ge - 254;
-        if (Ge > 264) {
-          var ze = fleb[Le = Ge - 257];
+        var Ue = Ve - 254;
+        if (Ve > 264) {
+          var ze = fleb[Le = Ve - 257];
           Ue = bits(_, fe, (1 << ze) - 1) + fl[Le];
           fe += ze;
         }
@@ -10214,7 +10216,7 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
         for (;he < Ke; ++he) ne[he] = ne[he - Fe];
       }
     }
-    ee.l = pe, ee.p = Ve, ee.b = he, ee.f = de;
+    ee.l = pe, ee.p = Ge, ee.b = he, ee.f = de;
     if (pe) de = 1, ee.m = me, ee.d = ge, ee.n = ye;
   } while (!de);
   return he != ne.length && oe ? slc(ne, 0, he) : ne.subarray(0, he);
@@ -10360,8 +10362,8 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
     fe += 14;
     for (Ae = 0; Ae < Pe; ++Ae) wbits(ee, fe + 3 * Ae, Re[clim[Ae]]);
     fe += 3 * Pe;
-    for (var Ve = [ Ee, Oe ], Ge = 0; Ge < 2; ++Ge) {
-      var Ue = Ve[Ge];
+    for (var Ge = [ Ee, Oe ], Ve = 0; Ve < 2; ++Ve) {
+      var Ue = Ge[Ve];
       for (Ae = 0; Ae < Ue.length; ++Ae) {
         var ze = 31 & Ue[Ae];
         wbits(ee, fe, $e[ze]), fe += Re[ze];
@@ -10400,12 +10402,12 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
           for (Ne = 0; Ne < 30; ++Ne) Oe[Ne] = 0;
         }
         var Me = 2, Fe = 0, je = ge, $e = Ie - De & 32767;
-        if (Be > 2 && Pe == hsh(Ae - $e)) for (var Ve = Math.min(pe, Be) - 1, Ge = Math.min(32767, Ae), Ue = Math.min(258, Be); $e <= Ge && --je && Ie != De; ) {
+        if (Be > 2 && Pe == hsh(Ae - $e)) for (var Ge = Math.min(pe, Be) - 1, Ve = Math.min(32767, Ae), Ue = Math.min(258, Be); $e <= Ve && --je && Ie != De; ) {
           if (_[Ae + Me] == _[Ae + Me - $e]) {
             for (var ze = 0; ze < Ue && _[Ae + ze] == _[Ae + ze - $e]; ++ze) ;
             if (ze > Me) {
               Me = ze, Fe = $e;
-              if (ze > Ve) break;
+              if (ze > Ge) break;
               var qe = Math.min($e, ze - 2), He = 0;
               for (Ne = 0; Ne < qe; ++Ne) {
                 var Ke = Ae - $e + Ne & 32767, We = Ke - ye[Ke] & 32767;
@@ -19598,6 +19600,41 @@ function cancelAllPeriodicTask() {
   }
 }
 
+var waitingItems = new Map;
+
+function waitForTimeout(_, ee) {
+  if (waitingItems.has(_)) return waitingItems.get(_).timeoutPromise.promise;
+  const ne = promiseWithResolver(), ie = setTimeout((() => {
+    finishWaitingForTimeout(_, true);
+  }), ee);
+  waitingItems.set(_, {
+    waitFrom: Date.now(),
+    timeout: ee,
+    timeoutPromise: ne,
+    timer: ie
+  });
+  return ne.promise;
+}
+
+function finishWaitingForTimeout(_, ee = false) {
+  const ne = waitingItems.get(_);
+  if (ne) {
+    if (ne.timer) clearTimeout(ne.timer);
+    ne.timeoutPromise.resolve(ee);
+    waitingItems.delete(_);
+    return true;
+  }
+  return false;
+}
+
+function finishAllWaitingForTimeout(_, ee) {
+  for (const [ne, ie] of waitingItems) if (ne.startsWith(_)) finishWaitingForTimeout(ne, ee);
+}
+
+function isWaitingForTimeout(_) {
+  return waitingItems.has(_);
+}
+
 index_es_default.plugin(index_es_default2).plugin(index_es_default3).plugin(index_es_default4).plugin(index_browser_es_default2).plugin(index_es_default8).plugin(index_browser_es_default3).plugin(import_transform_pouch.default);
 
 function appendPurgeSeqs(_, ee) {
@@ -21157,22 +21194,26 @@ function reactive(_, ee) {
 function _reactive({expression: _, initialValue: ee}) {
   let ne, ie = false;
   const re = new Set, se = {
-    depends: new Set,
-    evalCount: 0,
-    readCount: 0,
+    myContext: new Set,
     markDirty() {
       ie = true;
       se.markDependedDirty();
+    },
+    rippleChanged() {
       re.forEach((_ => _(se)));
+      se.myContext.forEach((_ => _.rippleChanged()));
     },
     markClean() {
       ie = false;
     },
     markDependedDirty() {
-      se.depends.forEach((_ => _.markDirty()));
+      se.myContext.forEach((_ => _.markDirty()));
+    },
+    get isDirty() {
+      return ie;
     },
     get value() {
-      if (context) se.depends.add(context);
+      if (context) se.myContext.add(context);
       if (!_) return ne;
       if (ie) {
         const ee = ne, ie = _();
@@ -21188,10 +21229,12 @@ function _reactive({expression: _, initialValue: ee}) {
       if (isObjectDifferent(ne, _)) {
         ne = _;
         se.markDirty();
+        se.rippleChanged();
       }
     },
     onChanged(_) {
       re.add(_);
+      se.markDirty();
     },
     offChanged(_) {
       re.delete(_);
@@ -21205,6 +21248,11 @@ function _reactive({expression: _, initialValue: ee}) {
     return ie;
   }();
   return se;
+}
+
+function computed(_) {
+  const ee = reactive(_);
+  return () => ee.value;
 }
 
 var lockStats = reactiveSource({
@@ -23502,13 +23550,13 @@ function create_each_block3(_) {
 
 function create_fragment3(_) {
   let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce, we, Oe, ke, xe, Ae, Le, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe = _[1] && create_if_block_8(_), je = _[3] && create_if_block_7(_);
-  const $e = [ create_if_block_13, create_else_block3 ], Ve = [];
+  const $e = [ create_if_block_13, create_else_block3 ], Ge = [];
   function select_block_type(_, ee) {
     if (0 == _[0].length) return 0; else return 1;
   }
   Ee = select_block_type(_);
-  Ce = Ve[Ee] = $e[Ee](_);
-  let Ge = _[1] && create_if_block3(_);
+  Ce = Ge[Ee] = $e[Ee](_);
+  let Ve = _[1] && create_if_block3(_);
   return {
     c() {
       ee = element("div");
@@ -23537,7 +23585,7 @@ function create_fragment3(_) {
       Se = element("div");
       Ce.c();
       we = space();
-      if (Ge) Ge.c();
+      if (Ve) Ve.c();
       Oe = space();
       ke = element("div");
       xe = element("label");
@@ -23587,9 +23635,9 @@ function create_fragment3(_) {
       if (je) je.m(ee, null);
       append(ee, ve);
       append(ee, Se);
-      Ve[Ee].m(Se, null);
+      Ge[Ee].m(Se, null);
       append(ee, we);
-      if (Ge) Ge.m(ee, null);
+      if (Ve) Ve.m(ee, null);
       append(ee, Oe);
       append(ee, ke);
       append(ke, xe);
@@ -23627,27 +23675,27 @@ function create_fragment3(_) {
       }
       let re = Ee;
       Ee = select_block_type(_);
-      if (Ee === re) Ve[Ee].p(_, ne); else {
+      if (Ee === re) Ge[Ee].p(_, ne); else {
         group_outros();
-        transition_out(Ve[re], 1, 1, (() => {
-          Ve[re] = null;
+        transition_out(Ge[re], 1, 1, (() => {
+          Ge[re] = null;
         }));
         check_outros();
-        Ce = Ve[Ee];
+        Ce = Ge[Ee];
         if (!Ce) {
-          Ce = Ve[Ee] = $e[Ee](_);
+          Ce = Ge[Ee] = $e[Ee](_);
           Ce.c();
         } else Ce.p(_, ne);
         transition_in(Ce, 1);
         Ce.m(Se, null);
       }
-      if (_[1]) if (Ge) Ge.p(_, ne); else {
-        Ge = create_if_block3(_);
-        Ge.c();
-        Ge.m(ee, Oe);
-      } else if (Ge) {
-        Ge.d(1);
-        Ge = null;
+      if (_[1]) if (Ve) Ve.p(_, ne); else {
+        Ve = create_if_block3(_);
+        Ve.c();
+        Ve.m(ee, Oe);
+      } else if (Ve) {
+        Ve.d(1);
+        Ve = null;
       }
       if (4 & ne[0]) Le.checked = _[2];
       if (2 & ne[0]) De.checked = _[1];
@@ -23666,8 +23714,8 @@ function create_fragment3(_) {
       if (_) detach(ee);
       if (Fe) Fe.d();
       if (je) je.d();
-      Ve[Ee].d();
-      if (Ge) Ge.d();
+      Ge[Ee].d();
+      if (Ve) Ve.d();
       Ne = false;
       run_all(Me);
     }
@@ -24596,7 +24644,7 @@ function inlineWorker(_) {
 }
 
 function Worker2() {
-  return inlineWorker('var B=Object.defineProperty,M=Object.defineProperties;var k=Object.getOwnPropertyDescriptors;var T=Object.getOwnPropertySymbols;var U=Object.prototype.hasOwnProperty,G=Object.prototype.propertyIsEnumerable;var x=(e,n)=>(n=Symbol[e])?n:Symbol.for("Symbol."+e);var A=(e,n,t)=>n in e?B(e,n,{enumerable:!0,configurable:!0,writable:!0,value:t}):e[n]=t,O=(e,n)=>{for(var t in n||(n={}))U.call(n,t)&&A(e,t,n[t]);if(T)for(var t of T(n))G.call(n,t)&&A(e,t,n[t]);return e},L=(e,n)=>M(e,k(n));var m=function(e,n){this[0]=e,this[1]=n},_=(e,n,t)=>{var r=(l,s,c,a)=>{try{var f=t[l](s),y=(s=f.value)instanceof m,E=f.done;Promise.resolve(y?s[0]:s).then(u=>y?r(l==="return"?l:"next",s[1]?{done:u.done,value:u.value}:u,c,a):c({value:u,done:E})).catch(u=>r("throw",u,c,a))}catch(u){a(u)}},o=l=>i[l]=s=>new Promise((c,a)=>r(l,s,c,a)),i={};return t=t.apply(e,n),i[x("asyncIterator")]=()=>i,o("next"),o("throw"),o("return"),i},S=e=>{var n=e[x("asyncIterator")],t=!1,r,o={};return n==null?(n=e[x("iterator")](),r=i=>o[i]=l=>n[i](l)):(n=n.call(e),r=i=>o[i]=l=>{if(t){if(t=!1,i==="throw")throw l;return l}return t=!0,{done:!1,value:new m(new Promise(s=>{var c=n[i](l);if(!(c instanceof Object))throw TypeError("Object expected");s(c)}),1)}}),o[x("iterator")]=()=>o,r("next"),"throw"in n?r("throw"):o.throw=i=>{throw i},"return"in n&&r("return"),o},C=(e,n,t)=>(n=e[x("asyncIterator")])?n.call(e):(e=e[x("iterator")](),n={},t=(r,o)=>(o=e[r])&&(n[r]=i=>new Promise((l,s,c)=>(i=o.call(e,i),c=i.done,Promise.resolve(i.value).then(a=>l({value:a,done:c}),s)))),t("next"),t("return"),n);var re=Symbol("cancelled"),oe=Symbol("auto_merged"),ie=Symbol("not_conflicted"),se=Symbol("missing_or_error"),ae=Symbol("leave_to_subsequent_proc"),le=Symbol("infinity"),ce=Symbol("timed out"),ue=Symbol("NotFound");var D={syncMaxSizeInMB:50,customChunkSize:0,concurrencyOfReadChunksOnline:100,minimumIntervalOfReadChunksOnline:333},fe=L(O({},D),{customChunkSize:50,concurrencyOfReadChunksOnline:30,minimumIntervalOfReadChunksOnline:25}),ye=L(O({},D),{customChunkSize:10,concurrencyOfReadChunksOnline:30,minimumIntervalOfReadChunksOnline:25}),v={minimumChunkSize:20,longLineThreshold:250,encrypt:!1,usePathObfuscation:!1,enableCompression:!1,useEden:!1,customChunkSize:0,useDynamicIterationCount:!1,hashAlg:"xxhash64",enableChunkSplitterV2:!0},V={maxChunksInEden:10,maxTotalLengthInEden:1024,maxAgeInEden:10,useIgnoreFiles:!1,useCustomRequestHandler:!1,batch_size:25,batches_limit:25,useIndexedDBAdapter:!0,useTimeouts:!1,readChunksOnline:!0,hashCacheMaxCount:300,hashCacheMaxAmount:50,concurrencyOfReadChunksOnline:40,minimumIntervalOfReadChunksOnline:50,ignoreFiles:".gitignore",syncMaxSizeInMB:50,enableChunkSplitterV2:!0};var pe=O(O({},V),v);var z={},H={};for(let e=0;e<256;e++)z[`00${e.toString(16)}`.slice(-2)]=e,H[e]=`00${e.toString(16)}`.slice(-2);function*K(e,n){for(let t=e;t<=n;t++)yield t}var $={},X={};[...K(192,447)].forEach((e,n)=>{$[n]=e,X[e]=n});var Ie=1024*1024*30;var Y=32768;var Te=3*5e7;function q(e){return new Promise((n,t)=>{let r=new Blob([e],{type:"application/octet-binary"}),o=new FileReader;o.onload=function(i){var c,a;let l=((a=(c=i.target)==null?void 0:c.result)==null?void 0:a.toString())||"";if(e.byteLength!=0&&(l==""||l=="data:"))return t(new TypeError("Could not parse the encoded string"));let s=l.substring(l.indexOf(",")+1);n(s)},o.readAsDataURL(r)})}async function I(e){let n=e instanceof Uint8Array?e:new Uint8Array(e);return n.byteLength<Y?btoa(String.fromCharCode.apply(null,[...n])):await q(n)}function F(e){return e.type==="text/plain"}function*j(e,n){let t="";e:do{let r=e.shift();if(typeof r=="undefined"){yield t;break e}if(r.startsWith("```")||r.startsWith(" ```")||r.startsWith("  ```")||r.startsWith("   ```")){yield t,t=r+(e.length!=0?`\n`:"");n:do{let s=e.shift();if(typeof s=="undefined")break n;t+=s+(e.length!=0?`\n`:"")}while(e.length>0&&!(e[0].startsWith("```")||e[0].startsWith(" ```")||e[0].startsWith("  ```")||e[0].startsWith("   ```")));let o=t.endsWith("="),i=t.length>2048,l=e.shift();if(typeof l!="undefined"&&(t+=l,t+=e.length!=0?`\n`:""),!o&&!i){let s=/(.*?[;,:<])/g,c=t.split(s).filter(a=>a!="");for(let a of c)yield a}else yield t;t=""}else t+=r+(e.length!=0?`\n`:""),(t.length>=n||e.length==0||e[0]=="#"||t[0]=="#")&&(yield t,t="")}while(e.length>0)}var R=10;function J(e,n,t,r){let o=typeof e=="string"?[e]:e;return function*(){for(let l of o)if(t){let s=l.split(`\n`),c=j(s,r);for(let a of c){let f=a;do{let y=n;f.charCodeAt(y-1)!=f.codePointAt(y-1)&&y++,yield f.substring(0,y),f=f.substring(y)}while(f!="")}}else{let s=l;do{let c=n,a=s.substring(0,c);s=s.substring(c),yield a}while(s!="")}}}function*Q(e,n,t=25,r){let o="",i=!1,l=n.length;for(let s of e){let c=s.length;if(r&&c>r){yield o+s,i=!1,o="";continue}let a=-1,f=0;e:do{if(a=s.indexOf(n,f),a==-1)break e;o+=s.slice(f,a)+n,o.length>t?(yield o,o="",i=!1):i=!0,f=a+l}while(a<c);(f!=a||f==-1&&a==-1)&&(o+=s.slice(f),i=!0)}i&&(yield o)}function*w(e,n){let t=e.length;if(t>n){let r=0;do{let o=r+n;if(o>t){yield e.substring(r);break}for(;e.charCodeAt(o-1)!=e.codePointAt(o-1);)o++;yield e.substring(r,o),r=o}while(r<t)}else yield e}function*Z(e,n){for(let t of e)yield*S(w(t,n))}function*ee(e){for(let n of e)yield n}var ne=100;async function P(e,n,t,r,o){if(e.size==0)return function*(){};if(F(e)){let y=await e.text();if(!t){let g=w(y,n);return function*(){yield*S(g)}}let E=y.length,u=r;for(;E/u>ne;)u+=r;let p=ee([y]),h=Q(p,`\n`,u),d=Z(h,n);return function*(){yield*S(d)}}let i=0;o&&o.endsWith(".pdf")&&(i=47);let c=Math.max(1e5,Math.min(1e8,e.size)),a=1,f=c;for(;f>10;)f/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return _(this,null,function*(){let E=e.size,u=0,p=new Uint8Array(yield new m(e.arrayBuffer()));do{let h=u+r,d=u+n,g,b=p.indexOf(i,h);b==-1&&(b=p.indexOf(R,h)),b==-1?g=d:g=b<d?b:d,yield yield new m(I(p.slice(u,g))),u=g}while(u<E)})}}async function N(e,n,t,r,o){if(F(e))return J(await e.text(),n,t,r);let i=0;o&&o.endsWith(".pdf")&&(i=47);let c=Math.max(1e5,Math.min(1e8,e.size)),a=1,f=c;for(;f>10;)f/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return _(this,null,function*(){let E=e.size,u=0;do{let p=n,h=new Uint8Array(yield new m(e.slice(u,u+n).arrayBuffer())),d=h.indexOf(i,r);p=d==-1?n:Math.min(n,d),d==-1&&(d=h.indexOf(R,r));let g=h.slice(0,p);u+=g.length,yield yield new m(I(g))}while(u<E)})}}self.onmessage=async e=>{let n=e.data.data,t=n.key,r=n.dataSrc,o=n.pieceSize,i=n.plainSplit,l=n.minimumChunkSize,s=n.filename,a=await(n.useV2?P:N)(r,o,i,l,s);try{for(var f=C(a()),y,E,u;y=!(E=await f.next()).done;y=!1){let p=E.value;self.postMessage([t,p])}}catch(E){u=[E]}finally{try{y&&(E=f.return)&&await E.call(f)}finally{if(u)throw u[0]}}self.postMessage([t,void 0])};\n');
+  return inlineWorker('var M=Object.defineProperty,B=Object.defineProperties;var k=Object.getOwnPropertyDescriptors;var T=Object.getOwnPropertySymbols;var U=Object.prototype.hasOwnProperty,G=Object.prototype.propertyIsEnumerable;var x=(e,n)=>(n=Symbol[e])?n:Symbol.for("Symbol."+e);var A=(e,n,t)=>n in e?M(e,n,{enumerable:!0,configurable:!0,writable:!0,value:t}):e[n]=t,O=(e,n)=>{for(var t in n||(n={}))U.call(n,t)&&A(e,t,n[t]);if(T)for(var t of T(n))G.call(n,t)&&A(e,t,n[t]);return e},L=(e,n)=>B(e,k(n));var m=function(e,n){this[0]=e,this[1]=n},_=(e,n,t)=>{var r=(l,s,c,a)=>{try{var y=t[l](s),f=(s=y.value)instanceof m,E=y.done;Promise.resolve(f?s[0]:s).then(u=>f?r(l==="return"?l:"next",s[1]?{done:u.done,value:u.value}:u,c,a):c({value:u,done:E})).catch(u=>r("throw",u,c,a))}catch(u){a(u)}},o=l=>i[l]=s=>new Promise((c,a)=>r(l,s,c,a)),i={};return t=t.apply(e,n),i[x("asyncIterator")]=()=>i,o("next"),o("throw"),o("return"),i},S=e=>{var n=e[x("asyncIterator")],t=!1,r,o={};return n==null?(n=e[x("iterator")](),r=i=>o[i]=l=>n[i](l)):(n=n.call(e),r=i=>o[i]=l=>{if(t){if(t=!1,i==="throw")throw l;return l}return t=!0,{done:!1,value:new m(new Promise(s=>{var c=n[i](l);if(!(c instanceof Object))throw TypeError("Object expected");s(c)}),1)}}),o[x("iterator")]=()=>o,r("next"),"throw"in n?r("throw"):o.throw=i=>{throw i},"return"in n&&r("return"),o},C=(e,n,t)=>(n=e[x("asyncIterator")])?n.call(e):(e=e[x("iterator")](),n={},t=(r,o)=>(o=e[r])&&(n[r]=i=>new Promise((l,s,c)=>(i=o.call(e,i),c=i.done,Promise.resolve(i.value).then(a=>l({value:a,done:c}),s)))),t("next"),t("return"),n);var re=Symbol("cancelled"),oe=Symbol("auto_merged"),ie=Symbol("not_conflicted"),se=Symbol("missing_or_error"),ae=Symbol("leave_to_subsequent_proc"),le=Symbol("infinity"),ce=Symbol("timed out"),ue=Symbol("NotFound");var D={syncMaxSizeInMB:50,customChunkSize:0,concurrencyOfReadChunksOnline:100,minimumIntervalOfReadChunksOnline:333},ye=L(O({},D),{customChunkSize:50,concurrencyOfReadChunksOnline:30,minimumIntervalOfReadChunksOnline:25}),fe=L(O({},D),{customChunkSize:10,concurrencyOfReadChunksOnline:30,minimumIntervalOfReadChunksOnline:25}),v={minimumChunkSize:20,longLineThreshold:250,encrypt:!1,usePathObfuscation:!1,enableCompression:!1,useEden:!1,customChunkSize:0,useDynamicIterationCount:!1,hashAlg:"xxhash64",enableChunkSplitterV2:!0},V={maxChunksInEden:10,maxTotalLengthInEden:1024,maxAgeInEden:10,useIgnoreFiles:!1,useCustomRequestHandler:!1,batch_size:25,batches_limit:25,useIndexedDBAdapter:!0,useTimeouts:!1,readChunksOnline:!0,hashCacheMaxCount:300,hashCacheMaxAmount:50,concurrencyOfReadChunksOnline:40,minimumIntervalOfReadChunksOnline:50,ignoreFiles:".gitignore",syncMaxSizeInMB:50,enableChunkSplitterV2:!0};var pe=O(O({},V),v);var z={},H={};for(let e=0;e<256;e++)z[`00${e.toString(16)}`.slice(-2)]=e,H[e]=`00${e.toString(16)}`.slice(-2);function*K(e,n){for(let t=e;t<=n;t++)yield t}var $={},X={};[...K(192,447)].forEach((e,n)=>{$[n]=e,X[e]=n});var Ie=1024*1024*30;var Y=32768;var Te=3*5e7;function q(e){return new Promise((n,t)=>{let r=new Blob([e],{type:"application/octet-binary"}),o=new FileReader;o.onload=function(i){var c,a;let l=((a=(c=i.target)==null?void 0:c.result)==null?void 0:a.toString())||"";if(e.byteLength!=0&&(l==""||l=="data:"))return t(new TypeError("Could not parse the encoded string"));let s=l.substring(l.indexOf(",")+1);n(s)},o.readAsDataURL(r)})}async function I(e){let n=e instanceof Uint8Array?e:new Uint8Array(e);return n.byteLength<Y?btoa(String.fromCharCode.apply(null,[...n])):await q(n)}function F(e){return e.type==="text/plain"}function*j(e,n){let t="";e:do{let r=e.shift();if(typeof r=="undefined"){yield t;break e}if(r.startsWith("```")||r.startsWith(" ```")||r.startsWith("  ```")||r.startsWith("   ```")){yield t,t=r+(e.length!=0?`\n`:"");n:do{let s=e.shift();if(typeof s=="undefined")break n;t+=s+(e.length!=0?`\n`:"")}while(e.length>0&&!(e[0].startsWith("```")||e[0].startsWith(" ```")||e[0].startsWith("  ```")||e[0].startsWith("   ```")));let o=t.endsWith("="),i=t.length>2048,l=e.shift();if(typeof l!="undefined"&&(t+=l,t+=e.length!=0?`\n`:""),!o&&!i){let s=/(.*?[;,:<])/g,c=t.split(s).filter(a=>a!="");for(let a of c)yield a}else yield t;t=""}else t+=r+(e.length!=0?`\n`:""),(t.length>=n||e.length==0||e[0]=="#"||t[0]=="#")&&(yield t,t="")}while(e.length>0)}var R=10;function J(e,n,t,r){let o=typeof e=="string"?[e]:e;return function*(){for(let l of o)if(t){let s=l.split(`\n`),c=j(s,r);for(let a of c){let y=a;do{let f=n;y.charCodeAt(f-1)!=y.codePointAt(f-1)&&f++,yield y.substring(0,f),y=y.substring(f)}while(y!="")}}else{let s=l;do{let c=n,a=s.substring(0,c);s=s.substring(c),yield a}while(s!="")}}}function*Q(e,n,t=25,r){let o="",i=!1,l=n.length;for(let s of e){let c=s.length;if(r&&c>r){yield o+s,i=!1,o="";continue}let a=-1,y=0;e:do{if(a=s.indexOf(n,y),a==-1)break e;o+=s.slice(y,a)+n,o.length>t?(yield o,o="",i=!1):i=!0,y=a+l}while(a<c);(y!=a||y==-1&&a==-1)&&(o+=s.slice(y),i=!0)}i&&(yield o)}function*w(e,n){let t=e.length;if(t>n){let r=0;do{let o=r+n;if(o>t){yield e.substring(r);break}for(;e.charCodeAt(o-1)!=e.codePointAt(o-1);)o++;yield e.substring(r,o),r=o}while(r<t)}else yield e}function*Z(e,n){for(let t of e)yield*S(w(t,n))}function*ee(e){for(let n of e)yield n}var ne=100;async function P(e,n,t,r,o){if(e.size==0)return function*(){};if(F(e)){let f=await e.text();if(!t){let g=w(f,n);return function*(){yield*S(g)}}let E=f.length,u=r;for(;E/u>ne;)u+=r;let p=ee([f]),h=Q(p,`\n`,u),d=Z(h,n);return function*(){yield*S(d)}}let i=0;o&&o.endsWith(".pdf")&&(i=47);let c=Math.max(1e5,Math.min(1e8,e.size)),a=1,y=c;for(;y>10;)y/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return _(this,null,function*(){let E=e.size,u=0,p=new Uint8Array(yield new m(e.arrayBuffer()));do{let h=u+r,d=u+n,g,b=p.indexOf(i,h);b==-1&&(b=p.indexOf(R,h)),b==-1?g=d:g=b<d?b:d,yield yield new m(I(p.slice(u,g))),u=g}while(u<E)})}}async function N(e,n,t,r,o){if(F(e))return J(await e.text(),n,t,r);let i=0;o&&o.endsWith(".pdf")&&(i=47);let c=Math.max(1e5,Math.min(1e8,e.size)),a=1,y=c;for(;y>10;)y/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return _(this,null,function*(){let E=e.size,u=0;do{let p=n,h=new Uint8Array(yield new m(e.slice(u,u+n).arrayBuffer())),d=h.indexOf(i,r);p=d==-1?n:Math.min(n,d),d==-1&&(d=h.indexOf(R,r));let g=h.slice(0,p);u+=g.length,yield yield new m(I(g))}while(u<E)})}}self.onmessage=async e=>{let n=e.data.data,t=n.key,r=n.dataSrc,o=n.pieceSize,i=n.plainSplit,l=n.minimumChunkSize,s=n.filename,a=await(n.useV2?P:N)(r,o,i,l,s);try{for(var y=C(a()),f,E,u;f=!(E=await y.next()).done;f=!1){let p=E.value;self.postMessage([t,p])}}catch(E){u=[E]}finally{try{f&&(E=y.return)&&await E.call(y)}finally{if(u)throw u[0]}}self.postMessage([t,void 0])};\n');
 }
 
 var key = 0, buffers = new Map, notify = new Notifier, worker = Worker2(), isTerminated = false;
@@ -26442,11 +26490,11 @@ var _a3, OnDialogSettingsDefault = {
   },
   lessInformationInLog: {
     name: "Show only notifications",
-    desc: "Prevent logging and show only notification"
+    desc: "Prevent logging and show only notification. Please disable when you report the logs"
   },
   showVerboseLog: {
     name: "Verbose Log",
-    desc: "Show verbose log"
+    desc: "Show verbose log. Please enable when you report the logs"
   },
   hashCacheMaxCount: {
     name: "Memory cache size (by total items)"
@@ -26687,6 +26735,14 @@ var _a3, OnDialogSettingsDefault = {
   processSmallFilesInUIThread: {
     name: "Process small files in the foreground",
     desc: "If enabled, the file under 1kb will be processed in the UI thread."
+  },
+  batchSaveMinimumDelay: {
+    name: "Minimum delay for batch database updating",
+    desc: "Seconds. Saving to the local database will be delayed until this value after we stop typing or saving."
+  },
+  batchSaveMaximumDelay: {
+    name: "Maximum delay for batch database updating",
+    desc: "Saving will be performed forcefully after this number of seconds."
   }
 };
 
@@ -27152,7 +27208,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
     if (this.isShown) {
       const ee = this.plugin.settings, ne = Object.keys(ee);
       let ie = false;
-      for (const re of ne) if (isObjectDifferent(ee[re], null == (_ = this.initialSettings) ? void 0 : _[re])) if (this.isDirty(re)) this.plugin.askInPopup(`config-reloaded-${re}`, `The setting "${getConfName(re)}" being in editing has been changed from somewhere. We can discard modification and reload by clicking {HERE}. Click elsewhere to ignore changes`, (_ => {
+      for (const re of ne) if ("deviceAndVaultName" !== re) if (isObjectDifferent(ee[re], null == (_ = this.initialSettings) ? void 0 : _[re])) if (this.isDirty(re)) this.plugin.askInPopup(`config-reloaded-${re}`, `The setting "${getConfName(re)}" being in editing has been changed from somewhere. We can discard modification and reload by clicking {HERE}. Click elsewhere to ignore changes`, (_ => {
         _.text = "HERE";
         _.addEventListener("click", (() => {
           this.refreshSetting(re);
@@ -27210,7 +27266,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       text: "Updates"
     }), pe = this.createEl(fe, "div", {
       text: ""
-    }), ge = "0.23.13", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
+    }), ge = "0.23.14", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
     ye.addClass("sls-header-button");
     ye.innerHTML = "<button> OK, I read everything. </button>";
     if (me > ((null == (_ = this.editingSettings) ? void 0 : _.lastReadUpdates) || 0)) {
@@ -27221,7 +27277,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         _.remove();
       }));
     }
-    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.13:\n  - Fixed:\n    - No longer files have been trimmed even delimiters have been continuous.\n    - Fixed the toggle title to `Do not split chunks in the background` from `Do not split chunks in the foreground`.\n    - Non-configured item mismatches are no longer detected.\n- 0.23.12:\n  - Improved:\n    - Now notes will be split into chunks in the background thread to improve smoothness.\n      - Default enabled, to disable, toggle `Do not split chunks in the foreground` on `Hatch` -> `Compatibility`.\n      - If you want to process very small notes in the foreground, please enable `Process small files in the foreground` on `Hatch` -> `Compatibility`.\n    - We can use a `splitting-limit-capped chunk splitter`; which performs more simple and make less amount of chunks.\n      - Default disabled, to enable, toggle `Use splitting-limit-capped chunk splitter` on `Sync settings` -> `Performance tweaks`\n  - Tidied\n    - Some files have been separated into multiple files to make them more explicit in what they are responsible for.\n- 0.23.11:\n  - Fixed:\n    - Now we *surely* can set the device name and enable customised synchronisation.\n    - Unnecessary dialogue update processes have been eliminated.\n    - Customisation sync no longer stores half-collected files.\n    - No longer hangs up when removing or renaming files with the `Sync on Save` toggle enabled.\n  - Improved:\n    - Customisation sync now performs data deserialization more smoothly.\n    - New translations have been merged.\n- 0.23.10\n  - Fixed:\n    - No longer configurations have been locked in the minimal setup.\n- 0.23.9\n  - Fixed:\n    - No longer unexpected parallel replication is performed.\n    - Now we can set the device name and enable customised synchronisation again.\n- 0.23.8\n  - New feature:\n    - Now we are ready for i18n. \n      - Patch or PR of `rosetta.ts` are welcome!\n    - The setting dialogue has been refined. Very controllable, clearly displayed disabled items, and ready to i18n.\n  - Fixed:\n    - Many memory leaks have been rescued.\n    - Chunk caches now work well.\n    - Many trivial but potential bugs are fixed.\n    - No longer error messages will be shown on retrieving checkpoint or server information.\n    - Now we can check and correct tweak mismatch during the setup\n  - Improved:\n    - Customisation synchronisation has got more smoother.\n  - Tidied\n    - Practically unused functions have been removed or are being prepared for removal.\n    - Many of the type-errors and lint errors have been corrected.\n    - Unused files have been removed.\n  - Note:\n    - From this version, some test files have been included. However, they are not enabled and released in the release build.\n      - To try them, please run Self-hosted LiveSync in the dev build.\n- 0.23.7\n  - Fixed:\n    - No longer missing tasks which have queued as the same key (e.g., for the same operation to the same file).\n      - This occurs, for example, with hidden files that have been changed multiple times in a very short period of time, such as `appearance.json`. Thanks for the report!\n    - Some trivial issues have been fixed.\n  - New feature:\n    - Reloading Obsidian can be scheduled until that file and database operations are stable.\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
+    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.14:\n  - Fixed:\n    - No longer batch-saving ignores editor inputs.\n    - The file-watching and serialisation processes have been changed to the one which is similar to previous implementations.\n    - We can configure the settings (Especially about text-boxes) even if we have configured the device name.\n  - Improved:\n    - We can configure the delay of batch-saving.\n      - Default: 5 seconds, the same as the previous hard-coded value. (Note: also, the previous behaviour was not correct).\n    - Also, we can configure the limit of delaying batch-saving.\n    - The performance of showing status indicators has been improved.\n- 0.23.13:\n  - Fixed:\n    - No longer files have been trimmed even delimiters have been continuous.\n    - Fixed the toggle title to `Do not split chunks in the background` from `Do not split chunks in the foreground`.\n    - Non-configured item mismatches are no longer detected.\n- 0.23.12:\n  - Improved:\n    - Now notes will be split into chunks in the background thread to improve smoothness.\n      - Default enabled, to disable, toggle `Do not split chunks in the foreground` on `Hatch` -> `Compatibility`.\n      - If you want to process very small notes in the foreground, please enable `Process small files in the foreground` on `Hatch` -> `Compatibility`.\n    - We can use a `splitting-limit-capped chunk splitter`; which performs more simple and make less amount of chunks.\n      - Default disabled, to enable, toggle `Use splitting-limit-capped chunk splitter` on `Sync settings` -> `Performance tweaks`\n  - Tidied\n    - Some files have been separated into multiple files to make them more explicit in what they are responsible for.\n- 0.23.11:\n  - Fixed:\n    - Now we *surely* can set the device name and enable customised synchronisation.\n    - Unnecessary dialogue update processes have been eliminated.\n    - Customisation sync no longer stores half-collected files.\n    - No longer hangs up when removing or renaming files with the `Sync on Save` toggle enabled.\n  - Improved:\n    - Customisation sync now performs data deserialization more smoothly.\n    - New translations have been merged.\n- 0.23.10\n  - Fixed:\n    - No longer configurations have been locked in the minimal setup.\n- 0.23.9\n  - Fixed:\n    - No longer unexpected parallel replication is performed.\n    - Now we can set the device name and enable customised synchronisation again.\n\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
     addScreenElement("100", fe);
     const isAnySyncEnabled = () => {
       var _, ee, ne, ie;
@@ -27926,6 +27982,14 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       text: "Performance tweaks"
     }).addClass("wizardHidden");
     new Setting2(Pe).setClass("wizardHidden").autoWireToggle("batchSave");
+    new Setting2(Pe).setClass("wizardHidden").autoWireNumeric("batchSaveMinimumDelay", {
+      acceptZero: true,
+      onUpdate: visibleOnly((() => this.isConfiguredAs("batchSave", true)))
+    });
+    new Setting2(Pe).setClass("wizardHidden").autoWireNumeric("batchSaveMaximumDelay", {
+      acceptZero: true,
+      onUpdate: visibleOnly((() => this.isConfiguredAs("batchSave", true)))
+    });
     new Setting2(Pe).setClass("wizardHidden").autoWireNumeric("customChunkSize", {
       clampMin: 0
     });
@@ -27936,9 +28000,9 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
     this.createEl(Pe, "h4", {
       text: (0, import_obsidian.sanitizeHTMLToDom)("Targets")
     }).addClass("wizardHidden");
-    const Ve = new Setting2(Pe).setName("Synchronising files").setDesc("(RegExp) Empty to sync all files. Set filter as a regular expression to limit synchronising files.").setClass("wizardHidden");
+    const Ge = new Setting2(Pe).setName("Synchronising files").setDesc("(RegExp) Empty to sync all files. Set filter as a regular expression to limit synchronising files.").setClass("wizardHidden");
     new MultipleRegExpControl_default({
-      target: Ve.controlEl,
+      target: Ge.controlEl,
       props: {
         patterns: this.editingSettings.syncOnlyRegEx.split("|[]|"),
         originals: [ ...this.editingSettings.syncOnlyRegEx.split("|[]|") ],
@@ -27949,9 +28013,9 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         }
       }
     });
-    const Ge = new Setting2(Pe).setName("Non-Synchronising files").setDesc("(RegExp) If this is set, any changes to local and remote files that match this will be skipped.").setClass("wizardHidden");
+    const Ve = new Setting2(Pe).setName("Non-Synchronising files").setDesc("(RegExp) If this is set, any changes to local and remote files that match this will be skipped.").setClass("wizardHidden");
     new MultipleRegExpControl_default({
-      target: Ge.controlEl,
+      target: Ve.controlEl,
       props: {
         patterns: this.editingSettings.syncIgnoreRegEx.split("|[]|"),
         originals: [ ...this.editingSettings.syncIgnoreRegEx.split("|[]|") ],
@@ -28626,7 +28690,23 @@ function setNoticeClass(_) {
 var idbProxyableTypes, cursorAdvanceMethods, StorageEventManager = class {}, StorageEventManagerObsidian = class extends StorageEventManager {
   constructor(_) {
     super();
+    this.totalQueued = reactiveSource(0);
+    this.batched = reactiveSource(0);
+    this.processing = reactiveSource(0);
+    this.bufferedQueuedItems = [];
+    this.concurrentProcessing = Semaphore(5);
+    this.waitedSince = new Map;
+    this.processingCount = 0;
     this.plugin = _;
+  }
+  get shouldBatchSave() {
+    return this.plugin.shouldBatchSave;
+  }
+  get batchSaveMinimumDelay() {
+    return this.plugin.batchSaveMinimumDelay;
+  }
+  get batchSaveMaximumDelay() {
+    return this.plugin.batchSaveMaximumDelay;
   }
   beginWatch() {
     const _ = this.plugin;
@@ -28640,28 +28720,27 @@ var idbProxyableTypes, cursorAdvanceMethods, StorageEventManager = class {}, Sto
     _.registerEvent(_.app.vault.on("rename", this.watchVaultRename));
     _.registerEvent(_.app.vault.on("create", this.watchVaultCreate));
     _.registerEvent(_.app.vault.on("raw", this.watchVaultRawEvents));
-    _.fileEventQueue.startPipeline();
   }
   watchVaultCreate(_, ee) {
-    this.appendWatchEvent([ {
+    this.appendQueue([ {
       type: "CREATE",
       file: _
     } ], ee);
   }
   watchVaultChange(_, ee) {
-    this.appendWatchEvent([ {
+    this.appendQueue([ {
       type: "CHANGED",
       file: _
     } ], ee);
   }
   watchVaultDelete(_, ee) {
-    this.appendWatchEvent([ {
+    this.appendQueue([ {
       type: "DELETE",
       file: _
     } ], ee);
   }
   watchVaultRename(_, ee, ne) {
-    if (_ instanceof import_obsidian.TFile) this.appendWatchEvent([ {
+    if (_ instanceof import_obsidian.TFile) this.appendQueue([ {
       type: "DELETE",
       file: {
         path: ee,
@@ -28669,17 +28748,19 @@ var idbProxyableTypes, cursorAdvanceMethods, StorageEventManager = class {}, Sto
         ctime: _.stat.ctime,
         size: _.stat.size,
         deleted: true
-      }
+      },
+      skipBatchWait: true
     }, {
       type: "CREATE",
-      file: _
+      file: _,
+      skipBatchWait: true
     } ], ne);
   }
   watchVaultRawEvents(_) {
     if (this.plugin.settings.useIgnoreFiles && this.plugin.ignoreFiles.some((ee => _.endsWith(ee.trim())))) this.plugin.isTargetFile(_).then((() => this._watchVaultRawEvents(_))); else this._watchVaultRawEvents(_);
   }
   _watchVaultRawEvents(_) {
-    if (this.plugin.settings.syncInternalFiles || this.plugin.settings.usePluginSync) if (this.plugin.settings.watchInternalFileChanges) if (_.startsWith(this.plugin.app.vault.configDir)) if (!this.plugin.settings.syncInternalFilesIgnorePatterns.replace(/\n| /g, "").split(",").filter((_ => _)).map((_ => new RegExp(_, "i"))).some((ee => _.match(ee)))) this.appendWatchEvent([ {
+    if (this.plugin.settings.syncInternalFiles || this.plugin.settings.usePluginSync) if (this.plugin.settings.watchInternalFileChanges) if (_.startsWith(this.plugin.app.vault.configDir)) if (!this.plugin.settings.syncInternalFilesIgnorePatterns.replace(/\n| /g, "").split(",").filter((_ => _)).map((_ => new RegExp(_, "i"))).some((ee => _.match(ee)))) this.appendQueue([ {
       type: "INTERNAL",
       file: {
         path: _,
@@ -28689,38 +28770,141 @@ var idbProxyableTypes, cursorAdvanceMethods, StorageEventManager = class {}, Sto
       }
     } ], null);
   }
-  async appendWatchEvent(_, ee) {
+  async appendQueue(_, ee) {
     var ne;
-    if (this.plugin.settings.isConfigured) if (!this.plugin.settings.suspendFileWatching) for (const ie of _) {
-      if (shouldBeIgnored(ie.file.path)) continue;
-      const _ = [ 0, 0, 0, 0, 0, 0 ].map((_ => `${Math.floor(1e5 * Math.random())}`)).join("-"), re = ie.type, se = ie.file, oe = ie.oldPath, le = se instanceof import_obsidian.TFile ? se.stat.size : null != (ne = null == se ? void 0 : se.size) ? ne : 0;
-      if (this.plugin.isFileSizeExceeded(le) && ("CREATE" == re || "CHANGED" == re)) {
-        Logger(`The storage file has been changed but exceeds the maximum size. Skipping: ${ie.file.path}`, LOG_LEVEL_NOTICE);
+    if (!this.plugin.settings.isConfigured) return;
+    if (this.plugin.settings.suspendFileWatching) return;
+    const ie = new Set;
+    for (const re of _) {
+      if (shouldBeIgnored(re.file.path)) continue;
+      const _ = [ 0, 0, 0, 0, 0, 0 ].map((_ => `${Math.floor(1e5 * Math.random())}`)).join("-"), se = re.type, oe = re.file, le = re.oldPath, ue = oe instanceof import_obsidian.TFile ? oe.stat.size : null != (ne = null == oe ? void 0 : oe.size) ? ne : 0;
+      if (this.plugin.isFileSizeExceeded(ue) && ("CREATE" == se || "CHANGED" == se)) {
+        Logger(`The storage file has been changed but exceeds the maximum size. Skipping: ${re.file.path}`, LOG_LEVEL_NOTICE);
         continue;
       }
-      if (se instanceof import_obsidian.TFolder) continue;
-      if (!await this.plugin.isTargetFile(se.path)) continue;
-      if (se instanceof import_obsidian.TFile && ("CREATE" == re || "CHANGED" == re)) {
+      if (oe instanceof import_obsidian.TFolder) continue;
+      if (!await this.plugin.isTargetFile(oe.path)) continue;
+      if (oe instanceof import_obsidian.TFile && ("CREATE" == se || "CHANGED" == se)) {
         await delay(10);
-        if (this.plugin.vaultAccess.recentlyTouched(se)) continue;
+        if (this.plugin.vaultAccess.recentlyTouched(oe)) continue;
       }
-      const ue = se instanceof import_obsidian.TFile ? {
-        ctime: se.stat.ctime,
-        mtime: se.stat.mtime,
-        file: se,
-        path: se.path,
-        size: se.stat.size
-      } : se;
-      this.plugin.fileEventQueue.enqueue({
-        type: re,
+      const de = oe instanceof import_obsidian.TFile ? {
+        ctime: oe.stat.ctime,
+        mtime: oe.stat.mtime,
+        file: oe,
+        path: oe.path,
+        size: oe.stat.size
+      } : oe;
+      let fe;
+      if (re.cachedData) fe = re.cachedData;
+      this.enqueue({
+        type: se,
         args: {
-          file: ue,
-          oldPath: oe,
+          file: de,
+          oldPath: le,
+          cache: fe,
           ctx: ee
         },
+        skipBatchWait: re.skipBatchWait,
         key: _
       });
+      ie.add(oe.path);
+      if (le) ie.add(le);
     }
+    for (const _ of ie) fireAndForget((() => this.startStandingBy(_)));
+  }
+  enqueue(_) {
+    const ee = _.args.file.path;
+    if (this.shouldBatchSave) {
+      Logger(`Request cancel for waiting of previous ${ee}`, LOG_LEVEL_DEBUG);
+      finishWaitingForTimeout(`storage-event-manager-batchsave-${ee}`);
+    }
+    this.bufferedQueuedItems.push(_);
+    if ("DELETE" == _.type || "RENAME" == _.type) return this.flushQueue();
+  }
+  async startStandingBy(_) {
+    await skipIfDuplicated(`storage-event-manager-${_}`, (async () => {
+      Logger(`Processing ${_}: Starting`, LOG_LEVEL_DEBUG);
+      const ee = await this.concurrentProcessing.acquire();
+      try {
+        Logger(`Processing ${_}: Started`, LOG_LEVEL_DEBUG);
+        let ee = false;
+        do {
+          const ne = this.bufferedQueuedItems.find((ee => ee.args.file.path == _));
+          if (void 0 === ne) {
+            ee = true;
+            break;
+          }
+          const ie = ne.type, re = ne.type;
+          if (!ne.cancelled) {
+            if (!ne.skipBatchWait) {
+              if (this.shouldBatchSave && ("CREATE" == re || "CHANGED" == re)) {
+                const ee = this.waitedSince.get(_);
+                let re = true;
+                const se = Date.now();
+                if (void 0 !== ee) if (ee + 1e3 * this.batchSaveMaximumDelay < se) {
+                  Logger(`Processing ${_}: Could not wait no more: ${ie}`, LOG_LEVEL_INFO);
+                  re = false;
+                }
+                if (re) {
+                  if (void 0 === ee) this.waitedSince.set(_, se);
+                  ne.batched = true;
+                  Logger(`Processing ${_}: Waiting for batch save delay: ${ie}`, LOG_LEVEL_DEBUG);
+                  this.updateStatus();
+                  if (!await waitForTimeout(`storage-event-manager-batchsave-${_}`, 1e3 * this.batchSaveMinimumDelay)) {
+                    Logger(`Processing ${_}: Cancelled by new queue: ${ie}`, LOG_LEVEL_DEBUG);
+                    this.cancelStandingBy(ne);
+                    continue;
+                  }
+                }
+              }
+            } else Logger(`Processing ${_}:Requested to perform immediately ${_}: ${ie}`, LOG_LEVEL_DEBUG);
+            Logger(`Processing ${_}: Request main to process: ${ie}`, LOG_LEVEL_DEBUG);
+            this.requestProcessQueue(ne);
+          } else {
+            Logger(`Processing ${_}: Cancelled (scheduled): ${ie}`, LOG_LEVEL_DEBUG);
+            this.cancelStandingBy(ne);
+          }
+        } while (!ee);
+      } finally {
+        ee();
+      }
+      Logger(`Processing ${_}: Finished`, LOG_LEVEL_DEBUG);
+    }));
+  }
+  cancelStandingBy(_) {
+    this.bufferedQueuedItems.remove(_);
+    this.updateStatus();
+  }
+  async requestProcessQueue(_) {
+    try {
+      this.processingCount++;
+      this.bufferedQueuedItems.remove(_);
+      this.updateStatus();
+      this.waitedSince.delete(_.args.file.path);
+      await this.plugin.handleFileEvent(_);
+    } finally {
+      this.processingCount--;
+      this.updateStatus();
+    }
+  }
+  isWaiting(_) {
+    return isWaitingForTimeout(`storage-event-manager-batchsave-${_}`);
+  }
+  flushQueue() {
+    this.bufferedQueuedItems.forEach((_ => _.skipBatchWait = true));
+    finishAllWaitingForTimeout("storage-event-manager-batchsave-", true);
+  }
+  cancelQueue(_) {
+    this.bufferedQueuedItems.forEach((ee => {
+      if (ee.key === _) ee.skipBatchWait = true;
+    }));
+  }
+  updateStatus() {
+    const _ = this.bufferedQueuedItems.filter((_ => !_.cancelled));
+    this.batched.value = _.filter((_ => _.batched && !_.skipBatchWait)).length;
+    this.processing.value = this.processingCount;
+    this.totalQueued.value = _.length - this.batched.value;
   }
 }, LiveSyncLocalDB = class {
   constructor(_, ee) {
@@ -30474,7 +30658,7 @@ function create_if_block4(_) {
 }
 
 function create_fragment5(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce, we, Oe, ke, xe, Ae, Le, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe, je, $e, Ve, Ge, Ue, ze, qe, He, Ke, We, Xe, Je, Qe, Ye = _[6] && create_if_block_53(_), Ze = _[1] && create_if_block_44(_);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce, we, Oe, ke, xe, Ae, Le, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe, je, $e, Ge, Ve, Ue, ze, qe, He, Ke, We, Xe, Je, Qe, Ye = _[6] && create_if_block_53(_), Ze = _[1] && create_if_block_44(_);
   function select_block_type(_, ee) {
     if (_[6]) return create_if_block_34; else return create_else_block_23;
   }
@@ -30533,9 +30717,9 @@ function create_fragment5(_) {
       je = element("th");
       je.textContent = "Rev";
       $e = space();
-      Ve = element("th");
-      Ve.textContent = "Stat";
-      Ge = space();
+      Ge = element("th");
+      Ge.textContent = "Stat";
+      Ve = space();
       if (Ze) Ze.c();
       Ue = space();
       ze = element("tr");
@@ -30582,7 +30766,7 @@ function create_fragment5(_) {
       attr(Be, "class", "svelte-1vjy5r1");
       attr(Me, "class", "svelte-1vjy5r1");
       attr(je, "class", "svelte-1vjy5r1");
-      attr(Ve, "class", "svelte-1vjy5r1");
+      attr(Ge, "class", "svelte-1vjy5r1");
       attr(De, "class", "svelte-1vjy5r1");
       attr(qe, "colspan", "5");
       attr(qe, "class", "more svelte-1vjy5r1");
@@ -30636,8 +30820,8 @@ function create_fragment5(_) {
       append(De, Fe);
       append(De, je);
       append(De, $e);
-      append(De, Ve);
       append(De, Ge);
+      append(De, Ve);
       if (Ze) Ze.m(De, null);
       append(Ie, Ue);
       append(Ie, ze);
@@ -44475,18 +44659,6 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     this.isLastHidden = false;
     this.pendingFileEventCount = reactiveSource(0);
     this.processingFileEventCount = reactiveSource(0);
-    this.fileEventQueue = new QueueProcessor((async _ => {
-      await this.handleFileEvent(_[0]);
-      return [];
-    }), {
-      suspended: true,
-      batchSize: 1,
-      concurrentLimit: 5,
-      delay: 100,
-      yieldThreshold: FileWatchEventQueueMax,
-      totalRemainingReactiveSource: this.pendingFileEventCount,
-      processingEntitiesReactiveSource: this.processingFileEventCount
-    }).replaceEnqueueProcessor(((_, ee) => this.queueNextFileEvent(_, ee)));
     this.notifies = {};
     this.statusLog = reactiveSource("");
     this._saveQueuedFiles = throttle((() => {
@@ -44622,6 +44794,18 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
   }
   set suspended(_) {
     this._suspended = _;
+  }
+  get shouldBatchSave() {
+    var _, ee;
+    return (null == (_ = this.settings) ? void 0 : _.batchSave) && true != (null == (ee = this.settings) ? void 0 : ee.liveSync);
+  }
+  get batchSaveMinimumDelay() {
+    var _, ee;
+    return null != (ee = null == (_ = this.settings) ? void 0 : _.batchSaveMinimumDelay) ? ee : DEFAULT_SETTINGS.batchSaveMinimumDelay;
+  }
+  get batchSaveMaximumDelay() {
+    var _, ee;
+    return null != (ee = null == (_ = this.settings) ? void 0 : _.batchSaveMaximumDelay) ? ee : DEFAULT_SETTINGS.batchSaveMaximumDelay;
   }
   getLastPostFailedBySize() {
     return !this.last_successful_post;
@@ -45168,7 +45352,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     this.settingTab = new ObsidianLiveSyncSettingTab(this.app, this);
     this.addSettingTab(this.settingTab);
     this.addUIs();
-    const _ = "0.23.13", ee = "0.23.13";
+    const _ = "0.23.14", ee = "0.23.14";
     this.manifestVersion = _;
     this.packageVersion = ee;
     Logger($f`Self-hosted LiveSync${" v"}${_} ${ee}`);
@@ -45195,6 +45379,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     localStorage.setItem(ne, `${VER}`);
     await this.openDatabase();
     this.watchWorkspaceOpen = this.watchWorkspaceOpen.bind(this);
+    this.watchEditorChange = this.watchEditorChange.bind(this);
     this.watchWindowVisibility = this.watchWindowVisibility.bind(this);
     this.watchOnline = this.watchOnline.bind(this);
     this.realizeSettingSyncMode = this.realizeSettingSyncMode.bind(this);
@@ -45325,7 +45510,6 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     }
     this.deviceAndVaultName = localStorage.getItem(ne) || "";
     this.ignoreFiles = this.settings.ignoreFiles.split(",").map((_ => _.trim()));
-    this.fileEventQueue.delay = !this.settings.liveSync && this.settings.batchSave ? 5e3 : 100;
     this.settingTab.requestReload();
   }
   saveDeviceAndVaultName() {
@@ -45372,7 +45556,6 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     this.localDatabase.settings = this.settings;
     setLang(this.settings.displayLanguage);
     this.settingTab.requestReload();
-    this.fileEventQueue.delay = !this.settings.liveSync && this.settings.batchSave ? 5e3 : 100;
     this.ignoreFiles = this.settings.ignoreFiles.split(",").map((_ => _.trim()));
     if ("" != this.settings.settingSyncFile) fireAndForget((() => this.saveSettingToMarkdown(this.settings.settingSyncFile)));
   }
@@ -45491,6 +45674,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
   }
   registerFileWatchEvents() {
     this.vaultManager.beginWatch();
+    this.registerEvent(this.app.workspace.on("editor-change", this.watchEditorChange));
   }
   swapSaveCommand() {
     var _, ee;
@@ -45504,9 +45688,9 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
             Logger("Unload and remove the handler.", LOG_LEVEL_VERBOSE);
             ne.callback = this._initialCallback;
             this._initialCallback = void 0;
-          } else {
+          } else if (this.settings.syncOnEditorSave) {
             Logger("Sync on Editor Save.", LOG_LEVEL_VERBOSE);
-            if (this.settings.syncOnEditorSave) this.replicate();
+            this.replicate();
           }
         }));
         ie();
@@ -45565,24 +45749,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     }
   }
   cancelRelativeEvent(_) {
-    this.fileEventQueue.modifyQueue((ee => [ ...ee.filter((ee => ee.key != _.key)) ]));
-  }
-  queueNextFileEvent(_, ee) {
-    if (this.settings.batchSave && !this.settings.liveSync) {
-      const ne = ee.args.file;
-      let ie = _.length;
-      e: for (;ie >= 0; ) {
-        ie--;
-        if (ie < 0) break e;
-        if (_[ie].args.file.path == ne.path) {
-          if (_[ie].type != ee.type) break e;
-          _.remove(_[ie]);
-        }
-      }
-    }
-    _.push(ee);
-    if ("DELETE" == ee.type || "RENAME" == ee.type) this.fileEventQueue.requestNextFlush();
-    return _;
+    this.vaultManager.cancelQueue(_.key);
   }
   async handleFileEvent(_) {
     const ee = _.args.file, ne = `handleFile:${ee.path}`;
@@ -45623,11 +45790,24 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
       await this.kvDB.set(ne, re);
     }));
   }
-  flushFileEventQueue() {
-    return this.fileEventQueue.flush();
-  }
   watchWorkspaceOpen(_) {
     if (!this.settings.suspendFileWatching) if (this.settings.isConfigured) if (this.isReady) if (_) scheduleTask("watch-workspace-open", 500, (() => fireAndForget((() => this.watchWorkspaceOpenAsync(_)))));
+  }
+  flushFileEventQueue() {
+    return this.vaultManager.flushQueue();
+  }
+  watchEditorChange(_, ee) {
+    if (!("path" in ee)) return;
+    if (!this.shouldBatchSave) return;
+    const ne = null == ee ? void 0 : ee.file;
+    if (!ne) return;
+    if (!this.vaultManager.isWaiting(ne.path)) return;
+    const ie = {
+      type: "CHANGED",
+      file: ne,
+      cachedData: null == ee ? void 0 : ee.data
+    };
+    this.vaultManager.appendQueue([ ie ]);
   }
   async watchWorkspaceOpenAsync(_) {
     if (!this.settings.suspendFileWatching) if (this.settings.isConfigured) if (this.isReady) {
@@ -45826,27 +46006,23 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     this.periodicSyncProcessor.enable(this.settings.periodicReplication ? 1e3 * this.settings.periodicReplicationInterval : 0);
   }
   observeForLogs() {
-    const _ = " ".repeat(10), ee = new Map, ne = reactiveSource(0);
-    function padLeftSp(ie, re) {
-      var se;
-      const oe = `${ie}`.length + 1, [le, ue] = null != (se = ee.get(re)) ? se : [ void 0, oe ];
-      if (ie || le) {
-        if (ie) {
-          if (le) clearTimeout(le);
-          ee.set(re, [ setTimeout((async () => {
-            ee.delete(re);
-            await delay(100);
-            ne.value = ne.value + 1;
-          }), 3e3), Math.max(ue, oe) ]);
-        }
-        return ` ${re}${`${_}${ie}`.slice(-ue)}`;
-      } else return "";
+    const _ = " ".repeat(10);
+    function padLeftSpComputed(ee, ne) {
+      const ie = reactiveSource("");
+      let re, se = 1;
+      ee.onChanged((ee => {
+        const oe = ee.value, le = `${Math.abs(oe)}`.length + 1;
+        se = se < le ? le : se;
+        if (re) clearTimeout(re);
+        if (0 == oe) re = setTimeout((() => {
+          ie.value = "";
+          se = 1;
+        }), 3e3);
+        ie.value = ` ${ne}${`${_}${oe}`.slice(-se)}`;
+      }));
+      return computed((() => ie.value));
     }
-    const ie = reactive((() => {
-      ne.value;
-      const _ = this.databaseQueueCount.value, ee = this.replicationResultCount.value, ie = this.storageApplyingCount.value, re = collectingChunks.value, se = pluginScanningCount.value, oe = hiddenFilesEventCount.value + hiddenFilesProcessingCount.value, le = this.conflictProcessQueueCount.value;
-      return `${padLeftSp(ee, "📥")}${padLeftSp(_, "📄")}${padLeftSp(ie, "💾")}${padLeftSp(re, "🧩")}${padLeftSp(se, "🔌")}${padLeftSp(oe, "⚙️")}${padLeftSp(le, "🔩")}`;
-    })), re = reactive((() => 0 != this.requestCount.value - this.responseCount.value ? "📲 " : "")), se = reactive((() => {
+    const ee = padLeftSpComputed(this.replicationResultCount, "📥"), ne = padLeftSpComputed(this.databaseQueueCount, "📄"), ie = padLeftSpComputed(this.storageApplyingCount, "💾"), re = padLeftSpComputed(collectingChunks, "🧩"), se = padLeftSpComputed(pluginScanningCount, "🔌"), oe = padLeftSpComputed(this.conflictProcessQueueCount, "🔩"), le = padLeftSpComputed(reactive((() => hiddenFilesEventCount.value + hiddenFilesProcessingCount.value)), "⚙️"), ue = reactive((() => `${ee()}${ne()}${ie()}${re()}${se()}${le()}${oe()}`)), de = computed((() => 0 != this.requestCount.value - this.responseCount.value ? "📲 " : "")), fe = computed((() => {
       const _ = this.replicationStat.value, ee = _.sent, ne = _.arrived, ie = _.maxPullSeq, re = _.maxPushSeq, se = _.lastSyncPullSeq, oe = _.lastSyncPushSeq;
       let le = "", ue = "", de = "";
       const fe = {
@@ -45891,26 +46067,22 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
         arrived: ne,
         pullLast: ue
       };
-    })), oe = reactive((() => {
-      ne.value;
-      const _ = this.pendingFileEventCount.value, ee = this.processingFileEventCount.value, ie = _ - ee;
-      return `${padLeftSp(ee, "⏳")}${padLeftSp(ie, "🛫")}`;
-    })), le = reactive((() => {
-      const {w: _, sent: ee, pushLast: ne, arrived: le, pullLast: ue} = se.value, de = ie.value, fe = oe.value;
+    })), he = padLeftSpComputed(this.vaultManager.processing, "⏳"), pe = padLeftSpComputed(this.vaultManager.totalQueued, "🛫"), ge = padLeftSpComputed(this.vaultManager.batched, "📬"), me = computed((() => `${he()}${pe()}${ge()}`)), ye = computed((() => {
+      const {w: _, sent: ee, pushLast: ne, arrived: ie, pullLast: re} = fe(), se = ue.value, oe = me();
       return {
-        message: `${re.value}Sync: ${_} ↑ ${ee}${ne} ↓ ${le}${ue}${fe}${de}`
+        message: `${de()}Sync: ${_} ↑ ${ee}${ne} ↓ ${ie}${re}${oe}${se}`
       };
-    })), ue = reactive((() => {
-      const _ = this.isReloadingScheduled ? "WARNING! RESTARTING OBSIDIAN IS SCHEDULED!\n" : "", {message: ee} = le.value;
+    })), ve = reactive((() => {
+      const _ = this.isReloadingScheduled ? "WARNING! RESTARTING OBSIDIAN IS SCHEDULED!\n" : "", {message: ee} = ye();
       return {
         message: ee,
         status: _ + this.statusLog.value
       };
-    })), de = throttle((() => {
-      const _ = ue.value;
-      this.applyStatusBarText(_.message, _.status);
+    })), Se = throttle((_ => {
+      const ee = _;
+      this.applyStatusBarText(ee.message, ee.status);
     }), 20);
-    ue.onChanged(de);
+    ve.onChanged((_ => Se(_.value)));
   }
   applyStatusBarText(_, ee) {
     var ne;

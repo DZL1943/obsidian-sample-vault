@@ -34,48 +34,7 @@ __export(main_exports, {
 module.exports = __toCommonJS(main_exports);
 var import_obsidian5 = require("obsidian");
 
-// node_modules/.pnpm/ts-dedent@2.2.0/node_modules/ts-dedent/esm/index.js
-function dedent(templ) {
-  var values = [];
-  for (var _i = 1; _i < arguments.length; _i++) {
-    values[_i - 1] = arguments[_i];
-  }
-  var strings = Array.from(typeof templ === "string" ? [templ] : templ);
-  strings[strings.length - 1] = strings[strings.length - 1].replace(/\r?\n([\t ]*)$/, "");
-  var indentLengths = strings.reduce(function(arr, str) {
-    var matches = str.match(/\n([\t ]+|(?!\s).)/g);
-    if (matches) {
-      return arr.concat(matches.map(function(match) {
-        var _a, _b;
-        return (_b = (_a = match.match(/[\t ]/g)) === null || _a === void 0 ? void 0 : _a.length) !== null && _b !== void 0 ? _b : 0;
-      }));
-    }
-    return arr;
-  }, []);
-  if (indentLengths.length) {
-    var pattern_1 = new RegExp("\n[	 ]{" + Math.min.apply(Math, indentLengths) + "}", "g");
-    strings = strings.map(function(str) {
-      return str.replace(pattern_1, "\n");
-    });
-  }
-  strings[0] = strings[0].replace(/^\r?\n/, "");
-  var string = strings[0];
-  values.forEach(function(value, i) {
-    var endentations = string.match(/(?:^|\n)( *)$/);
-    var endentation = endentations ? endentations[1] : "";
-    var indentedValue = value;
-    if (typeof value === "string" && value.includes("\n")) {
-      indentedValue = String(value).split("\n").map(function(str, i2) {
-        return i2 === 0 ? str : "" + endentation + str;
-      }).join("\n");
-    }
-    string += indentedValue + strings[i + 1];
-  });
-  return string;
-}
-var esm_default = dedent;
-
-// node_modules/.pnpm/asciimath-parser@0.6.4/node_modules/asciimath-parser/dist/index.js
+// node_modules/.pnpm/asciimath-parser@0.6.5/node_modules/asciimath-parser/dist/index.js
 var f = ((l) => (l.NumberLiteral = "NumberLiteral", l.StringLiteral = "StringLiteral", l.Text = "Text", l.Const = "Const", l.OperatorOA = "OperatorA", l.OperatorOAB = "OperatorOAB", l.OperatorAOB = "OperatorAOB", l.OperatorMinus = "OperatorMinus", l.OperatorAO = "OperatorAO", l.OperatorO2 = "OperatorOptionalTwoParams", l.OperatorSup = "OperatorSup", l.OperatorPartial = "OperatorPartial", l.LParen = "LParen", l.RParen = "RParen", l.Paren = "Paren", l.Align = "Align", l.Split = "Split", l.None = "None", l))(f || {});
 var C = /* @__PURE__ */ new Map([["alpha", { type: "Const", tex: "\\alpha" }], ["beta", { type: "Const", tex: "\\beta" }], ["gamma", { type: "Const", tex: "\\gamma" }], ["Gamma", { type: "Const", tex: "\\Gamma" }], ["delta", { type: "Const", tex: "\\delta" }], ["Delta", { type: "Const", tex: "\\Delta" }], ["epsi", { type: "Const", tex: "\\varepsilon" }], ["epsilon", { type: "Const", tex: "\\epsilon" }], ["varepsilon", { type: "Const", tex: "\\varepsilon" }], ["zeta", { type: "Const", tex: "\\zeta" }], ["eta", { type: "Const", tex: "\\eta" }], ["theta", { type: "Const", tex: "\\theta" }], ["Theta", { type: "Const", tex: "\\Theta" }], ["vartheta", { type: "Const", tex: "\\vartheta" }], ["iota", { type: "Const", tex: "\\iota" }], ["kappa", { type: "Const", tex: "\\kappa" }], ["lambda", { type: "Const", tex: "\\lambda" }], ["Lambda", { type: "Const", tex: "\\Lambda" }], ["mu", { type: "Const", tex: "\\mu" }], ["nu", { type: "Const", tex: "\\nu" }], ["xi", { type: "Const", tex: "\\xi" }], ["Xi", { type: "Const", tex: "\\Xi" }], ["pi", { type: "Const", tex: "\\pi" }], ["Pi", { type: "Const", tex: "\\Pi" }], ["rho", { type: "Const", tex: "\\rho" }], ["sigma", { type: "Const", tex: "\\sigma" }], ["Sigma", { type: "Const", tex: "\\Sigma" }], ["tau", { type: "Const", tex: "\\tau" }], ["upsilon", { type: "Const", tex: "\\upsilon" }], ["phi", { type: "Const", tex: "\\phi" }], ["varphi", { type: "Const", tex: "\\varphi" }], ["varPhi", { type: "Const", tex: "\\varPhi" }], ["Phi", { type: "Const", tex: "\\Phi" }], ["chi", { type: "Const", tex: "\\chi" }], ["psi", { type: "Const", tex: "\\psi" }], ["Psi", { type: "Const", tex: "\\Psi" }], ["omega", { type: "Const", tex: "\\omega" }], ["Omega", { type: "Const", tex: "\\Omega" }], ["***", { type: "Const", tex: "\\star" }], ["star", { type: "Const", tex: "\\star" }], ["**", { type: "Const", tex: "\\ast" }], ["ast", { type: "Const", tex: "\\ast" }], ["*", { type: "Const", tex: "\\cdot" }], ["cdot", { type: "Const", tex: "\\cdot" }], ["//", { type: "Const", tex: "{/}" }], ["\\\\", { type: "Const", tex: "\\backslash" }], ["setminus", { type: "Const", tex: "\\setminus" }], ["xx", { type: "Const", tex: "\\times" }], ["|><", { type: "Const", tex: "\\ltimes" }], ["><|", { type: "Const", tex: "\\rtimes" }], ["|><|", { type: "Const", tex: "\\bowtie" }], ["-:", { type: "Const", tex: "\\div" }], ["@", { type: "Const", tex: "\\circ" }], ["o+", { type: "Const", tex: "\\oplus" }], ["ox", { type: "Const", tex: "\\otimes" }], ["o.", { type: "Const", tex: "\\odot" }], ["sum", { type: "Const", tex: "\\sum" }], ["prod", { type: "Const", tex: "\\prod" }], ["^^", { type: "Const", tex: "\\wedge" }], ["^^^", { type: "Const", tex: "\\bigwedge" }], ["vv", { type: "Const", tex: "\\vee" }], ["vvv", { type: "Const", tex: "\\bigvee" }], ["nn", { type: "Const", tex: "\\cap" }], ["nnn", { type: "Const", tex: "\\bigcap" }], ["uu", { type: "Const", tex: "\\cup" }], ["uuu", { type: "Const", tex: "\\bigcup" }], ["!=", { type: "Const", tex: "\\ne" }], ["lt", { type: "Const", tex: "<" }], ["<=", { type: "Const", tex: "\\leqslant" }], ["le", { type: "Const", tex: "\\le" }], ["gt", { type: "Const", tex: ">" }], [">=", { type: "Const", tex: "\\geqslant" }], ["ge", { type: "Const", tex: "\\ge" }], ["-<", { type: "Const", tex: "\\prec" }], [">-", { type: "Const", tex: "\\succ" }], ["-<=", { type: "Const", tex: "\\preceq" }], [">-=", { type: "Const", tex: "\\succeq" }], ["in", { type: "Const", tex: "\\in" }], ["!in", { type: "Const", tex: "\\notin" }], ["sub", { type: "Const", tex: "\\subset" }], ["sup", { type: "Const", tex: "\\supset" }], ["sube", { type: "Const", tex: "\\subseteq" }], ["supe", { type: "Const", tex: "\\supseteq" }], ["-=", { type: "Const", tex: "\\equiv" }], ["~=", { type: "Const", tex: "\\cong" }], ["~", { type: "Const", tex: "\\sim" }], ["~~", { type: "Const", tex: "\\approx" }], ["\\#", { type: "Const", tex: "\\#" }], ["\\&", { type: "Const", tex: "\\&" }], ["\\@", { type: "Const", tex: "@" }], ["\\%", { type: "Const", tex: "\\%" }], ["%", { type: "Const", tex: "\\%" }], ["\\_", { type: "Const", tex: "\\_" }], ["\\^", { type: "Const", tex: "\\^" }], ["\\$", { type: "Const", tex: "\\$" }], ["\\ ", { type: "Const", tex: "\\ " }], ["\\,", { type: "Const", tex: "\\," }], ["\\;", { type: "Const", tex: "\\;" }], ["\\:", { type: "Const", tex: "\\:" }], ["\\!", { type: "Const", tex: "\\!" }], ["enspace", { type: "Const", tex: "\\enspace" }], ["hspace", { type: "OperatorA", tex: "\\hspace{$1}", eatNext: true }], ["prop", { type: "Const", tex: "\\propto" }], ["comp", { type: "Const", tex: "\\complement" }], ["complement", { type: "Const", tex: "\\complement" }], ["if", { type: "Text", tex: "if\\quad" }], ["otherwise", { type: "Text", tex: "otherwise\\quad" }], ["and", { type: "Text", tex: " and " }], ["or", { type: "Text", tex: " or " }], ["not", { type: "Const", tex: "\\neg" }], ["=>", { type: "Const", tex: "\\implies" }], ["~>", { type: "Const", tex: "\\rightsquigarrow" }], ["-/->", { type: "Const", tex: "\\nrightarrow" }], ["<-/-", { type: "Const", tex: "\\nleftarrow" }], ["<-/->", { type: "Const", tex: "\\nleftrightarrow" }], ["<=>", { type: "Const", tex: "\\iff" }], ["iff", { type: "Const", tex: "\\iff" }], ["AA", { type: "Const", tex: "\\forall" }], ["EE", { type: "Const", tex: "\\exists" }], ["_|_", { type: "Const", tex: "\\bot" }], ["TT", { type: "Const", tex: "\\top" }], ["|--", { type: "Const", tex: "\\vdash" }], ["|==", { type: "Const", tex: "\\models" }], ["int", { type: "Const", tex: "\\int" }], ["oint", { type: "Const", tex: "\\oint" }], ["del", { type: "Const", tex: "\\partial" }], ["grad", { type: "Const", tex: "\\nabla" }], ["+-", { type: "Const", tex: "\\pm" }], ["-+", { type: "Const", tex: "\\mp" }], ["O/", { type: "Const", tex: "\\varnothing" }], ["oo", { type: "Const", tex: "\\infty" }], ["aleph", { type: "Const", tex: "\\aleph" }], ["...", { type: "Const", tex: "\\ldots" }], [":.", { type: "Const", tex: "\\therefore" }], [":'", { type: "Const", tex: "\\because" }], ["/_", { type: "Const", tex: "\\angle" }], ["/_\\", { type: "Const", tex: "\\triangle" }], ["quad", { type: "Const", tex: "\\quad" }], ["qquad", { type: "Const", tex: "\\qquad" }], ["cdots", { type: "Const", tex: "\\cdots" }], ["vdots", { type: "Const", tex: "\\vdots" }], ["ddots", { type: "Const", tex: "\\ddots" }], ["diamond", { type: "Const", tex: "\\diamond" }], ["Lap", { type: "Const", tex: "\\mathscr{L}" }], ["square", { type: "Const", tex: "\\square" }], ["|__", { type: "LParen", tex: "\\lfloor" }], ["__|", { type: "RParen", tex: "\\rfloor" }], ["|~", { type: "LParen", tex: "\\lceil" }], ["~|", { type: "RParen", tex: "\\rceil" }], ["CC", { type: "Const", tex: "\\mathbb{C}" }], ["NN", { type: "Const", tex: "\\mathbb{N}" }], ["QQ", { type: "Const", tex: "\\mathbb{Q}" }], ["RR", { type: "Const", tex: "\\mathbb{R}" }], ["ZZ", { type: "Const", tex: "\\mathbb{Z}" }], ["'", { type: "Const", tex: "^{\\prime}" }], ["''", { type: "Const", tex: "^{\\prime\\prime}" }], ["'''", { type: "Const", tex: "^{\\prime\\prime\\prime}" }], ["lim", { type: "Const", tex: "\\lim" }], ["sin", { type: "Const", tex: "\\sin" }], ["cos", { type: "Const", tex: "\\cos" }], ["tan", { type: "Const", tex: "\\tan" }], ["sinh", { type: "Const", tex: "\\sinh" }], ["cosh", { type: "Const", tex: "\\cosh" }], ["tanh", { type: "Const", tex: "\\tanh" }], ["cot", { type: "Const", tex: "\\cot" }], ["sec", { type: "Const", tex: "\\sec" }], ["csc", { type: "Const", tex: "\\csc" }], ["arcsin", { type: "Const", tex: "\\arcsin" }], ["arccos", { type: "Const", tex: "\\arccos" }], ["arctan", { type: "Const", tex: "\\arctan" }], ["coth", { type: "Const", tex: "\\coth" }], ["sech", { type: "Const", tex: "\\operatorname{sech}" }], ["csch", { type: "Const", tex: "\\operatorname{csch}" }], ["exp", { type: "Const", tex: "\\exp" }], ["log", { type: "Const", tex: "\\log" }], ["ln", { type: "Const", tex: "\\ln" }], ["det", { type: "Const", tex: "\\det" }], ["dim", { type: "Const", tex: "\\dim" }], ["gcd", { type: "Const", tex: "\\gcd" }], ["lcm", { type: "Const", tex: "\\operatorname{lcm}" }], ["min", { type: "Const", tex: "\\min" }], ["max", { type: "Const", tex: "\\max" }], ["Sup", { type: "Const", tex: "\\sup" }], ["inf", { type: "Const", tex: "\\inf" }], ["mod", { type: "Const", tex: "\\operatorname{mod}" }], ["sgn", { type: "Const", tex: "\\operatorname{sgn}" }], ["abs", { type: "OperatorA", tex: "\\left| $1 \\right|" }], ["norm", { type: "OperatorA", tex: "\\left\\| $1 \\right\\|" }], ["floor", { type: "OperatorA", tex: "\\left\\lfloor $1 \\right\\rfloor" }], ["ceil", { type: "OperatorA", tex: "\\left\\lceil $1 \\right\\rceil" }], ["uarr", { type: "Const", tex: "\\uparrow" }], ["uparrow", { type: "Const", tex: "\\uparrow" }], ["darr", { type: "Const", tex: "\\downarrow" }], ["downarrow", { type: "Const", tex: "\\downarrow" }], ["rarr", { type: "Const", tex: "\\rightarrow" }], ["rightarrow", { type: "Const", tex: "\\rightarrow" }], ["to", { type: "Const", tex: "\\to" }], ["->", { type: "Const", tex: "\\to" }], ["<-", { type: "Const", tex: "\\gets" }], [">->", { type: "Const", tex: "\\rightarrowtail" }], ["->>", { type: "Const", tex: "\\twoheadrightarrow" }], [">->>", { type: "Const", tex: "\u2916" }], ["|->", { type: "Const", tex: "\\mapsto" }], ["larr", { type: "Const", tex: "\\leftarrow" }], ["leftarrow", { type: "Const", tex: "\\leftarrow" }], ["harr", { type: "Const", tex: "\\leftrightarrow" }], ["rArr", { type: "Const", tex: "\\Rightarrow" }], ["lArr", { type: "Const", tex: "\\Leftarrow" }], ["hArr", { type: "Const", tex: "\\Leftrightarrow" }], ["curvArrLt", { type: "Const", tex: "\\curvearrowleft" }], ["curvArrRt", { type: "Const", tex: "\\curvearrowright" }], ["circArrLt", { type: "Const", tex: "\\circlearrowleft" }], ["circArrRt", { type: "Const", tex: "\\circlearrowright" }], ["sqrt", { type: "OperatorA", tex: "\\sqrt{ $1 }" }], ["root", { type: "OperatorOAB", tex: "\\sqrt[ $1 ]{ $2 }" }], ["frac", { type: "OperatorOAB", tex: "\\frac{ $1 }{ $2 }" }], ["/", { type: "OperatorAOB", tex: "\\frac{ $1 }{ $2 }" }], ["choose", { type: "OperatorAOB", tex: "{ $1 \\choose $2 }" }], ["_", { type: "OperatorSup", tex: "_{ $1 }" }], ["^", { type: "OperatorSup", tex: "^{ $1 }" }], ["stackrel", { type: "OperatorOAB", tex: "\\stackrel{ $1 }{ $2 }" }], ["overset", { type: "OperatorOAB", tex: "\\overset{ $1 }{ $2 }" }], ["underset", { type: "OperatorOAB", tex: "\\underset{ $1 }{ $2 }" }], ["hat", { type: "OperatorA", tex: "\\hat{ $1 }" }], ["\\`", { type: "OperatorA", tex: "\\`{ $1 }" }], ["widehat", { type: "OperatorA", tex: "\\widehat{ $1 }" }], ["Hat", { type: "OperatorA", tex: "\\widehat{ $1 }" }], ["widetilde", { type: "OperatorA", tex: "\\widetilde{ $1 }" }], ["ol", { type: "OperatorA", tex: "\\overline{ $1 }" }], ["overline", { type: "OperatorA", tex: "\\overline{ $1 }" }], ["arc", { type: "OperatorA", tex: "\\stackrel{\\frown}{ $1 }" }], ["bar", { type: "OperatorA", tex: "\\bar{ $1 }" }], ["vec", { type: "OperatorA", tex: "\\vec{ $1 }" }], ["Vec", { type: "OperatorA", tex: "\\overrightarrow{ $1 }" }], ["Aec", { type: "OperatorA", tex: "\\overleftarrow{ $1 }" }], ["tilde", { type: "OperatorA", tex: "\\tilde{ $1 }" }], ["Tilde", { type: "OperatorA", tex: "\\widetilde{ $1 }" }], ["dot", { type: "OperatorA", tex: "\\dot{ $1 }" }], ["ddot", { type: "OperatorA", tex: "\\ddot{ $1 }" }], ["ul", { type: "OperatorA", tex: "\\underline{ $1 }" }], ["underline", { type: "OperatorA", tex: "\\underline{ $1 }" }], ["underbrace", { type: "OperatorA", tex: "\\underbrace{ $1 }" }], ["ubrace", { type: "OperatorA", tex: "\\underbrace{ $1 }" }], ["overbrace", { type: "OperatorA", tex: "\\overbrace{ $1 }" }], ["obrace", { type: "OperatorA", tex: "\\overbrace{ $1 }" }], ["color", { type: "OperatorOAB", tex: "{ \\color{$1} $2 }", eatNext: true }], ["phantom", { type: "OperatorA", tex: "\\phantom{$1}" }], ["text", { type: "OperatorA", tex: "\\text{$1}", eatNext: true }], ["tex", { type: "OperatorA", tex: "$1", eatNext: true }], ["mbox", { type: "OperatorA", tex: "\\mbox{$1}" }], ["op", { type: "OperatorA", tex: "\\operatorname{ $1 }", eatNext: true }], ["cancel", { type: "OperatorA", tex: "\\cancel{ $1 }" }], ["bb", { type: "OperatorA", tex: "\\mathbf{ $1 }" }], ["mathbf", { type: "OperatorA", tex: "\\mathbf{ $1 }" }], ["sf", { type: "OperatorA", tex: "\\mathsf{ $1 }" }], ["mathsf", { type: "OperatorA", tex: "\\mathsf{ $1 }" }], ["bbb", { type: "OperatorA", tex: "\\mathbb{ $1 }" }], ["mathbb", { type: "OperatorA", tex: "\\mathbb{ $1 }" }], ["cc", { type: "OperatorA", tex: "\\mathcal{ $1 }" }], ["mathcal", { type: "OperatorA", tex: "\\mathcal{ $1 }" }], ["tt", { type: "OperatorA", tex: "\\mathtt{ $1 }" }], ["mathtt", { type: "OperatorA", tex: "\\mathtt{ $1 }" }], ["fr", { type: "OperatorA", tex: "\\mathfrak{ $1 }" }], ["bm", { type: "OperatorA", tex: "\\boldsymbol{ $1 }" }], ["rm", { type: "OperatorA", tex: "\\mathrm{ $1 }" }], ["scr", { type: "OperatorA", tex: "\\mathscr{ $1 }" }], ["limits", { type: "OperatorA", tex: "\\mathop{ $1 }\\limits" }], ["iint", { type: "Const", tex: "\\iint" }], ["iiint", { type: "Const", tex: "\\iiint" }], ["oiint", { type: "Const", tex: "\u222F" }], ["oiiint", { type: "Const", tex: "\u2230" }], ["laplace", { type: "Const", tex: "\\Delta" }], ["==", { type: "OperatorOptionalTwoParams", tex: "\\xlongequal[ $2 ]{ $1 }" }], ["-->", { type: "OperatorOptionalTwoParams", tex: "\\xrightarrow[ $2 ]{ $1 }" }], ["||", { type: "Paren", tex: "\\Vert" }], ["!||", { type: "Const", tex: "\u2226" }], ["S=", { type: "Const", tex: "\u224C" }], ["S~", { type: "Const", tex: "\u223D" }], ["!-=", { type: "Const", tex: "\\not\\equiv" }], ["!|", { type: "Const", tex: "\u2224" }], ["!", { type: "OperatorAO", tex: "{$1 !}" }], ["!!", { type: "OperatorAO", tex: "{$1 !!}" }], ["!sube", { type: "Const", tex: "\\not\\subseteq" }], ["!supe", { type: "Const", tex: "\\not\\supseteq" }], ["subne", { type: "Const", tex: "\\subsetneqq" }], ["supne", { type: "Const", tex: "\\supsetneqq" }], ["lhd", { type: "Const", tex: "\\lhd" }], ["rhd", { type: "Const", tex: "\\rhd" }], ["normal", { type: "Const", tex: "\\unlhd" }], ["rnormal", { type: "Const", tex: "\\unrhd" }], ["hline", { type: "Const", tex: "\\hline" }], ["--", { type: "Const", tex: "\\hline" }], ["(", { type: "LParen", tex: "(" }], [")", { type: "RParen", tex: ")" }], ["[", { type: "LParen", tex: "[" }], ["]", { type: "RParen", tex: "]" }], ["{", { type: "LParen", tex: "\\lbrace" }], ["}", { type: "RParen", tex: "\\rbrace" }], ["(:", { type: "LParen", tex: "\\langle" }], [":)", { type: "RParen", tex: "\\rangle" }], ["{:", { type: "LParen", tex: "." }], [":}", { type: "RParen", tex: "." }], ["|", { type: "Paren", tex: "|" }], ["&", { type: "Align", tex: "&" }], ["&&", { type: "Align", tex: "&&" }], [",", { type: "Split", tex: "," }], [";", { type: "Split", tex: ";" }], ["-", { type: "OperatorMinus", tex: "{-$1 }" }], ["+", { type: "OperatorMinus", tex: "{+$1 }" }], ["part", { type: "OperatorPartial", tex: "\\partial" }], ["pp", { type: "OperatorPartial", tex: "\\partial" }], ["dd", { type: "OperatorPartial", tex: "\\mathrm{d}" }], ["tiny", { type: "OperatorA", tex: "{\\tiny $1 }" }], ["small", { type: "OperatorA", tex: "{\\small $1 }" }], ["large", { type: "OperatorA", tex: "{\\large $1 }" }], ["huge", { type: "OperatorA", tex: "{\\huge $1 }" }]]);
 function V() {
@@ -87,7 +46,7 @@ function T(o) {
   if (typeof o == "string")
     return { type: "Const", value: o, tex: o };
   let e;
-  return o.type === "Text" ? e = o.tex.replace(/^(\\quad)?(.+?)(\\quad)?$/, (t, n, s, p) => `${n || ""}\\text{${s}}${p || ""}`) : e = o.tex, { type: "Const", value: o.value, tex: e };
+  return o.type === "Text" ? e = o.tex.replace(/^(\\quad)?(.+?)(\\quad)?$/, (t, n, p, s) => `${n || ""}\\text{${p}}${s || ""}`) : e = o.tex, { type: "Const", value: o.value, tex: e };
 }
 function u(o) {
   let e = [];
@@ -116,18 +75,18 @@ function w(o, e) {
   t.type === "Const" && t.tex === "\\hline" && n.type === "Paren" && ([o[e], o[e + 1]] = [n, t]);
 }
 function z(o, e, t) {
-  let n = o[e], s = $(), p = /* @__PURE__ */ new Set();
-  s.lparen = `\\left${n.tex}`, e++;
+  let n = o[e], p = $(), s = /* @__PURE__ */ new Set();
+  p.lparen = `\\left${n.tex}`, e++;
   let a = [], r = null;
   for (w(o, e), n = o[e]; e < t; ) {
     if (n = o[e], n.type === "Split" && n.value === ",") {
       r ? (a.push(r), r = null) : a.push(T()), ++e;
       continue;
-    } else if (n.type === "Split" && (n.value === ";" || n.tex === "\\\\")) {
-      r && (a.push(r), r = null), s.params.push(a), a = [], e++, w(o, e);
+    } else if (n.type === "Split" && n.value === ";" || n.type === "Align" && n.tex === "\\\\") {
+      r && (a.push(r), r = null), p.params.push(a), a = [], e++, w(o, e);
       continue;
     } else if (n.type === "Paren") {
-      r && (a.push(r), r = null), p.add(a.length), e++;
+      r && (a.push(r), r = null), s.add(a.length), e++;
       continue;
     }
     for (r = u(); e < t && n.type !== "Split" && n.type !== "Paren" && n.type !== "Align"; ) {
@@ -135,37 +94,37 @@ function z(o, e, t) {
       e = i.current, r.body.push(i.node), n = o[e];
     }
   }
-  return r && (a.push(r), r = null), a.length > 0 && (s.params.push(a), a = []), s.dividerIndices = Array.from(p).sort((i, y) => i - y), n = o[e], e < o.length ? (e++, s.rparen = `\\right${n.tex}`, n.value === ":}" && s.lparen.endsWith("lbrace") && (s.alignment = "l")) : s.rparen = "\\right.", { node: s, current: e };
+  return r && (a.push(r), r = null), a.length > 0 && (p.params.push(a), a = []), p.dividerIndices = Array.from(s).sort((i, y) => i - y), n = o[e], e < o.length ? (e++, p.rparen = `\\right${n.tex}`, n.value === ":}" && p.lparen.endsWith("lbrace") && (p.alignment = "l")) : p.rparen = "\\right.", { node: p, current: e };
 }
 var g = class extends Error {
 };
 function L(o, e, t) {
-  let n = o[e], s = u();
-  if (s.body.push(A(n, true)), e = O(e + 1, t, o, s), e >= o.length)
+  let n = o[e], p = u();
+  if (p.body.push(A(n, true)), e = O(e + 1, t, o, p), e >= o.length)
     throw new g(`Read index out of range at line: ${n.pos.line}, ch: ${n.pos.ch}.`);
-  return n = o[e], e++, s.body.push(A(n, false)), s.body[0].value === "{:" && s.body[s.body.length - 1].value === ":}" && (s.body[0].tex = "{", s.body[s.body.length - 1].tex = "}"), { node: s, current: e };
+  return n = o[e], e++, p.body.push(A(n, false)), p.body[0].value === "{:" && p.body[p.body.length - 1].value === ":}" && (p.body[0].tex = "{", p.body[p.body.length - 1].tex = "}"), { node: p, current: e };
 }
 function M(o, e) {
   let t = o[e], n = u();
   return n.body.push({ type: "Const", value: t.value, tex: `\\left${t.tex}` }), e = O(e + 1, o.length, o, n), n.body.push({ type: "Const", value: ".", tex: "\\right." }), { node: n, current: e };
 }
 function B(o, e) {
-  let t = -1, n = -1, s = [];
-  for (let p = o + 1; p < e.length; p++) {
-    if (e[p].type === "LParen") {
-      s.push("");
+  let t = -1, n = -1, p = [];
+  for (let s = o + 1; s < e.length; s++) {
+    if (e[s].type === "LParen") {
+      p.push("");
       continue;
     }
-    if (s.length === 0) {
-      if (e[p].value === ";" ? t === -1 && (t = p) : e[p].type === "RParen" && n === -1 && (n = p), t !== -1 && n !== -1)
+    if (p.length === 0) {
+      if (e[s].value === ";" ? t === -1 && (t = s) : e[s].type === "RParen" && n === -1 && (n = s), t !== -1 && n !== -1)
         break;
     } else
-      e[p].type === "RParen" && s.pop();
+      e[s].type === "RParen" && p.pop();
   }
   return { closingIndex: n, semiIndex: t };
 }
 function q(o, e, t, n) {
-  let s = -1, p = -1, a = [];
+  let p = -1, s = -1, a = [];
   for (let r = e; r < t; r++) {
     if (o[r].type === "LParen") {
       a.push("");
@@ -175,23 +134,23 @@ function q(o, e, t, n) {
       a.pop();
       continue;
     }
-    if (!(a.length > 0) && (o[r].type === "RParen" || (o[r].value === ";" ? s === -1 && (s = r) : o[r].value === n && p === -1 && (p = r), s !== -1 && p !== -1)))
+    if (!(a.length > 0) && (o[r].type === "RParen" || (o[r].value === ";" ? p === -1 && (p = r) : o[r].value === n && s === -1 && (s = r), p !== -1 && s !== -1)))
       break;
   }
-  return { semiIndex: s, barIndex: p };
+  return { semiIndex: p, barIndex: s };
 }
 function E(o, e) {
-  let t = o[e], { semiIndex: n, barIndex: s } = q(o, e + 1, o.length, t.value);
-  if (s === -1)
+  let t = o[e], { semiIndex: n, barIndex: p } = q(o, e + 1, o.length, t.value);
+  if (p === -1)
     return I(e, t);
-  if (n === -1 || n > s) {
+  if (n === -1 || n > p) {
     let i = u();
-    return e++, i.body.push(T(`\\left${t.tex}`)), e = O(e, s, o, i), i.body.push(T(`\\right${t.tex}`)), e = s + 1, { current: e, node: i };
+    return e++, i.body.push(T(`\\left${t.tex}`)), e = O(e, p, o, i), i.body.push(T(`\\right${t.tex}`)), e = p + 1, { current: e, node: i };
   }
-  let p = $();
-  p.lparen = `\\left${t.tex}`, p.rparen = `\\right${t.tex}`, t = o[++e];
+  let s = $();
+  s.lparen = `\\left${t.tex}`, s.rparen = `\\right${t.tex}`, t = o[++e];
   let a = [], r = null;
-  for (; e < s; ) {
+  for (; e < p; ) {
     if (t.type === "Split") {
       switch (t.value) {
         case ",": {
@@ -199,24 +158,24 @@ function E(o, e) {
           break;
         }
         case ";": {
-          r && (a.push(r), r = null), p.params.push(a), a = [];
+          r && (a.push(r), r = null), s.params.push(a), a = [];
           break;
         }
       }
       t = o[++e];
       continue;
     }
-    for (r = u(), t = o[e]; e < s && t.type !== "Split"; ) {
+    for (r = u(), t = o[e]; e < p && t.type !== "Split"; ) {
       let i = x(o, e);
       e = i.current, r.body.push(i.node), t = o[e];
     }
   }
-  return r && (a.push(r), r = null), a.length > 0 && (p.params.push(a), a = []), e = s + 1, { node: p, current: e };
+  return r && (a.push(r), r = null), a.length > 0 && (s.params.push(a), a = []), e = p + 1, { node: s, current: e };
 }
 function O(o, e, t, n) {
   for (; o < e; ) {
-    let s = x(t, o);
-    o = s.current, n.body.push(s.node);
+    let p = x(t, o);
+    o = p.current, n.body.push(p.node);
   }
   return o;
 }
@@ -228,26 +187,26 @@ function k(o) {
   return e.type === "Const" && t.type === "Const" && e.value === "(" && t.value === ")" && (o.body.pop(), o.body.shift()), o;
 }
 function W(o, e, t) {
-  let n = o[e], s = T(), p = "", a = "", r = "";
+  let n = o[e], p = T(), s = "", a = "", r = "";
   if (n.value === "^" || n.value === "_") {
-    p = n.value === "^" ? "_" : "^", a = n.value, e++;
+    s = n.value === "^" ? "_" : "^", a = n.value, e++;
     let d = x(o, e, false);
-    d.node.type === "Flat" && (d.node = k(d.node)), s = d.node, e = d.current;
+    d.node.type === "Flat" && (d.node = k(d.node)), p = d.node, e = d.current;
   }
   let i = T();
-  if (e < o.length && (n = o[e], n.value === p)) {
+  if (e < o.length && (n = o[e], n.value === s)) {
     r = n.value, e++;
     let d = x(o, e, false);
     d.node.type === "Flat" && (d.node = k(d.node)), i = d.node, e = d.current;
   }
   let y = c();
-  return y.tex = t.tex, y.params[0] = (() => a === "^" ? s : r === "^" ? i : T())(), y.params[1] = (() => a === "_" ? s : r === "_" ? i : T())(), { node: y, current: e };
+  return y.tex = t.tex, y.params[0] = (() => a === "^" ? p : r === "^" ? i : T())(), y.params[1] = (() => a === "_" ? p : r === "_" ? i : T())(), { node: y, current: e };
 }
 function D(o, e, t, n) {
-  let s;
-  o.type === "Flat" ? s = o : (s = u(), s.body.push(o));
-  let p = m();
-  p.tex = e.tex;
+  let p;
+  o.type === "Flat" ? p = o : (p = u(), p.body.push(o));
+  let s = m();
+  s.tex = e.tex;
   let a = x(t, n, false);
   if (n = a.current, a.node.type === "Flat")
     a.node = k(a.node);
@@ -255,23 +214,23 @@ function D(o, e, t, n) {
     let r = a.node;
     r.lparen.endsWith("(") && r.rparen.endsWith(")") && (r.lparen = "", r.rparen = "");
   }
-  return p.params = a.node, s.body.push(p), o = s, { node: o, current: n };
+  return s.params = a.node, p.body.push(s), o = p, { node: o, current: n };
 }
 function K(o, e) {
   let t = m();
   return t.params = o, t.tex = e.tex, o = t, o;
 }
 function j(o, e, t, n) {
-  let s = c();
-  o.type === "Flat" && (o = k(o)), s.tex = e.tex, s.params[0] = o;
-  let p = x(t, n);
-  return n = p.current, p.node.type === "Flat" && (p.node = k(p.node)), s.params[1] = p.node, o = s, { node: o, current: n };
+  let p = c();
+  o.type === "Flat" && (o = k(o)), p.tex = e.tex, p.params[0] = o;
+  let s = x(t, n);
+  return n = s.current, s.node.type === "Flat" && (s.node = k(s.node)), p.params[1] = s.node, o = p, { node: o, current: n };
 }
 function v(o, e, t) {
-  let n = m(), s = o[e];
-  n.tex = s.tex, e++;
-  let p = x(o, e, t);
-  return e = p.current, p.node.type === "Flat" && (p.node = k(p.node)), n.params = p.node, { node: n, current: e };
+  let n = m(), p = o[e];
+  n.tex = p.tex, e++;
+  let s = x(o, e, t);
+  return e = s.current, s.node.type === "Flat" && (s.node = k(s.node)), n.params = s.node, { node: n, current: e };
 }
 function G(o, e) {
   let t = o[e];
@@ -285,10 +244,10 @@ function G(o, e) {
     return { node: T(t.value), current: e };
   if (o[e].type === "RParen")
     return { node: T(t.value), current: e };
-  let s = x(o, e, true);
-  e = s.current;
-  let p = m();
-  return p.tex = t.tex, p.params = s.node, { node: p, current: e };
+  let p = x(o, e, true);
+  e = p.current;
+  let s = m();
+  return s.tex = t.tex, s.params = p.node, { node: s, current: e };
 }
 function Q(o, e, t) {
   let n = u();
@@ -300,103 +259,103 @@ function U(o, e) {
 function Z(o, e) {
   let t = c(), n = o[e];
   t.tex = "\\frac{ $1 }{ $2 }";
-  let s = n.tex, p = null;
+  let p = n.tex, s = null;
   if (e++, e >= o.length)
     return { node: t, current: e };
   if (n = o[e], n.type === "OperatorSup") {
     let i = v(o, e, false);
-    e = i.current, p = i.node;
+    e = i.current, s = i.node;
   }
   let a = x(o, e, true);
-  if (e = a.current, a.node.type === "Flat" && (a.node = k(a.node)), t.params[0] = Q(s, p, a.node), e >= o.length)
+  if (e = a.current, a.node.type === "Flat" && (a.node = k(a.node)), t.params[0] = Q(p, s, a.node), e >= o.length)
     return { node: t, current: e };
   let r = x(o, e);
-  return e = r.current, r.node.type === "Flat" ? (r.node = k(r.node), r.node = U(r.node, s)) : (r.node = u(r.node), r.node.body.unshift(T(s)), p && r.node.body.push(p)), t.params[1] = r.node, { node: t, current: e };
+  return e = r.current, r.node.type === "Flat" ? (r.node = k(r.node), r.node = U(r.node, p)) : (r.node = u(r.node), r.node.body.unshift(T(p)), s && r.node.body.push(s)), t.params[1] = r.node, { node: t, current: e };
 }
 function x(o, e, t = true) {
   if (e >= o.length)
     return { node: T(), current: e };
-  let n = o[e], s;
+  let n = o[e], p;
   switch (n.type) {
     case "Const":
     case "Text":
     case "NumberLiteral":
     case "StringLiteral": {
-      e++, s = T(n);
+      e++, p = T(n);
       break;
     }
     case "LParen": {
-      ({ node: s, current: e } = F(o, e));
+      ({ node: p, current: e } = F(o, e));
       break;
     }
     case "Paren": {
-      ({ node: s, current: e } = E(o, e));
+      ({ node: p, current: e } = E(o, e));
       break;
     }
     case "OperatorSup":
     case "OperatorA": {
-      ({ node: s, current: e } = v(o, e, false));
+      ({ node: p, current: e } = v(o, e, false));
       break;
     }
     case "OperatorMinus": {
-      ({ node: s, current: e } = G(o, e));
+      ({ node: p, current: e } = G(o, e));
       break;
     }
     case "OperatorOAB": {
-      s = c(), s.tex = n.tex, e++;
-      let p = x(o, e);
-      e = p.current, p.node.type === "Flat" && (p.node = k(p.node)), s.params[0] = p.node;
+      p = c(), p.tex = n.tex, e++;
+      let s = x(o, e);
+      e = s.current, s.node.type === "Flat" && (s.node = k(s.node)), p.params[0] = s.node;
       let a = x(o, e);
-      e = a.current, a.node.type === "Flat" && (a.node = k(a.node)), s.params[1] = a.node;
+      e = a.current, a.node.type === "Flat" && (a.node = k(a.node)), p.params[1] = a.node;
       break;
     }
     case "OperatorOptionalTwoParams": {
       if (e++, e >= o.length) {
-        s = T(`${n.tex.replace(/[\{\[] \$\d+ [\}\]]/g, "")}{}`);
+        p = T(`${n.tex.replace(/[\{\[] \$\d+ [\}\]]/g, "")}{}`);
         break;
       }
-      ({ node: s, current: e } = W(o, e, n));
+      ({ node: p, current: e } = W(o, e, n));
       break;
     }
     case "OperatorPartial": {
-      ({ node: s, current: e } = Z(o, e));
+      ({ node: p, current: e } = Z(o, e));
       break;
     }
     case "Split":
     case "Align": {
-      e++, s = T(n);
+      e++, p = T(n);
       break;
     }
     case "RParen": {
-      e++, s = T(n);
+      e++, p = T(n);
       break;
     }
     default:
       throw new Error(`Unmatched token \`${n.value}\` at line: ${n.pos.line}, ch: ${n.pos.ch}.`);
   }
   if (e < o.length && t) {
-    let p = true;
-    for (; p && e < o.length; ) {
+    let s = true;
+    for (; s && e < o.length; ) {
       let a = o[e];
       switch (a.type) {
         case "OperatorAOB": {
-          ({ node: s, current: e } = j(s, a, o, e + 1));
+          ({ node: p, current: e } = j(p, a, o, e + 1));
           break;
         }
         case "OperatorAO": {
-          s = K(s, a), e++;
+          p = K(p, a), e++;
           break;
         }
         case "OperatorSup": {
-          ({ node: s, current: e } = D(s, a, o, e + 1));
+          ({ node: p, current: e } = D(p, a, o, e + 1));
           break;
         }
         default:
-          p = false;
+          s = false;
       }
     }
   }
-  return { node: s, current: e };
+  return { node: p, current: e };
 }
 function P(o) {
   let e = V(), t = 0;
@@ -409,17 +368,17 @@ function P(o) {
 function H(o) {
   let e = o.dividerIndices, t = "\\begin{array}", n = o.alignment;
   if (e.length) {
-    let s = e[e.length - 1];
+    let p = e[e.length - 1];
     for (let a = e.length - 1; a >= 1; a--)
       e[a] -= e[a - 1];
     t += "{";
     for (let a = 0; a < e.length; a++)
       t += `${n.repeat(e[a])}|`;
-    let p = Math.max(...o.params.map((a) => a.length));
-    t += `${n.repeat(p - s)}}`;
+    let s = Math.max(...o.params.map((a) => a.length));
+    t += `${n.repeat(s - p)}}`;
   } else {
-    let s = Math.max(...o.params.map((p) => p.length));
-    t += `{${n.repeat(s)}}`;
+    let p = Math.max(...o.params.map((s) => s.length));
+    t += `{${n.repeat(p)}}`;
   }
   return [t, "\\end{array}"];
 }
@@ -461,8 +420,8 @@ var N = class {
         throw new Error(`Value \`${n}\` is invalid, the length of char must be 1`);
     });
     let t = Array.from(new Set(e));
-    this._n = t.length, this._root = new b(this._n), t.forEach((n, s) => {
-      this._char_to_index.set(n, s);
+    this._n = t.length, this._root = new b(this._n), t.forEach((n, p) => {
+      this._char_to_index.set(n, p);
     });
   }
   c2i(e) {
@@ -472,75 +431,75 @@ var N = class {
     if (e.length === 0)
       return;
     let t = this._root;
-    [...e].forEach((n, s) => {
-      let p = this.c2i(n);
-      if (typeof p > "u")
+    [...e].forEach((n, p) => {
+      let s = this.c2i(n);
+      if (typeof s > "u")
         throw new Error(`key \`${n}\` not in key set`);
-      t._nextNode[p] === null && (t._nextNode[p] = new b(this._n)), t = t._nextNode[p], s === e.length - 1 && (t._end = true);
+      t._nextNode[s] === null && (t._nextNode[s] = new b(this._n)), t = t._nextNode[s], p === e.length - 1 && (t._end = true);
     });
   }
   search(e) {
-    if (!this._root._nextNode.find((s) => s !== null) || e.length === 0)
+    if (!this._root._nextNode.find((p) => p !== null) || e.length === 0)
       return false;
     let t = this._root, n = 0;
     for (; n < e.length; n++) {
-      let s = e[n], p = this.c2i(s);
-      if (typeof p > "u")
-        throw new Error(`key \`${s}\` not in key set`);
-      if (t._nextNode[p] === null)
+      let p = e[n], s = this.c2i(p);
+      if (typeof s > "u")
+        throw new Error(`key \`${p}\` not in key set`);
+      if (t._nextNode[s] === null)
         return false;
-      t = t._nextNode[p];
+      t = t._nextNode[s];
     }
     return n === e.length;
   }
   tryParsing(e, t = 0, n = { line: 1, ch: 0 }) {
-    let s = "", p = this._root, a = false, r = t;
+    let p = "", s = this._root, a = false, r = t;
     for (; r < e.length; r++) {
       let y = e[r], d = this.c2i(y);
-      if (typeof d > "u" || p._nextNode[d] === null)
+      if (typeof d > "u" || s._nextNode[d] === null)
         break;
-      s += y, p = p._nextNode[d], a = p._end;
+      p += y, s = s._nextNode[d], a = s._end;
     }
-    let i = (() => a ? C.get(s) : { tex: s, type: "StringLiteral" })();
-    return { value: s, isKeyWord: a, current: r, ...i, pos: n };
+    let i = (() => a ? C.get(p) : { tex: p, type: "StringLiteral" })();
+    return { value: p, isKeyWord: a, current: r, ...i, pos: n };
   }
   tryParsingNumber(e, t, n) {
-    let s = e[t], p = "";
-    for (; R.test(s) && t < e.length; )
-      p += s, s = e[++t];
-    for (s === "." && (p += s, s = e[++t]); R.test(s) && t < e.length; )
-      p += s, s = e[++t];
-    return { value: p, isKeyWord: false, current: t, pos: n, tex: p, type: "NumberLiteral" };
+    let p = e[t], s = "";
+    for (; R.test(p) && t < e.length; )
+      s += p, p = e[++t];
+    for (p === "." && (s += p, p = e[++t]); R.test(p) && t < e.length; )
+      s += p, p = e[++t];
+    return { value: s, isKeyWord: false, current: t, pos: n, tex: s, type: "NumberLiteral" };
   }
   tryParsingString(e, t, n) {
-    let s = e[t], p = "";
-    for (; X.test(s) && t < e.length; ) {
-      let a = this.c2i(s);
+    let p = e[t], s = "";
+    for (; X.test(p) && t < e.length; ) {
+      let a = this.c2i(p);
       if (typeof a < "u" && this._root._nextNode[a] !== null)
         break;
-      p += s, s = e[++t];
+      s += p, p = e[++t];
     }
-    return { value: p, isKeyWord: false, current: t, pos: n, tex: p, type: "StringLiteral" };
+    return { value: s, isKeyWord: false, current: t, pos: n, tex: s, type: "StringLiteral" };
   }
   tryParsingNewLines(e, t, n) {
-    let s = e[t], p = "";
-    for (; /\n/.test(s) && t < e.length; )
-      p += s, s = e[++t], n.line++, n.ch = 0;
-    return p.length >= 2 ? { value: p, isKeyWord: true, current: t, pos: n, tex: "\\\\", type: "Align" } : { value: "", isKeyWord: false, current: t, pos: n, tex: "", type: "None" };
+    let p = e[t], s = "";
+    for (; /\n/.test(p) && t < e.length; )
+      s += p, p = e[++t], n.line++, n.ch = 0;
+    return s.length >= 2 ? { value: s, isKeyWord: true, current: t, pos: n, tex: "\\\\", type: "Align" } : { value: "", isKeyWord: false, current: t, pos: n, tex: "", type: "None" };
   }
   getPlainTextInDoubleQuote(e, t, n) {
-    let s = "", p = e[t];
-    if (p === '"') {
-      for (p = e[++t]; p !== '"' && t < e.length; )
-        s += p, p = e[++t];
-      if (p === '"')
-        return t++, { current: t, value: s, pos: n };
+    let p = "", s = e[t];
+    if (s === '"') {
+      for (s = e[++t]; s !== '"' && t < e.length; )
+        p += s, s = e[++t];
+      if (s === '"')
+        return t++, { current: t, value: p, pos: n };
     }
-    return { value: s, current: t, pos: n };
+    return { value: p, current: t, pos: n };
   }
   tryParsingText(e, t, n) {
-    let { value: s, current: p } = this.getPlainTextInDoubleQuote(e, t, n);
-    return { value: s, isKeyWord: false, current: p, pos: n, tex: s, type: "Text" };
+    let { value: p, current: s } = this.getPlainTextInDoubleQuote(e, t, n);
+    return { value: p, isKeyWord: false, current: s, pos: n, tex: p, type: "Text" };
   }
   skipSpaces(e, t) {
     for (; t < e.length; ) {
@@ -553,75 +512,75 @@ var N = class {
   }
   eatNext(e, t, n) {
     t = this.skipSpaces(e, t);
-    let s = Y({ current: t, pos: n });
+    let p = Y({ current: t, pos: n });
     if (t >= e.length)
-      return s;
-    let p = e[t], a = "";
-    switch (p) {
+      return p;
+    let s = e[t], a = "";
+    switch (s) {
       case '"': {
-        for (p = e[++t]; t < e.length && p !== '"'; )
-          a += p, p = e[++t];
+        for (s = e[++t]; t < e.length && s !== '"'; )
+          a += s, s = e[++t];
         t++;
         break;
       }
       case "(": {
-        for (p = e[++t]; t < e.length && p !== ")"; )
-          a += p, p = e[++t];
+        for (s = e[++t]; t < e.length && s !== ")"; )
+          a += s, s = e[++t];
         t++;
         break;
       }
       default: {
-        for (; t < e.length && /\S/.test(p); )
-          p = e[t++], a += p;
+        for (; t < e.length && /\S/.test(s); )
+          s = e[t++], a += s;
         break;
       }
     }
-    return s.tex = s.value = a, s.current = t, s;
+    return p.tex = p.value = a, p.current = t, p;
   }
   tryParsingAll(e) {
-    let t = 0, n = [], s = 0, p = [...e], a = 1, r = 0;
-    for (; t < p.length; ) {
+    let t = 0, n = [], p = 0, s = [...e], a = 1, r = 0;
+    for (; t < s.length; ) {
       {
-        let y = this.tryParsingNewLines(p, t, { line: a, ch: r });
+        let y = this.tryParsingNewLines(s, t, { line: a, ch: r });
         if (a = y.pos.line, r = y.pos.ch, t = y.current, y.value !== "") {
           n.push(y);
           continue;
         }
       }
-      if (/\s/.test(p[t])) {
+      if (/\s/.test(s[t])) {
         t++, r++;
         continue;
       }
-      let i = this.tryParsing(p, t, { line: a, ch: r });
+      let i = this.tryParsing(s, t, { line: a, ch: r });
       if (r += i.current - t, t = i.current, i.value !== "") {
         if (n.push(i), i.eatNext) {
-          let y = this.eatNext(p, t, { line: a, ch: r });
+          let y = this.eatNext(s, t, { line: a, ch: r });
           r += y.current - t, t = y.current, n.push(y);
         }
         continue;
       }
       {
-        let y = this.tryParsingNumber(p, t, { line: a, ch: r });
+        let y = this.tryParsingNumber(s, t, { line: a, ch: r });
         if (r += y.current - t, t = y.current, y.value !== "") {
           n.push(y);
           continue;
         }
       }
       {
-        let y = this.tryParsingText(p, t, { line: a, ch: r });
+        let y = this.tryParsingText(s, t, { line: a, ch: r });
         if (r += y.current - t, t = y.current, y.value !== "") {
           n.push(y);
           continue;
         }
       }
       {
-        let y = this.tryParsingString(p, t, { line: a, ch: r });
+        let y = this.tryParsingString(s, t, { line: a, ch: r });
         if (r += y.current - t, t = y.current, y.value !== "") {
           n.push(y);
           continue;
         }
       }
-      if (s++, s > p.length * 2)
+      if (p++, p > s.length * 2)
         throw new Error("Oops! There may be an infinity loop!");
     }
     return n;
@@ -636,22 +595,22 @@ var b = class {
 };
 function S(o = {}) {
   let e = /* @__PURE__ */ new Set([]);
-  o.symbols && (Array.isArray(o.symbols) ? o.symbols.forEach(([s, p]) => {
-    if (s.length === 0)
-      throw new Error(`Cannot insert empty token! Token value: ${p}`);
-    C.set(s, p);
-  }) : Object.entries(o.symbols).forEach(([s, p]) => {
-    if (s.length === 0)
-      throw new Error(`Cannot insert empty token! Token value: ${p}`);
-    C.set(s, p);
+  o.symbols && (Array.isArray(o.symbols) ? o.symbols.forEach(([p, s]) => {
+    if (p.length === 0)
+      throw new Error(`Cannot insert empty token! Token value: ${s}`);
+    C.set(p, s);
+  }) : Object.entries(o.symbols).forEach(([p, s]) => {
+    if (p.length === 0)
+      throw new Error(`Cannot insert empty token! Token value: ${s}`);
+    C.set(p, s);
   }));
-  for (let s of C.keys())
-    [...s].forEach((p) => e.add(p));
+  for (let p of C.keys())
+    [...p].forEach((s) => e.add(s));
   let t = Array.from(e);
   t.push(" ");
   let n = new N(t);
-  for (let s of C.keys())
-    n.insert(s);
+  for (let p of C.keys())
+    n.insert(p);
   return n;
 }
 function J(o) {
@@ -666,12 +625,12 @@ var _ = class {
     __publicField(this, "trie");
     __publicField(this, "display");
     __publicField(this, "replaceLaws");
-    let { display: t, symbols: n, replaceBeforeTokenizing: s } = J(e);
-    this.trie = S({ symbols: n }), this.display = t, this.replaceLaws = s;
+    let { display: t, symbols: n, replaceBeforeTokenizing: p } = J(e);
+    this.trie = S({ symbols: n }), this.display = t, this.replaceLaws = p;
   }
   toTex(e, t) {
     try {
-      e = this.replaceLaws.reduce((s, p) => s.replaceAll(p[0], p[1]), e);
+      e = this.replaceLaws.reduce((p, s) => p.replaceAll(s[0], s[1]), e);
       let n = h(P(this.trie.tryParsingAll(e)));
       return typeof (t == null ? void 0 : t.display) > "u" ? this.display && (n = `\\displaystyle{ ${n} }`) : t.display && (n = `\\displaystyle{ ${n} }`), n;
     } catch (n) {
@@ -680,9 +639,86 @@ var _ = class {
   }
 };
 
+// node_modules/.pnpm/ts-dedent@2.2.0/node_modules/ts-dedent/esm/index.js
+function dedent(templ) {
+  var values = [];
+  for (var _i = 1; _i < arguments.length; _i++) {
+    values[_i - 1] = arguments[_i];
+  }
+  var strings = Array.from(typeof templ === "string" ? [templ] : templ);
+  strings[strings.length - 1] = strings[strings.length - 1].replace(/\r?\n([\t ]*)$/, "");
+  var indentLengths = strings.reduce(function(arr, str) {
+    var matches = str.match(/\n([\t ]+|(?!\s).)/g);
+    if (matches) {
+      return arr.concat(matches.map(function(match) {
+        var _a, _b;
+        return (_b = (_a = match.match(/[\t ]/g)) === null || _a === void 0 ? void 0 : _a.length) !== null && _b !== void 0 ? _b : 0;
+      }));
+    }
+    return arr;
+  }, []);
+  if (indentLengths.length) {
+    var pattern_1 = new RegExp("\n[	 ]{" + Math.min.apply(Math, indentLengths) + "}", "g");
+    strings = strings.map(function(str) {
+      return str.replace(pattern_1, "\n");
+    });
+  }
+  strings[0] = strings[0].replace(/^\r?\n/, "");
+  var string = strings[0];
+  values.forEach(function(value, i) {
+    var endentations = string.match(/(?:^|\n)( *)$/);
+    var endentation = endentations ? endentations[1] : "";
+    var indentedValue = value;
+    if (typeof value === "string" && value.includes("\n")) {
+      indentedValue = String(value).split("\n").map(function(str, i2) {
+        return i2 === 0 ? str : "" + endentation + str;
+      }).join("\n");
+    }
+    string += indentedValue + strings[i + 1];
+  });
+  return string;
+}
+var esm_default = dedent;
+
+// src/confirm-modal.ts
+var import_obsidian = require("obsidian");
+var ConfirmModal = class extends import_obsidian.Modal {
+  constructor(app2) {
+    super(app2);
+  }
+  setMessage(message) {
+    this.message = message;
+    return this;
+  }
+  onConfirm(f2) {
+    this.confirmHandler = f2;
+    return this;
+  }
+  onOpen() {
+    const { contentEl, titleEl } = this;
+    titleEl.setText("Are you sure?");
+    new import_obsidian.Setting(contentEl).setDesc(this.message);
+    new import_obsidian.Setting(contentEl).addButton((btn) => btn.setButtonText("Cancel").onClick(() => {
+      this.close();
+    })).addButton((btn) => btn.setButtonText("Continue").setCta().onClick(() => {
+      this.close();
+      this.confirmHandler();
+    }));
+  }
+  onClose() {
+    const { contentEl } = this;
+    contentEl.empty();
+  }
+};
+
+// src/inline.ts
+var import_language = require("@codemirror/language");
+var import_view = require("@codemirror/view");
+var import_obsidian2 = require("obsidian");
+
 // src/utils.ts
-function normalizeEscape(escape) {
-  return escape.replace(/([$^\\.()[\]{}*?|])/g, "\\$1");
+function normalizeEscape(escape_) {
+  return escape_.replace(/([$^\\.()[\]{}*?|])/g, "\\$1");
 }
 function isLatexCode(code) {
   const latexRegex = /\\([A-Za-z0-9]){2,}/gm;
@@ -691,9 +727,6 @@ function isLatexCode(code) {
 }
 
 // src/inline.ts
-var import_view = require("@codemirror/view");
-var import_language = require("@codemirror/language");
-var import_obsidian = require("obsidian");
 var AM = new _();
 function selectionAndRangeOverlap(selection, rangeFrom, rangeTo) {
   for (const range of selection.ranges) {
@@ -752,8 +785,8 @@ var InlineWidget = class extends import_view.WidgetType {
   }
   toDOM(_view) {
     const tex = AM.toTex(this.rawQuery);
-    const mathEl = (0, import_obsidian.renderMath)(tex, false);
-    (0, import_obsidian.finishRenderMath)();
+    const mathEl = (0, import_obsidian2.renderMath)(tex, false);
+    (0, import_obsidian2.finishRenderMath)();
     return mathEl;
   }
 };
@@ -765,7 +798,7 @@ function inlinePlugin(plugin) {
     }
     update(update) {
       var _a;
-      if (!update.state.field(import_obsidian.editorLivePreviewField)) {
+      if (!update.state.field(import_obsidian2.editorLivePreviewField)) {
         this.decorations = import_view.Decoration.none;
         return;
       }
@@ -776,8 +809,8 @@ function inlinePlugin(plugin) {
 }
 
 // src/settings.ts
-var import_obsidian2 = require("obsidian");
-var AsciiMathSettingTab = class extends import_obsidian2.PluginSettingTab {
+var import_obsidian3 = require("obsidian");
+var AsciiMathSettingTab = class extends import_obsidian3.PluginSettingTab {
   constructor(app2, plugin) {
     super(app2, plugin);
     this.plugin = plugin;
@@ -786,37 +819,37 @@ var AsciiMathSettingTab = class extends import_obsidian2.PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     containerEl.createEl("h2", { text: "Settings for asciimath" });
-    new import_obsidian2.Setting(containerEl).setName("Code block prefix aliases").setDesc("Seperate different aliases with comma.").addText((text) => text.setPlaceholder("asciimath, am").setValue(this.plugin.settings.blockPrefix.join(", ")).onChange((0, import_obsidian2.debounce)((value) => {
+    new import_obsidian3.Setting(containerEl).setName("Code block prefix aliases").setDesc("Seperate different aliases with comma.").addText((text) => text.setPlaceholder("asciimath, am").setValue(this.plugin.settings.blockPrefix.join(", ")).onChange((0, import_obsidian3.debounce)((value) => {
       this.plugin.settings.blockPrefix = value.split(",").map((s) => s.trim()).filter(Boolean);
     }, 1e3)));
-    new import_obsidian2.Setting(containerEl).setName("Replace math blocks").setDesc("Enable this if you want to use AsciiMath but keep using default math blocks (dollar-sign blocks). This will not affect your previous notes that are written in LaTeX because the plugin will check which syntax to use before drawing the math.").addToggle((toggle) => {
+    new import_obsidian3.Setting(containerEl).setName("Replace math blocks").setDesc("Enable this if you want to use AsciiMath but keep using default math blocks (dollar-sign blocks). This will not affect your previous notes that are written in LaTeX because the plugin will check which syntax to use before drawing the math.").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.replaceMathBlock).onChange((v2) => {
         this.plugin.settings.replaceMathBlock = v2;
         this.plugin.setupMathBlockRendering();
       });
     });
-    new import_obsidian2.Setting(containerEl).setName("Custom symbols").setDesc("Transforms custom symbols into LaTeX symbols. One row for each rule.").addTextArea((text) => {
-      const el = text.setPlaceholder("symbol1, \\LaTeXSymbol1\nsymbol2, \\LaTeXSymbol2\n...").setValue(this.plugin.settings.customSymbols.map((r) => r.join(", ")).join("\n")).onChange((0, import_obsidian2.debounce)((value) => {
+    new import_obsidian3.Setting(containerEl).setName("Custom symbols").setDesc("Transforms custom symbols into LaTeX symbols. One row for each rule.").addTextArea((text) => {
+      const el = text.setPlaceholder("symbol1, \\LaTeXSymbol1\nsymbol2, \\LaTeXSymbol2\n...").setValue(this.plugin.settings.customSymbols.map((r) => r.join(", ")).join("\n")).onChange((0, import_obsidian3.debounce)((value) => {
         this.plugin.settings.customSymbols = value.split("\n").map((r) => r.split(",").map((s) => s.trim()).filter(Boolean)).filter((l) => l.length);
       }, 1e3));
       el.inputEl.addClass("__asciimath_settings_custom-symbols");
     });
-    new import_obsidian2.Setting(containerEl).setHeading().setName("Inline code math (deprecated)").setDesc("These settings will be removed in the next version of the plugin");
-    new import_obsidian2.Setting(containerEl).setName("Disable deprecation warning").setDesc("Note: ignoring deprecation issues may make the plugin unusable with existing notes in the future.").addToggle((toggle) => {
+    new import_obsidian3.Setting(containerEl).setHeading().setName("Inline code math (deprecated)").setDesc("These settings will be removed in the next version of the plugin");
+    new import_obsidian3.Setting(containerEl).setName("Disable deprecation warning").setDesc("Note: ignoring deprecation issues may make the plugin unusable with existing notes in the future.").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.disableDeprecationWarning).onChange((v2) => {
         this.plugin.settings.disableDeprecationWarning = v2;
       });
     });
-    new import_obsidian2.Setting(containerEl).setName("Inline asciimath start").setDesc("The leading escape of the inline asciimath formula. It should starts with **only one backtick**.").addText((text) => text.setPlaceholder("`$").setValue(this.plugin.settings.inline.open).onChange((0, import_obsidian2.debounce)((value) => {
+    new import_obsidian3.Setting(containerEl).setName("Inline asciimath start").setDesc("The leading escape of the inline asciimath formula. It should starts with **only one backtick**.").addText((text) => text.setPlaceholder("`$").setValue(this.plugin.settings.inline.open).onChange((0, import_obsidian3.debounce)((value) => {
       this.plugin.settings.inline.open = value;
     }, 1e3)));
-    new import_obsidian2.Setting(containerEl).setName("Inline asciimath end").setDesc("The trailing escape of the inline asciimath formula. It should ends with **only one backtick**.").addText((text) => text.setPlaceholder("$`").setValue(this.plugin.settings.inline.close).onChange((0, import_obsidian2.debounce)((value) => {
+    new import_obsidian3.Setting(containerEl).setName("Inline asciimath end").setDesc("The trailing escape of the inline asciimath formula. It should ends with **only one backtick**.").addText((text) => text.setPlaceholder("$`").setValue(this.plugin.settings.inline.close).onChange((0, import_obsidian3.debounce)((value) => {
       this.plugin.settings.inline.close = value;
     }, 1e3)));
-    new import_obsidian2.Setting(containerEl).setName("Don't forget to save and reload settings \u2192").addButton((btn) => btn.setButtonText("Save").onClick(async () => {
+    new import_obsidian3.Setting(containerEl).setName("Don't forget to save and reload settings \u2192").addButton((btn) => btn.setButtonText("Save").onClick(async () => {
       const valid = validateSettings(this.plugin.settings);
       if (!valid.isValid) {
-        new import_obsidian2.Notice(valid.message);
+        new import_obsidian3.Notice(valid.message);
         return;
       }
       await this.plugin.saveSettings();
@@ -828,7 +861,7 @@ var AsciiMathSettingTab = class extends import_obsidian2.PluginSettingTab {
       this.plugin.AM = new _({
         symbols: this.plugin.calcSymbols()
       });
-      new import_obsidian2.Notice("Asciimath settings reloaded successfully!");
+      new import_obsidian3.Notice("Asciimath settings reloaded successfully!");
     }));
   }
 };
@@ -864,37 +897,6 @@ function validateSettings(settings) {
     message: "OK"
   };
 }
-
-// src/confirm-modal.ts
-var import_obsidian3 = require("obsidian");
-var ConfirmModal = class extends import_obsidian3.Modal {
-  constructor(app2) {
-    super(app2);
-  }
-  setMessage(message) {
-    this.message = message;
-    return this;
-  }
-  onConfirm(f2) {
-    this.confirmHandler = f2;
-    return this;
-  }
-  onOpen() {
-    const { contentEl, titleEl } = this;
-    titleEl.setText("Are you sure?");
-    new import_obsidian3.Setting(contentEl).setDesc(this.message);
-    new import_obsidian3.Setting(contentEl).addButton((btn) => btn.setButtonText("Cancel").onClick(() => {
-      this.close();
-    })).addButton((btn) => btn.setButtonText("Continue").setCta().onClick(() => {
-      this.close();
-      this.confirmHandler();
-    }));
-  }
-  onClose() {
-    const { contentEl } = this;
-    contentEl.empty();
-  }
-};
 
 // src/symbol-search/modal.ts
 var import_obsidian4 = require("obsidian");
@@ -1355,6 +1357,12 @@ var AsciiMathPlugin = class extends import_obsidian5.Plugin {
       }
     });
     this.addCommand({
+      id: "asciimath-insert-symbol",
+      icon: "sigma",
+      name: "View AsciiMath symbols",
+      editorCallback: this.modalCallback()
+    });
+    this.addCommand({
       id: "insert-asciimath-block",
       name: "Insert asciimath block",
       editorCallback: (editor, _view) => {
@@ -1366,13 +1374,23 @@ ${editor.getDoc().getSelection()}
       }
     });
     this.addCommand({
-      id: "insert-asciimath-inline",
-      name: "Insert asciimath inline (deprecated)",
-      callback: () => {
-        const modal = new import_obsidian5.Modal(this.app);
-        modal.titleEl.setText("This command is deprecated");
-        new import_obsidian5.Setting(modal.contentEl).setName('It is advised to convert your old AsciiMath blocks to new syntax using "Update old AsciiMath" commands and proceed using default obsidian dollar-sign blocks with AsciiMath syntax');
-        modal.open();
+      id: "convert-selected-to-latex",
+      name: "Convert exact selection into LaTeX",
+      editorCallback: (editor, _view) => {
+        const cursorStart = editor.getCursor("from");
+        const cursorEnd = editor.getCursor("to");
+        const amCode = editor.getSelection();
+        const doConvert = () => editor.replaceRange(this.AM.toTex(amCode), cursorStart, cursorEnd);
+        if (amCode.length > 500) {
+          new ConfirmModal(this.app).setMessage(esm_default`The selection is over 500 chars.
+                     Please confirm that you have selected the exact AsciiMath expression.
+                     Click the Continue button to convert though.`).onConfirm(doConvert).open();
+        } else if (isLatexCode(amCode)) {
+          new ConfirmModal(this.app).setMessage(esm_default`The selection may be already LaTeX.
+                   Click the Continue buttom to convert though.`).onConfirm(doConvert).open();
+        } else {
+          doConvert();
+        }
       }
     });
     this.addCommand({
@@ -1400,12 +1418,6 @@ ${editor.getDoc().getSelection()}
         This will replace all Asciimath formulas of old syntax (like \`\$ and \$\`) with new syntax (wrapped with dollar signs),
         which is more convenient to use.
         THIS ACTION CANNOT BE UNDONE.`)
-    });
-    this.addCommand({
-      id: "asciimath-insert-symbol",
-      icon: "sigma",
-      name: "Insert AsciiMath symbol",
-      editorCallback: this.modalCallback()
     });
     this.postProcessors = /* @__PURE__ */ new Map();
     this.app.workspace.onLayoutReady(async () => {
@@ -1439,7 +1451,10 @@ ${editor.getDoc().getSelection()}
             const placeholder_a_pos = placeholder.indexOf("$1");
             const spacesBefore$1 = ((_a = placeholder.substring(0, placeholder_a_pos).match(/(\$\d+?)/g)) == null ? void 0 : _a.join("").length) || 0;
             editor.replaceSelection(am + temp);
-            editor.setCursor({ line: cur.line, ch: cur.ch + am.length + placeholder_a_pos - spacesBefore$1 });
+            editor.setCursor({
+              line: cur.line,
+              ch: cur.ch + am.length + placeholder_a_pos - spacesBefore$1
+            });
           } else {
             const placeholder_b_pos = placeholder.indexOf("$2");
             const cur = editor.getCursor("to");
@@ -1448,9 +1463,15 @@ ${editor.getDoc().getSelection()}
               const $before$2 = placeholder.substring(0, placeholder_b_pos).match(/(\$\d+?)/g);
               const $spacesBefore$2 = ($before$2 == null ? void 0 : $before$2.join("").length) || 0;
               const $2before$1 = !$before$2 || !$before$2.includes("$1") ? sel.length : 0;
-              editor.setCursor({ line: cur.line, ch: cur.ch + am.length + placeholder_b_pos - $spacesBefore$2 - $2before$1 });
+              editor.setCursor({
+                line: cur.line,
+                ch: cur.ch + am.length + placeholder_b_pos - $spacesBefore$2 - $2before$1
+              });
             } else {
-              editor.setCursor({ line: cur.line, ch: cur.ch + am.length + placeholder.length - 2 });
+              editor.setCursor({
+                line: cur.line,
+                ch: cur.ch + am.length + placeholder.length - 2
+              });
             }
           }
         } else {
@@ -1471,10 +1492,17 @@ ${editor.getDoc().getSelection()}
     return async () => new ConfirmModal(this.app).setMessage(message).onConfirm(async () => {
       const allConvertionRes = await Promise.all(this.app.vault.getMarkdownFiles().map(async (f2) => {
         const convertionRes = await this.convertAsciiMathInFile(f2, target);
-        return { ...convertionRes, hasAsciimath: convertionRes.block || convertionRes.inline };
+        return {
+          ...convertionRes,
+          hasAsciimath: convertionRes.block || convertionRes.inline
+        };
       }));
       const { block, inline, fileNum } = allConvertionRes.reduce((x2, y) => {
-        return { block: x2.block + y.block, inline: x2.inline + y.inline, fileNum: x2.fileNum + y.hasAsciimath };
+        return {
+          block: x2.block + y.block,
+          inline: x2.inline + y.inline,
+          fileNum: x2.fileNum + y.hasAsciimath
+        };
       }, { block: 0, inline: 0, fileNum: 0 });
       new import_obsidian5.Notice(`Converted ${block} blocks and ${inline} inline formulas in ${fileNum} file${fileNum > 1 ? "s" : ""}.`);
     }).open();

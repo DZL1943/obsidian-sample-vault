@@ -3120,7 +3120,7 @@ var ObsidianLinksSettingTab = class extends import_obsidian6.PluginSettingTab {
         feature1SettingDesc.appendText(" see ");
         feature1SettingDesc.appendChild(
           createEl("a", {
-            href: "https://github.com/mii-key/obsidian-links/blob/master/README.md#copy-link-to-object",
+            href: "https://github.com/mii-key/obsidian-links/blob/master/docs/insider/copy-link-to-element.md",
             text: "docs"
           })
         );
@@ -4758,15 +4758,18 @@ var CopyLinkToHeadingToObjectCommand = class extends CommandBase {
       return false;
     }
     const text = editor.getLine(editor.getCursor("from").line);
-    const result = text.match(new RegExp(RegExPatterns.NoteHeading.source));
-    if (checking) {
-      return !!result;
-    }
+    const headingMatch = text.match(new RegExp(RegExPatterns.NoteHeading.source));
     const currentView = this.obsidianProxy.Vault.getActiveNoteView();
+    const block = headingMatch ? void 0 : (currentView == null ? void 0 : currentView.file) ? this.getBlock(editor, currentView == null ? void 0 : currentView.file) : void 0;
+    if (checking) {
+      return !!headingMatch || !!block;
+    }
     const currentNotePath = (_a = currentView == null ? void 0 : currentView.file) == null ? void 0 : _a.path;
-    if (result && result[1] && currentNotePath) {
+    if (headingMatch && headingMatch[1] && currentNotePath) {
       console.log(currentNotePath);
-      this.copyLinkToHeadingUnderCursorToClipboard(result[1], currentNotePath);
+      this.copyLinkToHeadingUnderCursorToClipboard(headingMatch[1], currentNotePath);
+    } else if (block && (currentView == null ? void 0 : currentView.file)) {
+      this.copyLinkToBlockUnderCursorToClipboard(currentView == null ? void 0 : currentView.file, editor, block);
     }
   }
   copyLinkToHeadingUnderCursorToClipboard(heading, notePath) {
@@ -4777,6 +4780,64 @@ var CopyLinkToHeadingToObjectCommand = class extends CommandBase {
     const rawLink = `[${heading}](${destination})`;
     this.obsidianProxy.clipboardWriteText(rawLink);
     this.obsidianProxy.createNotice("Link copied to your clipboard");
+  }
+  copyLinkToBlockUnderCursorToClipboard(file, editor, block) {
+    if (block.id) {
+      return this.obsidianProxy.clipboardWriteText(
+        `${this.obsidianProxy.app.fileManager.generateMarkdownLink(
+          file,
+          "",
+          "#^" + block.id
+        )}`
+      );
+    }
+    const sectionEnd = block.position.end;
+    const end2 = {
+      ch: sectionEnd.col,
+      line: sectionEnd.line
+    };
+    const id = this.generateId();
+    editor.replaceRange(`${this.isEolRequired(block) ? "\n\n" : " "}^${id}`, end2);
+    navigator.clipboard.writeText(
+      `${this.obsidianProxy.app.fileManager.generateMarkdownLink(
+        file,
+        "",
+        "#^" + id
+      )}`
+    );
+  }
+  getBlock(editor, file) {
+    const cursor = editor.getCursor("from");
+    const fileCache = this.obsidianProxy.app.metadataCache.getFileCache(file);
+    let block = ((fileCache == null ? void 0 : fileCache.sections) || []).find((section) => {
+      return section.position.start.line <= cursor.line && section.position.end.line >= cursor.line;
+    });
+    if ((block == null ? void 0 : block.type) === "list") {
+      block = ((fileCache == null ? void 0 : fileCache.listItems) || []).find((item) => {
+        return item.position.start.line <= cursor.line && item.position.end.line >= cursor.line;
+      });
+    } else if ((block == null ? void 0 : block.type) === "heading") {
+      block = ((fileCache == null ? void 0 : fileCache.headings) || []).find((heading) => {
+        return heading.position.start.line === cursor.line;
+      });
+    }
+    return block;
+  }
+  generateId() {
+    return Math.random().toString(36).substring(2, 6);
+  }
+  isEolRequired(block) {
+    const blockType = block.type || "";
+    switch (blockType) {
+      case "blockquote":
+      case "code":
+      case "table":
+      case "comment":
+      case "footnoteDefinition":
+        return true;
+      default:
+        return false;
+    }
   }
 };
 
@@ -5199,7 +5260,7 @@ var ObsidianLinksPlugin = class extends import_obsidian8.Plugin {
       if (path) {
         let target = path;
         if (path.startsWith("[")) {
-          const links = findLinks(path, 2 /* Wiki */);
+          const links = findLinks(path, 2 /* Wiki */ | 1 /* Markdown */);
           if (links.length > 0 && ((_a = links[0].destination) == null ? void 0 : _a.content)) {
             target = (_b = links[0].destination) == null ? void 0 : _b.content;
           }

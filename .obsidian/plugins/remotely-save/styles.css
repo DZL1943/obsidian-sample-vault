@@ -21,6 +21,10 @@
   display: none;
 }
 
+.settings-encryption-method-hide {
+  display: none;
+}
+
 .s3-disclaimer {
   font-weight: bold;
 }
@@ -145,6 +149,25 @@
 }
 
 .yandexdisk-revoke-auth-button-hide {
+  display: none;
+}
+
+.koofr-disclaimer {
+  font-weight: bold;
+}
+.koofr-hide {
+  display: none;
+}
+
+.koofr-allow-to-use-hide {
+  display: none;
+}
+
+.koofr-auth-button-hide {
+  display: none;
+}
+
+.koofr-revoke-auth-button-hide {
   display: none;
 }
 
