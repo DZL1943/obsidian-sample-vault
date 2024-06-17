@@ -167,6 +167,12 @@
       "icon": "eye-off",
       "name": "Privacy Glasses: Privacy Glasses - hide all",
       "mode": "any"
+    },
+    {
+      "id": "file-explorer:new-file",
+      "icon": "lucide-file-plus",
+      "name": "新建笔记",
+      "mode": "any"
     }
   ],
   "macros": [],
