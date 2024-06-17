@@ -32,12 +32,12 @@
     },
     {
       "id": "7906c8996add2e11",
+      "type": "file",
+      "file": "draft.md",
       "x": -1500,
       "y": 720,
       "width": 500,
-      "height": 420,
-      "type": "file",
-      "file": "draft.md"
+      "height": 420
     }
   ],
   "edges": [],
