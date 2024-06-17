@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-17 15:56"
+modified: "2024-06-17 16:57"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -33,10 +33,10 @@ for _dir in $top_dirs;do touch $_dir/.gitkeep;done
     - journals
     - context
 - 30_Jottings/: 非正式笔记
-- 40_Pages/: 正式笔记
-- ~~50_Projects/~~: 项目笔记
-- ~~60_Areas/~~: 领域知识笔记
-- ~~70_Resources/~~: 附件以外的资源文件
+- 40_Pages/: 原创笔记
+- 50_Projects/: 项目笔记
+- 60_Areas/: 领域知识笔记
+- 70_Resources/: 附件以外的资源文件
 - 80_Archives/: 归档
 - 90_Misc/: 杂项(比如附件、模版等)
     - Attachments/
@@ -72,74 +72,73 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 17. easy-typing-obsidian
 18. editing-toolbar
 19. editor-width-slider
-20. embed-code-file
-21. execute-code
-22. file-tree-alternative
-23. find-unlinked-files
-24. float-search
-25. floating-toc
-26. fuzzy-chinese-pinyin
-27. hotkey-helper
-28. hotkeysplus-obsidian
-29. janitor
-30. keyboard-analyzer
-31. legacy-vault-switcher
-32. local-backup
-33. make-md
-34. nldates-obsidian
-35. note-refactor-obsidian
-36. obsidian-advanced-uri
-37. obsidian-auto-link-title
-38. obsidian-columns
-39. obsidian-completr
-40. obsidian-emoji-toolbar
-41. obsidian-excalidraw-plugin
-42. obsidian-excel-to-markdown-table
-43. obsidian-export-image
-44. obsidian-folder-focus-mode
-45. obsidian-footnotes
-46. obsidian-git
-47. obsidian-heading-shifter
-48. obsidian-hover-editor
-49. obsidian-kanban
-50. obsidian-linter
-51. obsidian-list-callouts
-52. obsidian-markmind
-53. obsidian-minimal-settings
-54. obsidian-opener
-55. obsidian-outliner
-56. obsidian-plugin-update-tracker
-57. obsidian-projects
-58. obsidian-quiet-outline
-59. obsidian-regex-replace
-60. obsidian-scroll-to-top-plugin
-61. obsidian-shellcommands
-62. obsidian-sidebar-expand-on-hover
-63. obsidian-style-settings
-64. obsidian-tagfolder
-65. obsidian-tasks-plugin
-66. obsidian-trash-explorer
-67. obsidian-zoom
-68. obsidian42-brat
-69. plugin-reloader
-70. privacy-glasses
-71. quick-explorer
-72. quick-plugin-switcher
-73. quickadd
-74. root-folder-context-menu
-75. settings-search
-76. show-whitespace-cm6
-77. solve
-78. statusbar-organizer
-79. surfing
-80. table-editor-obsidian
-81. tabs
-82. tag-wrangler
-83. templater-obsidian
-84. typewriter-mode
-85. unicode-search
-86. url-into-selection
-87. various-complements
+20. execute-code
+21. file-tree-alternative
+22. find-unlinked-files
+23. float-search
+24. floating-toc
+25. fuzzy-chinese-pinyin
+26. hotkey-helper
+27. hotkeysplus-obsidian
+28. janitor
+29. keyboard-analyzer
+30. legacy-vault-switcher
+31. local-backup
+32. make-md
+33. nldates-obsidian
+34. note-refactor-obsidian
+35. obsidian-advanced-uri
+36. obsidian-auto-link-title
+37. obsidian-columns
+38. obsidian-completr
+39. obsidian-emoji-toolbar
+40. obsidian-excalidraw-plugin
+41. obsidian-excel-to-markdown-table
+42. obsidian-export-image
+43. obsidian-folder-focus-mode
+44. obsidian-footnotes
+45. obsidian-git
+46. obsidian-heading-shifter
+47. obsidian-hover-editor
+48. obsidian-kanban
+49. obsidian-linter
+50. obsidian-list-callouts
+51. obsidian-markmind
+52. obsidian-minimal-settings
+53. obsidian-opener
+54. obsidian-outliner
+55. obsidian-plugin-update-tracker
+56. obsidian-projects
+57. obsidian-quiet-outline
+58. obsidian-regex-replace
+59. obsidian-scroll-to-top-plugin
+60. obsidian-shellcommands
+61. obsidian-sidebar-expand-on-hover
+62. obsidian-style-settings
+63. obsidian-tagfolder
+64. obsidian-tasks-plugin
+65. obsidian-trash-explorer
+66. obsidian-zoom
+67. obsidian42-brat
+68. plugin-reloader
+69. privacy-glasses
+70. quick-explorer
+71. quick-plugin-switcher
+72. quickadd
+73. root-folder-context-menu
+74. settings-search
+75. show-whitespace-cm6
+76. solve
+77. statusbar-organizer
+78. surfing
+79. table-editor-obsidian
+80. tabs
+81. tag-wrangler
+82. templater-obsidian
+83. typewriter-mode
+84. unicode-search
+85. url-into-selection
+86. various-complements
 
 
 ## 快捷键设置
