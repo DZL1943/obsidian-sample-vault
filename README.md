@@ -286,7 +286,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 
 ## Issues
 
-- [ ] %% 2024/06/18 %%minimal 主题 7.7.3 版本, dataview 表格属性错行问题. 降至 7.4.3 无此问题.
+- [ ] %% 2024/06/18 %%[minimal 主题 7.7.3 版本, dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
 
 #
 
