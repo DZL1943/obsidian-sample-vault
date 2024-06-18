@@ -1,6 +1,7 @@
 /* src/styles/theme.css */
 .lineage-main {
   --lineage-accent: #55b1ae;
+  --lineage-color-selection: #418cff;
 }
 .theme-dark {
   --background-container: #373d4c;
@@ -8,6 +9,7 @@
   --background-active-parent: #5b637a;
   --background-inactive-node: var(--background-container);
   --lineage-accent-faint: #628c8c;
+  --lineage-color-selection-faint: #567aab;
 }
 .theme-light {
   --background-container: #899cb3;
@@ -15,6 +17,7 @@
   --background-active-parent: #cedbeb;
   --background-inactive-node: var(--background-container);
   --lineage-accent-faint: #adccca;
+  --lineage-color-selection-faint: #8eaedf;
 }
 .active-node,
 .active-child {
@@ -68,7 +71,6 @@
   width: 100%;
   height: auto;
   min-height: 100px;
-  max-height: 80vh;
   & .view-header,
   & .inline-title,
   & .embedded-backlinks,
@@ -98,11 +100,30 @@
   margin: 0;
 }
 .lineage-card {
+  --p-spacing: 0px;
   & .callout {
     mix-blend-mode: initial;
   }
   & button.copy-code-button {
     display: none;
+  }
+  & .cm-blockid {
+    display: inline-block;
+    font-size: 12px;
+    vertical-align: text-top;
+    margin-top: -0.2em;
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
+  & .is-unresolved {
+    color: var(--link-unresolved-color);
+    opacity: var(--link-unresolved-opacity);
+    filter: var(--link-unresolved-filter);
+  }
+  & ul,
+  ol {
+    margin-block-start: 0;
+    margin-block-end: 0;
   }
 }
 

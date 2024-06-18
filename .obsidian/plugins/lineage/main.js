@@ -38,6 +38,24 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
+var __accessCheck = (obj, member, msg) => {
+  if (!member.has(obj))
+    throw TypeError("Cannot " + msg);
+};
+var __privateGet = (obj, member, getter) => {
+  __accessCheck(obj, member, "read from private field");
+  return getter ? getter.call(obj) : member.get(obj);
+};
+var __privateAdd = (obj, member, value) => {
+  if (member.has(obj))
+    throw TypeError("Cannot add the same private member more than once");
+  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+};
+var __privateSet = (obj, member, value, setter) => {
+  __accessCheck(obj, member, "write to private field");
+  setter ? setter.call(obj, value) : member.set(obj, value);
+  return value;
+};
 
 // node_modules/classnames/index.js
 var require_classnames = __commonJS({
@@ -105,10 +123,10 @@ __export(main_exports, {
   default: () => Lineage
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian32 = require("obsidian");
+var import_obsidian38 = require("obsidian");
 
 // src/view/view.ts
-var import_obsidian22 = require("obsidian");
+var import_obsidian26 = require("obsidian");
 
 // node_modules/svelte/src/runtime/internal/utils.js
 function noop() {
@@ -550,7 +568,7 @@ function outro_and_destroy_block(block, lookup) {
     lookup.delete(block.key);
   });
 }
-function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block12, next, get_context) {
+function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block13, next, get_context) {
   let o = old_blocks.length;
   let n = list.length;
   let i = o;
@@ -567,7 +585,7 @@ function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, looku
     const key = get_key(child_ctx);
     let block = lookup.get(key);
     if (!block) {
-      block = create_each_block12(key, child_ctx);
+      block = create_each_block13(key, child_ctx);
       block.c();
     } else if (dynamic) {
       updates.push(() => block.p(child_ctx, dirty));
@@ -726,7 +744,7 @@ function make_dirty(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init(component, options, instance73, create_fragment75, not_equal, props, append_styles2 = null, dirty = [-1]) {
+function init(component, options, instance75, create_fragment77, not_equal, props, append_styles2 = null, dirty = [-1]) {
   const parent_component = current_component;
   set_current_component(component);
   const $$ = component.$$ = {
@@ -752,7 +770,7 @@ function init(component, options, instance73, create_fragment75, not_equal, prop
   };
   append_styles2 && append_styles2($$.root);
   let ready = false;
-  $$.ctx = instance73 ? instance73(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance75 ? instance75(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
       if (!$$.skip_bound && $$.bound[i])
@@ -765,7 +783,7 @@ function init(component, options, instance73, create_fragment75, not_equal, prop
   $$.update();
   ready = true;
   run_all($$.before_update);
-  $$.fragment = create_fragment75 ? create_fragment75($$.ctx) : false;
+  $$.fragment = create_fragment77 ? create_fragment77($$.ctx) : false;
   if (options.target) {
     if (options.hydrate) {
       start_hydrating();
@@ -1048,28 +1066,31 @@ var lang = {
   open_in_lineage: "Open in Lineage",
   toggle_lineage_view: "Toggle view",
   export_document: "Export document",
-  export_document_outline: "Export document as an outline",
-  create_new_file: "Create new document",
-  new_file: "New lineage document",
+  create_new_document: "Create new document",
+  new_document: "New document",
+  change_format_to_document: "File format: sections",
+  change_format_to_outline: "File format: outline (experimental)",
   format_headings: "Format headings",
   extract_branch: "Extract branch to a new document",
   error_apply_snapshot_while_editing: "Cannot apply a snapshot while editing",
-  error_delete_last_node: "Cannot delete the last card",
+  error_delete_last_node: "Cannot delete this card",
   error_generic: "Something went wrong\nFurther details may be available in the developer console",
   cant_split_card_that_has_children: "Cannot split a card that has children",
   cant_split_card_identical: "The result is the same as the input",
-  error_parent_not_found: (full) => `Could not find the parent section of ${full}`
+  cant_merge_multiple_nodes: "Cannot merge multiple cards",
+  error_parent_not_found: (full) => `Could not find the parent section of ${full}`,
+  import_from_gingko: "Import from Gingko"
 };
 
 // src/stores/settings/reducers/change-zoom-level.ts
 var zoomStep = 0.1;
 var maxZoomLevel = 2;
 var minZoomLevel = 0.1;
-var changeZoomLevel = (state, payload) => {
+var changeZoomLevel = (state2, payload) => {
   if ("value" in payload) {
-    state.view.zoomLevel = payload.value;
+    state2.view.zoomLevel = payload.value;
   } else {
-    state.view.zoomLevel = payload.direction === "in" ? Math.min(state.view.zoomLevel + zoomStep, maxZoomLevel) : Math.max(state.view.zoomLevel - zoomStep, minZoomLevel);
+    state2.view.zoomLevel = payload.direction === "in" ? Math.min(state2.view.zoomLevel + zoomStep, maxZoomLevel) : Math.max(state2.view.zoomLevel - zoomStep, minZoomLevel);
   }
 };
 
@@ -3149,7 +3170,7 @@ var File_symlink = class extends SvelteComponent {
 };
 var file_symlink_default = File_symlink;
 
-// node_modules/lucide-svelte/dist/icons/file-text.svelte
+// node_modules/lucide-svelte/dist/icons/file-up.svelte
 function create_default_slot12(ctx) {
   let current;
   const default_slot_template = (
@@ -3219,7 +3240,7 @@ function create_fragment13(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "file-text" },
+    { name: "file-up" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -3289,9 +3310,8 @@ function instance13($$self, $$props, $$invalidate) {
       }
     ],
     ["path", { "d": "M14 2v4a2 2 0 0 0 2 2h4" }],
-    ["path", { "d": "M10 9H8" }],
-    ["path", { "d": "M16 13H8" }],
-    ["path", { "d": "M16 17H8" }]
+    ["path", { "d": "M12 12v6" }],
+    ["path", { "d": "m15 15-3-3-3 3" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -3301,15 +3321,15 @@ function instance13($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var File_text = class extends SvelteComponent {
+var File_up = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance13, create_fragment13, safe_not_equal, {});
   }
 };
-var file_text_default = File_text;
+var file_up_default = File_up;
 
-// node_modules/lucide-svelte/dist/icons/file-up.svelte
+// node_modules/lucide-svelte/dist/icons/heading-1.svelte
 function create_default_slot13(ctx) {
   let current;
   const default_slot_template = (
@@ -3379,7 +3399,7 @@ function create_fragment14(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "file-up" },
+    { name: "heading-1" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -3442,15 +3462,10 @@ function create_fragment14(ctx) {
 function instance14($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    [
-      "path",
-      {
-        "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
-      }
-    ],
-    ["path", { "d": "M14 2v4a2 2 0 0 0 2 2h4" }],
-    ["path", { "d": "M12 12v6" }],
-    ["path", { "d": "m15 15-3-3-3 3" }]
+    ["path", { "d": "M4 12h8" }],
+    ["path", { "d": "M4 18V6" }],
+    ["path", { "d": "M12 18V6" }],
+    ["path", { "d": "m17 12 3-2v8" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -3460,15 +3475,15 @@ function instance14($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var File_up = class extends SvelteComponent {
+var Heading_1 = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance14, create_fragment14, safe_not_equal, {});
   }
 };
-var file_up_default = File_up;
+var heading_1_default = Heading_1;
 
-// node_modules/lucide-svelte/dist/icons/heading-1.svelte
+// node_modules/lucide-svelte/dist/icons/history.svelte
 function create_default_slot14(ctx) {
   let current;
   const default_slot_template = (
@@ -3538,7 +3553,7 @@ function create_fragment15(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "heading-1" },
+    { name: "history" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -3601,10 +3616,14 @@ function create_fragment15(ctx) {
 function instance15($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["path", { "d": "M4 12h8" }],
-    ["path", { "d": "M4 18V6" }],
-    ["path", { "d": "M12 18V6" }],
-    ["path", { "d": "m17 12 3-2v8" }]
+    [
+      "path",
+      {
+        "d": "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+      }
+    ],
+    ["path", { "d": "M3 3v5h5" }],
+    ["path", { "d": "M12 7v5l4 2" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -3614,15 +3633,15 @@ function instance15($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Heading_1 = class extends SvelteComponent {
+var History = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance15, create_fragment15, safe_not_equal, {});
   }
 };
-var heading_1_default = Heading_1;
+var history_default = History;
 
-// node_modules/lucide-svelte/dist/icons/history.svelte
+// node_modules/lucide-svelte/dist/icons/keyboard.svelte
 function create_default_slot15(ctx) {
   let current;
   const default_slot_template = (
@@ -3692,7 +3711,7 @@ function create_fragment16(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "history" },
+    { name: "keyboard" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -3755,14 +3774,24 @@ function create_fragment16(ctx) {
 function instance16($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
+    ["path", { "d": "M10 8h.01" }],
+    ["path", { "d": "M12 12h.01" }],
+    ["path", { "d": "M14 8h.01" }],
+    ["path", { "d": "M16 12h.01" }],
+    ["path", { "d": "M18 8h.01" }],
+    ["path", { "d": "M6 8h.01" }],
+    ["path", { "d": "M7 16h10" }],
+    ["path", { "d": "M8 12h.01" }],
     [
-      "path",
+      "rect",
       {
-        "d": "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+        "x": "2",
+        "y": "4",
+        "width": "20",
+        "height": "16",
+        "rx": "2"
       }
-    ],
-    ["path", { "d": "M3 3v5h5" }],
-    ["path", { "d": "M12 7v5l4 2" }]
+    ]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -3772,15 +3801,15 @@ function instance16($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var History = class extends SvelteComponent {
+var Keyboard = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance16, create_fragment16, safe_not_equal, {});
   }
 };
-var history_default = History;
+var keyboard_default = Keyboard;
 
-// node_modules/lucide-svelte/dist/icons/keyboard.svelte
+// node_modules/lucide-svelte/dist/icons/maximize.svelte
 function create_default_slot16(ctx) {
   let current;
   const default_slot_template = (
@@ -3850,7 +3879,7 @@ function create_fragment17(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "keyboard" },
+    { name: "maximize" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -3913,24 +3942,10 @@ function create_fragment17(ctx) {
 function instance17($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["path", { "d": "M10 8h.01" }],
-    ["path", { "d": "M12 12h.01" }],
-    ["path", { "d": "M14 8h.01" }],
-    ["path", { "d": "M16 12h.01" }],
-    ["path", { "d": "M18 8h.01" }],
-    ["path", { "d": "M6 8h.01" }],
-    ["path", { "d": "M7 16h10" }],
-    ["path", { "d": "M8 12h.01" }],
-    [
-      "rect",
-      {
-        "x": "2",
-        "y": "4",
-        "width": "20",
-        "height": "16",
-        "rx": "2"
-      }
-    ]
+    ["path", { "d": "M8 3H5a2 2 0 0 0-2 2v3" }],
+    ["path", { "d": "M21 8V5a2 2 0 0 0-2-2h-3" }],
+    ["path", { "d": "M3 16v3a2 2 0 0 0 2 2h3" }],
+    ["path", { "d": "M16 21h3a2 2 0 0 0 2-2v-3" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -3940,15 +3955,15 @@ function instance17($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Keyboard = class extends SvelteComponent {
+var Maximize = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance17, create_fragment17, safe_not_equal, {});
   }
 };
-var keyboard_default = Keyboard;
+var maximize_default = Maximize;
 
-// node_modules/lucide-svelte/dist/icons/maximize.svelte
+// node_modules/lucide-svelte/dist/icons/merge.svelte
 function create_default_slot17(ctx) {
   let current;
   const default_slot_template = (
@@ -4018,7 +4033,7 @@ function create_fragment18(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "maximize" },
+    { name: "merge" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -4081,10 +4096,14 @@ function create_fragment18(ctx) {
 function instance18($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["path", { "d": "M8 3H5a2 2 0 0 0-2 2v3" }],
-    ["path", { "d": "M21 8V5a2 2 0 0 0-2-2h-3" }],
-    ["path", { "d": "M3 16v3a2 2 0 0 0 2 2h3" }],
-    ["path", { "d": "M16 21h3a2 2 0 0 0 2-2v-3" }]
+    ["path", { "d": "m8 6 4-4 4 4" }],
+    [
+      "path",
+      {
+        "d": "M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22"
+      }
+    ],
+    ["path", { "d": "m20 22-5-5" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -4094,15 +4113,15 @@ function instance18($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Maximize = class extends SvelteComponent {
+var Merge = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance18, create_fragment18, safe_not_equal, {});
   }
 };
-var maximize_default = Maximize;
+var merge_default = Merge;
 
-// node_modules/lucide-svelte/dist/icons/merge.svelte
+// node_modules/lucide-svelte/dist/icons/minus.svelte
 function create_default_slot18(ctx) {
   let current;
   const default_slot_template = (
@@ -4172,7 +4191,7 @@ function create_fragment19(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "merge" },
+    { name: "minus" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -4234,16 +4253,7 @@ function create_fragment19(ctx) {
 }
 function instance19($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
-  const iconNode = [
-    ["path", { "d": "m8 6 4-4 4 4" }],
-    [
-      "path",
-      {
-        "d": "M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22"
-      }
-    ],
-    ["path", { "d": "m20 22-5-5" }]
-  ];
+  const iconNode = [["path", { "d": "M5 12h14" }]];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
     if ("$$scope" in $$new_props)
@@ -4252,15 +4262,15 @@ function instance19($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Merge = class extends SvelteComponent {
+var Minus = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance19, create_fragment19, safe_not_equal, {});
   }
 };
-var merge_default = Merge;
+var minus_default = Minus;
 
-// node_modules/lucide-svelte/dist/icons/minus.svelte
+// node_modules/lucide-svelte/dist/icons/more-vertical.svelte
 function create_default_slot19(ctx) {
   let current;
   const default_slot_template = (
@@ -4330,7 +4340,7 @@ function create_fragment20(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "minus" },
+    { name: "more-vertical" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -4392,7 +4402,11 @@ function create_fragment20(ctx) {
 }
 function instance20($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
-  const iconNode = [["path", { "d": "M5 12h14" }]];
+  const iconNode = [
+    ["circle", { "cx": "12", "cy": "12", "r": "1" }],
+    ["circle", { "cx": "12", "cy": "5", "r": "1" }],
+    ["circle", { "cx": "12", "cy": "19", "r": "1" }]
+  ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
     if ("$$scope" in $$new_props)
@@ -4401,15 +4415,15 @@ function instance20($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Minus = class extends SvelteComponent {
+var More_vertical = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance20, create_fragment20, safe_not_equal, {});
   }
 };
-var minus_default = Minus;
+var more_vertical_default = More_vertical;
 
-// node_modules/lucide-svelte/dist/icons/more-vertical.svelte
+// node_modules/lucide-svelte/dist/icons/pen.svelte
 function create_default_slot20(ctx) {
   let current;
   const default_slot_template = (
@@ -4479,7 +4493,7 @@ function create_fragment21(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "more-vertical" },
+    { name: "pen" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -4542,9 +4556,12 @@ function create_fragment21(ctx) {
 function instance21($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["circle", { "cx": "12", "cy": "12", "r": "1" }],
-    ["circle", { "cx": "12", "cy": "5", "r": "1" }],
-    ["circle", { "cx": "12", "cy": "19", "r": "1" }]
+    [
+      "path",
+      {
+        "d": "M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+      }
+    ]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -4554,15 +4571,15 @@ function instance21($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var More_vertical = class extends SvelteComponent {
+var Pen = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance21, create_fragment21, safe_not_equal, {});
   }
 };
-var more_vertical_default = More_vertical;
+var pen_default = Pen;
 
-// node_modules/lucide-svelte/dist/icons/pen.svelte
+// node_modules/lucide-svelte/dist/icons/pencil.svelte
 function create_default_slot21(ctx) {
   let current;
   const default_slot_template = (
@@ -4632,7 +4649,7 @@ function create_fragment22(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "pen" },
+    { name: "pencil" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -4700,7 +4717,8 @@ function instance22($$self, $$props, $$invalidate) {
       {
         "d": "M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
       }
-    ]
+    ],
+    ["path", { "d": "m15 5 4 4" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -4710,15 +4728,15 @@ function instance22($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Pen = class extends SvelteComponent {
+var Pencil = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance22, create_fragment22, safe_not_equal, {});
   }
 };
-var pen_default = Pen;
+var pencil_default = Pencil;
 
-// node_modules/lucide-svelte/dist/icons/pencil.svelte
+// node_modules/lucide-svelte/dist/icons/plus.svelte
 function create_default_slot22(ctx) {
   let current;
   const default_slot_template = (
@@ -4788,7 +4806,7 @@ function create_fragment23(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "pencil" },
+    { name: "plus" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -4850,15 +4868,7 @@ function create_fragment23(ctx) {
 }
 function instance23($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
-  const iconNode = [
-    [
-      "path",
-      {
-        "d": "M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
-      }
-    ],
-    ["path", { "d": "m15 5 4 4" }]
-  ];
+  const iconNode = [["path", { "d": "M5 12h14" }], ["path", { "d": "M12 5v14" }]];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
     if ("$$scope" in $$new_props)
@@ -4867,15 +4877,15 @@ function instance23($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Pencil = class extends SvelteComponent {
+var Plus = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance23, create_fragment23, safe_not_equal, {});
   }
 };
-var pencil_default = Pencil;
+var plus_default = Plus;
 
-// node_modules/lucide-svelte/dist/icons/plus.svelte
+// node_modules/lucide-svelte/dist/icons/redo-2.svelte
 function create_default_slot23(ctx) {
   let current;
   const default_slot_template = (
@@ -4945,7 +4955,7 @@ function create_fragment24(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "plus" },
+    { name: "redo-2" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -5007,7 +5017,15 @@ function create_fragment24(ctx) {
 }
 function instance24($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
-  const iconNode = [["path", { "d": "M5 12h14" }], ["path", { "d": "M12 5v14" }]];
+  const iconNode = [
+    ["path", { "d": "m15 14 5-5-5-5" }],
+    [
+      "path",
+      {
+        "d": "M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"
+      }
+    ]
+  ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
     if ("$$scope" in $$new_props)
@@ -5016,15 +5034,15 @@ function instance24($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Plus = class extends SvelteComponent {
+var Redo_2 = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance24, create_fragment24, safe_not_equal, {});
   }
 };
-var plus_default = Plus;
+var redo_2_default = Redo_2;
 
-// node_modules/lucide-svelte/dist/icons/redo-2.svelte
+// node_modules/lucide-svelte/dist/icons/rotate-ccw.svelte
 function create_default_slot24(ctx) {
   let current;
   const default_slot_template = (
@@ -5094,7 +5112,7 @@ function create_fragment25(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "redo-2" },
+    { name: "rotate-ccw" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -5157,13 +5175,13 @@ function create_fragment25(ctx) {
 function instance25($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["path", { "d": "m15 14 5-5-5-5" }],
     [
       "path",
       {
-        "d": "M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"
+        "d": "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
       }
-    ]
+    ],
+    ["path", { "d": "M3 3v5h5" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -5173,15 +5191,15 @@ function instance25($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Redo_2 = class extends SvelteComponent {
+var Rotate_ccw = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance25, create_fragment25, safe_not_equal, {});
   }
 };
-var redo_2_default = Redo_2;
+var rotate_ccw_default = Rotate_ccw;
 
-// node_modules/lucide-svelte/dist/icons/rotate-ccw.svelte
+// node_modules/lucide-svelte/dist/icons/save.svelte
 function create_default_slot25(ctx) {
   let current;
   const default_slot_template = (
@@ -5251,7 +5269,7 @@ function create_fragment26(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "rotate-ccw" },
+    { name: "save" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -5317,10 +5335,11 @@ function instance26($$self, $$props, $$invalidate) {
     [
       "path",
       {
-        "d": "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+        "d": "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
       }
     ],
-    ["path", { "d": "M3 3v5h5" }]
+    ["polyline", { "points": "17 21 17 13 7 13 7 21" }],
+    ["polyline", { "points": "7 3 7 8 15 8" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -5330,15 +5349,15 @@ function instance26($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Rotate_ccw = class extends SvelteComponent {
+var Save = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance26, create_fragment26, safe_not_equal, {});
   }
 };
-var rotate_ccw_default = Rotate_ccw;
+var save_default = Save;
 
-// node_modules/lucide-svelte/dist/icons/save.svelte
+// node_modules/lucide-svelte/dist/icons/scissors.svelte
 function create_default_slot26(ctx) {
   let current;
   const default_slot_template = (
@@ -5408,7 +5427,7 @@ function create_fragment27(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "save" },
+    { name: "scissors" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -5471,14 +5490,11 @@ function create_fragment27(ctx) {
 function instance27($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    [
-      "path",
-      {
-        "d": "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
-      }
-    ],
-    ["polyline", { "points": "17 21 17 13 7 13 7 21" }],
-    ["polyline", { "points": "7 3 7 8 15 8" }]
+    ["circle", { "cx": "6", "cy": "6", "r": "3" }],
+    ["path", { "d": "M8.12 8.12 12 12" }],
+    ["path", { "d": "M20 4 8.12 15.88" }],
+    ["circle", { "cx": "6", "cy": "18", "r": "3" }],
+    ["path", { "d": "M14.8 14.8 20 20" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -5488,15 +5504,15 @@ function instance27($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Save = class extends SvelteComponent {
+var Scissors = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance27, create_fragment27, safe_not_equal, {});
   }
 };
-var save_default = Save;
+var scissors_default = Scissors;
 
-// node_modules/lucide-svelte/dist/icons/scissors.svelte
+// node_modules/lucide-svelte/dist/icons/search.svelte
 function create_default_slot27(ctx) {
   let current;
   const default_slot_template = (
@@ -5566,7 +5582,7 @@ function create_fragment28(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "scissors" },
+    { name: "search" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -5629,11 +5645,8 @@ function create_fragment28(ctx) {
 function instance28($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["circle", { "cx": "6", "cy": "6", "r": "3" }],
-    ["path", { "d": "M8.12 8.12 12 12" }],
-    ["path", { "d": "M20 4 8.12 15.88" }],
-    ["circle", { "cx": "6", "cy": "18", "r": "3" }],
-    ["path", { "d": "M14.8 14.8 20 20" }]
+    ["circle", { "cx": "11", "cy": "11", "r": "8" }],
+    ["path", { "d": "m21 21-4.3-4.3" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -5643,15 +5656,15 @@ function instance28($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Scissors = class extends SvelteComponent {
+var Search = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance28, create_fragment28, safe_not_equal, {});
   }
 };
-var scissors_default = Scissors;
+var search_default = Search;
 
-// node_modules/lucide-svelte/dist/icons/search.svelte
+// node_modules/lucide-svelte/dist/icons/settings.svelte
 function create_default_slot28(ctx) {
   let current;
   const default_slot_template = (
@@ -5721,7 +5734,7 @@ function create_fragment29(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "search" },
+    { name: "settings" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -5784,8 +5797,13 @@ function create_fragment29(ctx) {
 function instance29($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["circle", { "cx": "11", "cy": "11", "r": "8" }],
-    ["path", { "d": "m21 21-4.3-4.3" }]
+    [
+      "path",
+      {
+        "d": "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+      }
+    ],
+    ["circle", { "cx": "12", "cy": "12", "r": "3" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -5795,15 +5813,15 @@ function instance29($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Search = class extends SvelteComponent {
+var Settings = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance29, create_fragment29, safe_not_equal, {});
   }
 };
-var search_default = Search;
+var settings_default = Settings;
 
-// node_modules/lucide-svelte/dist/icons/settings.svelte
+// node_modules/lucide-svelte/dist/icons/split.svelte
 function create_default_slot29(ctx) {
   let current;
   const default_slot_template = (
@@ -5873,7 +5891,7 @@ function create_fragment30(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "settings" },
+    { name: "split" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -5936,13 +5954,15 @@ function create_fragment30(ctx) {
 function instance30($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
+    ["path", { "d": "M16 3h5v5" }],
+    ["path", { "d": "M8 3H3v5" }],
     [
       "path",
       {
-        "d": "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+        "d": "M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"
       }
     ],
-    ["circle", { "cx": "12", "cy": "12", "r": "3" }]
+    ["path", { "d": "m15 9 6-6" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -5952,15 +5972,15 @@ function instance30($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Settings = class extends SvelteComponent {
+var Split = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance30, create_fragment30, safe_not_equal, {});
   }
 };
-var settings_default = Settings;
+var split_default = Split;
 
-// node_modules/lucide-svelte/dist/icons/split.svelte
+// node_modules/lucide-svelte/dist/icons/text.svelte
 function create_default_slot30(ctx) {
   let current;
   const default_slot_template = (
@@ -6030,7 +6050,7 @@ function create_fragment31(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "split" },
+    { name: "text" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -6093,15 +6113,9 @@ function create_fragment31(ctx) {
 function instance31($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["path", { "d": "M16 3h5v5" }],
-    ["path", { "d": "M8 3H3v5" }],
-    [
-      "path",
-      {
-        "d": "M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"
-      }
-    ],
-    ["path", { "d": "m15 9 6-6" }]
+    ["path", { "d": "M17 6.1H3" }],
+    ["path", { "d": "M21 12.1H3" }],
+    ["path", { "d": "M15.1 18H3" }]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -6111,15 +6125,15 @@ function instance31($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Split = class extends SvelteComponent {
+var Text = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance31, create_fragment31, safe_not_equal, {});
   }
 };
-var split_default = Split;
+var text_default = Text;
 
-// node_modules/lucide-svelte/dist/icons/text.svelte
+// node_modules/lucide-svelte/dist/icons/trash.svelte
 function create_default_slot31(ctx) {
   let current;
   const default_slot_template = (
@@ -6189,7 +6203,7 @@ function create_fragment32(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "text" },
+    { name: "trash" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -6252,9 +6266,19 @@ function create_fragment32(ctx) {
 function instance32($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["path", { "d": "M17 6.1H3" }],
-    ["path", { "d": "M21 12.1H3" }],
-    ["path", { "d": "M15.1 18H3" }]
+    ["path", { "d": "M3 6h18" }],
+    [
+      "path",
+      {
+        "d": "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+      }
+    ]
   ];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -6264,15 +6288,15 @@ function instance32($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Text = class extends SvelteComponent {
+var Trash = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance32, create_fragment32, safe_not_equal, {});
   }
 };
-var text_default = Text;
+var trash_default = Trash;
 
-// node_modules/lucide-svelte/dist/icons/trash.svelte
+// node_modules/lucide-svelte/dist/icons/undo-2.svelte
 function create_default_slot32(ctx) {
   let current;
   const default_slot_template = (
@@ -6342,7 +6366,7 @@ function create_fragment33(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "trash" },
+    { name: "undo-2" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -6405,17 +6429,11 @@ function create_fragment33(ctx) {
 function instance33($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [
-    ["path", { "d": "M3 6h18" }],
+    ["path", { "d": "M9 14 4 9l5-5" }],
     [
       "path",
       {
-        "d": "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
-      }
-    ],
-    [
-      "path",
-      {
-        "d": "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+        "d": "M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"
       }
     ]
   ];
@@ -6427,15 +6445,15 @@ function instance33($$self, $$props, $$invalidate) {
   $$props = exclude_internal_props($$props);
   return [iconNode, $$props, slots, $$scope];
 }
-var Trash = class extends SvelteComponent {
+var Undo_2 = class extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance33, create_fragment33, safe_not_equal, {});
   }
 };
-var trash_default = Trash;
+var undo_2_default = Undo_2;
 
-// node_modules/lucide-svelte/dist/icons/undo-2.svelte
+// node_modules/lucide-svelte/dist/icons/x.svelte
 function create_default_slot33(ctx) {
   let current;
   const default_slot_template = (
@@ -6505,7 +6523,7 @@ function create_fragment34(ctx) {
   let icon;
   let current;
   const icon_spread_levels = [
-    { name: "undo-2" },
+    { name: "x" },
     /*$$props*/
     ctx[1],
     { iconNode: (
@@ -6567,163 +6585,6 @@ function create_fragment34(ctx) {
 }
 function instance34($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
-  const iconNode = [
-    ["path", { "d": "M9 14 4 9l5-5" }],
-    [
-      "path",
-      {
-        "d": "M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"
-      }
-    ]
-  ];
-  $$self.$$set = ($$new_props) => {
-    $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
-    if ("$$scope" in $$new_props)
-      $$invalidate(3, $$scope = $$new_props.$$scope);
-  };
-  $$props = exclude_internal_props($$props);
-  return [iconNode, $$props, slots, $$scope];
-}
-var Undo_2 = class extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance34, create_fragment34, safe_not_equal, {});
-  }
-};
-var undo_2_default = Undo_2;
-
-// node_modules/lucide-svelte/dist/icons/x.svelte
-function create_default_slot34(ctx) {
-  let current;
-  const default_slot_template = (
-    /*#slots*/
-    ctx[2].default
-  );
-  const default_slot = create_slot(
-    default_slot_template,
-    ctx,
-    /*$$scope*/
-    ctx[3],
-    null
-  );
-  return {
-    c() {
-      if (default_slot)
-        default_slot.c();
-    },
-    m(target, anchor) {
-      if (default_slot) {
-        default_slot.m(target, anchor);
-      }
-      current = true;
-    },
-    p(ctx2, dirty) {
-      if (default_slot) {
-        if (default_slot.p && (!current || dirty & /*$$scope*/
-        8)) {
-          update_slot_base(
-            default_slot,
-            default_slot_template,
-            ctx2,
-            /*$$scope*/
-            ctx2[3],
-            !current ? get_all_dirty_from_scope(
-              /*$$scope*/
-              ctx2[3]
-            ) : get_slot_changes(
-              default_slot_template,
-              /*$$scope*/
-              ctx2[3],
-              dirty,
-              null
-            ),
-            null
-          );
-        }
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(default_slot, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(default_slot, local);
-      current = false;
-    },
-    d(detaching) {
-      if (default_slot)
-        default_slot.d(detaching);
-    }
-  };
-}
-function create_fragment35(ctx) {
-  let icon;
-  let current;
-  const icon_spread_levels = [
-    { name: "x" },
-    /*$$props*/
-    ctx[1],
-    { iconNode: (
-      /*iconNode*/
-      ctx[0]
-    ) }
-  ];
-  let icon_props = {
-    $$slots: { default: [create_default_slot34] },
-    $$scope: { ctx }
-  };
-  for (let i = 0; i < icon_spread_levels.length; i += 1) {
-    icon_props = assign(icon_props, icon_spread_levels[i]);
-  }
-  icon = new Icon_default({ props: icon_props });
-  return {
-    c() {
-      create_component(icon.$$.fragment);
-    },
-    m(target, anchor) {
-      mount_component(icon, target, anchor);
-      current = true;
-    },
-    p(ctx2, [dirty]) {
-      const icon_changes = dirty & /*$$props, iconNode*/
-      3 ? get_spread_update(icon_spread_levels, [
-        icon_spread_levels[0],
-        dirty & /*$$props*/
-        2 && get_spread_object(
-          /*$$props*/
-          ctx2[1]
-        ),
-        dirty & /*iconNode*/
-        1 && { iconNode: (
-          /*iconNode*/
-          ctx2[0]
-        ) }
-      ]) : {};
-      if (dirty & /*$$scope*/
-      8) {
-        icon_changes.$$scope = { dirty, ctx: ctx2 };
-      }
-      icon.$set(icon_changes);
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(icon.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(icon.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      destroy_component(icon, detaching);
-    }
-  };
-}
-function instance35($$self, $$props, $$invalidate) {
-  let { $$slots: slots = {}, $$scope } = $$props;
   const iconNode = [["path", { "d": "M18 6 6 18" }], ["path", { "d": "m6 6 12 12" }]];
   $$self.$$set = ($$new_props) => {
     $$invalidate(1, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -6736,7 +6597,7 @@ function instance35($$self, $$props, $$invalidate) {
 var X = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance35, create_fragment35, safe_not_equal, {});
+    init(this, options, instance34, create_fragment34, safe_not_equal, {});
   }
 };
 var x_default = X;
@@ -6785,36 +6646,16 @@ var derived = (source, mapper) => {
 
 // src/stores/document/derived/history-store.ts
 var historyStore = (view) => {
-  return derived(view.documentStore, (state) => {
-    return state.history;
+  return derived(view.documentStore, (state2) => {
+    return state2.history;
   });
 };
 
 // src/view/components/container/controls-bar/controls-container.svelte
 var import_obsidian = require("obsidian");
 
-// src/obsidian/events/workspace/helpers/set-file-view-type.ts
-var setFileViewType = (plugin, file, leaf, newViewType) => {
-  plugin.settings.dispatch({
-    type: newViewType === "markdown" ? "SET_DOCUMENT_TYPE_TO_MARKDOWN" : "SET_DOCUMENT_TYPE_TO_TREE",
-    payload: {
-      path: file.path
-    }
-  });
-  if (leaf) {
-    setTimeout(() => {
-      leaf.setViewState({
-        type: newViewType,
-        popstate: true,
-        state: leaf.view.getState()
-      });
-      plugin.app.workspace.revealLeaf(leaf);
-    }, 0);
-  }
-};
-
 // src/stores/view/derived/zoom-level-store.ts
-var zoomLevelStore = (view) => derived(view.plugin.settings, (state) => state.view.zoomLevel);
+var zoomLevelStore = (view) => derived(view.plugin.settings, (state2) => state2.view.zoomLevel);
 
 // node_modules/svelte/src/runtime/store/index.js
 var subscriber_queue = [];
@@ -6861,10 +6702,10 @@ function writable(value, start = noop) {
 }
 
 // src/stores/view/derived/ui-controls-store.ts
-var uiControlsStore = (view) => derived(view.viewStore, (state) => state.ui.controls);
+var uiControlsStore = (view) => derived(view.viewStore, (state2) => state2.ui.controls);
 
 // src/view/components/container/shared/button.svelte
-function create_fragment36(ctx) {
+function create_fragment35(ctx) {
   let button;
   let button_class_value;
   let current;
@@ -7008,7 +6849,7 @@ function create_fragment36(ctx) {
     }
   };
 }
-function instance36($$self, $$props, $$invalidate) {
+function instance35($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { label } = $$props;
   let { tooltipPosition } = $$props;
@@ -7046,7 +6887,7 @@ function instance36($$self, $$props, $$invalidate) {
 var Button = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance36, create_fragment36, safe_not_equal, {
+    init(this, options, instance35, create_fragment35, safe_not_equal, {
       label: 0,
       tooltipPosition: 1,
       disabled: 2,
@@ -7057,11 +6898,54 @@ var Button = class extends SvelteComponent {
 };
 var button_default = Button;
 
+// src/stores/view/subscriptions/effects/align-branch/helpers/reset-zoom.ts
+var resetZoom = (container) => {
+  const columnsContainer = container.querySelector(".columns");
+  columnsContainer.style.transform = "none";
+};
+
+// node_modules/tiny-invariant/dist/esm/tiny-invariant.js
+var isProduction = false;
+var prefix = "Invariant failed";
+function invariant(condition, message) {
+  if (condition) {
+    return;
+  }
+  if (isProduction) {
+    throw new Error(prefix);
+  }
+  var provided = typeof message === "function" ? message() : message;
+  var value = provided ? "".concat(prefix, ": ").concat(provided) : prefix;
+  throw new Error(value);
+}
+
+// src/stores/view/subscriptions/effects/align-branch/helpers/get-combined-client-rect.ts
+var getCombinedBoundingClientRect = (elements) => {
+  if (elements.length === 0) {
+    return new DOMRect(0, 0, 0, 0);
+  }
+  let combinedRect = elements[0].getBoundingClientRect();
+  for (let i = 1; i < elements.length; i++) {
+    const rect = elements[i].getBoundingClientRect();
+    combinedRect = combineRects(combinedRect, rect);
+  }
+  return combinedRect;
+};
+var combineRects = (rect1, rect2) => {
+  const left = Math.min(rect1.left, rect2.left);
+  const top = Math.min(rect1.top, rect2.top);
+  const right = Math.max(rect1.right, rect2.right);
+  const bottom = Math.max(rect1.bottom, rect2.bottom);
+  const width = right - left;
+  const height = bottom - top;
+  return new DOMRect(left, top, width, height);
+};
+
 // src/view/components/container/controls-bar/controls-container.svelte
 function add_css(target) {
   append_styles(target, "svelte-qjaf0g", ".controls-container.svelte-qjaf0g{right:var(--size-4-2);top:var(--size-4-2);gap:var(--size-4-2);display:flex;flex-direction:column;position:absolute;z-index:2}.controls-toggle.svelte-qjaf0g{display:none}.is-mobile{& .controls-toggle {\n            display: block;\n        };& .buttons-group[data-visible='false'] {\n            display: none;\n        }}");
 }
-function create_default_slot_10(ctx) {
+function create_default_slot_9(ctx) {
   let morevertical;
   let current;
   morevertical = new more_vertical_default({ props: { class: "svg-icon" } });
@@ -7086,34 +6970,6 @@ function create_default_slot_10(ctx) {
     },
     d(detaching) {
       destroy_component(morevertical, detaching);
-    }
-  };
-}
-function create_default_slot_9(ctx) {
-  let filetext;
-  let current;
-  filetext = new file_text_default({ props: { class: "svg-icon" } });
-  return {
-    c() {
-      create_component(filetext.$$.fragment);
-    },
-    m(target, anchor) {
-      mount_component(filetext, target, anchor);
-      current = true;
-    },
-    p: noop,
-    i(local) {
-      if (current)
-        return;
-      transition_in(filetext.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(filetext.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      destroy_component(filetext, detaching);
     }
   };
 }
@@ -7341,7 +7197,7 @@ function create_default_slot_1(ctx) {
     }
   };
 }
-function create_default_slot35(ctx) {
+function create_default_slot34(ctx) {
   let zoomout;
   let current;
   zoomout = new minus_default({ props: { class: "svg-icon" } });
@@ -7369,7 +7225,7 @@ function create_default_slot35(ctx) {
     }
   };
 }
-function create_fragment37(ctx) {
+function create_fragment36(ctx) {
   let div4;
   let div0;
   let button0;
@@ -7379,23 +7235,21 @@ function create_fragment37(ctx) {
   let t1;
   let button2;
   let t2;
+  let div2;
   let button3;
   let t3;
-  let div2;
   let button4;
   let t4;
   let button5;
   let t5;
+  let div3;
   let button6;
   let t6;
-  let div3;
   let button7;
   let t7;
   let button8;
   let t8;
   let button9;
-  let t9;
-  let button10;
   let current;
   button0 = new button_default({
     props: {
@@ -7405,30 +7259,16 @@ function create_fragment37(ctx) {
       ),
       label: "Toggle controls",
       tooltipPosition: "left",
-      $$slots: { default: [create_default_slot_10] },
+      $$slots: { default: [create_default_slot_9] },
       $$scope: { ctx }
     }
   });
   button0.$on(
     "click",
     /*toggleShowControls*/
-    ctx[18]
+    ctx[17]
   );
   button1 = new button_default({
-    props: {
-      class: "control-item",
-      label: lang.open_in_editor,
-      tooltipPosition: "left",
-      $$slots: { default: [create_default_slot_9] },
-      $$scope: { ctx }
-    }
-  });
-  button1.$on(
-    "click",
-    /*openAsMarkdown*/
-    ctx[10]
-  );
-  button2 = new button_default({
     props: {
       active: (
         /*$controls*/
@@ -7441,12 +7281,12 @@ function create_fragment37(ctx) {
       $$scope: { ctx }
     }
   });
-  button2.$on(
+  button1.$on(
     "click",
     /*toggleSettings*/
     ctx[9]
   );
-  button3 = new button_default({
+  button2 = new button_default({
     props: {
       active: (
         /*$controls*/
@@ -7459,12 +7299,12 @@ function create_fragment37(ctx) {
       $$scope: { ctx }
     }
   });
-  button3.$on(
+  button2.$on(
     "click",
     /*toggleHelp*/
     ctx[8]
   );
-  button4 = new button_default({
+  button3 = new button_default({
     props: {
       active: (
         /*$controls*/
@@ -7481,12 +7321,12 @@ function create_fragment37(ctx) {
       $$scope: { ctx }
     }
   });
-  button4.$on(
+  button3.$on(
     "click",
     /*click_handler*/
-    ctx[19]
+    ctx[18]
   );
-  button5 = new button_default({
+  button4 = new button_default({
     props: {
       class: "control-item",
       disabled: !/*$history*/
@@ -7497,12 +7337,12 @@ function create_fragment37(ctx) {
       $$scope: { ctx }
     }
   });
-  button5.$on(
+  button4.$on(
     "click",
     /*handlePreviousClick*/
     ctx[7]
   );
-  button6 = new button_default({
+  button5 = new button_default({
     props: {
       class: "control-item",
       disabled: !/*$history*/
@@ -7513,12 +7353,12 @@ function create_fragment37(ctx) {
       $$scope: { ctx }
     }
   });
-  button6.$on(
+  button5.$on(
     "click",
     /*handleNextClick*/
     ctx[6]
   );
-  button7 = new button_default({
+  button6 = new button_default({
     props: {
       class: "control-item",
       disabled: (
@@ -7531,12 +7371,12 @@ function create_fragment37(ctx) {
       $$scope: { ctx }
     }
   });
-  button7.$on(
+  button6.$on(
     "click",
     /*zoomIn*/
-    ctx[11]
+    ctx[10]
   );
-  button8 = new button_default({
+  button7 = new button_default({
     props: {
       class: "control-item",
       disabled: (
@@ -7549,26 +7389,26 @@ function create_fragment37(ctx) {
       $$scope: { ctx }
     }
   });
-  button8.$on(
+  button7.$on(
     "click",
     /*restoreZoom*/
-    ctx[13]
+    ctx[12]
   );
-  button9 = new button_default({
+  button8 = new button_default({
     props: {
       class: "control-item",
-      label: "Zoom to fit",
+      label: "Fit document height into view",
       tooltipPosition: "left",
       $$slots: { default: [create_default_slot_1] },
       $$scope: { ctx }
     }
   });
-  button9.$on(
+  button8.$on(
     "click",
-    /*fitToScale*/
-    ctx[14]
+    /*fitDocumentHeightIntoView*/
+    ctx[13]
   );
-  button10 = new button_default({
+  button9 = new button_default({
     props: {
       class: "control-item",
       disabled: (
@@ -7577,14 +7417,14 @@ function create_fragment37(ctx) {
       ),
       label: "Zoom out",
       tooltipPosition: "left",
-      $$slots: { default: [create_default_slot35] },
+      $$slots: { default: [create_default_slot34] },
       $$scope: { ctx }
     }
   });
-  button10.$on(
+  button9.$on(
     "click",
     /*zoomOut*/
-    ctx[12]
+    ctx[11]
   );
   return {
     c() {
@@ -7597,23 +7437,21 @@ function create_fragment37(ctx) {
       t1 = space();
       create_component(button2.$$.fragment);
       t2 = space();
+      div2 = element("div");
       create_component(button3.$$.fragment);
       t3 = space();
-      div2 = element("div");
       create_component(button4.$$.fragment);
       t4 = space();
       create_component(button5.$$.fragment);
       t5 = space();
+      div3 = element("div");
       create_component(button6.$$.fragment);
       t6 = space();
-      div3 = element("div");
       create_component(button7.$$.fragment);
       t7 = space();
       create_component(button8.$$.fragment);
       t8 = space();
       create_component(button9.$$.fragment);
-      t9 = space();
-      create_component(button10.$$.fragment);
       attr(div0, "class", "buttons-group controls-toggle svelte-qjaf0g");
       attr(div1, "class", "buttons-group buttons-group--vertical");
       attr(
@@ -7647,24 +7485,22 @@ function create_fragment37(ctx) {
       mount_component(button1, div1, null);
       append(div1, t1);
       mount_component(button2, div1, null);
-      append(div1, t2);
-      mount_component(button3, div1, null);
-      append(div4, t3);
+      append(div4, t2);
       append(div4, div2);
+      mount_component(button3, div2, null);
+      append(div2, t3);
       mount_component(button4, div2, null);
       append(div2, t4);
       mount_component(button5, div2, null);
-      append(div2, t5);
-      mount_component(button6, div2, null);
-      append(div4, t6);
+      append(div4, t5);
       append(div4, div3);
+      mount_component(button6, div3, null);
+      append(div3, t6);
       mount_component(button7, div3, null);
       append(div3, t7);
       mount_component(button8, div3, null);
       append(div3, t8);
       mount_component(button9, div3, null);
-      append(div3, t9);
-      mount_component(button10, div3, null);
       current = true;
     },
     p(ctx2, [dirty]) {
@@ -7674,13 +7510,17 @@ function create_fragment37(ctx) {
         button0_changes.active = /*$showControls*/
         ctx2[0];
       if (dirty & /*$$scope*/
-      8388608) {
+      4194304) {
         button0_changes.$$scope = { dirty, ctx: ctx2 };
       }
       button0.$set(button0_changes);
       const button1_changes = {};
+      if (dirty & /*$controls*/
+      2)
+        button1_changes.active = /*$controls*/
+        ctx2[1].showSettingsSidebar;
       if (dirty & /*$$scope*/
-      8388608) {
+      4194304) {
         button1_changes.$$scope = { dirty, ctx: ctx2 };
       }
       button1.$set(button1_changes);
@@ -7688,22 +7528,12 @@ function create_fragment37(ctx) {
       if (dirty & /*$controls*/
       2)
         button2_changes.active = /*$controls*/
-        ctx2[1].showSettingsSidebar;
+        ctx2[1].showHelpSidebar;
       if (dirty & /*$$scope*/
-      8388608) {
+      4194304) {
         button2_changes.$$scope = { dirty, ctx: ctx2 };
       }
       button2.$set(button2_changes);
-      const button3_changes = {};
-      if (dirty & /*$controls*/
-      2)
-        button3_changes.active = /*$controls*/
-        ctx2[1].showHelpSidebar;
-      if (dirty & /*$$scope*/
-      8388608) {
-        button3_changes.$$scope = { dirty, ctx: ctx2 };
-      }
-      button3.$set(button3_changes);
       if (!current || dirty & /*$showControls*/
       1) {
         attr(
@@ -7713,17 +7543,27 @@ function create_fragment37(ctx) {
           ctx2[0]
         );
       }
-      const button4_changes = {};
+      const button3_changes = {};
       if (dirty & /*$controls*/
       2)
-        button4_changes.active = /*$controls*/
+        button3_changes.active = /*$controls*/
         ctx2[1].showHistorySidebar;
       if (dirty & /*$history*/
       4)
-        button4_changes.disabled = /*$history*/
+        button3_changes.disabled = /*$history*/
         ctx2[2].items.length === 0;
       if (dirty & /*$$scope*/
-      8388608) {
+      4194304) {
+        button3_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      button3.$set(button3_changes);
+      const button4_changes = {};
+      if (dirty & /*$history*/
+      4)
+        button4_changes.disabled = !/*$history*/
+        ctx2[2].state.canGoBack;
+      if (dirty & /*$$scope*/
+      4194304) {
         button4_changes.$$scope = { dirty, ctx: ctx2 };
       }
       button4.$set(button4_changes);
@@ -7731,22 +7571,12 @@ function create_fragment37(ctx) {
       if (dirty & /*$history*/
       4)
         button5_changes.disabled = !/*$history*/
-        ctx2[2].state.canGoBack;
+        ctx2[2].state.canGoForward;
       if (dirty & /*$$scope*/
-      8388608) {
+      4194304) {
         button5_changes.$$scope = { dirty, ctx: ctx2 };
       }
       button5.$set(button5_changes);
-      const button6_changes = {};
-      if (dirty & /*$history*/
-      4)
-        button6_changes.disabled = !/*$history*/
-        ctx2[2].state.canGoForward;
-      if (dirty & /*$$scope*/
-      8388608) {
-        button6_changes.$$scope = { dirty, ctx: ctx2 };
-      }
-      button6.$set(button6_changes);
       if (!current || dirty & /*$showControls*/
       1) {
         attr(
@@ -7756,42 +7586,42 @@ function create_fragment37(ctx) {
           ctx2[0]
         );
       }
+      const button6_changes = {};
+      if (dirty & /*$zoomLevel*/
+      8)
+        button6_changes.disabled = /*$zoomLevel*/
+        ctx2[3] === maxZoomLevel;
+      if (dirty & /*$$scope*/
+      4194304) {
+        button6_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      button6.$set(button6_changes);
       const button7_changes = {};
       if (dirty & /*$zoomLevel*/
       8)
         button7_changes.disabled = /*$zoomLevel*/
-        ctx2[3] === maxZoomLevel;
+        ctx2[3] === 1;
       if (dirty & /*$$scope*/
-      8388608) {
+      4194304) {
         button7_changes.$$scope = { dirty, ctx: ctx2 };
       }
       button7.$set(button7_changes);
       const button8_changes = {};
-      if (dirty & /*$zoomLevel*/
-      8)
-        button8_changes.disabled = /*$zoomLevel*/
-        ctx2[3] === 1;
       if (dirty & /*$$scope*/
-      8388608) {
+      4194304) {
         button8_changes.$$scope = { dirty, ctx: ctx2 };
       }
       button8.$set(button8_changes);
       const button9_changes = {};
+      if (dirty & /*$zoomLevel*/
+      8)
+        button9_changes.disabled = /*$zoomLevel*/
+        ctx2[3] === minZoomLevel;
       if (dirty & /*$$scope*/
-      8388608) {
+      4194304) {
         button9_changes.$$scope = { dirty, ctx: ctx2 };
       }
       button9.$set(button9_changes);
-      const button10_changes = {};
-      if (dirty & /*$zoomLevel*/
-      8)
-        button10_changes.disabled = /*$zoomLevel*/
-        ctx2[3] === minZoomLevel;
-      if (dirty & /*$$scope*/
-      8388608) {
-        button10_changes.$$scope = { dirty, ctx: ctx2 };
-      }
-      button10.$set(button10_changes);
       if (!current || dirty & /*$showControls*/
       1) {
         attr(
@@ -7815,7 +7645,6 @@ function create_fragment37(ctx) {
       transition_in(button7.$$.fragment, local);
       transition_in(button8.$$.fragment, local);
       transition_in(button9.$$.fragment, local);
-      transition_in(button10.$$.fragment, local);
       current = true;
     },
     o(local) {
@@ -7829,7 +7658,6 @@ function create_fragment37(ctx) {
       transition_out(button7.$$.fragment, local);
       transition_out(button8.$$.fragment, local);
       transition_out(button9.$$.fragment, local);
-      transition_out(button10.$$.fragment, local);
       current = false;
     },
     d(detaching) {
@@ -7846,11 +7674,10 @@ function create_fragment37(ctx) {
       destroy_component(button7);
       destroy_component(button8);
       destroy_component(button9);
-      destroy_component(button10);
     }
   };
 }
-function instance37($$self, $$props, $$invalidate) {
+function instance36($$self, $$props, $$invalidate) {
   let $showControls;
   let $controls;
   let $history;
@@ -7879,11 +7706,6 @@ function instance37($$self, $$props, $$invalidate) {
   const toggleSettings = () => {
     viewStore.dispatch({ type: "UI/TOGGLE_SETTINGS_SIDEBAR" });
   };
-  const openAsMarkdown = () => {
-    const file = plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
-    if (file)
-      setFileViewType(plugin, file, view.leaf, "markdown");
-  };
   const zoomIn = () => {
     view.plugin.settings.dispatch({
       type: "UI/CHANGE_ZOOM_LEVEL",
@@ -7902,13 +7724,19 @@ function instance37($$self, $$props, $$invalidate) {
       payload: { value: 1 }
     });
   };
-  const fitToScale = () => {
-    restoreZoom();
+  const fitDocumentHeightIntoView = () => {
+    invariant(view.container);
+    resetZoom(view.container);
     const columns = Array.from(view.containerEl.querySelectorAll(".column"));
     if (columns.length) {
-      const scrolls = columns.map((c) => c.scrollHeight).sort();
-      const biggest = scrolls[scrolls.length - 1];
-      const scale = window.innerHeight / biggest;
+      const groupHeights = columns.map((c) => {
+        return getCombinedBoundingClientRect(Array.from(c.querySelectorAll(".group"))).height;
+      }).sort((a, b) => a - b);
+      const height = groupHeights[groupHeights.length - 1];
+      const width = getCombinedBoundingClientRect(columns).width;
+      const heightScale = view.container.getBoundingClientRect().height / (height + 100);
+      const widthScale = view.container.getBoundingClientRect().width / (width + 100);
+      const scale = Math.min(heightScale, widthScale);
       view.plugin.settings.dispatch({
         type: "UI/CHANGE_ZOOM_LEVEL",
         payload: { value: scale }
@@ -7938,11 +7766,10 @@ function instance37($$self, $$props, $$invalidate) {
     handlePreviousClick,
     toggleHelp,
     toggleSettings,
-    openAsMarkdown,
     zoomIn,
     zoomOut,
     restoreZoom,
-    fitToScale,
+    fitDocumentHeightIntoView,
     zoomLevel,
     controls,
     showControls,
@@ -7953,7 +7780,7 @@ function instance37($$self, $$props, $$invalidate) {
 var Controls_container = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance37, create_fragment37, safe_not_equal, {}, add_css);
+    init(this, options, instance36, create_fragment36, safe_not_equal, {}, add_css);
   }
 };
 var controls_container_default = Controls_container;
@@ -8031,7 +7858,7 @@ var draggable = (node, data) => {
 function add_css2(target) {
   append_styles(target, "svelte-id8vtx", ".draggable.svelte-id8vtx.svelte-id8vtx{width:100%;background-color:transparent;display:flex;position:relative}.drag-handle.svelte-id8vtx.svelte-id8vtx{height:100%;width:6px;background-color:transparent;cursor:grab;position:absolute;left:0;z-index:1}.draggable.svelte-id8vtx:hover .drag-handle.svelte-id8vtx{background-size:2px 4px;background-image:linear-gradient(\n            0deg,\n            hsla(0, 0%, 44.7%, 0.25) 20%,\n            transparent 40%\n        )}.content.svelte-id8vtx.svelte-id8vtx{width:100%\n    }");
 }
-function create_fragment38(ctx) {
+function create_fragment37(ctx) {
   let div2;
   let div0;
   let t;
@@ -8160,7 +7987,7 @@ function create_fragment38(ctx) {
     }
   };
 }
-function instance38($$self, $$props, $$invalidate) {
+function instance37($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { nodeId } = $$props;
   const view = getView();
@@ -8183,7 +8010,7 @@ function instance38($$self, $$props, $$invalidate) {
 var Draggable = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance38, create_fragment38, safe_not_equal, { nodeId: 0 }, add_css2);
+    init(this, options, instance37, create_fragment37, safe_not_equal, { nodeId: 0 }, add_css2);
   }
 };
 var draggable_default = Draggable;
@@ -8360,7 +8187,7 @@ function create_if_block_2(ctx) {
     }
   };
 }
-function create_fragment39(ctx) {
+function create_fragment38(ctx) {
   let if_block_anchor;
   function select_block_type(ctx2, dirty) {
     if (!/*editing*/
@@ -8412,7 +8239,7 @@ function create_fragment39(ctx) {
     }
   };
 }
-function instance39($$self, $$props, $$invalidate) {
+function instance38($$self, $$props, $$invalidate) {
   let { editing } = $$props;
   let { hasChildren } = $$props;
   let { active } = $$props;
@@ -8435,8 +8262,8 @@ var Bridges = class extends SvelteComponent {
     init(
       this,
       options,
-      instance39,
-      create_fragment39,
+      instance38,
+      create_fragment38,
       safe_not_equal,
       {
         editing: 0,
@@ -8460,9 +8287,9 @@ var modKey = isMacLike ? "Cmd" : "Ctrl";
 
 // src/view/components/container/column/components/group/components/card/components/dnd/droppable.svelte
 function add_css4(target) {
-  append_styles(target, "svelte-gg7hht", ":root{--node-width:400px;--min-node-height:100px}.lineage-card.svelte-gg7hht{width:var(--node-width);height:fit-content;display:flex;position:relative;font-size:16px;--scrollbar-thumb-bg:var(--color-base-30);--scrollbar-active-thumb-bg:var(--color-base-40)}.lineage-card.svelte-gg7hht::-webkit-scrollbar{display:initial}.node-border--active.svelte-gg7hht{border-left:5px var(--lineage-accent) solid}.node-border--editing.svelte-gg7hht{border-left:5px var(--color-base-70) solid}.node-border--discard.svelte-gg7hht{border-left:5px var(--color-red) solid}");
+  append_styles(target, "svelte-7s9glw", ":root{--node-width:400px;--min-node-height:100px}.lineage-card.svelte-7s9glw{width:var(--node-width);height:fit-content;display:flex;position:relative;font-size:16px;--scrollbar-thumb-bg:var(--color-base-30);--scrollbar-active-thumb-bg:var(--color-base-40)}.lineage-card.svelte-7s9glw::-webkit-scrollbar{display:initial}.node-border--active.svelte-7s9glw{border-left:5px var(--lineage-accent) solid}.node-border--editing.svelte-7s9glw{border-left:5px var(--color-base-70) solid}.node-border--discard.svelte-7s9glw{border-left:5px var(--color-red) solid}.node-border--selected.svelte-7s9glw{border-left:5px var(--lineage-color-selection) solid}");
 }
-function create_fragment40(ctx) {
+function create_fragment39(ctx) {
   let div;
   let t;
   let bridges;
@@ -8473,13 +8300,13 @@ function create_fragment40(ctx) {
   let dispose;
   const default_slot_template = (
     /*#slots*/
-    ctx[11].default
+    ctx[12].default
   );
   const default_slot = create_slot(
     default_slot_template,
     ctx,
     /*$$scope*/
-    ctx[10],
+    ctx[11],
     null
   );
   bridges = new bridges_default({
@@ -8514,7 +8341,7 @@ function create_fragment40(ctx) {
         /*active*/
         ctx[1] ? (
           /*activeStatusClasses*/
-          ctx[9][
+          ctx[10][
             /*active*/
             ctx[1]
           ]
@@ -8523,11 +8350,14 @@ function create_fragment40(ctx) {
         ctx[5] ? "node-border--discard" : (
           /*editing*/
           ctx[4] ? "node-border--editing" : (
-            /*active*/
-            ctx[1] === "node" /* node */ ? "node-border--active" : void 0
+            /*selected*/
+            ctx[6] ? "node-border--selected" : (
+              /*active*/
+              ctx[1] === "node" /* node */ ? "node-border--active" : void 0
+            )
           )
         )
-      )) + " svelte-gg7hht");
+      )) + " svelte-7s9glw");
       attr(
         div,
         "id",
@@ -8549,22 +8379,22 @@ function create_fragment40(ctx) {
             div,
             "click",
             /*setActive*/
-            ctx[6]
+            ctx[7]
           ),
           listen(
             div,
             "dblclick",
             /*dblclick_handler*/
-            ctx[12]
+            ctx[13]
           ),
           action_destroyer(droppable_action = droppable.call(null, div, {
             viewStore: (
               /*viewStore*/
-              ctx[8]
+              ctx[9]
             ),
             documentStore: (
               /*documentStore*/
-              ctx[7]
+              ctx[8]
             )
           }))
         ];
@@ -8574,20 +8404,20 @@ function create_fragment40(ctx) {
     p(ctx2, [dirty]) {
       if (default_slot) {
         if (default_slot.p && (!current || dirty & /*$$scope*/
-        1024)) {
+        2048)) {
           update_slot_base(
             default_slot,
             default_slot_template,
             ctx2,
             /*$$scope*/
-            ctx2[10],
+            ctx2[11],
             !current ? get_all_dirty_from_scope(
               /*$$scope*/
-              ctx2[10]
+              ctx2[11]
             ) : get_slot_changes(
               default_slot_template,
               /*$$scope*/
-              ctx2[10],
+              ctx2[11],
               dirty,
               null
             ),
@@ -8613,13 +8443,13 @@ function create_fragment40(ctx) {
         bridges_changes.parentId = /*parentId*/
         ctx2[3];
       bridges.$set(bridges_changes);
-      if (!current || dirty & /*active, disableEditConfirmation, editing*/
-      50 && div_class_value !== (div_class_value = null_to_empty((0, import_classnames.default)(
+      if (!current || dirty & /*active, disableEditConfirmation, editing, selected*/
+      114 && div_class_value !== (div_class_value = null_to_empty((0, import_classnames.default)(
         "lineage-card",
         /*active*/
         ctx2[1] ? (
           /*activeStatusClasses*/
-          ctx2[9][
+          ctx2[10][
             /*active*/
             ctx2[1]
           ]
@@ -8628,11 +8458,14 @@ function create_fragment40(ctx) {
         ctx2[5] ? "node-border--discard" : (
           /*editing*/
           ctx2[4] ? "node-border--editing" : (
-            /*active*/
-            ctx2[1] === "node" /* node */ ? "node-border--active" : void 0
+            /*selected*/
+            ctx2[6] ? "node-border--selected" : (
+              /*active*/
+              ctx2[1] === "node" /* node */ ? "node-border--active" : void 0
+            )
           )
         )
-      )) + " svelte-gg7hht")) {
+      )) + " svelte-7s9glw")) {
         attr(div, "class", div_class_value);
       }
       if (!current || dirty & /*nodeId*/
@@ -8669,7 +8502,7 @@ function create_fragment40(ctx) {
     }
   };
 }
-function instance40($$self, $$props, $$invalidate) {
+function instance39($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { nodeId } = $$props;
   let { active } = $$props;
@@ -8677,13 +8510,15 @@ function instance40($$self, $$props, $$invalidate) {
   let { parentId } = $$props;
   let { editing } = $$props;
   let { disableEditConfirmation } = $$props;
+  let { selected } = $$props;
   const setActive = (e) => {
     if (!editing)
       viewStore.dispatch({
         type: "DOCUMENT/SET_ACTIVE_NODE",
         payload: { id: nodeId },
         context: {
-          modKey: isMacLike ? e.metaKey : e.ctrlKey
+          modKey: isMacLike ? e.metaKey : e.ctrlKey,
+          source: "mouse"
         }
       });
   };
@@ -8716,8 +8551,10 @@ function instance40($$self, $$props, $$invalidate) {
       $$invalidate(4, editing = $$props2.editing);
     if ("disableEditConfirmation" in $$props2)
       $$invalidate(5, disableEditConfirmation = $$props2.disableEditConfirmation);
+    if ("selected" in $$props2)
+      $$invalidate(6, selected = $$props2.selected);
     if ("$$scope" in $$props2)
-      $$invalidate(10, $$scope = $$props2.$$scope);
+      $$invalidate(11, $$scope = $$props2.$$scope);
   };
   return [
     nodeId,
@@ -8726,6 +8563,7 @@ function instance40($$self, $$props, $$invalidate) {
     parentId,
     editing,
     disableEditConfirmation,
+    selected,
     setActive,
     documentStore,
     viewStore,
@@ -8741,8 +8579,8 @@ var Droppable = class extends SvelteComponent {
     init(
       this,
       options,
-      instance40,
-      create_fragment40,
+      instance39,
+      create_fragment39,
       safe_not_equal,
       {
         nodeId: 0,
@@ -8750,7 +8588,8 @@ var Droppable = class extends SvelteComponent {
         hasChildren: 2,
         parentId: 3,
         editing: 4,
-        disableEditConfirmation: 5
+        disableEditConfirmation: 5,
+        selected: 6
       },
       add_css4
     );
@@ -8812,9 +8651,9 @@ var expandableTextareaAction = (el) => {
 
 // src/view/components/container/column/components/group/components/card/components/content/inline-editor.svelte
 function add_css5(target) {
-  append_styles(target, "svelte-1fo3f29", ".editor-container.svelte-1fo3f29{width:100%;min-height:var(--min-node-height);max-height:65vh;height:fit-content;overflow:hidden;display:flex}");
+  append_styles(target, "svelte-1y50rwn", ".editor-container.svelte-1y50rwn{width:100%;min-height:var(--min-node-height);height:fit-content;overflow:hidden;display:flex}");
 }
-function create_fragment41(ctx) {
+function create_fragment40(ctx) {
   let div;
   let expandableTextareaAction_action;
   let loadInlineEditor_action;
@@ -8824,7 +8663,7 @@ function create_fragment41(ctx) {
     c() {
       div = element("div");
       div.innerHTML = ``;
-      attr(div, "class", "editor-container svelte-1fo3f29");
+      attr(div, "class", "editor-container svelte-1y50rwn");
     },
     m(target, anchor) {
       insert(target, div, anchor);
@@ -8870,7 +8709,7 @@ function create_fragment41(ctx) {
     }
   };
 }
-function instance41($$self, $$props, $$invalidate) {
+function instance40($$self, $$props, $$invalidate) {
   let { nodeId } = $$props;
   const view = getView();
   $$self.$$set = ($$props2) => {
@@ -8882,7 +8721,7 @@ function instance41($$self, $$props, $$invalidate) {
 var Inline_editor = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance41, create_fragment41, safe_not_equal, { nodeId: 0 }, add_css5);
+    init(this, options, instance40, create_fragment40, safe_not_equal, { nodeId: 0 }, add_css5);
   }
 };
 var inline_editor_default = Inline_editor;
@@ -8894,9 +8733,9 @@ var import_obsidian3 = require("obsidian");
 var contentStore = (view, nodeId) => {
   let nodeContent;
   let documentContent;
-  return derived(view.documentStore, (state) => {
-    if (!nodeContent || documentContent !== state.document.content || nodeContent !== documentContent[nodeId]) {
-      documentContent = state.document.content;
+  return derived(view.documentStore, (state2) => {
+    if (!nodeContent || documentContent !== state2.document.content || nodeContent !== documentContent[nodeId]) {
+      documentContent = state2.document.content;
       nodeContent = documentContent[nodeId];
       if (!nodeContent)
         return "";
@@ -8905,8 +8744,8 @@ var contentStore = (view, nodeId) => {
   });
 };
 var documentContentStore = (view) => {
-  return derived(view.documentStore, (state) => {
-    return state.document.content;
+  return derived(view.documentStore, (state2) => {
+    return state2.document.content;
   });
 };
 
@@ -8918,8 +8757,14 @@ var markdownPreviewAction = (element2, nodeId) => {
   const render = (content) => {
     if (view && element2) {
       element2.empty();
-      if (content.length > 0 && !/^> /.test(content)) {
-        content = content.replace(/^$/gm, "&nbsp;");
+      if (content.length > 0) {
+        const hasCallout = /^> /gm.test(content);
+        if (!hasCallout)
+          content = content.replace(/^$/gm, "&nbsp;");
+        content = content.replace(
+          /\s+(\^[a-zA-Z0-9]{4,})$/gm,
+          '<sup class="cm-blockid" data-block-id="$1">$1</sup>'
+        );
       }
       import_obsidian3.MarkdownRenderer.render(
         plugin.app,
@@ -8942,6 +8787,14 @@ var markdownPreviewAction = (element2, nodeId) => {
 };
 
 // src/view/components/container/column/components/group/components/card/components/content/event-handlers/handle-links.ts
+var selectCard = (view, id2) => {
+  view.viewStore.dispatch({
+    type: "DOCUMENT/SET_ACTIVE_NODE",
+    payload: {
+      id: id2
+    }
+  });
+};
 var handleFile = (view, link) => {
   const path = view.documentStore.getValue().file.path;
   if (link && path) {
@@ -8961,13 +8814,25 @@ var handleHeading = (view, link) => {
       if (heading) {
         const card = heading.closest(".lineage-card");
         if (card && card.id) {
-          view.viewStore.dispatch({
-            type: "DOCUMENT/SET_ACTIVE_NODE",
-            payload: {
-              id: card.id
-            }
-          });
+          selectCard(view, card.id);
           break;
+        }
+      }
+    }
+  }
+};
+var handleBlockLink = (view, link) => {
+  const match = /#\^([a-zA-Z0-9]{4,})$/.exec(link);
+  if (match) {
+    const id2 = match[1];
+    if (id2) {
+      const element2 = view.containerEl.querySelector(
+        `[data-block-id="^${id2}"`
+      );
+      if (element2) {
+        const card = element2.closest(".lineage-card");
+        if (card && card.id) {
+          selectCard(view, card.id);
         }
       }
     }
@@ -8981,7 +8846,10 @@ var handleClick = (view) => (e) => {
   const link = e.target.dataset.href;
   if (!link)
     return;
-  if (link.startsWith("#")) {
+  if (link.contains("#^")) {
+    e.stopPropagation();
+    handleBlockLink(view, link);
+  } else if (link.startsWith("#")) {
     e.stopPropagation();
     handleHeading(view, link);
   } else {
@@ -8993,7 +8861,7 @@ var handleClick = (view) => (e) => {
 function add_css6(target) {
   append_styles(target, "svelte-1acdsm2", ".preview-container.svelte-1acdsm2{width:100%;min-height:var(--min-node-height);font-size:var(--font-text-size);padding:6px 6px 6px 12px;color-scheme:light}");
 }
-function create_fragment42(ctx) {
+function create_fragment41(ctx) {
   let div;
   let div_class_value;
   let markdownPreviewAction_action;
@@ -9044,7 +8912,7 @@ function create_fragment42(ctx) {
     }
   };
 }
-function instance42($$self, $$props, $$invalidate) {
+function instance41($$self, $$props, $$invalidate) {
   let { nodeId } = $$props;
   const view = getView();
   const onClick = handleClick(view);
@@ -9057,7 +8925,7 @@ function instance42($$self, $$props, $$invalidate) {
 var Content = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance42, create_fragment42, safe_not_equal, { nodeId: 0 }, add_css6);
+    init(this, options, instance41, create_fragment41, safe_not_equal, { nodeId: 0 }, add_css6);
   }
 };
 var content_default = Content;
@@ -9067,7 +8935,7 @@ var import_classnames2 = __toESM(require_classnames());
 function add_css7(target) {
   append_styles(target, "svelte-fdem69", ":root{--floating-button-width:30px;--floating-button-height:30px;--floating-button-bg:#dbdbdb;--position-tb:-10px;--position-lr:-4px}button.svelte-fdem69{color:var(--color-acive-node) !important;width:var(--floating-button-width);height:var(--floating-button-height);position:absolute;opacity:0;box-shadow:none;border:none;background-color:transparent;transition:opacity 200ms;padding:8px !important;cursor:pointer}.is-disabled.svelte-fdem69{cursor:not-allowed}button.svelte-fdem69:not(.is-disabled):hover{opacity:0.8}.is-mobile{& button {\n            opacity: 0.8;\n        }}.position-top.svelte-fdem69{top:var(--position-tb);left:calc(50% - calc(var(--floating-button-width) / 2))}.position-bottom.svelte-fdem69{bottom:var(--position-tb);left:calc(50% - calc(var(--floating-button-width) / 2))}.position-right.svelte-fdem69{top:calc(50% - calc(var(--floating-button-height) / 2));right:var(--position-lr)}.position-bottom-right.svelte-fdem69{top:var(--position-lr);right:var(--position-lr)}.position-top-right.svelte-fdem69{top:var(--position-lr);right:16px}");
 }
-function create_fragment43(ctx) {
+function create_fragment42(ctx) {
   let button;
   let button_class_value;
   let current;
@@ -9190,7 +9058,7 @@ function create_fragment43(ctx) {
     }
   };
 }
-function instance43($$self, $$props, $$invalidate) {
+function instance42($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { classes = "" } = $$props;
   let { position } = $$props;
@@ -9220,13 +9088,13 @@ function instance43($$self, $$props, $$invalidate) {
 var Floating_button = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance43, create_fragment43, safe_not_equal, { classes: 0, position: 1, label: 2 }, add_css7);
+    init(this, options, instance42, create_fragment42, safe_not_equal, { classes: 0, position: 1, label: 2 }, add_css7);
   }
 };
 var floating_button_default = Floating_button;
 
 // src/view/components/container/column/components/group/components/card/components/card-buttons/delete-node-button.svelte
-function create_default_slot36(ctx) {
+function create_default_slot35(ctx) {
   let trashicon;
   let current;
   trashicon = new trash_default({ props: { class: "svg-con" } });
@@ -9254,14 +9122,14 @@ function create_default_slot36(ctx) {
     }
   };
 }
-function create_fragment44(ctx) {
+function create_fragment43(ctx) {
   let floatingbutton;
   let current;
   floatingbutton = new floating_button_default({
     props: {
       label: "Delete",
       position: "up-right",
-      $$slots: { default: [create_default_slot36] },
+      $$slots: { default: [create_default_slot35] },
       $$scope: { ctx }
     }
   });
@@ -9301,7 +9169,7 @@ function create_fragment44(ctx) {
     }
   };
 }
-function instance44($$self, $$props, $$invalidate) {
+function instance43($$self, $$props, $$invalidate) {
   let { nodeId } = $$props;
   const view = getView();
   const documentStore = view.documentStore;
@@ -9321,7 +9189,7 @@ function instance44($$self, $$props, $$invalidate) {
 var Delete_node_button = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance44, create_fragment44, safe_not_equal, { nodeId: 1 });
+    init(this, options, instance43, create_fragment43, safe_not_equal, { nodeId: 1 });
   }
 };
 var delete_node_button_default = Delete_node_button;
@@ -9347,21 +9215,6 @@ var cancelChanges = (view) => {
     });
   }
 };
-
-// node_modules/tiny-invariant/dist/esm/tiny-invariant.js
-var isProduction = false;
-var prefix = "Invariant failed";
-function invariant(condition, message) {
-  if (condition) {
-    return;
-  }
-  if (isProduction) {
-    throw new Error(prefix);
-  }
-  var provided = typeof message === "function" ? message() : message;
-  var value = provided ? "".concat(prefix, ": ").concat(provided) : prefix;
-  throw new Error(value);
-}
 
 // src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/save-node-content.ts
 var saveNodeContent = (view) => {
@@ -9438,7 +9291,7 @@ function create_if_block2(ctx) {
     }
   };
 }
-function create_default_slot37(ctx) {
+function create_default_slot36(ctx) {
   let current_block_type_index;
   let if_block;
   let if_block_anchor;
@@ -9502,7 +9355,7 @@ function create_default_slot37(ctx) {
     }
   };
 }
-function create_fragment45(ctx) {
+function create_fragment44(ctx) {
   let floatingbutton;
   let current;
   floatingbutton = new floating_button_default({
@@ -9512,7 +9365,7 @@ function create_fragment45(ctx) {
         ctx[0] ? "Save" : "Edit"
       ),
       position: "down-right",
-      $$slots: { default: [create_default_slot37] },
+      $$slots: { default: [create_default_slot36] },
       $$scope: { ctx }
     }
   });
@@ -9556,7 +9409,7 @@ function create_fragment45(ctx) {
     }
   };
 }
-function instance45($$self, $$props, $$invalidate) {
+function instance44($$self, $$props, $$invalidate) {
   let { editing } = $$props;
   let { nodeId } = $$props;
   const view = getView();
@@ -9583,7 +9436,7 @@ function instance45($$self, $$props, $$invalidate) {
 var Edit_node_button = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance45, create_fragment45, safe_not_equal, { editing: 0, nodeId: 2 });
+    init(this, options, instance44, create_fragment44, safe_not_equal, { editing: 0, nodeId: 2 });
   }
 };
 var edit_node_button_default = Edit_node_button;
@@ -9620,13 +9473,13 @@ var saveNodeAndInsertNode = (view, direction, content = "") => {
   });
   if (content) {
     if (direction === "down" || direction === "right") {
-      view.inlineEditor.overrideCursor(0, 0);
+      view.inlineEditor.overrideCursor({ line: 0, ch: 0 });
     }
   }
 };
 
 // src/view/components/container/column/components/group/components/card/components/card-buttons/create-card-button.svelte
-function create_default_slot38(ctx) {
+function create_default_slot37(ctx) {
   let switch_instance;
   let switch_instance_anchor;
   let current;
@@ -9702,7 +9555,7 @@ function create_default_slot38(ctx) {
     }
   };
 }
-function create_fragment46(ctx) {
+function create_fragment45(ctx) {
   let floatingbutton;
   let current;
   floatingbutton = new floating_button_default({
@@ -9718,7 +9571,7 @@ function create_fragment46(ctx) {
         /*position*/
         ctx[0]
       ),
-      $$slots: { default: [create_default_slot38] },
+      $$slots: { default: [create_default_slot37] },
       $$scope: { ctx }
     }
   });
@@ -9769,7 +9622,7 @@ function create_fragment46(ctx) {
     }
   };
 }
-function instance46($$self, $$props, $$invalidate) {
+function instance45($$self, $$props, $$invalidate) {
   let { position } = $$props;
   const view = getView();
   const createCard = (e) => {
@@ -9795,7 +9648,7 @@ function instance46($$self, $$props, $$invalidate) {
 var Create_card_button = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance46, create_fragment46, safe_not_equal, { position: 0 });
+    init(this, options, instance45, create_fragment45, safe_not_equal, { position: 0 });
   }
 };
 var create_card_button_default = Create_card_button;
@@ -9829,6 +9682,14 @@ function __awaiter(thisArg, _arguments, P, generator) {
   });
 }
 
+// src/obsidian/events/workspace/helpers/get-document-format.ts
+var getDocumentFormat = (view) => {
+  invariant(view.file);
+  const format2 = view.plugin.settings.getValue().documents[view.file.path]?.documentFormat;
+  invariant(format2);
+  return format2;
+};
+
 // src/lib/data-conversion/helpers/delimiter.ts
 var level = (parentNumber, index) => `${parentNumber ? parentNumber + "." : ""}${index}`;
 var delimiter = (parentNumber, index) => `
@@ -9845,11 +9706,155 @@ var parseDelimiter = (line) => {
   }
 };
 
+// src/view/components/container/column/components/group/components/card/components/card-buttons/helpers/find-section-position.ts
+var findSectionPosition = (view, nodeId) => {
+  const lines = view.data.split("\n");
+  const treeIndex = get_store_value(view.documentStore).sections.id_section[nodeId];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.startsWith("<!--")) {
+      const section = parseDelimiter(line);
+      if (section && section[2] === treeIndex) {
+        return i;
+      }
+    }
+  }
+};
+
+// src/helpers/clone.ts
+var clone = (object) => JSON.parse(JSON.stringify(object));
+
+// node_modules/nanoid/url-alphabet/index.js
+var urlAlphabet = "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict";
+
+// node_modules/nanoid/index.browser.js
+var nanoid = (size = 21) => {
+  let id2 = "";
+  let bytes = crypto.getRandomValues(new Uint8Array(size));
+  while (size--) {
+    id2 += urlAlphabet[bytes[size] & 63];
+  }
+  return id2;
+};
+
+// src/lib/data-conversion/json-to-outline.ts
+var formatContent = (content, indent) => {
+  const lines = content.split("\n");
+  return lines.length === 1 ? lines[0] : lines.map((line, i) => i === 0 ? line : `${indent}  ${line}`).join("\n");
+};
+var nodeToOutline = (node, depth = 0) => {
+  const indent = "	".repeat(depth);
+  let outline = `${indent}- ${formatContent(node.content, indent)}
+`;
+  for (const child of node.children) {
+    outline += nodeToOutline(child, depth + 1);
+  }
+  return outline;
+};
+var jsonToOutline = (nodes, depth = 0) => {
+  const mapped = nodes.map((node) => nodeToOutline(node, depth));
+  const last = mapped.pop() || "";
+  mapped.push(last.replace(/\n$/, ""));
+  return mapped.join("");
+};
+
+// src/lib/data-conversion/columns-to-json.ts
+var createTreeNode = (content = "") => {
+  return {
+    content: content.trim(),
+    children: []
+  };
+};
+var columnsToJson = (columns, content) => {
+  const nodeMap = {};
+  for (const column of columns) {
+    for (const group of column.groups) {
+      for (const node of group.nodes) {
+        const treeNode = createTreeNode(content[node]?.content);
+        let parentNode = nodeMap[group.parentId];
+        if (!parentNode) {
+          parentNode = createTreeNode();
+          nodeMap[group.parentId] = parentNode;
+        }
+        parentNode.children.push(treeNode);
+        nodeMap[node] = treeNode;
+      }
+    }
+  }
+  const roots = [];
+  if (columns[0])
+    for (const group of columns[0].groups) {
+      for (const node of group.nodes) {
+        const treeNode = nodeMap[node];
+        if (treeNode) {
+          roots.push(treeNode);
+        } else {
+          throw new Error(`could not find node ${node}`);
+        }
+      }
+    }
+  return roots;
+};
+
+// src/view/helpers/extract-frontmatter.ts
+var extractFrontmatter = (markdown) => {
+  const frontmatterRegex = /^---\n([\s\S]+?)\n---\n/;
+  const match = markdown.match(frontmatterRegex);
+  if (match) {
+    const frontmatter = match[0];
+    const data = markdown.slice(frontmatter.length);
+    return { data, frontmatter: frontmatter.trim() + "\n" };
+  } else {
+    return { data: markdown, frontmatter: "" };
+  }
+};
+
+// src/view/components/container/column/components/group/components/card/components/card-buttons/helpers/find-outline-position.ts
+var findOutlinePosition = (view, nodeId) => {
+  const documentStore = view.documentStore;
+  const document2 = clone(documentStore.getValue().document);
+  const id2 = nanoid(12);
+  document2.content[nodeId].content = id2;
+  const outline = jsonToOutline(
+    columnsToJson(document2.columns, document2.content)
+  );
+  const { frontmatter } = extractFrontmatter(view.data);
+  const frontmatterOffset = frontmatter.length ? frontmatter.split("\n").length - 1 : 0;
+  const lines = outline.split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.contains(id2)) {
+      return i + frontmatterOffset;
+    }
+  }
+};
+
+// src/obsidian/events/workspace/actions/set-view-type.ts
+var setViewType = (plugin, path, type) => {
+  plugin.settings.dispatch({
+    type: "SET_VIEW_TYPE",
+    payload: {
+      path,
+      type
+    }
+  });
+};
+
+// src/view/components/container/column/components/group/components/card/components/card-buttons/helpers/openFileAndJumpToLine.ts
+var openFileAndJumpToLine = async (plugin, file, line, ch) => {
+  const leaf = plugin.app.workspace.getLeaf("split");
+  setViewType(plugin, file.path, "markdown");
+  await leaf.openFile(file);
+  const markdownView = leaf.view;
+  markdownView.editor.setCursor({ line, ch });
+  setViewType(plugin, file.path, "lineage");
+};
+
 // src/view/components/container/column/components/group/components/card/components/card-buttons/tree-index-button.svelte
 function add_css8(target) {
   append_styles(target, "svelte-zzekbz", ".tree-index.svelte-zzekbz{position:absolute;bottom:3px;right:8px;opacity:0.8;font-size:12px;cursor:pointer}.is-active.svelte-zzekbz{opacity:0.3}.is-active-child.svelte-zzekbz{opacity:0.3}.is-active-parent.svelte-zzekbz{opacity:0.6}");
 }
-function create_fragment47(ctx) {
+function create_fragment46(ctx) {
   let div;
   let t;
   let div_class_value;
@@ -9862,7 +9867,7 @@ function create_fragment47(ctx) {
         /*section*/
         ctx[1]
       );
-      attr(div, "aria-label", "Jump to section");
+      attr(div, "aria-label", "Reveal in editor");
       attr(div, "class", div_class_value = null_to_empty("tree-index " + /*activeStatus*/
       (ctx[0] ? (
         /*classes*/
@@ -9916,43 +9921,22 @@ function create_fragment47(ctx) {
     }
   };
 }
-function instance47($$self, $$props, $$invalidate) {
-  const plugin = getPlugin();
+function instance46($$self, $$props, $$invalidate) {
   const view = getView();
-  const documentStore = view.documentStore;
   let { nodeId } = $$props;
   let { activeStatus } = $$props;
   let { section } = $$props;
-  const openFileAndJumpToLine = (file, line, ch) => __awaiter(void 0, void 0, void 0, function* () {
-    const leaf = plugin.app.workspace.getLeaf("split");
-    plugin.settings.dispatch({
-      type: "SET_DOCUMENT_TYPE_TO_MARKDOWN",
-      payload: { path: file.path }
-    });
-    yield leaf.openFile(file);
-    const markdownView = leaf.view;
-    markdownView.editor.setCursor({ line, ch });
-    plugin.settings.dispatch({
-      type: "SET_DOCUMENT_TYPE_TO_TREE",
-      payload: { path: file.path }
-    });
-  });
   const openFile2 = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!view.file)
       return;
-    const treeIndex = get_store_value(documentStore).sections.id_section[nodeId];
+    const format2 = getDocumentFormat(view);
+    const i = format2 === "sections" ? findSectionPosition(view, nodeId) : findOutlinePosition(view, nodeId);
+    if (typeof i === "undefined")
+      return;
+    const targetLine = i + (format2 === "sections" ? 1 : 0);
     const lines = view.data.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      if (line.startsWith("<!--")) {
-        const section2 = parseDelimiter(line);
-        if (section2 && section2[2] === treeIndex) {
-          const nextLineIndex = i + 1;
-          const nextLine = lines[nextLineIndex] || "";
-          yield openFileAndJumpToLine(view.file, nextLineIndex, nextLine.length);
-        }
-      }
-    }
+    const nextLine = lines[targetLine] || "";
+    yield openFileAndJumpToLine(view.plugin, view.file, targetLine, nextLine.length);
   });
   const classes = {
     ["node" /* node */]: "is-active",
@@ -9973,7 +9957,7 @@ function instance47($$self, $$props, $$invalidate) {
 var Tree_index_button = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance47, create_fragment47, safe_not_equal, { nodeId: 4, activeStatus: 0, section: 1 }, add_css8);
+    init(this, options, instance46, create_fragment46, safe_not_equal, { nodeId: 4, activeStatus: 0, section: 1 }, add_css8);
   }
 };
 var tree_index_button_default = Tree_index_button;
@@ -10139,7 +10123,7 @@ function create_if_block_12(ctx) {
     }
   };
 }
-function create_fragment48(ctx) {
+function create_fragment47(ctx) {
   let t;
   let treeindex;
   let current;
@@ -10238,7 +10222,7 @@ function create_fragment48(ctx) {
     }
   };
 }
-function instance48($$self, $$props, $$invalidate) {
+function instance47($$self, $$props, $$invalidate) {
   let { editing } = $$props;
   let { active } = $$props;
   let { nodeId } = $$props;
@@ -10258,7 +10242,7 @@ function instance48($$self, $$props, $$invalidate) {
 var Card_buttons = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance48, create_fragment48, safe_not_equal, {
+    init(this, options, instance47, create_fragment47, safe_not_equal, {
       editing: 0,
       active: 1,
       nodeId: 2,
@@ -10297,7 +10281,7 @@ function create_else_block2(ctx) {
         draggable_changes.nodeId = /*node*/
         ctx2[0];
       if (dirty & /*$$scope, node*/
-      129) {
+      257) {
         draggable_changes.$$scope = { dirty, ctx: ctx2 };
       }
       draggable2.$set(draggable_changes);
@@ -10393,7 +10377,7 @@ function create_default_slot_12(ctx) {
     }
   };
 }
-function create_default_slot39(ctx) {
+function create_default_slot38(ctx) {
   let current_block_type_index;
   let if_block;
   let t;
@@ -10505,7 +10489,7 @@ function create_default_slot39(ctx) {
     }
   };
 }
-function create_fragment49(ctx) {
+function create_fragment48(ctx) {
   let droppable2;
   let current;
   droppable2 = new droppable_default({
@@ -10534,7 +10518,11 @@ function create_fragment49(ctx) {
         /*parentId*/
         ctx[4]
       ),
-      $$slots: { default: [create_default_slot39] },
+      selected: (
+        /*selected*/
+        ctx[7]
+      ),
+      $$slots: { default: [create_default_slot38] },
       $$scope: { ctx }
     }
   });
@@ -10572,8 +10560,12 @@ function create_fragment49(ctx) {
       16)
         droppable_changes.parentId = /*parentId*/
         ctx2[4];
+      if (dirty & /*selected*/
+      128)
+        droppable_changes.selected = /*selected*/
+        ctx2[7];
       if (dirty & /*$$scope, active, editing, node, section*/
-      199) {
+      327) {
         droppable_changes.$$scope = { dirty, ctx: ctx2 };
       }
       droppable2.$set(droppable_changes);
@@ -10593,7 +10585,7 @@ function create_fragment49(ctx) {
     }
   };
 }
-function instance49($$self, $$props, $$invalidate) {
+function instance48($$self, $$props, $$invalidate) {
   let { node } = $$props;
   let { editing } = $$props;
   let { active } = $$props;
@@ -10601,6 +10593,7 @@ function instance49($$self, $$props, $$invalidate) {
   let { parentId } = $$props;
   let { disableEditConfirmation } = $$props;
   let { section } = $$props;
+  let { selected } = $$props;
   $$self.$$set = ($$props2) => {
     if ("node" in $$props2)
       $$invalidate(0, node = $$props2.node);
@@ -10616,20 +10609,32 @@ function instance49($$self, $$props, $$invalidate) {
       $$invalidate(5, disableEditConfirmation = $$props2.disableEditConfirmation);
     if ("section" in $$props2)
       $$invalidate(6, section = $$props2.section);
+    if ("selected" in $$props2)
+      $$invalidate(7, selected = $$props2.selected);
   };
-  return [node, editing, active, hasChildren, parentId, disableEditConfirmation, section];
+  return [
+    node,
+    editing,
+    active,
+    hasChildren,
+    parentId,
+    disableEditConfirmation,
+    section,
+    selected
+  ];
 }
 var Card = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance49, create_fragment49, safe_not_equal, {
+    init(this, options, instance48, create_fragment48, safe_not_equal, {
       node: 0,
       editing: 1,
       active: 2,
       hasChildren: 3,
       parentId: 4,
       disableEditConfirmation: 5,
-      section: 6
+      section: 6,
+      selected: 7
     });
   }
 };
@@ -10645,9 +10650,9 @@ var findColumn = (columns, columnId) => {
 var groupsStore = (view, columnId) => {
   let column;
   let columns;
-  return derived(view.documentStore, (state) => {
-    if (!column || columns !== state.document.columns) {
-      columns = state.document.columns;
+  return derived(view.documentStore, (state2) => {
+    if (!column || columns !== state2.document.columns) {
+      columns = state2.document.columns;
       column = findColumn(columns, columnId);
       if (!column)
         return [];
@@ -10666,9 +10671,9 @@ var findGroup = (columns, columnId, groupId) => {
 var nodesStore = (view, columnId, groupId) => {
   let group;
   let columns;
-  return derived(view.documentStore, (state) => {
-    if (!group || columns !== state.document.columns) {
-      columns = state.document.columns;
+  return derived(view.documentStore, (state2) => {
+    if (!group || columns !== state2.document.columns) {
+      columns = state2.document.columns;
       group = findGroup(columns, columnId, groupId);
       if (!group)
         return [];
@@ -10683,7 +10688,7 @@ function add_css9(target) {
 }
 function get_each_context2(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[16] = list[i];
+  child_ctx[17] = list[i];
   return child_ctx;
 }
 function create_if_block5(ctx) {
@@ -10695,11 +10700,11 @@ function create_if_block5(ctx) {
   let current;
   let each_value = ensure_array_like(
     /*$nodes*/
-    ctx[11]
+    ctx[12]
   );
   const get_key = (ctx2) => (
     /*node*/
-    ctx2[16]
+    ctx2[17]
   );
   for (let i = 0; i < each_value.length; i += 1) {
     let child_ctx = get_each_context2(ctx, each_value, i);
@@ -10720,7 +10725,7 @@ function create_if_block5(ctx) {
           ctx[0]
         ) && "group-has-active-parent",
         /*activeGroup*/
-        ctx[3] === /*groupId*/
+        ctx[4] === /*groupId*/
         ctx[0] && "group-has-active-node"
       )) + " svelte-1yh6cqv");
       attr(div, "id", div_id_value = "group-" + /*groupId*/
@@ -10736,18 +10741,18 @@ function create_if_block5(ctx) {
       current = true;
     },
     p(ctx2, dirty) {
-      if (dirty & /*$nodes, activeNode, parentNodes, activeChildGroups, groupId, activeGroup, editedNode, disableEditConfirmation, idSection, searchQuery, searching, searchResults*/
-      4095) {
+      if (dirty & /*$nodes, activeNode, parentNodes, activeChildGroups, groupId, activeGroup, editedNode, disableEditConfirmation, idSection, selectedNodes, searchQuery, searching, searchResults*/
+      8191) {
         each_value = ensure_array_like(
           /*$nodes*/
-          ctx2[11]
+          ctx2[12]
         );
         group_outros();
         each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div, outro_and_destroy_block, create_each_block2, null, get_each_context2);
         check_outros();
       }
       if (!current || dirty & /*activeChildGroups, groupId, activeGroup*/
-      11 && div_class_value !== (div_class_value = null_to_empty((0, import_classnames3.default)(
+      19 && div_class_value !== (div_class_value = null_to_empty((0, import_classnames3.default)(
         "group",
         /*activeChildGroups*/
         ctx2[1].has(
@@ -10755,7 +10760,7 @@ function create_if_block5(ctx) {
           ctx2[0]
         ) && "group-has-active-parent",
         /*activeGroup*/
-        ctx2[3] === /*groupId*/
+        ctx2[4] === /*groupId*/
         ctx2[0] && "group-has-active-node"
       )) + " svelte-1yh6cqv")) {
         attr(div, "class", div_class_value);
@@ -10797,16 +10802,16 @@ function create_if_block_13(ctx) {
     props: {
       node: (
         /*node*/
-        ctx[16]
+        ctx[17]
       ),
       active: (
         /*node*/
-        ctx[16] === /*activeNode*/
-        ctx[4] ? "node" /* node */ : (
+        ctx[17] === /*activeNode*/
+        ctx[5] ? "node" /* node */ : (
           /*parentNodes*/
-          ctx[2].has(
+          ctx[3].has(
             /*node*/
-            ctx[16]
+            ctx[17]
           ) ? "parent" /* parent */ : (
             /*activeChildGroups*/
             ctx[1].has(
@@ -10814,7 +10819,7 @@ function create_if_block_13(ctx) {
               ctx[0]
             ) ? "child" /* child */ : (
               /*activeGroup*/
-              ctx[3] === /*groupId*/
+              ctx[4] === /*groupId*/
               ctx[0] ? "sibling" /* sibling */ : null
             )
           )
@@ -10822,8 +10827,8 @@ function create_if_block_13(ctx) {
       ),
       editing: (
         /*editedNode*/
-        ctx[5] === /*node*/
-        ctx[16]
+        ctx[6] === /*node*/
+        ctx[17]
       ),
       hasChildren: (
         /*activeChildGroups*/
@@ -10835,16 +10840,23 @@ function create_if_block_13(ctx) {
       ),
       disableEditConfirmation: (
         /*editedNode*/
-        ctx[5] === /*node*/
-        ctx[16] && /*disableEditConfirmation*/
-        ctx[6]
+        ctx[6] === /*node*/
+        ctx[17] && /*disableEditConfirmation*/
+        ctx[7]
       ),
       section: (
         /*idSection*/
-        ctx[10][
+        ctx[11][
           /*node*/
-          ctx[16]
+          ctx[17]
         ]
+      ),
+      selected: (
+        /*selectedNodes*/
+        ctx[2].has(
+          /*node*/
+          ctx[17]
+        )
       )
     }
   });
@@ -10859,18 +10871,18 @@ function create_if_block_13(ctx) {
     p(ctx2, dirty) {
       const node_1_changes = {};
       if (dirty & /*$nodes*/
-      2048)
+      4096)
         node_1_changes.node = /*node*/
-        ctx2[16];
+        ctx2[17];
       if (dirty & /*$nodes, activeNode, parentNodes, activeChildGroups, groupId, activeGroup*/
-      2079)
+      4155)
         node_1_changes.active = /*node*/
-        ctx2[16] === /*activeNode*/
-        ctx2[4] ? "node" /* node */ : (
+        ctx2[17] === /*activeNode*/
+        ctx2[5] ? "node" /* node */ : (
           /*parentNodes*/
-          ctx2[2].has(
+          ctx2[3].has(
             /*node*/
-            ctx2[16]
+            ctx2[17]
           ) ? "parent" /* parent */ : (
             /*activeChildGroups*/
             ctx2[1].has(
@@ -10878,16 +10890,16 @@ function create_if_block_13(ctx) {
               ctx2[0]
             ) ? "child" /* child */ : (
               /*activeGroup*/
-              ctx2[3] === /*groupId*/
+              ctx2[4] === /*groupId*/
               ctx2[0] ? "sibling" /* sibling */ : null
             )
           )
         );
       if (dirty & /*editedNode, $nodes*/
-      2080)
+      4160)
         node_1_changes.editing = /*editedNode*/
-        ctx2[5] === /*node*/
-        ctx2[16];
+        ctx2[6] === /*node*/
+        ctx2[17];
       if (dirty & /*activeChildGroups*/
       2)
         node_1_changes.hasChildren = /*activeChildGroups*/
@@ -10897,18 +10909,25 @@ function create_if_block_13(ctx) {
         node_1_changes.parentId = /*groupId*/
         ctx2[0];
       if (dirty & /*editedNode, $nodes, disableEditConfirmation*/
-      2144)
+      4288)
         node_1_changes.disableEditConfirmation = /*editedNode*/
-        ctx2[5] === /*node*/
-        ctx2[16] && /*disableEditConfirmation*/
-        ctx2[6];
+        ctx2[6] === /*node*/
+        ctx2[17] && /*disableEditConfirmation*/
+        ctx2[7];
       if (dirty & /*idSection, $nodes*/
-      3072)
+      6144)
         node_1_changes.section = /*idSection*/
-        ctx2[10][
+        ctx2[11][
           /*node*/
-          ctx2[16]
+          ctx2[17]
         ];
+      if (dirty & /*selectedNodes, $nodes*/
+      4100)
+        node_1_changes.selected = /*selectedNodes*/
+        ctx2[2].has(
+          /*node*/
+          ctx2[17]
+        );
       node_1.$set(node_1_changes);
     },
     i(local) {
@@ -10930,11 +10949,11 @@ function create_each_block2(key_1, ctx) {
   let first;
   let show_if = (
     /*searchQuery*/
-    ctx[7].length === 0 || !/*searching*/
-    ctx[9] && /*searchResults*/
-    ctx[8].has(
+    ctx[8].length === 0 || !/*searching*/
+    ctx[10] && /*searchResults*/
+    ctx[9].has(
       /*node*/
-      ctx[16]
+      ctx[17]
     )
   );
   let if_block_anchor;
@@ -10960,19 +10979,19 @@ function create_each_block2(key_1, ctx) {
     p(new_ctx, dirty) {
       ctx = new_ctx;
       if (dirty & /*searchQuery, searching, searchResults, $nodes*/
-      2944)
+      5888)
         show_if = /*searchQuery*/
-        ctx[7].length === 0 || !/*searching*/
-        ctx[9] && /*searchResults*/
-        ctx[8].has(
+        ctx[8].length === 0 || !/*searching*/
+        ctx[10] && /*searchResults*/
+        ctx[9].has(
           /*node*/
-          ctx[16]
+          ctx[17]
         );
       if (show_if) {
         if (if_block) {
           if_block.p(ctx, dirty);
           if (dirty & /*searchQuery, searching, searchResults, $nodes*/
-          2944) {
+          5888) {
             transition_in(if_block, 1);
           }
         } else {
@@ -11009,14 +11028,14 @@ function create_each_block2(key_1, ctx) {
     }
   };
 }
-function create_fragment50(ctx) {
+function create_fragment49(ctx) {
   let show_if = (
     /*$nodes*/
-    ctx[11].length > 0 && /*searchQuery*/
-    (ctx[7].length === 0 || /*$nodes*/
-    ctx[11].some(
+    ctx[12].length > 0 && /*searchQuery*/
+    (ctx[8].length === 0 || /*$nodes*/
+    ctx[12].some(
       /*func*/
-      ctx[14]
+      ctx[15]
     ))
   );
   let if_block_anchor;
@@ -11036,19 +11055,19 @@ function create_fragment50(ctx) {
     },
     p(ctx2, [dirty]) {
       if (dirty & /*$nodes, searchQuery, searchResults*/
-      2432)
+      4864)
         show_if = /*$nodes*/
-        ctx2[11].length > 0 && /*searchQuery*/
-        (ctx2[7].length === 0 || /*$nodes*/
-        ctx2[11].some(
+        ctx2[12].length > 0 && /*searchQuery*/
+        (ctx2[8].length === 0 || /*$nodes*/
+        ctx2[12].some(
           /*func*/
-          ctx2[14]
+          ctx2[15]
         ));
       if (show_if) {
         if (if_block) {
           if_block.p(ctx2, dirty);
           if (dirty & /*$nodes, searchQuery, searchResults*/
-          2432) {
+          4864) {
             transition_in(if_block, 1);
           }
         } else {
@@ -11084,11 +11103,12 @@ function create_fragment50(ctx) {
     }
   };
 }
-function instance50($$self, $$props, $$invalidate) {
+function instance49($$self, $$props, $$invalidate) {
   let $nodes;
   let { groupId } = $$props;
   let { columnId } = $$props;
   let { activeChildGroups } = $$props;
+  let { selectedNodes } = $$props;
   let { parentNodes } = $$props;
   let { activeGroup } = $$props;
   let { activeNode } = $$props;
@@ -11100,37 +11120,40 @@ function instance50($$self, $$props, $$invalidate) {
   let { idSection } = $$props;
   const view = getView();
   const nodes = nodesStore(view, columnId, groupId);
-  component_subscribe($$self, nodes, (value) => $$invalidate(11, $nodes = value));
+  component_subscribe($$self, nodes, (value) => $$invalidate(12, $nodes = value));
   const func2 = (n) => searchResults.has(n);
   $$self.$$set = ($$props2) => {
     if ("groupId" in $$props2)
       $$invalidate(0, groupId = $$props2.groupId);
     if ("columnId" in $$props2)
-      $$invalidate(13, columnId = $$props2.columnId);
+      $$invalidate(14, columnId = $$props2.columnId);
     if ("activeChildGroups" in $$props2)
       $$invalidate(1, activeChildGroups = $$props2.activeChildGroups);
+    if ("selectedNodes" in $$props2)
+      $$invalidate(2, selectedNodes = $$props2.selectedNodes);
     if ("parentNodes" in $$props2)
-      $$invalidate(2, parentNodes = $$props2.parentNodes);
+      $$invalidate(3, parentNodes = $$props2.parentNodes);
     if ("activeGroup" in $$props2)
-      $$invalidate(3, activeGroup = $$props2.activeGroup);
+      $$invalidate(4, activeGroup = $$props2.activeGroup);
     if ("activeNode" in $$props2)
-      $$invalidate(4, activeNode = $$props2.activeNode);
+      $$invalidate(5, activeNode = $$props2.activeNode);
     if ("editedNode" in $$props2)
-      $$invalidate(5, editedNode = $$props2.editedNode);
+      $$invalidate(6, editedNode = $$props2.editedNode);
     if ("disableEditConfirmation" in $$props2)
-      $$invalidate(6, disableEditConfirmation = $$props2.disableEditConfirmation);
+      $$invalidate(7, disableEditConfirmation = $$props2.disableEditConfirmation);
     if ("searchQuery" in $$props2)
-      $$invalidate(7, searchQuery = $$props2.searchQuery);
+      $$invalidate(8, searchQuery = $$props2.searchQuery);
     if ("searchResults" in $$props2)
-      $$invalidate(8, searchResults = $$props2.searchResults);
+      $$invalidate(9, searchResults = $$props2.searchResults);
     if ("searching" in $$props2)
-      $$invalidate(9, searching = $$props2.searching);
+      $$invalidate(10, searching = $$props2.searching);
     if ("idSection" in $$props2)
-      $$invalidate(10, idSection = $$props2.idSection);
+      $$invalidate(11, idSection = $$props2.idSection);
   };
   return [
     groupId,
     activeChildGroups,
+    selectedNodes,
     parentNodes,
     activeGroup,
     activeNode,
@@ -11152,22 +11175,23 @@ var Group = class extends SvelteComponent {
     init(
       this,
       options,
-      instance50,
-      create_fragment50,
+      instance49,
+      create_fragment49,
       safe_not_equal,
       {
         groupId: 0,
-        columnId: 13,
+        columnId: 14,
         activeChildGroups: 1,
-        parentNodes: 2,
-        activeGroup: 3,
-        activeNode: 4,
-        editedNode: 5,
-        disableEditConfirmation: 6,
-        searchQuery: 7,
-        searchResults: 8,
-        searching: 9,
-        idSection: 10
+        selectedNodes: 2,
+        parentNodes: 3,
+        activeGroup: 4,
+        activeNode: 5,
+        editedNode: 6,
+        disableEditConfirmation: 7,
+        searchQuery: 8,
+        searchResults: 9,
+        searching: 10,
+        idSection: 11
       },
       add_css9
     );
@@ -11248,7 +11272,7 @@ function add_css10(target) {
 }
 function get_each_context3(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[15] = list[i];
+  child_ctx[16] = list[i];
   return child_ctx;
 }
 function create_if_block6(ctx) {
@@ -11258,7 +11282,7 @@ function create_if_block6(ctx) {
     props: {
       groupId: (
         /*group*/
-        ctx[15].parentId
+        ctx[16].parentId
       ),
       columnId: (
         /*columnId*/
@@ -11266,31 +11290,31 @@ function create_if_block6(ctx) {
       ),
       parentNodes: (
         /*parentNodes*/
-        ctx[3]
+        ctx[4]
       ),
       activeGroup: (
         /*activeGroup*/
-        ctx[4]
+        ctx[5]
       ),
       editedNode: (
         /*editedNode*/
-        ctx[6]
+        ctx[7]
       ),
       disableEditConfirmation: (
         /*disableEditConfirmation*/
-        ctx[7]
+        ctx[8]
       ),
       searchQuery: (
         /*searchQuery*/
-        ctx[8]
+        ctx[9]
       ),
       searchResults: (
         /*searchResults*/
-        ctx[9]
+        ctx[10]
       ),
       searching: (
         /*searching*/
-        ctx[10]
+        ctx[11]
       ),
       activeChildGroups: (
         /*activeChildGroups*/
@@ -11298,11 +11322,15 @@ function create_if_block6(ctx) {
       ),
       activeNode: (
         /*activeNode*/
-        ctx[5]
+        ctx[6]
       ),
       idSection: (
         /*idSection*/
-        ctx[11]
+        ctx[12]
+      ),
+      selectedNodes: (
+        /*selectedNodes*/
+        ctx[3]
       )
     }
   });
@@ -11317,53 +11345,57 @@ function create_if_block6(ctx) {
     p(ctx2, dirty) {
       const group_1_changes = {};
       if (dirty & /*$groups*/
-      4096)
+      8192)
         group_1_changes.groupId = /*group*/
-        ctx2[15].parentId;
+        ctx2[16].parentId;
       if (dirty & /*columnId*/
       1)
         group_1_changes.columnId = /*columnId*/
         ctx2[0];
       if (dirty & /*parentNodes*/
-      8)
-        group_1_changes.parentNodes = /*parentNodes*/
-        ctx2[3];
-      if (dirty & /*activeGroup*/
       16)
-        group_1_changes.activeGroup = /*activeGroup*/
+        group_1_changes.parentNodes = /*parentNodes*/
         ctx2[4];
+      if (dirty & /*activeGroup*/
+      32)
+        group_1_changes.activeGroup = /*activeGroup*/
+        ctx2[5];
       if (dirty & /*editedNode*/
-      64)
-        group_1_changes.editedNode = /*editedNode*/
-        ctx2[6];
-      if (dirty & /*disableEditConfirmation*/
       128)
-        group_1_changes.disableEditConfirmation = /*disableEditConfirmation*/
+        group_1_changes.editedNode = /*editedNode*/
         ctx2[7];
-      if (dirty & /*searchQuery*/
+      if (dirty & /*disableEditConfirmation*/
       256)
-        group_1_changes.searchQuery = /*searchQuery*/
+        group_1_changes.disableEditConfirmation = /*disableEditConfirmation*/
         ctx2[8];
-      if (dirty & /*searchResults*/
+      if (dirty & /*searchQuery*/
       512)
-        group_1_changes.searchResults = /*searchResults*/
+        group_1_changes.searchQuery = /*searchQuery*/
         ctx2[9];
-      if (dirty & /*searching*/
+      if (dirty & /*searchResults*/
       1024)
-        group_1_changes.searching = /*searching*/
+        group_1_changes.searchResults = /*searchResults*/
         ctx2[10];
+      if (dirty & /*searching*/
+      2048)
+        group_1_changes.searching = /*searching*/
+        ctx2[11];
       if (dirty & /*activeChildGroups*/
       2)
         group_1_changes.activeChildGroups = /*activeChildGroups*/
         ctx2[1];
       if (dirty & /*activeNode*/
-      32)
+      64)
         group_1_changes.activeNode = /*activeNode*/
-        ctx2[5];
+        ctx2[6];
       if (dirty & /*idSection*/
-      2048)
+      4096)
         group_1_changes.idSection = /*idSection*/
-        ctx2[11];
+        ctx2[12];
+      if (dirty & /*selectedNodes*/
+      8)
+        group_1_changes.selectedNodes = /*selectedNodes*/
+        ctx2[3];
       group_1.$set(group_1_changes);
     },
     i(local) {
@@ -11386,7 +11418,7 @@ function create_each_block3(key_1, ctx) {
   let show_if = !/*dndChildGroups*/
   ctx[2].has(
     /*group*/
-    ctx[15].parentId
+    ctx[16].parentId
   );
   let if_block_anchor;
   let current;
@@ -11411,17 +11443,17 @@ function create_each_block3(key_1, ctx) {
     p(new_ctx, dirty) {
       ctx = new_ctx;
       if (dirty & /*dndChildGroups, $groups*/
-      4100)
+      8196)
         show_if = !/*dndChildGroups*/
         ctx[2].has(
           /*group*/
-          ctx[15].parentId
+          ctx[16].parentId
         );
       if (show_if) {
         if (if_block) {
           if_block.p(ctx, dirty);
           if (dirty & /*dndChildGroups, $groups*/
-          4100) {
+          8196) {
             transition_in(if_block, 1);
           }
         } else {
@@ -11458,7 +11490,7 @@ function create_each_block3(key_1, ctx) {
     }
   };
 }
-function create_fragment51(ctx) {
+function create_fragment50(ctx) {
   let div2;
   let div0;
   let t0;
@@ -11472,11 +11504,11 @@ function create_fragment51(ctx) {
   let dispose;
   let each_value = ensure_array_like(
     /*$groups*/
-    ctx[12]
+    ctx[13]
   );
   const get_key = (ctx2) => (
     /*group*/
-    ctx2[15].parentId
+    ctx2[16].parentId
   );
   for (let i = 0; i < each_value.length; i += 1) {
     let child_ctx = get_each_context3(ctx, each_value, i);
@@ -11521,11 +11553,11 @@ function create_fragment51(ctx) {
       }
     },
     p(ctx2, [dirty]) {
-      if (dirty & /*$groups, columnId, parentNodes, activeGroup, editedNode, disableEditConfirmation, searchQuery, searchResults, searching, activeChildGroups, activeNode, idSection, dndChildGroups*/
-      8191) {
+      if (dirty & /*$groups, columnId, parentNodes, activeGroup, editedNode, disableEditConfirmation, searchQuery, searchResults, searching, activeChildGroups, activeNode, idSection, selectedNodes, dndChildGroups*/
+      16383) {
         each_value = ensure_array_like(
           /*$groups*/
-          ctx2[12]
+          ctx2[13]
         );
         group_outros();
         each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div2, outro_and_destroy_block, create_each_block3, t1, get_each_context3);
@@ -11567,11 +11599,12 @@ function create_fragment51(ctx) {
     }
   };
 }
-function instance51($$self, $$props, $$invalidate) {
+function instance50($$self, $$props, $$invalidate) {
   let $groups;
   let { columnId } = $$props;
   let { activeChildGroups } = $$props;
   let { dndChildGroups } = $$props;
+  let { selectedNodes } = $$props;
   let { parentNodes } = $$props;
   let { activeGroup } = $$props;
   let { activeNode } = $$props;
@@ -11583,7 +11616,7 @@ function instance51($$self, $$props, $$invalidate) {
   let { idSection } = $$props;
   const view = getView();
   const groups = groupsStore(view, columnId);
-  component_subscribe($$self, groups, (value) => $$invalidate(12, $groups = value));
+  component_subscribe($$self, groups, (value) => $$invalidate(13, $groups = value));
   $$self.$$set = ($$props2) => {
     if ("columnId" in $$props2)
       $$invalidate(0, columnId = $$props2.columnId);
@@ -11591,29 +11624,32 @@ function instance51($$self, $$props, $$invalidate) {
       $$invalidate(1, activeChildGroups = $$props2.activeChildGroups);
     if ("dndChildGroups" in $$props2)
       $$invalidate(2, dndChildGroups = $$props2.dndChildGroups);
+    if ("selectedNodes" in $$props2)
+      $$invalidate(3, selectedNodes = $$props2.selectedNodes);
     if ("parentNodes" in $$props2)
-      $$invalidate(3, parentNodes = $$props2.parentNodes);
+      $$invalidate(4, parentNodes = $$props2.parentNodes);
     if ("activeGroup" in $$props2)
-      $$invalidate(4, activeGroup = $$props2.activeGroup);
+      $$invalidate(5, activeGroup = $$props2.activeGroup);
     if ("activeNode" in $$props2)
-      $$invalidate(5, activeNode = $$props2.activeNode);
+      $$invalidate(6, activeNode = $$props2.activeNode);
     if ("editedNode" in $$props2)
-      $$invalidate(6, editedNode = $$props2.editedNode);
+      $$invalidate(7, editedNode = $$props2.editedNode);
     if ("disableEditConfirmation" in $$props2)
-      $$invalidate(7, disableEditConfirmation = $$props2.disableEditConfirmation);
+      $$invalidate(8, disableEditConfirmation = $$props2.disableEditConfirmation);
     if ("searchQuery" in $$props2)
-      $$invalidate(8, searchQuery = $$props2.searchQuery);
+      $$invalidate(9, searchQuery = $$props2.searchQuery);
     if ("searchResults" in $$props2)
-      $$invalidate(9, searchResults = $$props2.searchResults);
+      $$invalidate(10, searchResults = $$props2.searchResults);
     if ("searching" in $$props2)
-      $$invalidate(10, searching = $$props2.searching);
+      $$invalidate(11, searching = $$props2.searching);
     if ("idSection" in $$props2)
-      $$invalidate(11, idSection = $$props2.idSection);
+      $$invalidate(12, idSection = $$props2.idSection);
   };
   return [
     columnId,
     activeChildGroups,
     dndChildGroups,
+    selectedNodes,
     parentNodes,
     activeGroup,
     activeNode,
@@ -11633,22 +11669,23 @@ var Column = class extends SvelteComponent {
     init(
       this,
       options,
-      instance51,
-      create_fragment51,
+      instance50,
+      create_fragment50,
       safe_not_equal,
       {
         columnId: 0,
         activeChildGroups: 1,
         dndChildGroups: 2,
-        parentNodes: 3,
-        activeGroup: 4,
-        activeNode: 5,
-        editedNode: 6,
-        disableEditConfirmation: 7,
-        searchQuery: 8,
-        searchResults: 9,
-        searching: 10,
-        idSection: 11
+        selectedNodes: 3,
+        parentNodes: 4,
+        activeGroup: 5,
+        activeNode: 6,
+        editedNode: 7,
+        disableEditConfirmation: 8,
+        searchQuery: 9,
+        searchResults: 10,
+        searching: 11,
+        idSection: 12
       },
       add_css10
     );
@@ -11696,10 +11733,10 @@ var scrollOnDndX = (node) => {
 };
 
 // src/stores/document/derived/columns-store.ts
-var columnsStore = (view) => derived(view.documentStore, (state) => state.document.columns);
+var columnsStore = (view) => derived(view.documentStore, (state2) => state2.document.columns);
 
 // src/view/components/container/buffers/columns-buffer.svelte
-function create_fragment52(ctx) {
+function create_fragment51(ctx) {
   let div;
   return {
     c() {
@@ -11724,7 +11761,7 @@ function create_fragment52(ctx) {
 var Columns_buffer = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, null, create_fragment52, safe_not_equal, {});
+    init(this, options, null, create_fragment51, safe_not_equal, {});
   }
 };
 var columns_buffer_default = Columns_buffer;
@@ -11732,60 +11769,60 @@ var columns_buffer_default = Columns_buffer;
 // src/stores/settings/derived/scrolling-store.ts
 var scrollingModeStore = (view) => derived(
   view.plugin.settings,
-  (state) => state.view.scrolling.horizontalScrollingMode
+  (state2) => state2.view.scrolling.horizontalScrollingMode
 );
 var verticalOffsetStore = (view) => derived(
   view.plugin.settings,
-  (state) => state.view.scrolling.verticalOffset
+  (state2) => state2.view.scrolling.verticalOffset
 );
 
 // src/stores/view/derived/dnd-store.ts
-var dndStore = (view) => derived(view.viewStore, (state) => state.document.dnd);
+var dndStore = (view) => derived(view.viewStore, (state2) => state2.document.dnd);
 
 // src/stores/view/derived/active-branch-store.ts
-var activeBranchStore = (view) => derived(view.viewStore, (state) => state.document.activeBranch);
+var activeBranchStore = (view) => derived(view.viewStore, (state2) => state2.document.activeBranch);
 
 // src/stores/view/derived/active-node-store.ts
-var activeNodeStore = (view) => derived(view.viewStore, (state) => state.document.activeNode);
+var activeNodeStore = (view) => derived(view.viewStore, (state2) => state2.document.activeNode);
 
 // src/stores/view/derived/editing-store.ts
-var documentStateStore = (view) => derived(view.viewStore, (state) => state.document.editing);
+var documentStateStore = (view) => derived(view.viewStore, (state2) => state2.document.editing);
 
 // src/stores/view/derived/search-store.ts
-var searchStore = (view) => derived(view.viewStore, (state) => state.search);
+var searchStore = (view) => derived(view.viewStore, (state2) => state2.search);
 
 // src/stores/settings/derived/limit-preview-height-store.ts
-var limitPreviewHeightStore = (view) => derived(view.plugin.settings, (state) => state.view.limitPreviewHeight);
+var limitPreviewHeightStore = (view) => derived(view.plugin.settings, (state2) => state2.view.limitPreviewHeight);
 
 // src/stores/document/derived/id-section-store.ts
 var idSectionStore = (view) => {
-  return derived(view.documentStore, (state) => {
-    return state.sections.id_section;
+  return derived(view.documentStore, (state2) => {
+    return state2.sections.id_section;
   });
 };
 
 // src/view/actions/context-menu/context-menu.ts
-var import_obsidian8 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 
 // src/view/actions/context-menu/helpers/on-long-press.ts
 var onLongPress = (element2, callback, preventDefaultPredicate) => {
-  const state = { timer: null, longPress: false };
+  const state2 = { timer: null, longPress: false };
   const onTouchEnd = (e) => {
-    if (state.longPress) {
-      state.longPress = false;
+    if (state2.longPress) {
+      state2.longPress = false;
       if (preventDefaultPredicate(e)) {
         e.stopPropagation();
         e.preventDefault();
       }
     }
-    if (state.timer)
-      clearTimeout(state.timer);
+    if (state2.timer)
+      clearTimeout(state2.timer);
   };
   const onTouchStart = (e) => {
-    if (state.timer)
-      clearTimeout(state.timer);
-    state.timer = setTimeout(() => {
-      state.longPress = true;
+    if (state2.timer)
+      clearTimeout(state2.timer);
+    state2.timer = setTimeout(() => {
+      state2.longPress = true;
       callback(e);
     }, 500);
   };
@@ -11799,8 +11836,8 @@ var onLongPress = (element2, callback, preventDefaultPredicate) => {
   };
 };
 
-// src/view/actions/context-menu/helpers/show-card-context-menu.ts
-var import_obsidian7 = require("obsidian");
+// src/view/actions/context-menu/card-context-menu/show-card-context-menu.ts
+var import_obsidian10 = require("obsidian");
 
 // src/lib/tree-utils/get/get-sorted-child-groups.ts
 var getSortedChildGroups = (columns, currentParentNode, remove = false) => {
@@ -11844,9 +11881,6 @@ var deleteNodeById = (columns, content, nodeId) => {
   }
 };
 
-// src/helpers/clone.ts
-var clone = (object) => JSON.parse(JSON.stringify(object));
-
 // src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/get-branch.ts
 var getBranch = (columns, content, nodeId, mode) => {
   const cut = mode === "cut";
@@ -11875,44 +11909,6 @@ var getBranch = (columns, content, nodeId, mode) => {
   return clone(branch);
 };
 
-// src/lib/data-conversion/columns-to-json.ts
-var createTreeNode = (content = "") => {
-  return {
-    content: content.trim(),
-    children: []
-  };
-};
-var columnsToJson = (columns, content) => {
-  const nodeMap = {};
-  for (const column of columns) {
-    for (const group of column.groups) {
-      for (const node of group.nodes) {
-        const treeNode = createTreeNode(content[node]?.content);
-        let parentNode = nodeMap[group.parentId];
-        if (!parentNode) {
-          parentNode = createTreeNode();
-          nodeMap[group.parentId] = parentNode;
-        }
-        parentNode.children.push(treeNode);
-        nodeMap[node] = treeNode;
-      }
-    }
-  }
-  const roots = [];
-  if (columns[0])
-    for (const group of columns[0].groups) {
-      for (const node of group.nodes) {
-        const treeNode = nodeMap[node];
-        if (treeNode) {
-          roots.push(treeNode);
-        } else {
-          throw new Error(`could not find node ${node}`);
-        }
-      }
-    }
-  return roots;
-};
-
 // src/lib/data-conversion/json-to-sections.ts
 var jsonToSections = (tree, parentNumber = "", text2 = "", includeStructure = true) => {
   for (let i = 0; i < tree.length; i++) {
@@ -11938,19 +11934,6 @@ var jsonToSections = (tree, parentNumber = "", text2 = "", includeStructure = tr
   return text2;
 };
 
-// node_modules/nanoid/url-alphabet/index.js
-var urlAlphabet = "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict";
-
-// node_modules/nanoid/index.browser.js
-var nanoid = (size = 21) => {
-  let id2 = "";
-  let bytes = crypto.getRandomValues(new Uint8Array(size));
-  while (size--) {
-    id2 += urlAlphabet[bytes[size] & 63];
-  }
-  return id2;
-};
-
 // src/helpers/id.ts
 var id_size = 8;
 var id = {
@@ -11974,7 +11957,7 @@ var createGroup = (parentId) => ({
 });
 
 // src/lib/data-conversion/branch-to-section.ts
-var branchToSection = (branch) => {
+var branchToColumns = (branch) => {
   const columns = [];
   columns.push(createColumn());
   columns[columns.length - 1].groups.push(createGroup("root"));
@@ -11985,10 +11968,21 @@ var branchToSection = (branch) => {
       columns[columns.length - 1].groups.push(group);
     }
   }
-  return jsonToSections(columnsToJson(columns, branch.content));
+  return columns;
+};
+var branchToJson = (branches) => {
+  const trees = [];
+  for (const branch of branches) {
+    const tree = columnsToJson(branchToColumns(branch), branch.content);
+    trees.push(tree[0]);
+  }
+  return trees;
+};
+var branchToSection = (branches) => {
+  return jsonToSections(branchToJson(branches));
 };
 
-// src/obsidian/commands/helpers/create-new-file.ts
+// src/obsidian/events/workspace/effects/create-new-file.ts
 var import_obsidian4 = require("obsidian");
 
 // src/helpers/sanitize-file-name.ts
@@ -12009,7 +12003,7 @@ var sanitizeFileName = (path, replacement = "-") => {
   return sanitized;
 };
 
-// src/obsidian/commands/helpers/create-new-file.ts
+// src/obsidian/events/workspace/effects/get-unique-file-name.ts
 var getUniqueFileName = (folderPath, files, basename = "Untitled") => {
   basename = sanitizeFileName(basename);
   let index = 1;
@@ -12020,9 +12014,13 @@ var getUniqueFileName = (folderPath, files, basename = "Untitled") => {
   }
   return `${folderPath}/${newFileName}`;
 };
+
+// src/obsidian/events/workspace/effects/create-new-file.ts
 var createNewFile = async (plugin, folder, data = "", basename) => {
   invariant(folder);
-  const children2 = folder.children.map((c) => c instanceof import_obsidian4.TFile ? c.basename : null).filter((f) => f);
+  const children2 = folder.children.map(
+    (c) => c instanceof import_obsidian4.TFile && c.extension === "md" ? c.basename : null
+  ).filter((f) => f);
   const path = getUniqueFileName(folder.path, children2, basename);
   const newFilePath = path + ".md";
   const file = await plugin.app.vault.create(newFilePath, data);
@@ -12030,21 +12028,57 @@ var createNewFile = async (plugin, folder, data = "", basename) => {
   return file;
 };
 
-// src/obsidian/commands/helpers/open-file.ts
-var openFile = async (plugin, file, newLeaf, mode) => {
+// src/obsidian/events/workspace/effects/open-file.ts
+var openFile = async (plugin, file, newLeaf) => {
   const leaf = plugin.app.workspace.getLeaf(newLeaf);
   await leaf.openFile(file);
-  setFileViewType(plugin, file, leaf, mode);
+  return leaf;
+};
+
+// src/obsidian/events/workspace/effects/toggle-obsidian-view-type.ts
+var toggleObsidianViewType = (plugin, leaf, type) => {
+  setTimeout(() => {
+    leaf.setViewState({
+      type,
+      popstate: true,
+      state: leaf.view.getState()
+    });
+    const activeLeaf = plugin.app.workspace.getLeaf();
+    if (activeLeaf !== leaf) {
+      plugin.app.workspace.revealLeaf(leaf);
+    }
+    plugin.app.workspace.setActiveLeaf(leaf);
+  }, 0);
+};
+
+// src/obsidian/events/workspace/actions/set-document-format.ts
+var setDocumentFormat = (plugin, path, type) => {
+  plugin.settings.dispatch({
+    type: "SET_DOCUMENT_TYPE",
+    payload: {
+      path,
+      format: type
+    }
+  });
+};
+
+// src/obsidian/events/workspace/effects/open-file-in-lineage.ts
+var openFileInLineage = async (plugin, file, type, newLeaf) => {
+  const leaf = await openFile(plugin, file, newLeaf);
+  toggleObsidianViewType(plugin, leaf, "lineage");
+  setDocumentFormat(plugin, file.path, type);
 };
 
 // src/obsidian/commands/helpers/extract-branch/helpers/get-file-name-of-extracted-branch/get-file-name-from-content.ts
 var getFileNameFromContent = (text2) => {
-  const lines = text2.split("\n").map((line) => line.trim().replace(/s+/g, " ")).filter((line) => line);
+  const lines = text2.split("\n").map((line) => line.trim().replace(/\s+/g, " ")).filter((line) => line);
   if (lines.length === 0)
     return;
   let result = void 0;
   if (lines[0].startsWith("# ")) {
     result = lines[0].replace(/^# /, "").substring(0, 100);
+  } else if (lines[0].startsWith("- ")) {
+    result = lines[0].replace(/^- /, "").substring(0, 100);
   } else {
     result = lines.join(" ");
   }
@@ -12080,6 +12114,11 @@ var onPluginError = (error, location, action) => {
   }
 };
 
+// src/lib/data-conversion/branch-to-outline.ts
+var branchToOutline = (branches) => {
+  return jsonToOutline(branchToJson(branches));
+};
+
 // src/obsidian/commands/helpers/extract-branch/extract-branch.ts
 var extractBranch = async (view) => {
   try {
@@ -12093,7 +12132,8 @@ var extractBranch = async (view) => {
       viewState.document.activeNode,
       "copy"
     );
-    const text2 = branchToSection(branch);
+    const format2 = getDocumentFormat(view);
+    const text2 = format2 === "outline" ? branchToOutline([branch]) : branchToSection([branch]);
     const newFile = await createNewFile(
       view.plugin,
       view.file.parent,
@@ -12104,7 +12144,7 @@ var extractBranch = async (view) => {
         documentState.sections.id_section[branch.nodeId]
       )
     );
-    await openFile(view.plugin, newFile, "split", "lineage");
+    await openFileInLineage(view.plugin, newFile, format2, "split");
     view.documentStore.dispatch({
       type: "DOCUMENT/EXTRACT_BRANCH",
       payload: {
@@ -12120,6 +12160,9 @@ var extractBranch = async (view) => {
 // src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/merge-node.ts
 var mergeNode = (view, direction) => {
   saveNodeContent(view);
+  if (view.viewStore.getValue().document.selectedNodes.size > 1) {
+    throw new Error(lang.cant_merge_multiple_nodes);
+  }
   view.documentStore.dispatch({
     type: "DOCUMENT/MERGE_NODE",
     payload: {
@@ -12129,38 +12172,51 @@ var mergeNode = (view, direction) => {
   });
 };
 
-// src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/clipboard/copy-active-branch-to-clipboard.ts
-var copyActiveBranchToClipboard = async (view) => {
-  const viewState = view.viewStore.getValue();
-  const documentState = view.documentStore.getValue();
-  const branch = getBranch(
-    documentState.document.columns,
-    documentState.document.content,
-    viewState.document.activeNode,
-    "copy"
+// src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/clipboard/map-active-branches-to-text.ts
+var mapActiveBranchesToText = (document2, activeNode, selectedNodes, format2) => {
+  const isSelection = selectedNodes.size > 1;
+  const nodes = isSelection ? [...selectedNodes] : [activeNode];
+  const branches = nodes.map(
+    (node) => getBranch(document2.columns, document2.content, node, "copy")
   );
-  const text2 = branchToSection(branch);
+  return format2 === "outline" ? branchToOutline(branches) : branchToSection(branches);
+};
+
+// src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/clipboard/copy-active-branches-to-clipboard.ts
+var copyActiveBranchesToClipboard = async (view) => {
+  const document2 = view.viewStore.getValue().document;
+  const format2 = getDocumentFormat(view);
+  const text2 = mapActiveBranchesToText(
+    view.documentStore.getValue().document,
+    document2.activeNode,
+    document2.selectedNodes,
+    format2
+  );
   await navigator.clipboard.writeText(text2);
 };
 
 // src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/copy-node.ts
 var copyNode = async (view) => {
-  await copyActiveBranchToClipboard(view);
+  const document2 = view.viewStore.getValue().document;
+  await copyActiveBranchesToClipboard(view);
   view.documentStore.dispatch({
     type: "DOCUMENT/COPY_NODE",
     payload: {
-      nodeId: view.viewStore.getValue().document.activeNode
+      nodeId: document2.activeNode,
+      selectedNodes: document2.selectedNodes
     }
   });
 };
 
 // src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/cut-node.ts
 var cutNode = async (view) => {
-  await copyActiveBranchToClipboard(view);
+  const document2 = view.viewStore.getValue().document;
+  await copyActiveBranchesToClipboard(view);
   view.documentStore.dispatch({
     type: "DOCUMENT/CUT_NODE",
     payload: {
-      nodeId: view.viewStore.getValue().document.activeNode
+      nodeId: document2.activeNode,
+      selectedNodes: document2.selectedNodes
     }
   });
 };
@@ -12178,20 +12234,1151 @@ var pasteNode = async (view) => {
   });
 };
 
-// src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/split-node.ts
-var splitNode = (view, mode) => {
-  saveNodeContent(view);
-  view.documentStore.dispatch({
-    type: "DOCUMENT/SPLIT_NODE",
-    payload: {
-      target: view.viewStore.getValue().document.activeNode,
-      mode
+// src/view/modals/split-node-modal/split-node-modal.ts
+var import_obsidian6 = require("obsidian");
+
+// src/view/modals/split-node-modal/helpers/get-modal-state.ts
+var getModalState = () => {
+  return getContext("modal-state");
+};
+
+// src/view/modals/split-node-modal/components/components/content-preview.svelte
+function add_css11(target) {
+  append_styles(target, "svelte-20u69o", ".preview.svelte-20u69o{flex-grow:1;max-height:500px;overflow:auto}");
+}
+function create_if_block7(ctx) {
+  let p;
+  return {
+    c() {
+      p = element("p");
+      p.textContent = "This card's content does not match any splitting pattern";
+      attr(p, "class", "mod-warning");
+    },
+    m(target, anchor) {
+      insert(target, p, anchor);
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(p);
+      }
     }
+  };
+}
+function create_fragment52(ctx) {
+  let div0;
+  let t;
+  let div1;
+  let if_block = !/*$mode*/
+  ctx[0] && create_if_block7(ctx);
+  return {
+    c() {
+      div0 = element("div");
+      if (if_block)
+        if_block.c();
+      t = space();
+      div1 = element("div");
+      attr(div1, "class", "preview svelte-20u69o");
+    },
+    m(target, anchor) {
+      insert(target, div0, anchor);
+      if (if_block)
+        if_block.m(div0, null);
+      insert(target, t, anchor);
+      insert(target, div1, anchor);
+      div1.innerHTML = /*$content*/
+      ctx[1];
+    },
+    p(ctx2, [dirty]) {
+      if (!/*$mode*/
+      ctx2[0]) {
+        if (if_block) {
+        } else {
+          if_block = create_if_block7(ctx2);
+          if_block.c();
+          if_block.m(div0, null);
+        }
+      } else if (if_block) {
+        if_block.d(1);
+        if_block = null;
+      }
+      if (dirty & /*$content*/
+      2)
+        div1.innerHTML = /*$content*/
+        ctx2[1];
+      ;
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(div0);
+        detach(t);
+        detach(div1);
+      }
+      if (if_block)
+        if_block.d();
+    }
+  };
+}
+function instance51($$self, $$props, $$invalidate) {
+  let $mode;
+  let $content;
+  const state2 = getModalState();
+  const mode = state2.mode;
+  component_subscribe($$self, mode, (value) => $$invalidate(0, $mode = value));
+  const content = state2.content;
+  component_subscribe($$self, content, (value) => $$invalidate(1, $content = value));
+  return [$mode, $content, mode, content];
+}
+var Content_preview = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance51, create_fragment52, safe_not_equal, {}, add_css11);
+  }
+};
+var content_preview_default = Content_preview;
+
+// src/view/modals/split-node-modal/helpers/get-modal-props.ts
+var getModalProps = () => {
+  return getContext("modal-props");
+};
+
+// src/view/modals/split-node-modal/components/components/modal-buttons.svelte
+function add_css12(target) {
+  append_styles(target, "svelte-6fani8", ".split-content-footer.svelte-6fani8{display:flex;align-items:center;justify-content:space-between}.modes-container.svelte-6fani8{height:50px;display:flex;align-items:center}.buttons-container.svelte-6fani8{display:flex;gap:5px;width:fit-content}label.svelte-6fani8{display:block;text-transform:capitalize}label[data-disabled='true'].svelte-6fani8{opacity:0.6}");
+}
+function get_each_context4(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[10] = list[i];
+  return child_ctx;
+}
+function create_each_block4(ctx) {
+  let label;
+  let input;
+  let input_checked_value;
+  let input_disabled_value;
+  let input_value_value;
+  let t0;
+  let t1_value = (
+    /*_mode*/
+    ctx[10] + ""
+  );
+  let t1;
+  let t2;
+  let label_data_disabled_value;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      label = element("label");
+      input = element("input");
+      t0 = space();
+      t1 = text(t1_value);
+      t2 = space();
+      input.checked = input_checked_value = /*$mode*/
+      ctx[0] === /*_mode*/
+      ctx[10];
+      input.disabled = input_disabled_value = /*disabledModes*/
+      ctx[4].has(
+        /*_mode*/
+        ctx[10]
+      );
+      attr(input, "name", "mode");
+      attr(input, "type", "radio");
+      input.value = input_value_value = /*_mode*/
+      ctx[10];
+      attr(label, "data-disabled", label_data_disabled_value = /*disabledModes*/
+      ctx[4].has(
+        /*_mode*/
+        ctx[10]
+      ));
+      attr(label, "class", "svelte-6fani8");
+    },
+    m(target, anchor) {
+      insert(target, label, anchor);
+      append(label, input);
+      append(label, t0);
+      append(label, t1);
+      append(label, t2);
+      if (!mounted) {
+        dispose = listen(
+          input,
+          "change",
+          /*change_handler*/
+          ctx[6]
+        );
+        mounted = true;
+      }
+    },
+    p(ctx2, dirty) {
+      if (dirty & /*$mode*/
+      1 && input_checked_value !== (input_checked_value = /*$mode*/
+      ctx2[0] === /*_mode*/
+      ctx2[10])) {
+        input.checked = input_checked_value;
+      }
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(label);
+      }
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_fragment53(ctx) {
+  let div2;
+  let div0;
+  let t0;
+  let div1;
+  let button0;
+  let t1;
+  let button0_disabled_value;
+  let t2;
+  let button1;
+  let mounted;
+  let dispose;
+  let each_value = ensure_array_like(
+    /*modes*/
+    ctx[5]
+  );
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block4(get_each_context4(ctx, each_value, i));
+  }
+  return {
+    c() {
+      div2 = element("div");
+      div0 = element("div");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      t0 = space();
+      div1 = element("div");
+      button0 = element("button");
+      t1 = text("Split");
+      t2 = space();
+      button1 = element("button");
+      button1.textContent = "Cancel";
+      attr(div0, "class", "modes-container svelte-6fani8");
+      attr(button0, "class", "mod-cta");
+      button0.disabled = button0_disabled_value = !/*$mode*/
+      ctx[0];
+      attr(div1, "class", "buttons-container svelte-6fani8");
+      attr(div2, "class", "split-content-footer svelte-6fani8");
+    },
+    m(target, anchor) {
+      insert(target, div2, anchor);
+      append(div2, div0);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        if (each_blocks[i]) {
+          each_blocks[i].m(div0, null);
+        }
+      }
+      append(div2, t0);
+      append(div2, div1);
+      append(div1, button0);
+      append(button0, t1);
+      append(div1, t2);
+      append(div1, button1);
+      if (!mounted) {
+        dispose = [
+          listen(
+            button0,
+            "click",
+            /*click_handler*/
+            ctx[7]
+          ),
+          listen(
+            button1,
+            "click",
+            /*click_handler_1*/
+            ctx[8]
+          )
+        ];
+        mounted = true;
+      }
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & /*disabledModes, modes, $mode, onModeChange*/
+      53) {
+        each_value = ensure_array_like(
+          /*modes*/
+          ctx2[5]
+        );
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context4(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+          } else {
+            each_blocks[i] = create_each_block4(child_ctx);
+            each_blocks[i].c();
+            each_blocks[i].m(div0, null);
+          }
+        }
+        for (; i < each_blocks.length; i += 1) {
+          each_blocks[i].d(1);
+        }
+        each_blocks.length = each_value.length;
+      }
+      if (dirty & /*$mode*/
+      1 && button0_disabled_value !== (button0_disabled_value = !/*$mode*/
+      ctx2[0])) {
+        button0.disabled = button0_disabled_value;
+      }
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(div2);
+      }
+      destroy_each(each_blocks, detaching);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function instance52($$self, $$props, $$invalidate) {
+  let $mode;
+  const state2 = getModalState();
+  const props = getModalProps();
+  const onModeChange = (value) => {
+    state2.mode.set(value);
+  };
+  const mode = state2.mode;
+  component_subscribe($$self, mode, (value) => $$invalidate(0, $mode = value));
+  const disabledModes = state2.disabledModes;
+  const modes = ["headings", "outline", "paragraphs"];
+  const change_handler = (e) => onModeChange(e.currentTarget.value);
+  const click_handler = () => props.callbacks.accept();
+  const click_handler_1 = () => props.callbacks.reject();
+  return [
+    $mode,
+    props,
+    onModeChange,
+    mode,
+    disabledModes,
+    modes,
+    change_handler,
+    click_handler,
+    click_handler_1
+  ];
+}
+var Modal_buttons = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance52, create_fragment53, safe_not_equal, {}, add_css12);
+  }
+};
+var modal_buttons_default = Modal_buttons;
+
+// src/view/modals/split-node-modal/components/modal-content.svelte
+function add_css13(target) {
+  append_styles(target, "svelte-1axt1o3", ".split-content-modal.svelte-1axt1o3{display:flex;flex-direction:column}");
+}
+function create_fragment54(ctx) {
+  let div;
+  let content;
+  let t;
+  let buttons;
+  let current;
+  content = new content_preview_default({});
+  buttons = new modal_buttons_default({});
+  return {
+    c() {
+      div = element("div");
+      create_component(content.$$.fragment);
+      t = space();
+      create_component(buttons.$$.fragment);
+      attr(div, "class", "split-content-modal svelte-1axt1o3");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      mount_component(content, div, null);
+      append(div, t);
+      mount_component(buttons, div, null);
+      current = true;
+    },
+    p: noop,
+    i(local) {
+      if (current)
+        return;
+      transition_in(content.$$.fragment, local);
+      transition_in(buttons.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(content.$$.fragment, local);
+      transition_out(buttons.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      destroy_component(content);
+      destroy_component(buttons);
+    }
+  };
+}
+function instance53($$self, $$props, $$invalidate) {
+  let { state: state2 } = $$props;
+  let { props } = $$props;
+  setContext("modal-state", state2);
+  setContext("modal-props", props);
+  $$self.$$set = ($$props2) => {
+    if ("state" in $$props2)
+      $$invalidate(0, state2 = $$props2.state);
+    if ("props" in $$props2)
+      $$invalidate(1, props = $$props2.props);
+  };
+  return [state2, props];
+}
+var Modal_content = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance53, create_fragment54, safe_not_equal, { state: 0, props: 1 }, add_css13);
+  }
+};
+var modal_content_default = Modal_content;
+
+// src/lib/format-detection/has-n-headings.ts
+var hasNHeadings = (input, n = 2) => {
+  const lines = input.split("\n");
+  let count = 0;
+  for (const line of lines) {
+    if (/^((\t*)- )?#+ +/.test(line)) {
+      count++;
+      if (count >= n)
+        return true;
+    }
+  }
+  return false;
+};
+
+// src/lib/format-detection/is-outline.ts
+var isOutline = (text2) => {
+  const lines = text2.split("\n").filter((x) => x.trim());
+  if (lines.length <= 1)
+    return false;
+  let level2 = 0;
+  for (const line of lines) {
+    if (!line)
+      continue;
+    const match = line.match(/^(\t*)- (.*)/);
+    if (match) {
+      const itemLevel = match[1].length + 1;
+      if (itemLevel - level2 > 1) {
+        return false;
+      }
+      level2 = itemLevel;
+    } else {
+      const match2 = line.match(/^(\t*) {2}/);
+      if (match2) {
+        const itemLevel = (match2[1] ? match2[1].length : 0) + 1;
+        if (itemLevel !== level2) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+// node_modules/diff/lib/index.mjs
+function Diff() {
+}
+Diff.prototype = {
+  diff: function diff(oldString, newString) {
+    var _options$timeout;
+    var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
+    var callback = options.callback;
+    if (typeof options === "function") {
+      callback = options;
+      options = {};
+    }
+    this.options = options;
+    var self = this;
+    function done(value) {
+      if (callback) {
+        setTimeout(function() {
+          callback(void 0, value);
+        }, 0);
+        return true;
+      } else {
+        return value;
+      }
+    }
+    oldString = this.castInput(oldString);
+    newString = this.castInput(newString);
+    oldString = this.removeEmpty(this.tokenize(oldString));
+    newString = this.removeEmpty(this.tokenize(newString));
+    var newLen = newString.length, oldLen = oldString.length;
+    var editLength = 1;
+    var maxEditLength = newLen + oldLen;
+    if (options.maxEditLength) {
+      maxEditLength = Math.min(maxEditLength, options.maxEditLength);
+    }
+    var maxExecutionTime = (_options$timeout = options.timeout) !== null && _options$timeout !== void 0 ? _options$timeout : Infinity;
+    var abortAfterTimestamp = Date.now() + maxExecutionTime;
+    var bestPath = [{
+      oldPos: -1,
+      lastComponent: void 0
+    }];
+    var newPos = this.extractCommon(bestPath[0], newString, oldString, 0);
+    if (bestPath[0].oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
+      return done([{
+        value: this.join(newString),
+        count: newString.length
+      }]);
+    }
+    var minDiagonalToConsider = -Infinity, maxDiagonalToConsider = Infinity;
+    function execEditLength() {
+      for (var diagonalPath = Math.max(minDiagonalToConsider, -editLength); diagonalPath <= Math.min(maxDiagonalToConsider, editLength); diagonalPath += 2) {
+        var basePath = void 0;
+        var removePath = bestPath[diagonalPath - 1], addPath = bestPath[diagonalPath + 1];
+        if (removePath) {
+          bestPath[diagonalPath - 1] = void 0;
+        }
+        var canAdd = false;
+        if (addPath) {
+          var addPathNewPos = addPath.oldPos - diagonalPath;
+          canAdd = addPath && 0 <= addPathNewPos && addPathNewPos < newLen;
+        }
+        var canRemove = removePath && removePath.oldPos + 1 < oldLen;
+        if (!canAdd && !canRemove) {
+          bestPath[diagonalPath] = void 0;
+          continue;
+        }
+        if (!canRemove || canAdd && removePath.oldPos + 1 < addPath.oldPos) {
+          basePath = self.addToPath(addPath, true, void 0, 0);
+        } else {
+          basePath = self.addToPath(removePath, void 0, true, 1);
+        }
+        newPos = self.extractCommon(basePath, newString, oldString, diagonalPath);
+        if (basePath.oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
+          return done(buildValues(self, basePath.lastComponent, newString, oldString, self.useLongestToken));
+        } else {
+          bestPath[diagonalPath] = basePath;
+          if (basePath.oldPos + 1 >= oldLen) {
+            maxDiagonalToConsider = Math.min(maxDiagonalToConsider, diagonalPath - 1);
+          }
+          if (newPos + 1 >= newLen) {
+            minDiagonalToConsider = Math.max(minDiagonalToConsider, diagonalPath + 1);
+          }
+        }
+      }
+      editLength++;
+    }
+    if (callback) {
+      (function exec() {
+        setTimeout(function() {
+          if (editLength > maxEditLength || Date.now() > abortAfterTimestamp) {
+            return callback();
+          }
+          if (!execEditLength()) {
+            exec();
+          }
+        }, 0);
+      })();
+    } else {
+      while (editLength <= maxEditLength && Date.now() <= abortAfterTimestamp) {
+        var ret = execEditLength();
+        if (ret) {
+          return ret;
+        }
+      }
+    }
+  },
+  addToPath: function addToPath(path, added, removed, oldPosInc) {
+    var last = path.lastComponent;
+    if (last && last.added === added && last.removed === removed) {
+      return {
+        oldPos: path.oldPos + oldPosInc,
+        lastComponent: {
+          count: last.count + 1,
+          added,
+          removed,
+          previousComponent: last.previousComponent
+        }
+      };
+    } else {
+      return {
+        oldPos: path.oldPos + oldPosInc,
+        lastComponent: {
+          count: 1,
+          added,
+          removed,
+          previousComponent: last
+        }
+      };
+    }
+  },
+  extractCommon: function extractCommon(basePath, newString, oldString, diagonalPath) {
+    var newLen = newString.length, oldLen = oldString.length, oldPos = basePath.oldPos, newPos = oldPos - diagonalPath, commonCount = 0;
+    while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(newString[newPos + 1], oldString[oldPos + 1])) {
+      newPos++;
+      oldPos++;
+      commonCount++;
+    }
+    if (commonCount) {
+      basePath.lastComponent = {
+        count: commonCount,
+        previousComponent: basePath.lastComponent
+      };
+    }
+    basePath.oldPos = oldPos;
+    return newPos;
+  },
+  equals: function equals(left, right) {
+    if (this.options.comparator) {
+      return this.options.comparator(left, right);
+    } else {
+      return left === right || this.options.ignoreCase && left.toLowerCase() === right.toLowerCase();
+    }
+  },
+  removeEmpty: function removeEmpty(array) {
+    var ret = [];
+    for (var i = 0; i < array.length; i++) {
+      if (array[i]) {
+        ret.push(array[i]);
+      }
+    }
+    return ret;
+  },
+  castInput: function castInput(value) {
+    return value;
+  },
+  tokenize: function tokenize(value) {
+    return value.split("");
+  },
+  join: function join(chars) {
+    return chars.join("");
+  }
+};
+function buildValues(diff2, lastComponent, newString, oldString, useLongestToken) {
+  var components = [];
+  var nextComponent;
+  while (lastComponent) {
+    components.push(lastComponent);
+    nextComponent = lastComponent.previousComponent;
+    delete lastComponent.previousComponent;
+    lastComponent = nextComponent;
+  }
+  components.reverse();
+  var componentPos = 0, componentLen = components.length, newPos = 0, oldPos = 0;
+  for (; componentPos < componentLen; componentPos++) {
+    var component = components[componentPos];
+    if (!component.removed) {
+      if (!component.added && useLongestToken) {
+        var value = newString.slice(newPos, newPos + component.count);
+        value = value.map(function(value2, i) {
+          var oldValue = oldString[oldPos + i];
+          return oldValue.length > value2.length ? oldValue : value2;
+        });
+        component.value = diff2.join(value);
+      } else {
+        component.value = diff2.join(newString.slice(newPos, newPos + component.count));
+      }
+      newPos += component.count;
+      if (!component.added) {
+        oldPos += component.count;
+      }
+    } else {
+      component.value = diff2.join(oldString.slice(oldPos, oldPos + component.count));
+      oldPos += component.count;
+      if (componentPos && components[componentPos - 1].added) {
+        var tmp = components[componentPos - 1];
+        components[componentPos - 1] = components[componentPos];
+        components[componentPos] = tmp;
+      }
+    }
+  }
+  var finalComponent = components[componentLen - 1];
+  if (componentLen > 1 && typeof finalComponent.value === "string" && (finalComponent.added || finalComponent.removed) && diff2.equals("", finalComponent.value)) {
+    components[componentLen - 2].value += finalComponent.value;
+    components.pop();
+  }
+  return components;
+}
+var characterDiff = new Diff();
+function generateOptions(options, defaults) {
+  if (typeof options === "function") {
+    defaults.callback = options;
+  } else if (options) {
+    for (var name in options) {
+      if (options.hasOwnProperty(name)) {
+        defaults[name] = options[name];
+      }
+    }
+  }
+  return defaults;
+}
+var extendedWordChars = /^[A-Za-z\xC0-\u02C6\u02C8-\u02D7\u02DE-\u02FF\u1E00-\u1EFF]+$/;
+var reWhitespace = /\S/;
+var wordDiff = new Diff();
+wordDiff.equals = function(left, right) {
+  if (this.options.ignoreCase) {
+    left = left.toLowerCase();
+    right = right.toLowerCase();
+  }
+  return left === right || this.options.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right);
+};
+wordDiff.tokenize = function(value) {
+  var tokens = value.split(/([^\S\r\n]+|[()[\]{}'"\r\n]|\b)/);
+  for (var i = 0; i < tokens.length - 1; i++) {
+    if (!tokens[i + 1] && tokens[i + 2] && extendedWordChars.test(tokens[i]) && extendedWordChars.test(tokens[i + 2])) {
+      tokens[i] += tokens[i + 2];
+      tokens.splice(i + 1, 2);
+      i--;
+    }
+  }
+  return tokens;
+};
+function diffWords(oldStr, newStr, options) {
+  options = generateOptions(options, {
+    ignoreWhitespace: true
   });
+  return wordDiff.diff(oldStr, newStr, options);
+}
+var lineDiff = new Diff();
+lineDiff.tokenize = function(value) {
+  if (this.options.stripTrailingCr) {
+    value = value.replace(/\r\n/g, "\n");
+  }
+  var retLines = [], linesAndNewlines = value.split(/(\n|\r\n)/);
+  if (!linesAndNewlines[linesAndNewlines.length - 1]) {
+    linesAndNewlines.pop();
+  }
+  for (var i = 0; i < linesAndNewlines.length; i++) {
+    var line = linesAndNewlines[i];
+    if (i % 2 && !this.options.newlineIsToken) {
+      retLines[retLines.length - 1] += line;
+    } else {
+      if (this.options.ignoreWhitespace) {
+        line = line.trim();
+      }
+      retLines.push(line);
+    }
+  }
+  return retLines;
+};
+var sentenceDiff = new Diff();
+sentenceDiff.tokenize = function(value) {
+  return value.split(/(\S.+?[.!?])(?=\s+|$)/);
+};
+var cssDiff = new Diff();
+cssDiff.tokenize = function(value) {
+  return value.split(/([{}:;,]|\s+)/);
+};
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function(obj2) {
+      return typeof obj2;
+    };
+  } else {
+    _typeof = function(obj2) {
+      return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+    };
+  }
+  return _typeof(obj);
+}
+var objectPrototypeToString = Object.prototype.toString;
+var jsonDiff = new Diff();
+jsonDiff.useLongestToken = true;
+jsonDiff.tokenize = lineDiff.tokenize;
+jsonDiff.castInput = function(value) {
+  var _this$options = this.options, undefinedReplacement = _this$options.undefinedReplacement, _this$options$stringi = _this$options.stringifyReplacer, stringifyReplacer = _this$options$stringi === void 0 ? function(k, v) {
+    return typeof v === "undefined" ? undefinedReplacement : v;
+  } : _this$options$stringi;
+  return typeof value === "string" ? value : JSON.stringify(canonicalize(value, null, null, stringifyReplacer), stringifyReplacer, "  ");
+};
+jsonDiff.equals = function(left, right) {
+  return Diff.prototype.equals.call(jsonDiff, left.replace(/,([\r\n])/g, "$1"), right.replace(/,([\r\n])/g, "$1"));
+};
+function canonicalize(obj, stack, replacementStack, replacer, key) {
+  stack = stack || [];
+  replacementStack = replacementStack || [];
+  if (replacer) {
+    obj = replacer(key, obj);
+  }
+  var i;
+  for (i = 0; i < stack.length; i += 1) {
+    if (stack[i] === obj) {
+      return replacementStack[i];
+    }
+  }
+  var canonicalizedObj;
+  if ("[object Array]" === objectPrototypeToString.call(obj)) {
+    stack.push(obj);
+    canonicalizedObj = new Array(obj.length);
+    replacementStack.push(canonicalizedObj);
+    for (i = 0; i < obj.length; i += 1) {
+      canonicalizedObj[i] = canonicalize(obj[i], stack, replacementStack, replacer, key);
+    }
+    stack.pop();
+    replacementStack.pop();
+    return canonicalizedObj;
+  }
+  if (obj && obj.toJSON) {
+    obj = obj.toJSON();
+  }
+  if (_typeof(obj) === "object" && obj !== null) {
+    stack.push(obj);
+    canonicalizedObj = {};
+    replacementStack.push(canonicalizedObj);
+    var sortedKeys = [], _key;
+    for (_key in obj) {
+      if (obj.hasOwnProperty(_key)) {
+        sortedKeys.push(_key);
+      }
+    }
+    sortedKeys.sort();
+    for (i = 0; i < sortedKeys.length; i += 1) {
+      _key = sortedKeys[i];
+      canonicalizedObj[_key] = canonicalize(obj[_key], stack, replacementStack, replacer, _key);
+    }
+    stack.pop();
+    replacementStack.pop();
+  } else {
+    canonicalizedObj = obj;
+  }
+  return canonicalizedObj;
+}
+var arrayDiff = new Diff();
+arrayDiff.tokenize = function(value) {
+  return value.slice();
+};
+arrayDiff.join = arrayDiff.removeEmpty = function(value) {
+  return value;
+};
+
+// src/lib/data-conversion/outilne-to-json.ts
+var addNewNode = (state2, level2, text2, root = 1) => {
+  state2.currentNode = {
+    content: text2,
+    children: []
+  };
+  for (const key of Object.keys(state2.currentParents)) {
+    const parentLevel = +key;
+    if (parentLevel >= level2) {
+      delete state2.currentParents[key];
+    }
+  }
+  if (level2 === root) {
+    state2.tree.push(state2.currentNode);
+  }
+  state2.currentParents[level2] = state2.currentNode;
+  const parent = state2.currentParents[level2 - 1];
+  if (parent) {
+    parent.children.push(state2.currentNode);
+  } else if (level2 > root)
+    throw new Error(`Item [${text2}] does not have a parent`);
+};
+var updateCurrentNode = (state2, text2) => {
+  if (state2.currentNode) {
+    if (state2.currentNode.content)
+      state2.currentNode.content += "\n";
+    state2.currentNode.content += text2;
+  } else if (text2.trim()) {
+    state2.currentNode = {
+      content: text2,
+      children: []
+    };
+    state2.tree.push(state2.currentNode);
+  }
+};
+var outlineToJson = (input) => {
+  const lines = input.split("\n");
+  const state2 = {
+    currentParents: {},
+    currentNode: null,
+    tree: []
+  };
+  for (const line of lines) {
+    if (parseDelimiter(line))
+      throw new Error("Outline has a section annotation");
+    const outlineMatch = line.match(/^(\t*)- (.*)/);
+    if (outlineMatch) {
+      const level2 = outlineMatch[1].length + 1;
+      addNewNode(state2, level2, outlineMatch[2]);
+    } else {
+      updateCurrentNode(state2, line.replace(/^\t* {2}|/g, ""));
+    }
+  }
+  return state2.tree;
+};
+
+// src/lib/data-conversion/helpers/find-highest-heading-level.ts
+var findHighestHeadingLevel = (lines) => {
+  return lines.reduce((acc, val) => {
+    const match = val.match(/^(#+) +(.*)$/);
+    if (match) {
+      const level2 = match[1].length;
+      if (level2 < acc)
+        acc = level2;
+    }
+    return acc;
+  }, 6);
+};
+
+// src/lib/data-conversion/headings-to-json.ts
+var headingsToJson = (input) => {
+  const lines = input.split("\n");
+  const highestHeadingLevel = findHighestHeadingLevel(lines);
+  const state2 = {
+    currentParents: {},
+    currentNode: null,
+    tree: []
+  };
+  for (const line of lines) {
+    if (parseDelimiter(line))
+      throw new Error("input has a section");
+    const match = line.match(/^(#+) (.+)/);
+    if (match) {
+      const level2 = match[1].length;
+      addNewNode(state2, level2, line, highestHeadingLevel);
+    } else {
+      updateCurrentNode(state2, line);
+    }
+  }
+  return state2.tree;
+};
+
+// src/lib/data-conversion/helpers/correct-headings.ts
+var correctHeadings = (markdown) => {
+  const lines = markdown.split("\n");
+  const headingRegex = /^(#+) +(.*)$/;
+  const highestHeadingLevel = findHighestHeadingLevel(lines);
+  const state2 = {
+    previousLevel: 0,
+    previousCorrectedLevel: 0,
+    previousLevels: []
+  };
+  const updatedLines = [];
+  for (const line of lines) {
+    const match = line.match(headingRegex);
+    let updatedLine = null;
+    if (match) {
+      const level2 = match[1].length;
+      const text2 = match[2];
+      let correctedLevel;
+      const parentIndex = state2.previousLevels.findLastIndex(
+        (l) => l.level < level2
+      );
+      const parent = state2.previousLevels[parentIndex];
+      if (!parent) {
+        correctedLevel = highestHeadingLevel;
+      } else if (level2 > state2.previousLevel) {
+        correctedLevel = state2.previousCorrectedLevel + 1;
+      } else if (level2 < state2.previousLevel) {
+        correctedLevel = Math.min(
+          highestHeadingLevel,
+          level2,
+          state2.previousCorrectedLevel - 1
+        );
+        if (parent) {
+          if (correctedLevel <= parent.level && level2 > parent.level) {
+            correctedLevel = parent.correctedLevel + 1;
+          }
+        }
+      } else if (level2 === state2.previousLevel) {
+        correctedLevel = state2.previousCorrectedLevel;
+      } else {
+        correctedLevel = level2;
+      }
+      updatedLine = `${"#".repeat(correctedLevel)} ${text2}`;
+      state2.previousLevel = level2;
+      state2.previousCorrectedLevel = correctedLevel;
+      state2.previousLevels.push({ level: level2, correctedLevel });
+    }
+    if (updatedLine)
+      updatedLines.push(updatedLine);
+    else
+      updatedLines.push(line);
+  }
+  return updatedLines.join("\n");
+};
+
+// src/lib/data-conversion/headings-to-sections.ts
+var headingsToSections = (input) => {
+  const tree = headingsToJson(correctHeadings(input));
+  if (tree.length === 1 && tree[0].children.length === 0)
+    return input;
+  return jsonToSections(tree);
+};
+
+// src/lib/data-conversion/paragraphs-to-sections.ts
+var splitByParagraph = (text2) => {
+  return text2.split(/\n\s*\n/);
+};
+var paragraphsToSections = (input) => {
+  const paragraphs = splitByParagraph(input);
+  if (paragraphs.length === 1)
+    return input;
+  const tree = paragraphs.map((p) => ({
+    content: p,
+    children: []
+  }));
+  return jsonToSections(tree);
+};
+
+// src/lib/data-conversion/outline-to-sections.ts
+var outlineToSections = (input) => {
+  const tree = outlineToJson(input);
+  if (tree.length === 1 && tree[0].children.length === 0)
+    return input;
+  return jsonToSections(tree);
+};
+
+// src/stores/document/reducers/split-node/helpers/split-text.ts
+var splitText = (text2, mode) => {
+  if (mode === "headings") {
+    return headingsToSections(text2);
+  } else if (mode === "paragraphs") {
+    return paragraphsToSections(text2);
+  } else {
+    return outlineToSections(text2);
+  }
+};
+
+// src/view/modals/split-node-modal/helpers/map-content.ts
+var escapeHtmlComment = (text2) => {
+  return text2.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+};
+var makeTabsVisible = (text2) => {
+  return text2.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+};
+var makeNewlinesVisible = (text2) => {
+  return text2.replace(/\n/g, "<br>");
+};
+var mapContent = (text2, mode) => {
+  let newContent = text2;
+  if (mode) {
+    try {
+      newContent = splitText(text2, mode);
+    } catch (e) {
+      onPluginError(e, "command", { text: text2, mode });
+    }
+  }
+  const differences = diffWords(text2, newContent);
+  return differences.map((part) => {
+    const style = part.added ? "color:green; background-color:lightgreen" : part.removed ? "color:red; background-color:#ffdddd" : "color: grey";
+    const escapedComments = escapeHtmlComment(part.value);
+    const visibleTabs = makeTabsVisible(escapedComments);
+    const value = makeNewlinesVisible(visibleTabs);
+    return `<span style="${style}">${value}</span>`;
+  }).join("");
+};
+
+// src/lib/format-detection/has-n-paragraph.ts
+var hasNParagraph = (text2, n = 2) => splitByParagraph(text2).length >= n;
+
+// src/view/modals/split-node-modal/split-node-modal.ts
+var SplitNodeModal = class extends import_obsidian6.Modal {
+  constructor(props) {
+    super(props.plugin.app);
+    this.props = props;
+    this.subscriptions = /* @__PURE__ */ new Set();
+    this.open = () => {
+      this.setTitle("Choose how to split this card");
+      this.initState();
+      new modal_content_default({
+        target: this.contentEl,
+        props: {
+          state: this.state,
+          props: this.props
+        }
+      });
+      const promise = new Promise((resolve) => {
+        this.resolve = resolve;
+      });
+      super.open();
+      return promise;
+    };
+    this.close = () => {
+      this.resolve(void 0);
+      super.close();
+      for (const unsub of this.subscriptions) {
+        unsub();
+      }
+    };
+    this.initState = () => {
+      const content = this.props.nodeContent;
+      this.state = {
+        content: writable(content),
+        mode: writable(null),
+        disabledModes: /* @__PURE__ */ new Set()
+      };
+      const hasHeadings = hasNHeadings(content);
+      const _isOutline = isOutline(content);
+      const hasParagraphs = hasNParagraph(content);
+      if (!hasHeadings) {
+        this.state.disabledModes.add("headings");
+      }
+      if (!_isOutline) {
+        this.state.disabledModes.add("outline");
+      }
+      if (!hasParagraphs) {
+        this.state.disabledModes.add("paragraphs");
+      }
+      if (hasHeadings) {
+        this.state.mode.set("headings");
+      } else if (_isOutline) {
+        this.state.mode.set("outline");
+      } else if (hasParagraphs) {
+        this.state.mode.set("paragraphs");
+      }
+      const unsubFromMod = this.state.mode.subscribe((mode) => {
+        if (mode)
+          this.state.content.set(mapContent(content, mode));
+      });
+      this.state.content.set(mapContent(content, get_store_value(this.state.mode)));
+      this.subscriptions.add(unsubFromMod);
+    };
+  }
+};
+
+// src/view/modals/split-node-modal/open-split-node-modal.ts
+var openSplitNodeModal = async (view) => {
+  const activeNode = view.viewStore.getValue().document.activeNode;
+  if (!activeNode)
+    return;
+  const nodeContent = view.documentStore.getValue().document.content[activeNode].content;
+  const modal = new SplitNodeModal({
+    plugin: view.plugin,
+    callbacks: {
+      accept: () => {
+        modal.close();
+        const newContent = get_store_value(modal.state.content);
+        const mode = get_store_value(modal.state.mode);
+        if (mode && newContent !== nodeContent) {
+          view.documentStore.dispatch({
+            type: "DOCUMENT/SPLIT_NODE",
+            payload: {
+              target: activeNode,
+              mode
+            }
+          });
+        }
+      },
+      reject: () => {
+        modal.close();
+      }
+    },
+    nodeContent
+  });
+  await modal.open();
 };
 
 // src/helpers/load-custom-icons.ts
-var import_obsidian6 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 var svgWrapper = (innerSVG, mode = "stroke") => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="svg-icon" ${mode === "fill" ? 'stroke="transparent" fill="currentColor"' : 'stroke="currentColor" fill="transparent"'}> ${innerSVG.trim().replace(/\n/g, "")}</svg>`;
 var cards = {
   name: "lineage-cards",
@@ -12210,63 +13397,136 @@ var split = {
 var customIcons = { cards, split };
 var loadCustomIcons = () => {
   for (const icon of Object.values(customIcons)) {
-    (0, import_obsidian6.addIcon)(icon.name, svgWrapper(icon.svg, icon.mode));
+    (0, import_obsidian7.addIcon)(icon.name, svgWrapper(icon.svg, icon.mode));
   }
 };
 
-// src/view/actions/context-menu/helpers/flags/has-heading.ts
-var hasHeading = (input) => {
-  const lines = input.split("\n");
-  for (const line of lines) {
-    if (/^#+\s+/.test(line)) {
-      return true;
+// src/view/actions/context-menu/card-context-menu/helpers/insert-block-id.ts
+var getExistingBlockId = (lines) => {
+  const reversed = [...lines].reverse();
+  for (let line of reversed) {
+    line = line.trim();
+    const match = /\s+\^([a-zA-Z0-9]{4,})$/.exec(line);
+    if (match) {
+      return match[1];
     }
   }
-  return false;
 };
-
-// src/view/actions/context-menu/helpers/flags/has-bullet-list.ts
-var hasBulletList = (input) => {
-  const lines = input.split("\n");
-  for (const line of lines) {
-    if (/^\t*- /.test(line)) {
-      return true;
+var generateBlockId = () => Math.random().toString(36).substring(2, 8);
+var insertBlockId = (text2, __id__) => {
+  const lines = text2.trimEnd().split("\n");
+  const existingId = getExistingBlockId(lines);
+  if (existingId) {
+    return {
+      blockId: existingId,
+      text: text2
+    };
+  } else {
+    const lastLine = lines[lines.length - 1];
+    let blockId = null;
+    if (lastLine) {
+      blockId = __id__ || generateBlockId();
+      lines[lines.length - 1] = lines[lines.length - 1] + ` ^${blockId}`;
+      return {
+        blockId,
+        text: lines.join("\n")
+      };
     }
   }
-  return false;
 };
 
-// src/view/actions/context-menu/helpers/show-card-context-menu.ts
+// src/view/actions/context-menu/card-context-menu/helpers/copy-link-to-block.ts
+var import_obsidian8 = require("obsidian");
+var copyLinkToBlock = async (view) => {
+  const file = view.file;
+  if (!file)
+    return;
+  const activeNode = view.viewStore.getValue().document.activeNode;
+  const documentState = view.documentStore.getValue();
+  const content = documentState.document.content[activeNode];
+  const text2 = content?.content;
+  const output = insertBlockId(text2);
+  if (output) {
+    const fileName = file.basename;
+    view.documentStore.dispatch({
+      type: "DOCUMENT/SET_NODE_CONTENT",
+      payload: {
+        content: output.text,
+        nodeId: activeNode
+      }
+    });
+    const link = `[[${fileName}#^${output.blockId}]]`;
+    await navigator.clipboard.writeText(link);
+    new import_obsidian8.Notice("Link copied to clipboard");
+  } else {
+    new import_obsidian8.Notice("Could not copy link to clipboard");
+  }
+};
+
+// src/lib/tree-utils/find/find-node-column.ts
+var findNodeColumn = (columns, nodeId) => {
+  for (let i = 0; i < columns.length; i++) {
+    const column = columns[i];
+    for (const group of column.groups) {
+      if (group.nodes.find((n) => n === nodeId))
+        return i;
+    }
+  }
+  return -1;
+};
+
+// src/view/actions/context-menu/card-context-menu/helpers/export-column.ts
+var import_obsidian9 = require("obsidian");
+var exportColumn = async (view) => {
+  const activeNode = view.viewStore.getValue().document.activeNode;
+  invariant(activeNode);
+  const document2 = view.documentStore.getValue().document;
+  const columnIndex = findNodeColumn(document2.columns, activeNode);
+  const column = document2.columns[columnIndex];
+  invariant(column);
+  const nodes = column.groups.map((g) => g.nodes).flat();
+  const content = nodes.map((n) => document2.content[n].content);
+  const text2 = content.filter((c) => c.trim().length > 0).join("\n\n");
+  if (!text2.trim()) {
+    new import_obsidian9.Notice("This column is empty");
+    return;
+  }
+  const file = view.file;
+  invariant(file);
+  invariant(file.parent);
+  const newFile = await createNewFile(
+    view.plugin,
+    file.parent,
+    text2,
+    `${file.basename} - column ${columnIndex + 1}`
+  );
+  await openFile(view.plugin, newFile, "split");
+};
+
+// src/view/actions/context-menu/card-context-menu/show-card-context-menu.ts
 var showCardContextMenu = (event, view) => {
-  const menu = new import_obsidian7.Menu();
+  const menu = new import_obsidian10.Menu();
+  const multipleNodesAreSelected = view.viewStore.getValue().document.selectedNodes.size > 1;
   menu.addItem(
-    (item) => item.setTitle("Extract").setIcon("file-symlink").onClick(() => {
-      extractBranch(view);
+    (item) => item.setTitle("Split card").setIcon(customIcons.split.name).onClick(() => {
+      openSplitNodeModal(view);
     })
-  );
-  const input = view.documentStore.getValue().document.content[view.viewStore.getValue().document.activeNode]?.content || "";
-  menu.addSeparator();
-  const _hasHeading = hasHeading(input);
-  const _hasBulletList = !_hasHeading && hasBulletList(input);
-  menu.addItem(
-    (item) => item.setTitle("Split by headings").setIcon(customIcons.split.name).onClick(() => {
-      splitNode(view, "heading");
-    }).setDisabled(!_hasHeading)
-  );
-  menu.addItem(
-    (item) => item.setTitle("Split outline").setIcon(customIcons.split.name).onClick(() => {
-      splitNode(view, "outline");
-    }).setDisabled(!_hasBulletList)
   );
   menu.addSeparator();
   menu.addItem(
     (item) => item.setTitle("Merge with the card above").setIcon("merge").onClick(() => {
       mergeNode(view, "up");
-    })
+    }).setDisabled(multipleNodesAreSelected)
   );
   menu.addItem(
     (item) => item.setTitle("Merge with the card below").setIcon("merge").onClick(() => {
       mergeNode(view, "down");
+    }).setDisabled(multipleNodesAreSelected)
+  );
+  menu.addSeparator();
+  menu.addItem(
+    (item) => item.setTitle("Copy link to block").setIcon("links-coming-in").onClick(() => {
+      copyLinkToBlock(view);
     })
   );
   menu.addSeparator();
@@ -12285,27 +13545,218 @@ var showCardContextMenu = (event, view) => {
       pasteNode(view);
     })
   );
+  menu.addSeparator();
+  menu.addItem(
+    (item) => item.setTitle("Extract branch").setIcon(customIcons.cards.name).onClick(() => {
+      extractBranch(view);
+    }).setDisabled(multipleNodesAreSelected)
+  );
+  menu.addItem(
+    (item) => item.setTitle("Export column").setIcon("file-text").onClick(() => {
+      exportColumn(view);
+    }).setDisabled(multipleNodesAreSelected)
+  );
+  menu.showAtMouseEvent(event);
+};
+
+// src/view/actions/context-menu/card-context-menu/card-context-menu-predicate.ts
+var cardContextMenuPredicate = (e) => {
+  const target = e.target;
+  return !target.hasClass("drag-handle") && Boolean(target.closest(".active-node.node-border--active"));
+};
+
+// src/view/actions/context-menu/view-context-menu/view-context-menu-predicate.ts
+var viewContextMenuPredicate = (e) => {
+  const target = e.target;
+  return target.hasClass("column-buffer") || target.hasClass("columns") || target.hasClass("columns-container");
+};
+
+// src/view/actions/context-menu/view-context-menu/show-view-context-menu.ts
+var import_obsidian11 = require("obsidian");
+
+// src/lib/data-conversion/sections-to-json.ts
+var depthLevel = (number) => {
+  if (number.includes(".")) {
+    return number.split(".").length;
+  } else
+    return /\d+/.test(number) ? 1 : 0;
+};
+var trimCurrentNode = (node) => {
+  if (node) {
+    node.content = node.content.trim();
+  }
+};
+var sectionsToJson = (text2) => {
+  const lines = text2.split("\n");
+  const map = {};
+  const tree = [];
+  let currentNode = null;
+  let currentParentNumber = "";
+  for (const line of lines) {
+    const sectionNumber = parseDelimiter(line);
+    if (sectionNumber) {
+      const [parent, , full] = sectionNumber;
+      const isASibling = parent === currentParentNumber;
+      const newNode = {
+        content: "",
+        children: []
+      };
+      map[full] = newNode;
+      if (isASibling) {
+        if (currentNode)
+          trimCurrentNode(currentNode);
+        const parentNode = map[parent];
+        if (parentNode) {
+          parentNode.children.push(newNode);
+        } else {
+          tree.push(newNode);
+        }
+        currentNode = newNode;
+      } else {
+        const isChild = depthLevel(parent) > depthLevel(currentParentNumber);
+        if (isChild) {
+          if (!currentNode) {
+            throw new Error(lang.error_parent_not_found(full));
+          }
+          trimCurrentNode(currentNode);
+          currentNode.children.push(newNode);
+          currentNode = newNode;
+        } else {
+          if (!parent) {
+            if (currentNode)
+              trimCurrentNode(currentNode);
+            tree.push(newNode);
+            currentNode = newNode;
+          } else {
+            const parentNode = map[parent];
+            if (!parentNode) {
+              throw new Error(lang.error_parent_not_found(full));
+            }
+            if (currentNode)
+              trimCurrentNode(currentNode);
+            parentNode.children.push(newNode);
+            currentNode = newNode;
+          }
+        }
+      }
+      currentParentNumber = parent;
+    } else {
+      if (currentNode) {
+        if (currentNode.content)
+          currentNode.content += "\n";
+        currentNode.content += line;
+      } else if (line.trim()) {
+        currentNode = {
+          content: line,
+          children: []
+        };
+        tree.push(currentNode);
+      }
+    }
+  }
+  return tree;
+};
+
+// src/lib/data-conversion/json-to-text.ts
+var jsonToText = (nodes) => {
+  return jsonToSections(nodes, void 0, void 0, false);
+};
+
+// src/obsidian/commands/helpers/export-document/prepare-exported-document.ts
+var prepareExportedDocument = (fileData, basename, format2) => {
+  const { data, frontmatter } = extractFrontmatter(fileData);
+  const tree = format2 === "outline" ? outlineToJson(data) : sectionsToJson(data);
+  if (tree.length < 2 && tree[0].children.length == 0) {
+    throw new Error(`File ${basename} does not appear to be a tree`);
+  }
+  return (frontmatter ? frontmatter + "\n" : "") + jsonToText(tree);
+};
+
+// src/obsidian/commands/helpers/export-document/export-document.ts
+var exportDocument = async (view) => {
+  try {
+    const file = view.file;
+    if (!file)
+      return;
+    if (!file.parent)
+      return;
+    const fileData = await view.plugin.app.vault.read(file);
+    const format2 = getDocumentFormat(view);
+    const output = prepareExportedDocument(fileData, file.basename, format2);
+    const newFile = await createNewFile(
+      view.plugin,
+      file.parent,
+      output,
+      file.basename
+    );
+    if (newFile) {
+      await openFile(view.plugin, newFile, "split");
+    }
+  } catch (e) {
+    onPluginError(e, "command", { type: "export-document" });
+  }
+};
+
+// src/view/actions/context-menu/view-context-menu/show-view-context-menu.ts
+var showViewContextMenu = (event, view) => {
+  const file = view.file;
+  if (!file)
+    return;
+  const menu = new import_obsidian11.Menu();
+  const format2 = getDocumentFormat(view);
+  const isOutline2 = format2 === "outline";
+  const _hasHeading = hasNHeadings(view.data, 1);
+  menu.addItem(
+    (item) => item.setTitle(lang.format_headings).setIcon("heading-1").onClick(() => {
+      saveNodeContent(view);
+      view.documentStore.dispatch({
+        type: "DOCUMENT/FORMAT_HEADINGS"
+      });
+    }).setDisabled(!_hasHeading)
+  );
+  menu.addSeparator();
+  menu.addItem(
+    (item) => item.setTitle(lang.change_format_to_document).setIcon("file-cog").onClick(() => {
+      setDocumentFormat(view.plugin, file.path, "sections");
+    }).setChecked(!isOutline2)
+  );
+  menu.addItem(
+    (item) => item.setTitle(lang.change_format_to_outline).setIcon("file-cog").onClick(() => {
+      setDocumentFormat(view.plugin, file.path, "outline");
+    }).setChecked(isOutline2)
+  );
+  menu.addSeparator();
+  menu.addItem(
+    (item) => item.setTitle(lang.export_document).setIcon("file-symlink").onClick(() => {
+      exportDocument(view);
+    })
+  );
   menu.showAtMouseEvent(event);
 };
 
 // src/view/actions/context-menu/context-menu.ts
 var contextMenu = (element2, view) => {
-  const predicate = (e) => {
-    const target = e.target;
-    return !target.hasClass("drag-handle") && Boolean(target.closest(".active-node.node-border--active"));
-  };
   const listener = (e) => {
-    if (predicate(e)) {
+    if (cardContextMenuPredicate(e)) {
       if (e instanceof MouseEvent)
         showCardContextMenu(e, view);
       else
         showCardContextMenu(new MouseEvent("contextmenu", e), view);
+    } else if (viewContextMenuPredicate(e)) {
+      if (e instanceof MouseEvent)
+        showViewContextMenu(e, view);
+      else
+        showViewContextMenu(new MouseEvent("contextmenu", e), view);
     }
   };
   element2.addEventListener("contextmenu", listener);
   let unsubFromLongPress = null;
-  if (import_obsidian8.Platform.isMobile) {
-    unsubFromLongPress = onLongPress(element2, listener, predicate);
+  if (import_obsidian12.Platform.isMobile) {
+    unsubFromLongPress = onLongPress(
+      element2,
+      listener,
+      cardContextMenuPredicate
+    );
   }
   return {
     destroy: () => {
@@ -12334,13 +13785,16 @@ var closeModalsWhenClickingOutside = (element2, view) => {
   };
 };
 
+// src/stores/view/derived/selected-nodes-store.ts
+var selectedNodesStore = (view) => derived(view.viewStore, (state2) => state2.document.selectedNodes);
+
 // src/view/components/container/container.svelte
-function add_css11(target) {
-  append_styles(target, "svelte-135hnko", ":root{--container-left-padding:100px}.columns-container.svelte-135hnko{position:relative;flex:1;height:100%;width:100%;display:flex;align-items:center;justify-content:start;padding-left:var(--container-left-padding);overflow-y:hidden;overflow-x:auto}.is-mobile{--container-left-padding:10px}.columns.svelte-135hnko{display:flex;align-items:center;width:100%}.hide-scrollbars.svelte-135hnko{--scrollbar-thumb-bg:transparent;--scrollbar-active-thumb-bg:transparent;--scrollbar-bg:transparent}.hide-scrollbars.svelte-135hnko::-webkit-scrollbar{display:none}.limit-card-height.svelte-135hnko{& .preview-container {\n            max-height: 65vh;\n        }}");
+function add_css14(target) {
+  append_styles(target, "svelte-ttmvm9", ":root{--container-left-padding:100px}.columns-container.svelte-ttmvm9{position:relative;flex:1;height:100%;width:100%;display:flex;align-items:center;justify-content:start;padding-left:var(--container-left-padding);overflow-y:hidden;overflow-x:auto}.is-mobile{--container-left-padding:10px}.columns.svelte-ttmvm9{display:flex;align-items:center;width:100%}.hide-scrollbars.svelte-ttmvm9{--scrollbar-thumb-bg:transparent;--scrollbar-active-thumb-bg:transparent;--scrollbar-bg:transparent}.hide-scrollbars.svelte-ttmvm9::-webkit-scrollbar{display:none}.limit-card-height.svelte-ttmvm9{& .preview-container {\n            max-height: 65vh;\n        };& .editor-container {\n            max-height: 65vh;\n        }}");
 }
-function get_each_context4(ctx, list, i) {
+function get_each_context5(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[20] = list[i];
+  child_ctx[22] = list[i];
   return child_ctx;
 }
 function create_if_block_14(ctx) {
@@ -12370,7 +13824,7 @@ function create_if_block_14(ctx) {
     }
   };
 }
-function create_each_block4(key_1, ctx) {
+function create_each_block5(key_1, ctx) {
   let first;
   let column_1;
   let current;
@@ -12378,7 +13832,7 @@ function create_each_block4(key_1, ctx) {
     props: {
       columnId: (
         /*column*/
-        ctx[20].id
+        ctx[22].id
       ),
       dndChildGroups: (
         /*$dnd*/
@@ -12423,6 +13877,10 @@ function create_each_block4(key_1, ctx) {
       idSection: (
         /*$idSection*/
         ctx[9]
+      ),
+      selectedNodes: (
+        /*$selectedNodes*/
+        ctx[10]
       )
     }
   });
@@ -12445,7 +13903,7 @@ function create_each_block4(key_1, ctx) {
       if (dirty & /*$columns*/
       16)
         column_1_changes.columnId = /*column*/
-        ctx[20].id;
+        ctx[22].id;
       if (dirty & /*$dnd*/
       32)
         column_1_changes.dndChildGroups = /*$dnd*/
@@ -12490,6 +13948,10 @@ function create_each_block4(key_1, ctx) {
       512)
         column_1_changes.idSection = /*$idSection*/
         ctx[9];
+      if (dirty & /*$selectedNodes*/
+      1024)
+        column_1_changes.selectedNodes = /*$selectedNodes*/
+        ctx[10];
       column_1.$set(column_1_changes);
     },
     i(local) {
@@ -12530,7 +13992,7 @@ function create_else_block3(ctx) {
     }
   };
 }
-function create_if_block7(ctx) {
+function create_if_block8(ctx) {
   let columnsbuffer;
   let current;
   columnsbuffer = new columns_buffer_default({});
@@ -12557,7 +14019,7 @@ function create_if_block7(ctx) {
     }
   };
 }
-function create_fragment53(ctx) {
+function create_fragment55(ctx) {
   let div1;
   let div0;
   let t0;
@@ -12584,14 +14046,14 @@ function create_fragment53(ctx) {
   );
   const get_key = (ctx2) => (
     /*column*/
-    ctx2[20].id
+    ctx2[22].id
   );
   for (let i = 0; i < each_value.length; i += 1) {
-    let child_ctx = get_each_context4(ctx, each_value, i);
+    let child_ctx = get_each_context5(ctx, each_value, i);
     let key = get_key(child_ctx);
-    each_1_lookup.set(key, each_blocks[i] = create_each_block4(key, child_ctx));
+    each_1_lookup.set(key, each_blocks[i] = create_each_block5(key, child_ctx));
   }
-  const if_block_creators = [create_if_block7, create_else_block3];
+  const if_block_creators = [create_if_block8, create_else_block3];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -12616,11 +14078,11 @@ function create_fragment53(ctx) {
       }
       t1 = space();
       if_block1.c();
-      attr(div0, "class", "columns svelte-135hnko");
+      attr(div0, "class", "columns svelte-ttmvm9");
       attr(div1, "class", div1_class_value = null_to_empty("columns-container " + /*$scrolling*/
       (ctx[2] === "fixed-position" || /*$scrolling*/
       ctx[2] === "keep-active-card-at-center" ? "hide-scrollbars" : "") + /*$limitPreviewHeight*/
-      (ctx[3] ? " limit-card-height" : "")) + " svelte-135hnko");
+      (ctx[3] ? " limit-card-height" : "")) + " svelte-ttmvm9");
       attr(div1, "id", "columns-container");
       attr(div1, "tabindex", "0");
     },
@@ -12644,13 +14106,13 @@ function create_fragment53(ctx) {
             null,
             div1,
             /*view*/
-            ctx[10]
+            ctx[11]
           )),
           action_destroyer(contextMenu_action = contextMenu.call(
             null,
             div1,
             /*view*/
-            ctx[10]
+            ctx[11]
           )),
           action_destroyer(scrollOnDndX_action = scrollOnDndX.call(null, div1))
         ];
@@ -12681,14 +14143,14 @@ function create_fragment53(ctx) {
         });
         check_outros();
       }
-      if (dirty & /*$columns, $dnd, parentNodes, $activeBranch, $activeNode, $editing, $search, $idSection*/
-      1011) {
+      if (dirty & /*$columns, $dnd, parentNodes, $activeBranch, $activeNode, $editing, $search, $idSection, $selectedNodes*/
+      2035) {
         each_value = ensure_array_like(
           /*$columns*/
           ctx2[4]
         );
         group_outros();
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div0, outro_and_destroy_block, create_each_block4, t1, get_each_context4);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div0, outro_and_destroy_block, create_each_block5, t1, get_each_context5);
         check_outros();
       }
       let previous_block_index = current_block_type_index;
@@ -12712,7 +14174,7 @@ function create_fragment53(ctx) {
       12 && div1_class_value !== (div1_class_value = null_to_empty("columns-container " + /*$scrolling*/
       (ctx2[2] === "fixed-position" || /*$scrolling*/
       ctx2[2] === "keep-active-card-at-center" ? "hide-scrollbars" : "") + /*$limitPreviewHeight*/
-      (ctx2[3] ? " limit-card-height" : "")) + " svelte-135hnko")) {
+      (ctx2[3] ? " limit-card-height" : "")) + " svelte-ttmvm9")) {
         attr(div1, "class", div1_class_value);
       }
     },
@@ -12749,7 +14211,7 @@ function create_fragment53(ctx) {
     }
   };
 }
-function instance52($$self, $$props, $$invalidate) {
+function instance54($$self, $$props, $$invalidate) {
   let $activeBranch;
   let $scrolling;
   let $limitPreviewHeight;
@@ -12759,6 +14221,7 @@ function instance52($$self, $$props, $$invalidate) {
   let $editing;
   let $search;
   let $idSection;
+  let $selectedNodes;
   const view = getView();
   const columns = columnsStore(view);
   component_subscribe($$self, columns, (value) => $$invalidate(4, $columns = value));
@@ -12770,6 +14233,8 @@ function instance52($$self, $$props, $$invalidate) {
   component_subscribe($$self, activeBranch, (value) => $$invalidate(0, $activeBranch = value));
   const activeNode = activeNodeStore(view);
   component_subscribe($$self, activeNode, (value) => $$invalidate(6, $activeNode = value));
+  const selectedNodes = selectedNodesStore(view);
+  component_subscribe($$self, selectedNodes, (value) => $$invalidate(10, $selectedNodes = value));
   const editing = documentStateStore(view);
   component_subscribe($$self, editing, (value) => $$invalidate(7, $editing = value));
   const search2 = searchStore(view);
@@ -12797,12 +14262,14 @@ function instance52($$self, $$props, $$invalidate) {
     $editing,
     $search,
     $idSection,
+    $selectedNodes,
     view,
     columns,
     scrolling,
     dnd,
     activeBranch,
     activeNode,
+    selectedNodes,
     editing,
     search2,
     limitPreviewHeight,
@@ -12812,16 +14279,16 @@ function instance52($$self, $$props, $$invalidate) {
 var Container = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance52, create_fragment53, safe_not_equal, {}, add_css11);
+    init(this, options, instance54, create_fragment55, safe_not_equal, {}, add_css14);
   }
 };
 var container_default = Container;
 
 // src/view/components/container/breadcrumbs/breadcrumbs-item.svelte
-function add_css12(target) {
+function add_css15(target) {
   append_styles(target, "svelte-1q9w33n", ".separator.svelte-1q9w33n{padding:2px 1px;color:var(--text-faint);min-width:8px}.breadcrumbs-item.svelte-1q9w33n{height:30px;border-bottom:1px solid var(--background-modifier-border);color:var(--text-muted);background-color:var(--interactive-normal);cursor:pointer;padding:2px 4px;border-radius:var(--radius-s);max-width:350px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;line-height:25px}.breadcrumbs-item.svelte-1q9w33n:hover{background-color:var(--interactive-hover)}.breadcrumbs-item.svelte-1q9w33n:last-child{border-bottom:none}.section-number.svelte-1q9w33n{font-style:italic;color:var(--text-faint)}");
 }
-function create_if_block8(ctx) {
+function create_if_block9(ctx) {
   let span;
   return {
     c() {
@@ -12839,7 +14306,7 @@ function create_if_block8(ctx) {
     }
   };
 }
-function create_fragment54(ctx) {
+function create_fragment56(ctx) {
   let t0;
   let span;
   let t1_value = (
@@ -12854,7 +14321,7 @@ function create_fragment54(ctx) {
   let dispose;
   let if_block = (
     /*index*/
-    ctx[0] > 0 && create_if_block8(ctx)
+    ctx[0] > 0 && create_if_block9(ctx)
   );
   return {
     c() {
@@ -12893,7 +14360,7 @@ function create_fragment54(ctx) {
       ) {
         if (if_block) {
         } else {
-          if_block = create_if_block8(ctx2);
+          if_block = create_if_block9(ctx2);
           if_block.c();
           if_block.m(t0.parentNode, t0);
         }
@@ -12932,7 +14399,7 @@ function create_fragment54(ctx) {
     }
   };
 }
-function instance53($$self, $$props, $$invalidate) {
+function instance55($$self, $$props, $$invalidate) {
   let { parentId } = $$props;
   let { index } = $$props;
   let { section } = $$props;
@@ -12963,8 +14430,8 @@ var Breadcrumbs_item = class extends SvelteComponent {
     init(
       this,
       options,
-      instance53,
-      create_fragment54,
+      instance55,
+      create_fragment56,
       safe_not_equal,
       {
         parentId: 4,
@@ -12972,23 +14439,23 @@ var Breadcrumbs_item = class extends SvelteComponent {
         section: 1,
         content: 2
       },
-      add_css12
+      add_css15
     );
   }
 };
 var breadcrumbs_item_default = Breadcrumbs_item;
 
 // src/view/components/container/breadcrumbs/breadcrumbs.svelte
-function add_css13(target) {
+function add_css16(target) {
   append_styles(target, "svelte-576atj", ".breadcrumbs-container.svelte-576atj{z-index:var(--z-index-breadcrumbs);left:var(--size-4-2);bottom:var(--size-4-2);display:flex;position:absolute;max-width:calc(100% - var(--size-4-2) * 2)}.breadcrumbs.svelte-576atj{display:flex;align-items:center;justify-content:center;border-radius:var(--radius-s);background-color:var(--interactive-normal);box-shadow:var(--input-shadow);max-width:100%;overflow:auto;font-size:var(--file-header-font-size);color:var(--text-muted);gap:0}");
 }
-function get_each_context5(ctx, list, i) {
+function get_each_context6(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[7] = list[i];
   child_ctx[9] = i;
   return child_ctx;
 }
-function create_each_block5(key_1, ctx) {
+function create_each_block6(key_1, ctx) {
   let first;
   let item;
   let current;
@@ -13076,7 +14543,7 @@ function create_each_block5(key_1, ctx) {
     }
   };
 }
-function create_fragment55(ctx) {
+function create_fragment57(ctx) {
   let div1;
   let div0;
   let each_blocks = [];
@@ -13091,9 +14558,9 @@ function create_fragment55(ctx) {
     ctx2[7]
   );
   for (let i = 0; i < each_value.length; i += 1) {
-    let child_ctx = get_each_context5(ctx, each_value, i);
+    let child_ctx = get_each_context6(ctx, each_value, i);
     let key = get_key(child_ctx);
-    each_1_lookup.set(key, each_blocks[i] = create_each_block5(key, child_ctx));
+    each_1_lookup.set(key, each_blocks[i] = create_each_block6(key, child_ctx));
   }
   return {
     c() {
@@ -13123,7 +14590,7 @@ function create_fragment55(ctx) {
           ctx2[0].sortedParentNodes
         );
         group_outros();
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div0, outro_and_destroy_block, create_each_block5, null, get_each_context5);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div0, outro_and_destroy_block, create_each_block6, null, get_each_context6);
         check_outros();
       }
     },
@@ -13151,7 +14618,7 @@ function create_fragment55(ctx) {
     }
   };
 }
-function instance54($$self, $$props, $$invalidate) {
+function instance56($$self, $$props, $$invalidate) {
   let $activeBranch;
   let $contents;
   let $sections;
@@ -13167,16 +14634,16 @@ function instance54($$self, $$props, $$invalidate) {
 var Breadcrumbs = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance54, create_fragment55, safe_not_equal, {}, add_css13);
+    init(this, options, instance56, create_fragment57, safe_not_equal, {}, add_css16);
   }
 };
 var breadcrumbs_default = Breadcrumbs;
 
 // src/stores/view/derived/navigation-history-store.ts
-var navigationHistoryStore = (view) => derived(view.viewStore, (state) => state.navigationHistory);
+var navigationHistoryStore = (view) => derived(view.viewStore, (state2) => state2.navigationHistory);
 
 // src/view/components/container/toolbar/components/navigation-buttons.svelte
-function add_css14(target) {
+function add_css17(target) {
   append_styles(target, "svelte-13yyztm", ".navigation-history.svelte-13yyztm{display:flex;align-items:center;justify-content:center}");
 }
 function create_default_slot_13(ctx) {
@@ -13207,7 +14674,7 @@ function create_default_slot_13(ctx) {
     }
   };
 }
-function create_default_slot40(ctx) {
+function create_default_slot39(ctx) {
   let arrowright;
   let current;
   arrowright = new arrow_right_default({ props: { class: "svg-icon", size: "12" } });
@@ -13235,7 +14702,7 @@ function create_default_slot40(ctx) {
     }
   };
 }
-function create_fragment56(ctx) {
+function create_fragment58(ctx) {
   let div;
   let button0;
   let t;
@@ -13262,7 +14729,7 @@ function create_fragment56(ctx) {
       ctx[0].state.canGoForward,
       label: "Navigate forward",
       tooltipPosition: "bottom",
-      $$slots: { default: [create_default_slot40] },
+      $$slots: { default: [create_default_slot39] },
       $$scope: { ctx }
     }
   });
@@ -13329,7 +14796,7 @@ function create_fragment56(ctx) {
     }
   };
 }
-function instance55($$self, $$props, $$invalidate) {
+function instance57($$self, $$props, $$invalidate) {
   let $navigationHistory;
   const view = getView();
   const viewStore = view.viewStore;
@@ -13352,16 +14819,16 @@ function instance55($$self, $$props, $$invalidate) {
 var Navigation_buttons = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance55, create_fragment56, safe_not_equal, {}, add_css14);
+    init(this, options, instance57, create_fragment58, safe_not_equal, {}, add_css17);
   }
 };
 var navigation_buttons_default = Navigation_buttons;
 
 // src/view/components/container/toolbar/components/search-toggle.svelte
-function add_css15(target) {
+function add_css18(target) {
   append_styles(target, "svelte-17l9x5j", ".search-container.svelte-17l9x5j{display:flex;align-items:center;justify-content:center;gap:var(--size-4-2)}");
 }
-function create_default_slot41(ctx) {
+function create_default_slot40(ctx) {
   let search_1;
   let current;
   search_1 = new search_default({ props: { class: "svg-icon", size: "12" } });
@@ -13389,7 +14856,7 @@ function create_default_slot41(ctx) {
     }
   };
 }
-function create_fragment57(ctx) {
+function create_fragment59(ctx) {
   let div;
   let button;
   let current;
@@ -13401,7 +14868,7 @@ function create_fragment57(ctx) {
       ),
       label: "Toggle search input",
       tooltipPosition: "bottom",
-      $$slots: { default: [create_default_slot41] },
+      $$slots: { default: [create_default_slot40] },
       $$scope: { ctx }
     }
   });
@@ -13451,7 +14918,7 @@ function create_fragment57(ctx) {
     }
   };
 }
-function instance56($$self, $$props, $$invalidate) {
+function instance58($$self, $$props, $$invalidate) {
   let $search;
   const view = getView();
   const viewStore = view.viewStore;
@@ -13465,16 +14932,16 @@ function instance56($$self, $$props, $$invalidate) {
 var Search_toggle = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance56, create_fragment57, safe_not_equal, {}, add_css15);
+    init(this, options, instance58, create_fragment59, safe_not_equal, {}, add_css18);
   }
 };
 var search_toggle_default = Search_toggle;
 
 // src/view/components/container/toolbar/components/search-input.svelte
-function add_css16(target) {
+function add_css19(target) {
   append_styles(target, "svelte-1cou308", ".search-input-element.svelte-1cou308{height:34px;padding-right:64px;padding-left:12px}@media(max-width: 568px){.search-input-element.svelte-1cou308{width:100%}.search-input-wrapper.svelte-1cou308{width:100%}}.search-input-wrapper.svelte-1cou308{max-width:100%}.search-input-container.svelte-1cou308::before{display:none}");
 }
-function create_fragment58(ctx) {
+function create_fragment60(ctx) {
   let div2;
   let input;
   let input_autofocus_value;
@@ -13591,7 +15058,7 @@ function create_fragment58(ctx) {
     }
   };
 }
-function instance57($$self, $$props, $$invalidate) {
+function instance59($$self, $$props, $$invalidate) {
   let $search;
   const view = getView();
   const viewStore = view.viewStore;
@@ -13633,16 +15100,16 @@ function instance57($$self, $$props, $$invalidate) {
 var Search_input = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance57, create_fragment58, safe_not_equal, {}, add_css16);
+    init(this, options, instance59, create_fragment60, safe_not_equal, {}, add_css19);
   }
 };
 var search_input_default = Search_input;
 
 // src/view/components/container/toolbar/toolbar.svelte
-function add_css17(target) {
+function add_css20(target) {
   append_styles(target, "svelte-zbwcn1", ".navigation-history-container.svelte-zbwcn1{z-index:var(--z-index-breadcrumbs);left:var(--size-4-2);top:var(--size-4-2);display:flex;position:absolute;gap:var(--size-4-2);flex-wrap:wrap;max-width:90%\n    }");
 }
-function create_if_block9(ctx) {
+function create_if_block10(ctx) {
   let searchinput;
   let current;
   searchinput = new search_input_default({});
@@ -13669,7 +15136,7 @@ function create_if_block9(ctx) {
     }
   };
 }
-function create_fragment59(ctx) {
+function create_fragment61(ctx) {
   let div;
   let navigationhistory;
   let t0;
@@ -13680,7 +15147,7 @@ function create_fragment59(ctx) {
   searchtoggle = new search_toggle_default({});
   let if_block = (
     /*$search*/
-    ctx[0].showInput && create_if_block9(ctx)
+    ctx[0].showInput && create_if_block10(ctx)
   );
   return {
     c() {
@@ -13714,7 +15181,7 @@ function create_fragment59(ctx) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block9(ctx2);
+          if_block = create_if_block10(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(div, null);
@@ -13752,7 +15219,7 @@ function create_fragment59(ctx) {
     }
   };
 }
-function instance58($$self, $$props, $$invalidate) {
+function instance60($$self, $$props, $$invalidate) {
   let $search;
   const view = getView();
   const search2 = searchStore(view);
@@ -13762,20 +15229,20 @@ function instance58($$self, $$props, $$invalidate) {
 var Toolbar = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance58, create_fragment59, safe_not_equal, {}, add_css17);
+    init(this, options, instance60, create_fragment61, safe_not_equal, {}, add_css20);
   }
 };
 var toolbar_default = Toolbar;
 
 // src/view/actions/settings/components/font-size.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 var FontSize = (element2, settingsStore) => {
   const settingsState = settingsStore.getValue();
   let input;
   const setValue = () => {
     input.setValue(settingsState.view.fontSize);
   };
-  new import_obsidian9.Setting(element2).setName("Font size").addSlider((cb) => {
+  new import_obsidian13.Setting(element2).setName("Font size").addSlider((cb) => {
     input = cb;
     cb.onChange((fontSize) => {
       settingsStore.dispatch({
@@ -13801,7 +15268,7 @@ var FontSize = (element2, settingsStore) => {
 };
 
 // src/view/actions/settings/components/background-color.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian14 = require("obsidian");
 
 // src/obsidian/helpers/get-theme.ts
 var getTheme = () => {
@@ -13845,7 +15312,7 @@ var BackgroundColor = (element2, settingsStore) => {
     );
     colorPicker.onChange(onChange);
   };
-  new import_obsidian10.Setting(element2).setName("Background color").addColorPicker((cb) => {
+  new import_obsidian14.Setting(element2).setName("Background color").addColorPicker((cb) => {
     colorPicker = cb;
     setValue();
   }).addExtraButton((cb) => {
@@ -13862,7 +15329,7 @@ var BackgroundColor = (element2, settingsStore) => {
 };
 
 // src/view/actions/settings/components/active-branch-color.ts
-var import_obsidian11 = require("obsidian");
+var import_obsidian15 = require("obsidian");
 var ActiveBranchColor = (container, settingsStore) => {
   const settingsState = settingsStore.getValue();
   let input;
@@ -13881,7 +15348,7 @@ var ActiveBranchColor = (container, settingsStore) => {
     );
     input.onChange(onChange);
   };
-  new import_obsidian11.Setting(container).setName("Active branch color").addColorPicker((cb) => {
+  new import_obsidian15.Setting(container).setName("Active branch color").addColorPicker((cb) => {
     input = cb;
     setValue();
   }).addExtraButton((cb) => {
@@ -13898,7 +15365,7 @@ var ActiveBranchColor = (container, settingsStore) => {
 };
 
 // src/view/actions/settings/components/card-width.ts
-var import_obsidian12 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 
 // src/stores/settings/default-settings.ts
 var DEFAULT_CARD_WIDTH = 550;
@@ -13919,6 +15386,9 @@ var DEFAULT_SETTINGS = () => ({
     limitPreviewHeight: true,
     zoomLevel: 1
   },
+  general: {
+    defaultDocumentFormat: "sections"
+  },
   backup: {}
 });
 
@@ -13929,7 +15399,7 @@ var CardWidth = (element2, settingsStore) => {
   const setValue = () => {
     input.setValue(settingsState.view.cardWidth);
   };
-  new import_obsidian12.Setting(element2).setName("Card width").addSlider((cb) => {
+  new import_obsidian16.Setting(element2).setName("Card width").addSlider((cb) => {
     input = cb;
     cb.setLimits(200, 1e3, 10);
     cb.onChange((width) => {
@@ -13955,10 +15425,10 @@ var CardWidth = (element2, settingsStore) => {
 };
 
 // src/view/actions/settings/components/scrolling-behavior.ts
-var import_obsidian13 = require("obsidian");
+var import_obsidian17 = require("obsidian");
 var ScrollingBehavior = (element2, settingsStore) => {
   const settingsState = settingsStore.getValue();
-  const setting = new import_obsidian13.Setting(element2).setName("Scrolling behavior");
+  const setting = new import_obsidian17.Setting(element2).setName("Scrolling behavior");
   setting.addDropdown((cb) => {
     const value = settingsState.view.scrolling.horizontalScrollingMode;
     cb.addOptions({
@@ -13978,15 +15448,36 @@ var ScrollingBehavior = (element2, settingsStore) => {
 };
 
 // src/view/actions/settings/components/limit-card-height.ts
-var import_obsidian14 = require("obsidian");
+var import_obsidian18 = require("obsidian");
 var LimitCardHeight = (element2, settingsStore) => {
   const settingsState = settingsStore.getValue();
-  new import_obsidian14.Setting(element2).setName("Limit card height").addToggle((cb) => {
+  new import_obsidian18.Setting(element2).setName("Limit card height").addToggle((cb) => {
     cb.setValue(settingsState.view.limitPreviewHeight).onChange((limit) => {
       settingsStore.dispatch({
         type: "SET_LIMIT_PREVIEW_HEIGHT",
         payload: {
           limit
+        }
+      });
+    });
+  });
+};
+
+// src/view/actions/settings/components/default-document-format.ts
+var import_obsidian19 = require("obsidian");
+var DefaultDocumentFormat = (element2, settingsStore) => {
+  const settingsState = settingsStore.getValue();
+  const setting = new import_obsidian19.Setting(element2).setName("Default format");
+  setting.addDropdown((cb) => {
+    const value = settingsState.general.defaultDocumentFormat;
+    cb.addOptions({
+      sections: "Sections",
+      outline: "Outline (experimental)"
+    }).setValue(value).onChange((value2) => {
+      settingsStore.dispatch({
+        type: "GENERAL/SET_DEFAULT_DOCUMENT_FORMAT",
+        payload: {
+          format: value2
         }
       });
     });
@@ -14004,6 +15495,7 @@ var renderSettings = (element2) => {
     CardWidth(element2, settingsStore);
     LimitCardHeight(element2, settingsStore);
     ScrollingBehavior(element2, settingsStore);
+    DefaultDocumentFormat(element2, settingsStore);
   };
   render();
   return {
@@ -14014,10 +15506,10 @@ var renderSettings = (element2) => {
 };
 
 // src/view/components/container/controls-bar/modals/settings/settings.svelte
-function add_css18(target) {
+function add_css21(target) {
   append_styles(target, "svelte-1o0j9qb", ".setting-items.svelte-1o0j9qb{display:flex;flex-direction:column;padding:20px;& .setting-item {\n            padding: 10px 0;\n        }}.is-mobile{& .setting-items {\n            padding: 5px 10px;\n        };& :global(.setting-item) {\n            display: flex;\n            flex-direction: column;\n            gap: 4px;\n        };& :global(.setting-item-control) {\n            width: 100%;\n            justify-content: center;\n        }}");
 }
-function create_fragment60(ctx) {
+function create_fragment62(ctx) {
   let div1;
   let div0;
   let renderSettings_action;
@@ -14055,7 +15547,7 @@ function create_fragment60(ctx) {
 var Settings2 = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, null, create_fragment60, safe_not_equal, {}, add_css18);
+    init(this, options, null, create_fragment62, safe_not_equal, {}, add_css21);
   }
 };
 var settings_default2 = Settings2;
@@ -14133,11 +15625,11 @@ var actionInfo = {
 };
 
 // src/view/components/container/controls-bar/modals/snapshots-list/components/snapshot-button.svelte
-var import_obsidian15 = require("obsidian");
-function add_css19(target) {
+var import_obsidian20 = require("obsidian");
+function add_css22(target) {
   append_styles(target, "svelte-1659s7i", ":root{--icon-wrapper-width:32px}.snapshot.svelte-1659s7i{padding:var(--size-4-2);cursor:pointer;display:flex;align-items:center;border-radius:4px;gap:4px;height:66px;width:330px;background-color:var(--background-secondary)}.selected.svelte-1659s7i{background-color:var(--nav-item-background-selected)}.icon-wrapper.svelte-1659s7i{width:32px;display:flex;align-items:center;justify-content:center}.snapshot-content.svelte-1659s7i{display:flex;flex-direction:column;gap:5px;flex:1}.snapshot-body.svelte-1659s7i{display:flex;justify-content:space-between;gap:5px;width:100%}.snapshot-label.svelte-1659s7i{font-size:14px;color:var(--color-base-70);display:block;flex:1;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.snapshot-card-content.svelte-1659s7i{font-size:14px;color:var(--color-base-60);display:block;white-space:nowrap;overflow:hidden;max-width:190px;text-overflow:ellipsis;font-style:italic;opacity:0.9}.snapshot-context.svelte-1659s7i{display:flex;flex-direction:column;align-items:end;height:100%;justify-content:space-between}.snapshot-section-number.svelte-1659s7i{font-size:11px;color:var(--color-base-40);min-width:16px;text-align:left;margin-left:auto}.snapshot-time.svelte-1659s7i{font-size:11px;color:var(--color-base-60)}");
 }
-function create_fragment61(ctx) {
+function create_fragment63(ctx) {
   let div6;
   let div0;
   let switch_instance;
@@ -14332,7 +15824,7 @@ function create_fragment61(ctx) {
     }
   };
 }
-function instance59($$self, $$props, $$invalidate) {
+function instance61($$self, $$props, $$invalidate) {
   let { snapshot } = $$props;
   let { active } = $$props;
   const view = getView();
@@ -14347,7 +15839,7 @@ function instance59($$self, $$props, $$invalidate) {
   const chars = `${numberOfCharacters} char${numberOfCharacters === 1 ? "" : "s"}`;
   const click_handler = () => {
     if (viewStore.getValue().document.editing.activeNodeId)
-      new import_obsidian15.Notice(lang.error_apply_snapshot_while_editing);
+      new import_obsidian20.Notice(lang.error_apply_snapshot_while_editing);
     else
       documentStore.dispatch({
         type: "HISTORY/SELECT_SNAPSHOT",
@@ -14374,7 +15866,7 @@ function instance59($$self, $$props, $$invalidate) {
 var Snapshot_button = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance59, create_fragment61, safe_not_equal, { snapshot: 0, active: 1 }, add_css19);
+    init(this, options, instance61, create_fragment63, safe_not_equal, { snapshot: 0, active: 1 }, add_css22);
   }
 };
 var snapshot_button_default = Snapshot_button;
@@ -14399,16 +15891,16 @@ var updateRelativeTime = (element2) => {
 };
 
 // src/view/components/container/controls-bar/modals/snapshots-list/file-histoy.svelte
-function add_css20(target) {
+function add_css23(target) {
   append_styles(target, "svelte-1t5m48g", ".snapshots-list.svelte-1t5m48g{display:flex;flex-direction:column;gap:var(--size-4-2);height:fit-content;max-height:400px;overflow-y:auto;padding-left:var(--size-4-2);padding-right:var(--size-4-2)}");
 }
-function get_each_context6(ctx, list, i) {
+function get_each_context7(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[3] = list[i];
   child_ctx[5] = i;
   return child_ctx;
 }
-function create_each_block6(key_1, ctx) {
+function create_each_block7(key_1, ctx) {
   let first;
   let snapshotbutton;
   let current;
@@ -14472,7 +15964,7 @@ function create_each_block6(key_1, ctx) {
     }
   };
 }
-function create_fragment62(ctx) {
+function create_fragment64(ctx) {
   let div1;
   let div0;
   let each_blocks = [];
@@ -14488,9 +15980,9 @@ function create_fragment62(ctx) {
     ctx2[3].id
   );
   for (let i = 0; i < each_value.length; i += 1) {
-    let child_ctx = get_each_context6(ctx, each_value, i);
+    let child_ctx = get_each_context7(ctx, each_value, i);
     let key = get_key(child_ctx);
-    each_1_lookup.set(key, each_blocks[i] = create_each_block6(key, child_ctx));
+    each_1_lookup.set(key, each_blocks[i] = create_each_block7(key, child_ctx));
   }
   return {
     c() {
@@ -14525,7 +16017,7 @@ function create_fragment62(ctx) {
         each_value = ensure_array_like([.../*$history*/
         ctx2[0].items].sort(func));
         group_outros();
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div0, outro_and_destroy_block, create_each_block6, null, get_each_context6);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div0, outro_and_destroy_block, create_each_block7, null, get_each_context7);
         check_outros();
       }
     },
@@ -14556,7 +16048,7 @@ function create_fragment62(ctx) {
   };
 }
 var func = (a, b) => b.created - a.created;
-function instance60($$self, $$props, $$invalidate) {
+function instance62($$self, $$props, $$invalidate) {
   let $history;
   const view = getView();
   const history = historyStore(view);
@@ -14566,7 +16058,7 @@ function instance60($$self, $$props, $$invalidate) {
 var File_histoy = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance60, create_fragment62, safe_not_equal, {}, add_css20);
+    init(this, options, instance62, create_fragment64, safe_not_equal, {}, add_css23);
   }
 };
 var file_histoy_default = File_histoy;
@@ -14818,7 +16310,7 @@ var navigateCommands = () => {
           type: "NAVIGATION/NAVIGATE_BACK"
         });
       },
-      hotkeys: [{ key: "ArrowLeft", modifiers: ["Mod", "Alt"] }]
+      hotkeys: [{ key: "J", modifiers: ["Alt"] }]
     },
     {
       name: "navigate_forward",
@@ -14829,7 +16321,37 @@ var navigateCommands = () => {
           type: "NAVIGATION/NAVIGATE_FORWARD"
         });
       },
-      hotkeys: [{ key: "ArrowRight", modifiers: ["Mod", "Alt"] }]
+      hotkeys: [{ key: "K", modifiers: ["Alt"] }]
+    },
+    {
+      name: "navigate_to_next_node",
+      check: isActiveAndNotEditing,
+      callback: (view, event) => {
+        event.preventDefault();
+        view.viewStore.dispatch({
+          type: "NAVIGATION/SELECT_NEXT_NODE",
+          payload: {
+            direction: "forward",
+            sections: view.documentStore.getValue().sections
+          }
+        });
+      },
+      hotkeys: [{ key: "N", modifiers: [] }]
+    },
+    {
+      name: "navigate_to_previous_node",
+      check: isActiveAndNotEditing,
+      callback: (view, event) => {
+        event.preventDefault();
+        view.viewStore.dispatch({
+          type: "NAVIGATION/SELECT_NEXT_NODE",
+          payload: {
+            direction: "back",
+            sections: view.documentStore.getValue().sections
+          }
+        });
+      },
+      hotkeys: [{ key: "B", modifiers: [] }]
     }
   );
   return commands;
@@ -14857,7 +16379,7 @@ var editCommands = () => {
       check: isActiveAndNotEditing,
       callback: (view, event) => {
         event.preventDefault();
-        view.inlineEditor.overrideCursor(0, 0);
+        view.inlineEditor.overrideCursor({ line: 0, ch: 0 });
         view.viewStore.dispatch({
           type: "DOCUMENT/ENABLE_EDIT_MODE",
           payload: {
@@ -14997,15 +16519,37 @@ var createCommands = () => {
 };
 
 // src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/move-node.ts
-var moveNode = (view, direction) => {
+var restoreEditingState = (view, state2) => {
+  setTimeout(() => {
+    view.inlineEditor.overrideCursor(state2.cursor);
+    view.viewStore.dispatch({
+      type: "DOCUMENT/ENABLE_EDIT_MODE",
+      payload: {
+        nodeId: state2.editedNode
+      }
+    });
+  });
+};
+var moveNode = async (view, direction) => {
+  let state2 = null;
+  if (view.inlineEditor.activeNode) {
+    state2 = {
+      cursor: view.inlineEditor.getCursor(),
+      editedNode: view.inlineEditor.activeNode
+    };
+  }
   saveNodeContent(view);
+  const document2 = view.viewStore.getValue().document;
   view.documentStore.dispatch({
     type: "DOCUMENT/MOVE_NODE",
     payload: {
       direction,
-      activeNodeId: view.viewStore.getValue().document.activeNode
+      activeNodeId: document2.activeNode,
+      selectedNodes: document2.selectedNodes
     }
   });
+  if (state2)
+    restoreEditingState(view, state2);
 };
 
 // src/view/actions/keyboard-shortcuts/helpers/commands/commands/move-commands.ts
@@ -15164,6 +16708,518 @@ var mapCtrlToMod = (customHotkeys) => {
   return customHotkeys;
 };
 
+// src/view/actions/keyboard-shortcuts/helpers/commands/commands/selection-commands.ts
+var selectionCommands = () => {
+  const commands = [];
+  commands.push(
+    {
+      name: "extend_select_up",
+      check: isActiveAndNotEditing,
+      callback: (view, event) => {
+        event.preventDefault();
+        view.viewStore.dispatch({
+          type: "DOCUMENT/NAVIGATE_USING_KEYBOARD",
+          payload: {
+            direction: "up",
+            columns: view.documentStore.getValue().document.columns
+          },
+          context: {
+            shiftKey: true
+          }
+        });
+      },
+      hotkeys: [
+        { key: "K", modifiers: ["Shift"] },
+        { key: "ArrowUp", modifiers: ["Shift"] }
+      ]
+    },
+    {
+      name: "extend_select_down",
+      check: isActiveAndNotEditing,
+      callback: (view, event) => {
+        event.preventDefault();
+        view.viewStore.dispatch({
+          type: "DOCUMENT/NAVIGATE_USING_KEYBOARD",
+          payload: {
+            direction: "down",
+            columns: view.documentStore.getValue().document.columns
+          },
+          context: {
+            shiftKey: true
+          }
+        });
+      },
+      hotkeys: [
+        { key: "J", modifiers: ["Shift"] },
+        { key: "ArrowDown", modifiers: ["Shift"] }
+      ]
+    },
+    {
+      name: "extend_select_to_end_of_column",
+      check: isActiveAndNotEditing,
+      callback: (view, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        view.viewStore.dispatch({
+          type: "DOCUMENT/JUMP_TO_NODE",
+          payload: {
+            target: "end-of-column",
+            columns: view.documentStore.getValue().document.columns
+          },
+          context: {
+            shiftKey: true
+          }
+        });
+      },
+      hotkeys: [{ key: "End", modifiers: ["Shift"] }]
+    },
+    {
+      name: "extend_select_to_start_of_column",
+      check: isActiveAndNotEditing,
+      callback: (view, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        view.viewStore.dispatch({
+          type: "DOCUMENT/JUMP_TO_NODE",
+          payload: {
+            target: "start-of-column",
+            columns: view.documentStore.getValue().document.columns
+          },
+          context: {
+            shiftKey: true
+          }
+        });
+      },
+      hotkeys: [{ key: "Home", modifiers: ["Shift"] }]
+    },
+    {
+      name: "extend_select_to_end_of_group",
+      check: isActiveAndNotEditing,
+      callback: (view, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        view.viewStore.dispatch({
+          type: "DOCUMENT/JUMP_TO_NODE",
+          payload: {
+            target: "end-of-group",
+            columns: view.documentStore.getValue().document.columns
+          },
+          context: {
+            shiftKey: true
+          }
+        });
+      },
+      hotkeys: [{ key: "PageDown", modifiers: ["Shift"] }]
+    },
+    {
+      name: "extend_select_to_start_of_group",
+      check: isActiveAndNotEditing,
+      callback: (view, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        view.viewStore.dispatch({
+          type: "DOCUMENT/JUMP_TO_NODE",
+          payload: {
+            target: "start-of-group",
+            columns: view.documentStore.getValue().document.columns
+          },
+          context: {
+            shiftKey: true
+          }
+        });
+      },
+      hotkeys: [{ key: "PageUp", modifiers: ["Shift"] }]
+    }
+  );
+  return commands;
+};
+
+// src/stores/view/subscriptions/effects/align-branch/helpers/get-node-element.ts
+var getNodeElement = (container, nodeId) => {
+  return container.querySelector("#" + nodeId);
+};
+
+// src/view/actions/keyboard-shortcuts/helpers/commands/commands/helpers/scroll-node.ts
+var STEP = 20;
+var scrollNode = (view, direction) => {
+  const container = view.container;
+  if (!container)
+    return;
+  const element2 = getNodeElement(
+    container,
+    view.viewStore.getValue().document.activeNode
+  );
+  if (!element2)
+    return;
+  if (direction === "down" || direction === "up") {
+    const column = element2.matchParent(".column");
+    if (!column)
+      return;
+    const scrollTop = direction === "up" ? STEP : -STEP;
+    requestAnimationFrame(() => {
+      column.scrollBy({
+        top: scrollTop,
+        behavior: "smooth"
+      });
+    });
+  } else {
+    const scrollLeft = direction === "left" ? STEP : -STEP;
+    requestAnimationFrame(() => {
+      container.scrollBy({
+        left: scrollLeft,
+        behavior: "smooth"
+      });
+    });
+  }
+};
+
+// src/stores/view/subscriptions/effects/align-branch/helpers/align-element/helpers/calculate-scroll-top.ts
+var VERTICAL_PADDING = 20;
+var calculateScrollTop = (elementRect, containerRect, settings) => {
+  const viewPortIsTallEnough = containerRect.height >= elementRect.height;
+  const deltaTop = containerRect.top + VERTICAL_PADDING - elementRect.top;
+  let scrollTop = 0;
+  if (!viewPortIsTallEnough) {
+    scrollTop = deltaTop;
+  } else if (settings.horizontalScrollingMode === "fixed-position") {
+    scrollTop = containerRect.top + settings.verticalOffset * containerRect.height - elementRect.top;
+  } else {
+    const verticalMiddle = containerRect.height / 2;
+    scrollTop = verticalMiddle - (elementRect.top - containerRect.top + elementRect.height / 2);
+  }
+  return scrollTop;
+};
+
+// src/stores/view/subscriptions/effects/align-branch/helpers/align-element/helpers/calculate-scroll-left.ts
+var HORIZONTAL_PADDING = 100;
+var calculateScrollLeft = (elementRect, containerRect, settings, childRect) => {
+  const viewPortIsWideEnough = containerRect.width > elementRect.width;
+  const viewPortIsWideEnoughForChild = childRect ? containerRect.width > childRect.right - elementRect.left + HORIZONTAL_PADDING : true;
+  const deltaRight = containerRect.right - HORIZONTAL_PADDING - elementRect.right;
+  const deltaRightOfChild = !childRect ? 0 : containerRect.right - HORIZONTAL_PADDING - childRect.right;
+  const deltaLeft = containerRect.left + HORIZONTAL_PADDING - elementRect.left;
+  const leftSideIsVisible = deltaLeft < 0;
+  const rightSideIsVisible = deltaRight > 0;
+  const rightSideOfChildIsVisible = !childRect || deltaRightOfChild > 0;
+  let scrollLeft = 0;
+  if (!viewPortIsWideEnough) {
+    scrollLeft = deltaLeft;
+  } else if (settings.horizontalScrollingMode === "fixed-position") {
+    scrollLeft = containerRect.left + settings.horizontalOffset * containerRect.width - elementRect.left;
+  } else if (settings.horizontalScrollingMode === "keep-active-card-at-center") {
+    const horizontalMiddle = containerRect.left + containerRect.width / 2;
+    const elementMiddle = elementRect.left + elementRect.width / 2;
+    scrollLeft = horizontalMiddle - elementMiddle;
+  } else if (!leftSideIsVisible) {
+    scrollLeft = deltaLeft;
+  } else if (settings.horizontalScrollingMode === "reveal-active-card-and-direct-child" && !rightSideOfChildIsVisible) {
+    if (viewPortIsWideEnoughForChild) {
+      scrollLeft = deltaRightOfChild;
+    } else {
+      scrollLeft = deltaLeft;
+    }
+  } else if (!rightSideIsVisible) {
+    scrollLeft = deltaRight;
+  }
+  return scrollLeft;
+};
+
+// src/stores/view/subscriptions/effects/align-branch/helpers/align-element/align-element.ts
+var THRESHOLD = 5;
+var alignElement = (container, elements, settings, behavior = "smooth", mode = "vertical", horizontalChild) => {
+  if (!container)
+    return;
+  const isArray2 = Array.isArray(elements);
+  const element2 = isArray2 ? elements[0] : elements;
+  if (!element2)
+    return;
+  const column = element2.matchParent(".column");
+  if (column) {
+    const elementRect = isArray2 ? getCombinedBoundingClientRect(elements) : element2.getBoundingClientRect();
+    const containerRect = container.parentElement.getBoundingClientRect();
+    if (mode === "horizontal" || mode === "both") {
+      const childRect = horizontalChild ? horizontalChild.getBoundingClientRect() : null;
+      const scrollLeft = calculateScrollLeft(
+        elementRect,
+        containerRect,
+        settings.view.scrolling,
+        childRect
+      );
+      if (Math.abs(scrollLeft) > THRESHOLD)
+        container.scrollBy({
+          left: scrollLeft * -1,
+          behavior
+        });
+    }
+    if (mode === "vertical" || mode === "both") {
+      const scrollTop = calculateScrollTop(
+        elementRect,
+        containerRect,
+        settings.view.scrolling
+      );
+      if (Math.abs(scrollTop) > THRESHOLD)
+        column.scrollBy({
+          top: scrollTop * -1,
+          behavior
+        });
+    }
+    return column.id;
+  }
+};
+
+// src/stores/view/subscriptions/effects/align-branch/align-parents-nodes.ts
+var alignParentsNodes = (viewState, container, localState, settings, behavior) => {
+  for (const id2 of viewState.document.activeBranch.sortedParentNodes) {
+    const element2 = getNodeElement(container, id2);
+    if (element2) {
+      const columnId = alignElement(
+        container,
+        element2,
+        settings,
+        behavior
+      );
+      if (columnId)
+        localState.columns.add(columnId);
+    }
+  }
+};
+
+// src/stores/view/subscriptions/effects/align-branch/helpers/apply-zoom.ts
+var calculateOffset = (container, activeNode) => {
+  const elementRect = activeNode?.getBoundingClientRect();
+  const containerRect = container.parentElement.getBoundingClientRect();
+  const horizontalMiddle = containerRect.left + containerRect.width / 2;
+  const elementMiddle = elementRect.left + elementRect.width / 2;
+  const scrollLeft = horizontalMiddle - elementMiddle;
+  const verticalMiddle = containerRect.height / 2;
+  const verticalElementMiddle = elementRect.top + elementRect.height / 2;
+  const scrollTop = verticalMiddle - verticalElementMiddle;
+  return { scrollLeft, scrollTop };
+};
+var adjustColumnsHeight = (zoomLevel, columnsContainer) => {
+  const columns = Array.from(
+    columnsContainer.querySelectorAll(".column")
+  );
+  for (const column of columns) {
+    column.style.height = `${100 / zoomLevel}vh`;
+  }
+};
+var adjustSkewedCenter = (viewState, container, columnsContainer, zoomLevel) => {
+  const activeNodeId = viewState.document.activeNode;
+  const activeNode = getNodeElement(container, activeNodeId);
+  invariant(activeNode);
+  const offset = calculateOffset(container, activeNode);
+  const scaledOffsetLeft = offset.scrollLeft / zoomLevel;
+  const scaledOffsetTop = (offset.scrollTop + 100) / zoomLevel;
+  columnsContainer.style.transform = `scale(${zoomLevel}) translate(${scaledOffsetLeft}px,${scaledOffsetTop}px)`;
+};
+var applyZoom = (viewState, container, zoomLevel, adjustColumns = false) => {
+  const columnsContainer = container.querySelector(".columns");
+  requestAnimationFrame(() => {
+    if (zoomLevel === 1) {
+      columnsContainer.style.transform = "none";
+    } else {
+      columnsContainer.style.transform = `scale(${zoomLevel}) `;
+      adjustSkewedCenter(
+        viewState,
+        container,
+        columnsContainer,
+        zoomLevel
+      );
+    }
+    if (adjustColumns)
+      adjustColumnsHeight(zoomLevel, columnsContainer);
+  });
+};
+
+// src/stores/view/subscriptions/effects/align-branch/align-child-group-of-column.ts
+var alignChildGroupOfColumn = (viewState, container, columnId, settings, behavior) => {
+  const columnElement = getNodeElement(container, columnId);
+  if (!columnElement)
+    return;
+  const elements = [];
+  if (columnElement) {
+    for (const childGroup of viewState.document.activeBranch.childGroups) {
+      const element2 = getNodeElement(
+        columnElement,
+        "group-" + childGroup
+      );
+      if (element2) {
+        elements.push(element2);
+      }
+    }
+    alignElement(
+      container,
+      elements.length > 1 ? elements : elements[0],
+      settings,
+      behavior
+    );
+  }
+};
+
+// src/stores/view/subscriptions/effects/align-branch/align-inactive-column.ts
+var alignInactiveColumn = (column, container, settings, behavior) => {
+  const nodes = column.groups.map((g) => g.nodes).flat();
+  if (nodes.length > 0) {
+    const element2 = getNodeElement(container, nodes[nodes.length - 1]);
+    if (element2)
+      alignElement(container, element2, settings, behavior);
+  }
+};
+
+// src/stores/view/subscriptions/effects/align-branch/align-child-columns.ts
+var alignChildColumns = (viewState, documentState, container, localState, settings, behavior, alignInactiveColumns = false) => {
+  let activeBranchNodeOfPreviousColumn = viewState.document.activeNode;
+  for (const column of documentState.document.columns) {
+    if (localState.columns.has(column.id))
+      continue;
+    const activeNodesOfColumn = viewState.document.activeNodesOfColumn[column.id];
+    const activeBranchNode = activeNodesOfColumn && activeBranchNodeOfPreviousColumn ? activeNodesOfColumn[activeBranchNodeOfPreviousColumn] : null;
+    activeBranchNodeOfPreviousColumn = activeBranchNode;
+    if (activeBranchNode) {
+      const element2 = getNodeElement(container, activeBranchNode);
+      if (element2) {
+        const columnId = alignElement(
+          container,
+          element2,
+          settings,
+          behavior
+        );
+        if (columnId)
+          localState.columns.add(columnId);
+      }
+    } else {
+      const childGroup = column.groups.find(
+        (g) => viewState.document.activeBranch.childGroups.has(g.parentId)
+      );
+      if (childGroup) {
+        alignChildGroupOfColumn(
+          viewState,
+          container,
+          column.id,
+          settings,
+          behavior
+        );
+      } else if (alignInactiveColumns) {
+        alignInactiveColumn(column, container, settings, behavior);
+      }
+    }
+  }
+};
+
+// src/stores/view/subscriptions/effects/align-branch/align-active-node.ts
+var alignActiveNode = (viewState, container, localState, settings, behavior) => {
+  const activeNodeId = viewState.document.activeNode;
+  const element2 = getNodeElement(container, activeNodeId);
+  if (element2) {
+    const childGroupElement = viewState.document.activeBranch.childGroups.size > 0 ? getNodeElement(container, "group-" + activeNodeId) : void 0;
+    const columnId = alignElement(
+      container,
+      element2,
+      settings,
+      behavior,
+      "both",
+      childGroupElement
+    );
+    if (columnId)
+      localState.columns.add(columnId);
+  }
+};
+
+// src/stores/view/subscriptions/effects/align-branch/align-branch.ts
+var align = async (view, behavior, alignInactiveColumns = false) => {
+  const container = view.container;
+  if (!container)
+    return;
+  const documentState = view.documentStore.getValue();
+  const viewState = view.viewStore.getValue();
+  const settings = view.plugin.settings.getValue();
+  const zooming = settings.view.zoomLevel !== 1;
+  if (zooming)
+    behavior = "instant";
+  const localState = {
+    columns: /* @__PURE__ */ new Set()
+  };
+  await view.inlineEditor.mounting;
+  alignActiveNode(viewState, container, localState, settings, behavior);
+  alignParentsNodes(viewState, container, localState, settings, behavior);
+  alignChildColumns(
+    viewState,
+    documentState,
+    container,
+    localState,
+    settings,
+    behavior,
+    alignInactiveColumns
+  );
+};
+var alignBranch = (view, behavior, alignInactiveColumns = false, delay = 0) => {
+  const container = view.container;
+  if (!container)
+    return;
+  const viewState = view.viewStore.getValue();
+  const zoomLevel = view.plugin.settings.getValue().view.zoomLevel;
+  if (!delay && zoomLevel === 1) {
+    requestAnimationFrame(() => {
+      align(view, behavior, alignInactiveColumns);
+    });
+  } else {
+    setTimeout(() => {
+      resetZoom(container);
+      align(view, behavior, alignInactiveColumns).finally(() => {
+        applyZoom(viewState, container, zoomLevel);
+      });
+    }, delay || 16);
+  }
+};
+
+// src/view/actions/keyboard-shortcuts/helpers/commands/commands/scroll-commands.ts
+var scrollCommands = () => {
+  const modifiers = ["Mod", "Alt"];
+  return [
+    {
+      name: "scroll_right",
+      check: isActive,
+      callback: (view) => {
+        scrollNode(view, "right");
+      },
+      hotkeys: [{ key: "L", modifiers }]
+    },
+    {
+      name: "scroll_left",
+      check: isActive,
+      callback: (view) => {
+        scrollNode(view, "left");
+      },
+      hotkeys: [{ key: "H", modifiers }]
+    },
+    {
+      name: "scroll_up",
+      check: isActive,
+      callback: (view) => {
+        scrollNode(view, "up");
+      },
+      hotkeys: [{ key: "K", modifiers }]
+    },
+    {
+      name: "scroll_down",
+      check: isActive,
+      callback: (view) => {
+        scrollNode(view, "down");
+      },
+      hotkeys: [{ key: "J", modifiers }]
+    },
+    {
+      name: "align_branch",
+      check: isActive,
+      callback: (view) => {
+        alignBranch(view);
+      },
+      hotkeys: [{ key: "G", modifiers }]
+    }
+  ];
+};
+
 // src/view/actions/keyboard-shortcuts/helpers/commands/load-commands.ts
 var pluginCommands = {
   current: null
@@ -15177,14 +17233,18 @@ var loadCommands = (plugin) => {
     ...mergeCommands(),
     ...clipboardCommands(),
     ...historyCommands(),
+    ...selectionCommands(),
+    ...scrollCommands(),
     {
       name: "delete_card",
       check: isActiveAndNotEditing,
       callback: (view) => {
+        const document2 = view.viewStore.getValue().document;
         view.documentStore.dispatch({
           type: "DOCUMENT/DELETE_NODE",
           payload: {
-            activeNodeId: view.viewStore.getValue().document.activeNode
+            activeNodeId: document2.activeNode,
+            selectedNodes: document2.selectedNodes
           }
         });
       },
@@ -15215,16 +17275,16 @@ var loadCommands = (plugin) => {
 var hotkeyToString = (hotkey) => hotkey.key.toUpperCase() + hotkey.modifiers.sort().join("");
 
 // src/stores/hotkeys/reducers/update-hotkey.ts
-var updateHotkey = (state, action) => {
-  const commandToUpdate = state.hotkeys.find(
+var updateHotkey = (state2, action) => {
+  const commandToUpdate = state2.hotkeys.find(
     (hotkey) => hotkey.name === action.payload.command
   );
   if (!commandToUpdate)
     return;
-  let existingCustomHotkey = state.customHotkeys[action.payload.command];
+  let existingCustomHotkey = state2.customHotkeys[action.payload.command];
   if (!existingCustomHotkey) {
     existingCustomHotkey = {};
-    state.customHotkeys[action.payload.command] = existingCustomHotkey;
+    state2.customHotkeys[action.payload.command] = existingCustomHotkey;
   }
   const newHotkey = {
     modifiers: action.payload.hotkey.modifiers,
@@ -15268,15 +17328,28 @@ var hotkeysLang = {
   merge_with_node_above: "Merge with card above",
   merge_with_node_below: "Merge with card below",
   toggle_search_input: "Search",
-  go_to_beginning_of_group: "Go to beginning of group",
+  go_to_beginning_of_group: "Go to start of group",
   go_to_end_of_group: "Go to end of group",
-  go_to_beginning_of_column: "Go to beginning of column",
+  go_to_beginning_of_column: "Go to start of column",
   go_to_end_of_column: "Go to end of column",
   copy_node: "Copy branch",
   cut_node: "Cut branch",
   paste_node: "Paste branch",
   navigate_back: "Navigate back",
-  navigate_forward: "Navigate forward"
+  navigate_forward: "Navigate forward",
+  navigate_to_next_node: "Select next card",
+  navigate_to_previous_node: "Select previous card",
+  extend_select_up: "Extend selection up",
+  extend_select_down: "Extend selection down",
+  extend_select_to_start_of_group: "Extend selection to start of group",
+  extend_select_to_end_of_group: "Extend selection to end of group",
+  extend_select_to_start_of_column: "Extend selection to start of column",
+  extend_select_to_end_of_column: "Extend selection to end of column",
+  scroll_left: "Scroll left",
+  scroll_right: "Scroll right",
+  scroll_up: "Scroll up",
+  scroll_down: "Scroll down",
+  align_branch: "Align active branch"
 };
 var groupedHotkeys = {
   "Create cards": /* @__PURE__ */ new Set([
@@ -15311,11 +17384,28 @@ var groupedHotkeys = {
     "go_to_beginning_of_column",
     "go_to_end_of_column",
     "navigate_back",
-    "navigate_forward"
+    "navigate_forward",
+    "navigate_to_previous_node",
+    "navigate_to_next_node"
+  ]),
+  Selection: /* @__PURE__ */ new Set([
+    "extend_select_up",
+    "extend_select_down",
+    "extend_select_to_start_of_group",
+    "extend_select_to_end_of_group",
+    "extend_select_to_start_of_column",
+    "extend_select_to_end_of_column"
   ]),
   History: /* @__PURE__ */ new Set(["undo_change", "redo_change"]),
   Search: /* @__PURE__ */ new Set(["toggle_search_input"]),
-  Clipboard: /* @__PURE__ */ new Set(["copy_node", "cut_node", "paste_node"])
+  Clipboard: /* @__PURE__ */ new Set(["copy_node", "cut_node", "paste_node"]),
+  Scrolling: /* @__PURE__ */ new Set([
+    "scroll_left",
+    "scroll_right",
+    "scroll_up",
+    "scroll_down",
+    "align_branch"
+  ])
 };
 var hotkeysGroups = Object.fromEntries(
   Object.entries(groupedHotkeys).map(([group, commands]) => Array.from(commands).map((c) => [c, group])).flat()
@@ -15335,22 +17425,22 @@ var commandToHotkeys = (command) => {
 };
 
 // src/stores/hotkeys/reducers/load-custom-hotkeys.ts
-var loadCustomHotkeys = (state, action) => {
+var loadCustomHotkeys = (state2, action) => {
   for (const [name, customHotkey] of Object.entries(
     action.payload.customHotkeys
   )) {
     if (customHotkey.primary || customHotkey.secondary) {
-      state.customHotkeys[name] = customHotkey;
+      state2.customHotkeys[name] = customHotkey;
     }
   }
   invariant(pluginCommands.current);
-  state.hotkeys = [];
+  state2.hotkeys = [];
   for (const pluginCommand of pluginCommands.current) {
     const hotkey = commandToHotkeys(pluginCommand);
-    state.hotkeys.push(hotkey);
-    const customHotkey = state.customHotkeys[hotkey.name];
+    state2.hotkeys.push(hotkey);
+    const customHotkey = state2.customHotkeys[hotkey.name];
     if (customHotkey) {
-      updateHotkey(state, {
+      updateHotkey(state2, {
         type: "HOTKEY/UPDATE",
         payload: {
           command: hotkey.name,
@@ -15363,8 +17453,8 @@ var loadCustomHotkeys = (state, action) => {
 };
 
 // src/stores/hotkeys/reducers/reset-hotkey.ts
-var resetHotkey = (state, action) => {
-  const hotkey = state.hotkeys.find(
+var resetHotkey = (state2, action) => {
+  const hotkey = state2.hotkeys.find(
     (hotkey2) => hotkey2.name === action.payload.command
   );
   if (!hotkey)
@@ -15377,7 +17467,7 @@ var resetHotkey = (state, action) => {
       const defaultHotkeys = commandToHotkeys(command).hotkeys;
       const index = action.payload.primary ? 0 : 1;
       hotkey.hotkeys[index] = defaultHotkeys[index];
-      const customHotkeys = state.customHotkeys[action.payload.command];
+      const customHotkeys = state2.customHotkeys[action.payload.command];
       if (customHotkeys)
         if (action.payload.primary) {
           delete customHotkeys.primary;
@@ -15389,10 +17479,10 @@ var resetHotkey = (state, action) => {
 };
 
 // src/stores/hotkeys/reducers/update-conflicting-hotkeys.ts
-var updateConflictingHotkeys = (state, action) => {
+var updateConflictingHotkeys = (state2, action) => {
   let numberOfConflictingHotkeys = 0;
   const groupedByHotkey = /* @__PURE__ */ new Map();
-  for (const pluginHotkey of state.hotkeys) {
+  for (const pluginHotkey of state2.hotkeys) {
     for (const hotkey of pluginHotkey.hotkeys) {
       delete hotkey.obsidianConflict;
       delete hotkey.pluginConflict;
@@ -15426,21 +17516,21 @@ var updateConflictingHotkeys = (state, action) => {
       }
     }
   }
-  state.numberOfConflictingHotkeys = numberOfConflictingHotkeys;
+  state2.numberOfConflictingHotkeys = numberOfConflictingHotkeys;
 };
 
 // src/stores/hotkeys/hotkey-reducer.ts
-var updateState = (state, action) => {
+var updateState = (state2, action) => {
   if (action.type === "UI/SET_SEARCH_TERM") {
-    state.searchTerm = action.payload.searchTerm.toLowerCase();
+    state2.searchTerm = action.payload.searchTerm.toLowerCase();
   } else if (action.type === "SETTINGS/LOAD_CUSTOM_HOTKEYS") {
-    loadCustomHotkeys(state, action);
+    loadCustomHotkeys(state2, action);
   } else if (action.type === "HOTKEY/UPDATE") {
-    updateHotkey(state, action);
+    updateHotkey(state2, action);
   } else if (action.type === "HOTKEY/RESET") {
-    resetHotkey(state, action);
+    resetHotkey(state2, action);
   } else if (action.type === "SET_CONFLICTING_HOTKEYS") {
-    updateConflictingHotkeys(state, action);
+    updateConflictingHotkeys(state2, action);
   }
 };
 var hotkeyReducer = (store, action) => {
@@ -15497,6 +17587,8 @@ var filteredHotkeys = derivedOnAction(
       "Delete cards": [],
       Clipboard: [],
       Navigation: [],
+      Selection: [],
+      Scrolling: [],
       History: [],
       Search: []
     });
@@ -15514,15 +17606,15 @@ var modKeyDictionary = {
 };
 
 // src/view/components/container/controls-bar/modals/hotkeys/components/hotkey/render-hotkey.svelte
-function add_css21(target) {
+function add_css24(target) {
   append_styles(target, "svelte-xx7tpf", ".hotkey-buttons.svelte-xx7tpf{width:100%;height:100%;position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:5px;opacity:0;background-color:var(--color-base-70)}.hotkey-button.svelte-xx7tpf{border:none;width:16px;height:16px;box-shadow:none;padding:2px;cursor:pointer}.hotkey-buttons.svelte-xx7tpf:hover{opacity:0.8}.hotkey-key.svelte-xx7tpf{color:var(--text-on-accent);background-color:#175c5a}");
 }
-function get_each_context7(ctx, list, i) {
+function get_each_context8(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[2] = list[i];
   return child_ctx;
 }
-function create_each_block7(ctx) {
+function create_each_block8(ctx) {
   let kbd;
   let t_value = modKeyDictionary[
     /*modifier*/
@@ -15553,7 +17645,7 @@ function create_each_block7(ctx) {
     }
   };
 }
-function create_fragment63(ctx) {
+function create_fragment65(ctx) {
   let div;
   let button;
   let pen;
@@ -15576,7 +17668,7 @@ function create_fragment63(ctx) {
   );
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block7(get_each_context7(ctx, each_value, i));
+    each_blocks[i] = create_each_block8(get_each_context8(ctx, each_value, i));
   }
   return {
     c() {
@@ -15635,11 +17727,11 @@ function create_fragment63(ctx) {
         );
         let i;
         for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context7(ctx, each_value, i);
+          const child_ctx = get_each_context8(ctx, each_value, i);
           if (each_blocks[i]) {
             each_blocks[i].p(child_ctx, dirty);
           } else {
-            each_blocks[i] = create_each_block7(child_ctx);
+            each_blocks[i] = create_each_block8(child_ctx);
             each_blocks[i].c();
             each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
           }
@@ -15675,7 +17767,7 @@ function create_fragment63(ctx) {
     }
   };
 }
-function instance61($$self, $$props, $$invalidate) {
+function instance63($$self, $$props, $$invalidate) {
   let { enableEditing } = $$props;
   let { hotkey } = $$props;
   $$self.$$set = ($$props2) => {
@@ -15689,7 +17781,7 @@ function instance61($$self, $$props, $$invalidate) {
 var Render_hotkey = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance61, create_fragment63, safe_not_equal, { enableEditing: 0, hotkey: 1 }, add_css21);
+    init(this, options, instance63, create_fragment65, safe_not_equal, { enableEditing: 0, hotkey: 1 }, add_css24);
   }
 };
 var render_hotkey_default = Render_hotkey;
@@ -15716,20 +17808,27 @@ var updateCommandsDictionary = (pluginHotkeys) => {
 };
 
 // src/stores/view/subscriptions/effects/focus-container.ts
-var import_obsidian16 = require("obsidian");
+var import_obsidian21 = require("obsidian");
 var focusContainer = (view) => {
-  if (view.container) {
-    const isEditingOnMobile = import_obsidian16.Platform.isMobile && Boolean(view.inlineEditor.activeNode);
-    if (!isEditingOnMobile)
-      view.container.focus();
-  }
+  setTimeout(() => {
+    if (view.container) {
+      const isEditing2 = Boolean(view.inlineEditor.activeNode);
+      const isEditingOnMobile = import_obsidian21.Platform.isMobile && isEditing2;
+      if (!isEditingOnMobile) {
+        if (isEditing2)
+          view.inlineEditor.focus();
+        else
+          view.container.focus();
+      }
+    }
+  }, 16);
 };
 
 // src/view/components/container/controls-bar/modals/hotkeys/components/hotkey/edit-hotkey.svelte
-function add_css22(target) {
+function add_css25(target) {
   append_styles(target, "svelte-imuvuj", ".container.svelte-imuvuj{display:flex;gap:5px;align-items:center;justify-content:center}.hotkey-container.svelte-imuvuj{display:flex;flex-direction:column;align-items:center;gap:5px}.input.svelte-imuvuj{width:115px;height:25px;text-align:center;font-size:14px}.modifiers.svelte-imuvuj{display:flex;gap:5px;width:100%;justify-content:center}.disabled.svelte-imuvuj{background-color:var(--color-base-50)}button.svelte-imuvuj:disabled{cursor:not-allowed}.save-and-cancel-buttons.svelte-imuvuj{display:flex;gap:5px;flex-direction:column}.hotkey-button.svelte-imuvuj{background-color:transparent;color:var(--color-base-25);border:none;width:20px;height:20px;box-shadow:none;padding:2px;cursor:pointer}.hotkey-key.svelte-imuvuj{color:lightgrey;background-color:#175c5a;border-color:#227f7d\n    }");
 }
-function create_if_block10(ctx) {
+function create_if_block11(ctx) {
   let kbd;
   let t_value = "Ctrl" /* Ctrl */ + "";
   let t;
@@ -15772,7 +17871,7 @@ function create_if_block10(ctx) {
     }
   };
 }
-function create_fragment64(ctx) {
+function create_fragment66(ctx) {
   let div3;
   let div1;
   let div0;
@@ -15804,7 +17903,7 @@ function create_fragment64(ctx) {
   let current;
   let mounted;
   let dispose;
-  let if_block = isMacLike && create_if_block10(ctx);
+  let if_block = isMacLike && create_if_block11(ctx);
   x = new x_default({ props: { class: "svg-icon", size: 8 } });
   rotateccw = new rotate_ccw_default({ props: { class: "svg-icon", size: 8 } });
   return {
@@ -15991,7 +18090,7 @@ function create_fragment64(ctx) {
     }
   };
 }
-function instance62($$self, $$props, $$invalidate) {
+function instance64($$self, $$props, $$invalidate) {
   let { isCustom } = $$props;
   let { hotkey } = $$props;
   let { commandName } = $$props;
@@ -16104,8 +18203,8 @@ var Edit_hotkey = class extends SvelteComponent {
     init(
       this,
       options,
-      instance62,
-      create_fragment64,
+      instance64,
+      create_fragment66,
       safe_not_equal,
       {
         isCustom: 0,
@@ -16114,7 +18213,7 @@ var Edit_hotkey = class extends SvelteComponent {
         isPrimary: 15,
         onCancel: 1
       },
-      add_css22
+      add_css25
     );
   }
 };
@@ -16122,7 +18221,7 @@ var edit_hotkey_default = Edit_hotkey;
 
 // src/view/components/container/controls-bar/modals/hotkeys/components/hotkey/hotkey.svelte
 var import_classnames4 = __toESM(require_classnames());
-function add_css23(target) {
+function add_css26(target) {
   append_styles(target, "svelte-1ctyvzu", ".hotkey.svelte-1ctyvzu{padding:5px;background-color:var(--color-base-50);display:flex;gap:5px;border-radius:3px;width:fit-content;position:relative}.editing.svelte-1ctyvzu{background-color:var(--color-base-60)}.hotkey--is-custom.svelte-1ctyvzu{background-color:var(--custom-hotkey-bg)}.obsidian-conflict.svelte-1ctyvzu{background-color:var(--color-red)}.plugin-conflict.svelte-1ctyvzu{background-color:var(--color-orange)}");
 }
 function create_else_block4(ctx) {
@@ -16171,7 +18270,7 @@ function create_else_block4(ctx) {
     }
   };
 }
-function create_if_block11(ctx) {
+function create_if_block12(ctx) {
   let edithotkey;
   let current;
   edithotkey = new edit_hotkey_default({
@@ -16241,14 +18340,14 @@ function create_if_block11(ctx) {
     }
   };
 }
-function create_fragment65(ctx) {
+function create_fragment67(ctx) {
   let div;
   let current_block_type_index;
   let if_block;
   let div_aria_label_value;
   let div_class_value;
   let current;
-  const if_block_creators = [create_if_block11, create_else_block4];
+  const if_block_creators = [create_if_block12, create_else_block4];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -16352,7 +18451,7 @@ function create_fragment65(ctx) {
     }
   };
 }
-function instance63($$self, $$props, $$invalidate) {
+function instance65($$self, $$props, $$invalidate) {
   let $editing;
   let { hotkey } = $$props;
   let { commandName } = $$props;
@@ -16385,22 +18484,22 @@ function instance63($$self, $$props, $$invalidate) {
 var Hotkey = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance63, create_fragment65, safe_not_equal, { hotkey: 0, commandName: 1, isPrimary: 2 }, add_css23);
+    init(this, options, instance65, create_fragment67, safe_not_equal, { hotkey: 0, commandName: 1, isPrimary: 2 }, add_css26);
   }
 };
 var hotkey_default = Hotkey;
 
 // src/view/components/container/controls-bar/modals/hotkeys/components/command.svelte
-function add_css24(target) {
+function add_css27(target) {
   append_styles(target, "svelte-16zu1cl", ".command.svelte-16zu1cl{padding:8px;display:flex;align-items:center;justify-content:space-between;border-radius:4px;gap:8px;background-color:var(--color-base-30)}@media(max-width: 720px){.command.svelte-16zu1cl{flex-direction:column;align-items:start;width:190px}.hotkeys.svelte-16zu1cl{align-self:center}}.hotkeys.svelte-16zu1cl{display:flex;flex-direction:column;align-items:end;gap:5px}.label.svelte-16zu1cl{font-size:14px;color:var(--text-normal);display:block}");
 }
-function get_each_context8(ctx, list, i) {
+function get_each_context9(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[1] = list[i];
   child_ctx[3] = i;
   return child_ctx;
 }
-function create_each_block8(ctx) {
+function create_each_block9(ctx) {
   let hotkey_1;
   let current;
   hotkey_1 = new hotkey_default({
@@ -16454,7 +18553,7 @@ function create_each_block8(ctx) {
     }
   };
 }
-function create_fragment66(ctx) {
+function create_fragment68(ctx) {
   let div1;
   let span;
   let t0_value = hotkeysLang[
@@ -16471,7 +18570,7 @@ function create_fragment66(ctx) {
   );
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block8(get_each_context8(ctx, each_value, i));
+    each_blocks[i] = create_each_block9(get_each_context9(ctx, each_value, i));
   }
   const out = (i) => transition_out(each_blocks[i], 1, 1, () => {
     each_blocks[i] = null;
@@ -16518,12 +18617,12 @@ function create_fragment66(ctx) {
         );
         let i;
         for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context8(ctx2, each_value, i);
+          const child_ctx = get_each_context9(ctx2, each_value, i);
           if (each_blocks[i]) {
             each_blocks[i].p(child_ctx, dirty);
             transition_in(each_blocks[i], 1);
           } else {
-            each_blocks[i] = create_each_block8(child_ctx);
+            each_blocks[i] = create_each_block9(child_ctx);
             each_blocks[i].c();
             transition_in(each_blocks[i], 1);
             each_blocks[i].m(div0, null);
@@ -16559,7 +18658,7 @@ function create_fragment66(ctx) {
     }
   };
 }
-function instance64($$self, $$props, $$invalidate) {
+function instance66($$self, $$props, $$invalidate) {
   let { commandHotkeys } = $$props;
   $$self.$$set = ($$props2) => {
     if ("commandHotkeys" in $$props2)
@@ -16570,21 +18669,21 @@ function instance64($$self, $$props, $$invalidate) {
 var Command = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance64, create_fragment66, safe_not_equal, { commandHotkeys: 0 }, add_css24);
+    init(this, options, instance66, create_fragment68, safe_not_equal, { commandHotkeys: 0 }, add_css27);
   }
 };
 var command_default = Command;
 
 // src/view/components/container/controls-bar/modals/hotkeys/group.svelte
-function add_css25(target) {
+function add_css28(target) {
   append_styles(target, "svelte-1odqylp", ".group.svelte-1odqylp{background-color:var(--background-secondary);padding:var(--size-4-2);border-radius:3px}.hotkeys-list.svelte-1odqylp{display:flex;flex-direction:column;gap:var(--size-4-2);overflow-y:auto}.group-name.svelte-1odqylp{padding-bottom:10px;padding-left:5px;font-size:16px;color:var(--color-base-70)}");
 }
-function get_each_context9(ctx, list, i) {
+function get_each_context10(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[2] = list[i];
   return child_ctx;
 }
-function create_each_block9(key_1, ctx) {
+function create_each_block10(key_1, ctx) {
   let first;
   let hotkey;
   let current;
@@ -16636,7 +18735,7 @@ function create_each_block9(key_1, ctx) {
     }
   };
 }
-function create_fragment67(ctx) {
+function create_fragment69(ctx) {
   let div2;
   let div0;
   let t0;
@@ -16654,9 +18753,9 @@ function create_fragment67(ctx) {
     ctx2[2].name
   );
   for (let i = 0; i < each_value.length; i += 1) {
-    let child_ctx = get_each_context9(ctx, each_value, i);
+    let child_ctx = get_each_context10(ctx, each_value, i);
     let key = get_key(child_ctx);
-    each_1_lookup.set(key, each_blocks[i] = create_each_block9(key, child_ctx));
+    each_1_lookup.set(key, each_blocks[i] = create_each_block10(key, child_ctx));
   }
   return {
     c() {
@@ -16703,7 +18802,7 @@ function create_fragment67(ctx) {
           ctx2[0]
         );
         group_outros();
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div1, outro_and_destroy_block, create_each_block9, null, get_each_context9);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div1, outro_and_destroy_block, create_each_block10, null, get_each_context10);
         check_outros();
       }
     },
@@ -16731,7 +18830,7 @@ function create_fragment67(ctx) {
     }
   };
 }
-function instance65($$self, $$props, $$invalidate) {
+function instance67($$self, $$props, $$invalidate) {
   let { group } = $$props;
   let { groupName } = $$props;
   $$self.$$set = ($$props2) => {
@@ -16745,16 +18844,16 @@ function instance65($$self, $$props, $$invalidate) {
 var Group2 = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance65, create_fragment67, safe_not_equal, { group: 0, groupName: 1 }, add_css25);
+    init(this, options, instance67, create_fragment69, safe_not_equal, { group: 0, groupName: 1 }, add_css28);
   }
 };
 var group_default2 = Group2;
 
 // src/view/components/container/controls-bar/modals/hotkeys/front.svelte
-function add_css26(target) {
+function add_css29(target) {
   append_styles(target, "svelte-105pskz", ".front.svelte-105pskz{display:flex;justify-content:space-between;align-items:center;width:100%}.search-input-container.svelte-105pskz{width:100%}");
 }
-function create_fragment68(ctx) {
+function create_fragment70(ctx) {
   let div2;
   let div1;
   let input;
@@ -16832,7 +18931,7 @@ function create_fragment68(ctx) {
     }
   };
 }
-function instance66($$self, $$props, $$invalidate) {
+function instance68($$self, $$props, $$invalidate) {
   let searchTerm = "";
   function input_input_handler() {
     searchTerm = this.value;
@@ -16857,7 +18956,7 @@ function instance66($$self, $$props, $$invalidate) {
 var Front = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance66, create_fragment68, safe_not_equal, {}, add_css26);
+    init(this, options, instance68, create_fragment70, safe_not_equal, {}, add_css29);
   }
 };
 var front_default = Front;
@@ -16866,10 +18965,10 @@ var front_default = Front;
 var numberOfConflictingHotkeysStore = () => derived(hotkeyStore, (store) => store.numberOfConflictingHotkeys);
 
 // src/view/components/container/controls-bar/modals/hotkeys/number-of-conflicts.svelte
-function add_css27(target) {
+function add_css30(target) {
   append_styles(target, "svelte-st1umc", ".conflicts-indicator.svelte-st1umc{font-size:12px;color:var(--color-red)}");
 }
-function create_if_block12(ctx) {
+function create_if_block13(ctx) {
   let div;
   let t0;
   let t1;
@@ -16918,11 +19017,11 @@ function create_if_block12(ctx) {
     }
   };
 }
-function create_fragment69(ctx) {
+function create_fragment71(ctx) {
   let if_block_anchor;
   let if_block = (
     /*$numberOfConflictingHotkeys*/
-    ctx[0] && create_if_block12(ctx)
+    ctx[0] && create_if_block13(ctx)
   );
   return {
     c() {
@@ -16943,7 +19042,7 @@ function create_fragment69(ctx) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block12(ctx2);
+          if_block = create_if_block13(ctx2);
           if_block.c();
           if_block.m(if_block_anchor.parentNode, if_block_anchor);
         }
@@ -16963,7 +19062,7 @@ function create_fragment69(ctx) {
     }
   };
 }
-function instance67($$self, $$props, $$invalidate) {
+function instance69($$self, $$props, $$invalidate) {
   let $numberOfConflictingHotkeys;
   const numberOfConflictingHotkeys = numberOfConflictingHotkeysStore();
   component_subscribe($$self, numberOfConflictingHotkeys, (value) => $$invalidate(0, $numberOfConflictingHotkeys = value));
@@ -16972,22 +19071,22 @@ function instance67($$self, $$props, $$invalidate) {
 var Number_of_conflicts = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance67, create_fragment69, safe_not_equal, {}, add_css27);
+    init(this, options, instance69, create_fragment71, safe_not_equal, {}, add_css30);
   }
 };
 var number_of_conflicts_default = Number_of_conflicts;
 
 // src/view/components/container/controls-bar/modals/hotkeys/hotkeys.svelte
-function add_css28(target) {
-  append_styles(target, "svelte-1qqeg4q", ".groups.svelte-1qqeg4q{min-width:430px;display:flex;flex-direction:column;gap:var(--size-4-2);max-height:360px;overflow-y:auto}@media(max-width: 720px){.groups.svelte-1qqeg4q{min-width:unset}}");
+function add_css31(target) {
+  append_styles(target, "svelte-nx28bg", ".groups.svelte-nx28bg{min-width:430px;display:flex;flex-direction:column;gap:var(--size-4-2);max-height:70vh;overflow-y:auto}@media(max-width: 720px){.groups.svelte-nx28bg{min-width:unset}}");
 }
-function get_each_context10(ctx, list, i) {
+function get_each_context11(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[1] = list[i][0];
   child_ctx[2] = list[i][1];
   return child_ctx;
 }
-function create_each_block10(key_1, ctx) {
+function create_each_block11(key_1, ctx) {
   let first;
   let group_1;
   let current;
@@ -17047,7 +19146,7 @@ function create_each_block10(key_1, ctx) {
     }
   };
 }
-function create_fragment70(ctx) {
+function create_fragment72(ctx) {
   let div1;
   let front;
   let t0;
@@ -17067,9 +19166,9 @@ function create_fragment70(ctx) {
     ctx2[1]
   );
   for (let i = 0; i < each_value.length; i += 1) {
-    let child_ctx = get_each_context10(ctx, each_value, i);
+    let child_ctx = get_each_context11(ctx, each_value, i);
     let key = get_key(child_ctx);
-    each_1_lookup.set(key, each_blocks[i] = create_each_block10(key, child_ctx));
+    each_1_lookup.set(key, each_blocks[i] = create_each_block11(key, child_ctx));
   }
   numberofconflicts = new number_of_conflicts_default({});
   return {
@@ -17083,7 +19182,7 @@ function create_fragment70(ctx) {
       }
       t1 = space();
       create_component(numberofconflicts.$$.fragment);
-      attr(div0, "class", "groups svelte-1qqeg4q");
+      attr(div0, "class", "groups svelte-nx28bg");
       attr(div1, "class", "lineage-modal");
       attr(div1, "tabindex", "0");
     },
@@ -17109,7 +19208,7 @@ function create_fragment70(ctx) {
           ctx2[0]
         ));
         group_outros();
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div0, outro_and_destroy_block, create_each_block10, null, get_each_context10);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div0, outro_and_destroy_block, create_each_block11, null, get_each_context11);
         check_outros();
       }
     },
@@ -17143,7 +19242,7 @@ function create_fragment70(ctx) {
     }
   };
 }
-function instance68($$self, $$props, $$invalidate) {
+function instance70($$self, $$props, $$invalidate) {
   let $filteredHotkeys;
   component_subscribe($$self, filteredHotkeys, ($$value) => $$invalidate(0, $filteredHotkeys = $$value));
   return [$filteredHotkeys];
@@ -17151,13 +19250,13 @@ function instance68($$self, $$props, $$invalidate) {
 var Hotkeys = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance68, create_fragment70, safe_not_equal, {}, add_css28);
+    init(this, options, instance70, create_fragment72, safe_not_equal, {}, add_css31);
   }
 };
 var hotkeys_default = Hotkeys;
 
 // src/view/actions/scrolling-axis/scrolling-axis.ts
-var import_obsidian17 = require("obsidian");
+var import_obsidian22 = require("obsidian");
 var scrollingAxis = (element2, { view, pressed }) => {
   const onKeyDown = (e) => {
     if (e.key === " ") {
@@ -17190,7 +19289,7 @@ var scrollingAxis = (element2, { view, pressed }) => {
   };
   let clientX = 0;
   let clientY = 0;
-  const dispatch = (0, import_obsidian17.debounce)(() => {
+  const dispatch = (0, import_obsidian22.debounce)(() => {
     const container = view.container;
     invariant(container);
     const containerRect = container.getBoundingClientRect();
@@ -17229,10 +19328,10 @@ var scrollingAxis = (element2, { view, pressed }) => {
 };
 
 // src/view/components/container/scrolling-axis/scrolling-axis.svelte
-function add_css29(target) {
+function add_css32(target) {
   append_styles(target, "svelte-159cthp", ".center-indicator.svelte-159cthp{position:absolute;width:100px;height:100px;left:calc(50% - 50px);top:calc(50% - 50px);display:flex;align-items:center;justify-content:center;pointer-events:none}.center-indicator-x.svelte-159cthp{min-width:100%;min-height:2px;background-color:var(--color-base-40);position:absolute}.center-indicator-y.svelte-159cthp{min-height:100%;min-width:2px;background-color:var(--color-base-40);position:absolute}");
 }
-function create_if_block13(ctx) {
+function create_if_block14(ctx) {
   let div2;
   return {
     c() {
@@ -17250,7 +19349,7 @@ function create_if_block13(ctx) {
     }
   };
 }
-function create_fragment71(ctx) {
+function create_fragment73(ctx) {
   let div0;
   let scrollingAxis_action;
   let t0;
@@ -17263,7 +19362,7 @@ function create_fragment71(ctx) {
   let dispose;
   let if_block = (
     /*$pressed*/
-    ctx[0] && create_if_block13(ctx)
+    ctx[0] && create_if_block14(ctx)
   );
   return {
     c() {
@@ -17324,7 +19423,7 @@ function create_fragment71(ctx) {
       ) {
         if (if_block) {
         } else {
-          if_block = create_if_block13(ctx2);
+          if_block = create_if_block14(ctx2);
           if_block.c();
           if_block.m(if_block_anchor.parentNode, if_block_anchor);
         }
@@ -17350,7 +19449,7 @@ function create_fragment71(ctx) {
     }
   };
 }
-function instance69($$self, $$props, $$invalidate) {
+function instance71($$self, $$props, $$invalidate) {
   let $pressed;
   let $verticalOffset;
   const pressed = writable(false);
@@ -17363,7 +19462,7 @@ function instance69($$self, $$props, $$invalidate) {
 var Scrolling_axis = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance69, create_fragment71, safe_not_equal, {}, add_css29);
+    init(this, options, instance71, create_fragment73, safe_not_equal, {}, add_css32);
   }
 };
 var scrolling_axis_default = Scrolling_axis;
@@ -17387,15 +19486,13 @@ var eventToString = (event) => {
   return string;
 };
 
-// src/view/actions/keyboard-shortcuts/keyboard-shortcuts.ts
-var import_obsidian18 = require("obsidian");
-
 // src/view/actions/on-escape/helpers/handle-escape-key.ts
 var handleEscapeKey = (view) => {
   const viewStore = view.viewStore;
   const value = viewStore.getValue();
   const search2 = value.search;
   const controls = value.ui.controls;
+  const selection = value.document.selectedNodes;
   if (search2.query) {
     viewStore.dispatch({
       type: "SEARCH/SET_QUERY",
@@ -17417,6 +19514,11 @@ var handleEscapeKey = (view) => {
       }
     });
     return true;
+  } else if (selection.size > 1) {
+    viewStore.dispatch({
+      type: "DOCUMENT/CLEAR_SELECTION"
+    });
+    return true;
   }
 };
 
@@ -17426,9 +19528,9 @@ var keyboardShortcuts = (target, {
 }) => {
   const event = "keydown";
   const unsubscribeFromHotkeyStore = hotkeyStore.subscribe(
-    (state, action, initialRun) => {
+    (state2, action, initialRun) => {
       if (action?.type === "HOTKEY/UPDATE" || action?.type === "HOTKEY/RESET" || initialRun)
-        updateCommandsDictionary(state.hotkeys);
+        updateCommandsDictionary(state2.hotkeys);
     }
   );
   const keyboardEventHandler = (event2) => {
@@ -17447,9 +19549,7 @@ var keyboardShortcuts = (target, {
         try {
           command.callback(view, event2);
         } catch (error) {
-          console.error(`[hotkey] command: `, command.name);
-          console.error(`[hotkey] `, error);
-          new import_obsidian18.Notice("Lineage plugin: " + error.message);
+          onPluginError(error, "command", command);
         }
       }
     }
@@ -17486,8 +19586,8 @@ var mouseWheelZoom = (element2, view) => {
 };
 
 // src/view/components/container/main.svelte
-function add_css30(target) {
-  append_styles(target, "svelte-1m8x8ks", ".lineage-main.svelte-1m8x8ks{--z-index-breadcrumbs:10;background-color:var(--background-container);display:flex;height:100%;width:100%;position:relative}.lineage-main.svelte-1m8x8ks:not(:focus-within){& .node-border--active {\n            border-left-color: var(--lineage-accent-faint);\n        };& .node-border--editing {\n            border-left-color: var(--color-base-40);\n        };& .node-border--discard {\n            border-left-color: #e8314660;\n        }}");
+function add_css33(target) {
+  append_styles(target, "svelte-1hu31kw", ".lineage-main.svelte-1hu31kw{--z-index-breadcrumbs:10;background-color:var(--background-container);display:flex;height:100%;width:100%;position:relative}.lineage-main.svelte-1hu31kw:not(:focus-within){& .node-border--active {\n            border-left-color: var(--lineage-accent-faint);\n        };& .node-border--editing {\n            border-left-color: var(--color-base-40);\n        };& .node-border--discard {\n            border-left-color: #e8314660;\n        };& .node-border--selected {\n            border-left-color: var(--lineage-color-selection-faint);\n        }}");
 }
 function create_if_block_3(ctx) {
   let settings;
@@ -17570,7 +19670,7 @@ function create_if_block_15(ctx) {
     }
   };
 }
-function create_if_block14(ctx) {
+function create_if_block15(ctx) {
   let scrollingaxis;
   let current;
   scrollingaxis = new scrolling_axis_default({});
@@ -17597,7 +19697,7 @@ function create_if_block14(ctx) {
     }
   };
 }
-function create_fragment72(ctx) {
+function create_fragment74(ctx) {
   let div;
   let container;
   let t0;
@@ -17645,7 +19745,7 @@ function create_fragment72(ctx) {
   }
   let if_block1 = (
     /*$scrollingMode*/
-    ctx[2] === "fixed-position" && create_if_block14(ctx)
+    ctx[2] === "fixed-position" && create_if_block15(ctx)
   );
   return {
     c() {
@@ -17663,7 +19763,7 @@ function create_fragment72(ctx) {
       t4 = space();
       if (if_block1)
         if_block1.c();
-      attr(div, "class", div_class_value = null_to_empty(`lineage-main`) + " svelte-1m8x8ks");
+      attr(div, "class", div_class_value = null_to_empty(`lineage-main`) + " svelte-1hu31kw");
     },
     m(target, anchor) {
       insert(target, div, anchor);
@@ -17732,7 +19832,7 @@ function create_fragment72(ctx) {
             transition_in(if_block1, 1);
           }
         } else {
-          if_block1 = create_if_block14(ctx2);
+          if_block1 = create_if_block15(ctx2);
           if_block1.c();
           transition_in(if_block1, 1);
           if_block1.m(div, null);
@@ -17796,7 +19896,7 @@ function create_fragment72(ctx) {
     }
   };
 }
-function instance70($$self, $$props, $$invalidate) {
+function instance72($$self, $$props, $$invalidate) {
   let $controls;
   let $scrollingMode;
   let { plugin } = $$props;
@@ -17818,22 +19918,10 @@ function instance70($$self, $$props, $$invalidate) {
 var Main = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance70, create_fragment72, safe_not_equal, { plugin: 5, view: 0 }, add_css30);
+    init(this, options, instance72, create_fragment74, safe_not_equal, { plugin: 5, view: 0 }, add_css33);
   }
 };
 var main_default = Main;
-
-// src/lib/tree-utils/find/find-node-column.ts
-var findNodeColumn = (columns, nodeId) => {
-  for (let i = 0; i < columns.length; i++) {
-    const column = columns[i];
-    for (const group of column.groups) {
-      if (group.nodes.find((n) => n === nodeId))
-        return i;
-    }
-  }
-  return -1;
-};
 
 // src/lib/tree-utils/sort/sort-groups.ts
 var sortGroups = (parents, children2) => {
@@ -18120,89 +20208,6 @@ var jsonToColumns = (tree, parentId = id.rootNode(), columns = [], content = {},
   return { content, columns };
 };
 
-// src/lib/data-conversion/sections-to-json.ts
-var depthLevel = (number) => {
-  if (number.includes(".")) {
-    return number.split(".").length;
-  } else
-    return /\d+/.test(number) ? 1 : 0;
-};
-var trimCurrentNode = (node) => {
-  if (node) {
-    node.content = node.content.trim();
-  }
-};
-var sectionsToJson = (text2) => {
-  const lines = text2.split("\n");
-  const map = {};
-  const tree = [];
-  let currentNode = null;
-  let currentParentNumber = "";
-  for (const line of lines) {
-    const sectionNumber = parseDelimiter(line);
-    if (sectionNumber) {
-      const [parent, , full] = sectionNumber;
-      const isASibling = parent === currentParentNumber;
-      const newNode = {
-        content: "",
-        children: []
-      };
-      map[full] = newNode;
-      if (isASibling) {
-        if (currentNode)
-          trimCurrentNode(currentNode);
-        const parentNode = map[parent];
-        if (parentNode) {
-          parentNode.children.push(newNode);
-        } else {
-          tree.push(newNode);
-        }
-        currentNode = newNode;
-      } else {
-        const isChild = depthLevel(parent) > depthLevel(currentParentNumber);
-        if (isChild) {
-          if (!currentNode) {
-            throw new Error(lang.error_parent_not_found(full));
-          }
-          trimCurrentNode(currentNode);
-          currentNode.children.push(newNode);
-          currentNode = newNode;
-        } else {
-          if (!parent) {
-            if (currentNode)
-              trimCurrentNode(currentNode);
-            tree.push(newNode);
-            currentNode = newNode;
-          } else {
-            const parentNode = map[parent];
-            if (!parentNode) {
-              throw new Error(lang.error_parent_not_found(full));
-            }
-            if (currentNode)
-              trimCurrentNode(currentNode);
-            parentNode.children.push(newNode);
-            currentNode = newNode;
-          }
-        }
-      }
-      currentParentNumber = parent;
-    } else {
-      if (currentNode) {
-        if (currentNode.content)
-          currentNode.content += "\n";
-        currentNode.content += line;
-      } else if (line.trim()) {
-        currentNode = {
-          content: line,
-          children: []
-        };
-        tree.push(currentNode);
-      }
-    }
-  }
-  return tree;
-};
-
 // src/lib/tree-utils/insert/insert-first-node.ts
 var insertFirstNode = (columns, content) => {
   if (columns.length === 0) {
@@ -18222,18 +20227,18 @@ var insertFirstNode = (columns, content) => {
 };
 
 // src/stores/document/reducers/load-document-from-file/load-document-from-file.ts
-var loadDocumentFromFile = (state, action) => {
-  const tree = sectionsToJson(action.payload.document.data);
+var loadDocumentFromFile = (state2, action) => {
+  const tree = action.payload.format === "outline" ? outlineToJson(action.payload.document.data) : sectionsToJson(action.payload.document.data);
   const document2 = jsonToColumns(tree);
-  state.document.columns = document2.columns;
-  state.document.content = document2.content;
+  state2.document.columns = document2.columns;
+  state2.document.content = document2.content;
   const emptyTree = tree.length === 0;
   if (emptyTree) {
-    insertFirstNode(state.document.columns, state.document.content);
+    insertFirstNode(state2.document.columns, state2.document.content);
   }
   if (action.type === "DOCUMENT/LOAD_FILE")
-    state.file.frontmatter = action.payload.document.frontmatter;
-  const activeNode = state.document.columns[0].groups[0].nodes[0];
+    state2.file.frontmatter = action.payload.document.frontmatter;
+  const activeNode = state2.document.columns[0].groups[0].nodes[0];
   invariant(activeNode);
   return activeNode;
 };
@@ -18346,21 +20351,31 @@ var findNextActiveNode = (columns, node, action) => {
 };
 
 // src/stores/document/reducers/delete-node/delete-node.ts
-var deleteNode = (document2, nodeId) => {
+var deleteNode = (document2, nodeId, selectedNodes) => {
   invariant(nodeId);
-  const lastNode = isLastRootNode(document2.columns, nodeId);
-  if (lastNode)
-    throw new Error(lang.error_delete_last_node);
-  const nextNode = findNextActiveNode(document2.columns, nodeId, {
-    type: "DOCUMENT/DELETE_NODE",
-    payload: {
-      activeNodeId: nodeId
+  const isSelection = selectedNodes && selectedNodes.size > 1;
+  const nodes = isSelection ? [...selectedNodes] : [nodeId];
+  let nextNode = void 0;
+  for (const nodeId2 of nodes) {
+    const lastNode = isLastRootNode(document2.columns, nodeId2);
+    if (lastNode) {
+      if (isSelection)
+        break;
+      else
+        throw new Error(lang.error_delete_last_node);
     }
-  });
+    nextNode = findNextActiveNode(document2.columns, nodeId2, {
+      type: "DOCUMENT/DELETE_NODE",
+      payload: {
+        activeNodeId: nodeId2
+      }
+    });
+    invariant(nextNode);
+    deleteChildNodes(document2, nodeId2);
+    deleteNodeById(document2.columns, document2.content, nodeId2);
+    cleanAndSortColumns(document2);
+  }
   invariant(nextNode);
-  deleteChildNodes(document2, nodeId);
-  deleteNodeById(document2.columns, document2.content, nodeId);
-  cleanAndSortColumns(document2);
   return nextNode;
 };
 
@@ -18398,25 +20413,52 @@ var findAdjacentNode = (columns, activeNodeId, direction) => {
   return targetNode;
 };
 
+// src/lib/tree-utils/find/find-adjacent-node-of-selection.ts
+var findAdjacentNodeOfSelection = (document2, activeNodeId, selectedNodes, direction) => {
+  const searchColumns = clone(document2.columns);
+  if (selectedNodes && selectedNodes.size > 1) {
+    const column = searchColumns[findNodeColumn(searchColumns, activeNodeId)];
+    invariant(column);
+    for (const group of column.groups) {
+      group.nodes = group.nodes.filter(
+        (n) => n === activeNodeId || !selectedNodes?.has(n)
+      );
+    }
+  }
+  return findAdjacentNode(searchColumns, activeNodeId, direction);
+};
+
 // src/stores/document/reducers/move-node/move-node.ts
 var moveNode2 = (document2, action) => {
-  const nodeToMove = action.payload.activeNodeId;
-  invariant(nodeToMove);
-  const targetNode = findAdjacentNode(
+  const selectedNodes = action.payload.selectedNodes;
+  const isSelection = selectedNodes && selectedNodes.size > 1;
+  const nodes = isSelection ? [...selectedNodes] : [action.payload.activeNodeId];
+  const shouldReverseOrder = isSelection && (action.payload.direction === "down" || action.payload.direction === "left");
+  if (shouldReverseOrder)
+    nodes.reverse();
+  invariant(action.payload.activeNodeId);
+  const targetNode = isSelection ? findAdjacentNodeOfSelection(
+    document2,
+    action.payload.activeNodeId,
+    selectedNodes,
+    action.payload.direction
+  ) : findAdjacentNode(
     document2.columns,
-    nodeToMove,
+    action.payload.activeNodeId,
     action.payload.direction
   );
   if (!targetNode)
     throw new SilentError("could not find adjacent node");
-  changeNodePosition(
-    document2,
-    nodeToMove,
-    targetNode,
-    action.payload.direction,
-    "move"
-  );
-  cleanAndSortColumns(document2);
+  for (const nodeToMove of nodes) {
+    changeNodePosition(
+      document2,
+      nodeToMove,
+      targetNode,
+      action.payload.direction,
+      "move"
+    );
+    cleanAndSortColumns(document2);
+  }
 };
 
 // src/lib/tree-utils/move/move-orphan-groups-to-a-new-parent.ts
@@ -18751,9 +20793,51 @@ var pastChildGroups = (document2, branch) => {
   }
 };
 
+// src/lib/format-detection/has-n-sections.ts
+var hasNSections = (input, n = 2) => {
+  const lines = input.split("\n");
+  let count = 0;
+  for (const line of lines) {
+    if (parseDelimiter(line)) {
+      count++;
+      if (count >= n)
+        return true;
+    }
+  }
+  return false;
+};
+
+// src/lib/format-detection/has-n-bullet-list-items.ts
+var hasNBulletListItems = (input, n = 2) => {
+  const lines = input.split("\n");
+  let count = 0;
+  for (const line of lines) {
+    if (/^(\t*)- (.+)/.test(line)) {
+      count++;
+      if (count >= n)
+        return true;
+    }
+  }
+  return false;
+};
+
+// src/lib/format-detection/detect-document-format.ts
+var detectDocumentFormat = (text2, strict = true) => {
+  const { data } = extractFrontmatter(text2);
+  if (hasNSections(data, 1))
+    return "sections";
+  if (isOutline(data))
+    return "outline";
+  if (!strict) {
+    if (hasNBulletListItems(text2, 1))
+      return "outline";
+  }
+};
+
 // src/stores/document/reducers/clipboard/paste-node/helpers/text-to-branches.ts
 var textToBranches = (text2) => {
-  const tree = sectionsToJson(text2);
+  const detectedFormat = detectDocumentFormat(text2, false);
+  const tree = detectedFormat === "outline" ? outlineToJson(text2) : sectionsToJson(text2);
   const document2 = jsonToColumns(tree);
   const branches = [];
   for (const nodeId of document2.columns[0].groups[0].nodes) {
@@ -18820,11 +20904,11 @@ var calculateColumnTreeIndexes = (columns) => {
 };
 
 // src/stores/document/reducers/state/update-sections-dictionary.ts
-var updateSectionsDictionary = (state) => {
-  state.sections = calculateColumnTreeIndexes(state.document.columns);
+var updateSectionsDictionary = (state2) => {
+  state2.sections = calculateColumnTreeIndexes(state2.document.columns);
 };
 
-// src/stores/view/subscriptions/actions/get-id-of-section.ts
+// src/stores/view/subscriptions/helpers/get-id-of-section.ts
 var getIdOfSection = (sections, section) => {
   const id2 = sections.section_id[section];
   invariant(id2);
@@ -18845,108 +20929,20 @@ var extractNode = (document2, action) => {
   });
 };
 
-// src/stores/view/subscriptions/actions/get-section-of-id.ts
+// src/stores/view/subscriptions/helpers/get-section-of-id.ts
 var getSectionOfId = (sections, nodeId) => {
   const section = sections.id_section[nodeId];
   invariant(section);
   return section;
 };
 
-// src/lib/data-conversion/outilne-to-json.ts
-var addNewNode = (state, level2, text2) => {
-  state.currentNode = {
-    content: text2,
-    children: []
-  };
-  if (level2 === 1) {
-    state.tree.push(state.currentNode);
-    state.currentNodes = [state.currentNode];
-  } else {
-    if (state.currentNodes[level2 - 2]) {
-      state.currentNodes[level2 - 2].children.push(state.currentNode);
-    }
-    state.currentNodes[level2 - 1] = state.currentNode;
-  }
-};
-var updateCurrentNode = (state, text2) => {
-  if (state.currentNode) {
-    if (state.currentNode.content)
-      state.currentNode.content += "\n";
-    state.currentNode.content += text2;
-  } else if (text2.trim()) {
-    state.currentNode = {
-      content: text2,
-      children: []
-    };
-    state.tree.push(state.currentNode);
-  }
-};
-var outlineToJson = (input) => {
-  const lines = input.split("\n");
-  const state = {
-    currentNodes: [],
-    currentNode: null,
-    tree: []
-  };
-  for (const line of lines) {
-    if (parseDelimiter(line))
-      throw new Error("input has a section");
-    const outlineMatch = line.match(/^(\t*)- (.+)/);
-    if (outlineMatch) {
-      const level2 = outlineMatch[1].length + 1;
-      addNewNode(state, level2, outlineMatch[2]);
-    } else {
-      updateCurrentNode(state, line);
-    }
-  }
-  return state.tree;
-};
-
-// src/lib/data-conversion/headings-to-json.ts
-var headingsToJson = (input) => {
-  const lines = input.split("\n");
-  const state = {
-    currentNodes: [],
-    currentNode: null,
-    tree: []
-  };
-  for (const line of lines) {
-    if (parseDelimiter(line))
-      throw new Error("input has a section");
-    const match = line.match(/^(#+) (.+)/);
-    if (match) {
-      const level2 = match[1].length;
-      addNewNode(state, level2, line);
-    } else {
-      updateCurrentNode(state, line);
-    }
-  }
-  return state.tree;
-};
-
-// src/lib/data-conversion/headings-to-sections.ts
-var headingsToSections = (input) => {
-  const tree = headingsToJson(input);
-  if (tree.length === 1 && tree[0].children.length === 0)
-    return input;
-  return jsonToSections(tree);
-};
-
-// src/lib/data-conversion/outline-to-sections.ts
-var outlineToSections = (input) => {
-  const tree = outlineToJson(input);
-  if (tree.length === 1 && tree[0].children.length === 0)
-    return input;
-  return jsonToSections(tree);
-};
-
 // src/stores/document/reducers/split-node/split-node.ts
-var splitNode2 = (document2, action) => {
+var splitNode = (document2, action) => {
   const targetNode = action.payload.target;
   const content = document2.content[targetNode];
   if (!content?.content)
     throw new SilentError("empty node");
-  const sections = action.payload.mode === "heading" ? headingsToSections(content.content) : outlineToSections(content.content);
+  const sections = splitText(content?.content, action.payload.mode);
   if (sections === content.content)
     throw new Error(lang.cant_split_card_identical);
   const childGroup = findChildGroup(document2.columns, targetNode);
@@ -18964,116 +20960,120 @@ var splitNode2 = (document2, action) => {
 };
 
 // src/stores/document/document-reducer.ts
-var updateDocumentState = (state, action) => {
+var updateDocumentState = (state2, action) => {
   let newActiveNodeId = null;
   let affectedNodeId = null;
   let affectedNodeContent = null;
   if (action.type === "DOCUMENT/SET_NODE_CONTENT") {
-    setNodeContent(state.document.content, action);
+    setNodeContent(state2.document.content, action);
     newActiveNodeId = action.payload.nodeId;
   } else if (action.type === "DOCUMENT/INSERT_NODE") {
-    newActiveNodeId = insertNode(state.document, action);
+    newActiveNodeId = insertNode(state2.document, action);
   } else if (action.type === "DOCUMENT/DELETE_NODE") {
-    affectedNodeContent = state.document.content[action.payload.activeNodeId];
+    affectedNodeContent = state2.document.content[action.payload.activeNodeId];
     newActiveNodeId = deleteNode(
-      state.document,
-      action.payload.activeNodeId
+      state2.document,
+      action.payload.activeNodeId,
+      action.payload.selectedNodes
     );
     affectedNodeId = action.payload.activeNodeId;
   } else if (action.type === "DOCUMENT/EXTRACT_BRANCH") {
-    affectedNodeContent = state.document.content[action.payload.nodeId];
-    extractNode(state.document, action);
+    affectedNodeContent = state2.document.content[action.payload.nodeId];
+    extractNode(state2.document, action);
     newActiveNodeId = action.payload.nodeId;
   } else if (action.type === "DOCUMENT/SPLIT_NODE") {
     affectedNodeId = action.payload.target;
-    affectedNodeContent = state.document.content[affectedNodeId];
-    newActiveNodeId = splitNode2(state.document, action);
+    affectedNodeContent = state2.document.content[affectedNodeId];
+    newActiveNodeId = splitNode(state2.document, action);
   } else if (action.type === "DOCUMENT/DROP_NODE") {
-    dropNode(state.document, action);
+    dropNode(state2.document, action);
     newActiveNodeId = action.payload.droppedNodeId;
   } else if (action.type === "DOCUMENT/MOVE_NODE") {
-    moveNode2(state.document, action);
+    moveNode2(state2.document, action);
     newActiveNodeId = action.payload.activeNodeId;
     affectedNodeId = newActiveNodeId;
   } else if (action.type === "DOCUMENT/MERGE_NODE") {
-    affectedNodeContent = state.document.content[action.payload.activeNodeId];
-    newActiveNodeId = mergeNode2(state.document, action);
+    affectedNodeContent = state2.document.content[action.payload.activeNodeId];
+    newActiveNodeId = mergeNode2(state2.document, action);
     affectedNodeId = action.payload.activeNodeId;
   } else if (action.type === "DOCUMENT/LOAD_FILE") {
-    newActiveNodeId = loadDocumentFromFile(state, action);
+    newActiveNodeId = loadDocumentFromFile(state2, action);
   } else if (action.type === "RESET_STORE") {
     const newState = defaultDocumentState();
-    state.document = newState.document;
-    state.history = newState.history;
-    state.file = newState.file;
+    state2.document = newState.document;
+    state2.history = newState.history;
+    state2.file = newState.file;
   } else if (action.type === "HISTORY/SELECT_SNAPSHOT") {
-    selectSnapshot(state.document, state.history, action);
-    state.history = { ...state.history };
+    selectSnapshot(state2.document, state2.history, action);
+    state2.history = { ...state2.history };
   } else if (action.type === "HISTORY/APPLY_PREVIOUS_SNAPSHOT") {
-    undoAction(state.document, state.history);
-    state.history = { ...state.history };
+    undoAction(state2.document, state2.history);
+    state2.history = { ...state2.history };
   } else if (action.type === "HISTORY/APPLY_NEXT_SNAPSHOT") {
-    redoAction(state.document, state.history);
-    state.history = { ...state.history };
+    redoAction(state2.document, state2.history);
+    state2.history = { ...state2.history };
   } else if (action.type === "FS/SET_FILE_PATH") {
-    state.file.path = action.payload.path;
+    state2.file.path = action.payload.path;
   } else if (action.type === "DOCUMENT/FORMAT_HEADINGS") {
-    formatHeadings2(state.document.content, state.sections);
+    formatHeadings2(state2.document.content, state2.sections);
     newActiveNodeId = getIdOfSection(
-      state.sections,
-      state.history.context.activeSection
+      state2.sections,
+      state2.history.context.activeSection
     );
   } else if (action.type === "DOCUMENT/PASTE_NODE") {
-    newActiveNodeId = pasteNode2(state.document, action);
+    newActiveNodeId = pasteNode2(state2.document, action);
   } else if (action.type === "DOCUMENT/CUT_NODE") {
-    affectedNodeContent = state.document.content[action.payload.nodeId];
-    newActiveNodeId = deleteNode(state.document, action.payload.nodeId);
+    affectedNodeContent = state2.document.content[action.payload.nodeId];
+    newActiveNodeId = deleteNode(
+      state2.document,
+      action.payload.nodeId,
+      action.payload.selectedNodes
+    );
     affectedNodeId = action.payload.nodeId;
+  } else if (action.type === "FILE/UPDATE_FRONTMATTER") {
+    state2.file.frontmatter = action.payload.frontmatter;
+    return;
   }
   const e = getDocumentEventType(action.type);
   let affectedSection = null;
   if (affectedNodeId) {
-    affectedSection = getSectionOfId(state.sections, affectedNodeId);
+    affectedSection = getSectionOfId(state2.sections, affectedNodeId);
   }
   if (e.dropOrMove || e.createOrDelete || e.changeHistory || e.clipboard) {
-    updateSectionsDictionary(state);
+    updateSectionsDictionary(state2);
+  }
+  if (action.type === "DOCUMENT/LOAD_FILE") {
+    const activeSection = action.payload.activeSection;
+    if (activeSection) {
+      const id2 = state2.sections.section_id[activeSection];
+      if (id2) {
+        newActiveNodeId = id2;
+      }
+    }
   }
   const contentShapeCreation = e.content || e.dropOrMove || e.createOrDelete;
   if (newActiveNodeId && (contentShapeCreation || e.clipboard)) {
     const newActiveSection = getSectionOfId(
-      state.sections,
+      state2.sections,
       newActiveNodeId
     );
     affectedNodeId = affectedNodeId || newActiveNodeId;
-    affectedNodeContent = affectedNodeContent || state.document.content[affectedNodeId];
+    affectedNodeContent = affectedNodeContent || state2.document.content[affectedNodeId];
     const context = {
-      numberOfSections: Object.keys(state.document.content).length,
+      numberOfSections: Object.keys(state2.document.content).length,
       affectedSection: affectedSection || newActiveSection,
       newActiveSection,
       action,
       contentOfAffectedSection: affectedNodeContent?.content?.substring(0, 300) || "",
-      numberOfCharacters: Object.values(state.document.content).map((x) => x.content.length).reduce((acc, v) => acc + v)
+      numberOfCharacters: Object.values(state2.document.content).map((x) => x.content.length).reduce((acc, v) => acc + v)
     };
-    addSnapshot(state.document, state.history, context);
-    state.history = { ...state.history };
+    addSnapshot(state2.document, state2.history, context);
+    state2.history = { ...state2.history };
   }
 };
 var documentReducer = (store, action) => {
   updateDocumentState(store, action);
   return store;
-};
-
-// src/view/helpers/extract-frontmatter.ts
-var extractFrontmatter = (markdown) => {
-  const frontmatterRegex = /^---\n([\s\S]+?)\n---\n/;
-  const match = markdown.match(frontmatterRegex);
-  if (match) {
-    const frontmatter = match[0];
-    const data = markdown.slice(frontmatter.length);
-    return { data, frontmatter: frontmatter.trim() + "\n" };
-  } else {
-    return { data: markdown, frontmatter: "" };
-  }
 };
 
 // src/stores/view/default-view-state.ts
@@ -19108,7 +21108,8 @@ var defaultViewState = () => ({
       childGroups: /* @__PURE__ */ new Set()
     },
     activeNode: "",
-    activeNodesOfColumn: {}
+    activeNodesOfColumn: {},
+    selectedNodes: /* @__PURE__ */ new Set()
   },
   navigationHistory: {
     items: [],
@@ -19122,50 +21123,50 @@ var defaultViewState = () => ({
 });
 
 // src/stores/view/reducers/search/set-search-query.ts
-var setSearchQuery = (state, query) => {
-  state.search.query = query;
-  state.search.results = /* @__PURE__ */ new Set();
-  state.search.searching = query.length > 0;
-  state.search = { ...state.search };
+var setSearchQuery = (state2, query) => {
+  state2.search.query = query;
+  state2.search.results = /* @__PURE__ */ new Set();
+  state2.search.searching = query.length > 0;
+  state2.search = { ...state2.search };
 };
 
 // src/stores/view/reducers/search/set-search-results.ts
-var setSearchResults = (state, results) => {
-  state.search.results = new Set(results);
-  state.search.searching = false;
-  state.search = { ...state.search };
+var setSearchResults = (state2, results) => {
+  state2.search.results = new Set(results);
+  state2.search.searching = false;
+  state2.search = { ...state2.search };
 };
 
 // src/stores/view/reducers/search/toggle-search-input.ts
-var toggleSearchInput = (state) => {
-  state.search.showInput = !state.search.showInput;
-  if (!state.search.showInput) {
-    setSearchQuery(state, "");
+var toggleSearchInput = (state2) => {
+  state2.search.showInput = !state2.search.showInput;
+  if (!state2.search.showInput) {
+    setSearchQuery(state2, "");
   }
-  state.search = { ...state.search };
+  state2.search = { ...state2.search };
 };
 
 // src/stores/view/reducers/document/enable-edit-mode.ts
-var enableEditMode = (state, action) => {
-  state.editing = {
+var enableEditMode = (state2, action) => {
+  state2.editing = {
     activeNodeId: action.payload.nodeId,
     disableEditConfirmation: false
   };
 };
 
 // src/stores/view/reducers/document/disable-edit-mode.ts
-var disableEditMode = (state) => {
-  state.editing = {
+var disableEditMode = (state2) => {
+  state2.editing = {
     activeNodeId: "",
     disableEditConfirmation: false
   };
 };
 
 // src/stores/view/reducers/document/on-drag-start.ts
-var onDragStart = (state, action) => {
+var onDragStart = (state2, action) => {
   const node = action.payload.nodeId;
   if (node) {
-    state.dnd = {
+    state2.dnd = {
       node: action.payload.nodeId,
       childGroups: new Set(action.payload.childGroups)
     };
@@ -19173,8 +21174,8 @@ var onDragStart = (state, action) => {
 };
 
 // src/stores/view/reducers/document/on-drag-end.ts
-var onDragEnd = (state) => {
-  state.dnd = {
+var onDragEnd = (state2) => {
+  state2.dnd = {
     node: "",
     childGroups: /* @__PURE__ */ new Set()
   };
@@ -19210,18 +21211,18 @@ var traverseUp = (columns, node) => {
 };
 
 // src/stores/view/reducers/document/helpers/update-active-branch.ts
-var updateActiveBranch = (state, columns, activeNodeOfGroup) => {
-  if (!state.activeNode)
+var updateActiveBranch = (state2, columns, activeNodeOfGroup) => {
+  if (!state2.activeNode)
     return;
-  const sortedParents = traverseUp(columns, state.activeNode).reverse();
+  const sortedParents = traverseUp(columns, state2.activeNode).reverse();
   const childGroups = [];
-  traverseDown(childGroups, columns, state.activeNode);
-  const group = findGroupByNodeId(columns, state.activeNode);
+  traverseDown(childGroups, columns, state2.activeNode);
+  const group = findGroupByNodeId(columns, state2.activeNode);
   if (!group)
-    throw new Error("could not find group for node " + state.activeNode);
-  const columnId = columns[findNodeColumn(columns, state.activeNode)].id;
-  if (childGroups.join() !== Array.from(state.activeBranch.childGroups).join() || sortedParents.join() !== state.activeBranch.sortedParentNodes.join() || group.parentId !== state.activeBranch.group || columnId !== state.activeBranch.column) {
-    state.activeBranch = {
+    throw new Error("could not find group for node " + state2.activeNode);
+  const columnId = columns[findNodeColumn(columns, state2.activeNode)].id;
+  if (childGroups.join() !== Array.from(state2.activeBranch.childGroups).join() || sortedParents.join() !== state2.activeBranch.sortedParentNodes.join() || group.parentId !== state2.activeBranch.group || columnId !== state2.activeBranch.column) {
+    state2.activeBranch = {
       childGroups: new Set(childGroups),
       sortedParentNodes: sortedParents,
       group: group.parentId,
@@ -19230,10 +21231,10 @@ var updateActiveBranch = (state, columns, activeNodeOfGroup) => {
   }
   if (!activeNodeOfGroup[columnId])
     activeNodeOfGroup[columnId] = {};
-  activeNodeOfGroup[columnId][group.parentId] = state.activeNode;
+  activeNodeOfGroup[columnId][group.parentId] = state2.activeNode;
   for (const column of Object.values(activeNodeOfGroup)) {
     for (const group2 in column) {
-      if (column[group2] === state.activeNode && group2 !== state.activeBranch.group) {
+      if (column[group2] === state2.activeNode && group2 !== state2.activeBranch.group) {
         delete column[group2];
       }
     }
@@ -19241,27 +21242,27 @@ var updateActiveBranch = (state, columns, activeNodeOfGroup) => {
 };
 
 // src/stores/view/reducers/ui/helpers/add-navigation-history-item.ts
-var addNavigationHistoryItem = (state, nodeId) => {
+var addNavigationHistoryItem = (state2, nodeId) => {
   if (!nodeId)
     return;
-  removeObsoleteHistoryItems(state.navigationHistory);
-  removeOldHistoryItems(state.navigationHistory, 100);
-  const activeItem = state.navigationHistory.items[state.navigationHistory.items.length - 1];
+  removeObsoleteHistoryItems(state2.navigationHistory);
+  removeOldHistoryItems(state2.navigationHistory, 100);
+  const activeItem = state2.navigationHistory.items[state2.navigationHistory.items.length - 1];
   if (activeItem !== nodeId) {
-    state.navigationHistory.items.push(nodeId);
+    state2.navigationHistory.items.push(nodeId);
   }
-  state.navigationHistory.state.activeIndex = state.navigationHistory.items.length - 1;
-  updateNavigationState(state.navigationHistory);
-  state.navigationHistory = {
-    ...state.navigationHistory
+  state2.navigationHistory.state.activeIndex = state2.navigationHistory.items.length - 1;
+  updateNavigationState(state2.navigationHistory);
+  state2.navigationHistory = {
+    ...state2.navigationHistory
   };
 };
 
 // src/stores/view/reducers/document/helpers/update-active-node.ts
-var updateActiveNode = (documentState, nodeId, state) => {
+var updateActiveNode = (documentState, nodeId, state2) => {
   documentState.activeNode = nodeId;
-  if (state)
-    addNavigationHistoryItem(state, documentState.activeNode);
+  if (state2)
+    addNavigationHistoryItem(state2, documentState.activeNode);
   if (documentState.editing.activeNodeId && documentState.editing.activeNodeId !== nodeId)
     disableEditMode(documentState);
 };
@@ -19308,8 +21309,87 @@ var findNextActiveNodeOnKeyboardNavigation = (columns, node, direction, activeNo
   return nextNode;
 };
 
+// src/stores/view/reducers/document/helpers/update-selected-nodes.ts
+var updateSelectedNodes = (column, selectedNodes, previousActiveNode, newActiveNode) => {
+  const allNodeIds = column.groups.flatMap((group) => group.nodes);
+  const previousActiveNodeIndex = allNodeIds.indexOf(previousActiveNode);
+  if (previousActiveNodeIndex === -1)
+    return;
+  const currentSelectionIsEmpty = selectedNodes.size === 0;
+  const lowestSelectedNodeIndex = currentSelectionIsEmpty ? previousActiveNodeIndex : allNodeIds.findIndex((nodeId) => selectedNodes.has(nodeId));
+  const highestSelectedNodeIndex = currentSelectionIsEmpty ? previousActiveNodeIndex : allNodeIds.findLastIndex((nodeId) => selectedNodes.has(nodeId));
+  const newActiveNodeIndex = allNodeIds.indexOf(newActiveNode);
+  if (newActiveNodeIndex === -1)
+    return;
+  let mode = null;
+  if (newActiveNodeIndex - previousActiveNodeIndex > 1) {
+    mode = "jump_down" /* jump_down */;
+  } else if (previousActiveNodeIndex - newActiveNodeIndex > 1) {
+    mode = "jump_up" /* jump_up */;
+  } else if (previousActiveNodeIndex === lowestSelectedNodeIndex)
+    mode = "step_from_top" /* step_from_top */;
+  else if (previousActiveNodeIndex === highestSelectedNodeIndex)
+    mode = "step_from_bottom" /* step_from_bottom */;
+  const goingUp = previousActiveNodeIndex > newActiveNodeIndex;
+  selectedNodes.clear();
+  if (!mode)
+    return;
+  let startIndex = 0, endIndex = 0;
+  if (currentSelectionIsEmpty) {
+    if (goingUp) {
+      startIndex = newActiveNodeIndex;
+      endIndex = previousActiveNodeIndex;
+    } else {
+      startIndex = previousActiveNodeIndex;
+      endIndex = newActiveNodeIndex;
+    }
+  } else if (mode === "jump_down" /* jump_down */) {
+    startIndex = previousActiveNodeIndex;
+    endIndex = newActiveNodeIndex;
+  } else if (mode === "jump_up" /* jump_up */) {
+    startIndex = newActiveNodeIndex;
+    endIndex = previousActiveNodeIndex;
+  } else if (mode === "step_from_top" /* step_from_top */) {
+    startIndex = newActiveNodeIndex;
+    endIndex = highestSelectedNodeIndex;
+  } else if (mode === "step_from_bottom" /* step_from_bottom */) {
+    startIndex = lowestSelectedNodeIndex;
+    endIndex = newActiveNodeIndex;
+  }
+  if (startIndex === endIndex)
+    return;
+  for (let i = startIndex; i <= endIndex; i++) {
+    selectedNodes.add(allNodeIds[i]);
+  }
+};
+
+// src/stores/view/reducers/document/helpers/reset-selection-state.ts
+var resetSelectionState = (documentState) => {
+  documentState.selectedNodes = /* @__PURE__ */ new Set();
+};
+
+// src/stores/view/reducers/document/helpers/update-selection-state.ts
+var updateSelectionState = (documentState, nextNode, action) => {
+  const isJump = action.type === "DOCUMENT/JUMP_TO_NODE";
+  const isVerticalStep = action.type === "DOCUMENT/NAVIGATE_USING_KEYBOARD" && (action.payload.direction === "up" || action.payload.direction === "down");
+  if (action.context?.shiftKey && (isJump || isVerticalStep)) {
+    const columnIndex = findNodeColumn(action.payload.columns, nextNode);
+    const column = action.payload.columns[columnIndex];
+    invariant(column);
+    updateSelectedNodes(
+      column,
+      documentState.selectedNodes,
+      documentState.activeNode,
+      nextNode
+    );
+    documentState.selectedNodes = new Set(documentState.selectedNodes);
+  } else {
+    resetSelectionState(documentState);
+  }
+};
+
 // src/stores/view/reducers/document/navigate-using-keyboard.ts
-var navigateUsingKeyboard = (documentState, state, action) => {
+var navigateUsingKeyboard = (documentState, state2, action) => {
   const nextNode = findNextActiveNodeOnKeyboardNavigation(
     action.payload.columns,
     documentState.activeNode,
@@ -19317,132 +21397,181 @@ var navigateUsingKeyboard = (documentState, state, action) => {
     documentState.activeNodesOfColumn
   );
   if (nextNode) {
-    updateActiveNode(documentState, nextNode, state);
+    updateSelectionState(documentState, nextNode, action);
+    updateActiveNode(documentState, nextNode, state2);
   }
 };
 
-// src/stores/view/reducers/ui/navigate-active-node.ts
-var navigateActiveNode = (documentState, state, forward = false) => {
-  const activeIndex = state.navigationHistory.state.activeIndex;
+// src/stores/view/reducers/ui/navigate-active-node-history.ts
+var navigateActiveNodeHistory = (documentState, state2, forward = false) => {
+  const activeIndex = state2.navigationHistory.state.activeIndex;
   const newIndex = forward ? activeIndex + 1 : activeIndex - 1;
-  const newItem = state.navigationHistory.items[newIndex];
+  const newItem = state2.navigationHistory.items[newIndex];
   if (newItem) {
-    state.navigationHistory.state.activeIndex = newIndex;
-    updateNavigationState(state.navigationHistory);
-    state.navigationHistory = { ...state.navigationHistory };
+    state2.navigationHistory.state.activeIndex = newIndex;
+    updateNavigationState(state2.navigationHistory);
+    state2.navigationHistory = { ...state2.navigationHistory };
     updateActiveNode(documentState, newItem, null);
   }
 };
 
 // src/stores/view/reducers/document/jump-to-node.ts
-var jumpToNode = (documentViewState, state, action) => {
+var jumpToNode = (documentViewState, state2, action) => {
   const nextNode = findNextActiveNode(
     action.payload.columns,
     documentViewState.activeNode,
     action
   );
   if (nextNode) {
-    updateActiveNode(documentViewState, nextNode, state);
+    updateSelectionState(documentViewState, nextNode, action);
+    updateActiveNode(documentViewState, nextNode, state2);
   }
 };
 
 // src/stores/view/reducers/ui/helpers/remove-deleted-navigation-items.ts
-var removeDeletedNavigationItems = (state, content) => {
+var removeDeletedNavigationItems = (state2, content) => {
   const items = [];
   let previous = null;
-  for (const item of state.navigationHistory.items) {
+  for (const item of state2.navigationHistory.items) {
     if (content.hasOwnProperty(item) && item !== previous) {
       items.push(item);
       previous = item;
     }
   }
-  state.navigationHistory.items = items;
-  state.navigationHistory.state.activeIndex = state.navigationHistory.items.length - 1;
-  updateNavigationState(state.navigationHistory);
-  state.navigationHistory = {
-    ...state.navigationHistory
+  state2.navigationHistory.items = items;
+  state2.navigationHistory.state.activeIndex = state2.navigationHistory.items.length - 1;
+  updateNavigationState(state2.navigationHistory);
+  state2.navigationHistory = {
+    ...state2.navigationHistory
   };
 };
 
 // src/stores/view/reducers/search/toggle-fuzzy-search.ts
-var toggleFuzzySearch = (state) => {
-  state.search.fuzzySearch = !state.search.fuzzySearch;
-  state.search = { ...state.search };
+var toggleFuzzySearch = (state2) => {
+  state2.search.fuzzySearch = !state2.search.fuzzySearch;
+  state2.search = { ...state2.search };
+};
+
+// src/helpers/sort-keys.ts
+var sortKeys = (obj) => {
+  return Object.keys(obj).sort((a, b) => {
+    const aParts = a.split(".");
+    const bParts = b.split(".");
+    for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+      if (aParts[i] === void 0)
+        return -1;
+      if (bParts[i] === void 0)
+        return 1;
+      const diff2 = Number(aParts[i]) - Number(bParts[i]);
+      if (diff2 !== 0)
+        return diff2;
+    }
+    return 0;
+  });
+};
+
+// src/lib/tree-utils/find/find-next-node.ts
+var findNextNode = (sections, node, direction) => {
+  const sortedSections = sortKeys(sections.section_id);
+  const currentSection = sections.id_section[node];
+  const currentSectionIndex = sortedSections.findIndex(
+    (section) => currentSection === section
+  );
+  if (currentSectionIndex === -1)
+    return node;
+  const nextSectionIndex = currentSectionIndex + (direction === "back" ? -1 : 1);
+  const nextSection = sortedSections[nextSectionIndex];
+  return sections.section_id[nextSection] || node;
+};
+
+// src/stores/view/reducers/ui/navigate-active-node.ts
+var navigateActiveNode = (documentState, state2, action) => {
+  const nextNode = findNextNode(
+    action.payload.sections,
+    documentState.activeNode,
+    action.payload.direction
+  );
+  if (nextNode && nextNode !== documentState.activeNode)
+    updateActiveNode(documentState, nextNode, state2);
 };
 
 // src/stores/view/view-reducer.ts
-var updateDocumentState2 = (state, action) => {
+var updateDocumentState2 = (state2, action) => {
   if (action.type === "DOCUMENT/SET_ACTIVE_NODE") {
-    updateActiveNode(state.document, action.payload.id, state);
+    updateActiveNode(state2.document, action.payload.id, state2);
   } else if (action.type === "DOCUMENT/NAVIGATE_USING_KEYBOARD") {
-    navigateUsingKeyboard(state.document, state, action);
+    navigateUsingKeyboard(state2.document, state2, action);
   } else if (action.type === "SEARCH/SET_QUERY") {
-    setSearchQuery(state, action.payload.query);
+    setSearchQuery(state2, action.payload.query);
   } else if (action.type === "SEARCH/SET_RESULTS") {
-    setSearchResults(state, action.payload.results);
+    setSearchResults(state2, action.payload.results);
   } else if (action.type === "SEARCH/TOGGLE_INPUT") {
-    toggleSearchInput(state);
+    toggleSearchInput(state2);
   } else if (action.type === "UI/TOGGLE_HISTORY_SIDEBAR") {
-    const showHistorySidebar = state.ui.controls.showHistorySidebar;
-    state.ui.controls = {
+    const showHistorySidebar = state2.ui.controls.showHistorySidebar;
+    state2.ui.controls = {
       showHistorySidebar: !showHistorySidebar,
       showHelpSidebar: false,
       showSettingsSidebar: false
     };
   } else if (action.type === "UI/TOGGLE_HELP_SIDEBAR") {
-    const showHelpSidebar = state.ui.controls.showHelpSidebar;
-    state.ui.controls = {
+    const showHelpSidebar = state2.ui.controls.showHelpSidebar;
+    state2.ui.controls = {
       showHistorySidebar: false,
       showHelpSidebar: !showHelpSidebar,
       showSettingsSidebar: false
     };
   } else if (action.type === "UI/TOGGLE_SETTINGS_SIDEBAR") {
-    const showSettingsSidebar = state.ui.controls.showSettingsSidebar;
-    state.ui.controls = {
+    const showSettingsSidebar = state2.ui.controls.showSettingsSidebar;
+    state2.ui.controls = {
       showHistorySidebar: false,
       showHelpSidebar: false,
       showSettingsSidebar: !showSettingsSidebar
     };
   } else if (action.type === "CLOSE_MODALS") {
-    state.ui.controls = {
+    state2.ui.controls = {
       showHistorySidebar: false,
-      showHelpSidebar: action.payload?.closeAllModals ? false : state.ui.controls.showHelpSidebar,
+      showHelpSidebar: action.payload?.closeAllModals ? false : state2.ui.controls.showHelpSidebar,
       showSettingsSidebar: false
     };
   } else if (action.type === "DOCUMENT/ENABLE_EDIT_MODE") {
-    enableEditMode(state.document, action);
+    enableEditMode(state2.document, action);
   } else if (action.type === "DOCUMENT/CONFIRM_DISABLE_EDIT") {
-    state.document.editing = {
-      ...state.document.editing,
+    state2.document.editing = {
+      ...state2.document.editing,
       disableEditConfirmation: true
     };
   } else if (action.type === "DOCUMENT/RESET_DISABLE_EDIT_CONFIRMATION") {
-    state.document.editing = {
-      ...state.document.editing,
+    state2.document.editing = {
+      ...state2.document.editing,
       disableEditConfirmation: false
     };
   } else if (action.type === "DOCUMENT/DISABLE_EDIT_MODE") {
-    disableEditMode(state.document);
+    disableEditMode(state2.document);
   } else if (action.type === "SET_DRAG_STARTED") {
-    onDragStart(state.document, action);
+    onDragStart(state2.document, action);
   } else if (action.type === "DOCUMENT/SET_DRAG_ENDED") {
-    onDragEnd(state.document);
+    onDragEnd(state2.document);
   } else if (action.type === "UPDATE_ACTIVE_BRANCH") {
     updateActiveBranch(
-      state.document,
+      state2.document,
       action.payload.columns,
-      state.document.activeNodesOfColumn
+      state2.document.activeNodesOfColumn
     );
   } else if (action.type === "NAVIGATION/NAVIGATE_FORWARD") {
-    navigateActiveNode(state.document, state, true);
+    navigateActiveNodeHistory(state2.document, state2, true);
   } else if (action.type === "NAVIGATION/NAVIGATE_BACK") {
-    navigateActiveNode(state.document, state);
+    navigateActiveNodeHistory(state2.document, state2);
   } else if (action.type === "DOCUMENT/JUMP_TO_NODE") {
-    jumpToNode(state.document, state, action);
+    jumpToNode(state2.document, state2, action);
   } else if (action.type === "NAVIGATION/REMOVE_OBSOLETE") {
-    removeDeletedNavigationItems(state, action.payload.content);
+    removeDeletedNavigationItems(state2, action.payload.content);
   } else if (action.type === "SEARCH/TOGGLE_FUZZY_MODE") {
-    toggleFuzzySearch(state);
+    toggleFuzzySearch(state2);
+  } else if (action.type === "DOCUMENT/CLEAR_SELECTION") {
+    resetSelectionState(state2.document);
+  } else if (action.type === "NAVIGATION/SELECT_NEXT_NODE") {
+    navigateActiveNode(state2.document, state2, action);
   }
 };
 var viewReducer = (store, action) => {
@@ -19450,10 +21579,200 @@ var viewReducer = (store, action) => {
   return store;
 };
 
+// src/stores/view/subscriptions/actions/update-active-branch.ts
+var updateActiveBranch2 = (viewStore, documentState) => {
+  viewStore.dispatch({
+    type: "UPDATE_ACTIVE_BRANCH",
+    payload: {
+      columns: documentState.document.columns
+    }
+  });
+};
+
+// src/stores/view/subscriptions/helpers/is-empty-document.ts
+var isEmptyDocument = (content) => {
+  const values = Object.values(content);
+  return values.length === 1 && values[0].content === "";
+};
+
+// src/stores/view/subscriptions/actions/enable-edit-mode.ts
+var enableEditMode2 = (viewStore, documentState) => {
+  viewStore.dispatch({
+    type: "DOCUMENT/ENABLE_EDIT_MODE",
+    payload: {
+      nodeId: getIdOfSection(
+        documentState.sections,
+        documentState.history.context.activeSection
+      )
+    }
+  });
+};
+
+// src/stores/view/subscriptions/effects/update-status-bar.ts
+var updateStatusBar = (view) => {
+  view.plugin.statusBar.update({
+    type: "NUMBER_OF_CARDS",
+    payload: {
+      cards: Object.keys(view.documentStore.getValue().document.content).length
+    }
+  });
+};
+
+// src/stores/view/subscriptions/effects/css-variables/apply-font-size.ts
+var applyFontSize = (view, fontSize) => {
+  if (fontSize)
+    view.containerEl.style.setProperty("--font-text-size", `${fontSize}px`);
+  else
+    view.containerEl.style.removeProperty("--font-text-size");
+};
+
+// src/stores/view/subscriptions/effects/css-variables/helpers/css-variables.ts
+var cssVariables = {
+  activeBranchBg: "--background-active-parent",
+  containerBg: "--background-container",
+  inactiveNodeBg: "--background-inactive-node",
+  cardWidth: "--node-width",
+  minCardHeight: "--min-node-height"
+};
+
+// src/stores/view/subscriptions/effects/css-variables/apply-container-bg.ts
+var applyContainerBg = (view, color) => {
+  if (color) {
+    view.containerEl.style.setProperty(cssVariables.containerBg, color);
+    view.containerEl.style.setProperty(cssVariables.inactiveNodeBg, color);
+  } else {
+    view.containerEl.style.removeProperty(cssVariables.containerBg);
+    view.containerEl.style.removeProperty(cssVariables.inactiveNodeBg);
+  }
+};
+
+// src/stores/view/subscriptions/effects/css-variables/apply-active-branch-bg.ts
+var applyActiveBranchBg = (view, color) => {
+  if (color) {
+    view.containerEl.style.setProperty(cssVariables.activeBranchBg, color);
+  } else {
+    view.containerEl.style.removeProperty(cssVariables.activeBranchBg);
+  }
+};
+
+// src/stores/view/subscriptions/effects/css-variables/apply-card-width.ts
+var applyCardWidth = (view, width) => {
+  invariant(width);
+  view.containerEl.style.setProperty(cssVariables.cardWidth, `${width}px`);
+};
+
+// src/stores/view/subscriptions/helpers/maybe-get-id-of-section.ts
+var maybeGetIdOfSection = (sections, section) => {
+  return sections.section_id[section] || null;
+};
+
+// src/stores/view/subscriptions/actions/set-initial-active-node.ts
+var setInitialActiveNode = (viewStore, documentState, settings, path) => {
+  let id2 = null;
+  const persistedSection = settings.documents[path]?.activeSection;
+  const sections = documentState.sections;
+  if (persistedSection) {
+    id2 = maybeGetIdOfSection(sections, persistedSection);
+  }
+  const mostRecentActiveSection = documentState.history.context.activeSection;
+  if (!id2 && mostRecentActiveSection) {
+    id2 = maybeGetIdOfSection(sections, mostRecentActiveSection);
+  }
+  if (!id2)
+    return;
+  viewStore.dispatch({
+    type: "DOCUMENT/SET_ACTIVE_NODE",
+    payload: {
+      id: id2
+    }
+  });
+};
+
+// src/stores/view/subscriptions/effects/mark-unresolved-links.ts
+var import_obsidian23 = require("obsidian");
+var getNonExistentLinks = (plugin, file) => {
+  const cache = plugin.app.metadataCache.getFileCache(file);
+  if (!cache?.links) {
+    return /* @__PURE__ */ new Set();
+  }
+  const links = cache.links.map((link) => link.link.split("#")[0]);
+  const nonExistentLinks = links.filter(
+    (link) => !plugin.app.metadataCache.getFirstLinkpathDest(link, file.path)
+  );
+  return new Set(nonExistentLinks);
+};
+var getFileLinkElements = (view) => {
+  return Array.from(
+    view.contentEl.querySelectorAll(".internal-link")
+  );
+};
+var markUnresolvedLinks = (view) => {
+  const file = view.file;
+  if (!file)
+    return;
+  const nonExistentLinks = getNonExistentLinks(view.plugin, file);
+  const links = getFileLinkElements(view);
+  for (const link of links) {
+    const isUnresolved = link.dataset.href && nonExistentLinks.has(link.dataset.href.split("#")[0]);
+    const hasUnresolvedClass = link.hasClass("is-unresolved" /* unresolved */);
+    if (isUnresolved) {
+      if (!hasUnresolvedClass) {
+        link.addClass("is-unresolved" /* unresolved */);
+      }
+    } else if (hasUnresolvedClass) {
+      link.removeClass("is-unresolved" /* unresolved */);
+    }
+  }
+};
+var debounced = (0, import_obsidian23.debounce)(markUnresolvedLinks, 100);
+
+// src/stores/view/subscriptions/on-view-mount.ts
+var applySettingsToView = (view) => {
+  const state2 = view.plugin.settings.getValue();
+  applyFontSize(view, state2.view.fontSize);
+  applyContainerBg(view, state2.view.theme.containerBg);
+  applyActiveBranchBg(view, state2.view.theme.activeBranchBg);
+  applyCardWidth(view, state2.view.cardWidth);
+  if (!view.container)
+    return;
+  applyZoom(
+    view.viewStore.getValue(),
+    view.container,
+    state2.view.zoomLevel,
+    true
+  );
+};
+var onViewMount = (view) => {
+  const documentStore = view.documentStore;
+  const documentState = documentStore.getValue();
+  const viewStore = view.viewStore;
+  const container = view.container;
+  if (!view.file)
+    return;
+  setInitialActiveNode(
+    viewStore,
+    documentState,
+    view.plugin.settings.getValue(),
+    view.file.path
+  );
+  updateActiveBranch2(viewStore, documentState);
+  if (view.isActive && isEmptyDocument(documentState.document.content)) {
+    enableEditMode2(viewStore, documentState);
+  }
+  updateStatusBar(view);
+  if (view.isActive && container) {
+    focusContainer(view);
+    alignBranch(view, void 0, true);
+  }
+  debounced(view);
+  applySettingsToView(view);
+};
+
 // src/stores/view/helpers/get-view-event-type.ts
 var navigationEvents = /* @__PURE__ */ new Set([
   "NAVIGATION/NAVIGATE_BACK",
-  "NAVIGATION/NAVIGATE_FORWARD"
+  "NAVIGATION/NAVIGATE_FORWARD",
+  "NAVIGATION/SELECT_NEXT_NODE"
 ]);
 var searchEvents = /* @__PURE__ */ new Set([
   "SEARCH/SET_QUERY",
@@ -19463,6 +21782,10 @@ var stateEvents = /* @__PURE__ */ new Set([
   "DOCUMENT/SET_ACTIVE_NODE",
   "DOCUMENT/NAVIGATE_USING_KEYBOARD",
   "DOCUMENT/JUMP_TO_NODE"
+]);
+var editEvents = /* @__PURE__ */ new Set([
+  "DOCUMENT/ENABLE_EDIT_MODE",
+  "DOCUMENT/CONFIRM_DISABLE_EDIT"
 ]);
 var cachedResults2 = {};
 var getViewEventType = (type) => {
@@ -19476,316 +21799,29 @@ var getViewEventType = (type) => {
     result = { activeNode: true };
   else if (searchEvents.has(type))
     result = { search: true };
+  else if (editEvents.has(type))
+    result = { edit: true };
   if (!result)
     result = {};
   cachedResults2[type] = result;
   return result;
 };
 
-// src/stores/view/subscriptions/effects/align-branch/helpers/get-combined-client-rect.ts
-var getCombinedBoundingClientRect = (elements) => {
-  if (elements.length === 0) {
-    return new DOMRect(0, 0, 0, 0);
-  }
-  let combinedRect = elements[0].getBoundingClientRect();
-  for (let i = 1; i < elements.length; i++) {
-    const rect = elements[i].getBoundingClientRect();
-    combinedRect = combineRects(combinedRect, rect);
-  }
-  return combinedRect;
-};
-var combineRects = (rect1, rect2) => {
-  const left = Math.min(rect1.left, rect2.left);
-  const top = Math.min(rect1.top, rect2.top);
-  const right = Math.max(rect1.right, rect2.right);
-  const bottom = Math.max(rect1.bottom, rect2.bottom);
-  const width = right - left;
-  const height = bottom - top;
-  return new DOMRect(left, top, width, height);
+// src/stores/view/subscriptions/actions/clear-selected-nodes.ts
+var clearSelectedNodes = (view) => {
+  view.viewStore.dispatch({ type: "DOCUMENT/CLEAR_SELECTION" });
 };
 
-// src/stores/view/subscriptions/effects/align-branch/helpers/align-element/helpers/calculate-scroll-top.ts
-var VERTICAL_PADDING = 20;
-var calculateScrollTop = (elementRect, containerRect, settings) => {
-  const viewPortIsTallEnough = containerRect.height >= elementRect.height;
-  const deltaTop = containerRect.top + VERTICAL_PADDING - elementRect.top;
-  let scrollTop = 0;
-  if (!viewPortIsTallEnough) {
-    scrollTop = deltaTop;
-  } else if (settings.horizontalScrollingMode === "fixed-position") {
-    scrollTop = containerRect.top + settings.verticalOffset * containerRect.height - elementRect.top;
-  } else {
-    const verticalMiddle = containerRect.height / 2;
-    scrollTop = verticalMiddle - (elementRect.top - containerRect.top + elementRect.height / 2);
-  }
-  return scrollTop;
-};
-
-// src/stores/view/subscriptions/effects/align-branch/helpers/align-element/helpers/calculate-scroll-left.ts
-var HORIZONTAL_PADDING = 100;
-var calculateScrollLeft = (elementRect, containerRect, settings, childRect) => {
-  const viewPortIsWideEnough = containerRect.width > elementRect.width;
-  const viewPortIsWideEnoughForChild = childRect ? containerRect.width > childRect.right - elementRect.left + HORIZONTAL_PADDING : true;
-  const deltaRight = containerRect.right - HORIZONTAL_PADDING - elementRect.right;
-  const deltaRightOfChild = !childRect ? 0 : containerRect.right - HORIZONTAL_PADDING - childRect.right;
-  const deltaLeft = containerRect.left + HORIZONTAL_PADDING - elementRect.left;
-  const leftSideIsVisible = deltaLeft < 0;
-  const rightSideIsVisible = deltaRight > 0;
-  const rightSideOfChildIsVisible = !childRect || deltaRightOfChild > 0;
-  let scrollLeft = 0;
-  if (!viewPortIsWideEnough) {
-    scrollLeft = deltaLeft;
-  } else if (settings.horizontalScrollingMode === "fixed-position") {
-    scrollLeft = containerRect.left + settings.horizontalOffset * containerRect.width - elementRect.left;
-  } else if (settings.horizontalScrollingMode === "keep-active-card-at-center") {
-    const horizontalMiddle = containerRect.left + containerRect.width / 2;
-    const elementMiddle = elementRect.left + elementRect.width / 2;
-    scrollLeft = horizontalMiddle - elementMiddle;
-  } else if (!leftSideIsVisible) {
-    scrollLeft = deltaLeft;
-  } else if (settings.horizontalScrollingMode === "reveal-active-card-and-direct-child" && !rightSideOfChildIsVisible) {
-    if (viewPortIsWideEnoughForChild) {
-      scrollLeft = deltaRightOfChild;
-    } else {
-      scrollLeft = deltaLeft;
-    }
-  } else if (!rightSideIsVisible) {
-    scrollLeft = deltaRight;
-  }
-  return scrollLeft;
-};
-
-// src/stores/view/subscriptions/effects/align-branch/helpers/align-element/align-element.ts
-var THRESHOLD = 5;
-var alignElement = (container, elements, settings, behavior = "smooth", mode = "vertical", horizontalChild) => {
-  if (!container)
-    return;
-  const isArray2 = Array.isArray(elements);
-  const element2 = isArray2 ? elements[0] : elements;
-  if (!element2)
-    return;
-  const column = element2.matchParent(".column");
-  if (column) {
-    const elementRect = isArray2 ? getCombinedBoundingClientRect(elements) : element2.getBoundingClientRect();
-    const containerRect = container.parentElement.getBoundingClientRect();
-    if (mode === "horizontal" || mode === "both") {
-      const childRect = horizontalChild ? horizontalChild.getBoundingClientRect() : null;
-      const scrollLeft = calculateScrollLeft(
-        elementRect,
-        containerRect,
-        settings.view.scrolling,
-        childRect
-      );
-      if (Math.abs(scrollLeft) > THRESHOLD)
-        container.scrollBy({
-          left: scrollLeft * -1,
-          behavior
-        });
-    }
-    if (mode === "vertical" || mode === "both") {
-      const scrollTop = calculateScrollTop(
-        elementRect,
-        containerRect,
-        settings.view.scrolling
-      );
-      if (Math.abs(scrollTop) > THRESHOLD)
-        column.scrollBy({
-          top: scrollTop * -1,
-          behavior
-        });
-    }
-    return column.id;
-  }
-};
-
-// src/stores/view/subscriptions/effects/align-branch/helpers/get-node-element.ts
-var getNodeElement = (container, nodeId) => {
-  return container.querySelector("#" + nodeId);
-};
-
-// src/stores/view/subscriptions/effects/align-branch/align-parents-and-active-node.ts
-var alignParentsAndActiveNode = (viewState, container, localState, settings, behavior) => {
-  const activeNodeId = viewState.document.activeNode;
-  const element2 = getNodeElement(container, activeNodeId);
-  if (element2) {
-    const childGroupElement = viewState.document.activeBranch.childGroups.size > 0 ? getNodeElement(container, "group-" + activeNodeId) : void 0;
-    const columnId = alignElement(
-      container,
-      element2,
-      settings,
-      behavior,
-      "both",
-      childGroupElement
-    );
-    if (columnId)
-      localState.columns.add(columnId);
-  }
-  for (const id2 of viewState.document.activeBranch.sortedParentNodes) {
-    const element3 = getNodeElement(container, id2);
-    if (element3) {
-      const columnId = alignElement(
-        container,
-        element3,
-        settings,
-        behavior
-      );
-      if (columnId)
-        localState.columns.add(columnId);
+// src/stores/view/subscriptions/actions/maybe-clear-selection.ts
+var maybeClearSelection = (view, action) => {
+  const selectedNodes = view.viewStore.getValue().document.selectedNodes;
+  if (selectedNodes.size > 1) {
+    const selectedNodeIsWithinSelection = action.type === "DOCUMENT/SET_ACTIVE_NODE" && selectedNodes.has(action.payload.id);
+    if (!selectedNodeIsWithinSelection) {
+      clearSelectedNodes(view);
     }
   }
 };
-
-// src/stores/view/subscriptions/effects/align-branch/align-child-group-of-column.ts
-var alignChildGroupOfColumn = (viewState, container, columnId, settings, behavior) => {
-  const columnElement = getNodeElement(container, columnId);
-  if (!columnElement)
-    return;
-  const elements = [];
-  if (columnElement) {
-    for (const childGroup of viewState.document.activeBranch.childGroups) {
-      const element2 = getNodeElement(
-        columnElement,
-        "group-" + childGroup
-      );
-      if (element2) {
-        elements.push(element2);
-      }
-    }
-    alignElement(
-      container,
-      elements.length > 1 ? elements : elements[0],
-      settings,
-      behavior
-    );
-  }
-};
-
-// src/stores/view/subscriptions/effects/align-branch/align-branch.ts
-var import_obsidian19 = require("obsidian");
-
-// src/stores/view/subscriptions/effects/align-branch/align-inactive-column.ts
-var alignInactiveColumn = (column, container, settings, behavior) => {
-  const nodes = column.groups.map((g) => g.nodes).flat();
-  if (nodes.length > 0) {
-    const element2 = getNodeElement(container, nodes[nodes.length - 1]);
-    if (element2)
-      alignElement(container, element2, settings, behavior);
-  }
-};
-
-// src/stores/view/subscriptions/effects/align-branch/helpers/apply-zoom.ts
-var calculateOffset = (container, activeNode) => {
-  const elementRect = activeNode?.getBoundingClientRect();
-  const containerRect = container.parentElement.getBoundingClientRect();
-  const horizontalMiddle = containerRect.left + containerRect.width / 2;
-  const elementMiddle = elementRect.left + elementRect.width / 2;
-  const scrollLeft = horizontalMiddle - elementMiddle;
-  const verticalMiddle = containerRect.height / 2;
-  const verticalElementMiddle = elementRect.top + elementRect.height / 2;
-  const scrollTop = verticalMiddle - verticalElementMiddle;
-  return { scrollLeft, scrollTop };
-};
-var adjustColumnsHeight = (zoomLevel, columnsContainer) => {
-  const columns = Array.from(
-    columnsContainer.querySelectorAll(".column")
-  );
-  for (const column of columns) {
-    column.style.height = `${100 / zoomLevel}vh`;
-  }
-};
-var adjustSkewedCenter = (viewState, container, columnsContainer, zoomLevel) => {
-  const activeNodeId = viewState.document.activeNode;
-  const activeNode = getNodeElement(container, activeNodeId);
-  invariant(activeNode);
-  const offset = calculateOffset(container, activeNode);
-  const scaledOffsetLeft = offset.scrollLeft / zoomLevel;
-  const scaledOffsetTop = (offset.scrollTop + 100) / zoomLevel;
-  columnsContainer.style.transform = `scale(${zoomLevel}) translate(${scaledOffsetLeft}px,${scaledOffsetTop}px)`;
-};
-var applyZoom = (viewState, container, zoomLevel, adjustColumns = false) => {
-  const columnsContainer = container.querySelector(".columns");
-  requestAnimationFrame(() => {
-    if (zoomLevel === 1) {
-      columnsContainer.style.transform = "none";
-    } else {
-      columnsContainer.style.transform = `scale(${zoomLevel}) `;
-      adjustSkewedCenter(
-        viewState,
-        container,
-        columnsContainer,
-        zoomLevel
-      );
-    }
-    if (adjustColumns)
-      adjustColumnsHeight(zoomLevel, columnsContainer);
-  });
-};
-
-// src/stores/view/subscriptions/effects/align-branch/helpers/reset-zoom.ts
-var resetZoom = (container) => {
-  const columnsContainer = container.querySelector(".columns");
-  columnsContainer.style.transform = "none";
-};
-
-// src/stores/view/subscriptions/effects/align-branch/align-branch.ts
-var alignBranch = (documentState, viewState, container, settings, behavior, alignInactiveColumns = false) => {
-  if (settings.view.zoomLevel !== 1)
-    behavior = "instant";
-  if (!container)
-    return;
-  const nodeId = viewState.document.activeNode;
-  if (!nodeId)
-    return;
-  const localState = {
-    columns: /* @__PURE__ */ new Set()
-  };
-  resetZoom(container);
-  alignParentsAndActiveNode(
-    viewState,
-    container,
-    localState,
-    settings,
-    behavior
-  );
-  let activeBranchNodeOfPreviousColumn = viewState.document.activeNode;
-  for (const column of documentState.document.columns) {
-    if (localState.columns.has(column.id))
-      continue;
-    const activeNodesOfColumn = viewState.document.activeNodesOfColumn[column.id];
-    const activeBranchNode = activeNodesOfColumn && activeBranchNodeOfPreviousColumn ? activeNodesOfColumn[activeBranchNodeOfPreviousColumn] : null;
-    activeBranchNodeOfPreviousColumn = activeBranchNode;
-    if (activeBranchNode) {
-      const element2 = getNodeElement(container, activeBranchNode);
-      if (element2) {
-        const columnId = alignElement(
-          container,
-          element2,
-          settings,
-          behavior
-        );
-        if (columnId)
-          localState.columns.add(columnId);
-      }
-    } else {
-      const childGroup = column.groups.find(
-        (g) => viewState.document.activeBranch.childGroups.has(g.parentId)
-      );
-      if (childGroup) {
-        alignChildGroupOfColumn(
-          viewState,
-          container,
-          column.id,
-          settings,
-          behavior
-        );
-      } else if (alignInactiveColumns) {
-        alignInactiveColumn(column, container, settings, behavior);
-      }
-    }
-  }
-  applyZoom(viewState, container, settings.view.zoomLevel);
-};
-var alignBranchDebounced = (0, import_obsidian19.debounce)(alignBranch, 32);
 
 // node_modules/fuse.js/dist/fuse.mjs
 function isArray(value) {
@@ -21158,106 +23194,6 @@ var updateSearchResults = (documentStore, viewStore) => {
   }
 };
 
-// src/stores/view/subscriptions/actions/update-active-branch.ts
-var updateActiveBranch2 = (viewStore, documentState) => {
-  viewStore.dispatch({
-    type: "UPDATE_ACTIVE_BRANCH",
-    payload: {
-      columns: documentState.document.columns
-    }
-  });
-};
-
-// src/stores/view/subscriptions/actions/set-active-node.ts
-var setActiveNode = (viewStore, documentState) => {
-  viewStore.dispatch({
-    type: "DOCUMENT/SET_ACTIVE_NODE",
-    payload: {
-      id: getIdOfSection(
-        documentState.sections,
-        documentState.history.context.activeSection
-      )
-    }
-  });
-};
-
-// src/stores/view/subscriptions/actions/enable-edit-mode.ts
-var enableEditMode2 = (viewStore, documentState) => {
-  viewStore.dispatch({
-    type: "DOCUMENT/ENABLE_EDIT_MODE",
-    payload: {
-      nodeId: getIdOfSection(
-        documentState.sections,
-        documentState.history.context.activeSection
-      )
-    }
-  });
-};
-
-// src/stores/view/subscriptions/actions/remove-obsolete-navigation-items.ts
-var removeObsoleteNavigationItems = (viewStore, documentState) => {
-  viewStore.dispatch({
-    type: "NAVIGATION/REMOVE_OBSOLETE",
-    payload: {
-      content: documentState.document.content
-    }
-  });
-};
-
-// src/stores/view/subscriptions/actions/update-search-results/helpers/reset-search-fuse.ts
-var resetSearchFuse = (documentStore) => {
-  searchState.fuse.delete(documentStore);
-};
-
-// src/stores/view/subscriptions/helpers/is-empty-document.ts
-var isEmptyDocument = (content) => {
-  const values = Object.values(content);
-  return values.length === 1 && values[0].content === "";
-};
-
-// src/stores/view/subscriptions/effects/css-variables/apply-font-size.ts
-var applyFontSize = (view, fontSize) => {
-  if (fontSize)
-    view.containerEl.style.setProperty("--font-text-size", `${fontSize}px`);
-  else
-    view.containerEl.style.removeProperty("--font-text-size");
-};
-
-// src/stores/view/subscriptions/effects/css-variables/helpers/css-variables.ts
-var cssVariables = {
-  activeBranchBg: "--background-active-parent",
-  containerBg: "--background-container",
-  inactiveNodeBg: "--background-inactive-node",
-  cardWidth: "--node-width",
-  minCardHeight: "--min-node-height"
-};
-
-// src/stores/view/subscriptions/effects/css-variables/apply-container-bg.ts
-var applyContainerBg = (view, color) => {
-  if (color) {
-    view.containerEl.style.setProperty(cssVariables.containerBg, color);
-    view.containerEl.style.setProperty(cssVariables.inactiveNodeBg, color);
-  } else {
-    view.containerEl.style.removeProperty(cssVariables.containerBg);
-    view.containerEl.style.removeProperty(cssVariables.inactiveNodeBg);
-  }
-};
-
-// src/stores/view/subscriptions/effects/css-variables/apply-active-branch-bg.ts
-var applyActiveBranchBg = (view, color) => {
-  if (color) {
-    view.containerEl.style.setProperty(cssVariables.activeBranchBg, color);
-  } else {
-    view.containerEl.style.removeProperty(cssVariables.activeBranchBg);
-  }
-};
-
-// src/stores/view/subscriptions/effects/css-variables/apply-card-width.ts
-var applyCardWidth = (view, width) => {
-  invariant(width);
-  view.containerEl.style.setProperty(cssVariables.cardWidth, `${width}px`);
-};
-
 // src/obsidian/helpers/get-used-hotkeys.ts
 var getUsedHotkeys = (plugin) => {
   const app = plugin.app;
@@ -21289,191 +23225,274 @@ var getUsedHotkeys = (plugin) => {
   return conflicting;
 };
 
-// src/stores/view/subscriptions/effects/update-status-bar.ts
-var updateStatusBar = (view) => {
-  view.plugin.statusBar.update({
-    type: "NUMBER_OF_CARDS",
+// src/stores/view/subscriptions/actions/update-conflicting-hotkeys.ts
+var updateConflictingHotkeys2 = (view) => {
+  setTimeout(() => {
+    hotkeyStore.dispatch({
+      type: "SET_CONFLICTING_HOTKEYS",
+      payload: {
+        conflictingHotkeys: getUsedHotkeys(view.plugin)
+      }
+    });
+  }, 50);
+};
+
+// src/stores/view/subscriptions/actions/update-search-results/helpers/reset-search-fuse.ts
+var resetSearchFuse = (documentStore) => {
+  searchState.fuse.delete(documentStore);
+};
+
+// src/stores/view/subscriptions/actions/persist-active-node-in-plugin-settings.ts
+var state = {};
+var persistActiveNodeInPluginSettings = (view) => {
+  if (!view.file)
+    return;
+  const documentState = view.documentStore.getValue();
+  const viewState = view.viewStore.getValue();
+  const sectionNumber = getSectionOfId(
+    documentState.sections,
+    viewState.document.activeNode
+  );
+  const path = view.file?.path;
+  if (state[path] === sectionNumber)
+    return;
+  state[path] = sectionNumber;
+  view.plugin.settings.dispatch({
+    type: "DOCUMENT/SET_ACTIVE_NODE",
     payload: {
-      cards: Object.keys(view.documentStore.getValue().document.content).length
+      sectionNumber,
+      path
     }
   });
 };
 
-// src/stores/view/subscriptions/view-subscriptions.ts
-var import_obsidian20 = require("obsidian");
-var viewEffectsAndActions = (view, action, initialRun, fromDocument) => {
+// src/stores/view/subscriptions/on-view-state-update.ts
+var onViewStateUpdate = (view, action) => {
   const documentStore = view.documentStore;
   const documentState = documentStore.getValue();
   const viewStore = view.viewStore;
   const viewState = viewStore.getValue();
-  const settings = view.plugin.settings.getValue();
   const container = view.container;
-  if (initialRun) {
-    setActiveNode(viewStore, documentState);
+  const type = action.type;
+  const e = getViewEventType(
+    type
+  );
+  const activeNodeChange = e.activeNode || e.activeNodeHistory;
+  if (activeNodeChange) {
     updateActiveBranch2(viewStore, documentState);
-    if (view.isActive && isEmptyDocument(documentState.document.content)) {
-      enableEditMode2(viewStore, documentState);
-    }
-    updateStatusBar(view);
-    if (view.isActive && container) {
-      focusContainer(view);
-      alignBranchDebounced(
-        documentState,
-        viewState,
-        container,
-        settings,
-        void 0,
-        true
-      );
-    }
-  } else if (action) {
-    const type = action.type;
-    const e = fromDocument ? getDocumentEventType(type) : getViewEventType(type);
-    if (!e)
-      return;
-    if (type === "DOCUMENT/LOAD_FILE") {
-      discardChanges(view);
-    }
-    const structuralChange = e.createOrDelete || e.dropOrMove || e.changeHistory || e.clipboard;
-    const activeNodeChange = e.activeNode || e.activeNodeHistory;
-    if (structuralChange) {
-      setActiveNode(viewStore, documentState);
-    }
-    if (activeNodeChange || structuralChange) {
-      updateActiveBranch2(viewStore, documentState);
-    }
-    if (type === "DOCUMENT/INSERT_NODE" && view.isActive) {
-      enableEditMode2(viewStore, documentState);
-    }
-    if (type === "DOCUMENT/DELETE_NODE" || type === "DOCUMENT/CUT_NODE" || e.changeHistory || type === "DOCUMENT/EXTRACT_BRANCH" || type === "DOCUMENT/LOAD_FILE") {
-      removeObsoleteNavigationItems(viewStore, documentState);
-    }
-    if (action.type === "SEARCH/SET_QUERY") {
-      updateSearchResults(documentStore, viewStore);
-    }
-    if (action.type === "UI/TOGGLE_HELP_SIDEBAR") {
-      if (viewState.ui.controls.showHelpSidebar)
-        setTimeout(() => {
-          hotkeyStore.dispatch({
-            type: "SET_CONFLICTING_HOTKEYS",
-            payload: {
-              conflictingHotkeys: getUsedHotkeys(view.plugin)
-            }
-          });
-        }, 50);
-    }
-    if (!container || !view.isViewOfFile)
-      return;
-    const postInlineEditor = type === "DOCUMENT/CONFIRM_DISABLE_EDIT";
-    if (e.content || structuralChange || postInlineEditor) {
-      const maybeViewIsClosing = !view.isActive;
-      view.saveDocument(maybeViewIsClosing, postInlineEditor);
-    }
-    if (e.content || structuralChange || type === "SEARCH/TOGGLE_FUZZY_MODE") {
-      resetSearchFuse(documentStore);
-    }
-    if (structuralChange) {
-      updateStatusBar(view);
-    }
-    if (action.type === "DOCUMENT/DISABLE_EDIT_MODE" || e.content || structuralChange || action.type === "SEARCH/TOGGLE_INPUT") {
-      focusContainer(view);
-    }
-    if (activeNodeChange || e.search || structuralChange || e.content) {
-      const skipAligning = action.type === "DOCUMENT/SET_ACTIVE_NODE" && action.context?.modKey;
-      if (!skipAligning)
-        alignBranchDebounced(
-          documentStore.getValue(),
-          viewState,
-          container,
-          settings,
-          type === "DOCUMENT/MOVE_NODE" ? "instant" : void 0,
-          type === "DOCUMENT/SPLIT_NODE" ? true : void 0
-        );
+    persistActiveNodeInPluginSettings(view);
+  }
+  if (activeNodeChange && type !== "DOCUMENT/NAVIGATE_USING_KEYBOARD" && type !== "DOCUMENT/JUMP_TO_NODE") {
+    maybeClearSelection(view, action);
+  }
+  if (action.type === "SEARCH/SET_QUERY") {
+    updateSearchResults(documentStore, viewStore);
+  }
+  if (action.type === "UI/TOGGLE_HELP_SIDEBAR") {
+    if (viewState.ui.controls.showHelpSidebar)
+      updateConflictingHotkeys2(view);
+  }
+  if (!container || !view.isViewOfFile)
+    return;
+  const postInlineEditor = type === "DOCUMENT/CONFIRM_DISABLE_EDIT";
+  if (postInlineEditor) {
+    const maybeViewIsClosing = !view.isActive;
+    view.saveDocument(maybeViewIsClosing, postInlineEditor);
+  }
+  if (type === "SEARCH/TOGGLE_FUZZY_MODE") {
+    resetSearchFuse(documentStore);
+  }
+  if (action.type === "DOCUMENT/DISABLE_EDIT_MODE" || action.type === "SEARCH/TOGGLE_INPUT" || action.type === "NAVIGATION/NAVIGATE_FORWARD" || action.type === "NAVIGATION/NAVIGATE_BACK") {
+    focusContainer(view);
+  }
+  if (activeNodeChange || e.search || e.edit) {
+    const skipAligning = action.type === "DOCUMENT/SET_ACTIVE_NODE" && action.context?.modKey;
+    if (!skipAligning) {
+      alignBranch(view);
     }
   }
 };
+
+// src/stores/view/subscriptions/actions/set-active-node.ts
+var setActiveNode = (viewStore, documentState) => {
+  viewStore.dispatch({
+    type: "DOCUMENT/SET_ACTIVE_NODE",
+    payload: {
+      id: getIdOfSection(
+        documentState.sections,
+        documentState.history.context.activeSection
+      )
+    }
+  });
+};
+
+// src/stores/view/subscriptions/actions/remove-obsolete-navigation-items.ts
+var removeObsoleteNavigationItems = (viewStore, documentState) => {
+  viewStore.dispatch({
+    type: "NAVIGATION/REMOVE_OBSOLETE",
+    payload: {
+      content: documentState.document.content
+    }
+  });
+};
+
+// src/stores/view/subscriptions/on-document-state-update.ts
+var onDocumentStateUpdate = (view, action) => {
+  const documentStore = view.documentStore;
+  const documentState = documentStore.getValue();
+  const viewStore = view.viewStore;
+  const container = view.container;
+  const type = action.type;
+  const e = getDocumentEventType(
+    type
+  );
+  if (type === "DOCUMENT/LOAD_FILE") {
+    discardChanges(view);
+  }
+  const structuralChange = e.createOrDelete || e.dropOrMove || e.changeHistory || e.clipboard;
+  if (structuralChange) {
+    setActiveNode(viewStore, documentState);
+    updateActiveBranch2(viewStore, documentState);
+  }
+  if (structuralChange && type !== "DOCUMENT/MOVE_NODE") {
+    clearSelectedNodes(view);
+  }
+  if (type === "DOCUMENT/INSERT_NODE" && view.isActive) {
+    enableEditMode2(viewStore, documentState);
+  }
+  if (type === "DOCUMENT/DELETE_NODE" || type === "DOCUMENT/CUT_NODE" || e.changeHistory || type === "DOCUMENT/EXTRACT_BRANCH" || type === "DOCUMENT/LOAD_FILE" || type === "DOCUMENT/SPLIT_NODE") {
+    removeObsoleteNavigationItems(viewStore, documentState);
+  }
+  if (!container || !view.isViewOfFile)
+    return;
+  if (e.content || structuralChange) {
+    const maybeViewIsClosing = !view.isActive;
+    view.saveDocument(maybeViewIsClosing);
+  }
+  if (e.content || structuralChange) {
+    resetSearchFuse(documentStore);
+  }
+  if (structuralChange) {
+    updateStatusBar(view);
+  }
+  if (e.content || structuralChange) {
+    focusContainer(view);
+  }
+  if (structuralChange || e.content) {
+    let scrollingBehavior;
+    let delay;
+    if (action.type === "DOCUMENT/MOVE_NODE") {
+      const verticalMove = action.payload.direction === "down" || action.payload.direction === "up";
+      if (verticalMove)
+        scrollingBehavior = "instant";
+    } else if (action.type === "DOCUMENT/LOAD_FILE") {
+      scrollingBehavior = "instant";
+    } else if (action.type === "DOCUMENT/DROP_NODE") {
+      delay = 500;
+    }
+    alignBranch(
+      view,
+      scrollingBehavior,
+      type === "DOCUMENT/SPLIT_NODE" ? true : void 0,
+      delay
+    );
+  }
+};
+
+// src/stores/view/subscriptions/on-plugin-settings-update.ts
+var import_obsidian24 = require("obsidian");
+var onPluginSettingsUpdate = (view, state2, action) => {
+  if (!view.container)
+    return;
+  const type = action.type;
+  if (type === "SET_FONT_SIZE") {
+    applyFontSize(view, state2.view.fontSize);
+  } else if (type === "SET_CONTAINER_BG") {
+    applyContainerBg(view, state2.view.theme.containerBg);
+  } else if (type === "SET_ACTIVE_BRANCH_BG") {
+    applyActiveBranchBg(view, state2.view.theme.activeBranchBg);
+  } else if (type === "SET_CARD_WIDTH") {
+    applyCardWidth(view, state2.view.cardWidth);
+  } else if (action.type === "UI/CHANGE_ZOOM_LEVEL") {
+    applyZoom(
+      view.viewStore.getValue(),
+      view.container,
+      state2.view.zoomLevel,
+      true
+    );
+  } else if (action.type === "SET_DOCUMENT_TYPE") {
+    view.saveDocument();
+  }
+  const shouldAlign = type === "SET_HORIZONTAL_SCROLLING_MODE" || type === "UPDATE_AXIS_OFFSET" || type === "UI/CHANGE_ZOOM_LEVEL" || type === "SET_CARD_WIDTH" || type === "SET_LIMIT_PREVIEW_HEIGHT";
+  if (view.isActive && shouldAlign) {
+    alignBranch(view, "instant");
+  }
+  if (type === "SET_HORIZONTAL_SCROLLING_MODE" && state2.view.scrolling.horizontalScrollingMode === "fixed-position") {
+    if (view.isActive)
+      new import_obsidian24.Notice("Hold space to change card position");
+  }
+};
+
+// src/stores/view/subscriptions/on-documents-state-update.ts
+var onDocumentsStateUpdate = (view, action) => {
+  if (!view.container)
+    return;
+  if (action.type === "WORKSPACE/ACTIVE_LEAF_CHANGE") {
+    if (view.viewStore.getValue().document.editing.activeNodeId) {
+      saveNodeContent(view);
+    }
+  }
+  if (view.isActive && (action.type === "WORKSPACE/SET_ACTIVE_LINEAGE_VIEW" || action.type === "WORKSPACE/RESIZE")) {
+    focusContainer(view);
+    alignBranch(view);
+  }
+};
+
+// src/stores/view/subscriptions/on-metadata-cache.ts
+var onMetadataCache = (view) => {
+  const eventRef = view.plugin.app.metadataCache.on("changed", (file) => {
+    if (file === view.file)
+      debounced(view);
+  });
+  return () => {
+    view.plugin.app.metadataCache.offref(eventRef);
+  };
+};
+
+// src/stores/view/subscriptions/view-subscriptions.ts
 var viewSubscriptions = (view) => {
   const unsubFromDocument = view.documentStore.subscribe(
     (documentState, action) => {
-      viewEffectsAndActions(view, action, false, true);
+      if (!action)
+        return;
+      onDocumentStateUpdate(view, action);
     }
   );
   const unsubFromView = view.viewStore.subscribe(
     (viewState, action, initialRun) => {
-      viewEffectsAndActions(view, action, initialRun, false);
+      if (initialRun) {
+        onViewMount(view);
+      } else if (action) {
+        onViewStateUpdate(view, action);
+      }
     }
   );
   const unsubFromDocuments = view.plugin.documents.subscribe((_, action) => {
     if (!action)
       return;
-    if (!view.container)
-      return;
-    if (action.type === "WORKSPACE/ACTIVE_LEAF_CHANGE") {
-      if (view.viewStore.getValue().document.editing.activeNodeId) {
-        saveNodeContent(view);
-      }
-    }
-    if (view.isActive && (action.type === "WORKSPACE/SET_ACTIVE_LINEAGE_VIEW" || action.type === "WORKSPACE/RESIZE")) {
-      focusContainer(view);
-      alignBranchDebounced(
-        view.documentStore.getValue(),
-        view.viewStore.getValue(),
-        view.container,
-        view.plugin.settings.getValue()
-      );
-    }
+    onDocumentsStateUpdate(view, action);
   });
   const unsubFromSettings = view.plugin.settings.subscribe(
-    (state, action, isInitialRun) => {
-      if (!view.container)
+    (state2, action) => {
+      if (!action)
         return;
-      if (isInitialRun) {
-        applyFontSize(view, state.view.fontSize);
-        applyContainerBg(view, state.view.theme.containerBg);
-        applyActiveBranchBg(view, state.view.theme.activeBranchBg);
-        applyCardWidth(view, state.view.cardWidth);
-        applyZoom(
-          view.viewStore.getValue(),
-          view.container,
-          state.view.zoomLevel,
-          true
-        );
-      } else if (action) {
-        const type = action.type;
-        if (type === "SET_FONT_SIZE") {
-          applyFontSize(view, state.view.fontSize);
-        } else if (type === "SET_CONTAINER_BG") {
-          applyContainerBg(view, state.view.theme.containerBg);
-        } else if (type === "SET_ACTIVE_BRANCH_BG") {
-          applyActiveBranchBg(view, state.view.theme.activeBranchBg);
-        } else if (type === "SET_CARD_WIDTH") {
-          applyCardWidth(view, state.view.cardWidth);
-        } else if (action.type === "UI/CHANGE_ZOOM_LEVEL") {
-          applyZoom(
-            view.viewStore.getValue(),
-            view.container,
-            state.view.zoomLevel,
-            true
-          );
-        }
-        const shouldAlign = type === "SET_HORIZONTAL_SCROLLING_MODE" || type === "UPDATE_AXIS_OFFSET" || type === "UI/CHANGE_ZOOM_LEVEL" || type === "SET_CARD_WIDTH" || type === "SET_LIMIT_PREVIEW_HEIGHT";
-        if (view.isActive && shouldAlign) {
-          alignBranchDebounced(
-            view.documentStore.getValue(),
-            view.viewStore.getValue(),
-            view.container,
-            state,
-            "instant"
-          );
-        }
-        if (type === "SET_HORIZONTAL_SCROLLING_MODE" && state.view.scrolling.horizontalScrollingMode === "fixed-position") {
-          new import_obsidian20.Notice("Hold space to change card position");
-        }
-      }
+      onPluginSettingsUpdate(view, state2, action);
     }
   );
+  const unsubFromCache = onMetadataCache(view);
   return () => {
     unsubFromDocument();
+    unsubFromCache();
     unsubFromView();
     unsubFromSettings();
     unsubFromDocuments();
@@ -21481,7 +23500,7 @@ var viewSubscriptions = (view) => {
 };
 
 // src/obsidian/helpers/inline-editor.ts
-var import_obsidian21 = require("obsidian");
+var import_obsidian25 = require("obsidian");
 
 // src/helpers/logger.ts
 var createLogger = (env) => {
@@ -21526,13 +23545,18 @@ var vimEnterInsertMode = (plugin, view) => {
 // src/obsidian/helpers/inline-editor.ts
 var noop2 = async () => {
 };
+var _mounting;
 var InlineEditor = class {
   constructor(view) {
     this.view = view;
     this.nodeId = null;
     this.target = null;
-    this.appliedExternalCursor = false;
+    this.appliedExternalCursor = null;
     this.onChangeSubscriptions = /* @__PURE__ */ new Set();
+    __privateAdd(this, _mounting, Promise.resolve());
+    this.focus = () => {
+      this.inlineView.editor.focus();
+    };
     this.setActiveEditor = () => {
       this.view.plugin.app.workspace.activeEditor = this.inlineView;
     };
@@ -21547,15 +23571,20 @@ var InlineEditor = class {
   get activeNode() {
     return this.nodeId;
   }
+  get mounting() {
+    return __privateGet(this, _mounting);
+  }
   getContent() {
     return this.inlineView.editor.getValue();
   }
   getCursor() {
     return this.inlineView.editor.getCursor();
   }
-  overrideCursor(line, ch) {
-    this.appliedExternalCursor = true;
-    this.setCursor(line, ch);
+  overrideCursor(cursor) {
+    if (this.activeNode)
+      this.setCursor(cursor.line, cursor.ch);
+    else
+      this.appliedExternalCursor = cursor;
   }
   setContent(content) {
     this.inlineView.__setViewData__(content, true);
@@ -21563,6 +23592,11 @@ var InlineEditor = class {
   loadNode(target, nodeId) {
     if (!this.view.file)
       return;
+    let resolve = () => {
+    };
+    __privateSet(this, _mounting, new Promise((_resolve) => {
+      resolve = _resolve;
+    }));
     this.view.plugin.settings.dispatch({
       type: "BACKUP/ADD_FILE",
       payload: {
@@ -21572,16 +23606,22 @@ var InlineEditor = class {
     });
     const content = this.view.documentStore.getValue().document.content[nodeId]?.content || "";
     this.setContent(content);
-    if (!this.appliedExternalCursor)
+    if (this.appliedExternalCursor) {
+      this.setCursor(
+        this.appliedExternalCursor.line,
+        this.appliedExternalCursor.ch
+      );
+      this.appliedExternalCursor = null;
+    } else {
       this.setCursor(
         this.inlineView.editor.lastLine(),
         this.inlineView.editor.getLine(
           this.inlineView.editor.lastLine()
         ).length
       );
-    this.appliedExternalCursor = false;
+    }
     target.append(this.containerEl);
-    this.inlineView.editor.focus();
+    this.focus();
     AdjustHeight(target)();
     this.nodeId = nodeId;
     this.target = target;
@@ -21590,6 +23630,7 @@ var InlineEditor = class {
     }
     this.target.addEventListener("focusin", this.setActiveEditor);
     this.setActiveEditor();
+    setTimeout(() => resolve(), Math.max(16, content.length / 60));
   }
   unloadNode() {
     this.nodeId = null;
@@ -21604,7 +23645,7 @@ var InlineEditor = class {
     const workspace = this.view.plugin.app.workspace;
     this.containerEl = document.createElement("div");
     this.containerEl.addClasses(["lineage-inline-editor"]);
-    this.inlineView = new import_obsidian21.MarkdownView({
+    this.inlineView = new import_obsidian25.MarkdownView({
       containerEl: this.containerEl,
       app: this.view.plugin.app,
       workspace
@@ -21642,10 +23683,52 @@ var InlineEditor = class {
     this.inlineView.editor.setCursor(line, ch);
   }
 };
+_mounting = new WeakMap();
+
+// src/view/helpers/stringify-document.ts
+var stringifyDocument = (document2, format2) => {
+  const json = columnsToJson(document2.columns, document2.content);
+  if (format2 === "outline") {
+    return jsonToOutline(json);
+  } else
+    return jsonToSections(json);
+};
+
+// src/obsidian/events/workspace/helpers/maybe-get-document-format.ts
+var maybeGetDocumentFormat = (view) => {
+  invariant(view.file);
+  return view.plugin.settings.getValue().documents[view.file.path]?.documentFormat;
+};
+
+// src/obsidian/events/workspace/helpers/get-or-detect-document-format.ts
+var getOrDetectDocumentFormat = (view, data) => {
+  const format2 = maybeGetDocumentFormat(view);
+  if (format2) {
+    return format2;
+  } else {
+    const detected = detectDocumentFormat(view.data);
+    if (detected)
+      return detected;
+    else {
+      const defaultFormat = view.plugin.settings.getValue().general.defaultDocumentFormat;
+      if (defaultFormat === "outline") {
+        if (!data.trim())
+          return "outline";
+        try {
+          const tree = outlineToJson(data);
+          if (tree.length <= 1 && tree[0]?.children?.length === 0)
+            return "outline";
+        } catch {
+        }
+      }
+      return "sections";
+    }
+  }
+};
 
 // src/view/view.ts
 var FILE_VIEW_TYPE = "lineage";
-var LineageView = class _LineageView extends import_obsidian22.TextFileView {
+var LineageView = class _LineageView extends import_obsidian26.TextFileView {
   constructor(leaf, plugin) {
     super(leaf);
     this.plugin = plugin;
@@ -21657,17 +23740,20 @@ var LineageView = class _LineageView extends import_obsidian22.TextFileView {
             type: "DOCUMENTS/DELETE_DOCUMENT",
             payload: { path: this.file.path }
           });
-          setFileViewType(this.plugin, this.file, this.leaf, "markdown");
+          setViewType(this.plugin, this.file.path, "markdown");
+          toggleObsidianViewType(
+            this.plugin,
+            this.plugin.app.workspace.getLeaf(),
+            "markdown"
+          );
         }
       }
       onPluginError(error, location, action);
     };
     this.saveDocument = async (immediate = false, force = false) => {
       invariant(this.file);
-      const state = clone(this.documentStore.getValue());
-      const data = state.file.frontmatter + jsonToSections(
-        columnsToJson(state.document.columns, state.document.content)
-      );
+      const state2 = clone(this.documentStore.getValue());
+      const data = state2.file.frontmatter + stringifyDocument(state2.document, getDocumentFormat(this));
       if (data !== this.data || force) {
         this.data = data;
         if (immediate)
@@ -21736,17 +23822,37 @@ var LineageView = class _LineageView extends import_obsidian22.TextFileView {
     };
     this.loadDocumentToStore = () => {
       const { data, frontmatter } = extractFrontmatter(this.data);
-      const state = this.documentStore.getValue();
-      const existingData = jsonToSections(
-        columnsToJson(state.document.columns, state.document.content)
-      );
-      if (!existingData || existingData !== data)
-        this.documentStore.dispatch({
-          payload: {
-            document: { data, frontmatter, position: null }
-          },
-          type: "DOCUMENT/LOAD_FILE"
-        });
+      const state2 = this.documentStore.getValue();
+      const format2 = getOrDetectDocumentFormat(this, data);
+      const existingData = stringifyDocument(state2.document, format2);
+      const bodyHasChanged = existingData !== data;
+      const frontmatterHasChanged = !bodyHasChanged && frontmatter !== state2.file.frontmatter;
+      if (!existingData || bodyHasChanged || frontmatterHasChanged) {
+        const isEditing2 = this.viewStore.getValue().document.editing.activeNodeId;
+        if (frontmatterHasChanged) {
+          this.documentStore.dispatch({
+            type: "FILE/UPDATE_FRONTMATTER",
+            payload: {
+              frontmatter
+            }
+          });
+        } else if (!isEditing2) {
+          const activeNode = this.viewStore.getValue().document.activeNode;
+          const activeSection = activeNode ? this.documentStore.getValue().sections.id_section[activeNode] : null;
+          this.documentStore.dispatch({
+            payload: {
+              document: { data, frontmatter, position: null },
+              format: format2,
+              activeSection
+            },
+            type: "DOCUMENT/LOAD_FILE"
+          });
+          if (!maybeGetDocumentFormat(this)) {
+            invariant(this.file);
+            setDocumentFormat(this.plugin, this.file.path, format2);
+          }
+        }
+      }
     };
     this.documentStore = new Store(
       defaultDocumentState(),
@@ -21832,23 +23938,23 @@ var LineageView = class _LineageView extends import_obsidian22.TextFileView {
 
 // src/stores/settings/subscriptions/effects/update-file-view-type-cache.ts
 var fileViewTypeCache = {};
-var updateFileViewTypeCache = (state) => {
-  fileViewTypeCache = state;
+var updateFileViewTypeCache = (state2) => {
+  fileViewTypeCache = state2;
 };
 
 // src/obsidian/patches/set-view-state.ts
 function setViewState(next) {
-  return function(state, ...rest) {
-    const isMarkdownView = state.type === "markdown";
-    const path = state?.state?.file;
-    if (isMarkdownView && fileViewTypeCache[path] && !state.state.inlineEditor) {
+  return function(state2, ...rest) {
+    const isMarkdownView = state2.type === "markdown";
+    const path = state2?.state?.file;
+    if (isMarkdownView && fileViewTypeCache[path]?.viewType === FILE_VIEW_TYPE && !state2.state.inlineEditor) {
       const newState = {
-        ...state,
+        ...state2,
         type: FILE_VIEW_TYPE
       };
       return next.apply(this, [newState, ...rest]);
     } else {
-      return next.apply(this, [state, ...rest]);
+      return next.apply(this, [state2, ...rest]);
     }
   };
 }
@@ -21891,13 +23997,30 @@ function around1(obj, method, createWrapper) {
 
 // src/stores/settings/settings-reducer.ts
 var updateState2 = (store, action) => {
-  if (action.type === "SET_DOCUMENT_TYPE_TO_MARKDOWN") {
+  if (action.type === "DELETE_DOCUMENT_PREFERENCES") {
     delete store.documents[action.payload.path];
-  } else if (action.type === "SET_DOCUMENT_TYPE_TO_TREE") {
-    store.documents[action.payload.path] = true;
+  } else if (action.type === "SET_DOCUMENT_TYPE") {
+    if (!store.documents[action.payload.path]) {
+      store.documents[action.payload.path] = {
+        documentFormat: action.payload.format,
+        viewType: "lineage",
+        activeSection: null
+      };
+    } else {
+      store.documents[action.payload.path].documentFormat = action.payload.format;
+    }
+  } else if (action.type === "SET_VIEW_TYPE") {
+    if (store.documents[action.payload.path]) {
+      store.documents[action.payload.path].viewType = action.payload.type;
+    }
+  } else if (action.type === "DOCUMENT/SET_ACTIVE_NODE") {
+    if (store.documents[action.payload.path]) {
+      store.documents[action.payload.path].activeSection = action.payload.sectionNumber;
+    }
   } else if (action.type === "HISTORY/UPDATE_DOCUMENT_PATH") {
+    const preferences = store.documents[action.payload.oldPath];
     delete store.documents[action.payload.oldPath];
-    store.documents[action.payload.newPath] = true;
+    store.documents[action.payload.newPath] = preferences;
   } else if (action.type === "SET_CUSTOM_HOTKEYS") {
     store.hotkeys.customHotkeys = action.payload.customHotkeys;
   } else if (action.type === "SET_FONT_SIZE") {
@@ -21929,6 +24052,8 @@ var updateState2 = (store, action) => {
     store.documents = action.payload.documents;
   } else if (action.type === "UI/CHANGE_ZOOM_LEVEL") {
     changeZoomLevel(store, action.payload);
+  } else if (action.type === "GENERAL/SET_DEFAULT_DOCUMENT_FORMAT") {
+    store.general.defaultDocumentFormat = action.payload.format;
   }
 };
 var settingsReducer = (store, action) => {
@@ -21958,7 +24083,7 @@ var deepMerge = (target, ...sources) => {
 };
 
 // src/obsidian/events/workspace/register-file-menu-event.ts
-var import_obsidian23 = require("obsidian");
+var import_obsidian29 = require("obsidian");
 
 // src/obsidian/events/workspace/helpers/get-leaf-of-file.ts
 var getLeafOfFile = (plugin, file, viewType) => {
@@ -21968,15 +24093,167 @@ var getLeafOfFile = (plugin, file, viewType) => {
   );
 };
 
-// src/obsidian/events/workspace/helpers/toggle-file-view-type.ts
-var toggleFileViewType = (plugin, file, leaf) => {
-  const currentModeIsLineage = fileViewTypeCache[file.path];
-  const currentViewType = currentModeIsLineage ? "lineage" : "markdown";
-  const newViewType = currentModeIsLineage ? "markdown" : "lineage";
-  const fileLeaf = leaf || getLeafOfFile(plugin, file, currentViewType);
-  setFileViewType(plugin, file, fileLeaf, newViewType);
+// src/obsidian/events/workspace/effects/toggle-file-view-type.ts
+var toggleFileViewType = async (plugin, file, leaf) => {
+  const documents = plugin.settings.getValue().documents;
+  const preferences = documents[file.path] ? documents[file.path] : null;
+  const currentViewType = preferences ? preferences.viewType : "markdown";
+  let fileLeaf = leaf || getLeafOfFile(plugin, file, currentViewType);
   if (!fileLeaf)
-    openFile(plugin, file, "tab", newViewType);
+    fileLeaf = await openFile(plugin, file, "tab");
+  const newViewType = currentViewType === "markdown" ? "lineage" : "markdown";
+  toggleObsidianViewType(plugin, fileLeaf, newViewType);
+  setViewType(plugin, file.path, newViewType);
+};
+
+// src/obsidian/events/workspace/context-menu-itetms/add-toggle-view-menu-item.ts
+var addToggleViewMenuItem = (menu, plugin, file, leaf) => {
+  menu.addItem((item) => {
+    const view = leaf?.view;
+    if (!view)
+      return;
+    const isTree = leaf.view.getViewType() === FILE_VIEW_TYPE;
+    item.setTitle(isTree ? lang.open_in_editor : lang.open_in_lineage);
+    item.setIcon(isTree ? "file-text" : customIcons.cards.name);
+    item.onClick(async () => {
+      toggleFileViewType(plugin, file, leaf);
+    });
+  });
+};
+
+// src/obsidian/events/workspace/effects/create-lineage-file-in-folder.ts
+var createLineageFileInFolder = async (plugin, folder) => {
+  const newFile = await createNewFile(plugin, folder);
+  if (newFile) {
+    const format2 = plugin.settings.getValue().general.defaultDocumentFormat;
+    await openFileInLineage(plugin, newFile, format2, "tab");
+  }
+};
+
+// src/obsidian/events/workspace/context-menu-itetms/add-folder-context-menu-items.ts
+var addFolderContextMenuItems = (menu, plugin, folder) => {
+  menu.addItem((item) => {
+    item.setTitle(lang.new_document);
+    item.setIcon(customIcons.cards.name);
+    item.onClick(() => createLineageFileInFolder(plugin, folder));
+  });
+};
+
+// src/obsidian/events/workspace/effects/import-from-gingko/import-from-gingko.ts
+var import_obsidian28 = require("obsidian");
+
+// src/obsidian/events/workspace/effects/import-from-gingko/helpers/verify-json-file.ts
+var verifyJsonFile = (tree) => {
+  for (const treeNode of tree) {
+    if (!treeNode)
+      return false;
+    if (typeof treeNode !== "object")
+      return false;
+    if (!("content" in treeNode))
+      return false;
+    if (!("children" in treeNode))
+      return false;
+    if (typeof treeNode.content !== "string")
+      return false;
+    if (!Array.isArray(treeNode.children))
+      return false;
+    if (!verifyJsonFile(treeNode.children))
+      return false;
+  }
+  return true;
+};
+
+// src/obsidian/events/workspace/effects/import-from-gingko/helpers/map-files-to-gingko-files.ts
+var mapFilesToGingkoFiles = async (plugin, files) => {
+  const gingkoFiles = [];
+  for (const file of files) {
+    const content = await plugin.app.vault.read(file);
+    const tree = JSON.parse(content);
+    const isValid = verifyJsonFile(tree);
+    if (!isValid)
+      throw new Error(
+        `File "${file.basename}" does not seem to be valid a Gingko file`
+      );
+    gingkoFiles.push({
+      basename: file.basename,
+      tree
+    });
+  }
+  return gingkoFiles;
+};
+
+// src/obsidian/events/workspace/effects/create-new-folder.ts
+var import_obsidian27 = require("obsidian");
+var createNewFolder = async (plugin, folder, basename) => {
+  invariant(folder);
+  const children2 = folder.children.map((c) => c instanceof import_obsidian27.TFolder ? c.name : null).filter((f) => f);
+  const path = getUniqueFileName(folder.path, children2, basename);
+  const createdFolder = await plugin.app.vault.createFolder(path);
+  invariant(createdFolder);
+  return createdFolder;
+};
+
+// src/obsidian/events/workspace/effects/import-from-gingko/helpers/create-lineage-documents-from-gingko-files.ts
+var createLineageDocumentsFromGingkoFiles = async (plugin, files, folderPath) => {
+  const parentFolder = plugin.app.vault.getFolderByPath(folderPath);
+  invariant(parentFolder);
+  let destinationFolder;
+  if (files.length === 1) {
+    destinationFolder = parentFolder;
+  } else {
+    destinationFolder = await createNewFolder(
+      plugin,
+      parentFolder,
+      "imported from gingko"
+    );
+  }
+  if (!destinationFolder)
+    throw new Error("Could not get destination folder");
+  for (const file of files) {
+    const sections = jsonToSections(file.tree);
+    const createdFile = await createNewFile(
+      plugin,
+      destinationFolder,
+      sections,
+      file.basename
+    );
+    setDocumentFormat(plugin, createdFile.path, "sections");
+    setViewType(plugin, createdFile.path, "lineage");
+  }
+};
+
+// src/obsidian/events/workspace/effects/import-from-gingko/import-from-gingko.ts
+var importFromGingko = async (plugin, files) => {
+  try {
+    const parentFolder = files[0].parent?.path;
+    if (!parentFolder)
+      return;
+    const gingkoFiles = await mapFilesToGingkoFiles(plugin, files);
+    await createLineageDocumentsFromGingkoFiles(
+      plugin,
+      gingkoFiles,
+      parentFolder
+    );
+    new import_obsidian28.Notice(
+      `Imported ${gingkoFiles.length} Gingko file${gingkoFiles.length === 1 ? "" : "s"}`
+    );
+  } catch (e) {
+    onPluginError(e, "command", { files });
+  }
+};
+
+// src/obsidian/events/workspace/context-menu-itetms/add-import-ginkgo-menu-item.ts
+var addImportGinkgoMenuItem = (menu, plugin, files) => {
+  const allJson = files.every((file) => file.extension === "json");
+  if (!allJson)
+    return;
+  menu.addItem((item) => {
+    item.setTitle(lang.import_from_gingko);
+    item.setIcon(customIcons.cards.name);
+    item.onClick(async () => {
+      importFromGingko(plugin, files);
+    });
+  });
 };
 
 // src/obsidian/events/workspace/register-file-menu-event.ts
@@ -21985,41 +24262,11 @@ var registerFileMenuEvent = (plugin) => {
     plugin.app.workspace.on(
       "file-menu",
       (menu, abstractFile, source, leaf) => {
-        if (abstractFile instanceof import_obsidian23.TFile) {
-          const view = leaf?.view;
-          if (!view)
-            return;
-          menu.addItem((item) => {
-            const isTree = view.getViewType() === FILE_VIEW_TYPE;
-            item.setTitle(
-              isTree ? lang.open_in_editor : lang.open_in_lineage
-            );
-            item.setIcon(
-              isTree ? "file-text" : customIcons.cards.name
-            );
-            item.onClick(async () => {
-              toggleFileViewType(plugin, abstractFile, leaf);
-            });
-          });
-        } else if (abstractFile instanceof import_obsidian23.TFolder) {
-          menu.addItem((item) => {
-            item.setTitle(lang.new_file);
-            item.setIcon(customIcons.cards.name);
-            item.onClick(async () => {
-              const newFile = await createNewFile(
-                plugin,
-                abstractFile
-              );
-              if (newFile) {
-                await openFile(
-                  plugin,
-                  newFile,
-                  "tab",
-                  "lineage"
-                );
-              }
-            });
-          });
+        if (abstractFile instanceof import_obsidian29.TFile) {
+          addToggleViewMenuItem(menu, plugin, abstractFile, leaf);
+          addImportGinkgoMenuItem(menu, plugin, [abstractFile]);
+        } else if (abstractFile instanceof import_obsidian29.TFolder) {
+          addFolderContextMenuItems(menu, plugin, abstractFile);
         }
       }
     )
@@ -22027,11 +24274,11 @@ var registerFileMenuEvent = (plugin) => {
 };
 
 // src/obsidian/events/vault/register-file-move-event.ts
-var import_obsidian24 = require("obsidian");
+var import_obsidian30 = require("obsidian");
 var registerFileRenameEvent = (plugin) => {
   plugin.registerEvent(
     plugin.app.vault.on("rename", (file, oldPath) => {
-      if (file instanceof import_obsidian24.TFile) {
+      if (file instanceof import_obsidian30.TFile) {
         if (fileViewTypeCache[oldPath]) {
           plugin.documents.dispatch({
             type: "DOCUMENTS/UPDATE_DOCUMENT_PATH",
@@ -22054,11 +24301,11 @@ var registerFileRenameEvent = (plugin) => {
 };
 
 // src/obsidian/events/vault/register-file-delete-event.ts
-var import_obsidian25 = require("obsidian");
+var import_obsidian31 = require("obsidian");
 var registerFileDeleteEvent = (plugin) => {
   plugin.registerEvent(
     plugin.app.vault.on("delete", (file) => {
-      if (file instanceof import_obsidian25.TFile) {
+      if (file instanceof import_obsidian31.TFile) {
         if (fileViewTypeCache[file.path]) {
           plugin.documents.dispatch({
             type: "DOCUMENTS/DELETE_DOCUMENT",
@@ -22067,7 +24314,7 @@ var registerFileDeleteEvent = (plugin) => {
             }
           });
           plugin.settings.dispatch({
-            type: "SET_DOCUMENT_TYPE_TO_MARKDOWN",
+            type: "DELETE_DOCUMENT_PREFERENCES",
             payload: {
               path: file.path
             }
@@ -22078,81 +24325,48 @@ var registerFileDeleteEvent = (plugin) => {
   );
 };
 
-// src/obsidian/commands/add-commands.ts
-var import_obsidian26 = require("obsidian");
-
 // src/helpers/slugify.ts
 var slugify = (inputString) => {
   return inputString.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
 };
 
-// src/lib/data-conversion/json-to-outline.ts
-var formatContent = (content, indent) => {
-  const lines = content.split("\n");
-  return lines.length === 1 ? lines[0] : lines.map((line, i) => i === 0 ? line : `${indent}  ${line}`).join("\n");
-};
-var nodeToOutline = (node, depth = 0) => {
-  const indent = "	".repeat(depth);
-  let outline = `${indent}- ${formatContent(node.content, indent)}
-`;
-  for (const child of node.children) {
-    outline += nodeToOutline(child, depth + 1);
-  }
-  return outline;
-};
-var jsonToOutline = (nodes, depth = 0) => {
-  const mapped = nodes.map((node) => nodeToOutline(node, depth));
-  const last = mapped.pop() || "";
-  mapped.push(last.replace(/\n$/, ""));
-  return mapped.join("");
+// src/obsidian/commands/helpers/get-active-file.ts
+var getActiveFile = (plugin) => {
+  const activeFile = plugin.app.workspace.getActiveFile();
+  if (activeFile && activeFile.extension === "md")
+    return activeFile;
 };
 
-// src/lib/data-conversion/json-to-text.ts
-var jsonToText = (nodes) => {
-  return jsonToSections(nodes, void 0, void 0, false);
-};
-
-// src/obsidian/commands/helpers/export-document/prepare-exported-document.ts
-var prepareExportedDocument = (fileData, basename, mode) => {
-  const { data, frontmatter } = extractFrontmatter(fileData);
-  const tree = sectionsToJson(data);
-  if (tree.length < 2 && tree[0].children.length == 0) {
-    throw new Error(`File ${basename} does not appear to be a tree`);
-  }
-  return (frontmatter ? frontmatter + "\n" : "") + (mode === "outline" ? jsonToOutline(tree) : jsonToText(tree));
-};
-
-// src/obsidian/commands/helpers/export-document/export-document.ts
-var exportDocument = async (plugin, file, mode) => {
+// src/obsidian/events/workspace/effects/create-lineage-document.ts
+var createLineageDocument = async (plugin) => {
   try {
-    if (!file.parent)
-      return;
-    const fileData = await plugin.app.vault.read(file);
-    const output = prepareExportedDocument(fileData, file.basename, mode);
-    const newFile = await createNewFile(
-      plugin,
-      file.parent,
-      output,
-      file.basename
-    );
-    if (newFile)
-      await openFile(plugin, newFile, "split", "markdown");
+    const format2 = plugin.settings.getValue().general.defaultDocumentFormat;
+    const file = getActiveFile(plugin);
+    let folder = null;
+    if (file) {
+      folder = file.parent;
+    } else {
+      folder = plugin.app.vault.getRoot();
+    }
+    if (folder) {
+      const newFile = await createNewFile(plugin, folder);
+      if (newFile) {
+        await openFileInLineage(plugin, newFile, format2, "tab");
+      }
+    }
   } catch (e) {
-    onPluginError(e, "command", { type: "export-document" });
+    onPluginError(e, "command", lang.create_new_document);
   }
 };
 
 // src/obsidian/commands/add-commands.ts
 var createCommands2 = (plugin) => {
   const commands = [];
-  const getActiveFile = () => {
-    return plugin.app.workspace.getActiveViewOfType(import_obsidian26.MarkdownView)?.file || plugin.app.workspace.getActiveViewOfType(LineageView)?.file;
-  };
   commands.push({
     name: lang.toggle_lineage_view,
     icon: customIcons.cards.name,
     checkCallback: (checking) => {
-      const file = getActiveFile();
+      const file = getActiveFile(plugin);
       if (file) {
         if (checking)
           return true;
@@ -22163,97 +24377,9 @@ var createCommands2 = (plugin) => {
     }
   });
   commands.push({
-    name: lang.create_new_file,
+    name: lang.create_new_document,
     icon: customIcons.cards.name,
-    callback: async () => {
-      try {
-        const file = getActiveFile();
-        let folder = null;
-        if (file) {
-          folder = file.parent;
-        } else {
-          folder = plugin.app.vault.getRoot();
-        }
-        if (folder) {
-          const newFile = await createNewFile(plugin, folder);
-          if (newFile) {
-            await openFile(plugin, newFile, "tab", "lineage");
-          }
-        }
-      } catch (e) {
-        onPluginError(e, "command", lang.create_new_file);
-      }
-    }
-  });
-  commands.push({
-    name: lang.toggle_lineage_view,
-    icon: customIcons.cards.name,
-    checkCallback: (checking) => {
-      const file = getActiveFile();
-      if (file) {
-        if (checking)
-          return true;
-        else
-          toggleFileViewType(plugin, file, void 0);
-      }
-    }
-  });
-  commands.push({
-    name: lang.export_document,
-    icon: customIcons.cards.name,
-    checkCallback: (checking) => {
-      const file = getActiveFile();
-      if (file) {
-        if (checking)
-          return true;
-        else {
-          exportDocument(plugin, file, "markdown");
-        }
-      }
-    }
-  });
-  commands.push({
-    name: lang.export_document_outline,
-    icon: customIcons.cards.name,
-    checkCallback: (checking) => {
-      const file = getActiveFile();
-      if (file) {
-        if (checking)
-          return true;
-        else {
-          exportDocument(plugin, file, "outline");
-        }
-      }
-    }
-  });
-  commands.push({
-    name: lang.format_headings,
-    icon: "heading1",
-    checkCallback: (checking) => {
-      const view = plugin.app.workspace.getActiveViewOfType(LineageView);
-      if (view) {
-        if (checking)
-          return true;
-        else
-          view.documentStore.dispatch({
-            type: "DOCUMENT/FORMAT_HEADINGS"
-          });
-      }
-    }
-  });
-  commands.push({
-    name: lang.extract_branch,
-    icon: "file-symlink",
-    checkCallback: (checking) => {
-      const view = plugin.app.workspace.getActiveViewOfType(LineageView);
-      if (view) {
-        if (checking)
-          return isActiveAndNotEditing(view);
-        else {
-          extractBranch(view);
-        }
-      }
-    }
+    callback: () => createLineageDocument(plugin)
   });
   return commands;
 };
@@ -22269,13 +24395,13 @@ var addCommands = (plugin) => {
 
 // src/stores/hotkeys/hotkey-subscriptions.ts
 var hotkeySubscriptions = (plugin) => {
-  hotkeyStore.subscribe((state, action) => {
+  hotkeyStore.subscribe((state2, action) => {
     if (action) {
       if (action.type === "HOTKEY/RESET" || action.type === "HOTKEY/UPDATE") {
         plugin.settings.dispatch({
           type: "SET_CUSTOM_HOTKEYS",
           payload: {
-            customHotkeys: state.customHotkeys
+            customHotkeys: state2.customHotkeys
           }
         });
         hotkeyStore.dispatch({
@@ -22291,29 +24417,29 @@ var hotkeySubscriptions = (plugin) => {
 
 // src/stores/settings/subscriptions/settings-subscriptions.ts
 var settingsSubscriptions = (plugin) => {
-  return plugin.settings.subscribe((state) => {
-    updateFileViewTypeCache(state.documents);
+  return plugin.settings.subscribe((state2) => {
+    updateFileViewTypeCache(state2.documents);
   });
 };
 
 // src/stores/documents/documents-reducer.ts
-var updateDocumentsState = (state, action) => {
+var updateDocumentsState = (state2, action) => {
   if (action.type === "DOCUMENTS/DELETE_DOCUMENT") {
     const path = action.payload.path;
-    if (path in state.documents) {
-      const oldEntry = state.documents[path];
+    if (path in state2.documents) {
+      const oldEntry = state2.documents[path];
       oldEntry.documentStore.dispatch({
         type: "RESET_STORE"
       });
-      delete state.documents[path];
+      delete state2.documents[path];
     }
   } else if (action.type === "DOCUMENTS/UPDATE_DOCUMENT_PATH") {
     const oldPath = action.payload.oldPath;
     const newPath = action.payload.newPath;
-    if (oldPath in state.documents) {
-      const oldEntry = state.documents[oldPath];
-      delete state.documents[oldPath];
-      state.documents[newPath] = oldEntry;
+    if (oldPath in state2.documents) {
+      const oldEntry = state2.documents[oldPath];
+      delete state2.documents[oldPath];
+      state2.documents[newPath] = oldEntry;
       oldEntry.documentStore.dispatch({
         type: "FS/SET_FILE_PATH",
         payload: {
@@ -22322,16 +24448,16 @@ var updateDocumentsState = (state, action) => {
       });
     }
   } else if (action.type === "DOCUMENTS/ADD_DOCUMENT") {
-    state.documents[action.payload.path] = {
+    state2.documents[action.payload.path] = {
       documentStore: action.payload.documentStore,
       viewId: action.payload.viewId
     };
   } else if (action.type === "WORKSPACE/SET_ACTIVE_LINEAGE_VIEW") {
-    if (state.documents[action.payload.path]) {
-      state.documents[action.payload.path].viewId = action.payload.viewId;
+    if (state2.documents[action.payload.path]) {
+      state2.documents[action.payload.path].viewId = action.payload.viewId;
     }
   } else if (action.type === "BACKUPS/SET_PROCESSED") {
-    state.processedBackups = true;
+    state2.processedBackups = true;
   }
 };
 var documentsReducer = (store, action) => {
@@ -22373,10 +24499,10 @@ var StatusBar = class {
 };
 
 // src/stores/documents/subscriptions/effects/process-document-backups/modal/document-backup-modal.ts
-var import_obsidian28 = require("obsidian");
+var import_obsidian33 = require("obsidian");
 
 // src/stores/documents/subscriptions/effects/process-document-backups/modal/modal-buttons.svelte
-function create_fragment73(ctx) {
+function create_fragment75(ctx) {
   let div;
   let button0;
   let t1;
@@ -22434,7 +24560,7 @@ function create_fragment73(ctx) {
     }
   };
 }
-function instance71($$self, $$props, $$invalidate) {
+function instance73($$self, $$props, $$invalidate) {
   let { callbacks } = $$props;
   $$self.$$set = ($$props2) => {
     if ("callbacks" in $$props2)
@@ -22442,25 +24568,25 @@ function instance71($$self, $$props, $$invalidate) {
   };
   return [callbacks];
 }
-var Modal_buttons = class extends SvelteComponent {
+var Modal_buttons2 = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance71, create_fragment73, safe_not_equal, { callbacks: 0 });
+    init(this, options, instance73, create_fragment75, safe_not_equal, { callbacks: 0 });
   }
 };
-var modal_buttons_default = Modal_buttons;
+var modal_buttons_default2 = Modal_buttons2;
 
 // src/stores/documents/subscriptions/effects/process-document-backups/modal/modal-content.svelte
-var import_obsidian27 = require("obsidian");
-function add_css31(target) {
+var import_obsidian32 = require("obsidian");
+function add_css34(target) {
   append_styles(target, "svelte-1ho9qqp", "code.svelte-1ho9qqp{background-color:var(--color-base-40);padding:2px 4px}");
 }
-function get_each_context11(ctx, list, i) {
+function get_each_context12(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[4] = list[i];
   return child_ctx;
 }
-function create_each_block11(ctx) {
+function create_each_block12(ctx) {
   let div;
   let code;
   let t0_value = (
@@ -22496,7 +24622,7 @@ function create_each_block11(ctx) {
     }
   };
 }
-function create_fragment74(ctx) {
+function create_fragment76(ctx) {
   let p0;
   let t0;
   let a;
@@ -22521,7 +24647,7 @@ function create_fragment74(ctx) {
   );
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block11(get_each_context11(ctx, each_value, i));
+    each_blocks[i] = create_each_block12(get_each_context12(ctx, each_value, i));
   }
   return {
     c() {
@@ -22591,11 +24717,11 @@ function create_fragment74(ctx) {
         );
         let i;
         for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context11(ctx2, each_value, i);
+          const child_ctx = get_each_context12(ctx2, each_value, i);
           if (each_blocks[i]) {
             each_blocks[i].p(child_ctx, dirty);
           } else {
-            each_blocks[i] = create_each_block11(child_ctx);
+            each_blocks[i] = create_each_block12(child_ctx);
             each_blocks[i].c();
             each_blocks[i].m(div, null);
           }
@@ -22628,14 +24754,14 @@ function create_fragment74(ctx) {
     }
   };
 }
-function instance72($$self, $$props, $$invalidate) {
+function instance74($$self, $$props, $$invalidate) {
   let { path } = $$props;
   let { backup } = $$props;
   let { plugin } = $$props;
   const openPath = () => {
     const file = plugin.app.vault.getAbstractFileByPath(path);
-    if (file && file instanceof import_obsidian27.TFile)
-      openFile(plugin, file, "split", "markdown");
+    if (file && file instanceof import_obsidian32.TFile)
+      openFile(plugin, file, "split");
   };
   $$self.$$set = ($$props2) => {
     if ("path" in $$props2)
@@ -22647,16 +24773,16 @@ function instance72($$self, $$props, $$invalidate) {
   };
   return [path, backup, openPath, plugin];
 }
-var Modal_content = class extends SvelteComponent {
+var Modal_content2 = class extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance72, create_fragment74, safe_not_equal, { path: 0, backup: 1, plugin: 3 }, add_css31);
+    init(this, options, instance74, create_fragment76, safe_not_equal, { path: 0, backup: 1, plugin: 3 }, add_css34);
   }
 };
-var modal_content_default = Modal_content;
+var modal_content_default2 = Modal_content2;
 
 // src/stores/documents/subscriptions/effects/process-document-backups/modal/document-backup-modal.ts
-var DocumentBackupModal = class extends import_obsidian28.Modal {
+var DocumentBackupModal = class extends import_obsidian33.Modal {
   constructor(props) {
     super(props.plugin.app);
     this.props = props;
@@ -22664,13 +24790,13 @@ var DocumentBackupModal = class extends import_obsidian28.Modal {
       this.setTitle("Lineage - Document backup");
       const fragment = document.createDocumentFragment();
       fragment.append();
-      new modal_buttons_default({
+      new modal_buttons_default2({
         target: this.contentEl.parentElement,
         props: {
           callbacks: this.props.callbacks
         }
       });
-      new modal_content_default({
+      new modal_content_default2({
         target: this.contentEl,
         props: this.props
       });
@@ -22688,7 +24814,7 @@ var DocumentBackupModal = class extends import_obsidian28.Modal {
 };
 
 // src/stores/documents/subscriptions/effects/process-document-backups/helpers/restore-backup.ts
-var import_obsidian29 = require("obsidian");
+var import_obsidian34 = require("obsidian");
 var restoreBackup = async (plugin, backup, path) => {
   const pathParts = path.split("/");
   const maybeFileName = pathParts.pop();
@@ -22698,7 +24824,7 @@ var restoreBackup = async (plugin, backup, path) => {
   const folderPath = pathParts.join("/");
   let folder;
   const maybeFolder = plugin.app.vault.getAbstractFileByPath(folderPath);
-  if (maybeFolder instanceof import_obsidian29.TFolder) {
+  if (maybeFolder instanceof import_obsidian34.TFolder) {
     folder = maybeFolder;
   } else {
     folder = plugin.app.vault.getRoot();
@@ -22709,11 +24835,11 @@ var restoreBackup = async (plugin, backup, path) => {
     backup.content,
     fileName
   );
-  await openFile(plugin, newFile, "split", "markdown");
+  await openFile(plugin, newFile, "split");
 };
 
 // src/stores/documents/subscriptions/effects/process-document-backups/process-document-backups.ts
-var import_obsidian30 = require("obsidian");
+var import_obsidian35 = require("obsidian");
 var processDocumentBackups = async (plugin) => {
   const deleteBackup = (path) => {
     plugin.settings.dispatch({
@@ -22726,7 +24852,7 @@ var processDocumentBackups = async (plugin) => {
   const backups = plugin.settings.getValue().backup;
   for (const [path, backup] of Object.entries(backups)) {
     const file = plugin.app.vault.getAbstractFileByPath(path);
-    if (file && file instanceof import_obsidian30.TFile) {
+    if (file && file instanceof import_obsidian35.TFile) {
       const content = await plugin.app.vault.read(file);
       if (content === backup.content) {
         deleteBackup(path);
@@ -22757,33 +24883,46 @@ var processDocumentBackups = async (plugin) => {
   plugin.documents.dispatch({ type: "BACKUPS/SET_PROCESSED" });
 };
 
-// src/stores/documents/subscriptions/effects/remove-obsolete-documents.ts
-var import_obsidian31 = require("obsidian");
-var removeObsoleteDocuments = (plugin) => {
+// src/stores/documents/subscriptions/effects/remove-obsolete-documents/helpers/filter-obsolete-documents.ts
+var filterObsoleteDocuments = (settings, allFiles) => {
+  if (allFiles.size === 0)
+    return 0;
+  const paths = Object.keys(settings.documents);
+  const deletedPaths = /* @__PURE__ */ new Set();
+  for (const path of paths) {
+    if (!allFiles.has(path)) {
+      deletedPaths.add(path);
+      delete settings.documents[path];
+    }
+  }
+  return deletedPaths.size;
+};
+
+// src/stores/documents/subscriptions/effects/remove-obsolete-documents/helpers/get-all-loaded-files.ts
+var import_obsidian36 = require("obsidian");
+var getAllLoadedFiles = (plugin) => {
   const allFiles = plugin.app.vault.getAllLoadedFiles();
   const allPaths = /* @__PURE__ */ new Set();
   for (const maybeFile of allFiles) {
-    if (maybeFile instanceof import_obsidian31.TFile) {
+    if (maybeFile instanceof import_obsidian36.TFile) {
       allPaths.add(maybeFile.path);
     }
   }
-  if (allPaths.size === 0)
-    return;
+  return allPaths;
+};
+
+// src/stores/documents/subscriptions/effects/remove-obsolete-documents.ts
+var removeObsoleteDocuments = (plugin) => {
   const settings = plugin.settings.getValue();
-  const filteredDocuments = {};
-  for (const path of Object.keys(settings.documents)) {
-    if (allPaths.has(path)) {
-      filteredDocuments[path] = true;
-    }
-  }
-  const diff = Object.keys(settings.documents).length - Object.keys(filteredDocuments).length;
-  if (diff === 0)
+  const allLoadedFiles = getAllLoadedFiles(plugin);
+  const deleted = filterObsoleteDocuments(settings, allLoadedFiles);
+  if (deleted === 0)
     return;
-  logger.debug(`[lineage] removed ${diff} from settings.documents`);
+  logger.debug(`[lineage] removed ${deleted} from settings.documents`);
   plugin.settings.dispatch({
     type: "UPDATE_DOCUMENTS_DICTIONARY",
     payload: {
-      documents: filteredDocuments
+      documents: settings.documents
     }
   });
 };
@@ -22798,43 +24937,64 @@ var documentsStoreSubscriptions = (plugin) => {
   });
 };
 
+// src/obsidian/events/workspace/actions/set-active-lineage-view.ts
+var setActiveLineageView = (view) => {
+  invariant(view.file);
+  view.plugin.documents.dispatch({
+    type: "WORKSPACE/SET_ACTIVE_LINEAGE_VIEW",
+    payload: {
+      path: view.file?.path,
+      viewId: view.id
+    }
+  });
+};
+
+// src/obsidian/events/workspace/actions/set-active-leaf-changed.ts
+var setActiveLeafChanged = (plugin) => {
+  plugin.documents.dispatch({
+    type: "WORKSPACE/ACTIVE_LEAF_CHANGE"
+  });
+};
+
 // src/obsidian/events/workspace/register-active-leaf-change.ts
 var registerActiveLeafChange = (plugin) => {
   plugin.registerEvent(
     plugin.app.workspace.on("active-leaf-change", (leaf) => {
       if (leaf?.view instanceof LineageView && leaf.view.file?.path) {
-        plugin.documents.dispatch({
-          type: "WORKSPACE/SET_ACTIVE_LINEAGE_VIEW",
-          payload: {
-            path: leaf.view.file?.path,
-            viewId: leaf.view.id
-          }
-        });
+        setActiveLineageView(leaf.view);
       }
-      plugin.documents.dispatch({
-        type: "WORKSPACE/ACTIVE_LEAF_CHANGE"
-      });
+      setActiveLeafChanged(plugin);
     })
   );
+};
+
+// src/obsidian/events/workspace/actions/on-workspace-resize.ts
+var onWorkspaceResize = (plugin) => {
+  plugin.documents.dispatch({
+    type: "WORKSPACE/RESIZE"
+  });
 };
 
 // src/obsidian/events/workspace/register-workspace-resize.ts
 var registerWorkspaceResize = (plugin) => {
   plugin.registerEvent(
     plugin.app.workspace.on("resize", () => {
-      plugin.documents.dispatch({
-        type: "WORKSPACE/RESIZE"
-      });
+      onWorkspaceResize(plugin);
     })
   );
+};
+
+// src/obsidian/events/workspace/actions/set-workspace-layout-ready.ts
+var setWorkspaceLayoutReady = (plugin) => {
+  plugin.documents.dispatch({
+    type: "WORKSPACE/LAYOUT_READY"
+  });
 };
 
 // src/obsidian/events/workspace/register-layout-ready.ts
 var registerLayoutReady = (plugin) => {
   plugin.app.workspace.onLayoutReady(() => {
-    plugin.documents.dispatch({
-      type: "WORKSPACE/LAYOUT_READY"
-    });
+    setWorkspaceLayoutReady(plugin);
   });
 };
 
@@ -22848,8 +25008,33 @@ function setActiveLeaf(next) {
   };
 }
 
+// src/stores/settings/migrations/migrate-document-preferences.ts
+var migrateDocumentPreferences = (settings) => {
+  for (const [path, pref] of Object.entries(settings.documents)) {
+    if (typeof pref === "boolean") {
+      settings.documents[path] = {
+        documentFormat: "sections",
+        viewType: "lineage",
+        activeSection: null
+      };
+    }
+  }
+};
+
+// src/obsidian/events/workspace/register-files-menu-event.ts
+var import_obsidian37 = require("obsidian");
+var registerFilesMenuEvent = (plugin) => {
+  plugin.registerEvent(
+    plugin.app.workspace.on("files-menu", (menu, abstractFile) => {
+      const allFiles = abstractFile.every((af) => af instanceof import_obsidian37.TFile);
+      if (allFiles)
+        addImportGinkgoMenuItem(menu, plugin, abstractFile);
+    })
+  );
+};
+
 // src/main.ts
-var Lineage = class extends import_obsidian32.Plugin {
+var Lineage = class extends import_obsidian38.Plugin {
   async onload() {
     await this.loadSettings();
     this.documents = new Store(
@@ -22868,14 +25053,17 @@ var Lineage = class extends import_obsidian32.Plugin {
     addCommands(this);
     loadCommands(this);
     this.statusBar = new StatusBar(this);
+    this.loadRibbonIcon();
   }
   async saveSettings() {
     await this.saveData(this.settings.getValue());
   }
   async loadSettings() {
-    const settings = await this.loadData() || {};
+    const rawSettings = await this.loadData() || {};
+    const settings = deepMerge(rawSettings, DEFAULT_SETTINGS());
+    migrateDocumentPreferences(settings);
     this.settings = new Store(
-      deepMerge(settings, DEFAULT_SETTINGS()),
+      settings,
       settingsReducer,
       onPluginError
     );
@@ -22886,6 +25074,7 @@ var Lineage = class extends import_obsidian32.Plugin {
   }
   registerEvents() {
     registerFileMenuEvent(this);
+    registerFilesMenuEvent(this);
     registerFileRenameEvent(this);
     registerFileDeleteEvent(this);
     registerActiveLeafChange(this);
@@ -22898,7 +25087,20 @@ var Lineage = class extends import_obsidian32.Plugin {
   }
   registerPatches() {
     this.register(around(this.app.workspace, { setActiveLeaf }));
-    this.register(around(import_obsidian32.WorkspaceLeaf.prototype, { setViewState }));
+    this.register(around(import_obsidian38.WorkspaceLeaf.prototype, { setViewState }));
+  }
+  loadRibbonIcon() {
+    this.addRibbonIcon(
+      customIcons.cards.name,
+      "Toggle Lineage view",
+      () => {
+        const file = getActiveFile(this);
+        if (file)
+          toggleFileViewType(this, file, void 0);
+        else
+          createLineageDocument(this);
+      }
+    );
   }
 };
 /*! Bundled license information:
@@ -22999,14 +25201,6 @@ lucide-svelte/dist/icons/file-plus.svelte:
    *)
 
 lucide-svelte/dist/icons/file-symlink.svelte:
-  (**
-   * @license lucide-svelte v0.344.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   *)
-
-lucide-svelte/dist/icons/file-text.svelte:
   (**
    * @license lucide-svelte v0.344.0 - ISC
    *
