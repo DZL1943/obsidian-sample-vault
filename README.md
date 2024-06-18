@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-18 21:36"
+modified: "2024-06-18 21:51"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -287,6 +287,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 ## Issues
 
 - [ ] %% 2024/06/18 %%[minimal 主题 7.7.3 版本, dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
+- [ ] %% 2024/06/12 %%create-note-in-folder 插件在修改配置之后可能需要重启才能生效.
 
 #
 

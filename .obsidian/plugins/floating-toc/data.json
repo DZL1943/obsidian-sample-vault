@@ -3,7 +3,7 @@
   "ignoreTopHeader": false,
   "positionStyle": "right",
   "isLoadOnMobile": false,
-  "isLeft": false,
+  "isLeft": true,
   "isDefaultPin": false,
   "isTooltip": true,
   "defaultCollapsedLevel": 6,
