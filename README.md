@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-18 21:51"
+modified: "2024-06-18 21:59"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -120,23 +120,22 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 65. obsidian-trash-explorer
 66. obsidian-zoom
 67. obsidian42-brat
-68. plugin-reloader
-69. privacy-glasses
-70. quick-explorer
-71. quickadd
-72. root-folder-context-menu
-73. settings-search
-74. show-whitespace-cm6
-75. solve
-76. surfing
-77. table-editor-obsidian
-78. tabs
-79. tag-wrangler
-80. templater-obsidian
-81. typewriter-mode
-82. unicode-search
-83. url-into-selection
-84. various-complements
+68. privacy-glasses
+69. quick-explorer
+70. quickadd
+71. root-folder-context-menu
+72. settings-search
+73. show-whitespace-cm6
+74. solve
+75. surfing
+76. table-editor-obsidian
+77. tabs
+78. tag-wrangler
+79. templater-obsidian
+80. typewriter-mode
+81. unicode-search
+82. url-into-selection
+83. various-complements
 
 
 ## 快捷键设置
