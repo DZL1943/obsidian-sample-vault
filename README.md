@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-18 11:06"
+modified: "2024-06-18 21:23"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -123,22 +123,20 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 68. plugin-reloader
 69. privacy-glasses
 70. quick-explorer
-71. quick-plugin-switcher
-72. quickadd
-73. root-folder-context-menu
-74. settings-search
-75. show-whitespace-cm6
-76. solve
-77. statusbar-organizer
-78. surfing
-79. table-editor-obsidian
-80. tabs
-81. tag-wrangler
-82. templater-obsidian
-83. typewriter-mode
-84. unicode-search
-85. url-into-selection
-86. various-complements
+71. quickadd
+72. root-folder-context-menu
+73. settings-search
+74. show-whitespace-cm6
+75. solve
+76. surfing
+77. table-editor-obsidian
+78. tabs
+79. tag-wrangler
+80. templater-obsidian
+81. typewriter-mode
+82. unicode-search
+83. url-into-selection
+84. various-complements
 
 
 ## 快捷键设置
@@ -285,6 +283,10 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 > [!faq] 报错找不到文件  
 > 比如 Various Complements 的配置文件, QuickAdd、Dataview 的相关脚本文件.  
 > 到对应的插件设置页面先关闭相关功能.
+
+## Issues
+
+- [ ] %% 2024/06/18 %%minimal 主题 7.7.3 版本, dataview 表格属性错行问题.
 
 #
 
