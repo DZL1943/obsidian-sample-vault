@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-18 21:23"
+modified: "2024-06-18 21:36"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -286,7 +286,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 
 ## Issues
 
-- [ ] %% 2024/06/18 %%minimal 主题 7.7.3 版本, dataview 表格属性错行问题.
+- [ ] %% 2024/06/18 %%minimal 主题 7.7.3 版本, dataview 表格属性错行问题. 降至 7.4.3 无此问题.
 
 #
 

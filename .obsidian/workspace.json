@@ -37,6 +37,18 @@
               },
               "pinned": true
             }
+          },
+          {
+            "id": "d8cfb448e2e2edcf",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Local/temp.md",
+                "mode": "preview",
+                "source": false
+              }
+            }
           }
         ],
         "currentTab": 1
@@ -299,8 +311,9 @@
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
-    "quicknotes.md",
+    "Local/temp.md",
     "README.md",
+    "quicknotes.md",
     "_canvas.canvas",
     "Vaults",
     "90_Misc/Code/taskCalendar/view.js",
@@ -312,7 +325,6 @@
     "temp1",
     "tmpxx",
     "atest.c",
-    "Local/temp.md",
     "20_Journals/context.md",
     "draft.md",
     "20_Journals/tasks.md",
