@@ -34,8 +34,8 @@ for _dir in $top_dirs;do touch $_dir/.gitkeep;done
     - context
 - 30_Jottings/: 非正式笔记
 - 40_Pages/: 原创笔记、主题笔记
-- 50_Projects/: 项目笔记
-- 60_Areas/: 领域知识笔记、卡片笔记[^1]
+- 50_Projects/: 项目笔记[^1]
+- 60_Areas/: 领域知识笔记、卡片笔记
 - 70_Resources/: 附件以外的资源文件
 - 80_Archives/: 归档
 - 90_Misc/: 杂项(比如附件、模版等)
