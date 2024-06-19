@@ -39,18 +39,6 @@
                   },
                   "pinned": true
                 }
-              },
-              {
-                "id": "d8cfb448e2e2edcf",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "Local/temp.md",
-                    "mode": "preview",
-                    "source": false
-                  }
-                }
               }
             ],
             "currentTab": 1
@@ -312,7 +300,7 @@
         }
       },
       "active": "dd0c724920d6ce07",
-      "mtime": "2024-06-18T22:00:08+08:00"
+      "mtime": "2024-06-19T09:12:07+08:00"
     }
   },
   "active": "minimal"
