@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-19 06:44"
+modified: "2024-06-20 14:39"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -20,10 +20,11 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 - 本地类: Obsidian、Zettlr
 - 云笔记类: Notion、Craft
 
->[!quote]+ 一点忠告
->- 永远不要 all-in-one 一个你无法完全掌控的(笔记)软件, 例如云笔记软件、非透明存储的本地笔记软件.
->- 不要花费过多时间在工具的打磨上, 尤其在你对自己的目标需求并不明确的时候.
->- 只在自己能力范围内有限度地折腾.
+> [!quote]+ 一点忠告
+> - 永远不要 all-in-one 一个你无法完全掌控的(笔记)软件, 例如云笔记软件、非透明存储的本地笔记软件.
+> - 不要花费过多时间在工具的打磨上, 尤其在你对自己的目标需求并不明确的时候.
+> - 只在自己能力范围内有限度地折腾.
+> - 一段时间后再回看, 你会发觉那些复杂的、花里胡哨的东西也就那样, 默认和精简才是王道.
 
 ## 安装
 
@@ -158,6 +159,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 | app:go-forward                                                        | Mod+]               |
 | app:toggle-left-sidebar                                               | Ctrl+L              |
 | app:toggle-right-sidebar                                              | Ctrl+R              |
+| app:toggle-ribbon                                                     | Mod+Ctrl+B          |
 | cycle-in-sidebar:cycle-left-sidebar                                   | Ctrl+[              |
 | cycle-in-sidebar:cycle-left-sidebar-reverse                           | Ctrl+Shift+[        |
 | cycle-in-sidebar:cycle-right-sidebar                                  | Ctrl+]              |

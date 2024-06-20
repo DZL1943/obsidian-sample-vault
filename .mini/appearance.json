@@ -1,0 +1,9 @@
+{
+  "accentColor": "#42b983",
+  "interfaceFontFamily": "Menlo",
+  "textFontFamily": "Menlo",
+  "monospaceFontFamily": "Menlo",
+  "baseFontSize": 18,
+  "baseFontSizeAction": true,
+  "translucency": false
+}
