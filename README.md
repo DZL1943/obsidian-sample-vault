@@ -14,6 +14,17 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 ![](90_Misc/Attachments/README-20240611204632938.png)  
 ![](90_Misc/Attachments/README-20240611203835624.png)
 
+## 主流的笔记软件
+
+- 编辑器类: Typora、MarkText
+- 本地类: Obsidian、Zettlr
+- 云笔记类: Notion、Craft
+
+>[!quote]+ 一点忠告
+>- 永远不要 all-in-one 一个你无法完全掌控的(笔记)软件, 例如云笔记软件、非透明存储的本地笔记软件.
+>- 不要花费过多时间在工具的打磨上, 尤其在你对自己的目标需求并不明确的时候.
+>- 只在自己能力范围内有限度地折腾.
+
 ## 安装
 
 [Download - Obsidian](https://obsidian.md/download)  
@@ -231,7 +242,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 - 微信
 - 知乎
 - Docusaurus
-## Resources
+## 参考
 
 - Official
     - [Home - Obsidian Help](https://help.obsidian.md/)
@@ -287,6 +298,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 
 - [ ] %% 2024/06/18 %%[minimal 主题 7.7.3 版本, dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
 - [ ] %% 2024/06/12 %%create-note-in-folder 插件在修改配置之后可能需要重启才能生效.
+- [ ] [Have Obsidian be the handler of .md files / Add ability to use Obsidian as a markdown editor on files outside vault (file association) - Feature requests - Obsidian Forum](https://forum.obsidian.md/t/have-obsidian-be-the-handler-of-md-files-add-ability-to-use-obsidian-as-a-markdown-editor-on-files-outside-vault-file-association/314/26?page=6)
 
 #
 
