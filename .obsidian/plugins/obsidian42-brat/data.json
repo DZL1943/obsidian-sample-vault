@@ -1,5 +1,6 @@
 {
   "pluginList": [
+    "polyipseity/obsidian-show-hidden-files",
     "Quorafind/Obsidian-Node-Auto-Resize",
     "aidan-gibson/obsidian-opener",
     "platon-ivanov/obsidian-visually-numbered-headings",
