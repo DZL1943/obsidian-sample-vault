@@ -1,5 +1,6 @@
 {
   "pluginList": [
+    "Quorafind/Obsidian-Node-Auto-Resize",
     "aidan-gibson/obsidian-opener",
     "platon-ivanov/obsidian-visually-numbered-headings",
     "xhuajin/obsidian-immersive-translate",
