@@ -126,7 +126,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 215.5,
+    "width": 200,
     "collapsed": true
   },
   "right": {
@@ -136,7 +136,7 @@
       {
         "id": "9bbb39ce85738cff",
         "type": "tabs",
-        "dimension": 46.69867947178872,
+        "dimension": 48.56770833333333,
         "children": [
           {
             "id": "e3ab673e1ce52da5",
@@ -176,7 +176,7 @@
       {
         "id": "dda52860917a3c25",
         "type": "tabs",
-        "dimension": 53.30132052821128,
+        "dimension": 51.432291666666664,
         "children": [
           {
             "id": "89b0519e275999ee",
@@ -265,7 +265,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 255.5
+    "width": 237.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -297,12 +297,12 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "dd0c724920d6ce07",
+  "active": "117a823cb947b7cb",
   "lastOpenFiles": [
+    "_canvas.canvas",
     "40_Pages/笔记软件.md",
     "README.md",
     "20_Journals/journals.md",
-    "_canvas.canvas",
     "90_Misc/Code/out.csv",
     "90_Misc/Code/hotkeys.py",
     "Local/temp.md",

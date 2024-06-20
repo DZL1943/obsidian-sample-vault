@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-20 14:39"
+modified: "2024-06-20 15:01"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -123,31 +123,30 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 56. obsidian-projects
 57. obsidian-quiet-outline
 58. obsidian-regex-replace
-59. obsidian-scroll-to-top-plugin
-60. obsidian-shellcommands
-61. obsidian-sidebar-expand-on-hover
-62. obsidian-style-settings
-63. obsidian-tagfolder
-64. obsidian-tasks-plugin
-65. obsidian-trash-explorer
-66. obsidian-zoom
-67. obsidian42-brat
-68. privacy-glasses
-69. quick-explorer
-70. quickadd
-71. root-folder-context-menu
-72. settings-search
-73. show-whitespace-cm6
-74. solve
-75. surfing
-76. table-editor-obsidian
-77. tabs
-78. tag-wrangler
-79. templater-obsidian
-80. typewriter-mode
-81. unicode-search
-82. url-into-selection
-83. various-complements
+59. obsidian-shellcommands
+60. obsidian-sidebar-expand-on-hover
+61. obsidian-style-settings
+62. obsidian-tagfolder
+63. obsidian-tasks-plugin
+64. obsidian-trash-explorer
+65. obsidian-zoom
+66. obsidian42-brat
+67. privacy-glasses
+68. quick-explorer
+69. quickadd
+70. root-folder-context-menu
+71. settings-search
+72. show-whitespace-cm6
+73. solve
+74. surfing
+75. table-editor-obsidian
+76. tabs
+77. tag-wrangler
+78. templater-obsidian
+79. typewriter-mode
+80. unicode-search
+81. url-into-selection
+82. various-complements
 
 
 ## 快捷键设置
