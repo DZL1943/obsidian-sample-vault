@@ -260,6 +260,7 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
     - [Basic writing and formatting syntax - GitHub Docs](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
     - [Markdown Cheat Sheet | Markdown Guide](https://www.markdownguide.org/cheat-sheet/)
     - [GitHub - Yakitrak/obsidian-cli: Interact with Obsidian in the terminal. Open, search, create, update, move and delete notes!](https://github.com/Yakitrak/obsidian-cli)
+    - [GitHub - sytone/obsidian-remote: Run Obsidian.md in a browser via a docker container.](https://github.com/sytone/obsidian-remote)
 - Themes & CSS Snippets
     - [Home - Minimal Documentation](https://minimal.guide/)
         - [Minimal Theme Settings - Minimal Documentation](https://minimal.guide/plugins/minimal-theme-settings)
