@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-21 23:45"
+modified: "2024-06-21 23:56"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -221,10 +221,11 @@ for folder in $folders;do touch $folder/.gitkeep;done
     - 官方同步
     - Syncthing: 推荐
     - Remotely Save 插件
+    - LiveSync 插件
 - 云
     - GitHub
-    - iCloud 不推荐
-    - OneDrive 不推荐
+    - iCloud: 不推荐
+    - OneDrive: 不推荐
     - 阿里云盘
 - 加密
     - Cryptomator
@@ -241,12 +242,14 @@ for folder in $folders;do touch $folder/.gitkeep;done
 - [obsidian-clipper](https://github.com/jplattel/obsidian-clipper): 无需插件, 相比 markdownload 更简单.(但可能剪藏不到内容)
 
 发布
-- [Notion](https://www.notion.so/)
+- [Notion](https://www.notion.so/) /Share to NotionNext 插件
 - 飞书
 - 语雀
 - 微信
 - 知乎
-- Docusaurus
+- GitHub/Enveloppe 插件
+- Docusaurus/Obisidiosaurus 插件
+- Digital Garden 插件
 ## 参考
 
 - Official
@@ -295,11 +298,11 @@ for folder in $folders;do touch $folder/.gitkeep;done
 
 ## Issues & Tips
 
-> [!faq] 首次启动时侧边栏按钮混乱  
+> [!faq]+ 首次启动时侧边栏按钮混乱  
 > 点击侧边栏第一个图标, 选择一个工作区加载一下, 最好再重启一下 ob.  
 > 建议每次更新插件之前保存工作空间布局.
 
-> [!faq] 报错找不到文件  
+> [!faq]+ 报错找不到文件  
 > 比如 Various Complements 的配置文件, QuickAdd、Dataview 的相关脚本文件.  
 > 到对应的插件设置页面先关闭相关功能.
 
@@ -316,7 +319,7 @@ for folder in $folders;do touch $folder/.gitkeep;done
 > [!bug]+ obsidian-visually-numbered-headings 插件
 > - 修改标题起始层级可能不生效, 需手动改配置文件
 > - 标题折叠按钮下移
-> - 增添标题时, 需手动刷新
+> - 增添标题时, 可能需手动刷新
 
 > [!question]+ [Have Obsidian be the handler of .md files / Add ability to use Obsidian as a markdown editor on files outside vault (file association) - Feature requests - Obsidian Forum](https://forum.obsidian.md/t/have-obsidian-be-the-handler-of-md-files-add-ability-to-use-obsidian-as-a-markdown-editor-on-files-outside-vault-file-association/314/26?page=6)
 
