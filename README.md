@@ -219,8 +219,8 @@ for folder in $folders;do touch $folder/.gitkeep;done
     - Remotely Save 插件
 - 云
     - GitHub
-    - iCloud
-    - OneDrive
+    - iCloud 不推荐
+    - OneDrive 不推荐
     - 阿里云盘
 - 加密
     - Cryptomator
