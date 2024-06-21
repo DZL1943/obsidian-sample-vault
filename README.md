@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-21 16:30"
+modified: "2024-06-21 16:50"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -299,7 +299,7 @@ for folder in $folders;do touch $folder/.gitkeep;done
 > 比如 Various Complements 的配置文件, QuickAdd、Dataview 的相关脚本文件.  
 > 到对应的插件设置页面先关闭相关功能.
 
->[!tip]+ 阅读模式渲染不正常时, 可以尝试(`cmd+r`)刷新一下.
+> [!tip]+ 阅读模式渲染不正常时, 可以尝试(`cmd+r`)刷新一下.
 
 > [!tip]+ 文件列表选择多个文件: (macOS 下)按住 alt 键, 用鼠标点选.
 
@@ -307,12 +307,12 @@ for folder in $folders;do touch $folder/.gitkeep;done
 
 > [!bug]+ %% 2024/06/12 %%create-note-in-folder 插件在修改配置之后可能需要重启才能生效.
 
->[!bug]+ obsidian-scroll-to-top-plugin 在开启缩放时无效
+> [!bug]+ obsidian-scroll-to-top-plugin 在开启缩放时无效
 
->[!bug]+ obsidian-visually-numbered-headings 插件
->- 修改标题起始层级可能不生效, 需手动改配置文件
->- 标题折叠按钮下移
->- 增添标题时, 需手动刷新
+> [!bug]+ obsidian-visually-numbered-headings 插件
+> - 修改标题起始层级可能不生效, 需手动改配置文件
+> - 标题折叠按钮下移
+> - 增添标题时, 需手动刷新
 
 > [!question]+ [Have Obsidian be the handler of .md files / Add ability to use Obsidian as a markdown editor on files outside vault (file association) - Feature requests - Obsidian Forum](https://forum.obsidian.md/t/have-obsidian-be-the-handler-of-md-files-add-ability-to-use-obsidian-as-a-markdown-editor-on-files-outside-vault-file-association/314/26?page=6)
 
