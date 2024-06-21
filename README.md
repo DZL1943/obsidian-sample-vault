@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-21 16:50"
+modified: "2024-06-21 23:45"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -17,14 +17,16 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 ## 主流的笔记软件
 
 - 编辑器类: Typora、MarkText
-- 本地类: Obsidian、Zettlr
-- 云笔记类: Notion、Craft
+- 本地类: Obsidian、Zettlr、SiYuan、Logseq、Anytype
+- 云笔记类: Notion、Craft、飞书、语雀
 
 > [!quote]+ 一点忠告
 > - 永远不要 all-in-one 一个你无法完全掌控的(笔记)软件, 例如云笔记软件、非透明存储的本地笔记软件.
+> - 不要把分类和笔记方法看得过重, 分类再完美没有内容也只是空壳, 绝大多数人能把一个类别细分下去就不错了.
 > - 不要花费过多时间在工具的打磨上, 尤其在你对自己的目标需求并不明确的时候.
-> - 只在自己能力范围内有限度地折腾.
-> - 一段时间后再回看, 你会发觉那些复杂的、花里胡哨的东西也就那样, 默认和精简才是正道.
+> - 只在自己能力范围内有限度地折腾. (很多东西离开了 obsidian 就啥也不是, 就简单地把其当做是一个带双链的比 vscode 更合适的 markdown 编辑器就好了)
+> - 当远离笔记工具一段时间后再回看, 你会发现曾经折腾的那些花里胡哨的东西并没有你想得那样完美和必要, 默认和精简才是王道.
+> - 越是复杂、长期的事情, 越应该尽量避免不必要的熵增.
 
 ## 安装
 
@@ -53,11 +55,13 @@ for folder in $folders;do touch $folder/.gitkeep;done
 - 90_Misc/: 杂项(比如附件、模版等)
     - Attachments/
     - Templates/
-- Vaults/: 可通过 `ln -s source_path Vaults/` 的方式临时处理其他位置的文件
+- Vaults/: 可通过 `ln -s source_path Vaults/` 的方式临时处理其他位置的文件 (该方法目前还没有正式的支持, 也不被推荐)
 - Local/: 本地目录, 不进行同步
 - draft: (进行中的)草稿, 可以每个设备单独一个文件, 互不冲突
 - quicknotes: 快速记录
 - README
+
+> [!hint]+ 上述目录结构归根结底是避免了分库. 但是如果你有一个明确的目的, 那还是建议果断拆分, 并且尽量精简 .obsidian 本身.
 
 ## 已启用的插件
 
@@ -202,8 +206,8 @@ for folder in $folders;do touch $folder/.gitkeep;done
 
 ## 主题
 
-- 桌面端: 推荐 [Minimal](https://minimal.guide/) 主题
-- 移动端: 推荐 Things 主题
+- 桌面端: [Minimal](https://minimal.guide/)、Blue Topaz、Border
+- 移动端: Things
 ## 同步、备份、加密
 
 - 本机
