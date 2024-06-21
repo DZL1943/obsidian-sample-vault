@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-20 15:01"
+modified: "2024-06-21 16:30"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -61,92 +61,92 @@ for folder in $folders;do touch $folder/.gitkeep;done
 
 ## 已启用的插件
 
-```bash title:"解析已启用的插件"
-cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:]]//g' | sed 's/"//g' | sed 's/,//g' | sort | tee enabled-plugins >(pbcopy)
+```json
+[
+  "advanced-canvas",
+  "any-block",
+  "attachment-flow-plugin",
+  "attachment-management",
+  "better-fn",
+  "buttons",
+  "canvas-keyboard-pan",
+  "chronology",
+  "cmdr",
+  "code-styler",
+  "create-note-in-folder",
+  "cycle-in-sidebar",
+  "cycle-through-panes",
+  "darlal-switcher-plus",
+  "dataview",
+  "dust-calendar",
+  "easy-typing-obsidian",
+  "editing-toolbar",
+  "editor-width-slider",
+  "execute-code",
+  "file-tree-alternative",
+  "find-unlinked-files",
+  "float-search",
+  "floating-toc",
+  "fuzzy-chinese-pinyin",
+  "hotkey-helper",
+  "hotkeysplus-obsidian",
+  "janitor",
+  "keyboard-analyzer",
+  "legacy-vault-switcher",
+  "local-backup",
+  "make-md",
+  "nldates-obsidian",
+  "note-refactor-obsidian",
+  "obsidian-advanced-uri",
+  "obsidian-auto-link-title",
+  "obsidian-columns",
+  "obsidian-completr",
+  "obsidian-emoji-toolbar",
+  "obsidian-excalidraw-plugin",
+  "obsidian-excel-to-markdown-table",
+  "obsidian-export-image",
+  "obsidian-folder-focus-mode",
+  "obsidian-footnotes",
+  "obsidian-git",
+  "obsidian-heading-shifter",
+  "obsidian-hover-editor",
+  "obsidian-kanban",
+  "obsidian-linter",
+  "obsidian-list-callouts",
+  "obsidian-markmind",
+  "obsidian-minimal-settings",
+  "obsidian-opener",
+  "obsidian-outliner",
+  "obsidian-plugin-update-tracker",
+  "obsidian-projects",
+  "obsidian-quiet-outline",
+  "obsidian-regex-replace",
+  "obsidian-shellcommands",
+  "obsidian-sidebar-expand-on-hover",
+  "obsidian-style-settings",
+  "obsidian-tagfolder",
+  "obsidian-tasks-plugin",
+  "obsidian-trash-explorer",
+  "obsidian-zoom",
+  "obsidian42-brat",
+  "privacy-glasses",
+  "quick-explorer",
+  "quickadd",
+  "root-folder-context-menu",
+  "settings-search",
+  "show-whitespace-cm6",
+  "solve",
+  "surfing",
+  "table-editor-obsidian",
+  "tabs",
+  "tag-wrangler",
+  "templater-obsidian",
+  "typewriter-mode",
+  "unicode-search",
+  "url-into-selection",
+  "various-complements"
+]
 ```
-
-1. advanced-canvas
-2. any-block
-3. attachment-flow-plugin
-4. attachment-management
-5. better-fn
-6. buttons
-7. canvas-keyboard-pan
-8. chronology
-9. cmdr
-10. code-styler
-11. create-note-in-folder
-12. cycle-in-sidebar
-13. cycle-through-panes
-14. darlal-switcher-plus
-15. dataview
-16. dust-calendar
-17. easy-typing-obsidian
-18. editing-toolbar
-19. editor-width-slider
-20. execute-code
-21. file-tree-alternative
-22. find-unlinked-files
-23. float-search
-24. floating-toc
-25. fuzzy-chinese-pinyin
-26. hotkey-helper
-27. hotkeysplus-obsidian
-28. janitor
-29. keyboard-analyzer
-30. legacy-vault-switcher
-31. local-backup
-32. make-md
-33. nldates-obsidian
-34. note-refactor-obsidian
-35. obsidian-advanced-uri
-36. obsidian-auto-link-title
-37. obsidian-columns
-38. obsidian-completr
-39. obsidian-emoji-toolbar
-40. obsidian-excalidraw-plugin
-41. obsidian-excel-to-markdown-table
-42. obsidian-export-image
-43. obsidian-folder-focus-mode
-44. obsidian-footnotes
-45. obsidian-git
-46. obsidian-heading-shifter
-47. obsidian-hover-editor
-48. obsidian-kanban
-49. obsidian-linter
-50. obsidian-list-callouts
-51. obsidian-markmind
-52. obsidian-minimal-settings
-53. obsidian-opener
-54. obsidian-outliner
-55. obsidian-plugin-update-tracker
-56. obsidian-projects
-57. obsidian-quiet-outline
-58. obsidian-regex-replace
-59. obsidian-shellcommands
-60. obsidian-sidebar-expand-on-hover
-61. obsidian-style-settings
-62. obsidian-tagfolder
-63. obsidian-tasks-plugin
-64. obsidian-trash-explorer
-65. obsidian-zoom
-66. obsidian42-brat
-67. privacy-glasses
-68. quick-explorer
-69. quickadd
-70. root-folder-context-menu
-71. settings-search
-72. show-whitespace-cm6
-73. solve
-74. surfing
-75. table-editor-obsidian
-76. tabs
-77. tag-wrangler
-78. templater-obsidian
-79. typewriter-mode
-80. unicode-search
-81. url-into-selection
-82. various-complements
 
 
 ## 快捷键设置
@@ -288,9 +288,10 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
     - [Git - gitignore Documentation](https://git-scm.com/docs/gitignore/zh_HANS-CN)
     - [Ignoring Files — Syncthing documentation](https://docs.syncthing.net/users/ignoring.html)
     - [Getting Started Guide | Kopia](https://kopia.io/docs/getting-started/)
-## FAQ
 
-> [!faq] 侧边栏按钮混乱  
+## Issues & Tips
+
+> [!faq] 首次启动时侧边栏按钮混乱  
 > 点击侧边栏第一个图标, 选择一个工作区加载一下, 最好再重启一下 ob.  
 > 建议每次更新插件之前保存工作空间布局.
 
@@ -298,13 +299,22 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 > 比如 Various Complements 的配置文件, QuickAdd、Dataview 的相关脚本文件.  
 > 到对应的插件设置页面先关闭相关功能.
 
->[!tip]+ 文件列表选择多个文件: (macOS 下)按住 alt 键, 用鼠标点选.
+>[!tip]+ 阅读模式渲染不正常时, 可以尝试(`cmd+r`)刷新一下.
 
-## Issues
+> [!tip]+ 文件列表选择多个文件: (macOS 下)按住 alt 键, 用鼠标点选.
 
-- [ ] %% 2024/06/18 %%[minimal 主题 7.7.3 版本, dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
-- [ ] %% 2024/06/12 %%create-note-in-folder 插件在修改配置之后可能需要重启才能生效.
-- [ ] [Have Obsidian be the handler of .md files / Add ability to use Obsidian as a markdown editor on files outside vault (file association) - Feature requests - Obsidian Forum](https://forum.obsidian.md/t/have-obsidian-be-the-handler-of-md-files-add-ability-to-use-obsidian-as-a-markdown-editor-on-files-outside-vault-file-association/314/26?page=6)
+> [!bug]+ %% 2024/06/18 %% minimal 主题 7.7.3 版本, [dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
+
+> [!bug]+ %% 2024/06/12 %%create-note-in-folder 插件在修改配置之后可能需要重启才能生效.
+
+>[!bug]+ obsidian-scroll-to-top-plugin 在开启缩放时无效
+
+>[!bug]+ obsidian-visually-numbered-headings 插件
+>- 修改标题起始层级可能不生效, 需手动改配置文件
+>- 标题折叠按钮下移
+>- 增添标题时, 需手动刷新
+
+> [!question]+ [Have Obsidian be the handler of .md files / Add ability to use Obsidian as a markdown editor on files outside vault (file association) - Feature requests - Obsidian Forum](https://forum.obsidian.md/t/have-obsidian-be-the-handler-of-md-files-add-ability-to-use-obsidian-as-a-markdown-editor-on-files-outside-vault-file-association/314/26?page=6)
 
 #
 
