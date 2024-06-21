@@ -298,6 +298,8 @@ cd .obsidian && cat community-plugins.json | grep -Ev '\[|\]' | sed 's/[[:space:
 > 比如 Various Complements 的配置文件, QuickAdd、Dataview 的相关脚本文件.  
 > 到对应的插件设置页面先关闭相关功能.
 
+>[!tip]+ 文件列表选择多个文件: (macOS 下)按住 alt 键, 用鼠标点选.
+
 ## Issues
 
 - [ ] %% 2024/06/18 %%[minimal 主题 7.7.3 版本, dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
