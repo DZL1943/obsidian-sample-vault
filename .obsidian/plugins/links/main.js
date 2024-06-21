@@ -816,15 +816,6 @@ function getFileExtension(path) {
   }
   return null;
 }
-function destinationRequireAngleBrackets(destination) {
-  for (let i = 0; i < destination.length; i++) {
-    const code = destination.charCodeAt(i);
-    if (code === 32) {
-      return true;
-    }
-  }
-  return false;
-}
 
 // suggesters/LinkTextSuggest.ts
 var import_obsidian = require("obsidian");
@@ -4753,7 +4744,6 @@ var CopyLinkToHeadingToObjectCommand = class extends CommandBase {
     this.isPresentInContextMenu = () => this.obsidianProxy.settings.ffCopyLinkToObject && this.obsidianProxy.settings.contexMenu.copyLinkToHeadingToClipboard;
   }
   handler(editor, checking) {
-    var _a;
     if (checking && !this.isEnabled()) {
       return false;
     }
@@ -4764,20 +4754,20 @@ var CopyLinkToHeadingToObjectCommand = class extends CommandBase {
     if (checking) {
       return !!headingMatch || !!block;
     }
-    const currentNotePath = (_a = currentView == null ? void 0 : currentView.file) == null ? void 0 : _a.path;
-    if (headingMatch && headingMatch[1] && currentNotePath) {
-      console.log(currentNotePath);
-      this.copyLinkToHeadingUnderCursorToClipboard(headingMatch[1], currentNotePath);
+    const currentNoteFile = currentView == null ? void 0 : currentView.file;
+    if (headingMatch && headingMatch[1] && currentNoteFile) {
+      this.copyLinkToHeadingUnderCursorToClipboard(headingMatch[1], currentNoteFile);
     } else if (block && (currentView == null ? void 0 : currentView.file)) {
       this.copyLinkToBlockUnderCursorToClipboard(currentView == null ? void 0 : currentView.file, editor, block);
     }
   }
-  copyLinkToHeadingUnderCursorToClipboard(heading, notePath) {
-    let destination = `${notePath}#${heading}`;
-    if (destinationRequireAngleBrackets(destination)) {
-      destination = `<${destination}>`;
-    }
-    const rawLink = `[${heading}](${destination})`;
+  copyLinkToHeadingUnderCursorToClipboard(heading, noteFile) {
+    const rawLink = this.obsidianProxy.app.fileManager.generateMarkdownLink(
+      noteFile,
+      "",
+      "#" + heading,
+      heading
+    );
     this.obsidianProxy.clipboardWriteText(rawLink);
     this.obsidianProxy.createNotice("Link copied to your clipboard");
   }

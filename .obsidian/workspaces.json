@@ -137,7 +137,7 @@
           {
             "id": "9bbb39ce85738cff",
             "type": "tabs",
-            "dimension": 48.69791666666667,
+            "dimension": 48.56770833333334,
             "children": [
               {
                 "id": "e3ab673e1ce52da5",
@@ -171,12 +171,13 @@
                   "state": {}
                 }
               }
-            ]
+            ],
+            "currentTab": 3
           },
           {
             "id": "dda52860917a3c25",
             "type": "tabs",
-            "dimension": 51.302083333333336,
+            "dimension": 51.43229166666666,
             "children": [
               {
                 "id": "89b0519e275999ee",
@@ -184,7 +185,7 @@
                 "state": {
                   "type": "file-properties",
                   "state": {
-                    "file": "_canvas.canvas"
+                    "file": "README.md"
                   }
                 }
               },
@@ -202,7 +203,7 @@
                 "state": {
                   "type": "backlink",
                   "state": {
-                    "file": "_canvas.canvas",
+                    "file": "README.md",
                     "collapseAll": true,
                     "extraContext": false,
                     "sortOrder": "alphabetical",
@@ -219,7 +220,7 @@
                 "state": {
                   "type": "outgoing-link",
                   "state": {
-                    "file": "_canvas.canvas",
+                    "file": "README.md",
                     "linksCollapsed": true,
                     "unlinkedCollapsed": false
                   }
@@ -231,7 +232,7 @@
                 "state": {
                   "type": "localgraph",
                   "state": {
-                    "file": "_canvas.canvas",
+                    "file": "README.md",
                     "options": {
                       "collapse-filter": true,
                       "search": "",
@@ -265,7 +266,7 @@
           }
         ],
         "direction": "horizontal",
-        "width": 223.5,
+        "width": 237.5,
         "collapsed": true
       },
       "left-ribbon": {
@@ -298,8 +299,8 @@
           "cmdr:打开设置": true
         }
       },
-      "active": "e3ab673e1ce52da5",
-      "mtime": "2024-06-20T14:59:58+08:00"
+      "active": "117a823cb947b7cb",
+      "mtime": "2024-06-21T15:38:25+08:00"
     }
   },
   "active": "minimal"

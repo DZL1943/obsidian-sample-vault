@@ -48708,9 +48708,9 @@ var RequestHandler = class {
       const cache = this.app.metadataCache.getFileCache(file);
       const frontmatter = __spreadValues({}, (_a = cache.frontmatter) != null ? _a : {});
       delete frontmatter.position;
-      const directTags = (_c = ((_b = cache.tags) != null ? _b : []).map((tag) => tag.tag)) != null ? _c : [];
+      const directTags = (_c = ((_b = cache.tags) != null ? _b : []).filter((tag) => tag).map((tag) => tag.tag)) != null ? _c : [];
       const frontmatterTags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [];
-      const filteredTags = [...frontmatterTags, ...directTags].map((tag) => tag.toString().replace(/^#/, "")).filter((value, index, self2) => self2.indexOf(value) === index);
+      const filteredTags = [...frontmatterTags, ...directTags].filter((tag) => tag).map((tag) => tag.toString().replace(/^#/, "")).filter((value, index, self2) => self2.indexOf(value) === index);
       return {
         tags: filteredTags,
         frontmatter,
@@ -49539,12 +49539,13 @@ var LocalRestApiSettingTab = class extends import_obsidian2.PluginSettingTab {
   display() {
     var _a;
     const { containerEl } = this;
+    containerEl.replaceChildren();
     const parsedCertificate = import_node_forge2.default.pki.certificateFromPem(this.plugin.settings.crypto.cert);
     const remainingCertificateValidityDays = getCertificateValidityDays(parsedCertificate);
     const shouldRegenerateCertificate = !getCertificateIsUptoStandards(parsedCertificate);
     containerEl.empty();
     containerEl.classList.add("obsidian-local-rest-api-settings");
-    containerEl.createEl("h2", { text: "Obsidian Local REST API" });
+    containerEl.createEl("h2", { text: "Local REST API" });
     containerEl.createEl("h3", { text: "How to Access" });
     const apiKeyDiv = containerEl.createEl("div");
     apiKeyDiv.classList.add("api-key-display");
@@ -49566,12 +49567,28 @@ var LocalRestApiSettingTab = class extends import_obsidian2.PluginSettingTab {
             ${this.plugin.settings.enableSecureServer === false ? "\u274C" : "\u2705"}
           </td>
           <td class="name">
-            Encrypted (HTTPS) API URL
-          </td>
-          <td class="url">
-             ${secureUrl} <a href="javascript:navigator.clipboard.writeText('${secureUrl}')">(copy)</a>
+            Encrypted (HTTPS) API URL<br /><br />
+            <i>
+              Requires that <a href="https://127.0.0.1:${this.plugin.settings.port}/${CERT_NAME}">this certificate</a> be
+              configured as a trusted certificate authority for
+              your browser.  See <a href="https://github.com/coddingtonbear/obsidian-web/wiki/How-do-I-get-my-browser-trust-my-Obsidian-Local-REST-API-certificate%3F">wiki</a> for more information.
+            </i>
           </td>
       `;
+    const secureUrlsTd = secureTr.createEl("td", { cls: "url" });
+    secureUrlsTd.innerHTML = `
+      ${secureUrl} <a href="javascript:navigator.clipboard.writeText('${secureUrl}')">(copy)</a><br />
+    `;
+    if (this.plugin.settings.subjectAltNames) {
+      for (const name of this.plugin.settings.subjectAltNames.split("\n")) {
+        if (name.trim()) {
+          const altSecureUrl = `https://${name.trim()}:${this.plugin.settings.port}/`;
+          secureUrlsTd.innerHTML += `
+            ${altSecureUrl} <a href="javascript:navigator.clipboard.writeText('${altSecureUrl}')">(copy)</a><br />
+          `;
+        }
+      }
+    }
     const insecureTr = connectionUrlsTbody.createEl("tr", this.plugin.settings.enableInsecureServer === false ? {
       cls: "disabled",
       title: "Disabled.  You can enable this in 'Settings' below."
@@ -49584,42 +49601,42 @@ var LocalRestApiSettingTab = class extends import_obsidian2.PluginSettingTab {
           ${this.plugin.settings.enableInsecureServer === false ? "\u274C" : "\u2705"}
         </td>
         <td class="name">
-          Non-encrypted (HTTP) API URL  ${this.plugin.settings.enableInsecureServer === false ? "(Disabled; enable below)" : ""}
-        </td>
-        <td class="url">
-          ${insecureUrl} <a href="javascript:navigator.clipboard.writeText('${insecureUrl}')">(copy)</a>
+          Non-encrypted (HTTP) API URL
         </td>
     `;
+    const insecureUrlsTd = insecureTr.createEl("td", { cls: "url" });
+    insecureUrlsTd.innerHTML = `
+      ${insecureUrl} <a href="javascript:navigator.clipboard.writeText('${insecureUrl}')">(copy)</a><br />
+    `;
+    if (this.plugin.settings.subjectAltNames) {
+      for (const name of this.plugin.settings.subjectAltNames.split("\n")) {
+        if (name.trim()) {
+          const altSecureUrl = `https://${name.trim()}:${this.plugin.settings.insecurePort}/`;
+          insecureUrlsTd.innerHTML += `
+            ${altSecureUrl} <a href="javascript:navigator.clipboard.writeText('${altSecureUrl}')">(copy)</a><br />
+          `;
+        }
+      }
+    }
+    const inOrderToAccess = apiKeyDiv.createEl("p");
+    inOrderToAccess.innerHTML = `
+      Your API Key must be passed in requests via an authorization header
+      <a href="javascript:navigator.clipboard.writeText('${this.plugin.settings.apiKey}')">(copy)</a>:
+    `;
+    apiKeyDiv.createEl("pre", { text: this.plugin.settings.apiKey });
+    apiKeyDiv.createEl("p", {
+      text: "For example, the following request will return all notes in the root directory of your vault:"
+    });
+    apiKeyDiv.createEl("pre", {
+      text: `GET /vault/ HTTP/1.1
+${(_a = this.plugin.settings.authorizationHeaderName) != null ? _a : "Authorization"}: Bearer ${this.plugin.settings.apiKey}`
+    });
     const seeMore = apiKeyDiv.createEl("p");
     seeMore.innerHTML = `
       Comprehensive documentation of what API endpoints are available can
       be found in
       <a href="https://coddingtonbear.github.io/obsidian-local-rest-api/">the online docs</a>.
     `;
-    const importCert = apiKeyDiv.createEl("p", {
-      cls: this.plugin.settings.enableSecureServer === false ? "disabled" : ""
-    });
-    importCert.createEl("span", {
-      text: "By default this plugin uses a self-signed certificate for HTTPS; you may want to "
-    });
-    importCert.createEl("a", {
-      href: `https://127.0.0.1:${this.plugin.settings.port}/${CERT_NAME}`,
-      text: "download this certificate"
-    });
-    importCert.createEl("span", {
-      text: " to use it for validating your connection's security by adding it as a trusted certificate authority in the browser or tool you are using for interacting with this API."
-    });
-    apiKeyDiv.createEl("p", {
-      text: "In order to access this API, your API Key must be passed in all requests via an authorization header:"
-    });
-    apiKeyDiv.createEl("pre", { text: this.plugin.settings.apiKey });
-    apiKeyDiv.createEl("p", {
-      text: "Example request for fetching all notes:"
-    });
-    apiKeyDiv.createEl("pre", {
-      text: `GET /vault/ HTTP/1.1
-${(_a = this.plugin.settings.authorizationHeaderName) != null ? _a : "Authorization"}: Bearer ${this.plugin.settings.apiKey}`
-    });
     containerEl.createEl("h3", { text: "Settings" });
     if (remainingCertificateValidityDays < 0) {
       const expiredCertDiv = apiKeyDiv.createEl("div");
@@ -49655,9 +49672,13 @@ ${(_a = this.plugin.settings.authorizationHeaderName) != null ? _a : "Authorizat
       `;
     }
     new import_obsidian2.Setting(containerEl).setName("Enable Non-encrypted (HTTP) Server").setDesc("Enables a non-encrypted (HTTP) server on the port designated below.  By default this plugin requires a secure HTTPS connection, but in safe environments you may turn on the non-encrypted server to simplify interacting with the API. Interactions with the API will still require the API Key shown above.  Under no circumstances is it recommended that you expose this service to the internet, especially if you turn on this feature!").addToggle((cb) => cb.onChange((value) => {
+      const originalValue = this.plugin.settings.enableInsecureServer;
       this.plugin.settings.enableInsecureServer = value;
       this.plugin.saveSettings();
       this.plugin.refreshServerState();
+      if (value !== originalValue) {
+        this.display();
+      }
     }).setValue(this.plugin.settings.enableInsecureServer));
     new import_obsidian2.Setting(containerEl).setName("Reset All Cryptography").setDesc(`Pressing this button will cause your certificate,
         private key, public key, and API key to be regenerated.
@@ -49733,9 +49754,13 @@ ${(_a = this.plugin.settings.authorizationHeaderName) != null ? _a : "Authorizat
         `).addToggle((cb) => {
         var _a2;
         return cb.onChange((value) => {
+          const originalValue = this.plugin.settings.enableSecureServer;
           this.plugin.settings.enableSecureServer = value;
           this.plugin.saveSettings();
           this.plugin.refreshServerState();
+          if (value !== originalValue) {
+            this.display();
+          }
         }).setValue((_a2 = this.plugin.settings.enableSecureServer) != null ? _a2 : true);
       });
       new import_obsidian2.Setting(containerEl).setName("Encrypted (HTTPS) Server Port").setDesc("This configures the port on which your REST API will listen for HTTPS connections.  It is recommended that you leave this port with its default setting as tools integrating with this API may expect the default port to be in use.  Under no circumstances is it recommended that you expose this service directly to the internet.").addText((cb) => cb.onChange((value) => {

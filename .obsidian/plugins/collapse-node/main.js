@@ -21,9 +21,10 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// canvasCollapseIndex.ts
+// src/canvasCollapseIndex.ts
 var canvasCollapseIndex_exports = {};
 __export(canvasCollapseIndex_exports, {
+  CollapseSettingTab: () => CollapseSettingTab,
   default: () => CanvasCollapsePlugin
 });
 module.exports = __toCommonJS(canvasCollapseIndex_exports);
@@ -63,15 +64,17 @@ function around1(obj, method, createWrapper) {
   }
 }
 
-// ControlHeader.ts
+// src/ControlHeader.ts
 var import_obsidian = require("obsidian");
 var CollapseControlHeader = class extends import_obsidian.Component {
-  constructor(node) {
+  constructor(plugin, node) {
     super();
     this.collapsed = false;
     this.content = "";
     this.refreshed = false;
     this.containingNodes = [];
+    this.oldFilePath = "";
+    this.plugin = plugin;
     this.node = node;
     this.collapsed = node.unknownData.collapsed === void 0 ? false : node.unknownData.collapsed;
   }
@@ -81,10 +84,21 @@ var CollapseControlHeader = class extends import_obsidian.Component {
     this.initTypeIcon();
     this.updateNodesInGroup();
     this.updateNode();
+    this.registerEvent(this.plugin.app.vault.on("rename", (file, oldPath) => {
+      var _a;
+      console.log(file, oldPath, this.node, (_a = this.node.file) == null ? void 0 : _a.path);
+      if (oldPath === this.oldFilePath) {
+        this.titleEl.setText(file.name.split(".")[0]);
+        this.oldFilePath = file.path;
+      }
+    }));
     return this.headerEl;
   }
   onunload() {
     super.onunload();
+  }
+  unload() {
+    super.unload();
     this.headerEl.empty();
     this.headerEl.detach();
   }
@@ -114,11 +128,12 @@ var CollapseControlHeader = class extends import_obsidian.Component {
     this.setIconOrContent("setIcon");
   }
   initContent() {
+    var _a;
     this.setIconOrContent("setContent");
-    this.titleEl.setText(this.content);
+    this.titleEl.setText((_a = this.content) == null ? void 0 : _a.replace(/^\#{1,} /g, ""));
   }
   setIconOrContent(action) {
-    var _a;
+    var _a, _b;
     const currentType = this.checkNodeType();
     switch (currentType) {
       case "text":
@@ -136,6 +151,7 @@ var CollapseControlHeader = class extends import_obsidian.Component {
         }
         if (action === "setContent")
           this.content = (_a = this.node.file) == null ? void 0 : _a.name.split(".")[0];
+        this.oldFilePath = (_b = this.node.file) == null ? void 0 : _b.path;
         break;
       case "group":
         if (action === "setIcon")
@@ -250,16 +266,18 @@ var CollapseControlHeader = class extends import_obsidian.Component {
   }
   updateEdgesInGroup(node, triggerCollapsed) {
     const edges = this.node.canvas.getEdgesForNode(node);
+    console.log(edges);
     edges.forEach((edge) => {
-      var _a, _b;
+      var _a, _b, _c, _d;
+      (_b = (_a = edge.labelElement) == null ? void 0 : _a.wrapperEl) == null ? void 0 : _b.classList.toggle("group-edges-collapsed", triggerCollapsed || this.collapsed);
       edge.lineGroupEl.classList.toggle("group-edges-collapsed", triggerCollapsed || this.collapsed);
-      (_a = edge.lineEndGroupEl) == null ? void 0 : _a.classList.toggle("group-edges-collapsed", triggerCollapsed || this.collapsed);
-      (_b = edge.lineStartGroupEl) == null ? void 0 : _b.classList.toggle("group-edges-collapsed", triggerCollapsed || this.collapsed);
+      (_c = edge.lineEndGroupEl) == null ? void 0 : _c.classList.toggle("group-edges-collapsed", triggerCollapsed || this.collapsed);
+      (_d = edge.lineStartGroupEl) == null ? void 0 : _d.classList.toggle("group-edges-collapsed", triggerCollapsed || this.collapsed);
     });
   }
 };
 
-// utils.ts
+// src/utils.ts
 var import_obsidian2 = require("obsidian");
 var getBoundingRect = (nodes) => {
   const bboxArray = nodes.map((t) => t.getBBox());
@@ -351,18 +369,18 @@ var handleNodesViaCommands = (plugin, checking, allNodes, collapse) => {
 var createHandleContextMenu = (section, callback) => {
   return (menu) => {
     menu.addItem((item) => {
-      const subMenu = item.setSection(section).setTitle("Canvas Collapse").setIcon("chevrons-left-right").setSubmenu();
+      const subMenu = item.setSection(section).setTitle("Collapse node").setIcon("chevrons-left-right").setSubmenu();
       handleCanvasMenu(subMenu, callback);
     });
   };
 };
 var handleCanvasMenu = (subMenu, callback) => {
   return subMenu.addItem((item) => {
-    item.setIcon("fold-vertical").setTitle("Fold Selected Nodes").onClick(async () => {
+    item.setIcon("fold-vertical").setTitle("Fold selected nodes").onClick(async () => {
       await callback(true);
     });
   }).addItem((item) => {
-    item.setIcon("unfold-vertical").setTitle("Expand Selected Nodes").onClick(async () => {
+    item.setIcon("unfold-vertical").setTitle("Expand selected nodes").onClick(async () => {
       await callback(false);
     });
   });
@@ -409,7 +427,43 @@ var getSelectionCoords = (dom) => {
   }
 };
 
-// canvasCollapseIndex.ts
+// src/canvasCollapseIndex.ts
+var import_view = require("@codemirror/view");
+var DEFAULT_SETTINGS = {
+  collapsableFileNode: true,
+  collapsableAttachmentNode: true,
+  collapsableGroupNode: true,
+  collapsableLinkNode: true,
+  collapsableTextNode: true,
+  minLineAmount: 0,
+  minimalControlHeader: false
+};
+var DynamicUpdateControlHeader = (plugin) => {
+  return import_view.EditorView.updateListener.of((v) => {
+    var _a;
+    if (v.docChanged) {
+      const editor = v.state.field(import_obsidian3.editorInfoField);
+      const node = editor.node;
+      if (node) {
+        if (node.unknownData.type === "text" && !plugin.settings.collapsableTextNode)
+          return;
+        if (node.unknownData.type === "file" && !plugin.settings.collapsableFileNode)
+          return;
+        if (node.unknownData.type === "text" || node.unknownData.type === "file" && node.file.extension === "md") {
+          const content = v.view.state.doc.toString();
+          if (node.headerComponent && plugin.settings.minLineAmount > 0 && content.split("\n").length < plugin.settings.minLineAmount) {
+            (_a = node.headerComponent) == null ? void 0 : _a.unload();
+            node.headerComponent = void 0;
+            return;
+          } else if (!node.headerComponent && plugin.settings.minLineAmount > 0 && content.split("\n").length >= plugin.settings.minLineAmount) {
+            node.headerComponent = new CollapseControlHeader(plugin, node);
+            node.containerEl.prepend(node.headerComponent.onload());
+          }
+        }
+      }
+    }
+  });
+};
 var CanvasCollapsePlugin = class extends import_obsidian3.Plugin {
   constructor() {
     super(...arguments);
@@ -417,13 +471,17 @@ var CanvasCollapsePlugin = class extends import_obsidian3.Plugin {
     this.patchSucceed = false;
   }
   async onload() {
+    this.loadSettings();
+    this.addSettingTab(new CollapseSettingTab(this.app, this));
     this.registerCommands();
     this.registerCanvasEvents();
     this.registerCustomIcons();
     this.patchCanvas();
     this.patchCanvasMenu();
     this.patchCanvasInteraction();
-    this.patchCanvasNode();
+    this.patchCanvasNode(this);
+    this.registerEditorExtension([DynamicUpdateControlHeader(this)]);
+    this.initGlobalCss();
   }
   onunload() {
     console.log("unloading plugin");
@@ -432,35 +490,35 @@ var CanvasCollapsePlugin = class extends import_obsidian3.Plugin {
   registerCommands() {
     this.addCommand({
       id: "fold-all-nodes",
-      name: "Fold All Nodes",
+      name: "Fold all nodes",
       checkCallback: (checking) => handleNodesViaCommands(this, checking, true, true)
     });
     this.addCommand({
       id: "expand-all-nodes",
-      name: "Expand All Nodes",
+      name: "Expand all nodes",
       checkCallback: (checking) => handleNodesViaCommands(this, checking, true, false)
     });
     this.addCommand({
       id: "fold-selected-nodes",
-      name: "Fold Selected Nodes",
+      name: "Fold selected nodes",
       checkCallback: (checking) => handleNodesViaCommands(this, checking, false, true)
     });
     this.addCommand({
       id: "expand-selected-nodes",
-      name: "Expand Selected Nodes",
+      name: "Expand selected nodes",
       checkCallback: (checking) => handleNodesViaCommands(this, checking, false, false)
     });
   }
   registerCanvasEvents() {
-    this.app.workspace.on("collapse-node:patched-canvas", () => {
+    this.registerEvent(this.app.workspace.on("collapse-node:patched-canvas", () => {
       refreshAllCanvasView(this.app);
-    });
-    this.app.workspace.on("canvas:selection-menu", (menu, canvas) => {
+    }));
+    this.registerEvent(this.app.workspace.on("canvas:selection-menu", (menu, canvas) => {
       handleSelectionContextMenu(this, menu, canvas);
-    });
-    this.app.workspace.on("canvas:node-menu", (menu, node) => {
+    }));
+    this.registerEvent(this.app.workspace.on("canvas:node-menu", (menu, node) => {
       handleNodeContextMenu(this, menu, node);
-    });
+    }));
   }
   registerCustomIcons() {
     (0, import_obsidian3.addIcon)("fold-vertical", `<g id="surface1"><path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" d="M 12 22.000312 L 12 16.000312 " transform="matrix(4.166667,0,0,4.166667,0,0)"/><path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" d="M 12 7.999687 L 12 1.999687 " transform="matrix(4.166667,0,0,4.166667,0,0)"/><path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" d="M 4.000312 12 L 1.999687 12 " transform="matrix(4.166667,0,0,4.166667,0,0)"/><path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" d="M 10.000312 12 L 7.999687 12 " transform="matrix(4.166667,0,0,4.166667,0,0)"/><path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" d="M 16.000312 12 L 13.999688 12 " transform="matrix(4.166667,0,0,4.166667,0,0)"/><path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" d="M 22.000312 12 L 19.999688 12 " transform="matrix(4.166667,0,0,4.166667,0,0)"/><path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" d="M 15 19.000312 L 12 16.000312 L 9 19.000312 " transform="matrix(4.166667,0,0,4.166667,0,0)"/><path style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" d="M 15 4.999687 L 12 7.999687 L 9 4.999687 " transform="matrix(4.166667,0,0,4.166667,0,0)"/></g>`);
@@ -617,7 +675,7 @@ var CanvasCollapsePlugin = class extends import_obsidian3.Plugin {
           if (this.menuEl.querySelector(".collapse-node-menu-item"))
             return result;
           const buttonEl = createEl("button", "clickable-icon collapse-node-menu-item");
-          (0, import_obsidian3.setTooltip)(buttonEl, "Fold Selected Nodes", {
+          (0, import_obsidian3.setTooltip)(buttonEl, "Fold selected nodes", {
             placement: "top"
           });
           (0, import_obsidian3.setIcon)(buttonEl, "lucide-chevrons-left-right");
@@ -696,9 +754,9 @@ var CanvasCollapsePlugin = class extends import_obsidian3.Plugin {
       }
     });
   }
-  patchCanvasNode() {
+  patchCanvasNode(plugin) {
     const initControlHeader = (node) => {
-      return new CollapseControlHeader(node);
+      return new CollapseControlHeader(plugin, node);
     };
     const patchNode = () => {
       var _a, _b;
@@ -722,13 +780,31 @@ var CanvasCollapsePlugin = class extends import_obsidian3.Plugin {
         return false;
       const uninstaller = around(prototype, {
         render: (next) => function(...args) {
+          var _a2;
           const result = next.call(this, ...args);
-          if (this.nodeEl.querySelector(".canvas-node-collapse-control"))
+          if (this.headerComponent)
             return result;
+          if (!plugin.settings.collapsableFileNode && this.unknownData.type === "file" && this.file.extension === "md")
+            return result;
+          if (!plugin.settings.collapsableAttachmentNode && this.unknownData.type === "file" && this.file.extension !== "md")
+            return result;
+          if (!plugin.settings.collapsableGroupNode && this.unknownData.type === "group")
+            return result;
+          if (!plugin.settings.collapsableLinkNode && this.unknownData.type === "link")
+            return result;
+          if (!plugin.settings.collapsableTextNode && this.unknownData.type === "text")
+            return result;
+          if (plugin.settings.minLineAmount > 0 && (this.unknownData.type === "text" || this.unknownData.type === "file")) {
+            if (typeof this.text === "string" && this.text.split("\n").length < plugin.settings.minLineAmount)
+              return result;
+            if (this.file && this.file.extension === "md" && this.child && ((_a2 = this.child.data) == null ? void 0 : _a2.split("\n").length) < plugin.settings.minLineAmount)
+              return result;
+          }
           this.headerComponent = initControlHeader(this);
+          this.nodeEl.setAttribute("data-node-type", this.unknownData.type);
           this.containerEl.prepend(this.headerComponent.onload());
           if (this.unknownData.collapsed) {
-            this.nodeEl.classList.add("collapsed");
+            this.nodeEl.toggleClass("collapsed", true);
             this.headerComponent.updateEdges();
           }
           return result;
@@ -768,6 +844,55 @@ var CanvasCollapsePlugin = class extends import_obsidian3.Plugin {
         });
         this.registerEvent(evt);
       }
+    });
+  }
+  initGlobalCss() {
+    document.body.toggleClass("minimal-control-header", this.settings.minimalControlHeader);
+  }
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+  }
+  async saveSettings() {
+    await this.saveData(this.settings);
+  }
+};
+var CollapseSettingTab = class extends import_obsidian3.PluginSettingTab {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+  display() {
+    const { containerEl } = this;
+    containerEl.empty();
+    new import_obsidian3.Setting(containerEl).setHeading().setName("Enable nodes to be collapsable");
+    this.createCollapsableSetting(this.plugin, containerEl, "File node", "", "collapsableFileNode");
+    this.createCollapsableSetting(this.plugin, containerEl, "Attachment node", "", "collapsableAttachmentNode");
+    this.createCollapsableSetting(this.plugin, containerEl, "Group node", "", "collapsableGroupNode");
+    this.createCollapsableSetting(this.plugin, containerEl, "Link node", "", "collapsableLinkNode");
+    this.createCollapsableSetting(this.plugin, containerEl, "Text node", "", "collapsableTextNode");
+    new import_obsidian3.Setting(containerEl).setHeading().setName("Detail settings");
+    new import_obsidian3.Setting(containerEl).setName("Line amount the enable node to be collapsed").setDesc("The amount of lines that will be shown when the node is collapsed").addText((text) => {
+      text.setValue(this.plugin.settings.minLineAmount.toString()).onChange(async (value) => {
+        if (!isNaN(Number(value))) {
+          this.plugin.settings.minLineAmount = Number(value);
+          await this.plugin.saveSettings();
+        }
+      });
+    });
+    new import_obsidian3.Setting(containerEl).setName("Minimal control header").setDesc("Hide the text and also icon in the control header of the node").addToggle((toggle) => {
+      toggle.setValue(this.plugin.settings.minimalControlHeader).onChange(async (value) => {
+        this.plugin.settings.minimalControlHeader = value;
+        document.body.toggleClass("minimal-control-header", value);
+        await this.plugin.saveSettings();
+      });
+    });
+  }
+  createCollapsableSetting(plugin, containerEl, name, desc, settingKey) {
+    new import_obsidian3.Setting(containerEl).setName(name).setDesc(desc).addToggle((toggle) => {
+      toggle.setValue(plugin.settings[settingKey]).onChange(async (value) => {
+        plugin.settings[settingKey] = value;
+        await plugin.saveSettings();
+      });
     });
   }
 };
