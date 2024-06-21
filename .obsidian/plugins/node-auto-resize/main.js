@@ -168,7 +168,7 @@ var NodeAutoResizeSettingTab = class extends import_obsidian.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    new import_obsidian.Setting(containerEl).setName("Auto Resize Width").setDesc("Automatically resize the width of the node.").addToggle((toggle) => toggle.setValue(this.plugin.settings.widthAutoResize).onChange(async (value) => {
+    new import_obsidian.Setting(containerEl).setName("Auto resize for width").setDesc("Automatically resize the width of the node.").addToggle((toggle) => toggle.setValue(this.plugin.settings.widthAutoResize).onChange(async (value) => {
       this.plugin.settings.widthAutoResize = value;
       await this.plugin.saveSettings();
       setTimeout(() => {
@@ -176,7 +176,7 @@ var NodeAutoResizeSettingTab = class extends import_obsidian.PluginSettingTab {
       }, 100);
     }));
     if (this.plugin.settings.widthAutoResize) {
-      new import_obsidian.Setting(containerEl).setName("Max Width").setDesc("The maximum width of the node.").addText((text) => text.setValue(this.plugin.settings.maxWidth.toString()).onChange(async (value) => {
+      new import_obsidian.Setting(containerEl).setName("Max width for auto resize").setDesc("The maximum width of the node.").addText((text) => text.setValue(this.plugin.settings.maxWidth.toString()).onChange(async (value) => {
         this.plugin.settings.maxWidth = parseInt(value);
         await this.plugin.saveSettings();
       }));

@@ -12,7 +12,7 @@
   "newLinkFormat": "relative",
   "useMarkdownLinks": true,
   "showUnsupportedFiles": true,
-  "attachmentFolderPath": "90_Misc/Attachments",
+  "attachmentFolderPath": "./",
   "showInlineTitle": false,
   "showRibbon": false
 }
