@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-21 23:56"
+modified: "2024-06-22 10:17"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -63,7 +63,7 @@ for folder in $folders;do touch $folder/.gitkeep;done
 
 > [!hint]+ 上述目录结构归根结底是避免了分库. 但是如果你有一个明确的目的, 那还是建议果断拆分, 并且尽量精简 .obsidian 本身.
 
-## 已启用的插件
+## 已启用的[插件](https://obsidian.md/plugins)
 
 ```json
 [
