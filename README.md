@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-22 14:18"
+modified: "2024-06-22 17:02"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -109,14 +109,12 @@ for folder in $folders;do touch $folder/.gitkeep;done
   "obsidian-excalidraw-plugin",
   "obsidian-excel-to-markdown-table",
   "obsidian-export-image",
-  "obsidian-folder-focus-mode",
   "obsidian-footnotes",
   "obsidian-git",
   "obsidian-heading-shifter",
   "obsidian-hover-editor",
   "obsidian-kanban",
   "obsidian-linter",
-  "obsidian-list-callouts",
   "obsidian-markmind",
   "obsidian-minimal-settings",
   "obsidian-opener",
@@ -322,6 +320,8 @@ for folder in $folders;do touch $folder/.gitkeep;done
 > - 修改标题起始层级可能不生效, 需手动改配置文件
 > - 标题折叠按钮下移
 > - 增添标题时, 可能需手动刷新
+
+> [!bug]+ obsidian-folder-focus-mode
 
 > [!question]+ [Have Obsidian be the handler of .md files / Add ability to use Obsidian as a markdown editor on files outside vault (file association) - Feature requests - Obsidian Forum](https://forum.obsidian.md/t/have-obsidian-be-the-handler-of-md-files-add-ability-to-use-obsidian-as-a-markdown-editor-on-files-outside-vault-file-association/314/26?page=6)
 
