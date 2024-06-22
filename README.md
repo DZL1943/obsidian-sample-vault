@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-22 10:17"
+modified: "2024-06-22 14:18"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -203,6 +203,8 @@ for folder in $folders;do touch $folder/.gitkeep;done
 | quickadd:runQuickAdd                                                  | Alt+Q               |
 | workspace:split-horizontal                                            | Ctrl+Alt+ArrowDown  |
 | workspace:split-vertical                                              | Ctrl+Alt+ArrowRight |
+
+> [!tip]+ macOS 下按 `` cmd+ ` `` 可以在打开的多个 Obsidian 窗口之间切换.
 
 ## 主题
 
