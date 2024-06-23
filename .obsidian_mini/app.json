@@ -2,7 +2,7 @@
   "defaultViewMode": "preview",
   "livePreview": true,
   "readableLineLength": false,
-  "strictLineBreaks": true,
+  "strictLineBreaks": false,
   "propertiesInDocument": "source",
   "useTab": false,
   "trashOption": "local",
