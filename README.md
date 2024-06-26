@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-22 17:02"
+modified: "2024-06-26 09:31"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -37,8 +37,8 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 
 ```bash title:"create essential dirs"
 folders=(Local 10_Inbox 20_Journals 30_Jottings 40_Pages 50_Projects 60_Areas 70_Resources 80_Archives 90_Misc/{Attachments,Templates})
-mkdir -p $folders
-for folder in $folders;do touch $folder/.gitkeep;done
+
+for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;done
 ```
 
 - 10_Inbox/: 临时笔记
@@ -61,32 +61,25 @@ for folder in $folders;do touch $folder/.gitkeep;done
 - quicknotes: 快速记录
 - README
 
-> [!hint]+ 上述目录结构归根结底是避免了分库. 但是如果你有一个明确的目的, 那还是建议果断拆分, 并且尽量精简 .obsidian 本身.
+> [!hint]+ 上述目录结构归根结底是避免了分库. 子库可以作为一个目录存在并且设置独立的 git.
 
 ## 已启用的[插件](https://obsidian.md/plugins)
 
 ```json
 [
-  "advanced-canvas",
   "any-block",
   "attachment-flow-plugin",
   "attachment-management",
   "better-fn",
-  "buttons",
   "canvas-keyboard-pan",
-  "chronology",
   "cmdr",
   "code-styler",
-  "create-note-in-folder",
   "cycle-in-sidebar",
-  "cycle-through-panes",
-  "darlal-switcher-plus",
   "dataview",
   "dust-calendar",
   "easy-typing-obsidian",
   "editing-toolbar",
   "editor-width-slider",
-  "execute-code",
   "file-tree-alternative",
   "find-unlinked-files",
   "float-search",
@@ -97,12 +90,9 @@ for folder in $folders;do touch $folder/.gitkeep;done
   "janitor",
   "keyboard-analyzer",
   "legacy-vault-switcher",
-  "local-backup",
-  "make-md",
   "nldates-obsidian",
   "note-refactor-obsidian",
   "obsidian-advanced-uri",
-  "obsidian-auto-link-title",
   "obsidian-columns",
   "obsidian-completr",
   "obsidian-emoji-toolbar",
@@ -115,41 +105,33 @@ for folder in $folders;do touch $folder/.gitkeep;done
   "obsidian-hover-editor",
   "obsidian-kanban",
   "obsidian-linter",
-  "obsidian-markmind",
   "obsidian-minimal-settings",
   "obsidian-opener",
   "obsidian-outliner",
   "obsidian-plugin-update-tracker",
-  "obsidian-projects",
   "obsidian-quiet-outline",
   "obsidian-regex-replace",
-  "obsidian-shellcommands",
   "obsidian-sidebar-expand-on-hover",
   "obsidian-style-settings",
   "obsidian-tagfolder",
   "obsidian-tasks-plugin",
-  "obsidian-trash-explorer",
-  "obsidian-zoom",
   "obsidian42-brat",
   "privacy-glasses",
   "quick-explorer",
   "quickadd",
-  "root-folder-context-menu",
   "settings-search",
   "show-whitespace-cm6",
-  "solve",
   "surfing",
   "table-editor-obsidian",
-  "tabs",
   "tag-wrangler",
   "templater-obsidian",
-  "typewriter-mode",
   "unicode-search",
   "url-into-selection",
   "various-complements"
 ]
 ```
 
+> [!hint]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
 
 ## 快捷键设置
 > [!attention] 此处快捷键基于 macOS 系统

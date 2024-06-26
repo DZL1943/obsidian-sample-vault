@@ -1,9 +1,0 @@
-{
-  "useRightMouse": true,
-  "useMiddleMouse": true,
-  "moveThreshold": 50,
-  "autoHide": false,
-  "autoHideRibbon": false,
-  "autoMinRootWidth": false,
-  "minRootWidth": 800
-}

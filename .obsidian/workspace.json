@@ -17,7 +17,7 @@
                 "file": "_canvas.canvas",
                 "viewState": {
                   "x": -1408.2447865694664,
-                  "y": 989.9795447912164,
+                  "y": 1097.9984664919498,
                   "zoom": 0.034980143100422356
                 }
               },
@@ -71,14 +71,6 @@
             }
           },
           {
-            "id": "2bcc6a6135bb4140",
-            "type": "leaf",
-            "state": {
-              "type": "mk-path-view",
-              "state": {}
-            }
-          },
-          {
             "id": "4bebf0e7282d48b0",
             "type": "leaf",
             "state": {
@@ -99,26 +91,6 @@
                 "extraContext": true,
                 "sortOrder": "alphabetical"
               }
-            }
-          },
-          {
-            "id": "497cf6303a58e2ef",
-            "type": "leaf",
-            "state": {
-              "type": "all-properties",
-              "state": {
-                "sortOrder": "frequency",
-                "showSearch": false,
-                "searchQuery": ""
-              }
-            }
-          },
-          {
-            "id": "48ad16c6f8073260",
-            "type": "leaf",
-            "state": {
-              "type": "trash-explorer",
-              "state": {}
             }
           }
         ],
@@ -147,14 +119,6 @@
             }
           },
           {
-            "id": "bd8ff2c295701feb",
-            "type": "leaf",
-            "state": {
-              "type": "chronology-calendar-view",
-              "state": {}
-            }
-          },
-          {
             "id": "b9d37edd91968223",
             "type": "leaf",
             "state": {
@@ -171,23 +135,13 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 2
       },
       {
         "id": "dda52860917a3c25",
         "type": "tabs",
         "dimension": 51.43229166666666,
         "children": [
-          {
-            "id": "89b0519e275999ee",
-            "type": "leaf",
-            "state": {
-              "type": "file-properties",
-              "state": {
-                "file": "README.md"
-              }
-            }
-          },
           {
             "id": "8dee6768aa08510c",
             "type": "leaf",
@@ -260,8 +214,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -270,10 +223,7 @@
   "left-ribbon": {
     "hiddenItems": {
       "obsidian42-brat:BRAT": true,
-      "obsidian-shellcommands:Shell commands: Custom variables": true,
       "workspaces:管理工作区布局": false,
-      "obsidian-trash-explorer:Open trash explorer": true,
-      "darlal-switcher-plus:Open in Headings Mode": true,
       "switcher:打开快速切换": true,
       "command-palette:打开命令面板": true,
       "fuzzy-chinese-pinyin:FuzzySearch": true,
@@ -282,7 +232,6 @@
       "privacy-glasses:Reveal non-private": true,
       "privacy-glasses:Reveal headlines only": true,
       "privacy-glasses:Reveal all": true,
-      "obsidian-projects:Open projects": true,
       "obsidian-kanban:创建新看板": true,
       "graph:查看关系图谱": true,
       "canvas:新建白板": false,
@@ -297,8 +246,12 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "dd0c724920d6ce07",
+  "active": "117a823cb947b7cb",
   "lastOpenFiles": [
+    "Local",
+    "_canvas.canvas",
+    "README.md",
+    "Spaces",
     "obsidian_mini/plugins/obsidian-style-settings/styles.css",
     "obsidian_mini/plugins/obsidian-style-settings/manifest.json",
     "obsidian_mini/plugins/obsidian-style-settings/main.js",
@@ -308,11 +261,7 @@
     "obsidian_mini/plugins/obsidian-outliner/main.js",
     "obsidian_mini/plugins/obsidian-outliner/data.json",
     "obsidian_mini/plugins/obsidian-linter/styles.css",
-    "obsidian_mini/plugins/obsidian-linter/manifest.json",
-    "obsidian_mini/plugins/obsidian-linter/main.js",
     "Local/temp.md",
-    "README.md",
-    "_canvas.canvas",
     "40_Pages/笔记软件.md",
     "20_Journals/journals.md",
     "quicknotes.md",

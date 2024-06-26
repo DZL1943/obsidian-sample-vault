@@ -73,14 +73,6 @@
                 }
               },
               {
-                "id": "2bcc6a6135bb4140",
-                "type": "leaf",
-                "state": {
-                  "type": "mk-path-view",
-                  "state": {}
-                }
-              },
-              {
                 "id": "4bebf0e7282d48b0",
                 "type": "leaf",
                 "state": {
@@ -101,26 +93,6 @@
                     "extraContext": true,
                     "sortOrder": "alphabetical"
                   }
-                }
-              },
-              {
-                "id": "497cf6303a58e2ef",
-                "type": "leaf",
-                "state": {
-                  "type": "all-properties",
-                  "state": {
-                    "sortOrder": "frequency",
-                    "showSearch": false,
-                    "searchQuery": ""
-                  }
-                }
-              },
-              {
-                "id": "48ad16c6f8073260",
-                "type": "leaf",
-                "state": {
-                  "type": "trash-explorer",
-                  "state": {}
                 }
               }
             ],
@@ -148,14 +120,6 @@
                 }
               },
               {
-                "id": "bd8ff2c295701feb",
-                "type": "leaf",
-                "state": {
-                  "type": "chronology-calendar-view",
-                  "state": {}
-                }
-              },
-              {
                 "id": "b9d37edd91968223",
                 "type": "leaf",
                 "state": {
@@ -171,24 +135,13 @@
                   "state": {}
                 }
               }
-            ],
-            "currentTab": 3
+            ]
           },
           {
             "id": "dda52860917a3c25",
             "type": "tabs",
             "dimension": 51.43229166666666,
             "children": [
-              {
-                "id": "89b0519e275999ee",
-                "type": "leaf",
-                "state": {
-                  "type": "file-properties",
-                  "state": {
-                    "file": "README.md"
-                  }
-                }
-              },
               {
                 "id": "8dee6768aa08510c",
                 "type": "leaf",
@@ -261,8 +214,7 @@
                   }
                 }
               }
-            ],
-            "currentTab": 1
+            ]
           }
         ],
         "direction": "horizontal",
@@ -272,10 +224,7 @@
       "left-ribbon": {
         "hiddenItems": {
           "obsidian42-brat:BRAT": true,
-          "obsidian-shellcommands:Shell commands: Custom variables": true,
           "workspaces:管理工作区布局": false,
-          "obsidian-trash-explorer:Open trash explorer": true,
-          "darlal-switcher-plus:Open in Headings Mode": true,
           "switcher:打开快速切换": true,
           "command-palette:打开命令面板": true,
           "fuzzy-chinese-pinyin:FuzzySearch": true,
@@ -284,7 +233,6 @@
           "privacy-glasses:Reveal non-private": true,
           "privacy-glasses:Reveal headlines only": true,
           "privacy-glasses:Reveal all": true,
-          "obsidian-projects:Open projects": true,
           "obsidian-kanban:创建新看板": true,
           "graph:查看关系图谱": true,
           "canvas:新建白板": false,
@@ -299,8 +247,8 @@
           "cmdr:打开设置": true
         }
       },
-      "active": "117a823cb947b7cb",
-      "mtime": "2024-06-21T15:38:25+08:00"
+      "active": "82484834b6c769a0",
+      "mtime": "2024-06-26T09:27:39+08:00"
     }
   },
   "active": "minimal"
