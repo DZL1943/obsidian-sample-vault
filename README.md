@@ -190,6 +190,11 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 - 桌面端: [Minimal](https://minimal.guide/)、Blue Topaz、Border
 - 移动端: Things
+
+## snippets
+
+## templates
+
 ## 同步、备份、加密
 
 - 本机
