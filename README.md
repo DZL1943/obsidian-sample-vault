@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-26 09:31"
+modified: "2024-06-26 11:53"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -25,6 +25,7 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 > - 不要把分类和笔记方法看得过重, 分类再完美没有内容也只是空壳, 绝大多数人能把一个类别细分下去就不错了.
 > - 不要花费过多时间在工具的打磨上, 尤其在你对自己的目标需求并不明确的时候.
 > - 只在自己能力范围内有限度地折腾. (很多东西离开了 obsidian 就啥也不是, 就简单地把其当做是一个带双链的比 vscode 更合适的 markdown 编辑器就好了)
+> - 越小白, 越不该瞎折腾, 认真记笔记就行.
 > - 当远离笔记工具一段时间后再回看, 你会发现曾经折腾的那些花里胡哨的东西并没有你想得那样完美和必要, 默认和精简才是王道.
 > - 越是复杂、长期的事情, 越应该尽量避免不必要的熵增.
 
@@ -115,7 +116,6 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
   "obsidian-style-settings",
   "obsidian-tagfolder",
   "obsidian-tasks-plugin",
-  "obsidian42-brat",
   "privacy-glasses",
   "quick-explorer",
   "quickadd",
