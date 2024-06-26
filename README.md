@@ -184,7 +184,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 | workspace:split-horizontal                                            | Ctrl+Alt+ArrowDown  |
 | workspace:split-vertical                                              | Ctrl+Alt+ArrowRight |
 
-> [!tip]+ macOS 下按 `` cmd+ ` `` 可以在打开的多个 Obsidian 窗口之间切换.
+> [!tip]+ macOS 下按 `` cmd+ ` `` 可以在多个前台窗口之间切换.
 
 ## 主题
 
