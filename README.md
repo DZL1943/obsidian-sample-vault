@@ -294,6 +294,8 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 > 比如 Various Complements 的配置文件, QuickAdd、Dataview 的相关脚本文件.  
 > 到对应的插件设置页面先关闭相关功能.
 
+>[!warning]+ 清理附件之前, 务必先检查一下是否有坏链接.
+
 > [!tip]+ 阅读模式渲染不正常时, 可以尝试(`cmd+r`)刷新一下.
 
 > [!tip]+ 文件列表选择多个文件: (macOS 下)按住 alt 键, 用鼠标点选.
