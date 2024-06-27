@@ -8,7 +8,7 @@
   "hideSearchSuggestions": false,
   "hideSearchCounts": false,
   "hideInstructions": false,
-  "hidePropertiesReading": false,
+  "hidePropertiesReading": true,
   "hideVault": false,
   "hideRibbon": false,
   "hideMeta": false

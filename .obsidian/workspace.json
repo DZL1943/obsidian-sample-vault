@@ -17,7 +17,7 @@
                 "file": "_canvas.canvas",
                 "viewState": {
                   "x": -1408.2447865694664,
-                  "y": 1097.9984664919498,
+                  "y": 534.3030851797153,
                   "zoom": 0.034980143100422356
                 }
               },
@@ -248,8 +248,9 @@
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
     "_canvas.canvas",
-    "Local",
+    "draft.md",
     "README.md",
+    "Local",
     "Spaces",
     "obsidian_mini/plugins/obsidian-style-settings/styles.css",
     "obsidian_mini/plugins/obsidian-style-settings/manifest.json",
@@ -264,7 +265,6 @@
     "20_Journals/journals.md",
     "quicknotes.md",
     "20_Journals/context.md",
-    "draft.md",
     "20_Journals/tasks.md",
     "All.md"
   ]
