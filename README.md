@@ -1,13 +1,13 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-28 10:34"
+modified: "2024-06-28 10:43"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
 
 # obsidian-sample-vault
 
-> [!note]+ 适用性说明
+> [!attention]+ 适用性说明
 > 1. 本库源自本人在 macOS 上的 Obsidian(1.6) 实践, 对其他系统未做适配, 请自行调整相关设置.
 > 2. 若在移动端使用, 建议在 `设置-文件与链接-切换配置文件夹` 处自行创建新的配置目录以免加载卡顿, 建议默认编辑模式设为源码模式.
 
@@ -20,7 +20,7 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 - 本地类: Obsidian、Zettlr、SiYuan、Logseq、Anytype
 - 云笔记类: Notion、Craft、飞书、语雀
 
-> [!note]+ 一点忠告
+> [!quote]+ 一点忠告
 > - 永远不要 all-in-one 一个你无法完全掌控的(笔记)软件, 例如云笔记软件、非透明存储的本地笔记软件.
 > - 不要把分类和笔记方法看得过重, 分类再完美没有内容也只是空壳, 绝大多数人能把一个类别细分下去就不错了.
 > - 不要花费过多时间在工具的打磨上, 尤其在你对自己的目标需求并不明确的时候.
@@ -62,7 +62,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - quicknotes: 快速记录
 - README
 
-> [!note]+ 上述目录结构归根结底是避免了分库. 子库可以作为一个目录存在并且设置独立的 git.
+> [!hint]+ 上述目录结构归根结底是避免了分库. 子库可以作为一个目录存在并且设置独立的 git.
 
 ## 已启用的[插件](https://obsidian.md/plugins)
 
@@ -131,7 +131,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 ]
 ```
 
-> [!note]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
+> [!hint]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
 
 ## 快捷键设置
 > [!attention] 此处快捷键基于 macOS 系统
@@ -299,7 +299,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 > [!tip]+ 文件列表选择多个文件: (macOS 下)按住 alt 键, 用鼠标点选.
 
-> [!tip]+ GitHub 支持的 Callout 类型
+> [!tip]+ GitHub 支持的 Callout 类型 (关键是首行得留空)
 > - note 蓝色
 > - tip 绿色
 > - important 紫色
