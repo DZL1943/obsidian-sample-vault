@@ -152,12 +152,6 @@
       "mode": "any"
     },
     {
-      "id": "markdown-table-editor:markdown-table-editor-open-horizontal",
-      "icon": "table",
-      "name": "Markdown Table Editor: Open Editor (Below the Active View)",
-      "mode": "any"
-    },
-    {
       "id": "workspace:split-vertical",
       "icon": "lucide-separator-vertical",
       "name": "左右分屏",

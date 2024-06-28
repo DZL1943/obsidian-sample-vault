@@ -99,7 +99,6 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
   "obsidian-emoji-toolbar",
   "obsidian-excalidraw-plugin",
   "obsidian-excel-to-markdown-table",
-  "obsidian-export-image",
   "obsidian-footnotes",
   "obsidian-git",
   "obsidian-heading-shifter",

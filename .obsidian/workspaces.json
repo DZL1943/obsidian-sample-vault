@@ -19,7 +19,7 @@
                     "file": "_canvas.canvas",
                     "viewState": {
                       "x": -1408.2447865694664,
-                      "y": 989.9795447912164,
+                      "y": 534.3030851797153,
                       "zoom": 0.034980143100422356
                     }
                   },
@@ -135,7 +135,8 @@
                   "state": {}
                 }
               }
-            ]
+            ],
+            "currentTab": 2
           },
           {
             "id": "dda52860917a3c25",
@@ -223,7 +224,6 @@
       },
       "left-ribbon": {
         "hiddenItems": {
-          "obsidian42-brat:BRAT": true,
           "workspaces:管理工作区布局": false,
           "switcher:打开快速切换": true,
           "command-palette:打开命令面板": true,
@@ -247,8 +247,8 @@
           "cmdr:打开设置": true
         }
       },
-      "active": "82484834b6c769a0",
-      "mtime": "2024-06-26T09:27:39+08:00"
+      "active": "dd0c724920d6ce07",
+      "mtime": "2024-06-28T09:02:02+08:00"
     }
   },
   "active": "minimal"
