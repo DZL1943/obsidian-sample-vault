@@ -8,7 +8,7 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 # obsidian-sample-vault
 
 > [!attention]+ 适用性说明
-> 1. 本库源自本人在 macOS 上的 Obsidian(1.6) 实践, 对其他系统未做适配, 请自行调整相关设置.
+> 1. 本库源自本人在 macOS 上的 Obsidian(1.6.x) 实践, 对其他系统未做适配, 请自行调整相关设置.
 > 2. 若在移动端使用, 建议在 `设置-文件与链接-切换配置文件夹` 处自行创建新的配置目录以免加载卡顿, 建议默认编辑模式设为源码模式.
 
 ![](90_Misc/Attachments/README-20240611204632938.png)  
