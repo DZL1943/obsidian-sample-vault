@@ -20,6 +20,8 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 - 本地类: Obsidian、Zettlr、SiYuan、Logseq、Anytype
 - 云笔记类: Notion、Craft、飞书、语雀
 
+>[!hint]+ 对于编程类笔记, 优先用代码编辑器处理. 或者将笔记与代码分离开.
+
 > [!quote]+ 一点忠告
 > - 永远不要 all-in-one 一个你无法完全掌控的(笔记)软件, 例如云笔记软件、非透明存储的本地笔记软件.
 > - 不要把分类和笔记方法看得过重, 分类再完美没有内容也只是空壳, 绝大多数人能把一个类别细分下去就不错了.
@@ -62,8 +64,9 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - quicknotes: 快速记录
 - README
 
-> [!hint]+ 上述目录结构归根结底是避免了分库. 子库可以作为一个目录存在并且设置独立的 git.
+> [!hint]+ 这里的目录结构还是偏传统的, 好处就是避免了分库. 子库可以作为一个目录存在并且设置独立的 git.
 
+>[!hint]+ 最简单的笔记结构, 只需要一个 inbox 和 outbox, 其他结构也大都是基于此构建的.
 ## 已启用的[插件](https://obsidian.md/plugins)
 
 ```json
