@@ -67,6 +67,9 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 > [!hint]+ 这里的目录结构还是偏传统的, 好处就是避免了分库. 子库可以作为一个目录存在并且设置独立的 git.
 
 >[!hint]+ 最简单的笔记结构, 只需要一个 inbox 和 outbox, 其他结构也大都是基于此构建的.
+
+>[!hint]+ 关键在于解耦笔记输入、笔记整理这两大过程.
+
 ## 已启用的[插件](https://obsidian.md/plugins)
 
 ```json
