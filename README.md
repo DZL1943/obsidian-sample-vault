@@ -60,6 +60,8 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - 90_Misc/: 杂项(比如附件、模版等)
     - Attachments/
     - Templates/
+    - Code/
+    - Configs/
 - Vaults/: 可通过 `ln -s source_path Vaults/` 的方式临时处理其他位置的文件 (该方法目前还没有正式的支持, 也不被推荐)
 - Local/: 本地目录, 不进行同步
 - draft: (进行中的)草稿, 可以每个设备单独一个文件, 互不冲突
