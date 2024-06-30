@@ -75,7 +75,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 > - projects: 输入
 > - areas: 输出. 按领域而不是分类
 > - resources: 输入, 比如文献笔记
-> - archives: 所有不再活跃的内容(仍有参考价值)
+> - archives: 已完成或搁置的、不再活跃或相关的、不再感兴趣和维护的内容(仍有参考价值)
 > - misc: 其他
 
 > [!hint]+ 关键在于解耦笔记输入、笔记整理这两大过程. 并且尽量维持笔记的原本结构而用链接的方式组织整理.
