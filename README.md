@@ -54,6 +54,8 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - 50_Projects/: 项目笔记[^1]
 - 60_Areas/: 领域知识笔记、卡片笔记
 - 70_Resources/: 附件以外的资源文件
+    - Clippings/
+    - Excerpts/
 - 80_Archives/: 归档
 - 90_Misc/: 杂项(比如附件、模版等)
     - Attachments/
