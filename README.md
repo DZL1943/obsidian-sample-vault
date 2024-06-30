@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-06-29 20:42"
+modified: "2024-06-30 14:43"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -66,12 +66,22 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 > [!hint]+ 这里的目录结构还是偏传统的, 好处就是避免了分库, 子库可以作为一个目录存在并且设置独立的 git.
 
-> [!hint]+ 最简单的笔记结构, 只需要一个 inbox 和 outbox (对应卢曼的闪念笔记和永久笔记), 其他结构也大都是基于此构建的.
+> [!hint]+ 最简单的笔记结构, 只需要一个 inbox 和 outbox (此处 inbox 指记笔记, outbox 指整理笔记, 类似于卢曼的闪念笔记和永久笔记)  
+> 上述目录结构中的 in/out 关系:
+> - inbox: (临时性)输入
+> - journals: (永久性)输入. 在这里记录你的生活、思想、目标计划等
+> - jottings: (碎片性)输入, 可看作是一个自源性的素材库
+> - pages: (含主观性的)输出, 需要持续更新维护
+> - projects: 输入
+> - areas: 输出. 按领域而不是分类
+> - resources: 输入, 比如文献笔记
+> - archives: 所有不再维护和需要的内容存档(仍有参考价值)
+> - misc: 其他
 
-> [!hint]+ 关键在于解耦笔记输入、笔记整理这两大过程.
+> [!hint]+ 关键在于解耦笔记输入、笔记整理这两大过程. 并且尽量维持笔记的原本结构而用链接的方式组织整理.
 
 ## 已启用的[插件](https://obsidian.md/plugins)
-
+%% 以实际为准 %%
 ```json
 [
   "any-block",
@@ -282,6 +292,8 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - [GitHub - tgrosinger/advanced-tables-obsidian: Improved table navigation, formatting, and manipulation in Obsidian.md](https://github.com/tgrosinger/advanced-tables-obsidian)
     - [GitHub - NicoNekoru/obsidan-advanced-table-xt: Plugin that adds features to tables in obsidian including merging, vertical headers, and custom css](https://github.com/NicoNekoru/obsidan-advanced-table-xt)
     - [GitHub - artisticat1/obsidian-latex-suite: Make typesetting LaTeX as fast as handwriting through snippets, text expansion, and editor enhancements](https://github.com/artisticat1/obsidian-latex-suite)
+- Pages & Blogs
+    - [The PARA Method: The Simple System for Organizing Your Digital Life in Seconds](https://fortelabs.com/blog/para/)
 - Others
     - [Moment.js | Docs](https://momentjs.com/docs/#/displaying/format/)
     - [luxon - Immutable date wrapper](https://moment.github.io/luxon/#/formatting?id=table-of-tokens)

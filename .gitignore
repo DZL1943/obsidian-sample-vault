@@ -9,6 +9,6 @@
 /[lL]ocal/
 未命名*
 [uU]ntitled*
-draft*
-temp*
-test*
+draft*.md
+test*.md
+temp*.md
