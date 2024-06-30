@@ -50,7 +50,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - journals
     - context
 - 30_Jottings/: 非正式笔记
-- 40_Pages/: 原创笔记、主题笔记
+- 40_Pages/: 原创笔记、主题笔记、MOC
 - 50_Projects/: 项目笔记[^1]
 - 60_Areas/: 领域知识笔记、卡片笔记
 - 70_Resources/: 附件以外的资源文件
