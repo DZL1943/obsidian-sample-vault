@@ -7890,7 +7890,25 @@ __export(main_exports, {
 
 module.exports = __toCommonJS(main_exports);
 
-var MAX_DOC_SIZE_BIN = 102400, VER = 10, LEAF_WAIT_TIMEOUT = 9e4, REPLICATION_BUSY_TIMEOUT = 3e6, LOG_LEVEL_DEBUG = -1, LOG_LEVEL_VERBOSE = 1, LOG_LEVEL_INFO = 10, LOG_LEVEL_NOTICE = 100, LOG_LEVEL_URGENT = 1e3, CANCELLED = Symbol("cancelled"), AUTO_MERGED = Symbol("auto_merged"), NOT_CONFLICTED = Symbol("not_conflicted"), MISSING_OR_ERROR = Symbol("missing_or_error"), LEAVE_TO_SUBSEQUENT = Symbol("leave_to_subsequent_proc"), TIME_ARGUMENT_INFINITY = Symbol("infinity"), RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"), VERSIONINFO_DOCID = "obsydian_livesync_version", MILSTONE_DOCID = "_local/obsydian_livesync_milestone", NODEINFO_DOCID = "_local/obsydian_livesync_nodeinfo", MODE_SELECTIVE = 0, MODE_AUTOMATIC = 1, MODE_PAUSED = 2, REMOTE_COUCHDB = "", REMOTE_MINIO = "MINIO", DEFAULT_SETTINGS = {
+var LOG_LEVEL_DEBUG = -1, LOG_LEVEL_VERBOSE = 1, LOG_LEVEL_INFO = 10, LOG_LEVEL_NOTICE = 100, LOG_LEVEL_URGENT = 1e3, LEVEL_INFO = LOG_LEVEL_INFO, defaultLoggerEnv = {
+  minLogLevel: LOG_LEVEL_INFO
+}, defaultLogger = function defaultLogger2(_, ee = LEVEL_INFO, ne) {
+  if (ee < defaultLoggerEnv.minLogLevel) return;
+  const ie = (new Date).toLocaleString(), re = "string" == typeof _ ? _ : _ instanceof Error ? `${_.name}:${_.message}` : JSON.stringify(_, null, 2);
+  if (_ instanceof Error) console.dir(_.stack);
+  const se = `${ie}\t${ee}\t${re}`;
+  console.log(se);
+}, _logger = defaultLogger;
+
+function setGlobalLogFunction(_) {
+  _logger = _;
+}
+
+function Logger(_, ee, ne) {
+  _logger(_, ee, ne);
+}
+
+var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"), MAX_DOC_SIZE_BIN = 102400, VER = 10, LEAF_WAIT_TIMEOUT = 9e4, REPLICATION_BUSY_TIMEOUT = 3e6, CANCELLED = Symbol("cancelled"), AUTO_MERGED = Symbol("auto_merged"), NOT_CONFLICTED = Symbol("not_conflicted"), MISSING_OR_ERROR = Symbol("missing_or_error"), LEAVE_TO_SUBSEQUENT = Symbol("leave_to_subsequent_proc"), TIME_ARGUMENT_INFINITY = Symbol("infinity"), VERSIONINFO_DOCID = "obsydian_livesync_version", MILSTONE_DOCID = "_local/obsydian_livesync_milestone", NODEINFO_DOCID = "_local/obsydian_livesync_nodeinfo", MODE_SELECTIVE = 0, MODE_AUTOMATIC = 1, MODE_PAUSED = 2, REMOTE_COUCHDB = "", REMOTE_MINIO = "MINIO", DEFAULT_SETTINGS = {
   remoteType: REMOTE_COUCHDB,
   useCustomRequestHandler: false,
   couchDB_URI: "",
@@ -8092,35 +8110,47 @@ function confName(_, ee = "") {
   if (_ in configurationNames) return `${null == (ne = configurationNames[_]) ? void 0 : ne.name}${statusDisplay(null == (ie = configurationNames[_]) ? void 0 : ie.status)}`; else return `${ee || ""}`;
 }
 
-var TweakValuesTemplate = {
+var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs, _options, _toString, _emptyExt, _fillNegs, fillNegs_fn, _parseAST, parseAST_fn, _partsToRegExp, partsToRegExp_fn, _parseGlob, parseGlob_fn, TweakValuesTemplate = {
   ...TweakValuesRecommendedTemplate,
   ...TweakValuesShouldMatchedTemplate
-}, PREFIXMD_LOGFILE = "LIVESYNC_LOG_", FLAGMD_REDFLAG = "redflag.md", FLAGMD_REDFLAG2 = "redflag2.md", FLAGMD_REDFLAG2_HR = "flag_rebuild.md", FLAGMD_REDFLAG3 = "redflag3.md", FLAGMD_REDFLAG3_HR = "flag_fetch.md", SYNCINFO_ID = "syncinfo", SALT_OF_PASSPHRASE = "rHGMPtr6oWw7VSa3W3wpa8fT8U", PREFIX_OBFUSCATED = "f:", PREFIX_CHUNK = "h:", PREFIX_ENCRYPTED_CHUNK = "h:+", import_obsidian = require("obsidian"), import_obsidian2 = require("obsidian"), import_diff_match_patch = __toESM(require_diff_match_patch(), 1), normalizePath = import_obsidian2.normalizePath, PERIODIC_PLUGIN_SWEEP = 60, CHeader = "h:", PSCHeader = "ps:", ICHeader = "i:", ICHeaderEnd = "i;", ICHeaderLength = ICHeader.length, ICXHeader = "ix:", configURIBase = "obsidian://setuplivesync?settings=", LEVEL_INFO = LOG_LEVEL_INFO, defaultLoggerEnv = {
-  minLogLevel: LOG_LEVEL_INFO
-}, defaultLogger = function defaultLogger2(_, ee = LEVEL_INFO, ne) {
-  if (ee < defaultLoggerEnv.minLogLevel) return;
-  const ie = (new Date).toLocaleString(), re = "string" == typeof _ ? _ : _ instanceof Error ? `${_.name}:${_.message}` : JSON.stringify(_, null, 2);
-  if (_ instanceof Error) console.dir(_.stack);
-  const se = `${ie}\t${ee}\t${re}`;
-  console.log(se);
-}, _logger = defaultLogger;
-
-function setGlobalLogFunction(_) {
-  _logger = _;
-}
-
-function Logger(_, ee, ne) {
-  _logger(_, ee, ne);
-}
-
-var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs, _options, _toString, _emptyExt, _fillNegs, fillNegs_fn, _parseAST, parseAST_fn, _partsToRegExp, partsToRegExp_fn, _parseGlob, parseGlob_fn, LRUCache = class {
+}, PREFIXMD_LOGFILE = "LIVESYNC_LOG_", FLAGMD_REDFLAG = "redflag.md", FLAGMD_REDFLAG2 = "redflag2.md", FLAGMD_REDFLAG2_HR = "flag_rebuild.md", FLAGMD_REDFLAG3 = "redflag3.md", FLAGMD_REDFLAG3_HR = "flag_fetch.md", SYNCINFO_ID = "syncinfo", SALT_OF_PASSPHRASE = "rHGMPtr6oWw7VSa3W3wpa8fT8U", PREFIX_OBFUSCATED = "f:", PREFIX_CHUNK = "h:", PREFIX_ENCRYPTED_CHUNK = "h:+", import_obsidian = require("obsidian"), import_obsidian2 = require("obsidian"), import_diff_match_patch = __toESM(require_diff_match_patch(), 1), normalizePath = import_obsidian2.normalizePath, PERIODIC_PLUGIN_SWEEP = 60, CHeader = "h:", PSCHeader = "ps:", ICHeader = "i:", ICHeaderEnd = "i;", ICHeaderLength = ICHeader.length, ICXHeader = "ix:", configURIBase = "obsidian://setuplivesync?settings=", LRUCache = class {
   constructor(_, ee, ne = false) {
-    this.cache = new Map([]);
-    this.revCache = new Map([]);
-    this.maxCache = 200;
-    this.maxCachedLength = 5e7;
-    this.cachedLength = 0;
-    this.enableReversed = true;
+    Object.defineProperty(this, "cache", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: new Map([])
+    });
+    Object.defineProperty(this, "revCache", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: new Map([])
+    });
+    Object.defineProperty(this, "maxCache", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 200
+    });
+    Object.defineProperty(this, "maxCachedLength", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 5e7
+    });
+    Object.defineProperty(this, "cachedLength", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 0
+    });
+    Object.defineProperty(this, "enableReversed", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: true
+    });
     this.maxCache = _ || 200;
     this.maxCachedLength = 1e6 * (ee || 1);
     this.enableReversed = !ne;
@@ -9048,77 +9078,30 @@ if (globalThis.crypto) webcrypto = globalThis.crypto; else {
   webcrypto = _;
 }
 
-var revMap = {}, numMap = {};
-
-for (let _ = 0; _ < 256; _++) {
-  revMap[`00${_.toString(16)}`.slice(-2)] = _;
-  numMap[_] = `00${_.toString(16)}`.slice(-2);
+function base64ToArrayBuffer(_) {
+  if ("string" == typeof _) return base64ToArrayBufferInternalBrowser(_);
+  const ee = _.map((_ => base64ToArrayBufferInternalBrowser(_))), ne = ee.reduce(((_, ee) => _ + ee.byteLength), 0), ie = new Uint8Array(ne);
+  let re = 0;
+  ee.forEach((_ => {
+    ie.set(new Uint8Array(_), re);
+    re += _.byteLength;
+  }));
+  return ie.buffer;
 }
 
-function* range(_, ee) {
-  for (let ne = _; ne <= ee; ne++) yield ne;
-}
-
-var table = {}, revTable = {};
-
-[ ...range(192, 447) ].forEach(((_, ee) => {
-  table[ee] = _;
-  revTable[_] = ee;
-}));
-
-var BINARY_CHUNK_MAX = 31457280;
-
-function hexStringToUint8Array(_) {
-  const ee = _.length / 2, ne = new Uint8Array(ee);
-  for (let ie = 0; ie < ee; ie++) ne[ie] = revMap[_[2 * ie] + _[2 * ie + 1]];
-  return ne;
-}
-
-function uint8ArrayToHexString(_) {
-  return [ ..._ ].map((_ => numMap[_])).join("");
-}
-
-var QUANTUM = 32768, writeString = _ => {
-  const ee = new Uint8Array(4 * _.length), ne = _.length;
-  let ie = 0, re = 0, se = 0;
-  for (;se < ne; ) {
-    re = _.charCodeAt(se++);
-    if (re < 128) ee[ie++] = re; else if (re < 2048) {
-      ee[ie++] = 192 | re >>> 6;
-      ee[ie++] = 128 | 63 & re;
-    } else if (re < 55296 || re > 57343) {
-      ee[ie++] = 224 | re >>> 12;
-      ee[ie++] = 128 | re >>> 6 & 63;
-      ee[ie++] = 128 | 63 & re;
-    } else {
-      re = 65536 + (re - 55296 << 10 | _.charCodeAt(se++) - 56320);
-      ee[ie++] = 240 | re >>> 18;
-      ee[ie++] = 128 | re >>> 12 & 63;
-      ee[ie++] = 128 | re >>> 6 & 63;
-      ee[ie++] = 128 | 63 & re;
-    }
+function base64ToArrayBufferInternalBrowser(_) {
+  try {
+    const ee = globalThis.atob(_), ne = ee.length, ie = new Uint8Array(ne);
+    for (let _ = 0; _ < ne; _++) ie[_] = ee.charCodeAt(_);
+    return ie.buffer;
+  } catch (_) {
+    Logger("Base64 Decode error", LOG_LEVEL_VERBOSE);
+    Logger(_, LOG_LEVEL_VERBOSE);
+    return new ArrayBuffer(0);
   }
-  return ee.slice(0, ie);
-}, readString = _ => {
-  let ee = 0;
-  const ne = _.length;
-  let ie = "";
-  for (;ee < ne; ) {
-    const re = [], se = Math.min(ee + QUANTUM, ne);
-    for (;ee < se; ) {
-      const ne = _[ee++];
-      if (ne < 128) re.push(ne); else if (192 == (224 & ne)) re.push((31 & ne) << 6 | 63 & _[ee++]); else if (224 == (240 & ne)) re.push((15 & ne) << 12 | (63 & _[ee++]) << 6 | 63 & _[ee++]); else if (240 == (248 & ne)) {
-        let ie = (7 & ne) << 18 | (63 & _[ee++]) << 12 | (63 & _[ee++]) << 6 | 63 & _[ee++];
-        if (ie < 65536) re.push(ie); else {
-          ie -= 65536;
-          re.push(55296 + (ie >>> 10), 56320 + (1023 & ie));
-        }
-      }
-    }
-    ie += String.fromCharCode(...re);
-  }
-  return ie;
-}, encodeChunkSize = 15e7;
+}
+
+var encodeChunkSize = 15e7;
 
 function arrayBufferToBase64internalBrowser(_) {
   return new Promise(((ee, ne) => {
@@ -9154,27 +9137,90 @@ async function arrayBufferToBase64(_) {
   return ie;
 }
 
-function base64ToArrayBuffer(_) {
-  if ("string" == typeof _) return base64ToArrayBufferInternalBrowser(_);
-  const ee = _.map((_ => base64ToArrayBufferInternalBrowser(_))), ne = ee.reduce(((_, ee) => _ + ee.byteLength), 0), ie = new Uint8Array(ne);
-  let re = 0;
-  ee.forEach((_ => {
-    ie.set(new Uint8Array(_), re);
-    re += _.byteLength;
-  }));
-  return ie.buffer;
+var QUANTUM = 32768;
+
+function writeString(_) {
+  const ee = new Uint8Array(4 * _.length), ne = _.length;
+  let ie = 0, re = 0, se = 0;
+  for (;se < ne; ) {
+    re = _.charCodeAt(se++);
+    if (re < 128) ee[ie++] = re; else if (re < 2048) {
+      ee[ie++] = 192 | re >>> 6;
+      ee[ie++] = 128 | 63 & re;
+    } else if (re < 55296 || re > 57343) {
+      ee[ie++] = 224 | re >>> 12;
+      ee[ie++] = 128 | re >>> 6 & 63;
+      ee[ie++] = 128 | 63 & re;
+    } else {
+      re = 65536 + (re - 55296 << 10 | _.charCodeAt(se++) - 56320);
+      ee[ie++] = 240 | re >>> 18;
+      ee[ie++] = 128 | re >>> 12 & 63;
+      ee[ie++] = 128 | re >>> 6 & 63;
+      ee[ie++] = 128 | 63 & re;
+    }
+  }
+  return ee.slice(0, ie);
 }
 
-function base64ToArrayBufferInternalBrowser(_) {
-  try {
-    const ee = globalThis.atob(_), ne = ee.length, ie = new Uint8Array(ne);
-    for (let _ = 0; _ < ne; _++) ie[_] = ee.charCodeAt(_);
-    return ie.buffer;
-  } catch (_) {
-    Logger("Base64 Decode error", LOG_LEVEL_VERBOSE);
-    Logger(_, LOG_LEVEL_VERBOSE);
-    return new ArrayBuffer(0);
+function readString(_) {
+  let ee = 0;
+  const ne = _.length;
+  let ie = "";
+  for (;ee < ne; ) {
+    const re = [], se = Math.min(ee + QUANTUM, ne);
+    for (;ee < se; ) {
+      const ne = _[ee++];
+      if (ne < 128) re.push(ne); else if (192 == (224 & ne)) re.push((31 & ne) << 6 | 63 & _[ee++]); else if (224 == (240 & ne)) re.push((15 & ne) << 12 | (63 & _[ee++]) << 6 | 63 & _[ee++]); else if (240 == (248 & ne)) {
+        let ie = (7 & ne) << 18 | (63 & _[ee++]) << 12 | (63 & _[ee++]) << 6 | 63 & _[ee++];
+        if (ie < 65536) re.push(ie); else {
+          ie -= 65536;
+          re.push(55296 + (ie >>> 10), 56320 + (1023 & ie));
+        }
+      }
+    }
+    ie += String.fromCharCode(...re);
   }
+  return ie;
+}
+
+function concatUInt8Array(_) {
+  const ee = _.reduce(((_, ee) => _ + ee.length), 0), ne = new Uint8Array(ee);
+  let ie = 0;
+  for (const ee of _) {
+    ne.set(ee, ie);
+    ie += ee.length;
+  }
+  return ne;
+}
+
+var revMap = {}, numMap = {};
+
+for (let _ = 0; _ < 256; _++) {
+  revMap[`00${_.toString(16)}`.slice(-2)] = _;
+  numMap[_] = `00${_.toString(16)}`.slice(-2);
+}
+
+function* range(_, ee) {
+  for (let ne = _; ne <= ee; ne++) yield ne;
+}
+
+var table = {}, revTable = {};
+
+[ ...range(192, 447) ].forEach(((_, ee) => {
+  table[ee] = _;
+  revTable[_] = ee;
+}));
+
+var BINARY_CHUNK_MAX = 31457280;
+
+function hexStringToUint8Array(_) {
+  const ee = _.length / 2, ne = new Uint8Array(ee);
+  for (let ie = 0; ie < ee; ie++) ne[ie] = revMap[_[2 * ie] + _[2 * ie + 1]];
+  return ne;
+}
+
+function uint8ArrayToHexString(_) {
+  return [ ..._ ].map((_ => numMap[_])).join("");
 }
 
 var regexpBase64 = /^[A-Za-z0-9+/]+=*$/;
@@ -9237,6 +9283,18 @@ function decodeBinary(_) {
     return decodeToArrayBuffer([ ee.substring(1), ...ne ]);
   }
   return base64ToArrayBuffer(_);
+}
+
+function* arrayToChunkedArray(_, ee) {
+  const ne = [ ..._ ];
+  for (;ne.length; ) {
+    const _ = ne.splice(0, ee);
+    yield _;
+  }
+}
+
+function unique(_) {
+  return [ ...new Set(_) ];
 }
 
 function isValidFilenameInWidows(_) {
@@ -9439,7 +9497,7 @@ function Semaphore(_, ee) {
     acquire(_ = 1, ee) {
       return this._acquire(_, null != ee ? ee : "", 0);
     },
-    tryAcquire(_ = 1, ee, ne) {
+    tryAcquire(_ = 1, ee = 1, ne) {
       return this._acquire(_, null != ne ? ne : "", ee);
     },
     peekQueues: () => re
@@ -9641,6 +9699,31 @@ async function decryptBinary(_, ee, ne) {
   }
 }
 
+var delay = (_, ee) => new Promise((ne => {
+  setTimeout((() => {
+    ne(ee);
+  }), _);
+}));
+
+function polyfillPromiseWithResolvers() {
+  let _, ee;
+  return {
+    promise: new Promise(((ne, ie) => {
+      _ = ne;
+      ee = ie;
+    })),
+    resolve: _,
+    reject: ee
+  };
+}
+
+var promiseWithResolver = polyfillPromiseWithResolvers, noop = () => {};
+
+function fireAndForget(_) {
+  if ("function" == typeof _) return fireAndForget(_());
+  _.then(noop).catch(noop);
+}
+
 var queueTails = new Map;
 
 async function performTask(_) {
@@ -9708,73 +9791,32 @@ function isLockAcquired(_) {
 
 var Notifier = class {
   constructor() {
-    this.p = promiseWithResolver();
-    this.isUsed = false;
+    Object.defineProperty(this, "_p", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: promiseWithResolver()
+    });
+    Object.defineProperty(this, "isUsed", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: false
+    });
   }
   notify() {
     if (this.isUsed) {
       this.isUsed = false;
-      this.p.promise.finally(noop);
-      this.p.resolve();
-      this.p = promiseWithResolver();
+      this._p.promise.finally(noop);
+      this._p.resolve();
+      this._p = promiseWithResolver();
     }
   }
   get nextNotify() {
     this.isUsed = true;
-    return this.p.promise;
+    return this._p.promise;
   }
 }, processNo = 0, allRunningProcessors = new Set([]), QueueProcessor = class {
-  constructor(_, ee, ne, ie) {
-    this._queue = [];
-    this._enqueueProcessor = (_, ee) => (_.push(ee), _);
-    this._isSuspended = true;
-    this._nextProcessNeedsImmediate = false;
-    this._waitId = "";
-    this._root = void 0;
-    this._instance = processNo++;
-    this._keepResultUntilDownstreamConnected = false;
-    this._keptResult = [];
-    this._runOnUpdateBatch = () => {};
-    this.concurrentLimit = 1;
-    this.batchSize = 1;
-    this.yieldThreshold = 1;
-    this.delay = 0;
-    this.interval = 0;
-    this.processingEntities = 0;
-    this.waitingEntries = 0;
-    this._notifier = new Notifier;
-    this._processingBatches = new Set;
-    this.addProcessingBatch = _ => {
-      const ee = this._processingBatches.add(_);
-      this._updateBatchProcessStatus();
-      return ee;
-    };
-    this.deleteProcessingBatch = _ => {
-      const ee = this._processingBatches.delete(_);
-      this._updateBatchProcessStatus();
-      return ee;
-    };
-    this._processing = false;
-    var re, se, oe, le, ue, de, fe;
-    this._root = this;
-    this._processor = _;
-    this.batchSize = null != (re = null == ee ? void 0 : ee.batchSize) ? re : 1;
-    this.yieldThreshold = null != (oe = null != (se = null == ee ? void 0 : ee.yieldThreshold) ? se : null == ee ? void 0 : ee.batchSize) ? oe : 0;
-    this.concurrentLimit = null != (le = null == ee ? void 0 : ee.concurrentLimit) ? le : 1;
-    this.delay = null != (ue = null == ee ? void 0 : ee.delay) ? ue : 0;
-    this.maintainDelay = null != (de = null == ee ? void 0 : ee.maintainDelay) ? de : false;
-    this.interval = null != (fe = null == ee ? void 0 : ee.interval) ? fe : 0;
-    if (null == ee ? void 0 : ee.keepResultUntilDownstreamConnected) this._keepResultUntilDownstreamConnected = ee.keepResultUntilDownstreamConnected;
-    if (null == ee ? void 0 : ee.remainingReactiveSource) this._remainingReactiveSource = null == ee ? void 0 : ee.remainingReactiveSource;
-    if (null == ee ? void 0 : ee.totalRemainingReactiveSource) this._totalRemainingReactiveSource = null == ee ? void 0 : ee.totalRemainingReactiveSource;
-    if (null == ee ? void 0 : ee.processingEntitiesReactiveSource) this._processingEntitiesReactiveSource = null == ee ? void 0 : ee.processingEntitiesReactiveSource;
-    if (void 0 !== (null == ee ? void 0 : ee.suspended)) this._isSuspended = null == ee ? void 0 : ee.suspended;
-    if (ie) this.replaceEnqueueProcessor(ie);
-    if (void 0 !== (null == ee ? void 0 : ee.pipeTo)) this.pipeTo(ee.pipeTo);
-    if (ne) this.enqueueAll(ne);
-    allRunningProcessors.add(this);
-    this._run();
-  }
   get nowProcessing() {
     return this.processingEntities;
   }
@@ -9817,6 +9859,203 @@ var Notifier = class {
   }
   get root() {
     if (void 0 === this._root) return this; else return this._root;
+  }
+  constructor(_, ee, ne, ie) {
+    var re, se, oe, le, ue, de, fe;
+    Object.defineProperty(this, "_queue", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: []
+    });
+    Object.defineProperty(this, "_processor", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "_enqueueProcessor", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: (_, ee) => (_.push(ee), _)
+    });
+    Object.defineProperty(this, "_isSuspended", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: true
+    });
+    Object.defineProperty(this, "_nextProcessNeedsImmediate", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: false
+    });
+    Object.defineProperty(this, "_pipeTo", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "_waitId", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: ""
+    });
+    Object.defineProperty(this, "_root", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "_instance", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: processNo++
+    });
+    Object.defineProperty(this, "_remainingReactiveSource", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "_totalRemainingReactiveSource", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "_processingEntitiesReactiveSource", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "_keepResultUntilDownstreamConnected", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: false
+    });
+    Object.defineProperty(this, "_keptResult", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: []
+    });
+    Object.defineProperty(this, "_runOnUpdateBatch", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: () => {}
+    });
+    Object.defineProperty(this, "concurrentLimit", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 1
+    });
+    Object.defineProperty(this, "batchSize", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 1
+    });
+    Object.defineProperty(this, "yieldThreshold", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 1
+    });
+    Object.defineProperty(this, "delay", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 0
+    });
+    Object.defineProperty(this, "maintainDelay", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "interval", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 0
+    });
+    Object.defineProperty(this, "processingEntities", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 0
+    });
+    Object.defineProperty(this, "waitingEntries", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 0
+    });
+    Object.defineProperty(this, "_notifier", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: new Notifier
+    });
+    Object.defineProperty(this, "_processingBatches", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: new Set
+    });
+    Object.defineProperty(this, "addProcessingBatch", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: _ => {
+        const ee = this._processingBatches.add(_);
+        this._updateBatchProcessStatus();
+        return ee;
+      }
+    });
+    Object.defineProperty(this, "deleteProcessingBatch", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: _ => {
+        const ee = this._processingBatches.delete(_);
+        this._updateBatchProcessStatus();
+        return ee;
+      }
+    });
+    Object.defineProperty(this, "_processing", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: false
+    });
+    this._root = this;
+    this._processor = _;
+    this.batchSize = null != (re = null == ee ? void 0 : ee.batchSize) ? re : 1;
+    this.yieldThreshold = null != (oe = null != (se = null == ee ? void 0 : ee.yieldThreshold) ? se : null == ee ? void 0 : ee.batchSize) ? oe : 0;
+    this.concurrentLimit = null != (le = null == ee ? void 0 : ee.concurrentLimit) ? le : 1;
+    this.delay = null != (ue = null == ee ? void 0 : ee.delay) ? ue : 0;
+    this.maintainDelay = null != (de = null == ee ? void 0 : ee.maintainDelay) ? de : false;
+    this.interval = null != (fe = null == ee ? void 0 : ee.interval) ? fe : 0;
+    if (null == ee ? void 0 : ee.keepResultUntilDownstreamConnected) this._keepResultUntilDownstreamConnected = ee.keepResultUntilDownstreamConnected;
+    if (null == ee ? void 0 : ee.remainingReactiveSource) this._remainingReactiveSource = null == ee ? void 0 : ee.remainingReactiveSource;
+    if (null == ee ? void 0 : ee.totalRemainingReactiveSource) this._totalRemainingReactiveSource = null == ee ? void 0 : ee.totalRemainingReactiveSource;
+    if (null == ee ? void 0 : ee.processingEntitiesReactiveSource) this._processingEntitiesReactiveSource = null == ee ? void 0 : ee.processingEntitiesReactiveSource;
+    if (void 0 !== (null == ee ? void 0 : ee.suspended)) this._isSuspended = null == ee ? void 0 : ee.suspended;
+    if (ie) this.replaceEnqueueProcessor(ie);
+    if (void 0 !== (null == ee ? void 0 : ee.pipeTo)) this.pipeTo(ee.pipeTo);
+    if (ne) this.enqueueAll(ne);
+    allRunningProcessors.add(this);
+    this._run();
   }
   replaceEnqueueProcessor(_) {
     this._enqueueProcessor = _;
@@ -11015,31 +11254,90 @@ async function fetchAllUsedChunks(_, ee) {
   }
 }
 
-function polyfillPromiseWithResolvers() {
-  let _, ee;
-  return {
-    promise: new Promise(((ne, ie) => {
-      _ = ne;
-      ee = ie;
-    })),
-    resolve: _,
-    reject: ee
-  };
+function replaceAll(_, ee, ne) {
+  if ("replaceAll" in String.prototype) return _.replaceAll(ee, ne); else return _.split(ee).join(ne);
 }
 
-var promiseWithResolver = polyfillPromiseWithResolvers;
+function replaceAllPairs(_, ...ee) {
+  let ne = `${_}`;
+  for (const [_, ie] of ee) ne = replaceAll(ne, _, ie);
+  return ne;
+}
+
+function extractObject(_, ee) {
+  const ne = {
+    ..._
+  };
+  for (const _ in ne) ne[_] = ee[_];
+  return ne;
+}
+
+function isObjectDifferent(_, ee, ne = false) {
+  if (typeof _ != typeof ee) return true;
+  if ("object" == typeof _) {
+    if (null === _ || null === ee) return _ !== ee;
+    const ie = [ ...new Set([ ...Object.keys(_), ...Object.keys(ee) ]) ];
+    if (ne) return ie.map((ne => void 0 !== (null == _ ? void 0 : _[ne]) && void 0 !== (null == ee ? void 0 : ee[ne]) && isObjectDifferent(null == _ ? void 0 : _[ne], null == ee ? void 0 : ee[ne]))).some((_ => true == _)); else return ie.map((ne => isObjectDifferent(null == _ ? void 0 : _[ne], null == ee ? void 0 : ee[ne]))).some((_ => true == _));
+  } else return _ !== ee;
+}
+
+var traps = {};
+
+async function waitForSignal(_, ee) {
+  return await waitForValue(_, ee) !== RESULT_TIMED_OUT;
+}
+
+function waitForValue(_, ee) {
+  let ne, ie;
+  const re = ee ? setTimeout((() => {
+    if (_ in traps) traps[_] = traps[_].filter((_ => _ != ie));
+    if (ne) ne(RESULT_TIMED_OUT);
+    ne = void 0;
+  }), ee) : false;
+  return new Promise((ee => {
+    if (!(_ in traps)) traps[_] = [];
+    ne = ee;
+    ie = _ => {
+      if (re) clearTimeout(re);
+      ee(_);
+    };
+    traps[_].push(ie);
+  }));
+}
+
+function sendSignal(_) {
+  sendValue(_, true);
+}
+
+function sendValue(_, ee) {
+  if (!(_ in traps)) return;
+  const ne = traps[_];
+  delete traps[_];
+  for (const _ of ne) _(ee);
+}
+
+var _a2, throttle = (_, ee) => {
+  let ne, ie = 0;
+  return (...re) => {
+    if (!ie) {
+      _(...re);
+      ie = Date.now();
+    } else {
+      clearTimeout(ne);
+      const se = ee - (Date.now() - ie);
+      ne = setTimeout((() => {
+        _(...re);
+        ie = Date.now();
+      }), se);
+    }
+  };
+};
 
 function resolveWithIgnoreKnownError(_, ee) {
   return new Promise(((ne, ie) => {
     _.then(ne).catch((_ => isErrorOfMissingDoc(_) ? ne(ee) : ie(_)));
   }));
 }
-
-var _a2, delay = (_, ee) => new Promise((ne => {
-  setTimeout((() => {
-    ne(ee);
-  }), _);
-}));
 
 function getDocData(_) {
   return "string" == typeof _ ? _ : _.join("");
@@ -11125,76 +11423,13 @@ function memorizeFuncWithLRUCache(_) {
   };
 }
 
-var traps = {};
-
-async function waitForSignal(_, ee) {
-  return await waitForValue(_, ee) !== RESULT_TIMED_OUT;
-}
-
-function waitForValue(_, ee) {
-  let ne, ie;
-  const re = ee ? setTimeout((() => {
-    if (_ in traps) traps[_] = traps[_].filter((_ => _ != ie));
-    if (ne) ne(RESULT_TIMED_OUT);
-    ne = void 0;
-  }), ee) : false;
-  return new Promise((ee => {
-    if (!(_ in traps)) traps[_] = [];
-    ne = ee;
-    ie = _ => {
-      if (re) clearTimeout(re);
-      ee(_);
-    };
-    traps[_].push(ie);
-  }));
-}
-
-function sendSignal(_) {
-  sendValue(_, true);
-}
-
-function sendValue(_, ee) {
-  if (!(_ in traps)) return;
-  const ne = traps[_];
-  delete traps[_];
-  for (const _ of ne) _(ee);
-}
-
 function onlyNot(_) {
   return function _onlyNot(ee) {
     if (ee === _) return false; else return true;
   };
 }
 
-var globalConcurrencyController = Semaphore(50);
-
-function* arrayToChunkedArray(_, ee) {
-  const ne = [ ..._ ];
-  for (;ne.length; ) {
-    const _ = ne.splice(0, ee);
-    yield _;
-  }
-}
-
-function unique(_) {
-  return [ ...new Set(_) ];
-}
-
-var noop = () => {};
-
-function fireAndForget(_) {
-  if ("function" == typeof _) return fireAndForget(_());
-  _.then(noop).catch(noop);
-}
-
-function isObjectDifferent(_, ee, ne = false) {
-  if (typeof _ != typeof ee) return true;
-  if ("object" == typeof _) {
-    if (null === _ || null === ee) return _ !== ee;
-    const ie = [ ...new Set([ ...Object.keys(_), ...Object.keys(ee) ]) ];
-    if (ne) return ie.map((ne => void 0 !== (null == _ ? void 0 : _[ne]) && void 0 !== (null == ee ? void 0 : ee[ne]) && isObjectDifferent(null == _ ? void 0 : _[ne], null == ee ? void 0 : ee[ne]))).some((_ => true == _)); else return ie.map((ne => isObjectDifferent(null == _ ? void 0 : _[ne], null == ee ? void 0 : ee[ne]))).some((_ => true == _));
-  } else return _ !== ee;
-}
+var ExportedSet, ExportedMap, globalConcurrencyController = Semaphore(50);
 
 function determineTypeFromBlob(_) {
   return isTextBlob(_) ? "plain" : "newnote";
@@ -11222,54 +11457,9 @@ function createSavingEntryFromLoadedEntry(_) {
   };
 }
 
-var ExportedSet, ExportedMap, throttle = (_, ee) => {
-  let ne, ie = 0;
-  return (...re) => {
-    if (!ie) {
-      _(...re);
-      ie = Date.now();
-    } else {
-      clearTimeout(ne);
-      const se = ee - (Date.now() - ie);
-      ne = setTimeout((() => {
-        _(...re);
-        ie = Date.now();
-      }), se);
-    }
-  };
-};
-
-function extractObject(_, ee) {
-  const ne = {
-    ..._
-  };
-  for (const _ in ne) ne[_] = ee[_];
-  return ne;
-}
-
 function setAllItems(_, ee) {
   ee.forEach((ee => _.add(ee)));
   return _;
-}
-
-function concatUInt8Array(_) {
-  const ee = _.reduce(((_, ee) => _ + ee.length), 0), ne = new Uint8Array(ee);
-  let ie = 0;
-  for (const ee of _) {
-    ne.set(ee, ie);
-    ie += ee.length;
-  }
-  return ne;
-}
-
-function replaceAll(_, ee, ne) {
-  if ("replaceAll" in String.prototype) return _.replaceAll(ee, ne); else return _.split(ee).join(ne);
-}
-
-function replaceAllPairs(_, ...ee) {
-  let ne = `${_}`;
-  for (const [_, ie] of ee) ne = replaceAll(ne, _, ie);
-  return ne;
 }
 
 function escapeNewLineFromString(_) {
@@ -20456,7 +20646,7 @@ async function xxhash_wasm_default() {
   };
 }
 
-var t2 = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 48, 8, 96, 3, 127, 127, 127, 0, 96, 3, 127, 127, 127, 1, 127, 96, 2, 127, 127, 0, 96, 2, 127, 126, 0, 96, 1, 127, 1, 127, 96, 1, 127, 1, 126, 96, 3, 127, 127, 126, 1, 126, 96, 3, 126, 127, 127, 1, 126, 3, 11, 10, 1, 1, 2, 0, 4, 6, 7, 3, 0, 5, 5, 3, 1, 0, 1, 7, 85, 9, 3, 109, 101, 109, 2, 0, 5, 120, 120, 104, 51, 50, 0, 0, 6, 105, 110, 105, 116, 51, 50, 0, 2, 8, 117, 112, 100, 97, 116, 101, 51, 50, 0, 3, 8, 100, 105, 103, 101, 115, 116, 51, 50, 0, 4, 5, 120, 120, 104, 54, 52, 0, 5, 6, 105, 110, 105, 116, 54, 52, 0, 7, 8, 117, 112, 100, 97, 116, 101, 54, 52, 0, 8, 8, 100, 105, 103, 101, 115, 116, 54, 52, 0, 9, 10, 211, 23, 10, 242, 1, 1, 4, 127, 32, 0, 32, 1, 106, 33, 3, 32, 1, 65, 16, 79, 4, 127, 32, 3, 65, 16, 107, 33, 6, 32, 2, 65, 168, 136, 141, 161, 2, 106, 33, 3, 32, 2, 65, 247, 148, 175, 175, 120, 106, 33, 4, 32, 2, 65, 177, 243, 221, 241, 121, 107, 33, 5, 3, 64, 32, 0, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 3, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 3, 32, 0, 65, 4, 106, 34, 0, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 4, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 0, 65, 4, 106, 34, 0, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 2, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 2, 32, 0, 65, 4, 106, 34, 0, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 5, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 5, 32, 0, 65, 4, 106, 34, 0, 32, 6, 77, 13, 0, 11, 32, 2, 65, 12, 119, 32, 5, 65, 18, 119, 106, 32, 4, 65, 7, 119, 106, 32, 3, 65, 1, 119, 106, 5, 32, 2, 65, 177, 207, 217, 178, 1, 106, 11, 32, 1, 106, 32, 0, 32, 1, 65, 15, 113, 16, 1, 11, 146, 1, 0, 32, 1, 32, 2, 106, 33, 2, 3, 64, 32, 1, 65, 4, 106, 32, 2, 75, 69, 4, 64, 32, 1, 40, 2, 0, 65, 189, 220, 202, 149, 124, 108, 32, 0, 106, 65, 17, 119, 65, 175, 214, 211, 190, 2, 108, 33, 0, 32, 1, 65, 4, 106, 33, 1, 12, 1, 11, 11, 3, 64, 32, 1, 32, 2, 79, 69, 4, 64, 32, 1, 45, 0, 0, 65, 177, 207, 217, 178, 1, 108, 32, 0, 106, 65, 11, 119, 65, 177, 243, 221, 241, 121, 108, 33, 0, 32, 1, 65, 1, 106, 33, 1, 12, 1, 11, 11, 32, 0, 65, 15, 118, 32, 0, 115, 65, 247, 148, 175, 175, 120, 108, 34, 0, 32, 0, 65, 13, 118, 115, 65, 189, 220, 202, 149, 124, 108, 34, 0, 32, 0, 65, 16, 118, 115, 11, 63, 0, 32, 0, 65, 8, 106, 32, 1, 65, 168, 136, 141, 161, 2, 106, 54, 2, 0, 32, 0, 65, 12, 106, 32, 1, 65, 247, 148, 175, 175, 120, 106, 54, 2, 0, 32, 0, 65, 16, 106, 32, 1, 54, 2, 0, 32, 0, 65, 20, 106, 32, 1, 65, 177, 243, 221, 241, 121, 107, 54, 2, 0, 11, 211, 4, 1, 6, 127, 32, 1, 32, 2, 106, 33, 6, 32, 0, 65, 24, 106, 33, 5, 32, 0, 65, 40, 106, 40, 2, 0, 33, 3, 32, 0, 32, 0, 40, 2, 0, 32, 2, 106, 54, 2, 0, 32, 0, 65, 4, 106, 34, 4, 32, 4, 40, 2, 0, 32, 2, 65, 16, 79, 32, 0, 40, 2, 0, 65, 16, 79, 114, 114, 54, 2, 0, 32, 2, 32, 3, 106, 65, 16, 73, 4, 64, 32, 3, 32, 5, 106, 32, 1, 32, 2, 252, 10, 0, 0, 32, 0, 65, 40, 106, 32, 2, 32, 3, 106, 54, 2, 0, 15, 11, 32, 3, 4, 64, 32, 3, 32, 5, 106, 32, 1, 65, 16, 32, 3, 107, 34, 2, 252, 10, 0, 0, 32, 0, 65, 8, 106, 34, 3, 40, 2, 0, 32, 5, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 3, 32, 4, 54, 2, 0, 32, 0, 65, 12, 106, 34, 3, 40, 2, 0, 32, 5, 65, 4, 106, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 3, 32, 4, 54, 2, 0, 32, 0, 65, 16, 106, 34, 3, 40, 2, 0, 32, 5, 65, 8, 106, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 3, 32, 4, 54, 2, 0, 32, 0, 65, 20, 106, 34, 3, 40, 2, 0, 32, 5, 65, 12, 106, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 3, 32, 4, 54, 2, 0, 32, 0, 65, 40, 106, 65, 0, 54, 2, 0, 32, 1, 32, 2, 106, 33, 1, 11, 32, 1, 32, 6, 65, 16, 107, 77, 4, 64, 32, 6, 65, 16, 107, 33, 8, 32, 0, 65, 8, 106, 40, 2, 0, 33, 2, 32, 0, 65, 12, 106, 40, 2, 0, 33, 3, 32, 0, 65, 16, 106, 40, 2, 0, 33, 4, 32, 0, 65, 20, 106, 40, 2, 0, 33, 7, 3, 64, 32, 1, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 2, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 2, 32, 1, 65, 4, 106, 34, 1, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 3, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 3, 32, 1, 65, 4, 106, 34, 1, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 4, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 1, 65, 4, 106, 34, 1, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 7, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 7, 32, 1, 65, 4, 106, 34, 1, 32, 8, 77, 13, 0, 11, 32, 0, 65, 8, 106, 32, 2, 54, 2, 0, 32, 0, 65, 12, 106, 32, 3, 54, 2, 0, 32, 0, 65, 16, 106, 32, 4, 54, 2, 0, 32, 0, 65, 20, 106, 32, 7, 54, 2, 0, 11, 32, 1, 32, 6, 73, 4, 64, 32, 5, 32, 1, 32, 6, 32, 1, 107, 34, 1, 252, 10, 0, 0, 32, 0, 65, 40, 106, 32, 1, 54, 2, 0, 11, 11, 97, 1, 1, 127, 32, 0, 65, 16, 106, 40, 2, 0, 33, 1, 32, 0, 65, 4, 106, 40, 2, 0, 4, 127, 32, 1, 65, 12, 119, 32, 0, 65, 20, 106, 40, 2, 0, 65, 18, 119, 106, 32, 0, 65, 12, 106, 40, 2, 0, 65, 7, 119, 106, 32, 0, 65, 8, 106, 40, 2, 0, 65, 1, 119, 106, 5, 32, 1, 65, 177, 207, 217, 178, 1, 106, 11, 32, 0, 40, 2, 0, 106, 32, 0, 65, 24, 106, 32, 0, 65, 40, 106, 40, 2, 0, 16, 1, 11, 157, 4, 2, 1, 127, 3, 126, 32, 0, 32, 1, 106, 33, 3, 32, 1, 65, 32, 79, 4, 126, 32, 3, 65, 32, 107, 33, 3, 32, 2, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 124, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 124, 33, 4, 32, 2, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 124, 33, 5, 32, 2, 66, 0, 124, 33, 6, 32, 2, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 125, 33, 2, 3, 64, 32, 0, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 4, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 4, 32, 0, 65, 8, 106, 34, 0, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 5, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 5, 32, 0, 65, 8, 106, 34, 0, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 6, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 0, 65, 8, 106, 34, 0, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 2, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 2, 32, 0, 65, 8, 106, 34, 0, 32, 3, 77, 13, 0, 11, 32, 6, 66, 12, 137, 32, 2, 66, 18, 137, 124, 32, 5, 66, 7, 137, 124, 32, 4, 66, 1, 137, 124, 32, 4, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 5, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 6, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 2, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 5, 32, 2, 66, 197, 207, 217, 178, 241, 229, 186, 234, 39, 124, 11, 32, 1, 173, 124, 32, 0, 32, 1, 65, 31, 113, 16, 6, 11, 137, 2, 0, 32, 1, 32, 2, 106, 33, 2, 3, 64, 32, 1, 65, 8, 106, 32, 2, 77, 4, 64, 32, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 32, 0, 133, 66, 27, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 33, 0, 32, 1, 65, 8, 106, 33, 1, 12, 1, 11, 11, 32, 1, 65, 4, 106, 32, 2, 77, 4, 64, 32, 1, 53, 2, 0, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 32, 0, 133, 66, 23, 137, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 249, 243, 221, 241, 153, 246, 153, 171, 22, 124, 33, 0, 32, 1, 65, 4, 106, 33, 1, 11, 3, 64, 32, 1, 32, 2, 73, 4, 64, 32, 1, 49, 0, 0, 66, 197, 207, 217, 178, 241, 229, 186, 234, 39, 126, 32, 0, 133, 66, 11, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 0, 32, 1, 65, 1, 106, 33, 1, 12, 1, 11, 11, 32, 0, 66, 33, 136, 32, 0, 133, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 34, 0, 32, 0, 66, 29, 136, 133, 66, 249, 243, 221, 241, 153, 246, 153, 171, 22, 126, 34, 0, 32, 0, 66, 32, 136, 133, 11, 88, 0, 32, 0, 65, 8, 106, 32, 1, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 124, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 124, 55, 3, 0, 32, 0, 65, 16, 106, 32, 1, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 124, 55, 3, 0, 32, 0, 65, 24, 106, 32, 1, 55, 3, 0, 32, 0, 65, 32, 106, 32, 1, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 125, 55, 3, 0, 11, 132, 5, 2, 3, 127, 4, 126, 32, 1, 32, 2, 106, 33, 5, 32, 0, 65, 40, 106, 33, 4, 32, 0, 65, 200, 0, 106, 40, 2, 0, 33, 3, 32, 0, 32, 0, 41, 3, 0, 32, 2, 173, 124, 55, 3, 0, 32, 2, 32, 3, 106, 65, 32, 73, 4, 64, 32, 3, 32, 4, 106, 32, 1, 32, 2, 252, 10, 0, 0, 32, 0, 65, 200, 0, 106, 32, 2, 32, 3, 106, 54, 2, 0, 15, 11, 32, 3, 4, 64, 32, 3, 32, 4, 106, 32, 1, 65, 32, 32, 3, 107, 34, 2, 252, 10, 0, 0, 32, 0, 65, 8, 106, 34, 3, 41, 3, 0, 32, 4, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 3, 32, 6, 55, 3, 0, 32, 0, 65, 16, 106, 34, 3, 41, 3, 0, 32, 4, 65, 8, 106, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 3, 32, 6, 55, 3, 0, 32, 0, 65, 24, 106, 34, 3, 41, 3, 0, 32, 4, 65, 16, 106, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 3, 32, 6, 55, 3, 0, 32, 0, 65, 32, 106, 34, 3, 41, 3, 0, 32, 4, 65, 24, 106, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 3, 32, 6, 55, 3, 0, 32, 0, 65, 200, 0, 106, 65, 0, 54, 2, 0, 32, 1, 32, 2, 106, 33, 1, 11, 32, 1, 65, 32, 106, 32, 5, 77, 4, 64, 32, 5, 65, 32, 107, 33, 2, 32, 0, 65, 8, 106, 41, 3, 0, 33, 6, 32, 0, 65, 16, 106, 41, 3, 0, 33, 7, 32, 0, 65, 24, 106, 41, 3, 0, 33, 8, 32, 0, 65, 32, 106, 41, 3, 0, 33, 9, 3, 64, 32, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 6, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 1, 65, 8, 106, 34, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 7, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 7, 32, 1, 65, 8, 106, 34, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 8, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 8, 32, 1, 65, 8, 106, 34, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 9, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 9, 32, 1, 65, 8, 106, 34, 1, 32, 2, 77, 13, 0, 11, 32, 0, 65, 8, 106, 32, 6, 55, 3, 0, 32, 0, 65, 16, 106, 32, 7, 55, 3, 0, 32, 0, 65, 24, 106, 32, 8, 55, 3, 0, 32, 0, 65, 32, 106, 32, 9, 55, 3, 0, 11, 32, 1, 32, 5, 73, 4, 64, 32, 4, 32, 1, 32, 5, 32, 1, 107, 34, 1, 252, 10, 0, 0, 32, 0, 65, 200, 0, 106, 32, 1, 54, 2, 0, 11, 11, 200, 2, 1, 5, 126, 32, 0, 65, 24, 106, 41, 3, 0, 33, 1, 32, 0, 41, 3, 0, 34, 2, 66, 32, 90, 4, 126, 32, 0, 65, 8, 106, 41, 3, 0, 34, 3, 66, 1, 137, 32, 0, 65, 16, 106, 41, 3, 0, 34, 4, 66, 7, 137, 124, 32, 1, 66, 12, 137, 32, 0, 65, 32, 106, 41, 3, 0, 34, 5, 66, 18, 137, 124, 124, 32, 3, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 4, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 1, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 5, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 5, 32, 1, 66, 197, 207, 217, 178, 241, 229, 186, 234, 39, 124, 11, 32, 2, 124, 32, 0, 65, 40, 106, 32, 2, 66, 31, 131, 167, 16, 6, 11 ]);
+var hashFunc, t2 = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 48, 8, 96, 3, 127, 127, 127, 0, 96, 3, 127, 127, 127, 1, 127, 96, 2, 127, 127, 0, 96, 2, 127, 126, 0, 96, 1, 127, 1, 127, 96, 1, 127, 1, 126, 96, 3, 127, 127, 126, 1, 126, 96, 3, 126, 127, 127, 1, 126, 3, 11, 10, 1, 1, 2, 0, 4, 6, 7, 3, 0, 5, 5, 3, 1, 0, 1, 7, 85, 9, 3, 109, 101, 109, 2, 0, 5, 120, 120, 104, 51, 50, 0, 0, 6, 105, 110, 105, 116, 51, 50, 0, 2, 8, 117, 112, 100, 97, 116, 101, 51, 50, 0, 3, 8, 100, 105, 103, 101, 115, 116, 51, 50, 0, 4, 5, 120, 120, 104, 54, 52, 0, 5, 6, 105, 110, 105, 116, 54, 52, 0, 7, 8, 117, 112, 100, 97, 116, 101, 54, 52, 0, 8, 8, 100, 105, 103, 101, 115, 116, 54, 52, 0, 9, 10, 211, 23, 10, 242, 1, 1, 4, 127, 32, 0, 32, 1, 106, 33, 3, 32, 1, 65, 16, 79, 4, 127, 32, 3, 65, 16, 107, 33, 6, 32, 2, 65, 168, 136, 141, 161, 2, 106, 33, 3, 32, 2, 65, 247, 148, 175, 175, 120, 106, 33, 4, 32, 2, 65, 177, 243, 221, 241, 121, 107, 33, 5, 3, 64, 32, 0, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 3, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 3, 32, 0, 65, 4, 106, 34, 0, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 4, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 0, 65, 4, 106, 34, 0, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 2, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 2, 32, 0, 65, 4, 106, 34, 0, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 5, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 5, 32, 0, 65, 4, 106, 34, 0, 32, 6, 77, 13, 0, 11, 32, 2, 65, 12, 119, 32, 5, 65, 18, 119, 106, 32, 4, 65, 7, 119, 106, 32, 3, 65, 1, 119, 106, 5, 32, 2, 65, 177, 207, 217, 178, 1, 106, 11, 32, 1, 106, 32, 0, 32, 1, 65, 15, 113, 16, 1, 11, 146, 1, 0, 32, 1, 32, 2, 106, 33, 2, 3, 64, 32, 1, 65, 4, 106, 32, 2, 75, 69, 4, 64, 32, 1, 40, 2, 0, 65, 189, 220, 202, 149, 124, 108, 32, 0, 106, 65, 17, 119, 65, 175, 214, 211, 190, 2, 108, 33, 0, 32, 1, 65, 4, 106, 33, 1, 12, 1, 11, 11, 3, 64, 32, 1, 32, 2, 79, 69, 4, 64, 32, 1, 45, 0, 0, 65, 177, 207, 217, 178, 1, 108, 32, 0, 106, 65, 11, 119, 65, 177, 243, 221, 241, 121, 108, 33, 0, 32, 1, 65, 1, 106, 33, 1, 12, 1, 11, 11, 32, 0, 65, 15, 118, 32, 0, 115, 65, 247, 148, 175, 175, 120, 108, 34, 0, 32, 0, 65, 13, 118, 115, 65, 189, 220, 202, 149, 124, 108, 34, 0, 32, 0, 65, 16, 118, 115, 11, 63, 0, 32, 0, 65, 8, 106, 32, 1, 65, 168, 136, 141, 161, 2, 106, 54, 2, 0, 32, 0, 65, 12, 106, 32, 1, 65, 247, 148, 175, 175, 120, 106, 54, 2, 0, 32, 0, 65, 16, 106, 32, 1, 54, 2, 0, 32, 0, 65, 20, 106, 32, 1, 65, 177, 243, 221, 241, 121, 107, 54, 2, 0, 11, 211, 4, 1, 6, 127, 32, 1, 32, 2, 106, 33, 6, 32, 0, 65, 24, 106, 33, 5, 32, 0, 65, 40, 106, 40, 2, 0, 33, 3, 32, 0, 32, 0, 40, 2, 0, 32, 2, 106, 54, 2, 0, 32, 0, 65, 4, 106, 34, 4, 32, 4, 40, 2, 0, 32, 2, 65, 16, 79, 32, 0, 40, 2, 0, 65, 16, 79, 114, 114, 54, 2, 0, 32, 2, 32, 3, 106, 65, 16, 73, 4, 64, 32, 3, 32, 5, 106, 32, 1, 32, 2, 252, 10, 0, 0, 32, 0, 65, 40, 106, 32, 2, 32, 3, 106, 54, 2, 0, 15, 11, 32, 3, 4, 64, 32, 3, 32, 5, 106, 32, 1, 65, 16, 32, 3, 107, 34, 2, 252, 10, 0, 0, 32, 0, 65, 8, 106, 34, 3, 40, 2, 0, 32, 5, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 3, 32, 4, 54, 2, 0, 32, 0, 65, 12, 106, 34, 3, 40, 2, 0, 32, 5, 65, 4, 106, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 3, 32, 4, 54, 2, 0, 32, 0, 65, 16, 106, 34, 3, 40, 2, 0, 32, 5, 65, 8, 106, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 3, 32, 4, 54, 2, 0, 32, 0, 65, 20, 106, 34, 3, 40, 2, 0, 32, 5, 65, 12, 106, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 3, 32, 4, 54, 2, 0, 32, 0, 65, 40, 106, 65, 0, 54, 2, 0, 32, 1, 32, 2, 106, 33, 1, 11, 32, 1, 32, 6, 65, 16, 107, 77, 4, 64, 32, 6, 65, 16, 107, 33, 8, 32, 0, 65, 8, 106, 40, 2, 0, 33, 2, 32, 0, 65, 12, 106, 40, 2, 0, 33, 3, 32, 0, 65, 16, 106, 40, 2, 0, 33, 4, 32, 0, 65, 20, 106, 40, 2, 0, 33, 7, 3, 64, 32, 1, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 2, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 2, 32, 1, 65, 4, 106, 34, 1, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 3, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 3, 32, 1, 65, 4, 106, 34, 1, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 4, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 4, 32, 1, 65, 4, 106, 34, 1, 40, 2, 0, 65, 247, 148, 175, 175, 120, 108, 32, 7, 106, 65, 13, 119, 65, 177, 243, 221, 241, 121, 108, 33, 7, 32, 1, 65, 4, 106, 34, 1, 32, 8, 77, 13, 0, 11, 32, 0, 65, 8, 106, 32, 2, 54, 2, 0, 32, 0, 65, 12, 106, 32, 3, 54, 2, 0, 32, 0, 65, 16, 106, 32, 4, 54, 2, 0, 32, 0, 65, 20, 106, 32, 7, 54, 2, 0, 11, 32, 1, 32, 6, 73, 4, 64, 32, 5, 32, 1, 32, 6, 32, 1, 107, 34, 1, 252, 10, 0, 0, 32, 0, 65, 40, 106, 32, 1, 54, 2, 0, 11, 11, 97, 1, 1, 127, 32, 0, 65, 16, 106, 40, 2, 0, 33, 1, 32, 0, 65, 4, 106, 40, 2, 0, 4, 127, 32, 1, 65, 12, 119, 32, 0, 65, 20, 106, 40, 2, 0, 65, 18, 119, 106, 32, 0, 65, 12, 106, 40, 2, 0, 65, 7, 119, 106, 32, 0, 65, 8, 106, 40, 2, 0, 65, 1, 119, 106, 5, 32, 1, 65, 177, 207, 217, 178, 1, 106, 11, 32, 0, 40, 2, 0, 106, 32, 0, 65, 24, 106, 32, 0, 65, 40, 106, 40, 2, 0, 16, 1, 11, 157, 4, 2, 1, 127, 3, 126, 32, 0, 32, 1, 106, 33, 3, 32, 1, 65, 32, 79, 4, 126, 32, 3, 65, 32, 107, 33, 3, 32, 2, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 124, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 124, 33, 4, 32, 2, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 124, 33, 5, 32, 2, 66, 0, 124, 33, 6, 32, 2, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 125, 33, 2, 3, 64, 32, 0, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 4, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 4, 32, 0, 65, 8, 106, 34, 0, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 5, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 5, 32, 0, 65, 8, 106, 34, 0, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 6, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 0, 65, 8, 106, 34, 0, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 2, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 2, 32, 0, 65, 8, 106, 34, 0, 32, 3, 77, 13, 0, 11, 32, 6, 66, 12, 137, 32, 2, 66, 18, 137, 124, 32, 5, 66, 7, 137, 124, 32, 4, 66, 1, 137, 124, 32, 4, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 5, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 6, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 2, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 5, 32, 2, 66, 197, 207, 217, 178, 241, 229, 186, 234, 39, 124, 11, 32, 1, 173, 124, 32, 0, 32, 1, 65, 31, 113, 16, 6, 11, 137, 2, 0, 32, 1, 32, 2, 106, 33, 2, 3, 64, 32, 1, 65, 8, 106, 32, 2, 77, 4, 64, 32, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 32, 0, 133, 66, 27, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 33, 0, 32, 1, 65, 8, 106, 33, 1, 12, 1, 11, 11, 32, 1, 65, 4, 106, 32, 2, 77, 4, 64, 32, 1, 53, 2, 0, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 32, 0, 133, 66, 23, 137, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 249, 243, 221, 241, 153, 246, 153, 171, 22, 124, 33, 0, 32, 1, 65, 4, 106, 33, 1, 11, 3, 64, 32, 1, 32, 2, 73, 4, 64, 32, 1, 49, 0, 0, 66, 197, 207, 217, 178, 241, 229, 186, 234, 39, 126, 32, 0, 133, 66, 11, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 0, 32, 1, 65, 1, 106, 33, 1, 12, 1, 11, 11, 32, 0, 66, 33, 136, 32, 0, 133, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 34, 0, 32, 0, 66, 29, 136, 133, 66, 249, 243, 221, 241, 153, 246, 153, 171, 22, 126, 34, 0, 32, 0, 66, 32, 136, 133, 11, 88, 0, 32, 0, 65, 8, 106, 32, 1, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 124, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 124, 55, 3, 0, 32, 0, 65, 16, 106, 32, 1, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 124, 55, 3, 0, 32, 0, 65, 24, 106, 32, 1, 55, 3, 0, 32, 0, 65, 32, 106, 32, 1, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 125, 55, 3, 0, 11, 132, 5, 2, 3, 127, 4, 126, 32, 1, 32, 2, 106, 33, 5, 32, 0, 65, 40, 106, 33, 4, 32, 0, 65, 200, 0, 106, 40, 2, 0, 33, 3, 32, 0, 32, 0, 41, 3, 0, 32, 2, 173, 124, 55, 3, 0, 32, 2, 32, 3, 106, 65, 32, 73, 4, 64, 32, 3, 32, 4, 106, 32, 1, 32, 2, 252, 10, 0, 0, 32, 0, 65, 200, 0, 106, 32, 2, 32, 3, 106, 54, 2, 0, 15, 11, 32, 3, 4, 64, 32, 3, 32, 4, 106, 32, 1, 65, 32, 32, 3, 107, 34, 2, 252, 10, 0, 0, 32, 0, 65, 8, 106, 34, 3, 41, 3, 0, 32, 4, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 3, 32, 6, 55, 3, 0, 32, 0, 65, 16, 106, 34, 3, 41, 3, 0, 32, 4, 65, 8, 106, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 3, 32, 6, 55, 3, 0, 32, 0, 65, 24, 106, 34, 3, 41, 3, 0, 32, 4, 65, 16, 106, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 3, 32, 6, 55, 3, 0, 32, 0, 65, 32, 106, 34, 3, 41, 3, 0, 32, 4, 65, 24, 106, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 3, 32, 6, 55, 3, 0, 32, 0, 65, 200, 0, 106, 65, 0, 54, 2, 0, 32, 1, 32, 2, 106, 33, 1, 11, 32, 1, 65, 32, 106, 32, 5, 77, 4, 64, 32, 5, 65, 32, 107, 33, 2, 32, 0, 65, 8, 106, 41, 3, 0, 33, 6, 32, 0, 65, 16, 106, 41, 3, 0, 33, 7, 32, 0, 65, 24, 106, 41, 3, 0, 33, 8, 32, 0, 65, 32, 106, 41, 3, 0, 33, 9, 3, 64, 32, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 6, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 6, 32, 1, 65, 8, 106, 34, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 7, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 7, 32, 1, 65, 8, 106, 34, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 8, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 8, 32, 1, 65, 8, 106, 34, 1, 41, 3, 0, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 32, 9, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 33, 9, 32, 1, 65, 8, 106, 34, 1, 32, 2, 77, 13, 0, 11, 32, 0, 65, 8, 106, 32, 6, 55, 3, 0, 32, 0, 65, 16, 106, 32, 7, 55, 3, 0, 32, 0, 65, 24, 106, 32, 8, 55, 3, 0, 32, 0, 65, 32, 106, 32, 9, 55, 3, 0, 11, 32, 1, 32, 5, 73, 4, 64, 32, 4, 32, 1, 32, 5, 32, 1, 107, 34, 1, 252, 10, 0, 0, 32, 0, 65, 200, 0, 106, 32, 1, 54, 2, 0, 11, 11, 200, 2, 1, 5, 126, 32, 0, 65, 24, 106, 41, 3, 0, 33, 1, 32, 0, 41, 3, 0, 34, 2, 66, 32, 90, 4, 126, 32, 0, 65, 8, 106, 41, 3, 0, 34, 3, 66, 1, 137, 32, 0, 65, 16, 106, 41, 3, 0, 34, 4, 66, 7, 137, 124, 32, 1, 66, 12, 137, 32, 0, 65, 32, 106, 41, 3, 0, 34, 5, 66, 18, 137, 124, 124, 32, 3, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 4, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 1, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 32, 5, 66, 207, 214, 211, 190, 210, 199, 171, 217, 66, 126, 66, 0, 124, 66, 31, 137, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 133, 66, 135, 149, 175, 175, 152, 182, 222, 155, 158, 127, 126, 66, 227, 220, 202, 149, 252, 206, 242, 245, 133, 127, 124, 5, 32, 1, 66, 197, 207, 217, 178, 241, 229, 186, 234, 39, 124, 11, 32, 2, 124, 32, 0, 65, 40, 106, 32, 2, 66, 31, 131, 167, 16, 6, 11 ]);
 
 async function e2() {
   const {instance: {exports: {mem: _, xxh32: ee, xxh64: ne, init32: ie, update32: re, digest32: se, init64: oe, update64: le, digest64: ue}}} = await WebAssembly.instantiate(t2);
@@ -20521,28 +20711,6 @@ async function e2() {
   };
 }
 
-var hashFunc, crc32kTable = new Uint32Array(256), crc32cTable = new Uint32Array(256);
-
-function generateCRC32KTable() {
-  for (let _ = 0; _ < 256; _++) {
-    let ee = _;
-    for (let _ = 0; _ < 8; _++) if (1 & ee) ee = ee >>> 1 ^ 3988292384; else ee >>>= 1;
-    crc32kTable[_] = ee;
-  }
-}
-
-function generateCRC32CTable() {
-  for (let _ = 0; _ < 256; _++) {
-    let ee = _;
-    for (let _ = 0; _ < 8; _++) if (1 & ee) ee = ee >>> 1 ^ 517762881; else ee >>>= 1;
-    crc32cTable[_] = ee;
-  }
-}
-
-generateCRC32CTable();
-
-generateCRC32KTable();
-
 async function initHashFunc() {
   try {
     const {h32ToString: _} = await e2();
@@ -20566,7 +20734,7 @@ async function initHashFunc() {
 initHashFunc();
 
 async function sha1(_) {
-  const ee = writeString(_), ne = await webcrypto.subtle.digest({
+  const ee = writeString(_), ne = await globalThis.crypto.subtle.digest({
     name: "SHA-1"
   }, ee);
   return await arrayBufferToBase64Single(ne);
@@ -24076,22 +24244,36 @@ function confirmWithMessage(_, ee, ne, ie, re, se) {
   }));
 }
 
-var __save, _save_fn, __load, _load_fn, __queueSave, _queueSave_fn, sameChangePairs, YieldOperationNumbers = 100, PersistentMap = class {
-  constructor(_, ee) {
-    __privateAdd(this, __save);
-    __privateAdd(this, __load);
-    __privateAdd(this, __queueSave);
-    this._setCount = YieldOperationNumbers;
-    this._key = _;
-    this._map = new Map(null != ee ? ee : []);
-    __privateMethod(this, __load, _load_fn).call(this, ee);
-  }
+var sameChangePairs, YieldOperationNumbers = 100, PersistentMap = class {
   flush() {
-    __privateMethod(this, __save, _save_fn).call(this);
+    this._save();
+  }
+  _save() {
+    localStorage.setItem(this._key, JSON.stringify([ ...this._map.entries() ]));
+  }
+  _load(_ = []) {
+    var ee;
+    try {
+      const ne = null != (ee = localStorage.getItem(this._key)) ? ee : "", ie = "" === ne ? "[]" : ne, re = JSON.parse(ie);
+      this._map = new Map([ ...re, ..._ ]);
+    } catch (ee) {
+      console.log(`Map read error : ${this._key}`);
+      console.dir(ee);
+      this._map = new Map([ ..._ ]);
+    }
+    return Promise.resolve();
+  }
+  _queueSave() {
+    this._setCount--;
+    if (this._setCount < 0) {
+      this._setCount = YieldOperationNumbers;
+      scheduleTask(`save-map-${this._key}`, 0, (() => this._save()));
+    }
+    scheduleTask(`save-map-${this._key}`, 150, (() => this._save()));
   }
   delete(_) {
     const ee = this._map.delete(_);
-    __privateMethod(this, __queueSave, _queueSave_fn).call(this);
+    this._queueSave();
     return ee;
   }
   has(_) {
@@ -24099,49 +24281,40 @@ var __save, _save_fn, __load, _load_fn, __queueSave, _queueSave_fn, sameChangePa
   }
   set(_, ee) {
     this._map.set(_, ee);
-    __privateMethod(this, __queueSave, _queueSave_fn).call(this);
+    this._queueSave();
     return this;
   }
   clear() {
     this._map = new Map;
-    __privateMethod(this, __save, _save_fn).call(this);
+    this._save();
   }
   get(_, ee) {
     const ne = this._map.get(_);
     if (void 0 === ne) return ee; else return ne;
   }
-};
-
-__save = new WeakSet;
-
-_save_fn = function() {
-  localStorage.setItem(this._key, JSON.stringify([ ...this._map.entries() ]));
-};
-
-__load = new WeakSet;
-
-_load_fn = function(_ = []) {
-  var ee;
-  try {
-    const ne = null != (ee = localStorage.getItem(this._key)) ? ee : "", ie = "" === ne ? "[]" : ne, re = JSON.parse(ie);
-    this._map = new Map([ ...re, ..._ ]);
-  } catch (ee) {
-    console.log(`Map read error : ${this._key}`);
-    console.dir(ee);
-    this._map = new Map([ ..._ ]);
+  constructor(_, ee) {
+    Object.defineProperty(this, "_setCount", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: YieldOperationNumbers
+    });
+    Object.defineProperty(this, "_map", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "_key", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    this._key = _;
+    this._map = new Map(null != ee ? ee : []);
+    this._load(ee);
   }
-  return Promise.resolve();
-};
-
-__queueSave = new WeakSet;
-
-_queueSave_fn = function() {
-  this._setCount--;
-  if (this._setCount < 0) {
-    this._setCount = YieldOperationNumbers;
-    scheduleTask(`save-map-${this._key}`, 0, (() => __privateMethod(this, __save, _save_fn).call(this)));
-  }
-  scheduleTask(`save-map-${this._key}`, 150, (() => __privateMethod(this, __save, _save_fn).call(this)));
 };
 
 function initializeStores(_) {
@@ -24644,7 +24817,7 @@ function inlineWorker(_) {
 }
 
 function Worker2() {
-  return inlineWorker('var M=Object.defineProperty,B=Object.defineProperties;var k=Object.getOwnPropertyDescriptors;var T=Object.getOwnPropertySymbols;var U=Object.prototype.hasOwnProperty,G=Object.prototype.propertyIsEnumerable;var x=(e,n)=>(n=Symbol[e])?n:Symbol.for("Symbol."+e);var A=(e,n,t)=>n in e?M(e,n,{enumerable:!0,configurable:!0,writable:!0,value:t}):e[n]=t,O=(e,n)=>{for(var t in n||(n={}))U.call(n,t)&&A(e,t,n[t]);if(T)for(var t of T(n))G.call(n,t)&&A(e,t,n[t]);return e},L=(e,n)=>B(e,k(n));var m=function(e,n){this[0]=e,this[1]=n},_=(e,n,t)=>{var r=(l,s,c,a)=>{try{var y=t[l](s),f=(s=y.value)instanceof m,E=y.done;Promise.resolve(f?s[0]:s).then(u=>f?r(l==="return"?l:"next",s[1]?{done:u.done,value:u.value}:u,c,a):c({value:u,done:E})).catch(u=>r("throw",u,c,a))}catch(u){a(u)}},o=l=>i[l]=s=>new Promise((c,a)=>r(l,s,c,a)),i={};return t=t.apply(e,n),i[x("asyncIterator")]=()=>i,o("next"),o("throw"),o("return"),i},S=e=>{var n=e[x("asyncIterator")],t=!1,r,o={};return n==null?(n=e[x("iterator")](),r=i=>o[i]=l=>n[i](l)):(n=n.call(e),r=i=>o[i]=l=>{if(t){if(t=!1,i==="throw")throw l;return l}return t=!0,{done:!1,value:new m(new Promise(s=>{var c=n[i](l);if(!(c instanceof Object))throw TypeError("Object expected");s(c)}),1)}}),o[x("iterator")]=()=>o,r("next"),"throw"in n?r("throw"):o.throw=i=>{throw i},"return"in n&&r("return"),o},C=(e,n,t)=>(n=e[x("asyncIterator")])?n.call(e):(e=e[x("iterator")](),n={},t=(r,o)=>(o=e[r])&&(n[r]=i=>new Promise((l,s,c)=>(i=o.call(e,i),c=i.done,Promise.resolve(i.value).then(a=>l({value:a,done:c}),s)))),t("next"),t("return"),n);var re=Symbol("cancelled"),oe=Symbol("auto_merged"),ie=Symbol("not_conflicted"),se=Symbol("missing_or_error"),ae=Symbol("leave_to_subsequent_proc"),le=Symbol("infinity"),ce=Symbol("timed out"),ue=Symbol("NotFound");var D={syncMaxSizeInMB:50,customChunkSize:0,concurrencyOfReadChunksOnline:100,minimumIntervalOfReadChunksOnline:333},ye=L(O({},D),{customChunkSize:50,concurrencyOfReadChunksOnline:30,minimumIntervalOfReadChunksOnline:25}),fe=L(O({},D),{customChunkSize:10,concurrencyOfReadChunksOnline:30,minimumIntervalOfReadChunksOnline:25}),v={minimumChunkSize:20,longLineThreshold:250,encrypt:!1,usePathObfuscation:!1,enableCompression:!1,useEden:!1,customChunkSize:0,useDynamicIterationCount:!1,hashAlg:"xxhash64",enableChunkSplitterV2:!0},V={maxChunksInEden:10,maxTotalLengthInEden:1024,maxAgeInEden:10,useIgnoreFiles:!1,useCustomRequestHandler:!1,batch_size:25,batches_limit:25,useIndexedDBAdapter:!0,useTimeouts:!1,readChunksOnline:!0,hashCacheMaxCount:300,hashCacheMaxAmount:50,concurrencyOfReadChunksOnline:40,minimumIntervalOfReadChunksOnline:50,ignoreFiles:".gitignore",syncMaxSizeInMB:50,enableChunkSplitterV2:!0};var pe=O(O({},V),v);var z={},H={};for(let e=0;e<256;e++)z[`00${e.toString(16)}`.slice(-2)]=e,H[e]=`00${e.toString(16)}`.slice(-2);function*K(e,n){for(let t=e;t<=n;t++)yield t}var $={},X={};[...K(192,447)].forEach((e,n)=>{$[n]=e,X[e]=n});var Ie=1024*1024*30;var Y=32768;var Te=3*5e7;function q(e){return new Promise((n,t)=>{let r=new Blob([e],{type:"application/octet-binary"}),o=new FileReader;o.onload=function(i){var c,a;let l=((a=(c=i.target)==null?void 0:c.result)==null?void 0:a.toString())||"";if(e.byteLength!=0&&(l==""||l=="data:"))return t(new TypeError("Could not parse the encoded string"));let s=l.substring(l.indexOf(",")+1);n(s)},o.readAsDataURL(r)})}async function I(e){let n=e instanceof Uint8Array?e:new Uint8Array(e);return n.byteLength<Y?btoa(String.fromCharCode.apply(null,[...n])):await q(n)}function F(e){return e.type==="text/plain"}function*j(e,n){let t="";e:do{let r=e.shift();if(typeof r=="undefined"){yield t;break e}if(r.startsWith("```")||r.startsWith(" ```")||r.startsWith("  ```")||r.startsWith("   ```")){yield t,t=r+(e.length!=0?`\n`:"");n:do{let s=e.shift();if(typeof s=="undefined")break n;t+=s+(e.length!=0?`\n`:"")}while(e.length>0&&!(e[0].startsWith("```")||e[0].startsWith(" ```")||e[0].startsWith("  ```")||e[0].startsWith("   ```")));let o=t.endsWith("="),i=t.length>2048,l=e.shift();if(typeof l!="undefined"&&(t+=l,t+=e.length!=0?`\n`:""),!o&&!i){let s=/(.*?[;,:<])/g,c=t.split(s).filter(a=>a!="");for(let a of c)yield a}else yield t;t=""}else t+=r+(e.length!=0?`\n`:""),(t.length>=n||e.length==0||e[0]=="#"||t[0]=="#")&&(yield t,t="")}while(e.length>0)}var R=10;function J(e,n,t,r){let o=typeof e=="string"?[e]:e;return function*(){for(let l of o)if(t){let s=l.split(`\n`),c=j(s,r);for(let a of c){let y=a;do{let f=n;y.charCodeAt(f-1)!=y.codePointAt(f-1)&&f++,yield y.substring(0,f),y=y.substring(f)}while(y!="")}}else{let s=l;do{let c=n,a=s.substring(0,c);s=s.substring(c),yield a}while(s!="")}}}function*Q(e,n,t=25,r){let o="",i=!1,l=n.length;for(let s of e){let c=s.length;if(r&&c>r){yield o+s,i=!1,o="";continue}let a=-1,y=0;e:do{if(a=s.indexOf(n,y),a==-1)break e;o+=s.slice(y,a)+n,o.length>t?(yield o,o="",i=!1):i=!0,y=a+l}while(a<c);(y!=a||y==-1&&a==-1)&&(o+=s.slice(y),i=!0)}i&&(yield o)}function*w(e,n){let t=e.length;if(t>n){let r=0;do{let o=r+n;if(o>t){yield e.substring(r);break}for(;e.charCodeAt(o-1)!=e.codePointAt(o-1);)o++;yield e.substring(r,o),r=o}while(r<t)}else yield e}function*Z(e,n){for(let t of e)yield*S(w(t,n))}function*ee(e){for(let n of e)yield n}var ne=100;async function P(e,n,t,r,o){if(e.size==0)return function*(){};if(F(e)){let f=await e.text();if(!t){let g=w(f,n);return function*(){yield*S(g)}}let E=f.length,u=r;for(;E/u>ne;)u+=r;let p=ee([f]),h=Q(p,`\n`,u),d=Z(h,n);return function*(){yield*S(d)}}let i=0;o&&o.endsWith(".pdf")&&(i=47);let c=Math.max(1e5,Math.min(1e8,e.size)),a=1,y=c;for(;y>10;)y/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return _(this,null,function*(){let E=e.size,u=0,p=new Uint8Array(yield new m(e.arrayBuffer()));do{let h=u+r,d=u+n,g,b=p.indexOf(i,h);b==-1&&(b=p.indexOf(R,h)),b==-1?g=d:g=b<d?b:d,yield yield new m(I(p.slice(u,g))),u=g}while(u<E)})}}async function N(e,n,t,r,o){if(F(e))return J(await e.text(),n,t,r);let i=0;o&&o.endsWith(".pdf")&&(i=47);let c=Math.max(1e5,Math.min(1e8,e.size)),a=1,y=c;for(;y>10;)y/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return _(this,null,function*(){let E=e.size,u=0;do{let p=n,h=new Uint8Array(yield new m(e.slice(u,u+n).arrayBuffer())),d=h.indexOf(i,r);p=d==-1?n:Math.min(n,d),d==-1&&(d=h.indexOf(R,r));let g=h.slice(0,p);u+=g.length,yield yield new m(I(g))}while(u<E)})}}self.onmessage=async e=>{let n=e.data.data,t=n.key,r=n.dataSrc,o=n.pieceSize,i=n.plainSplit,l=n.minimumChunkSize,s=n.filename,a=await(n.useV2?P:N)(r,o,i,l,s);try{for(var y=C(a()),f,E,u;f=!(E=await y.next()).done;f=!1){let p=E.value;self.postMessage([t,p])}}catch(E){u=[E]}finally{try{f&&(E=y.return)&&await E.call(y)}finally{if(u)throw u[0]}}self.postMessage([t,void 0])};\n');
+  return inlineWorker('var L=(t,e)=>(e=Symbol[t])?e:Symbol.for("Symbol."+t);var b=function(t,e){this[0]=t,this[1]=e},E=(t,e,n)=>{var r=(c,s,l,a)=>{try{var u=n[c](s),g=(s=u.value)instanceof b,x=u.done;Promise.resolve(g?s[0]:s).then(f=>g?r(c==="return"?c:"next",s[1]?{done:f.done,value:f.value}:f,l,a):l({value:f,done:x})).catch(f=>r("throw",f,l,a))}catch(f){a(f)}},o=c=>i[c]=s=>new Promise((l,a)=>r(c,s,l,a)),i={};return n=n.apply(t,e),i[L("asyncIterator")]=()=>i,o("next"),o("throw"),o("return"),i},m=t=>{var e=t[L("asyncIterator")],n=!1,r,o={};return e==null?(e=t[L("iterator")](),r=i=>o[i]=c=>e[i](c)):(e=e.call(t),r=i=>o[i]=c=>{if(n){if(n=!1,i==="throw")throw c;return c}return n=!0,{done:!1,value:new b(new Promise(s=>{var l=e[i](c);if(!(l instanceof Object))throw TypeError("Object expected");s(l)}),1)}}),o[L("iterator")]=()=>o,r("next"),"throw"in e?r("throw"):o.throw=i=>{throw i},"return"in e&&r("return"),o},B=(t,e,n)=>(e=t[L("asyncIterator")])?e.call(t):(t=t[L("iterator")](),e={},n=(r,o)=>(o=t[r])&&(e[r]=i=>new Promise((c,s,l)=>(i=o.call(t,i),l=i.done,Promise.resolve(i.value).then(a=>c({value:a,done:l}),s)))),n("next"),n("return"),e);var Z=3*5e7;function O(t){return new Promise((e,n)=>{let r=new Blob([t],{type:"application/octet-binary"}),o=new FileReader;o.onload=function(i){var l,a;let c=((a=(l=i.target)==null?void 0:l.result)==null?void 0:a.toString())||"";if(t.byteLength!=0&&(c==""||c=="data:"))return n(new TypeError("Could not parse the encoded string"));let s=c.substring(c.indexOf(",")+1);e(s)},o.readAsDataURL(r)})}async function A(t){let e=t instanceof Uint8Array?t:new Uint8Array(t);return e.byteLength<S?btoa(String.fromCharCode.apply(null,[...e])):await O(e)}var S=32768;var P={},N={};for(let t=0;t<256;t++)P[`00${t.toString(16)}`.slice(-2)]=t,N[t]=`00${t.toString(16)}`.slice(-2);function*v(t,e){for(let n=t;n<=e;n++)yield n}var R={},W={};[...v(192,447)].forEach((t,e)=>{R[e]=t,W[t]=e});var it=1024*1024*30;function T(t){return t.type==="text/plain"}function*$(t,e){let n="";t:do{let r=t.shift();if(typeof r=="undefined"){yield n;break t}if(r.startsWith("```")||r.startsWith(" ```")||r.startsWith("  ```")||r.startsWith("   ```")){yield n,n=r+(t.length!=0?`\n`:"");e:do{let s=t.shift();if(typeof s=="undefined")break e;n+=s+(t.length!=0?`\n`:"")}while(t.length>0&&!(t[0].startsWith("```")||t[0].startsWith(" ```")||t[0].startsWith("  ```")||t[0].startsWith("   ```")));let o=n.endsWith("="),i=n.length>2048,c=t.shift();if(typeof c!="undefined"&&(n+=c,n+=t.length!=0?`\n`:""),!o&&!i){let s=/(.*?[;,:<])/g,l=n.split(s).filter(a=>a!="");for(let a of l)yield a}else yield n;n=""}else n+=r+(t.length!=0?`\n`:""),(n.length>=e||t.length==0||t[0]=="#"||n[0]=="#")&&(yield n,n="")}while(t.length>0)}var U=10;function j(t,e,n,r){let o=typeof t=="string"?[t]:t;return function*(){for(let c of o)if(n){let s=c.split(`\n`),l=$(s,r);for(let a of l){let u=a;do{let g=e;u.charCodeAt(g-1)!=u.codePointAt(g-1)&&g++,yield u.substring(0,g),u=u.substring(g)}while(u!="")}}else{let s=c;do{let l=e,a=s.substring(0,l);s=s.substring(l),yield a}while(s!="")}}}function*z(t,e,n=25,r){let o="",i=!1,c=e.length;for(let s of t){let l=s.length;if(r&&l>r){yield o+s,i=!1,o="";continue}let a=-1,u=0;t:do{if(a=s.indexOf(e,u),a==-1)break t;o+=s.slice(u,a)+e,o.length>n?(yield o,o="",i=!1):i=!0,u=a+c}while(a<l);(u!=a||u==-1&&a==-1)&&(o+=s.slice(u),i=!0)}i&&(yield o)}function*_(t,e){let n=t.length;if(n>e){let r=0;do{let o=r+e;if(o>n){yield t.substring(r);break}for(;t.charCodeAt(o-1)!=t.codePointAt(o-1);)o++;yield t.substring(r,o),r=o}while(r<n)}else yield t}function*D(t,e){for(let n of t)yield*m(_(n,e))}function*H(t){for(let e of t)yield e}var X=100;async function G(t,e,n,r,o){if(t.size==0)return function*(){};if(T(t)){let g=await t.text();if(!n){let h=_(g,e);return function*(){yield*m(h)}}let x=g.length,f=r;for(;x/f>X;)f+=r;let y=H([g]),p=z(y,`\n`,f),d=D(p,e);return function*(){yield*m(d)}}let i=0;o&&o.endsWith(".pdf")&&(i=47);let l=Math.max(1e5,Math.min(1e8,t.size)),a=1,u=l;for(;u>10;)u/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return E(this,null,function*(){let x=t.size,f=0,y=new Uint8Array(yield new b(t.arrayBuffer()));do{let p=f+r,d=f+e,h,w=y.indexOf(i,p);w==-1&&(w=y.indexOf(U,p)),w==-1?h=d:h=w<d?w:d,yield yield new b(A(y.slice(f,h))),f=h}while(f<x)})}}async function F(t,e,n,r,o){if(T(t))return j(await t.text(),e,n,r);let i=0;o&&o.endsWith(".pdf")&&(i=47);let l=Math.max(1e5,Math.min(1e8,t.size)),a=1,u=l;for(;u>10;)u/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return E(this,null,function*(){let x=t.size,f=0;do{let y=e,p=new Uint8Array(yield new b(t.slice(f,f+e).arrayBuffer())),d=p.indexOf(i,r);y=d==-1?e:Math.min(e,d),d==-1&&(d=p.indexOf(U,r));let h=p.slice(0,y);f+=h.length,yield yield new b(A(h))}while(f<x)})}}self.onmessage=async t=>{let e=t.data.data,n=e.key,r=e.dataSrc,o=e.pieceSize,i=e.plainSplit,c=e.minimumChunkSize,s=e.filename,a=await(e.useV2?G:F)(r,o,i,c,s);try{for(var u=B(a()),g,x,f;g=!(x=await u.next()).done;g=!1){let y=x.value;self.postMessage([n,y])}}catch(x){f=[x]}finally{try{g&&(x=u.return)&&await x.call(u)}finally{if(f)throw f[0]}}self.postMessage([n,void 0])};\n');
 }
 
 var key = 0, buffers = new Map, notify = new Notifier, worker = Worker2(), isTerminated = false;
@@ -27266,7 +27439,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       text: "Updates"
     }), pe = this.createEl(fe, "div", {
       text: ""
-    }), ge = "0.23.14", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
+    }), ge = "0.23.15", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
     ye.addClass("sls-header-button");
     ye.innerHTML = "<button> OK, I read everything. </button>";
     if (me > ((null == (_ = this.editingSettings) ? void 0 : _.lastReadUpdates) || 0)) {
@@ -27277,7 +27450,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         _.remove();
       }));
     }
-    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.14:\n  - Fixed:\n    - No longer batch-saving ignores editor inputs.\n    - The file-watching and serialisation processes have been changed to the one which is similar to previous implementations.\n    - We can configure the settings (Especially about text-boxes) even if we have configured the device name.\n  - Improved:\n    - We can configure the delay of batch-saving.\n      - Default: 5 seconds, the same as the previous hard-coded value. (Note: also, the previous behaviour was not correct).\n    - Also, we can configure the limit of delaying batch-saving.\n    - The performance of showing status indicators has been improved.\n- 0.23.13:\n  - Fixed:\n    - No longer files have been trimmed even delimiters have been continuous.\n    - Fixed the toggle title to `Do not split chunks in the background` from `Do not split chunks in the foreground`.\n    - Non-configured item mismatches are no longer detected.\n- 0.23.12:\n  - Improved:\n    - Now notes will be split into chunks in the background thread to improve smoothness.\n      - Default enabled, to disable, toggle `Do not split chunks in the foreground` on `Hatch` -> `Compatibility`.\n      - If you want to process very small notes in the foreground, please enable `Process small files in the foreground` on `Hatch` -> `Compatibility`.\n    - We can use a `splitting-limit-capped chunk splitter`; which performs more simple and make less amount of chunks.\n      - Default disabled, to enable, toggle `Use splitting-limit-capped chunk splitter` on `Sync settings` -> `Performance tweaks`\n  - Tidied\n    - Some files have been separated into multiple files to make them more explicit in what they are responsible for.\n- 0.23.11:\n  - Fixed:\n    - Now we *surely* can set the device name and enable customised synchronisation.\n    - Unnecessary dialogue update processes have been eliminated.\n    - Customisation sync no longer stores half-collected files.\n    - No longer hangs up when removing or renaming files with the `Sync on Save` toggle enabled.\n  - Improved:\n    - Customisation sync now performs data deserialization more smoothly.\n    - New translations have been merged.\n- 0.23.10\n  - Fixed:\n    - No longer configurations have been locked in the minimal setup.\n- 0.23.9\n  - Fixed:\n    - No longer unexpected parallel replication is performed.\n    - Now we can set the device name and enable customised synchronisation again.\n\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
+    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.15:\n  - Maintenance Update:\n    - Library refining (Phase 1). There are no significant changes on the user side.\n- 0.23.14:\n  - Fixed:\n    - No longer batch-saving ignores editor inputs.\n    - The file-watching and serialisation processes have been changed to the one which is similar to previous implementations.\n    - We can configure the settings (Especially about text-boxes) even if we have configured the device name.\n  - Improved:\n    - We can configure the delay of batch-saving.\n      - Default: 5 seconds, the same as the previous hard-coded value. (Note: also, the previous behaviour was not correct).\n    - Also, we can configure the limit of delaying batch-saving.\n    - The performance of showing status indicators has been improved.\n- 0.23.13:\n  - Fixed:\n    - No longer files have been trimmed even delimiters have been continuous.\n    - Fixed the toggle title to `Do not split chunks in the background` from `Do not split chunks in the foreground`.\n    - Non-configured item mismatches are no longer detected.\n- 0.23.12:\n  - Improved:\n    - Now notes will be split into chunks in the background thread to improve smoothness.\n      - Default enabled, to disable, toggle `Do not split chunks in the foreground` on `Hatch` -> `Compatibility`.\n      - If you want to process very small notes in the foreground, please enable `Process small files in the foreground` on `Hatch` -> `Compatibility`.\n    - We can use a `splitting-limit-capped chunk splitter`; which performs more simple and make less amount of chunks.\n      - Default disabled, to enable, toggle `Use splitting-limit-capped chunk splitter` on `Sync settings` -> `Performance tweaks`\n  - Tidied\n    - Some files have been separated into multiple files to make them more explicit in what they are responsible for.\n\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
     addScreenElement("100", fe);
     const isAnySyncEnabled = () => {
       var _, ee, ne, ie;
@@ -43573,8 +43746,24 @@ function createId(_, ee, ne) {
 
 var indexes = new Map, inProgress = new Set, failed = new Map, Trench = class {
   constructor(_, ee = true) {
-    this._flushTask = void 0;
-    this.concealing = new Map;
+    Object.defineProperty(this, "_db", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "_flushTask", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "concealing", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: new Map
+    });
     this._db = _;
     if (ee) this._flushTask = (async () => {
       const ee = await _.keys(`${PREFIX_TRENCH}-${PREFIX_EPHEMERAL}`, `${PREFIX_TRENCH}-${PREFIX_EPHEMERAL}.`);
@@ -45352,7 +45541,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     this.settingTab = new ObsidianLiveSyncSettingTab(this.app, this);
     this.addSettingTab(this.settingTab);
     this.addUIs();
-    const _ = "0.23.14", ee = "0.23.14";
+    const _ = "0.23.15", ee = "0.23.14";
     this.manifestVersion = _;
     this.packageVersion = ee;
     Logger($f`Self-hosted LiveSync${" v"}${_} ${ee}`);

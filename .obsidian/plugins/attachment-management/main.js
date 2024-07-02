@@ -885,7 +885,6 @@ var OverrideModal = class extends import_obsidian4.Modal {
           attachmentPath: this.setting.attachmentPath,
           attachFormat: this.setting.attachFormat
         });
-        console.log(this.setting.extensionOverride);
         this.onOpen();
       });
     });
@@ -1825,7 +1824,6 @@ var AttachmentManagementPlugin = class extends import_obsidian11.Plugin {
     await this.loadSettings();
     console.log(`Plugin loading: ${this.manifest.name} v.${this.manifest.version}`);
     this.app.workspace.onLayoutReady(() => {
-      console.log(`${this.manifest.name} got onLayoutReady`);
       this.addCommand({
         id: "attachment-management-rearrange-all-links",
         name: "Rearrange all linked attachments",
