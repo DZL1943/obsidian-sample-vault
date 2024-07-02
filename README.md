@@ -16,9 +16,24 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 
 ## 主流的笔记软件
 
-- 编辑器类: Typora、MarkText
-- 本地类: Obsidian、Zettlr、SiYuan、Logseq、Anytype
-- 云笔记类: Notion、Craft、飞书、语雀
+- 本地类
+    - 编辑器: Vim、Emacs、VSCode, Typora、MarkText
+    - 透明存储: Obsidian、Logseq
+    - 非透明存储: SiYuan、Joplin、[Anytype](https://anytype.io)
+- 云笔记类 %% 通常需要登录账号和联网 %%
+    - 传统类: OneNote、Apple Notes
+    - 在线类: Roam Research、[Notion](https://www.notion.so/)、[Craft](https://www.craft.do/)、[语雀](https://www.yuque.com/)、[飞书](https://docs.feishu.cn/)
+- 其他 %% 不够流行或了解不足 %%
+    - Ulysses
+    - Zettlr
+    - TiddlyWiki
+    - Zim
+    - AppFlowy
+    - AFFiNE
+    - [Capacities](https://capacities.io/)
+    - [Tana](https://tana.inc/)
+    - Heptabase
+    - [ClickUp](https://clickup.com/)
 
 > [!hint]+ 对于编程类笔记, 优先用代码编辑器处理. 或者将笔记与代码分离开.
 
