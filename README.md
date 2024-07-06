@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-03 06:09"
+modified: "2024-07-06 22:34"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -151,7 +151,6 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
   "obsidian-style-settings",
   "obsidian-tagfolder",
   "obsidian-tasks-plugin",
-  "privacy-glasses",
   "quick-explorer",
   "quickadd",
   "settings-search",
@@ -355,6 +354,10 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 > - 增添标题时, 可能需手动刷新
 
 > [!bug]+ obsidian-folder-focus-mode
+
+> [!bug]+ privacy-glasses 插件会导致导出时图片虚化.
+
+> [!bug] 紧接着图片后面的文字在导出 pdf 时不会显示.
 
 > [!question]+ [Have Obsidian be the handler of .md files / Add ability to use Obsidian as a markdown editor on files outside vault (file association) - Feature requests - Obsidian Forum](https://forum.obsidian.md/t/have-obsidian-be-the-handler-of-md-files-add-ability-to-use-obsidian-as-a-markdown-editor-on-files-outside-vault-file-association/314/26?page=6)
 

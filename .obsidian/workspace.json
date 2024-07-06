@@ -242,15 +242,14 @@
       "cmdr:QuickAdd: Run QuickAdd": true,
       "cmdr:Shell commands: Execute: gcam": true,
       "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
-      "cmdr:打开设置": true,
-      "obsidian42-brat:BRAT": false
+      "cmdr:打开设置": true
     }
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
+    "_canvas.canvas",
     "draft.md",
     "README.md",
-    "_canvas.canvas",
     "90_Misc/Templates/yearly-template.md",
     "90_Misc/Templates/word-template.md",
     "90_Misc/Templates/weekly-template.md",
