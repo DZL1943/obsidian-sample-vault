@@ -4772,12 +4772,21 @@ var CopyLinkToHeadingToObjectCommand = class extends CommandBase {
     this.obsidianProxy.createNotice("Link copied to your clipboard");
   }
   copyLinkToBlockUnderCursorToClipboard(file, editor, block) {
+    var _a;
+    let linkText = void 0;
+    const blockFirstLine = editor.getLine(block.position.start.line);
+    const links = findLinks(blockFirstLine, 2 /* Wiki */ | 1 /* Markdown */);
+    if (links && links.length && links[0].destinationType == "image" /* Image */) {
+      linkText = (_a = links[0].text) == null ? void 0 : _a.content;
+    }
     if (block.id) {
       return this.obsidianProxy.clipboardWriteText(
+        //TODO: handle spaces
         `${this.obsidianProxy.app.fileManager.generateMarkdownLink(
           file,
           "",
-          "#^" + block.id
+          "#^" + block.id,
+          linkText
         )}`
       );
     }
@@ -4789,10 +4798,12 @@ var CopyLinkToHeadingToObjectCommand = class extends CommandBase {
     const id = this.generateId();
     editor.replaceRange(`${this.isEolRequired(block) ? "\n\n" : " "}^${id}`, end2);
     navigator.clipboard.writeText(
+      //TODO: handle spaces
       `${this.obsidianProxy.app.fileManager.generateMarkdownLink(
         file,
         "",
-        "#^" + id
+        "#^" + id,
+        linkText
       )}`
     );
   }
