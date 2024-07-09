@@ -1,5 +1,7 @@
 {
   "pluginList": [
+    "yan42685/obsidian-clever-search",
+    "wish5115/obsidian-floating-settings",
     "polyipseity/obsidian-show-hidden-files",
     "Quorafind/Obsidian-Node-Auto-Resize",
     "aidan-gibson/obsidian-opener",
