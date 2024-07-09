@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-06 22:34"
+modified: "2024-07-09 10:18"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -131,7 +131,6 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
   "obsidian-advanced-uri",
   "obsidian-columns",
   "obsidian-completr",
-  "obsidian-emoji-toolbar",
   "obsidian-excalidraw-plugin",
   "obsidian-excel-to-markdown-table",
   "obsidian-footnotes",
@@ -159,7 +158,6 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
   "table-editor-obsidian",
   "tag-wrangler",
   "templater-obsidian",
-  "unicode-search",
   "url-into-selection",
   "various-complements"
 ]
