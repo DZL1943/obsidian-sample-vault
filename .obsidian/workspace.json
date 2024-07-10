@@ -238,18 +238,15 @@
       "cmdr:QuickAdd: Run QuickAdd": true,
       "cmdr:Shell commands: Execute: gcam": true,
       "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
-      "cmdr:打开设置": true,
-      "privacy-glasses:Hide all": false,
-      "privacy-glasses:Reveal non-private": false,
-      "privacy-glasses:Reveal headlines only": false,
-      "privacy-glasses:Reveal all": false
+      "cmdr:打开设置": true
     }
   },
-  "active": "dd0c724920d6ce07",
+  "active": "117a823cb947b7cb",
   "lastOpenFiles": [
+    "quicknotes.md",
+    "README.md",
     "_canvas.canvas",
     "draft.md",
-    "README.md",
     "90_Misc/Templates/yearly-template.md",
     "90_Misc/Templates/word-template.md",
     "90_Misc/Templates/weekly-template.md",
@@ -273,7 +270,6 @@
     "Local/temp.md",
     "40_Pages/笔记软件.md",
     "20_Journals/journals.md",
-    "quicknotes.md",
     "20_Journals/context.md",
     "20_Journals/tasks.md",
     "All.md"
