@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-13 11:26"
+modified: "2024-07-13 17:30"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -11,8 +11,8 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 > 1. 本库源自本人在 macOS 上的 Obsidian(1.6.x) 实践, 对其他系统未做适配, 请自行调整相关设置.
 > 2. 若在移动端使用, 建议在 `设置-文件与链接-切换配置文件夹` 处自行创建新的配置目录以免加载卡顿, 建议默认编辑模式设为源码模式.
 
-![](90_Misc/Attachments/README-20240611204632938.png)  
-![](90_Misc/Attachments/README-20240611203835624.png)
+![](Misc/Attachments/README-20240611204632938.png)  
+![](Misc/Attachments/README-20240611203835624.png)
 
 ### 主流的笔记软件
 
@@ -72,7 +72,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - Clippings/
     - Excerpts/
 - 80_Archives/: 归档
-- 90_Misc/: 杂项(比如附件、模版等)
+- Misc/: 杂项(比如附件、模版等)
     - Attachments/
     - Templates/
     - Code/

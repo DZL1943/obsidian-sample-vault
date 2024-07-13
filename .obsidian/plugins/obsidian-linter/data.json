@@ -269,7 +269,8 @@
     "70_Resources",
     "80_Archives",
     "90_Misc",
-    "20_Journals"
+    "20_Journals",
+    "Misc"
   ],
   "filesToIgnore": [],
   "linterLocale": "system-default",

@@ -11,13 +11,14 @@
   "useMarkdownLinks": true,
   "showUnsupportedFiles": true,
   "showInlineTitle": false,
-  "attachmentFolderPath": "90_Misc/Attachments",
+  "attachmentFolderPath": "Misc/Attachments",
   "useTab": false,
   "userIgnoreFilters": [
     "80_archives/",
     "90_misc/attachments/",
     "80_Archives/",
-    "90_Misc/Attachments/"
+    "90_Misc/Attachments/",
+    "Misc/Attachments/"
   ],
   "pdfExportSettings": {
     "includeName": true,

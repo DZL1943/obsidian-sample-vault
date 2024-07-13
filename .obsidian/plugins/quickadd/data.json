@@ -51,8 +51,8 @@
         {
           "name": "reload",
           "type": "UserScript",
-          "id": "543b6cd2-d775-467e-8c6e-b7a3444d2cf7",
-          "path": "90_Misc/Code/reload.js",
+          "id": "d7d2ae18-caad-47d6-bdee-c7f71910bddf",
+          "path": "Misc/Code/reload.js",
           "settings": {}
         }
       ],
