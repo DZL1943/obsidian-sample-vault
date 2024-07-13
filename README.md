@@ -252,6 +252,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - VeraCrypt
     - [Encrypto](https://macpaw.com/encrypto)
     - git-crypt
+
 ### 剪藏、发布、导出
 
 - 简悦
@@ -270,6 +271,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - GitHub/Enveloppe 插件
 - Docusaurus/Obisidiosaurus 插件
 - Digital Garden 插件
+
 ### 参考
 
 - Official
