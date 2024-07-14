@@ -368,5 +368,13 @@
       ],
       "key": "P"
     }
+  ],
+  "vim-toggle:toggle-vim": [
+    {
+      "modifiers": [
+        "Ctrl"
+      ],
+      "key": "V"
+    }
   ]
 }

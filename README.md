@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-14 10:13"
+modified: "2024-07-14 16:36"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -122,7 +122,6 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
   "floating-toc",
   "fuzzy-chinese-pinyin",
   "hotkey-helper",
-  "hotkeysplus-obsidian",
   "janitor",
   "keyboard-analyzer",
   "legacy-vault-switcher",
@@ -213,6 +212,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 | quickadd:choice:3c55de5c-97b0-429c-9e0c-3335df22fa10                  | Ctrl+C              |
 | quickadd:choice:d03adf12-a165-4b3e-b1e0-4d05983a64dd                  | Mod+R               |
 | quickadd:runQuickAdd                                                  | Alt+Q               |
+| vim-toggle:toggle-vim                                                 | Ctrl+V              |
 | workspace:split-horizontal                                            | Ctrl+Alt+ArrowDown  |
 | workspace:split-vertical                                              | Ctrl+Alt+ArrowRight |
 
