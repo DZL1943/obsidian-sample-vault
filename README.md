@@ -1,11 +1,11 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-14 09:46"
+modified: "2024-07-14 10:13"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
 
-## obsidian-sample-vault
+# obsidian-sample-vault
 
 > [!attention]+ 适用性说明
 > 1. 本库源自本人在 macOS 上的 Obsidian(1.6.x) 实践, 对其他系统未做适配, 请自行调整相关设置.
@@ -14,7 +14,7 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 ![](Misc/Attachments/README-20240611204632938.png)  
 ![](Misc/Attachments/README-20240611203835624.png)
 
-### 主流的笔记软件
+## 主流的笔记软件
 
 - 本地类
     - 编辑器: Vim、Emacs、VSCode, Typora、MarkText
@@ -46,12 +46,12 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 > - 当远离笔记工具一段时间后再回看, 你会发现曾经折腾的那些花里胡哨的东西并没有你想得那样完美和必要, 默认和精简才是王道.
 > - 越是复杂、长期的事情, 越应该尽量避免不必要的熵增.
 
-### 安装
+## 安装
 
 [Download - Obsidian](https://obsidian.md/download)  
 [Releases · obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases/releases)
 
-### 目录结构说明
+## 目录结构说明
 
 ```bash title:"create essential dirs"
 folders=(Local 10_Inbox 20_Journals 30_Jottings 40_Pages 50_Projects 60_Areas 70_Resources 80_Archives 90_Misc/{Attachments,Templates})
@@ -99,7 +99,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 > [!hint]+ 关键在于解耦笔记输入、笔记整理这两大过程. 并且尽量维持笔记的原本结构而用链接的方式组织整理.
 
-### 已启用的[插件](https://obsidian.md/plugins)
+## 已启用的[插件](https://obsidian.md/plugins)
 %% 以实际为准 %%
 ```json
 [
@@ -165,7 +165,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 > [!hint]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
 
-### 快捷键设置
+## 快捷键设置
 > [!attention] 此处快捷键基于 macOS 系统
 
 | command                                                               | keys                |
@@ -218,16 +218,16 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 > [!tip]+ macOS 下按 `` cmd+ ` `` 可以在多个前台窗口之间切换.
 
-### 主题
+## 主题
 
 - 桌面端: [Minimal](https://minimal.guide/)、Blue Topaz、Border
 - 移动端: Things
 
-### snippets
+## snippets
 
-### templates
+## templates
 
-### 同步、备份、加密
+## 同步、备份、加密
 
 - 本机
     - Git
@@ -252,7 +252,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - [Encrypto](https://macpaw.com/encrypto)
     - git-crypt
 
-### 剪藏、发布、导出
+## 剪藏、发布、导出
 
 - 简悦
 - [mika-cn/maoxian-web-clipper](https://github.com/mika-cn/maoxian-web-clipper)
@@ -271,7 +271,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - Docusaurus/Obisidiosaurus 插件
 - Digital Garden 插件
 
-### 参考
+## 参考
 
 - Official
     - [Home - Obsidian Help](https://help.obsidian.md/)
@@ -319,7 +319,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - [Ignoring Files — Syncthing documentation](https://docs.syncthing.net/users/ignoring.html)
     - [Getting Started Guide | Kopia](https://kopia.io/docs/getting-started/)
 
-### Issues & Tips
+## Issues & Tips
 
 > [!faq]+ 首次启动时侧边栏按钮混乱  
 > 点击侧边栏第一个图标, 选择一个工作区加载一下, 最好再重启一下 ob.  
