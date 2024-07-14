@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-13 17:30"
+modified: "2024-07-14 09:46"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -65,9 +65,9 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - journals
     - context
 - 30_Jottings/: 非正式笔记
-- 40_Pages/: 原创笔记、主题笔记、MOC
-- 50_Projects/: 项目笔记[^1]
-- 60_Areas/: 领域知识笔记、卡片笔记
+- 40_Pages/: 原创笔记、主题笔记、MOC [^1]
+- 50_Projects/: 项目笔记[^2]
+- 60_Areas/: 领域知识笔记、卡片笔记 [^3]
 - 70_Resources/: 附件以外的资源文件
     - Clippings/
     - Excerpts/
@@ -363,4 +363,6 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 #
 
-[^1]: 比如记录学习 xxx 的笔记, 可以先在 Projects 目录下建立一个 xxx 的目录, 在学习的过程中给每个知识点建立卡片笔记, 完事后归档到对应领域目录.
+[^1]: 这里不要堆积知识类的笔记(放到 areas 里面), 不要分类用聚类.
+[^2]: 比如记录学习 xxx 的笔记, 可以先在 Projects 目录下建立一个 xxx 的目录, 在学习的过程中给每个知识点建立卡片笔记, 完事后归档到对应领域目录.
+[^3]: 如果有完整的体系并且能够在别处存储, 那么还是建议独立成库. 这里的 areas 可以是学科但是不要层级分类, 只列举你感兴趣的, 扁平直达更好.
