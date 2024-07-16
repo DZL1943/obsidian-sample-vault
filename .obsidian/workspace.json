@@ -37,33 +37,9 @@
               },
               "pinned": true
             }
-          },
-          {
-            "id": "4caea8d791addfdb",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Misc/Templates/yearly-template.md",
-                "mode": "source",
-                "source": true
-              }
-            }
-          },
-          {
-            "id": "3eaf8aa423fd1714",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Misc/Templates/monthly-template.md",
-                "mode": "source",
-                "source": false
-              }
-            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -179,7 +155,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Misc/Templates/yearly-template.md",
+                "file": "README.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -196,7 +172,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Misc/Templates/yearly-template.md",
+                "file": "README.md",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": false
               }
@@ -208,7 +184,7 @@
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "Misc/Templates/yearly-template.md",
+                "file": "README.md",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -265,10 +241,10 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "4caea8d791addfdb",
+  "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
-    "Misc/Templates/monthly-template.md",
     "Misc/Templates/yearly-template.md",
+    "Misc/Templates/monthly-template.md",
     "20_Journals/2024/2024.md",
     "Misc/Templates/weekly-template.md",
     "README.md",
