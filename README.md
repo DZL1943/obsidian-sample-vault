@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-18 01:55"
+modified: "2024-07-18 02:35"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -13,6 +13,10 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 
 ![](Misc/Attachments/README-20240611204632938.png)  
 ![](Misc/Attachments/README-20240611203835624.png)
+
+## Changelog
+
+- [2024/07/18] 重命名 20_Journals 为 20_Private
 
 ## 主流的笔记软件
 
