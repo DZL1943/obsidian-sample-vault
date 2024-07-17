@@ -89,12 +89,13 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - 80_Archives/: 归档
 - Misc/: 杂项(比如附件、模版等)
     - Attachments/
-        - images/
-        - audios/
-        - videos/
         - docs/
         - canvas/
         - draws/
+        - images/
+        - icons/
+        - audios/
+        - videos/
     - Templates/
     - Code/
     - Configs/
