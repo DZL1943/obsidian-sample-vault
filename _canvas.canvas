@@ -2,7 +2,7 @@
 	"nodes":[
 		{"id":"94651c23f983e6d8","type":"file","file":"links.md","collapsed":false,"x":-1920,"y":190,"width":280,"height":400,"color":"5"},
 		{"id":"6d9231fb56bb5779","type":"link","url":"http://localhost:8384","collapsed":true,"x":-1590,"y":190,"width":480,"height":400},
-		{"id":"0c62916701abae42","type":"file","file":"20_Journals/context.md","x":-1920,"y":720,"width":360,"height":420},
+		{"id":"0c62916701abae42","type":"file","file":"20_Private/context.md","x":-1920,"y":720,"width":360,"height":420},
 		{"id":"7906c8996add2e11","type":"file","file":"draft.md","x":-1500,"y":720,"width":500,"height":420}
 	],
 	"edges":[],

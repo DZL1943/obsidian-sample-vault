@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-14 16:36"
+modified: "2024-07-18 01:55"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -54,16 +54,31 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 ## 目录结构说明
 
 ```bash title:"create essential dirs"
-folders=(Local 10_Inbox 20_Journals 30_Jottings 40_Pages 50_Projects 60_Areas 70_Resources 80_Archives 90_Misc/{Attachments,Templates})
+folders=(Local 10_Inbox 20_Private 30_Jottings 40_Pages 50_Projects 60_Areas 70_Resources 80_Archives 90_Misc/{Attachments,Templates})
 
 for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;done
 ```
 
 - 10_Inbox/: 临时笔记
-- 20_Journals/: 日记 (建议每年一个目录, 每月或每周一个文件)
+- 20_Private/
+    - YYYY/: 日记 (每年一个目录, 每月或每周一个文件)
+        - YYYY
+        - YYYY-MM
+        - YYYY-[W]WW
+        - YYYY-MM-DD
     - tasks
-    - journals
+    - journals: moc
     - context
+    - contacts
+    - finance
+    - things
+    - bookmarks
+    - books
+    - movies
+    - music
+    - games
+    - sports
+    - secrets
 - 30_Jottings/: 非正式笔记
 - 40_Pages/: 原创笔记、主题笔记、MOC [^1]
 - 50_Projects/: 项目笔记[^2]
@@ -74,9 +89,16 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - 80_Archives/: 归档
 - Misc/: 杂项(比如附件、模版等)
     - Attachments/
+        - images/
+        - audios/
+        - videos/
+        - docs/
+        - canvas/
+        - draws/
     - Templates/
     - Code/
     - Configs/
+    - Dicts/
 - Vaults/: 可通过 `ln -s source_path Vaults/` 的方式临时处理其他位置的文件 (该方法目前还没有正式的支持, 也不被推荐)
 - Local/: 本地目录, 不进行同步
 - draft: (进行中的)草稿, 可以每个设备单独一个文件, 互不冲突

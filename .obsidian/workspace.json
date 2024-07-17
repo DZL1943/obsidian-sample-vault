@@ -134,7 +134,8 @@
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 2
       },
       {
         "id": "dda52860917a3c25",
@@ -243,13 +244,13 @@
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
+    "_canvas.canvas",
     "Misc/Templates/yearly-template.md",
     "Misc/Templates/monthly-template.md",
     "20_Journals/2024/2024.md",
     "Misc/Templates/weekly-template.md",
     "README.md",
     "20_Journals/2024",
-    "_canvas.canvas",
     "90_Misc/Attachments",
     "90_Misc"
   ]

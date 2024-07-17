@@ -270,7 +270,8 @@
     "80_Archives",
     "90_Misc",
     "20_Journals",
-    "Misc"
+    "Misc",
+    "20_Private"
   ],
   "filesToIgnore": [],
   "linterLocale": "system-default",
