@@ -16,6 +16,7 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 
 ## Changelog
 
+- [2024/07/13] 重命名 90_Misc 为 Misc
 - [2024/07/18] 重命名 20_Journals 为 20_Private
 
 ## 主流的笔记软件
