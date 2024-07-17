@@ -1,3 +1,4 @@
+.DS_Store
 *.swp
 *.key
 /.trash/
@@ -5,7 +6,7 @@
 /.space/
 /Spaces/
 /Vaults/
-*[pP]rivate/
+#*[pP]rivate/
 /[lL]ocal/
 未命名*
 [uU]ntitled*
