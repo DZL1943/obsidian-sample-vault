@@ -1,18 +1,14 @@
 {
   "pluginList": [
-    "yan42685/obsidian-clever-search",
-    "wish5115/obsidian-floating-settings",
-    "polyipseity/obsidian-show-hidden-files",
-    "Quorafind/Obsidian-Node-Auto-Resize",
     "aidan-gibson/obsidian-opener",
+    "l1xnan/obsidian-better-export-pdf",
     "platon-ivanov/obsidian-visually-numbered-headings",
-    "xhuajin/obsidian-immersive-translate",
+    "polyipseity/obsidian-show-hidden-files",
     "Quorafind/Obsidian-Legacy-Vault-Switcher",
-    "deathau/sliding-panes-obsidian",
-    "sunbooshi/note-to-mp",
-    "Fevol/obsidian-criticmarkup",
-    "Yaozhuwa/AttachFlow",
-    "Quorafind/Outliner.MD"
+    "Quorafind/Obsidian-Node-Auto-Resize",
+    "Quorafind/Outliner.MD",
+    "wish5115/obsidian-floating-settings",
+    "Yaozhuwa/AttachFlow"
   ],
   "pluginSubListFrozenVersion": [],
   "themesList": [],

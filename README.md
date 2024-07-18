@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-18 16:10"
+modified: "2024-07-18 16:37"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -183,6 +183,25 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
   "url-into-selection",
   "various-complements"
 ]
+```
+
+brat
+```json
+[
+    "aidan-gibson/obsidian-opener",
+    "Fevol/obsidian-criticmarkup",
+    "l1xnan/obsidian-better-export-pdf",
+    "platon-ivanov/obsidian-visually-numbered-headings",
+    "polyipseity/obsidian-show-hidden-files",
+    "Quorafind/Obsidian-Legacy-Vault-Switcher",
+    "Quorafind/Obsidian-Node-Auto-Resize",
+    "Quorafind/Outliner.MD",
+    "sunbooshi/note-to-mp",
+    "wish5115/obsidian-floating-settings",
+    "xhuajin/obsidian-immersive-translate",
+    "yan42685/obsidian-clever-search",
+    "Yaozhuwa/AttachFlow",
+  ]
 ```
 
 > [!hint]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
