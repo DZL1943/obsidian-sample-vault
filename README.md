@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-18 16:37"
+modified: "2024-07-18 18:56"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -201,7 +201,7 @@ brat
     "xhuajin/obsidian-immersive-translate",
     "yan42685/obsidian-clever-search",
     "Yaozhuwa/AttachFlow",
-  ]
+]
 ```
 
 > [!hint]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
