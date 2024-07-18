@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-18 02:35"
+modified: "2024-07-18 16:10"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -365,9 +365,9 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 > - warning 黄色
 > - caution 红色
 
-> [!bug]+ %% 2024/06/18 %% minimal 主题 7.7.3 版本, [dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
+> [!bug]+ %% 2024-06-18 %% minimal 主题 7.7.3 版本, [dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
 
-> [!bug]+ %% 2024/06/12 %%create-note-in-folder 插件在修改配置之后可能需要重启才能生效.
+> [!bug]+ %% 2024-06-12 %%create-note-in-folder 插件在修改配置之后可能需要重启才能生效.
 
 > [!bug]+ obsidian-scroll-to-top-plugin 在开启缩放时无效
 
@@ -386,8 +386,9 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 ## Changelog
 
-- [2024/07/13] 重命名 90_Misc 为 Misc
-- [2024/07/18] 重命名 20_Journals 为 20_Private; 增加 Changelog
+- [2024-07-13] 重命名 90_Misc 为 Misc
+- [2024-07-18] 重命名 20_Journals 为 20_Private; 增加 Changelog
+- [2024-07-18] 更改日期格式 YYYY/MM/DD 为 YYYY-MM-DD
 
 #
 

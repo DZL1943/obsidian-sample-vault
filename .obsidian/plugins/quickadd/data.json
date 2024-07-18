@@ -22,7 +22,7 @@
       },
       "format": {
         "enabled": true,
-        "format": "## %%[{{date:YYYY/MM/DD HH:mm}}]%% {{value}}"
+        "format": "## %%[{{date:YYYY-MM-DD HH:mm}}]%% {{value}}"
       },
       "insertAfter": {
         "enabled": false,
