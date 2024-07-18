@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-18 18:56"
+modified: "2024-07-18 21:12"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -333,6 +333,7 @@ brat
     - [GitHub - sytone/obsidian-remote: Run Obsidian.md in a browser via a docker container.](https://github.com/sytone/obsidian-remote)
     - [GitHub - secure-77/Perlite: A web-based markdown viewer optimized for Obsidian](https://github.com/secure-77/Perlite)
     - [GitHub - doocs/md: ✍ WeChat Markdown Editor | 一款高度简洁的微信 Markdown 编辑器：支持 Markdown 语法、色盘取色、多图上传、一键下载文档、自定义 CSS 样式、一键重置等特性](https://github.com/doocs/md)
+    - [GitHub - charmbracelet/glow: Render markdown on the CLI, with pizzazz! 💅🏻](https://github.com/charmbracelet/glow)
 - Themes & CSS Snippets
     - [Home - Minimal Documentation](https://minimal.guide/)
         - [Minimal Theme Settings - Minimal Documentation](https://minimal.guide/plugins/minimal-theme-settings)
