@@ -5,14 +5,14 @@ if you want to view the source, please visit the github repository of this plugi
 
 "use strict";
 
-var extendStatics, __assign, __create = Object.create, __defProp = Object.defineProperty, __getOwnPropDesc = Object.getOwnPropertyDescriptor, __getOwnPropNames = Object.getOwnPropertyNames, __getProtoOf = Object.getPrototypeOf, __hasOwnProp = Object.prototype.hasOwnProperty, __defNormalProp = (_, ee, ne) => ee in _ ? __defProp(_, ee, {
+var __create = Object.create, __defProp = Object.defineProperty, __getOwnPropDesc = Object.getOwnPropertyDescriptor, __getOwnPropNames = Object.getOwnPropertyNames, __getProtoOf = Object.getPrototypeOf, __hasOwnProp = Object.prototype.hasOwnProperty, __typeError = _ => {
+  throw TypeError(_);
+}, __defNormalProp = (_, ee, ne) => ee in _ ? __defProp(_, ee, {
   enumerable: true,
   configurable: true,
   writable: true,
   value: ne
-}) : _[ee] = ne, __esm = (_, ee) => function __init() {
-  return _ && (ee = (0, _[__getOwnPropNames(_)[0]])(_ = 0)), ee;
-}, __commonJS = (_, ee) => function __require() {
+}) : _[ee] = ne, __commonJS = (_, ee) => function __require() {
   return ee || (0, _[__getOwnPropNames(_)[0]])((ee = {
     exports: {}
   }).exports, ee), ee.exports;
@@ -32,25 +32,10 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
   enumerable: true
 }) : ne, _)), __toCommonJS = _ => __copyProps(__defProp({}, "__esModule", {
   value: true
-}), _), __publicField = (_, ee, ne) => {
-  __defNormalProp(_, "symbol" != typeof ee ? ee + "" : ee, ne);
-  return ne;
-}, __accessCheck = (_, ee, ne) => {
-  if (!ee.has(_)) throw TypeError("Cannot " + ne);
-}, __privateGet = (_, ee, ne) => {
-  __accessCheck(_, ee, "read from private field");
-  return ne ? ne.call(_) : ee.get(_);
-}, __privateAdd = (_, ee, ne) => {
-  if (ee.has(_)) throw TypeError("Cannot add the same private member more than once");
-  ee instanceof WeakSet ? ee.add(_) : ee.set(_, ne);
-}, __privateSet = (_, ee, ne, ie) => {
-  __accessCheck(_, ee, "write to private field");
-  ie ? ie.call(_, ne) : ee.set(_, ne);
-  return ne;
-}, __privateMethod = (_, ee, ne) => {
-  __accessCheck(_, ee, "access private method");
-  return ne;
-}, require_diff_match_patch = __commonJS({
+}), _), __publicField = (_, ee, ne) => __defNormalProp(_, "symbol" != typeof ee ? ee + "" : ee, ne), __accessCheck = (_, ee, ne) => ee.has(_) || __typeError("Cannot " + ne), __privateGet = (_, ee, ne) => (__accessCheck(_, ee, "read from private field"), 
+ne ? ne.call(_) : ee.get(_)), __privateAdd = (_, ee, ne) => ee.has(_) ? __typeError("Cannot add the same private member more than once") : ee instanceof WeakSet ? ee.add(_) : ee.set(_, ne), __privateSet = (_, ee, ne, ie) => (__accessCheck(_, ee, "write to private field"), 
+ie ? ie.call(_, ne) : ee.set(_, ne), ne), __privateMethod = (_, ee, ne) => (__accessCheck(_, ee, "access private method"), 
+ne), require_diff_match_patch = __commonJS({
   "node_modules/diff-match-patch/index.js"(_, ee) {
     var diff_match_patch2 = function() {
       this.Diff_Timeout = 1;
@@ -96,8 +81,8 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
       if (1 == le.length) return [ new diff_match_patch2.Diff(ne, _), new diff_match_patch2.Diff(1, ee) ];
       var de = this.diff_halfMatch_(_, ee);
       if (de) {
-        var fe = de[0], he = de[1], pe = de[2], ge = de[3], me = de[4], ye = this.diff_main(fe, pe, ie, re), ve = this.diff_main(he, ge, ie, re);
-        return ye.concat([ new diff_match_patch2.Diff(0, me) ], ve);
+        var fe = de[0], he = de[1], pe = de[2], ge = de[3], me = de[4], ye = this.diff_main(fe, pe, ie, re), Se = this.diff_main(he, ge, ie, re);
+        return ye.concat([ new diff_match_patch2.Diff(0, me) ], Se);
       }
       if (ie && _.length > 100 && ee.length > 100) return this.diff_lineMode_(_, ee, re); else return this.diff_bisect_(_, ee, re);
     };
@@ -146,29 +131,29 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
       }
       de[le + 1] = 0;
       fe[le + 1] = 0;
-      for (var pe = re - se, ge = pe % 2 != 0, me = 0, ye = 0, ve = 0, Se = 0, Ee = 0; Ee < oe && !((new Date).getTime() > ie); Ee++) {
-        for (var Ce = -Ee + me; Ce <= Ee - ye; Ce += 2) {
+      for (var pe = re - se, ge = pe % 2 != 0, me = 0, ye = 0, Se = 0, Ee = 0, ve = 0; ve < oe && !((new Date).getTime() > ie); ve++) {
+        for (var Ce = -ve + me; Ce <= ve - ye; Ce += 2) {
           var we = le + Ce;
-          if (Ce == -Ee || Ce != Ee && de[we - 1] < de[we + 1]) Re = de[we + 1]; else Re = de[we - 1] + 1;
-          for (var Oe = Re - Ce; Re < re && Oe < se && _.charAt(Re) == ee.charAt(Oe); ) {
+          if (Ce == -ve || Ce != ve && de[we - 1] < de[we + 1]) Re = de[we + 1]; else Re = de[we - 1] + 1;
+          for (var ke = Re - Ce; Re < re && ke < se && _.charAt(Re) == ee.charAt(ke); ) {
             Re++;
-            Oe++;
+            ke++;
           }
           de[we] = Re;
-          if (Re > re) ye += 2; else if (Oe > se) me += 2; else if (ge) if ((Ae = le + pe - Ce) >= 0 && Ae < ue && -1 != fe[Ae]) if (Re >= (xe = re - fe[Ae])) return this.diff_bisectSplit_(_, ee, Re, Oe, ie);
+          if (Re > re) ye += 2; else if (ke > se) me += 2; else if (ge) if ((Ae = le + pe - Ce) >= 0 && Ae < ue && -1 != fe[Ae]) if (Re >= (Oe = re - fe[Ae])) return this.diff_bisectSplit_(_, ee, Re, ke, ie);
         }
-        for (var ke = -Ee + ve; ke <= Ee - Se; ke += 2) {
-          var xe, Ae = le + ke;
-          if (ke == -Ee || ke != Ee && fe[Ae - 1] < fe[Ae + 1]) xe = fe[Ae + 1]; else xe = fe[Ae - 1] + 1;
-          for (var Le = xe - ke; xe < re && Le < se && _.charAt(re - xe - 1) == ee.charAt(se - Le - 1); ) {
+        for (var Le = -ve + Se; Le <= ve - Ee; Le += 2) {
+          var Oe, Ae = le + Le;
+          if (Le == -ve || Le != ve && fe[Ae - 1] < fe[Ae + 1]) Oe = fe[Ae + 1]; else Oe = fe[Ae - 1] + 1;
+          for (var xe = Oe - Le; Oe < re && xe < se && _.charAt(re - Oe - 1) == ee.charAt(se - xe - 1); ) {
+            Oe++;
             xe++;
-            Le++;
           }
-          fe[Ae] = xe;
-          if (xe > re) Se += 2; else if (Le > se) ve += 2; else if (!ge) if ((we = le + pe - ke) >= 0 && we < ue && -1 != de[we]) {
+          fe[Ae] = Oe;
+          if (Oe > re) Ee += 2; else if (xe > se) Se += 2; else if (!ge) if ((we = le + pe - Le) >= 0 && we < ue && -1 != de[we]) {
             var Re;
-            Oe = le + (Re = de[we]) - we;
-            if (Re >= (xe = re - xe)) return this.diff_bisectSplit_(_, ee, Re, Oe, ie);
+            ke = le + (Re = de[we]) - we;
+            if (Re >= (Oe = re - Oe)) return this.diff_bisectSplit_(_, ee, Re, ke, ie);
           }
         }
       }
@@ -614,14 +599,14 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
         he = ue;
         var ge = Math.max(1, ne - ue + 1), me = Math.min(ne + ue, _.length) + ee.length, ye = Array(me + 2);
         ye[me + 1] = (1 << pe) - 1;
-        for (var ve = me; ve >= ge; ve--) {
-          var Se = ie[_.charAt(ve - 1)];
-          if (0 === pe) ye[ve] = (ye[ve + 1] << 1 | 1) & Se; else ye[ve] = (ye[ve + 1] << 1 | 1) & Se | (fe[ve + 1] | fe[ve]) << 1 | 1 | fe[ve + 1];
-          if (ye[ve] & de) {
-            var Ee = match_bitapScore_(pe, ve - 1);
-            if (Ee <= se) {
-              se = Ee;
-              if ((oe = ve - 1) > ne) ge = Math.max(1, 2 * ne - oe); else break;
+        for (var Se = me; Se >= ge; Se--) {
+          var Ee = ie[_.charAt(Se - 1)];
+          if (0 === pe) ye[Se] = (ye[Se + 1] << 1 | 1) & Ee; else ye[Se] = (ye[Se + 1] << 1 | 1) & Ee | (fe[Se + 1] | fe[Se]) << 1 | 1 | fe[Se + 1];
+          if (ye[Se] & de) {
+            var ve = match_bitapScore_(pe, Se - 1);
+            if (ve <= se) {
+              se = ve;
+              if ((oe = Se - 1) > ne) ge = Math.max(1, 2 * ne - oe); else break;
             }
           }
         }
@@ -752,10 +737,10 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
             if (de.length > this.Match_MaxBits && this.diff_levenshtein(pe) / de.length > this.Patch_DeleteThreshold) se[oe] = false; else {
               this.diff_cleanupSemanticLossless(pe);
               for (var ge, me = 0, ye = 0; ye < _[oe].diffs.length; ye++) {
-                var ve = _[oe].diffs[ye];
-                if (0 !== ve[0]) ge = this.diff_xIndex(pe, me);
-                if (1 === ve[0]) ee = ee.substring(0, le + ge) + ve[1] + ee.substring(le + ge); else if (ve[0] === ne) ee = ee.substring(0, le + ge) + ee.substring(le + this.diff_xIndex(pe, me + ve[1].length));
-                if (ve[0] !== ne) me += ve[1].length;
+                var Se = _[oe].diffs[ye];
+                if (0 !== Se[0]) ge = this.diff_xIndex(pe, me);
+                if (1 === Se[0]) ee = ee.substring(0, le + ge) + Se[1] + ee.substring(le + ge); else if (Se[0] === ne) ee = ee.substring(0, le + ge) + ee.substring(le + this.diff_xIndex(pe, me + Se[1].length));
+                if (Se[0] !== ne) me += Se[1].length;
               }
             }
           }
@@ -1023,28 +1008,28 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
           return re.pre + fe[0] + _;
         }));
         if (me) {
-          var ve = numeric(fe[0]), Se = numeric(fe[1]), Ee = Math.max(fe[0].length, fe[1].length), Ce = 3 == fe.length ? Math.abs(numeric(fe[2])) : 1, we = lte;
-          if (Se < ve) {
+          var Se = numeric(fe[0]), Ee = numeric(fe[1]), ve = Math.max(fe[0].length, fe[1].length), Ce = 3 == fe.length ? Math.abs(numeric(fe[2])) : 1, we = lte;
+          if (Ee < Se) {
             Ce *= -1;
             we = gte;
           }
-          var Oe = fe.some(isPadded);
+          var ke = fe.some(isPadded);
           he = [];
-          for (var ke = ve; we(ke, Se); ke += Ce) {
-            var xe;
+          for (var Le = Se; we(Le, Ee); Le += Ce) {
+            var Oe;
             if (ge) {
-              if ("\\" === (xe = String.fromCharCode(ke))) xe = "";
+              if ("\\" === (Oe = String.fromCharCode(Le))) Oe = "";
             } else {
-              xe = String(ke);
-              if (Oe) {
-                var Ae = Ee - xe.length;
+              Oe = String(Le);
+              if (ke) {
+                var Ae = ve - Oe.length;
                 if (Ae > 0) {
-                  var Le = new Array(Ae + 1).join("0");
-                  if (ke < 0) xe = "-" + Le + xe.slice(1); else xe = Le + xe;
+                  var xe = new Array(Ae + 1).join("0");
+                  if (Le < 0) Oe = "-" + xe + Oe.slice(1); else Oe = xe + Oe;
                 }
               }
             }
-            he.push(xe);
+            he.push(Oe);
           }
         } else {
           he = [];
@@ -1057,148 +1042,6 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
       }
       return ie;
     }
-  }
-}), require_nextTick = __commonJS({
-  "(disabled):node_modules/immediate/lib/nextTick"() {}
-}), require_queueMicrotask = __commonJS({
-  "node_modules/immediate/lib/queueMicrotask.js"(_) {
-    "use strict";
-    _.test = function() {
-      return "function" == typeof window.queueMicrotask;
-    };
-    _.install = function(_) {
-      return function() {
-        window.queueMicrotask(_);
-      };
-    };
-  }
-}), require_mutation = __commonJS({
-  "node_modules/immediate/lib/mutation.js"(_) {
-    "use strict";
-    var ee = window.MutationObserver || window.WebKitMutationObserver;
-    _.test = function() {
-      return ee;
-    };
-    _.install = function(_) {
-      var ne = 0, ie = new ee(_), re = window.document.createTextNode("");
-      ie.observe(re, {
-        characterData: true
-      });
-      return function() {
-        re.data = ne = ++ne % 2;
-      };
-    };
-  }
-}), require_messageChannel = __commonJS({
-  "node_modules/immediate/lib/messageChannel.js"(_) {
-    "use strict";
-    _.test = function() {
-      if (window.setImmediate) return false; else return "undefined" != typeof window.MessageChannel;
-    };
-    _.install = function(_) {
-      var ee = new window.MessageChannel;
-      ee.port1.onmessage = _;
-      return function() {
-        ee.port2.postMessage(0);
-      };
-    };
-  }
-}), require_stateChange = __commonJS({
-  "node_modules/immediate/lib/stateChange.js"(_) {
-    "use strict";
-    _.test = function() {
-      return "document" in window && "onreadystatechange" in window.document.createElement("script");
-    };
-    _.install = function(_) {
-      return function() {
-        var ee = window.document.createElement("script");
-        ee.onreadystatechange = function() {
-          _();
-          ee.onreadystatechange = null;
-          ee.parentNode.removeChild(ee);
-          ee = null;
-        };
-        window.document.documentElement.appendChild(ee);
-        return _;
-      };
-    };
-  }
-}), require_timeout = __commonJS({
-  "node_modules/immediate/lib/timeout.js"(_) {
-    "use strict";
-    _.test = function() {
-      return true;
-    };
-    _.install = function(_) {
-      return function() {
-        setTimeout(_, 0);
-      };
-    };
-  }
-}), require_lib = __commonJS({
-  "node_modules/immediate/lib/index.js"(_, ee) {
-    "use strict";
-    var ne, ie, re, se = [ require_nextTick(), require_queueMicrotask(), require_mutation(), require_messageChannel(), require_stateChange(), require_timeout() ], oe = -1, le = [], ue = false;
-    function cleanUpNextTick() {
-      if (ne && ie) {
-        ne = false;
-        if (ie.length) le = ie.concat(le); else oe = -1;
-        if (le.length) nextTick();
-      }
-    }
-    function nextTick() {
-      if (!ne) {
-        ue = false;
-        ne = true;
-        for (var _ = le.length, ee = setTimeout(cleanUpNextTick); _; ) {
-          ie = le;
-          le = [];
-          for (;ie && ++oe < _; ) ie[oe].run();
-          oe = -1;
-          _ = le.length;
-        }
-        ie = null;
-        oe = -1;
-        ne = false;
-        clearTimeout(ee);
-      }
-    }
-    for (var de = -1, fe = se.length; ++de < fe; ) if (se[de] && se[de].test && se[de].test()) {
-      re = se[de].install(nextTick);
-      break;
-    }
-    function Item(_, ee) {
-      this.fun = _;
-      this.array = ee;
-    }
-    Item.prototype.run = function() {
-      var _ = this.fun, ee = this.array;
-      switch (ee.length) {
-       case 0:
-        return _();
-
-       case 1:
-        return _(ee[0]);
-
-       case 2:
-        return _(ee[0], ee[1]);
-
-       case 3:
-        return _(ee[0], ee[1], ee[2]);
-
-       default:
-        return _.apply(null, ee);
-      }
-    };
-    ee.exports = function immediate2(_) {
-      var ee = new Array(arguments.length - 1);
-      if (arguments.length > 1) for (var ie = 1; ie < arguments.length; ie++) ee[ie - 1] = arguments[ie];
-      le.push(new Item(_, ee));
-      if (!ue && !ne) {
-        ue = true;
-        re();
-      }
-    };
   }
 }), require_events = __commonJS({
   "node_modules/events/events.js"(_, ee) {
@@ -1545,7 +1388,7 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
           return re;
         };
       })();
-      function toUtf85(_) {
+      function toUtf82(_) {
         if (/[\u0080-\uFFFF]/.test(_)) _ = unescape(encodeURIComponent(_));
         return _;
       }
@@ -1558,7 +1401,7 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
         this.reset();
       }
       SparkMD5.prototype.append = function(_) {
-        this.appendBinary(toUtf85(_));
+        this.appendBinary(toUtf82(_));
         return this;
       };
       SparkMD5.prototype.appendBinary = function(_) {
@@ -1617,7 +1460,7 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
         md5cycle(this._hash, _);
       };
       SparkMD5.hash = function(_, ee) {
-        return SparkMD5.hashBinary(toUtf85(_), ee);
+        return SparkMD5.hashBinary(toUtf82(_), ee);
       };
       SparkMD5.hashBinary = function(_, ee) {
         var ne = hex(md51(_));
@@ -3076,2680 +2919,6 @@ var extendStatics, __assign, __create = Object.create, __defProp = Object.define
       XMLBuilder: re
     };
   }
-}), tslib_es6_exports = {};
-
-__export(tslib_es6_exports, {
-  __assign: () => __assign,
-  __asyncDelegator: () => __asyncDelegator,
-  __asyncGenerator: () => __asyncGenerator,
-  __asyncValues: () => __asyncValues,
-  __await: () => __await,
-  __awaiter: () => __awaiter,
-  __classPrivateFieldGet: () => __classPrivateFieldGet,
-  __classPrivateFieldSet: () => __classPrivateFieldSet,
-  __createBinding: () => __createBinding,
-  __decorate: () => __decorate,
-  __exportStar: () => __exportStar,
-  __extends: () => __extends,
-  __generator: () => __generator,
-  __importDefault: () => __importDefault,
-  __importStar: () => __importStar,
-  __makeTemplateObject: () => __makeTemplateObject,
-  __metadata: () => __metadata,
-  __param: () => __param,
-  __read: () => __read,
-  __rest: () => __rest,
-  __spread: () => __spread,
-  __spreadArrays: () => __spreadArrays,
-  __values: () => __values
-});
-
-function __extends(_, ee) {
-  extendStatics(_, ee);
-  function __() {
-    this.constructor = _;
-  }
-  _.prototype = null === ee ? Object.create(ee) : (__.prototype = ee.prototype, new __);
-}
-
-function __rest(_, ee) {
-  var ne = {};
-  for (var ie in _) if (Object.prototype.hasOwnProperty.call(_, ie) && ee.indexOf(ie) < 0) ne[ie] = _[ie];
-  if (null != _ && "function" == typeof Object.getOwnPropertySymbols) {
-    var re = 0;
-    for (ie = Object.getOwnPropertySymbols(_); re < ie.length; re++) if (ee.indexOf(ie[re]) < 0 && Object.prototype.propertyIsEnumerable.call(_, ie[re])) ne[ie[re]] = _[ie[re]];
-  }
-  return ne;
-}
-
-function __decorate(_, ee, ne, ie) {
-  var re, se = arguments.length, oe = se < 3 ? ee : null === ie ? ie = Object.getOwnPropertyDescriptor(ee, ne) : ie;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) oe = Reflect.decorate(_, ee, ne, ie); else for (var le = _.length - 1; le >= 0; le--) if (re = _[le]) oe = (se < 3 ? re(oe) : se > 3 ? re(ee, ne, oe) : re(ee, ne)) || oe;
-  return se > 3 && oe && Object.defineProperty(ee, ne, oe), oe;
-}
-
-function __param(_, ee) {
-  return function(ne, ie) {
-    ee(ne, ie, _);
-  };
-}
-
-function __metadata(_, ee) {
-  if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(_, ee);
-}
-
-function __awaiter(_, ee, ne, ie) {
-  return new (ne || (ne = Promise))((function(re, se) {
-    function fulfilled(_) {
-      try {
-        step(ie.next(_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function rejected(_) {
-      try {
-        step(ie["throw"](_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function step(_) {
-      _.done ? re(_.value) : function adopt(_) {
-        return _ instanceof ne ? _ : new ne((function(ee) {
-          ee(_);
-        }));
-      }(_.value).then(fulfilled, rejected);
-    }
-    step((ie = ie.apply(_, ee || [])).next());
-  }));
-}
-
-function __generator(_, ee) {
-  var ne, ie, re, se, oe = {
-    label: 0,
-    sent: function() {
-      if (1 & re[0]) throw re[1];
-      return re[1];
-    },
-    trys: [],
-    ops: []
-  };
-  return se = {
-    next: verb(0),
-    throw: verb(1),
-    return: verb(2)
-  }, "function" == typeof Symbol && (se[Symbol.iterator] = function() {
-    return this;
-  }), se;
-  function verb(se) {
-    return function(le) {
-      return function step(se) {
-        if (ne) throw new TypeError("Generator is already executing.");
-        for (;oe; ) try {
-          if (ne = 1, ie && (re = 2 & se[0] ? ie["return"] : se[0] ? ie["throw"] || ((re = ie["return"]) && re.call(ie), 
-          0) : ie.next) && !(re = re.call(ie, se[1])).done) return re;
-          if (ie = 0, re) se = [ 2 & se[0], re.value ];
-          switch (se[0]) {
-           case 0:
-           case 1:
-            re = se;
-            break;
-
-           case 4:
-            oe.label++;
-            return {
-              value: se[1],
-              done: false
-            };
-
-           case 5:
-            oe.label++;
-            ie = se[1];
-            se = [ 0 ];
-            continue;
-
-           case 7:
-            se = oe.ops.pop();
-            oe.trys.pop();
-            continue;
-
-           default:
-            if (!(re = oe.trys, re = re.length > 0 && re[re.length - 1]) && (6 === se[0] || 2 === se[0])) {
-              oe = 0;
-              continue;
-            }
-            if (3 === se[0] && (!re || se[1] > re[0] && se[1] < re[3])) {
-              oe.label = se[1];
-              break;
-            }
-            if (6 === se[0] && oe.label < re[1]) {
-              oe.label = re[1];
-              re = se;
-              break;
-            }
-            if (re && oe.label < re[2]) {
-              oe.label = re[2];
-              oe.ops.push(se);
-              break;
-            }
-            if (re[2]) oe.ops.pop();
-            oe.trys.pop();
-            continue;
-          }
-          se = ee.call(_, oe);
-        } catch (_) {
-          se = [ 6, _ ];
-          ie = 0;
-        } finally {
-          ne = re = 0;
-        }
-        if (5 & se[0]) throw se[1];
-        return {
-          value: se[0] ? se[1] : void 0,
-          done: true
-        };
-      }([ se, le ]);
-    };
-  }
-}
-
-function __createBinding(_, ee, ne, ie) {
-  if (void 0 === ie) ie = ne;
-  _[ie] = ee[ne];
-}
-
-function __exportStar(_, ee) {
-  for (var ne in _) if ("default" !== ne && !ee.hasOwnProperty(ne)) ee[ne] = _[ne];
-}
-
-function __values(_) {
-  var ee = "function" == typeof Symbol && Symbol.iterator, ne = ee && _[ee], ie = 0;
-  if (ne) return ne.call(_);
-  if (_ && "number" == typeof _.length) return {
-    next: function() {
-      if (_ && ie >= _.length) _ = void 0;
-      return {
-        value: _ && _[ie++],
-        done: !_
-      };
-    }
-  };
-  throw new TypeError(ee ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __read(_, ee) {
-  var ne = "function" == typeof Symbol && _[Symbol.iterator];
-  if (!ne) return _;
-  var ie, re, se = ne.call(_), oe = [];
-  try {
-    for (;(void 0 === ee || ee-- > 0) && !(ie = se.next()).done; ) oe.push(ie.value);
-  } catch (_) {
-    re = {
-      error: _
-    };
-  } finally {
-    try {
-      if (ie && !ie.done && (ne = se["return"])) ne.call(se);
-    } finally {
-      if (re) throw re.error;
-    }
-  }
-  return oe;
-}
-
-function __spread() {
-  for (var _ = [], ee = 0; ee < arguments.length; ee++) _ = _.concat(__read(arguments[ee]));
-  return _;
-}
-
-function __spreadArrays() {
-  for (var _ = 0, ee = 0, ne = arguments.length; ee < ne; ee++) _ += arguments[ee].length;
-  var ie = Array(_), re = 0;
-  for (ee = 0; ee < ne; ee++) for (var se = arguments[ee], oe = 0, le = se.length; oe < le; oe++, 
-  re++) ie[re] = se[oe];
-  return ie;
-}
-
-function __await(_) {
-  return this instanceof __await ? (this.v = _, this) : new __await(_);
-}
-
-function __asyncGenerator(_, ee, ne) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ie, re = ne.apply(_, ee || []), se = [];
-  return ie = {}, verb("next"), verb("throw"), verb("return"), ie[Symbol.asyncIterator] = function() {
-    return this;
-  }, ie;
-  function verb(_) {
-    if (re[_]) ie[_] = function(ee) {
-      return new Promise((function(ne, ie) {
-        se.push([ _, ee, ne, ie ]) > 1 || resume(_, ee);
-      }));
-    };
-  }
-  function resume(_, ee) {
-    try {
-      (function step(_) {
-        _.value instanceof __await ? Promise.resolve(_.value.v).then(fulfill, reject) : settle(se[0][2], _);
-      })(re[_](ee));
-    } catch (_) {
-      settle(se[0][3], _);
-    }
-  }
-  function fulfill(_) {
-    resume("next", _);
-  }
-  function reject(_) {
-    resume("throw", _);
-  }
-  function settle(_, ee) {
-    if (_(ee), se.shift(), se.length) resume(se[0][0], se[0][1]);
-  }
-}
-
-function __asyncDelegator(_) {
-  var ee, ne;
-  return ee = {}, verb("next"), verb("throw", (function(_) {
-    throw _;
-  })), verb("return"), ee[Symbol.iterator] = function() {
-    return this;
-  }, ee;
-  function verb(ie, re) {
-    ee[ie] = _[ie] ? function(ee) {
-      return (ne = !ne) ? {
-        value: __await(_[ie](ee)),
-        done: "return" === ie
-      } : re ? re(ee) : ee;
-    } : re;
-  }
-}
-
-function __asyncValues(_) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ee, ne = _[Symbol.asyncIterator];
-  return ne ? ne.call(_) : (_ = "function" == typeof __values ? __values(_) : _[Symbol.iterator](), 
-  ee = {}, verb("next"), verb("throw"), verb("return"), ee[Symbol.asyncIterator] = function() {
-    return this;
-  }, ee);
-  function verb(ne) {
-    ee[ne] = _[ne] && function(ee) {
-      return new Promise((function(ie, re) {
-        (function settle(_, ee, ne, ie) {
-          Promise.resolve(ie).then((function(ee) {
-            _({
-              value: ee,
-              done: ne
-            });
-          }), ee);
-        })(ie, re, (ee = _[ne](ee)).done, ee.value);
-      }));
-    };
-  }
-}
-
-function __makeTemplateObject(_, ee) {
-  if (Object.defineProperty) Object.defineProperty(_, "raw", {
-    value: ee
-  }); else _.raw = ee;
-  return _;
-}
-
-function __importStar(_) {
-  if (_ && _.__esModule) return _;
-  var ee = {};
-  if (null != _) for (var ne in _) if (Object.hasOwnProperty.call(_, ne)) ee[ne] = _[ne];
-  ee.default = _;
-  return ee;
-}
-
-function __importDefault(_) {
-  return _ && _.__esModule ? _ : {
-    default: _
-  };
-}
-
-function __classPrivateFieldGet(_, ee) {
-  if (!ee.has(_)) throw new TypeError("attempted to get private field on non-instance");
-  return ee.get(_);
-}
-
-function __classPrivateFieldSet(_, ee, ne) {
-  if (!ee.has(_)) throw new TypeError("attempted to set private field on non-instance");
-  ee.set(_, ne);
-  return ne;
-}
-
-var fromUtf82, toUtf82, init_tslib_es6 = __esm({
-  "node_modules/@aws-crypto/sha1-browser/node_modules/tslib/tslib.es6.js"() {
-    extendStatics = function(_, ee) {
-      return (extendStatics = Object.setPrototypeOf || {
-        __proto__: []
-      } instanceof Array && function(_, ee) {
-        _.__proto__ = ee;
-      } || function(_, ee) {
-        for (var ne in ee) if (ee.hasOwnProperty(ne)) _[ne] = ee[ne];
-      })(_, ee);
-    };
-    __assign = function() {
-      __assign = Object.assign || function __assign8(_) {
-        for (var ee, ne = 1, ie = arguments.length; ne < ie; ne++) {
-          ee = arguments[ne];
-          for (var re in ee) if (Object.prototype.hasOwnProperty.call(ee, re)) _[re] = ee[re];
-        }
-        return _;
-      };
-      return __assign.apply(this, arguments);
-    };
-  }
-}), require_isEmptyData = __commonJS({
-  "node_modules/@aws-crypto/sha1-browser/build/isEmptyData.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.isEmptyData = void 0;
-    _.isEmptyData = function isEmptyData2(_) {
-      if ("string" == typeof _) return 0 === _.length; else return 0 === _.byteLength;
-    };
-  }
-}), require_constants = __commonJS({
-  "node_modules/@aws-crypto/sha1-browser/build/constants.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.EMPTY_DATA_SHA_1 = _.SHA_1_HMAC_ALGO = _.SHA_1_HASH = void 0;
-    _.SHA_1_HASH = {
-      name: "SHA-1"
-    };
-    _.SHA_1_HMAC_ALGO = {
-      name: "HMAC",
-      hash: _.SHA_1_HASH
-    };
-    _.EMPTY_DATA_SHA_1 = new Uint8Array([ 218, 57, 163, 238, 94, 107, 75, 13, 50, 85, 191, 239, 149, 96, 24, 144, 175, 216, 7, 9 ]);
-  }
-}), init_pureJs = __esm({
-  "node_modules/@aws-sdk/util-utf8-browser/dist-es/pureJs.js"() {
-    fromUtf82 = _ => {
-      const ee = [];
-      for (let ne = 0, ie = _.length; ne < ie; ne++) {
-        const ie = _.charCodeAt(ne);
-        if (ie < 128) ee.push(ie); else if (ie < 2048) ee.push(ie >> 6 | 192, 63 & ie | 128); else if (ne + 1 < _.length && 55296 == (64512 & ie) && 56320 == (64512 & _.charCodeAt(ne + 1))) {
-          const re = 65536 + ((1023 & ie) << 10) + (1023 & _.charCodeAt(++ne));
-          ee.push(re >> 18 | 240, re >> 12 & 63 | 128, re >> 6 & 63 | 128, 63 & re | 128);
-        } else ee.push(ie >> 12 | 224, ie >> 6 & 63 | 128, 63 & ie | 128);
-      }
-      return Uint8Array.from(ee);
-    };
-    toUtf82 = _ => {
-      let ee = "";
-      for (let ne = 0, ie = _.length; ne < ie; ne++) {
-        const ie = _[ne];
-        if (ie < 128) ee += String.fromCharCode(ie); else if (192 <= ie && ie < 224) {
-          const re = _[++ne];
-          ee += String.fromCharCode((31 & ie) << 6 | 63 & re);
-        } else if (240 <= ie && ie < 365) {
-          const re = "%" + [ ie, _[++ne], _[++ne], _[++ne] ].map((_ => _.toString(16))).join("%");
-          ee += decodeURIComponent(re);
-        } else ee += String.fromCharCode((15 & ie) << 12 | (63 & _[++ne]) << 6 | 63 & _[++ne]);
-      }
-      return ee;
-    };
-  }
-});
-
-function fromUtf83(_) {
-  return (new TextEncoder).encode(_);
-}
-
-function toUtf83(_) {
-  return new TextDecoder("utf-8").decode(_);
-}
-
-var fromUtf84, toUtf84, init_whatwgEncodingApi = __esm({
-  "node_modules/@aws-sdk/util-utf8-browser/dist-es/whatwgEncodingApi.js"() {}
-}), dist_es_exports = {};
-
-__export(dist_es_exports, {
-  fromUtf8: () => fromUtf84,
-  toUtf8: () => toUtf84
-});
-
-var fallbackWindow, init_dist_es = __esm({
-  "node_modules/@aws-sdk/util-utf8-browser/dist-es/index.js"() {
-    init_pureJs();
-    init_whatwgEncodingApi();
-    fromUtf84 = _ => "function" == typeof TextEncoder ? fromUtf83(_) : fromUtf82(_);
-    toUtf84 = _ => "function" == typeof TextDecoder ? toUtf83(_) : toUtf82(_);
-  }
-}), dist_es_exports2 = {};
-
-__export(dist_es_exports2, {
-  locateWindow: () => locateWindow
-});
-
-function locateWindow() {
-  if ("undefined" != typeof window) return window; else if ("undefined" != typeof self) return self;
-  return fallbackWindow;
-}
-
-var extendStatics2, __assign2, init_dist_es2 = __esm({
-  "node_modules/@aws-sdk/util-locate-window/dist-es/index.js"() {
-    fallbackWindow = {};
-  }
-}), require_ie11Sha1 = __commonJS({
-  "node_modules/@aws-crypto/sha1-browser/build/ie11Sha1.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.Sha1 = void 0;
-    var ee = require_isEmptyData(), ne = require_constants(), ie = (init_dist_es(), 
-    __toCommonJS(dist_es_exports)), re = (init_dist_es2(), __toCommonJS(dist_es_exports2)), se = function() {
-      function Sha13(_) {
-        this.secret = _;
-        this.reset();
-      }
-      Sha13.prototype.update = function(_) {
-        var ne = this;
-        if (!(0, ee.isEmptyData)(_)) {
-          this.operation = this.operation.then((function(ee) {
-            ee.onerror = function() {
-              ne.operation = Promise.reject(new Error("Error encountered updating hash"));
-            };
-            ee.process(toArrayBufferView(_));
-            return ee;
-          }));
-          this.operation.catch((function() {}));
-        }
-      };
-      Sha13.prototype.digest = function() {
-        return this.operation.then((function(_) {
-          return new Promise((function(ee, ne) {
-            _.onerror = function() {
-              ne(new Error("Error encountered finalizing hash"));
-            };
-            _.oncomplete = function() {
-              if (_.result) ee(new Uint8Array(_.result));
-              ne(new Error("Error encountered finalizing hash"));
-            };
-            _.finish();
-          }));
-        }));
-      };
-      Sha13.prototype.reset = function() {
-        if (this.secret) {
-          this.operation = function getKeyPromise(_) {
-            return new Promise((function(ee, ie) {
-              var se = (0, re.locateWindow)().msCrypto.subtle.importKey("raw", toArrayBufferView(_), ne.SHA_1_HMAC_ALGO, false, [ "sign" ]);
-              se.oncomplete = function() {
-                if (se.result) ee(se.result);
-                ie(new Error("ImportKey completed without importing key."));
-              };
-              se.onerror = function() {
-                ie(new Error("ImportKey failed to import key."));
-              };
-            }));
-          }(this.secret).then((function(_) {
-            return (0, re.locateWindow)().msCrypto.subtle.sign(ne.SHA_1_HMAC_ALGO, _);
-          }));
-          this.operation.catch((function() {}));
-        } else this.operation = Promise.resolve((0, re.locateWindow)().msCrypto.subtle.digest("SHA-1"));
-      };
-      return Sha13;
-    }();
-    _.Sha1 = se;
-    function toArrayBufferView(_) {
-      if ("string" == typeof _) return (0, ie.fromUtf8)(_);
-      if (ArrayBuffer.isView(_)) return new Uint8Array(_.buffer, _.byteOffset, _.byteLength / Uint8Array.BYTES_PER_ELEMENT); else return new Uint8Array(_);
-    }
-  }
-}), require_webCryptoSha1 = __commonJS({
-  "node_modules/@aws-crypto/sha1-browser/build/webCryptoSha1.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.Sha1 = void 0;
-    var ee = (init_dist_es(), __toCommonJS(dist_es_exports)), ne = require_isEmptyData(), ie = require_constants(), re = (init_dist_es2(), 
-    __toCommonJS(dist_es_exports2)), se = function() {
-      function Sha13(_) {
-        this.toHash = new Uint8Array(0);
-        if (void 0 !== _) {
-          this.key = new Promise((function(ee, ne) {
-            (0, re.locateWindow)().crypto.subtle.importKey("raw", convertToBuffer2(_), ie.SHA_1_HMAC_ALGO, false, [ "sign" ]).then(ee, ne);
-          }));
-          this.key.catch((function() {}));
-        }
-      }
-      Sha13.prototype.update = function(_) {
-        if (!(0, ne.isEmptyData)(_)) {
-          var ee = convertToBuffer2(_), ie = new Uint8Array(this.toHash.byteLength + ee.byteLength);
-          ie.set(this.toHash, 0);
-          ie.set(ee, this.toHash.byteLength);
-          this.toHash = ie;
-        }
-      };
-      Sha13.prototype.digest = function() {
-        var _ = this;
-        if (this.key) return this.key.then((function(ee) {
-          return (0, re.locateWindow)().crypto.subtle.sign(ie.SHA_1_HMAC_ALGO, ee, _.toHash).then((function(_) {
-            return new Uint8Array(_);
-          }));
-        }));
-        if ((0, ne.isEmptyData)(this.toHash)) return Promise.resolve(ie.EMPTY_DATA_SHA_1); else return Promise.resolve().then((function() {
-          return (0, re.locateWindow)().crypto.subtle.digest(ie.SHA_1_HASH, _.toHash);
-        })).then((function(_) {
-          return Promise.resolve(new Uint8Array(_));
-        }));
-      };
-      Sha13.prototype.reset = function() {
-        this.toHash = new Uint8Array(0);
-      };
-      return Sha13;
-    }();
-    _.Sha1 = se;
-    function convertToBuffer2(_) {
-      if ("string" == typeof _) return (0, ee.fromUtf8)(_);
-      if (ArrayBuffer.isView(_)) return new Uint8Array(_.buffer, _.byteOffset, _.byteLength / Uint8Array.BYTES_PER_ELEMENT); else return new Uint8Array(_);
-    }
-  }
-}), tslib_es6_exports2 = {};
-
-__export(tslib_es6_exports2, {
-  __assign: () => __assign2,
-  __asyncDelegator: () => __asyncDelegator2,
-  __asyncGenerator: () => __asyncGenerator2,
-  __asyncValues: () => __asyncValues2,
-  __await: () => __await2,
-  __awaiter: () => __awaiter2,
-  __classPrivateFieldGet: () => __classPrivateFieldGet2,
-  __classPrivateFieldSet: () => __classPrivateFieldSet2,
-  __createBinding: () => __createBinding2,
-  __decorate: () => __decorate2,
-  __exportStar: () => __exportStar2,
-  __extends: () => __extends2,
-  __generator: () => __generator2,
-  __importDefault: () => __importDefault2,
-  __importStar: () => __importStar2,
-  __makeTemplateObject: () => __makeTemplateObject2,
-  __metadata: () => __metadata2,
-  __param: () => __param2,
-  __read: () => __read2,
-  __rest: () => __rest2,
-  __spread: () => __spread2,
-  __spreadArrays: () => __spreadArrays2,
-  __values: () => __values2
-});
-
-function __extends2(_, ee) {
-  extendStatics2(_, ee);
-  function __() {
-    this.constructor = _;
-  }
-  _.prototype = null === ee ? Object.create(ee) : (__.prototype = ee.prototype, new __);
-}
-
-function __rest2(_, ee) {
-  var ne = {};
-  for (var ie in _) if (Object.prototype.hasOwnProperty.call(_, ie) && ee.indexOf(ie) < 0) ne[ie] = _[ie];
-  if (null != _ && "function" == typeof Object.getOwnPropertySymbols) {
-    var re = 0;
-    for (ie = Object.getOwnPropertySymbols(_); re < ie.length; re++) if (ee.indexOf(ie[re]) < 0 && Object.prototype.propertyIsEnumerable.call(_, ie[re])) ne[ie[re]] = _[ie[re]];
-  }
-  return ne;
-}
-
-function __decorate2(_, ee, ne, ie) {
-  var re, se = arguments.length, oe = se < 3 ? ee : null === ie ? ie = Object.getOwnPropertyDescriptor(ee, ne) : ie;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) oe = Reflect.decorate(_, ee, ne, ie); else for (var le = _.length - 1; le >= 0; le--) if (re = _[le]) oe = (se < 3 ? re(oe) : se > 3 ? re(ee, ne, oe) : re(ee, ne)) || oe;
-  return se > 3 && oe && Object.defineProperty(ee, ne, oe), oe;
-}
-
-function __param2(_, ee) {
-  return function(ne, ie) {
-    ee(ne, ie, _);
-  };
-}
-
-function __metadata2(_, ee) {
-  if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(_, ee);
-}
-
-function __awaiter2(_, ee, ne, ie) {
-  return new (ne || (ne = Promise))((function(re, se) {
-    function fulfilled(_) {
-      try {
-        step(ie.next(_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function rejected(_) {
-      try {
-        step(ie["throw"](_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function step(_) {
-      _.done ? re(_.value) : function adopt(_) {
-        return _ instanceof ne ? _ : new ne((function(ee) {
-          ee(_);
-        }));
-      }(_.value).then(fulfilled, rejected);
-    }
-    step((ie = ie.apply(_, ee || [])).next());
-  }));
-}
-
-function __generator2(_, ee) {
-  var ne, ie, re, se, oe = {
-    label: 0,
-    sent: function() {
-      if (1 & re[0]) throw re[1];
-      return re[1];
-    },
-    trys: [],
-    ops: []
-  };
-  return se = {
-    next: verb(0),
-    throw: verb(1),
-    return: verb(2)
-  }, "function" == typeof Symbol && (se[Symbol.iterator] = function() {
-    return this;
-  }), se;
-  function verb(se) {
-    return function(le) {
-      return function step(se) {
-        if (ne) throw new TypeError("Generator is already executing.");
-        for (;oe; ) try {
-          if (ne = 1, ie && (re = 2 & se[0] ? ie["return"] : se[0] ? ie["throw"] || ((re = ie["return"]) && re.call(ie), 
-          0) : ie.next) && !(re = re.call(ie, se[1])).done) return re;
-          if (ie = 0, re) se = [ 2 & se[0], re.value ];
-          switch (se[0]) {
-           case 0:
-           case 1:
-            re = se;
-            break;
-
-           case 4:
-            oe.label++;
-            return {
-              value: se[1],
-              done: false
-            };
-
-           case 5:
-            oe.label++;
-            ie = se[1];
-            se = [ 0 ];
-            continue;
-
-           case 7:
-            se = oe.ops.pop();
-            oe.trys.pop();
-            continue;
-
-           default:
-            if (!(re = oe.trys, re = re.length > 0 && re[re.length - 1]) && (6 === se[0] || 2 === se[0])) {
-              oe = 0;
-              continue;
-            }
-            if (3 === se[0] && (!re || se[1] > re[0] && se[1] < re[3])) {
-              oe.label = se[1];
-              break;
-            }
-            if (6 === se[0] && oe.label < re[1]) {
-              oe.label = re[1];
-              re = se;
-              break;
-            }
-            if (re && oe.label < re[2]) {
-              oe.label = re[2];
-              oe.ops.push(se);
-              break;
-            }
-            if (re[2]) oe.ops.pop();
-            oe.trys.pop();
-            continue;
-          }
-          se = ee.call(_, oe);
-        } catch (_) {
-          se = [ 6, _ ];
-          ie = 0;
-        } finally {
-          ne = re = 0;
-        }
-        if (5 & se[0]) throw se[1];
-        return {
-          value: se[0] ? se[1] : void 0,
-          done: true
-        };
-      }([ se, le ]);
-    };
-  }
-}
-
-function __createBinding2(_, ee, ne, ie) {
-  if (void 0 === ie) ie = ne;
-  _[ie] = ee[ne];
-}
-
-function __exportStar2(_, ee) {
-  for (var ne in _) if ("default" !== ne && !ee.hasOwnProperty(ne)) ee[ne] = _[ne];
-}
-
-function __values2(_) {
-  var ee = "function" == typeof Symbol && Symbol.iterator, ne = ee && _[ee], ie = 0;
-  if (ne) return ne.call(_);
-  if (_ && "number" == typeof _.length) return {
-    next: function() {
-      if (_ && ie >= _.length) _ = void 0;
-      return {
-        value: _ && _[ie++],
-        done: !_
-      };
-    }
-  };
-  throw new TypeError(ee ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __read2(_, ee) {
-  var ne = "function" == typeof Symbol && _[Symbol.iterator];
-  if (!ne) return _;
-  var ie, re, se = ne.call(_), oe = [];
-  try {
-    for (;(void 0 === ee || ee-- > 0) && !(ie = se.next()).done; ) oe.push(ie.value);
-  } catch (_) {
-    re = {
-      error: _
-    };
-  } finally {
-    try {
-      if (ie && !ie.done && (ne = se["return"])) ne.call(se);
-    } finally {
-      if (re) throw re.error;
-    }
-  }
-  return oe;
-}
-
-function __spread2() {
-  for (var _ = [], ee = 0; ee < arguments.length; ee++) _ = _.concat(__read2(arguments[ee]));
-  return _;
-}
-
-function __spreadArrays2() {
-  for (var _ = 0, ee = 0, ne = arguments.length; ee < ne; ee++) _ += arguments[ee].length;
-  var ie = Array(_), re = 0;
-  for (ee = 0; ee < ne; ee++) for (var se = arguments[ee], oe = 0, le = se.length; oe < le; oe++, 
-  re++) ie[re] = se[oe];
-  return ie;
-}
-
-function __await2(_) {
-  return this instanceof __await2 ? (this.v = _, this) : new __await2(_);
-}
-
-function __asyncGenerator2(_, ee, ne) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ie, re = ne.apply(_, ee || []), se = [];
-  return ie = {}, verb("next"), verb("throw"), verb("return"), ie[Symbol.asyncIterator] = function() {
-    return this;
-  }, ie;
-  function verb(_) {
-    if (re[_]) ie[_] = function(ee) {
-      return new Promise((function(ne, ie) {
-        se.push([ _, ee, ne, ie ]) > 1 || resume(_, ee);
-      }));
-    };
-  }
-  function resume(_, ee) {
-    try {
-      (function step(_) {
-        _.value instanceof __await2 ? Promise.resolve(_.value.v).then(fulfill, reject) : settle(se[0][2], _);
-      })(re[_](ee));
-    } catch (_) {
-      settle(se[0][3], _);
-    }
-  }
-  function fulfill(_) {
-    resume("next", _);
-  }
-  function reject(_) {
-    resume("throw", _);
-  }
-  function settle(_, ee) {
-    if (_(ee), se.shift(), se.length) resume(se[0][0], se[0][1]);
-  }
-}
-
-function __asyncDelegator2(_) {
-  var ee, ne;
-  return ee = {}, verb("next"), verb("throw", (function(_) {
-    throw _;
-  })), verb("return"), ee[Symbol.iterator] = function() {
-    return this;
-  }, ee;
-  function verb(ie, re) {
-    ee[ie] = _[ie] ? function(ee) {
-      return (ne = !ne) ? {
-        value: __await2(_[ie](ee)),
-        done: "return" === ie
-      } : re ? re(ee) : ee;
-    } : re;
-  }
-}
-
-function __asyncValues2(_) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ee, ne = _[Symbol.asyncIterator];
-  return ne ? ne.call(_) : (_ = "function" == typeof __values2 ? __values2(_) : _[Symbol.iterator](), 
-  ee = {}, verb("next"), verb("throw"), verb("return"), ee[Symbol.asyncIterator] = function() {
-    return this;
-  }, ee);
-  function verb(ne) {
-    ee[ne] = _[ne] && function(ee) {
-      return new Promise((function(ie, re) {
-        (function settle(_, ee, ne, ie) {
-          Promise.resolve(ie).then((function(ee) {
-            _({
-              value: ee,
-              done: ne
-            });
-          }), ee);
-        })(ie, re, (ee = _[ne](ee)).done, ee.value);
-      }));
-    };
-  }
-}
-
-function __makeTemplateObject2(_, ee) {
-  if (Object.defineProperty) Object.defineProperty(_, "raw", {
-    value: ee
-  }); else _.raw = ee;
-  return _;
-}
-
-function __importStar2(_) {
-  if (_ && _.__esModule) return _;
-  var ee = {};
-  if (null != _) for (var ne in _) if (Object.hasOwnProperty.call(_, ne)) ee[ne] = _[ne];
-  ee.default = _;
-  return ee;
-}
-
-function __importDefault2(_) {
-  return _ && _.__esModule ? _ : {
-    default: _
-  };
-}
-
-function __classPrivateFieldGet2(_, ee) {
-  if (!ee.has(_)) throw new TypeError("attempted to get private field on non-instance");
-  return ee.get(_);
-}
-
-function __classPrivateFieldSet2(_, ee, ne) {
-  if (!ee.has(_)) throw new TypeError("attempted to set private field on non-instance");
-  ee.set(_, ne);
-  return ne;
-}
-
-var extendStatics3, __assign3, init_tslib_es62 = __esm({
-  "node_modules/@aws-crypto/supports-web-crypto/node_modules/tslib/tslib.es6.js"() {
-    extendStatics2 = function(_, ee) {
-      return (extendStatics2 = Object.setPrototypeOf || {
-        __proto__: []
-      } instanceof Array && function(_, ee) {
-        _.__proto__ = ee;
-      } || function(_, ee) {
-        for (var ne in ee) if (ee.hasOwnProperty(ne)) _[ne] = ee[ne];
-      })(_, ee);
-    };
-    __assign2 = function() {
-      __assign2 = Object.assign || function __assign8(_) {
-        for (var ee, ne = 1, ie = arguments.length; ne < ie; ne++) {
-          ee = arguments[ne];
-          for (var re in ee) if (Object.prototype.hasOwnProperty.call(ee, re)) _[re] = ee[re];
-        }
-        return _;
-      };
-      return __assign2.apply(this, arguments);
-    };
-  }
-}), require_supportsWebCrypto = __commonJS({
-  "node_modules/@aws-crypto/supports-web-crypto/build/supportsWebCrypto.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.supportsZeroByteGCM = _.supportsSubtleCrypto = _.supportsSecureRandom = _.supportsWebCrypto = void 0;
-    var ee = (init_tslib_es62(), __toCommonJS(tslib_es6_exports2)), ne = [ "decrypt", "digest", "encrypt", "exportKey", "generateKey", "importKey", "sign", "verify" ];
-    _.supportsWebCrypto = function supportsWebCrypto(_) {
-      if (supportsSecureRandom(_) && "object" == typeof _.crypto.subtle) return supportsSubtleCrypto(_.crypto.subtle); else return false;
-    };
-    function supportsSecureRandom(_) {
-      if ("object" == typeof _ && "object" == typeof _.crypto) return "function" == typeof _.crypto.getRandomValues; else return false;
-    }
-    _.supportsSecureRandom = supportsSecureRandom;
-    function supportsSubtleCrypto(_) {
-      return _ && ne.every((function(ee) {
-        return "function" == typeof _[ee];
-      }));
-    }
-    _.supportsSubtleCrypto = supportsSubtleCrypto;
-    _.supportsZeroByteGCM = function supportsZeroByteGCM(_) {
-      return ee.__awaiter(this, void 0, void 0, (function() {
-        var ne;
-        return ee.__generator(this, (function(ee) {
-          switch (ee.label) {
-           case 0:
-            if (!supportsSubtleCrypto(_)) return [ 2, false ];
-            ee.label = 1;
-
-           case 1:
-            ee.trys.push([ 1, 4, , 5 ]);
-            return [ 4, _.generateKey({
-              name: "AES-GCM",
-              length: 128
-            }, false, [ "encrypt" ]) ];
-
-           case 2:
-            ne = ee.sent();
-            return [ 4, _.encrypt({
-              name: "AES-GCM",
-              iv: new Uint8Array(Array(12)),
-              additionalData: new Uint8Array(Array(16)),
-              tagLength: 128
-            }, ne, new Uint8Array(0)) ];
-
-           case 3:
-            return [ 2, 16 === ee.sent().byteLength ];
-
-           case 4:
-            ee.sent();
-            return [ 2, false ];
-
-           case 5:
-            return [ 2 ];
-          }
-        }));
-      }));
-    };
-  }
-}), require_build = __commonJS({
-  "node_modules/@aws-crypto/supports-web-crypto/build/index.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    (init_tslib_es62(), __toCommonJS(tslib_es6_exports2)).__exportStar(require_supportsWebCrypto(), _);
-  }
-}), tslib_es6_exports3 = {};
-
-__export(tslib_es6_exports3, {
-  __assign: () => __assign3,
-  __asyncDelegator: () => __asyncDelegator3,
-  __asyncGenerator: () => __asyncGenerator3,
-  __asyncValues: () => __asyncValues3,
-  __await: () => __await3,
-  __awaiter: () => __awaiter3,
-  __classPrivateFieldGet: () => __classPrivateFieldGet3,
-  __classPrivateFieldSet: () => __classPrivateFieldSet3,
-  __createBinding: () => __createBinding3,
-  __decorate: () => __decorate3,
-  __exportStar: () => __exportStar3,
-  __extends: () => __extends3,
-  __generator: () => __generator3,
-  __importDefault: () => __importDefault3,
-  __importStar: () => __importStar3,
-  __makeTemplateObject: () => __makeTemplateObject3,
-  __metadata: () => __metadata3,
-  __param: () => __param3,
-  __read: () => __read3,
-  __rest: () => __rest3,
-  __spread: () => __spread3,
-  __spreadArrays: () => __spreadArrays3,
-  __values: () => __values3
-});
-
-function __extends3(_, ee) {
-  extendStatics3(_, ee);
-  function __() {
-    this.constructor = _;
-  }
-  _.prototype = null === ee ? Object.create(ee) : (__.prototype = ee.prototype, new __);
-}
-
-function __rest3(_, ee) {
-  var ne = {};
-  for (var ie in _) if (Object.prototype.hasOwnProperty.call(_, ie) && ee.indexOf(ie) < 0) ne[ie] = _[ie];
-  if (null != _ && "function" == typeof Object.getOwnPropertySymbols) {
-    var re = 0;
-    for (ie = Object.getOwnPropertySymbols(_); re < ie.length; re++) if (ee.indexOf(ie[re]) < 0 && Object.prototype.propertyIsEnumerable.call(_, ie[re])) ne[ie[re]] = _[ie[re]];
-  }
-  return ne;
-}
-
-function __decorate3(_, ee, ne, ie) {
-  var re, se = arguments.length, oe = se < 3 ? ee : null === ie ? ie = Object.getOwnPropertyDescriptor(ee, ne) : ie;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) oe = Reflect.decorate(_, ee, ne, ie); else for (var le = _.length - 1; le >= 0; le--) if (re = _[le]) oe = (se < 3 ? re(oe) : se > 3 ? re(ee, ne, oe) : re(ee, ne)) || oe;
-  return se > 3 && oe && Object.defineProperty(ee, ne, oe), oe;
-}
-
-function __param3(_, ee) {
-  return function(ne, ie) {
-    ee(ne, ie, _);
-  };
-}
-
-function __metadata3(_, ee) {
-  if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(_, ee);
-}
-
-function __awaiter3(_, ee, ne, ie) {
-  return new (ne || (ne = Promise))((function(re, se) {
-    function fulfilled(_) {
-      try {
-        step(ie.next(_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function rejected(_) {
-      try {
-        step(ie["throw"](_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function step(_) {
-      _.done ? re(_.value) : function adopt(_) {
-        return _ instanceof ne ? _ : new ne((function(ee) {
-          ee(_);
-        }));
-      }(_.value).then(fulfilled, rejected);
-    }
-    step((ie = ie.apply(_, ee || [])).next());
-  }));
-}
-
-function __generator3(_, ee) {
-  var ne, ie, re, se, oe = {
-    label: 0,
-    sent: function() {
-      if (1 & re[0]) throw re[1];
-      return re[1];
-    },
-    trys: [],
-    ops: []
-  };
-  return se = {
-    next: verb(0),
-    throw: verb(1),
-    return: verb(2)
-  }, "function" == typeof Symbol && (se[Symbol.iterator] = function() {
-    return this;
-  }), se;
-  function verb(se) {
-    return function(le) {
-      return function step(se) {
-        if (ne) throw new TypeError("Generator is already executing.");
-        for (;oe; ) try {
-          if (ne = 1, ie && (re = 2 & se[0] ? ie["return"] : se[0] ? ie["throw"] || ((re = ie["return"]) && re.call(ie), 
-          0) : ie.next) && !(re = re.call(ie, se[1])).done) return re;
-          if (ie = 0, re) se = [ 2 & se[0], re.value ];
-          switch (se[0]) {
-           case 0:
-           case 1:
-            re = se;
-            break;
-
-           case 4:
-            oe.label++;
-            return {
-              value: se[1],
-              done: false
-            };
-
-           case 5:
-            oe.label++;
-            ie = se[1];
-            se = [ 0 ];
-            continue;
-
-           case 7:
-            se = oe.ops.pop();
-            oe.trys.pop();
-            continue;
-
-           default:
-            if (!(re = oe.trys, re = re.length > 0 && re[re.length - 1]) && (6 === se[0] || 2 === se[0])) {
-              oe = 0;
-              continue;
-            }
-            if (3 === se[0] && (!re || se[1] > re[0] && se[1] < re[3])) {
-              oe.label = se[1];
-              break;
-            }
-            if (6 === se[0] && oe.label < re[1]) {
-              oe.label = re[1];
-              re = se;
-              break;
-            }
-            if (re && oe.label < re[2]) {
-              oe.label = re[2];
-              oe.ops.push(se);
-              break;
-            }
-            if (re[2]) oe.ops.pop();
-            oe.trys.pop();
-            continue;
-          }
-          se = ee.call(_, oe);
-        } catch (_) {
-          se = [ 6, _ ];
-          ie = 0;
-        } finally {
-          ne = re = 0;
-        }
-        if (5 & se[0]) throw se[1];
-        return {
-          value: se[0] ? se[1] : void 0,
-          done: true
-        };
-      }([ se, le ]);
-    };
-  }
-}
-
-function __createBinding3(_, ee, ne, ie) {
-  if (void 0 === ie) ie = ne;
-  _[ie] = ee[ne];
-}
-
-function __exportStar3(_, ee) {
-  for (var ne in _) if ("default" !== ne && !ee.hasOwnProperty(ne)) ee[ne] = _[ne];
-}
-
-function __values3(_) {
-  var ee = "function" == typeof Symbol && Symbol.iterator, ne = ee && _[ee], ie = 0;
-  if (ne) return ne.call(_);
-  if (_ && "number" == typeof _.length) return {
-    next: function() {
-      if (_ && ie >= _.length) _ = void 0;
-      return {
-        value: _ && _[ie++],
-        done: !_
-      };
-    }
-  };
-  throw new TypeError(ee ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __read3(_, ee) {
-  var ne = "function" == typeof Symbol && _[Symbol.iterator];
-  if (!ne) return _;
-  var ie, re, se = ne.call(_), oe = [];
-  try {
-    for (;(void 0 === ee || ee-- > 0) && !(ie = se.next()).done; ) oe.push(ie.value);
-  } catch (_) {
-    re = {
-      error: _
-    };
-  } finally {
-    try {
-      if (ie && !ie.done && (ne = se["return"])) ne.call(se);
-    } finally {
-      if (re) throw re.error;
-    }
-  }
-  return oe;
-}
-
-function __spread3() {
-  for (var _ = [], ee = 0; ee < arguments.length; ee++) _ = _.concat(__read3(arguments[ee]));
-  return _;
-}
-
-function __spreadArrays3() {
-  for (var _ = 0, ee = 0, ne = arguments.length; ee < ne; ee++) _ += arguments[ee].length;
-  var ie = Array(_), re = 0;
-  for (ee = 0; ee < ne; ee++) for (var se = arguments[ee], oe = 0, le = se.length; oe < le; oe++, 
-  re++) ie[re] = se[oe];
-  return ie;
-}
-
-function __await3(_) {
-  return this instanceof __await3 ? (this.v = _, this) : new __await3(_);
-}
-
-function __asyncGenerator3(_, ee, ne) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ie, re = ne.apply(_, ee || []), se = [];
-  return ie = {}, verb("next"), verb("throw"), verb("return"), ie[Symbol.asyncIterator] = function() {
-    return this;
-  }, ie;
-  function verb(_) {
-    if (re[_]) ie[_] = function(ee) {
-      return new Promise((function(ne, ie) {
-        se.push([ _, ee, ne, ie ]) > 1 || resume(_, ee);
-      }));
-    };
-  }
-  function resume(_, ee) {
-    try {
-      (function step(_) {
-        _.value instanceof __await3 ? Promise.resolve(_.value.v).then(fulfill, reject) : settle(se[0][2], _);
-      })(re[_](ee));
-    } catch (_) {
-      settle(se[0][3], _);
-    }
-  }
-  function fulfill(_) {
-    resume("next", _);
-  }
-  function reject(_) {
-    resume("throw", _);
-  }
-  function settle(_, ee) {
-    if (_(ee), se.shift(), se.length) resume(se[0][0], se[0][1]);
-  }
-}
-
-function __asyncDelegator3(_) {
-  var ee, ne;
-  return ee = {}, verb("next"), verb("throw", (function(_) {
-    throw _;
-  })), verb("return"), ee[Symbol.iterator] = function() {
-    return this;
-  }, ee;
-  function verb(ie, re) {
-    ee[ie] = _[ie] ? function(ee) {
-      return (ne = !ne) ? {
-        value: __await3(_[ie](ee)),
-        done: "return" === ie
-      } : re ? re(ee) : ee;
-    } : re;
-  }
-}
-
-function __asyncValues3(_) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ee, ne = _[Symbol.asyncIterator];
-  return ne ? ne.call(_) : (_ = "function" == typeof __values3 ? __values3(_) : _[Symbol.iterator](), 
-  ee = {}, verb("next"), verb("throw"), verb("return"), ee[Symbol.asyncIterator] = function() {
-    return this;
-  }, ee);
-  function verb(ne) {
-    ee[ne] = _[ne] && function(ee) {
-      return new Promise((function(ie, re) {
-        (function settle(_, ee, ne, ie) {
-          Promise.resolve(ie).then((function(ee) {
-            _({
-              value: ee,
-              done: ne
-            });
-          }), ee);
-        })(ie, re, (ee = _[ne](ee)).done, ee.value);
-      }));
-    };
-  }
-}
-
-function __makeTemplateObject3(_, ee) {
-  if (Object.defineProperty) Object.defineProperty(_, "raw", {
-    value: ee
-  }); else _.raw = ee;
-  return _;
-}
-
-function __importStar3(_) {
-  if (_ && _.__esModule) return _;
-  var ee = {};
-  if (null != _) for (var ne in _) if (Object.hasOwnProperty.call(_, ne)) ee[ne] = _[ne];
-  ee.default = _;
-  return ee;
-}
-
-function __importDefault3(_) {
-  return _ && _.__esModule ? _ : {
-    default: _
-  };
-}
-
-function __classPrivateFieldGet3(_, ee) {
-  if (!ee.has(_)) throw new TypeError("attempted to get private field on non-instance");
-  return ee.get(_);
-}
-
-function __classPrivateFieldSet3(_, ee, ne) {
-  if (!ee.has(_)) throw new TypeError("attempted to set private field on non-instance");
-  ee.set(_, ne);
-  return ne;
-}
-
-var extendStatics4, __assign4, init_tslib_es63 = __esm({
-  "node_modules/@aws-crypto/ie11-detection/node_modules/tslib/tslib.es6.js"() {
-    extendStatics3 = function(_, ee) {
-      return (extendStatics3 = Object.setPrototypeOf || {
-        __proto__: []
-      } instanceof Array && function(_, ee) {
-        _.__proto__ = ee;
-      } || function(_, ee) {
-        for (var ne in ee) if (ee.hasOwnProperty(ne)) _[ne] = ee[ne];
-      })(_, ee);
-    };
-    __assign3 = function() {
-      __assign3 = Object.assign || function __assign8(_) {
-        for (var ee, ne = 1, ie = arguments.length; ne < ie; ne++) {
-          ee = arguments[ne];
-          for (var re in ee) if (Object.prototype.hasOwnProperty.call(ee, re)) _[re] = ee[re];
-        }
-        return _;
-      };
-      return __assign3.apply(this, arguments);
-    };
-  }
-}), require_CryptoOperation = __commonJS({
-  "node_modules/@aws-crypto/ie11-detection/build/CryptoOperation.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-  }
-}), require_Key = __commonJS({
-  "node_modules/@aws-crypto/ie11-detection/build/Key.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-  }
-}), require_KeyOperation = __commonJS({
-  "node_modules/@aws-crypto/ie11-detection/build/KeyOperation.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-  }
-}), require_MsSubtleCrypto = __commonJS({
-  "node_modules/@aws-crypto/ie11-detection/build/MsSubtleCrypto.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-  }
-}), require_MsWindow = __commonJS({
-  "node_modules/@aws-crypto/ie11-detection/build/MsWindow.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.isMsWindow = void 0;
-    var ee = [ "decrypt", "digest", "encrypt", "exportKey", "generateKey", "importKey", "sign", "verify" ];
-    _.isMsWindow = function isMsWindow(_) {
-      if (function quacksLikeAnMsWindow(_) {
-        return "MSInputMethodContext" in _ && "msCrypto" in _;
-      }(_) && void 0 !== _.msCrypto.subtle) {
-        var ne = _.msCrypto, ie = ne.getRandomValues, re = ne.subtle;
-        return ee.map((function(_) {
-          return re[_];
-        })).concat(ie).every((function(_) {
-          return "function" == typeof _;
-        }));
-      }
-      return false;
-    };
-  }
-}), require_build2 = __commonJS({
-  "node_modules/@aws-crypto/ie11-detection/build/index.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    var ee = (init_tslib_es63(), __toCommonJS(tslib_es6_exports3));
-    ee.__exportStar(require_CryptoOperation(), _);
-    ee.__exportStar(require_Key(), _);
-    ee.__exportStar(require_KeyOperation(), _);
-    ee.__exportStar(require_MsSubtleCrypto(), _);
-    ee.__exportStar(require_MsWindow(), _);
-  }
-}), require_convertToBuffer = __commonJS({
-  "node_modules/@aws-crypto/util/build/convertToBuffer.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.convertToBuffer = void 0;
-    var ee = (init_dist_es(), __toCommonJS(dist_es_exports)), ne = "undefined" != typeof Buffer && Buffer.from ? function(_) {
-      return Buffer.from(_, "utf8");
-    } : ee.fromUtf8;
-    _.convertToBuffer = function convertToBuffer2(_) {
-      if (_ instanceof Uint8Array) return _;
-      if ("string" == typeof _) return ne(_);
-      if (ArrayBuffer.isView(_)) return new Uint8Array(_.buffer, _.byteOffset, _.byteLength / Uint8Array.BYTES_PER_ELEMENT); else return new Uint8Array(_);
-    };
-  }
-}), require_isEmptyData2 = __commonJS({
-  "node_modules/@aws-crypto/util/build/isEmptyData.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.isEmptyData = void 0;
-    _.isEmptyData = function isEmptyData2(_) {
-      if ("string" == typeof _) return 0 === _.length; else return 0 === _.byteLength;
-    };
-  }
-}), require_numToUint8 = __commonJS({
-  "node_modules/@aws-crypto/util/build/numToUint8.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.numToUint8 = void 0;
-    _.numToUint8 = function numToUint8(_) {
-      return new Uint8Array([ (4278190080 & _) >> 24, (16711680 & _) >> 16, (65280 & _) >> 8, 255 & _ ]);
-    };
-  }
-}), require_uint32ArrayFrom = __commonJS({
-  "node_modules/@aws-crypto/util/build/uint32ArrayFrom.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.uint32ArrayFrom = void 0;
-    _.uint32ArrayFrom = function uint32ArrayFrom(_) {
-      if (!Uint32Array.from) {
-        for (var ee = new Uint32Array(_.length), ne = 0; ne < _.length; ) {
-          ee[ne] = _[ne];
-          ne += 1;
-        }
-        return ee;
-      }
-      return Uint32Array.from(_);
-    };
-  }
-}), require_build3 = __commonJS({
-  "node_modules/@aws-crypto/util/build/index.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.uint32ArrayFrom = _.numToUint8 = _.isEmptyData = _.convertToBuffer = void 0;
-    var ee = require_convertToBuffer();
-    Object.defineProperty(_, "convertToBuffer", {
-      enumerable: true,
-      get: function() {
-        return ee.convertToBuffer;
-      }
-    });
-    var ne = require_isEmptyData2();
-    Object.defineProperty(_, "isEmptyData", {
-      enumerable: true,
-      get: function() {
-        return ne.isEmptyData;
-      }
-    });
-    var ie = require_numToUint8();
-    Object.defineProperty(_, "numToUint8", {
-      enumerable: true,
-      get: function() {
-        return ie.numToUint8;
-      }
-    });
-    var re = require_uint32ArrayFrom();
-    Object.defineProperty(_, "uint32ArrayFrom", {
-      enumerable: true,
-      get: function() {
-        return re.uint32ArrayFrom;
-      }
-    });
-  }
-}), require_crossPlatformSha1 = __commonJS({
-  "node_modules/@aws-crypto/sha1-browser/build/crossPlatformSha1.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.Sha1 = void 0;
-    var ee = require_ie11Sha1(), ne = require_webCryptoSha1(), ie = require_build(), re = require_build2(), se = (init_dist_es2(), 
-    __toCommonJS(dist_es_exports2)), oe = require_build3(), le = function() {
-      function Sha13(_) {
-        if ((0, ie.supportsWebCrypto)((0, se.locateWindow)())) this.hash = new ne.Sha1(_); else if ((0, 
-        re.isMsWindow)((0, se.locateWindow)())) this.hash = new ee.Sha1(_); else throw new Error("SHA1 not supported");
-      }
-      Sha13.prototype.update = function(_, ee) {
-        this.hash.update((0, oe.convertToBuffer)(_));
-      };
-      Sha13.prototype.digest = function() {
-        return this.hash.digest();
-      };
-      Sha13.prototype.reset = function() {
-        this.hash.reset();
-      };
-      return Sha13;
-    }();
-    _.Sha1 = le;
-  }
-}), require_build4 = __commonJS({
-  "node_modules/@aws-crypto/sha1-browser/build/index.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.WebCryptoSha1 = _.Ie11Sha1 = void 0;
-    (init_tslib_es6(), __toCommonJS(tslib_es6_exports)).__exportStar(require_crossPlatformSha1(), _);
-    var ee = require_ie11Sha1();
-    Object.defineProperty(_, "Ie11Sha1", {
-      enumerable: true,
-      get: function() {
-        return ee.Sha1;
-      }
-    });
-    var ne = require_webCryptoSha1();
-    Object.defineProperty(_, "WebCryptoSha1", {
-      enumerable: true,
-      get: function() {
-        return ne.Sha1;
-      }
-    });
-  }
-}), tslib_es6_exports4 = {};
-
-__export(tslib_es6_exports4, {
-  __assign: () => __assign4,
-  __asyncDelegator: () => __asyncDelegator4,
-  __asyncGenerator: () => __asyncGenerator4,
-  __asyncValues: () => __asyncValues4,
-  __await: () => __await4,
-  __awaiter: () => __awaiter4,
-  __classPrivateFieldGet: () => __classPrivateFieldGet4,
-  __classPrivateFieldSet: () => __classPrivateFieldSet4,
-  __createBinding: () => __createBinding4,
-  __decorate: () => __decorate4,
-  __exportStar: () => __exportStar4,
-  __extends: () => __extends4,
-  __generator: () => __generator4,
-  __importDefault: () => __importDefault4,
-  __importStar: () => __importStar4,
-  __makeTemplateObject: () => __makeTemplateObject4,
-  __metadata: () => __metadata4,
-  __param: () => __param4,
-  __read: () => __read4,
-  __rest: () => __rest4,
-  __spread: () => __spread4,
-  __spreadArrays: () => __spreadArrays4,
-  __values: () => __values4
-});
-
-function __extends4(_, ee) {
-  extendStatics4(_, ee);
-  function __() {
-    this.constructor = _;
-  }
-  _.prototype = null === ee ? Object.create(ee) : (__.prototype = ee.prototype, new __);
-}
-
-function __rest4(_, ee) {
-  var ne = {};
-  for (var ie in _) if (Object.prototype.hasOwnProperty.call(_, ie) && ee.indexOf(ie) < 0) ne[ie] = _[ie];
-  if (null != _ && "function" == typeof Object.getOwnPropertySymbols) {
-    var re = 0;
-    for (ie = Object.getOwnPropertySymbols(_); re < ie.length; re++) if (ee.indexOf(ie[re]) < 0 && Object.prototype.propertyIsEnumerable.call(_, ie[re])) ne[ie[re]] = _[ie[re]];
-  }
-  return ne;
-}
-
-function __decorate4(_, ee, ne, ie) {
-  var re, se = arguments.length, oe = se < 3 ? ee : null === ie ? ie = Object.getOwnPropertyDescriptor(ee, ne) : ie;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) oe = Reflect.decorate(_, ee, ne, ie); else for (var le = _.length - 1; le >= 0; le--) if (re = _[le]) oe = (se < 3 ? re(oe) : se > 3 ? re(ee, ne, oe) : re(ee, ne)) || oe;
-  return se > 3 && oe && Object.defineProperty(ee, ne, oe), oe;
-}
-
-function __param4(_, ee) {
-  return function(ne, ie) {
-    ee(ne, ie, _);
-  };
-}
-
-function __metadata4(_, ee) {
-  if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(_, ee);
-}
-
-function __awaiter4(_, ee, ne, ie) {
-  return new (ne || (ne = Promise))((function(re, se) {
-    function fulfilled(_) {
-      try {
-        step(ie.next(_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function rejected(_) {
-      try {
-        step(ie["throw"](_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function step(_) {
-      _.done ? re(_.value) : function adopt(_) {
-        return _ instanceof ne ? _ : new ne((function(ee) {
-          ee(_);
-        }));
-      }(_.value).then(fulfilled, rejected);
-    }
-    step((ie = ie.apply(_, ee || [])).next());
-  }));
-}
-
-function __generator4(_, ee) {
-  var ne, ie, re, se, oe = {
-    label: 0,
-    sent: function() {
-      if (1 & re[0]) throw re[1];
-      return re[1];
-    },
-    trys: [],
-    ops: []
-  };
-  return se = {
-    next: verb(0),
-    throw: verb(1),
-    return: verb(2)
-  }, "function" == typeof Symbol && (se[Symbol.iterator] = function() {
-    return this;
-  }), se;
-  function verb(se) {
-    return function(le) {
-      return function step(se) {
-        if (ne) throw new TypeError("Generator is already executing.");
-        for (;oe; ) try {
-          if (ne = 1, ie && (re = 2 & se[0] ? ie["return"] : se[0] ? ie["throw"] || ((re = ie["return"]) && re.call(ie), 
-          0) : ie.next) && !(re = re.call(ie, se[1])).done) return re;
-          if (ie = 0, re) se = [ 2 & se[0], re.value ];
-          switch (se[0]) {
-           case 0:
-           case 1:
-            re = se;
-            break;
-
-           case 4:
-            oe.label++;
-            return {
-              value: se[1],
-              done: false
-            };
-
-           case 5:
-            oe.label++;
-            ie = se[1];
-            se = [ 0 ];
-            continue;
-
-           case 7:
-            se = oe.ops.pop();
-            oe.trys.pop();
-            continue;
-
-           default:
-            if (!(re = oe.trys, re = re.length > 0 && re[re.length - 1]) && (6 === se[0] || 2 === se[0])) {
-              oe = 0;
-              continue;
-            }
-            if (3 === se[0] && (!re || se[1] > re[0] && se[1] < re[3])) {
-              oe.label = se[1];
-              break;
-            }
-            if (6 === se[0] && oe.label < re[1]) {
-              oe.label = re[1];
-              re = se;
-              break;
-            }
-            if (re && oe.label < re[2]) {
-              oe.label = re[2];
-              oe.ops.push(se);
-              break;
-            }
-            if (re[2]) oe.ops.pop();
-            oe.trys.pop();
-            continue;
-          }
-          se = ee.call(_, oe);
-        } catch (_) {
-          se = [ 6, _ ];
-          ie = 0;
-        } finally {
-          ne = re = 0;
-        }
-        if (5 & se[0]) throw se[1];
-        return {
-          value: se[0] ? se[1] : void 0,
-          done: true
-        };
-      }([ se, le ]);
-    };
-  }
-}
-
-function __createBinding4(_, ee, ne, ie) {
-  if (void 0 === ie) ie = ne;
-  _[ie] = ee[ne];
-}
-
-function __exportStar4(_, ee) {
-  for (var ne in _) if ("default" !== ne && !ee.hasOwnProperty(ne)) ee[ne] = _[ne];
-}
-
-function __values4(_) {
-  var ee = "function" == typeof Symbol && Symbol.iterator, ne = ee && _[ee], ie = 0;
-  if (ne) return ne.call(_);
-  if (_ && "number" == typeof _.length) return {
-    next: function() {
-      if (_ && ie >= _.length) _ = void 0;
-      return {
-        value: _ && _[ie++],
-        done: !_
-      };
-    }
-  };
-  throw new TypeError(ee ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __read4(_, ee) {
-  var ne = "function" == typeof Symbol && _[Symbol.iterator];
-  if (!ne) return _;
-  var ie, re, se = ne.call(_), oe = [];
-  try {
-    for (;(void 0 === ee || ee-- > 0) && !(ie = se.next()).done; ) oe.push(ie.value);
-  } catch (_) {
-    re = {
-      error: _
-    };
-  } finally {
-    try {
-      if (ie && !ie.done && (ne = se["return"])) ne.call(se);
-    } finally {
-      if (re) throw re.error;
-    }
-  }
-  return oe;
-}
-
-function __spread4() {
-  for (var _ = [], ee = 0; ee < arguments.length; ee++) _ = _.concat(__read4(arguments[ee]));
-  return _;
-}
-
-function __spreadArrays4() {
-  for (var _ = 0, ee = 0, ne = arguments.length; ee < ne; ee++) _ += arguments[ee].length;
-  var ie = Array(_), re = 0;
-  for (ee = 0; ee < ne; ee++) for (var se = arguments[ee], oe = 0, le = se.length; oe < le; oe++, 
-  re++) ie[re] = se[oe];
-  return ie;
-}
-
-function __await4(_) {
-  return this instanceof __await4 ? (this.v = _, this) : new __await4(_);
-}
-
-function __asyncGenerator4(_, ee, ne) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ie, re = ne.apply(_, ee || []), se = [];
-  return ie = {}, verb("next"), verb("throw"), verb("return"), ie[Symbol.asyncIterator] = function() {
-    return this;
-  }, ie;
-  function verb(_) {
-    if (re[_]) ie[_] = function(ee) {
-      return new Promise((function(ne, ie) {
-        se.push([ _, ee, ne, ie ]) > 1 || resume(_, ee);
-      }));
-    };
-  }
-  function resume(_, ee) {
-    try {
-      (function step(_) {
-        _.value instanceof __await4 ? Promise.resolve(_.value.v).then(fulfill, reject) : settle(se[0][2], _);
-      })(re[_](ee));
-    } catch (_) {
-      settle(se[0][3], _);
-    }
-  }
-  function fulfill(_) {
-    resume("next", _);
-  }
-  function reject(_) {
-    resume("throw", _);
-  }
-  function settle(_, ee) {
-    if (_(ee), se.shift(), se.length) resume(se[0][0], se[0][1]);
-  }
-}
-
-function __asyncDelegator4(_) {
-  var ee, ne;
-  return ee = {}, verb("next"), verb("throw", (function(_) {
-    throw _;
-  })), verb("return"), ee[Symbol.iterator] = function() {
-    return this;
-  }, ee;
-  function verb(ie, re) {
-    ee[ie] = _[ie] ? function(ee) {
-      return (ne = !ne) ? {
-        value: __await4(_[ie](ee)),
-        done: "return" === ie
-      } : re ? re(ee) : ee;
-    } : re;
-  }
-}
-
-function __asyncValues4(_) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ee, ne = _[Symbol.asyncIterator];
-  return ne ? ne.call(_) : (_ = "function" == typeof __values4 ? __values4(_) : _[Symbol.iterator](), 
-  ee = {}, verb("next"), verb("throw"), verb("return"), ee[Symbol.asyncIterator] = function() {
-    return this;
-  }, ee);
-  function verb(ne) {
-    ee[ne] = _[ne] && function(ee) {
-      return new Promise((function(ie, re) {
-        (function settle(_, ee, ne, ie) {
-          Promise.resolve(ie).then((function(ee) {
-            _({
-              value: ee,
-              done: ne
-            });
-          }), ee);
-        })(ie, re, (ee = _[ne](ee)).done, ee.value);
-      }));
-    };
-  }
-}
-
-function __makeTemplateObject4(_, ee) {
-  if (Object.defineProperty) Object.defineProperty(_, "raw", {
-    value: ee
-  }); else _.raw = ee;
-  return _;
-}
-
-function __importStar4(_) {
-  if (_ && _.__esModule) return _;
-  var ee = {};
-  if (null != _) for (var ne in _) if (Object.hasOwnProperty.call(_, ne)) ee[ne] = _[ne];
-  ee.default = _;
-  return ee;
-}
-
-function __importDefault4(_) {
-  return _ && _.__esModule ? _ : {
-    default: _
-  };
-}
-
-function __classPrivateFieldGet4(_, ee) {
-  if (!ee.has(_)) throw new TypeError("attempted to get private field on non-instance");
-  return ee.get(_);
-}
-
-function __classPrivateFieldSet4(_, ee, ne) {
-  if (!ee.has(_)) throw new TypeError("attempted to set private field on non-instance");
-  ee.set(_, ne);
-  return ne;
-}
-
-var extendStatics5, __assign5, init_tslib_es64 = __esm({
-  "node_modules/@aws-crypto/sha256-browser/node_modules/tslib/tslib.es6.js"() {
-    extendStatics4 = function(_, ee) {
-      return (extendStatics4 = Object.setPrototypeOf || {
-        __proto__: []
-      } instanceof Array && function(_, ee) {
-        _.__proto__ = ee;
-      } || function(_, ee) {
-        for (var ne in ee) if (ee.hasOwnProperty(ne)) _[ne] = ee[ne];
-      })(_, ee);
-    };
-    __assign4 = function() {
-      __assign4 = Object.assign || function __assign8(_) {
-        for (var ee, ne = 1, ie = arguments.length; ne < ie; ne++) {
-          ee = arguments[ne];
-          for (var re in ee) if (Object.prototype.hasOwnProperty.call(ee, re)) _[re] = ee[re];
-        }
-        return _;
-      };
-      return __assign4.apply(this, arguments);
-    };
-  }
-}), require_isEmptyData3 = __commonJS({
-  "node_modules/@aws-crypto/sha256-browser/build/isEmptyData.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.isEmptyData = void 0;
-    _.isEmptyData = function isEmptyData2(_) {
-      if ("string" == typeof _) return 0 === _.length; else return 0 === _.byteLength;
-    };
-  }
-}), require_constants2 = __commonJS({
-  "node_modules/@aws-crypto/sha256-browser/build/constants.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.EMPTY_DATA_SHA_256 = _.SHA_256_HMAC_ALGO = _.SHA_256_HASH = void 0;
-    _.SHA_256_HASH = {
-      name: "SHA-256"
-    };
-    _.SHA_256_HMAC_ALGO = {
-      name: "HMAC",
-      hash: _.SHA_256_HASH
-    };
-    _.EMPTY_DATA_SHA_256 = new Uint8Array([ 227, 176, 196, 66, 152, 252, 28, 20, 154, 251, 244, 200, 153, 111, 185, 36, 39, 174, 65, 228, 100, 155, 147, 76, 164, 149, 153, 27, 120, 82, 184, 85 ]);
-  }
-}), require_ie11Sha256 = __commonJS({
-  "node_modules/@aws-crypto/sha256-browser/build/ie11Sha256.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.Sha256 = void 0;
-    var ee = require_isEmptyData3(), ne = require_constants2(), ie = (init_dist_es(), 
-    __toCommonJS(dist_es_exports)), re = (init_dist_es2(), __toCommonJS(dist_es_exports2)), se = function() {
-      function Sha2563(_) {
-        this.secret = _;
-        this.reset();
-      }
-      Sha2563.prototype.update = function(_) {
-        var ne = this;
-        if (!(0, ee.isEmptyData)(_)) {
-          this.operation = this.operation.then((function(ee) {
-            ee.onerror = function() {
-              ne.operation = Promise.reject(new Error("Error encountered updating hash"));
-            };
-            ee.process(toArrayBufferView(_));
-            return ee;
-          }));
-          this.operation.catch((function() {}));
-        }
-      };
-      Sha2563.prototype.digest = function() {
-        return this.operation.then((function(_) {
-          return new Promise((function(ee, ne) {
-            _.onerror = function() {
-              ne(new Error("Error encountered finalizing hash"));
-            };
-            _.oncomplete = function() {
-              if (_.result) ee(new Uint8Array(_.result));
-              ne(new Error("Error encountered finalizing hash"));
-            };
-            _.finish();
-          }));
-        }));
-      };
-      Sha2563.prototype.reset = function() {
-        if (this.secret) {
-          this.operation = function getKeyPromise(_) {
-            return new Promise((function(ee, ie) {
-              var se = (0, re.locateWindow)().msCrypto.subtle.importKey("raw", toArrayBufferView(_), ne.SHA_256_HMAC_ALGO, false, [ "sign" ]);
-              se.oncomplete = function() {
-                if (se.result) ee(se.result);
-                ie(new Error("ImportKey completed without importing key."));
-              };
-              se.onerror = function() {
-                ie(new Error("ImportKey failed to import key."));
-              };
-            }));
-          }(this.secret).then((function(_) {
-            return (0, re.locateWindow)().msCrypto.subtle.sign(ne.SHA_256_HMAC_ALGO, _);
-          }));
-          this.operation.catch((function() {}));
-        } else this.operation = Promise.resolve((0, re.locateWindow)().msCrypto.subtle.digest("SHA-256"));
-      };
-      return Sha2563;
-    }();
-    _.Sha256 = se;
-    function toArrayBufferView(_) {
-      if ("string" == typeof _) return (0, ie.fromUtf8)(_);
-      if (ArrayBuffer.isView(_)) return new Uint8Array(_.buffer, _.byteOffset, _.byteLength / Uint8Array.BYTES_PER_ELEMENT); else return new Uint8Array(_);
-    }
-  }
-}), require_webCryptoSha256 = __commonJS({
-  "node_modules/@aws-crypto/sha256-browser/build/webCryptoSha256.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.Sha256 = void 0;
-    var ee = require_build3(), ne = require_constants2(), ie = (init_dist_es2(), __toCommonJS(dist_es_exports2)), re = function() {
-      function Sha2563(_) {
-        this.toHash = new Uint8Array(0);
-        this.secret = _;
-        this.reset();
-      }
-      Sha2563.prototype.update = function(_) {
-        if (!(0, ee.isEmptyData)(_)) {
-          var ne = (0, ee.convertToBuffer)(_), ie = new Uint8Array(this.toHash.byteLength + ne.byteLength);
-          ie.set(this.toHash, 0);
-          ie.set(ne, this.toHash.byteLength);
-          this.toHash = ie;
-        }
-      };
-      Sha2563.prototype.digest = function() {
-        var _ = this;
-        if (this.key) return this.key.then((function(ee) {
-          return (0, ie.locateWindow)().crypto.subtle.sign(ne.SHA_256_HMAC_ALGO, ee, _.toHash).then((function(_) {
-            return new Uint8Array(_);
-          }));
-        }));
-        if ((0, ee.isEmptyData)(this.toHash)) return Promise.resolve(ne.EMPTY_DATA_SHA_256); else return Promise.resolve().then((function() {
-          return (0, ie.locateWindow)().crypto.subtle.digest(ne.SHA_256_HASH, _.toHash);
-        })).then((function(_) {
-          return Promise.resolve(new Uint8Array(_));
-        }));
-      };
-      Sha2563.prototype.reset = function() {
-        var _ = this;
-        this.toHash = new Uint8Array(0);
-        if (this.secret && void 0 !== this.secret) {
-          this.key = new Promise((function(re, se) {
-            (0, ie.locateWindow)().crypto.subtle.importKey("raw", (0, ee.convertToBuffer)(_.secret), ne.SHA_256_HMAC_ALGO, false, [ "sign" ]).then(re, se);
-          }));
-          this.key.catch((function() {}));
-        }
-      };
-      return Sha2563;
-    }();
-    _.Sha256 = re;
-  }
-}), tslib_es6_exports5 = {};
-
-__export(tslib_es6_exports5, {
-  __assign: () => __assign5,
-  __asyncDelegator: () => __asyncDelegator5,
-  __asyncGenerator: () => __asyncGenerator5,
-  __asyncValues: () => __asyncValues5,
-  __await: () => __await5,
-  __awaiter: () => __awaiter5,
-  __classPrivateFieldGet: () => __classPrivateFieldGet5,
-  __classPrivateFieldSet: () => __classPrivateFieldSet5,
-  __createBinding: () => __createBinding5,
-  __decorate: () => __decorate5,
-  __exportStar: () => __exportStar5,
-  __extends: () => __extends5,
-  __generator: () => __generator5,
-  __importDefault: () => __importDefault5,
-  __importStar: () => __importStar5,
-  __makeTemplateObject: () => __makeTemplateObject5,
-  __metadata: () => __metadata5,
-  __param: () => __param5,
-  __read: () => __read5,
-  __rest: () => __rest5,
-  __spread: () => __spread5,
-  __spreadArrays: () => __spreadArrays5,
-  __values: () => __values5
-});
-
-function __extends5(_, ee) {
-  extendStatics5(_, ee);
-  function __() {
-    this.constructor = _;
-  }
-  _.prototype = null === ee ? Object.create(ee) : (__.prototype = ee.prototype, new __);
-}
-
-function __rest5(_, ee) {
-  var ne = {};
-  for (var ie in _) if (Object.prototype.hasOwnProperty.call(_, ie) && ee.indexOf(ie) < 0) ne[ie] = _[ie];
-  if (null != _ && "function" == typeof Object.getOwnPropertySymbols) {
-    var re = 0;
-    for (ie = Object.getOwnPropertySymbols(_); re < ie.length; re++) if (ee.indexOf(ie[re]) < 0 && Object.prototype.propertyIsEnumerable.call(_, ie[re])) ne[ie[re]] = _[ie[re]];
-  }
-  return ne;
-}
-
-function __decorate5(_, ee, ne, ie) {
-  var re, se = arguments.length, oe = se < 3 ? ee : null === ie ? ie = Object.getOwnPropertyDescriptor(ee, ne) : ie;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) oe = Reflect.decorate(_, ee, ne, ie); else for (var le = _.length - 1; le >= 0; le--) if (re = _[le]) oe = (se < 3 ? re(oe) : se > 3 ? re(ee, ne, oe) : re(ee, ne)) || oe;
-  return se > 3 && oe && Object.defineProperty(ee, ne, oe), oe;
-}
-
-function __param5(_, ee) {
-  return function(ne, ie) {
-    ee(ne, ie, _);
-  };
-}
-
-function __metadata5(_, ee) {
-  if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(_, ee);
-}
-
-function __awaiter5(_, ee, ne, ie) {
-  return new (ne || (ne = Promise))((function(re, se) {
-    function fulfilled(_) {
-      try {
-        step(ie.next(_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function rejected(_) {
-      try {
-        step(ie["throw"](_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function step(_) {
-      _.done ? re(_.value) : function adopt(_) {
-        return _ instanceof ne ? _ : new ne((function(ee) {
-          ee(_);
-        }));
-      }(_.value).then(fulfilled, rejected);
-    }
-    step((ie = ie.apply(_, ee || [])).next());
-  }));
-}
-
-function __generator5(_, ee) {
-  var ne, ie, re, se, oe = {
-    label: 0,
-    sent: function() {
-      if (1 & re[0]) throw re[1];
-      return re[1];
-    },
-    trys: [],
-    ops: []
-  };
-  return se = {
-    next: verb(0),
-    throw: verb(1),
-    return: verb(2)
-  }, "function" == typeof Symbol && (se[Symbol.iterator] = function() {
-    return this;
-  }), se;
-  function verb(se) {
-    return function(le) {
-      return function step(se) {
-        if (ne) throw new TypeError("Generator is already executing.");
-        for (;oe; ) try {
-          if (ne = 1, ie && (re = 2 & se[0] ? ie["return"] : se[0] ? ie["throw"] || ((re = ie["return"]) && re.call(ie), 
-          0) : ie.next) && !(re = re.call(ie, se[1])).done) return re;
-          if (ie = 0, re) se = [ 2 & se[0], re.value ];
-          switch (se[0]) {
-           case 0:
-           case 1:
-            re = se;
-            break;
-
-           case 4:
-            oe.label++;
-            return {
-              value: se[1],
-              done: false
-            };
-
-           case 5:
-            oe.label++;
-            ie = se[1];
-            se = [ 0 ];
-            continue;
-
-           case 7:
-            se = oe.ops.pop();
-            oe.trys.pop();
-            continue;
-
-           default:
-            if (!(re = oe.trys, re = re.length > 0 && re[re.length - 1]) && (6 === se[0] || 2 === se[0])) {
-              oe = 0;
-              continue;
-            }
-            if (3 === se[0] && (!re || se[1] > re[0] && se[1] < re[3])) {
-              oe.label = se[1];
-              break;
-            }
-            if (6 === se[0] && oe.label < re[1]) {
-              oe.label = re[1];
-              re = se;
-              break;
-            }
-            if (re && oe.label < re[2]) {
-              oe.label = re[2];
-              oe.ops.push(se);
-              break;
-            }
-            if (re[2]) oe.ops.pop();
-            oe.trys.pop();
-            continue;
-          }
-          se = ee.call(_, oe);
-        } catch (_) {
-          se = [ 6, _ ];
-          ie = 0;
-        } finally {
-          ne = re = 0;
-        }
-        if (5 & se[0]) throw se[1];
-        return {
-          value: se[0] ? se[1] : void 0,
-          done: true
-        };
-      }([ se, le ]);
-    };
-  }
-}
-
-function __createBinding5(_, ee, ne, ie) {
-  if (void 0 === ie) ie = ne;
-  _[ie] = ee[ne];
-}
-
-function __exportStar5(_, ee) {
-  for (var ne in _) if ("default" !== ne && !ee.hasOwnProperty(ne)) ee[ne] = _[ne];
-}
-
-function __values5(_) {
-  var ee = "function" == typeof Symbol && Symbol.iterator, ne = ee && _[ee], ie = 0;
-  if (ne) return ne.call(_);
-  if (_ && "number" == typeof _.length) return {
-    next: function() {
-      if (_ && ie >= _.length) _ = void 0;
-      return {
-        value: _ && _[ie++],
-        done: !_
-      };
-    }
-  };
-  throw new TypeError(ee ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __read5(_, ee) {
-  var ne = "function" == typeof Symbol && _[Symbol.iterator];
-  if (!ne) return _;
-  var ie, re, se = ne.call(_), oe = [];
-  try {
-    for (;(void 0 === ee || ee-- > 0) && !(ie = se.next()).done; ) oe.push(ie.value);
-  } catch (_) {
-    re = {
-      error: _
-    };
-  } finally {
-    try {
-      if (ie && !ie.done && (ne = se["return"])) ne.call(se);
-    } finally {
-      if (re) throw re.error;
-    }
-  }
-  return oe;
-}
-
-function __spread5() {
-  for (var _ = [], ee = 0; ee < arguments.length; ee++) _ = _.concat(__read5(arguments[ee]));
-  return _;
-}
-
-function __spreadArrays5() {
-  for (var _ = 0, ee = 0, ne = arguments.length; ee < ne; ee++) _ += arguments[ee].length;
-  var ie = Array(_), re = 0;
-  for (ee = 0; ee < ne; ee++) for (var se = arguments[ee], oe = 0, le = se.length; oe < le; oe++, 
-  re++) ie[re] = se[oe];
-  return ie;
-}
-
-function __await5(_) {
-  return this instanceof __await5 ? (this.v = _, this) : new __await5(_);
-}
-
-function __asyncGenerator5(_, ee, ne) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ie, re = ne.apply(_, ee || []), se = [];
-  return ie = {}, verb("next"), verb("throw"), verb("return"), ie[Symbol.asyncIterator] = function() {
-    return this;
-  }, ie;
-  function verb(_) {
-    if (re[_]) ie[_] = function(ee) {
-      return new Promise((function(ne, ie) {
-        se.push([ _, ee, ne, ie ]) > 1 || resume(_, ee);
-      }));
-    };
-  }
-  function resume(_, ee) {
-    try {
-      (function step(_) {
-        _.value instanceof __await5 ? Promise.resolve(_.value.v).then(fulfill, reject) : settle(se[0][2], _);
-      })(re[_](ee));
-    } catch (_) {
-      settle(se[0][3], _);
-    }
-  }
-  function fulfill(_) {
-    resume("next", _);
-  }
-  function reject(_) {
-    resume("throw", _);
-  }
-  function settle(_, ee) {
-    if (_(ee), se.shift(), se.length) resume(se[0][0], se[0][1]);
-  }
-}
-
-function __asyncDelegator5(_) {
-  var ee, ne;
-  return ee = {}, verb("next"), verb("throw", (function(_) {
-    throw _;
-  })), verb("return"), ee[Symbol.iterator] = function() {
-    return this;
-  }, ee;
-  function verb(ie, re) {
-    ee[ie] = _[ie] ? function(ee) {
-      return (ne = !ne) ? {
-        value: __await5(_[ie](ee)),
-        done: "return" === ie
-      } : re ? re(ee) : ee;
-    } : re;
-  }
-}
-
-function __asyncValues5(_) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ee, ne = _[Symbol.asyncIterator];
-  return ne ? ne.call(_) : (_ = "function" == typeof __values5 ? __values5(_) : _[Symbol.iterator](), 
-  ee = {}, verb("next"), verb("throw"), verb("return"), ee[Symbol.asyncIterator] = function() {
-    return this;
-  }, ee);
-  function verb(ne) {
-    ee[ne] = _[ne] && function(ee) {
-      return new Promise((function(ie, re) {
-        (function settle(_, ee, ne, ie) {
-          Promise.resolve(ie).then((function(ee) {
-            _({
-              value: ee,
-              done: ne
-            });
-          }), ee);
-        })(ie, re, (ee = _[ne](ee)).done, ee.value);
-      }));
-    };
-  }
-}
-
-function __makeTemplateObject5(_, ee) {
-  if (Object.defineProperty) Object.defineProperty(_, "raw", {
-    value: ee
-  }); else _.raw = ee;
-  return _;
-}
-
-function __importStar5(_) {
-  if (_ && _.__esModule) return _;
-  var ee = {};
-  if (null != _) for (var ne in _) if (Object.hasOwnProperty.call(_, ne)) ee[ne] = _[ne];
-  ee.default = _;
-  return ee;
-}
-
-function __importDefault5(_) {
-  return _ && _.__esModule ? _ : {
-    default: _
-  };
-}
-
-function __classPrivateFieldGet5(_, ee) {
-  if (!ee.has(_)) throw new TypeError("attempted to get private field on non-instance");
-  return ee.get(_);
-}
-
-function __classPrivateFieldSet5(_, ee, ne) {
-  if (!ee.has(_)) throw new TypeError("attempted to set private field on non-instance");
-  ee.set(_, ne);
-  return ne;
-}
-
-var extendStatics6, __assign6, init_tslib_es65 = __esm({
-  "node_modules/@aws-crypto/sha256-js/node_modules/tslib/tslib.es6.js"() {
-    extendStatics5 = function(_, ee) {
-      return (extendStatics5 = Object.setPrototypeOf || {
-        __proto__: []
-      } instanceof Array && function(_, ee) {
-        _.__proto__ = ee;
-      } || function(_, ee) {
-        for (var ne in ee) if (ee.hasOwnProperty(ne)) _[ne] = ee[ne];
-      })(_, ee);
-    };
-    __assign5 = function() {
-      __assign5 = Object.assign || function __assign8(_) {
-        for (var ee, ne = 1, ie = arguments.length; ne < ie; ne++) {
-          ee = arguments[ne];
-          for (var re in ee) if (Object.prototype.hasOwnProperty.call(ee, re)) _[re] = ee[re];
-        }
-        return _;
-      };
-      return __assign5.apply(this, arguments);
-    };
-  }
-}), require_constants3 = __commonJS({
-  "node_modules/@aws-crypto/sha256-js/build/constants.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.MAX_HASHABLE_LENGTH = _.INIT = _.KEY = _.DIGEST_LENGTH = _.BLOCK_SIZE = void 0;
-    _.BLOCK_SIZE = 64;
-    _.DIGEST_LENGTH = 32;
-    _.KEY = new Uint32Array([ 1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774, 264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, 2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711, 113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291, 1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411, 3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344, 430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298 ]);
-    _.INIT = [ 1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225 ];
-    _.MAX_HASHABLE_LENGTH = Math.pow(2, 53) - 1;
-  }
-}), require_RawSha256 = __commonJS({
-  "node_modules/@aws-crypto/sha256-js/build/RawSha256.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.RawSha256 = void 0;
-    var ee = require_constants3(), ne = function() {
-      function RawSha2562() {
-        this.state = Int32Array.from(ee.INIT);
-        this.temp = new Int32Array(64);
-        this.buffer = new Uint8Array(64);
-        this.bufferLength = 0;
-        this.bytesHashed = 0;
-        this.finished = false;
-      }
-      RawSha2562.prototype.update = function(_) {
-        if (this.finished) throw new Error("Attempted to update an already finished hash.");
-        var ne = 0, ie = _.byteLength;
-        this.bytesHashed += ie;
-        if (8 * this.bytesHashed > ee.MAX_HASHABLE_LENGTH) throw new Error("Cannot hash more than 2^53 - 1 bits");
-        for (;ie > 0; ) {
-          this.buffer[this.bufferLength++] = _[ne++];
-          ie--;
-          if (this.bufferLength === ee.BLOCK_SIZE) {
-            this.hashBuffer();
-            this.bufferLength = 0;
-          }
-        }
-      };
-      RawSha2562.prototype.digest = function() {
-        if (!this.finished) {
-          var _ = 8 * this.bytesHashed, ne = new DataView(this.buffer.buffer, this.buffer.byteOffset, this.buffer.byteLength), ie = this.bufferLength;
-          ne.setUint8(this.bufferLength++, 128);
-          if (ie % ee.BLOCK_SIZE >= ee.BLOCK_SIZE - 8) {
-            for (var re = this.bufferLength; re < ee.BLOCK_SIZE; re++) ne.setUint8(re, 0);
-            this.hashBuffer();
-            this.bufferLength = 0;
-          }
-          for (re = this.bufferLength; re < ee.BLOCK_SIZE - 8; re++) ne.setUint8(re, 0);
-          ne.setUint32(ee.BLOCK_SIZE - 8, Math.floor(_ / 4294967296), true);
-          ne.setUint32(ee.BLOCK_SIZE - 4, _);
-          this.hashBuffer();
-          this.finished = true;
-        }
-        var se = new Uint8Array(ee.DIGEST_LENGTH);
-        for (re = 0; re < 8; re++) {
-          se[4 * re] = this.state[re] >>> 24 & 255;
-          se[4 * re + 1] = this.state[re] >>> 16 & 255;
-          se[4 * re + 2] = this.state[re] >>> 8 & 255;
-          se[4 * re + 3] = this.state[re] >>> 0 & 255;
-        }
-        return se;
-      };
-      RawSha2562.prototype.hashBuffer = function() {
-        for (var _ = this.buffer, ne = this.state, ie = ne[0], re = ne[1], se = ne[2], oe = ne[3], le = ne[4], ue = ne[5], de = ne[6], fe = ne[7], he = 0; he < ee.BLOCK_SIZE; he++) {
-          if (he < 16) this.temp[he] = (255 & _[4 * he]) << 24 | (255 & _[4 * he + 1]) << 16 | (255 & _[4 * he + 2]) << 8 | 255 & _[4 * he + 3]; else {
-            var pe = this.temp[he - 2], ge = (pe >>> 17 | pe << 15) ^ (pe >>> 19 | pe << 13) ^ pe >>> 10, me = ((pe = this.temp[he - 15]) >>> 7 | pe << 25) ^ (pe >>> 18 | pe << 14) ^ pe >>> 3;
-            this.temp[he] = (ge + this.temp[he - 7] | 0) + (me + this.temp[he - 16] | 0);
-          }
-          var ye = (((le >>> 6 | le << 26) ^ (le >>> 11 | le << 21) ^ (le >>> 25 | le << 7)) + (le & ue ^ ~le & de) | 0) + (fe + (ee.KEY[he] + this.temp[he] | 0) | 0) | 0, ve = ((ie >>> 2 | ie << 30) ^ (ie >>> 13 | ie << 19) ^ (ie >>> 22 | ie << 10)) + (ie & re ^ ie & se ^ re & se) | 0;
-          fe = de;
-          de = ue;
-          ue = le;
-          le = oe + ye | 0;
-          oe = se;
-          se = re;
-          re = ie;
-          ie = ye + ve | 0;
-        }
-        ne[0] += ie;
-        ne[1] += re;
-        ne[2] += se;
-        ne[3] += oe;
-        ne[4] += le;
-        ne[5] += ue;
-        ne[6] += de;
-        ne[7] += fe;
-      };
-      return RawSha2562;
-    }();
-    _.RawSha256 = ne;
-  }
-}), require_jsSha256 = __commonJS({
-  "node_modules/@aws-crypto/sha256-js/build/jsSha256.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.Sha256 = void 0;
-    var ee = (init_tslib_es65(), __toCommonJS(tslib_es6_exports5)), ne = require_constants3(), ie = require_RawSha256(), re = require_build3(), se = function() {
-      function Sha2563(_) {
-        this.secret = _;
-        this.hash = new ie.RawSha256;
-        this.reset();
-      }
-      Sha2563.prototype.update = function(_) {
-        if (!(0, re.isEmptyData)(_) && !this.error) try {
-          this.hash.update((0, re.convertToBuffer)(_));
-        } catch (_) {
-          this.error = _;
-        }
-      };
-      Sha2563.prototype.digestSync = function() {
-        if (this.error) throw this.error;
-        if (this.outer) {
-          if (!this.outer.finished) this.outer.update(this.hash.digest());
-          return this.outer.digest();
-        }
-        return this.hash.digest();
-      };
-      Sha2563.prototype.digest = function() {
-        return ee.__awaiter(this, void 0, void 0, (function() {
-          return ee.__generator(this, (function(_) {
-            return [ 2, this.digestSync() ];
-          }));
-        }));
-      };
-      Sha2563.prototype.reset = function() {
-        this.hash = new ie.RawSha256;
-        if (this.secret) {
-          this.outer = new ie.RawSha256;
-          var _ = function bufferFromSecret(_) {
-            var ee = (0, re.convertToBuffer)(_);
-            if (ee.byteLength > ne.BLOCK_SIZE) {
-              var se = new ie.RawSha256;
-              se.update(ee);
-              ee = se.digest();
-            }
-            var oe = new Uint8Array(ne.BLOCK_SIZE);
-            oe.set(ee);
-            return oe;
-          }(this.secret), ee = new Uint8Array(ne.BLOCK_SIZE);
-          ee.set(_);
-          for (var se = 0; se < ne.BLOCK_SIZE; se++) {
-            _[se] ^= 54;
-            ee[se] ^= 92;
-          }
-          this.hash.update(_);
-          this.outer.update(ee);
-          for (se = 0; se < _.byteLength; se++) _[se] = 0;
-        }
-      };
-      return Sha2563;
-    }();
-    _.Sha256 = se;
-  }
-}), require_build5 = __commonJS({
-  "node_modules/@aws-crypto/sha256-js/build/index.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    (init_tslib_es65(), __toCommonJS(tslib_es6_exports5)).__exportStar(require_jsSha256(), _);
-  }
-}), require_crossPlatformSha256 = __commonJS({
-  "node_modules/@aws-crypto/sha256-browser/build/crossPlatformSha256.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.Sha256 = void 0;
-    var ee = require_ie11Sha256(), ne = require_webCryptoSha256(), ie = require_build5(), re = require_build(), se = require_build2(), oe = (init_dist_es2(), 
-    __toCommonJS(dist_es_exports2)), le = require_build3(), ue = function() {
-      function Sha2563(_) {
-        if ((0, re.supportsWebCrypto)((0, oe.locateWindow)())) this.hash = new ne.Sha256(_); else if ((0, 
-        se.isMsWindow)((0, oe.locateWindow)())) this.hash = new ee.Sha256(_); else this.hash = new ie.Sha256(_);
-      }
-      Sha2563.prototype.update = function(_, ee) {
-        this.hash.update((0, le.convertToBuffer)(_));
-      };
-      Sha2563.prototype.digest = function() {
-        return this.hash.digest();
-      };
-      Sha2563.prototype.reset = function() {
-        this.hash.reset();
-      };
-      return Sha2563;
-    }();
-    _.Sha256 = ue;
-  }
-}), require_build6 = __commonJS({
-  "node_modules/@aws-crypto/sha256-browser/build/index.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.WebCryptoSha256 = _.Ie11Sha256 = void 0;
-    (init_tslib_es64(), __toCommonJS(tslib_es6_exports4)).__exportStar(require_crossPlatformSha256(), _);
-    var ee = require_ie11Sha256();
-    Object.defineProperty(_, "Ie11Sha256", {
-      enumerable: true,
-      get: function() {
-        return ee.Sha256;
-      }
-    });
-    var ne = require_webCryptoSha256();
-    Object.defineProperty(_, "WebCryptoSha256", {
-      enumerable: true,
-      get: function() {
-        return ne.Sha256;
-      }
-    });
-  }
 }), require_es5 = __commonJS({
   "node_modules/bowser/es5.js"(_, ee) {
     ne = _, ie = function() {
@@ -6086,7 +3255,7 @@ var extendStatics6, __assign6, init_tslib_es65 = __esm({
               get: function() {
                 return se.PLATFORMS_MAP;
               }
-            } ]) && function a3(_, ee) {
+            } ]) && function a2(_, ee) {
               for (var ne = 0; ne < ee.length; ne++) {
                 var ie = ee[ne];
                 ie.enumerable = ie.enumerable || false, ie.configurable = true, "value" in ie && (ie.writable = true), 
@@ -6996,892 +4165,6 @@ var extendStatics6, __assign6, init_tslib_es65 = __esm({
     }, "object" == typeof _ && "object" == typeof ee ? ee.exports = ie() : "function" == typeof define && define.amd ? define([], ie) : "object" == typeof _ ? _.bowser = ie() : ne.bowser = ie();
     var ne, ie;
   }
-}), tslib_es6_exports6 = {};
-
-__export(tslib_es6_exports6, {
-  __assign: () => __assign6,
-  __asyncDelegator: () => __asyncDelegator6,
-  __asyncGenerator: () => __asyncGenerator6,
-  __asyncValues: () => __asyncValues6,
-  __await: () => __await6,
-  __awaiter: () => __awaiter6,
-  __classPrivateFieldGet: () => __classPrivateFieldGet6,
-  __classPrivateFieldSet: () => __classPrivateFieldSet6,
-  __createBinding: () => __createBinding6,
-  __decorate: () => __decorate6,
-  __exportStar: () => __exportStar6,
-  __extends: () => __extends6,
-  __generator: () => __generator6,
-  __importDefault: () => __importDefault6,
-  __importStar: () => __importStar6,
-  __makeTemplateObject: () => __makeTemplateObject6,
-  __metadata: () => __metadata6,
-  __param: () => __param6,
-  __read: () => __read6,
-  __rest: () => __rest6,
-  __spread: () => __spread6,
-  __spreadArrays: () => __spreadArrays6,
-  __values: () => __values6
-});
-
-function __extends6(_, ee) {
-  extendStatics6(_, ee);
-  function __() {
-    this.constructor = _;
-  }
-  _.prototype = null === ee ? Object.create(ee) : (__.prototype = ee.prototype, new __);
-}
-
-function __rest6(_, ee) {
-  var ne = {};
-  for (var ie in _) if (Object.prototype.hasOwnProperty.call(_, ie) && ee.indexOf(ie) < 0) ne[ie] = _[ie];
-  if (null != _ && "function" == typeof Object.getOwnPropertySymbols) {
-    var re = 0;
-    for (ie = Object.getOwnPropertySymbols(_); re < ie.length; re++) if (ee.indexOf(ie[re]) < 0 && Object.prototype.propertyIsEnumerable.call(_, ie[re])) ne[ie[re]] = _[ie[re]];
-  }
-  return ne;
-}
-
-function __decorate6(_, ee, ne, ie) {
-  var re, se = arguments.length, oe = se < 3 ? ee : null === ie ? ie = Object.getOwnPropertyDescriptor(ee, ne) : ie;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) oe = Reflect.decorate(_, ee, ne, ie); else for (var le = _.length - 1; le >= 0; le--) if (re = _[le]) oe = (se < 3 ? re(oe) : se > 3 ? re(ee, ne, oe) : re(ee, ne)) || oe;
-  return se > 3 && oe && Object.defineProperty(ee, ne, oe), oe;
-}
-
-function __param6(_, ee) {
-  return function(ne, ie) {
-    ee(ne, ie, _);
-  };
-}
-
-function __metadata6(_, ee) {
-  if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(_, ee);
-}
-
-function __awaiter6(_, ee, ne, ie) {
-  return new (ne || (ne = Promise))((function(re, se) {
-    function fulfilled(_) {
-      try {
-        step(ie.next(_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function rejected(_) {
-      try {
-        step(ie["throw"](_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function step(_) {
-      _.done ? re(_.value) : function adopt(_) {
-        return _ instanceof ne ? _ : new ne((function(ee) {
-          ee(_);
-        }));
-      }(_.value).then(fulfilled, rejected);
-    }
-    step((ie = ie.apply(_, ee || [])).next());
-  }));
-}
-
-function __generator6(_, ee) {
-  var ne, ie, re, se, oe = {
-    label: 0,
-    sent: function() {
-      if (1 & re[0]) throw re[1];
-      return re[1];
-    },
-    trys: [],
-    ops: []
-  };
-  return se = {
-    next: verb(0),
-    throw: verb(1),
-    return: verb(2)
-  }, "function" == typeof Symbol && (se[Symbol.iterator] = function() {
-    return this;
-  }), se;
-  function verb(se) {
-    return function(le) {
-      return function step(se) {
-        if (ne) throw new TypeError("Generator is already executing.");
-        for (;oe; ) try {
-          if (ne = 1, ie && (re = 2 & se[0] ? ie["return"] : se[0] ? ie["throw"] || ((re = ie["return"]) && re.call(ie), 
-          0) : ie.next) && !(re = re.call(ie, se[1])).done) return re;
-          if (ie = 0, re) se = [ 2 & se[0], re.value ];
-          switch (se[0]) {
-           case 0:
-           case 1:
-            re = se;
-            break;
-
-           case 4:
-            oe.label++;
-            return {
-              value: se[1],
-              done: false
-            };
-
-           case 5:
-            oe.label++;
-            ie = se[1];
-            se = [ 0 ];
-            continue;
-
-           case 7:
-            se = oe.ops.pop();
-            oe.trys.pop();
-            continue;
-
-           default:
-            if (!(re = oe.trys, re = re.length > 0 && re[re.length - 1]) && (6 === se[0] || 2 === se[0])) {
-              oe = 0;
-              continue;
-            }
-            if (3 === se[0] && (!re || se[1] > re[0] && se[1] < re[3])) {
-              oe.label = se[1];
-              break;
-            }
-            if (6 === se[0] && oe.label < re[1]) {
-              oe.label = re[1];
-              re = se;
-              break;
-            }
-            if (re && oe.label < re[2]) {
-              oe.label = re[2];
-              oe.ops.push(se);
-              break;
-            }
-            if (re[2]) oe.ops.pop();
-            oe.trys.pop();
-            continue;
-          }
-          se = ee.call(_, oe);
-        } catch (_) {
-          se = [ 6, _ ];
-          ie = 0;
-        } finally {
-          ne = re = 0;
-        }
-        if (5 & se[0]) throw se[1];
-        return {
-          value: se[0] ? se[1] : void 0,
-          done: true
-        };
-      }([ se, le ]);
-    };
-  }
-}
-
-function __createBinding6(_, ee, ne, ie) {
-  if (void 0 === ie) ie = ne;
-  _[ie] = ee[ne];
-}
-
-function __exportStar6(_, ee) {
-  for (var ne in _) if ("default" !== ne && !ee.hasOwnProperty(ne)) ee[ne] = _[ne];
-}
-
-function __values6(_) {
-  var ee = "function" == typeof Symbol && Symbol.iterator, ne = ee && _[ee], ie = 0;
-  if (ne) return ne.call(_);
-  if (_ && "number" == typeof _.length) return {
-    next: function() {
-      if (_ && ie >= _.length) _ = void 0;
-      return {
-        value: _ && _[ie++],
-        done: !_
-      };
-    }
-  };
-  throw new TypeError(ee ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __read6(_, ee) {
-  var ne = "function" == typeof Symbol && _[Symbol.iterator];
-  if (!ne) return _;
-  var ie, re, se = ne.call(_), oe = [];
-  try {
-    for (;(void 0 === ee || ee-- > 0) && !(ie = se.next()).done; ) oe.push(ie.value);
-  } catch (_) {
-    re = {
-      error: _
-    };
-  } finally {
-    try {
-      if (ie && !ie.done && (ne = se["return"])) ne.call(se);
-    } finally {
-      if (re) throw re.error;
-    }
-  }
-  return oe;
-}
-
-function __spread6() {
-  for (var _ = [], ee = 0; ee < arguments.length; ee++) _ = _.concat(__read6(arguments[ee]));
-  return _;
-}
-
-function __spreadArrays6() {
-  for (var _ = 0, ee = 0, ne = arguments.length; ee < ne; ee++) _ += arguments[ee].length;
-  var ie = Array(_), re = 0;
-  for (ee = 0; ee < ne; ee++) for (var se = arguments[ee], oe = 0, le = se.length; oe < le; oe++, 
-  re++) ie[re] = se[oe];
-  return ie;
-}
-
-function __await6(_) {
-  return this instanceof __await6 ? (this.v = _, this) : new __await6(_);
-}
-
-function __asyncGenerator6(_, ee, ne) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ie, re = ne.apply(_, ee || []), se = [];
-  return ie = {}, verb("next"), verb("throw"), verb("return"), ie[Symbol.asyncIterator] = function() {
-    return this;
-  }, ie;
-  function verb(_) {
-    if (re[_]) ie[_] = function(ee) {
-      return new Promise((function(ne, ie) {
-        se.push([ _, ee, ne, ie ]) > 1 || resume(_, ee);
-      }));
-    };
-  }
-  function resume(_, ee) {
-    try {
-      (function step(_) {
-        _.value instanceof __await6 ? Promise.resolve(_.value.v).then(fulfill, reject) : settle(se[0][2], _);
-      })(re[_](ee));
-    } catch (_) {
-      settle(se[0][3], _);
-    }
-  }
-  function fulfill(_) {
-    resume("next", _);
-  }
-  function reject(_) {
-    resume("throw", _);
-  }
-  function settle(_, ee) {
-    if (_(ee), se.shift(), se.length) resume(se[0][0], se[0][1]);
-  }
-}
-
-function __asyncDelegator6(_) {
-  var ee, ne;
-  return ee = {}, verb("next"), verb("throw", (function(_) {
-    throw _;
-  })), verb("return"), ee[Symbol.iterator] = function() {
-    return this;
-  }, ee;
-  function verb(ie, re) {
-    ee[ie] = _[ie] ? function(ee) {
-      return (ne = !ne) ? {
-        value: __await6(_[ie](ee)),
-        done: "return" === ie
-      } : re ? re(ee) : ee;
-    } : re;
-  }
-}
-
-function __asyncValues6(_) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ee, ne = _[Symbol.asyncIterator];
-  return ne ? ne.call(_) : (_ = "function" == typeof __values6 ? __values6(_) : _[Symbol.iterator](), 
-  ee = {}, verb("next"), verb("throw"), verb("return"), ee[Symbol.asyncIterator] = function() {
-    return this;
-  }, ee);
-  function verb(ne) {
-    ee[ne] = _[ne] && function(ee) {
-      return new Promise((function(ie, re) {
-        (function settle(_, ee, ne, ie) {
-          Promise.resolve(ie).then((function(ee) {
-            _({
-              value: ee,
-              done: ne
-            });
-          }), ee);
-        })(ie, re, (ee = _[ne](ee)).done, ee.value);
-      }));
-    };
-  }
-}
-
-function __makeTemplateObject6(_, ee) {
-  if (Object.defineProperty) Object.defineProperty(_, "raw", {
-    value: ee
-  }); else _.raw = ee;
-  return _;
-}
-
-function __importStar6(_) {
-  if (_ && _.__esModule) return _;
-  var ee = {};
-  if (null != _) for (var ne in _) if (Object.hasOwnProperty.call(_, ne)) ee[ne] = _[ne];
-  ee.default = _;
-  return ee;
-}
-
-function __importDefault6(_) {
-  return _ && _.__esModule ? _ : {
-    default: _
-  };
-}
-
-function __classPrivateFieldGet6(_, ee) {
-  if (!ee.has(_)) throw new TypeError("attempted to get private field on non-instance");
-  return ee.get(_);
-}
-
-function __classPrivateFieldSet6(_, ee, ne) {
-  if (!ee.has(_)) throw new TypeError("attempted to set private field on non-instance");
-  ee.set(_, ne);
-  return ne;
-}
-
-var extendStatics7, __assign7, init_tslib_es66 = __esm({
-  "node_modules/@aws-crypto/crc32/node_modules/tslib/tslib.es6.js"() {
-    extendStatics6 = function(_, ee) {
-      return (extendStatics6 = Object.setPrototypeOf || {
-        __proto__: []
-      } instanceof Array && function(_, ee) {
-        _.__proto__ = ee;
-      } || function(_, ee) {
-        for (var ne in ee) if (ee.hasOwnProperty(ne)) _[ne] = ee[ne];
-      })(_, ee);
-    };
-    __assign6 = function() {
-      __assign6 = Object.assign || function __assign8(_) {
-        for (var ee, ne = 1, ie = arguments.length; ne < ie; ne++) {
-          ee = arguments[ne];
-          for (var re in ee) if (Object.prototype.hasOwnProperty.call(ee, re)) _[re] = ee[re];
-        }
-        return _;
-      };
-      return __assign6.apply(this, arguments);
-    };
-  }
-}), require_aws_crc32 = __commonJS({
-  "node_modules/@aws-crypto/crc32/build/aws_crc32.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.AwsCrc32 = void 0;
-    var ee = (init_tslib_es66(), __toCommonJS(tslib_es6_exports6)), ne = require_build3(), ie = require_build7(), re = function() {
-      function AwsCrc323() {
-        this.crc32 = new ie.Crc32;
-      }
-      AwsCrc323.prototype.update = function(_) {
-        if (!(0, ne.isEmptyData)(_)) this.crc32.update((0, ne.convertToBuffer)(_));
-      };
-      AwsCrc323.prototype.digest = function() {
-        return ee.__awaiter(this, void 0, void 0, (function() {
-          return ee.__generator(this, (function(_) {
-            return [ 2, (0, ne.numToUint8)(this.crc32.digest()) ];
-          }));
-        }));
-      };
-      AwsCrc323.prototype.reset = function() {
-        this.crc32 = new ie.Crc32;
-      };
-      return AwsCrc323;
-    }();
-    _.AwsCrc32 = re;
-  }
-}), require_build7 = __commonJS({
-  "node_modules/@aws-crypto/crc32/build/index.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.AwsCrc32 = _.Crc32 = _.crc32 = void 0;
-    var ee = (init_tslib_es66(), __toCommonJS(tslib_es6_exports6)), ne = require_build3();
-    _.crc32 = function crc32(_) {
-      return (new ie).update(_).digest();
-    };
-    var ie = function() {
-      function Crc324() {
-        this.checksum = 4294967295;
-      }
-      Crc324.prototype.update = function(_) {
-        var ne, ie;
-        try {
-          for (var se = ee.__values(_), oe = se.next(); !oe.done; oe = se.next()) {
-            var le = oe.value;
-            this.checksum = this.checksum >>> 8 ^ re[255 & (this.checksum ^ le)];
-          }
-        } catch (_) {
-          ne = {
-            error: _
-          };
-        } finally {
-          try {
-            if (oe && !oe.done && (ie = se.return)) ie.call(se);
-          } finally {
-            if (ne) throw ne.error;
-          }
-        }
-        return this;
-      };
-      Crc324.prototype.digest = function() {
-        return (4294967295 ^ this.checksum) >>> 0;
-      };
-      return Crc324;
-    }();
-    _.Crc32 = ie;
-    var re = (0, ne.uint32ArrayFrom)([ 0, 1996959894, 3993919788, 2567524794, 124634137, 1886057615, 3915621685, 2657392035, 249268274, 2044508324, 3772115230, 2547177864, 162941995, 2125561021, 3887607047, 2428444049, 498536548, 1789927666, 4089016648, 2227061214, 450548861, 1843258603, 4107580753, 2211677639, 325883990, 1684777152, 4251122042, 2321926636, 335633487, 1661365465, 4195302755, 2366115317, 997073096, 1281953886, 3579855332, 2724688242, 1006888145, 1258607687, 3524101629, 2768942443, 901097722, 1119000684, 3686517206, 2898065728, 853044451, 1172266101, 3705015759, 2882616665, 651767980, 1373503546, 3369554304, 3218104598, 565507253, 1454621731, 3485111705, 3099436303, 671266974, 1594198024, 3322730930, 2970347812, 795835527, 1483230225, 3244367275, 3060149565, 1994146192, 31158534, 2563907772, 4023717930, 1907459465, 112637215, 2680153253, 3904427059, 2013776290, 251722036, 2517215374, 3775830040, 2137656763, 141376813, 2439277719, 3865271297, 1802195444, 476864866, 2238001368, 4066508878, 1812370925, 453092731, 2181625025, 4111451223, 1706088902, 314042704, 2344532202, 4240017532, 1658658271, 366619977, 2362670323, 4224994405, 1303535960, 984961486, 2747007092, 3569037538, 1256170817, 1037604311, 2765210733, 3554079995, 1131014506, 879679996, 2909243462, 3663771856, 1141124467, 855842277, 2852801631, 3708648649, 1342533948, 654459306, 3188396048, 3373015174, 1466479909, 544179635, 3110523913, 3462522015, 1591671054, 702138776, 2966460450, 3352799412, 1504918807, 783551873, 3082640443, 3233442989, 3988292384, 2596254646, 62317068, 1957810842, 3939845945, 2647816111, 81470997, 1943803523, 3814918930, 2489596804, 225274430, 2053790376, 3826175755, 2466906013, 167816743, 2097651377, 4027552580, 2265490386, 503444072, 1762050814, 4150417245, 2154129355, 426522225, 1852507879, 4275313526, 2312317920, 282753626, 1742555852, 4189708143, 2394877945, 397917763, 1622183637, 3604390888, 2714866558, 953729732, 1340076626, 3518719985, 2797360999, 1068828381, 1219638859, 3624741850, 2936675148, 906185462, 1090812512, 3747672003, 2825379669, 829329135, 1181335161, 3412177804, 3160834842, 628085408, 1382605366, 3423369109, 3138078467, 570562233, 1426400815, 3317316542, 2998733608, 733239954, 1555261956, 3268935591, 3050360625, 752459403, 1541320221, 2607071920, 3965973030, 1969922972, 40735498, 2617837225, 3943577151, 1913087877, 83908371, 2512341634, 3803740692, 2075208622, 213261112, 2463272603, 3855990285, 2094854071, 198958881, 2262029012, 4057260610, 1759359992, 534414190, 2176718541, 4139329115, 1873836001, 414664567, 2282248934, 4279200368, 1711684554, 285281116, 2405801727, 4167216745, 1634467795, 376229701, 2685067896, 3608007406, 1308918612, 956543938, 2808555105, 3495958263, 1231636301, 1047427035, 2932959818, 3654703836, 1088359270, 936918e3, 2847714899, 3736837829, 1202900863, 817233897, 3183342108, 3401237130, 1404277552, 615818150, 3134207493, 3453421203, 1423857449, 601450431, 3009837614, 3294710456, 1567103746, 711928724, 3020668471, 3272380065, 1510334235, 755167117 ]), se = require_aws_crc32();
-    Object.defineProperty(_, "AwsCrc32", {
-      enumerable: true,
-      get: function() {
-        return se.AwsCrc32;
-      }
-    });
-  }
-}), tslib_es6_exports7 = {};
-
-__export(tslib_es6_exports7, {
-  __assign: () => __assign7,
-  __asyncDelegator: () => __asyncDelegator7,
-  __asyncGenerator: () => __asyncGenerator7,
-  __asyncValues: () => __asyncValues7,
-  __await: () => __await7,
-  __awaiter: () => __awaiter7,
-  __classPrivateFieldGet: () => __classPrivateFieldGet7,
-  __classPrivateFieldSet: () => __classPrivateFieldSet7,
-  __createBinding: () => __createBinding7,
-  __decorate: () => __decorate7,
-  __exportStar: () => __exportStar7,
-  __extends: () => __extends7,
-  __generator: () => __generator7,
-  __importDefault: () => __importDefault7,
-  __importStar: () => __importStar7,
-  __makeTemplateObject: () => __makeTemplateObject7,
-  __metadata: () => __metadata7,
-  __param: () => __param7,
-  __read: () => __read7,
-  __rest: () => __rest7,
-  __spread: () => __spread7,
-  __spreadArrays: () => __spreadArrays7,
-  __values: () => __values7
-});
-
-function __extends7(_, ee) {
-  extendStatics7(_, ee);
-  function __() {
-    this.constructor = _;
-  }
-  _.prototype = null === ee ? Object.create(ee) : (__.prototype = ee.prototype, new __);
-}
-
-function __rest7(_, ee) {
-  var ne = {};
-  for (var ie in _) if (Object.prototype.hasOwnProperty.call(_, ie) && ee.indexOf(ie) < 0) ne[ie] = _[ie];
-  if (null != _ && "function" == typeof Object.getOwnPropertySymbols) {
-    var re = 0;
-    for (ie = Object.getOwnPropertySymbols(_); re < ie.length; re++) if (ee.indexOf(ie[re]) < 0 && Object.prototype.propertyIsEnumerable.call(_, ie[re])) ne[ie[re]] = _[ie[re]];
-  }
-  return ne;
-}
-
-function __decorate7(_, ee, ne, ie) {
-  var re, se = arguments.length, oe = se < 3 ? ee : null === ie ? ie = Object.getOwnPropertyDescriptor(ee, ne) : ie;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) oe = Reflect.decorate(_, ee, ne, ie); else for (var le = _.length - 1; le >= 0; le--) if (re = _[le]) oe = (se < 3 ? re(oe) : se > 3 ? re(ee, ne, oe) : re(ee, ne)) || oe;
-  return se > 3 && oe && Object.defineProperty(ee, ne, oe), oe;
-}
-
-function __param7(_, ee) {
-  return function(ne, ie) {
-    ee(ne, ie, _);
-  };
-}
-
-function __metadata7(_, ee) {
-  if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(_, ee);
-}
-
-function __awaiter7(_, ee, ne, ie) {
-  return new (ne || (ne = Promise))((function(re, se) {
-    function fulfilled(_) {
-      try {
-        step(ie.next(_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function rejected(_) {
-      try {
-        step(ie["throw"](_));
-      } catch (_) {
-        se(_);
-      }
-    }
-    function step(_) {
-      _.done ? re(_.value) : function adopt(_) {
-        return _ instanceof ne ? _ : new ne((function(ee) {
-          ee(_);
-        }));
-      }(_.value).then(fulfilled, rejected);
-    }
-    step((ie = ie.apply(_, ee || [])).next());
-  }));
-}
-
-function __generator7(_, ee) {
-  var ne, ie, re, se, oe = {
-    label: 0,
-    sent: function() {
-      if (1 & re[0]) throw re[1];
-      return re[1];
-    },
-    trys: [],
-    ops: []
-  };
-  return se = {
-    next: verb(0),
-    throw: verb(1),
-    return: verb(2)
-  }, "function" == typeof Symbol && (se[Symbol.iterator] = function() {
-    return this;
-  }), se;
-  function verb(se) {
-    return function(le) {
-      return function step(se) {
-        if (ne) throw new TypeError("Generator is already executing.");
-        for (;oe; ) try {
-          if (ne = 1, ie && (re = 2 & se[0] ? ie["return"] : se[0] ? ie["throw"] || ((re = ie["return"]) && re.call(ie), 
-          0) : ie.next) && !(re = re.call(ie, se[1])).done) return re;
-          if (ie = 0, re) se = [ 2 & se[0], re.value ];
-          switch (se[0]) {
-           case 0:
-           case 1:
-            re = se;
-            break;
-
-           case 4:
-            oe.label++;
-            return {
-              value: se[1],
-              done: false
-            };
-
-           case 5:
-            oe.label++;
-            ie = se[1];
-            se = [ 0 ];
-            continue;
-
-           case 7:
-            se = oe.ops.pop();
-            oe.trys.pop();
-            continue;
-
-           default:
-            if (!(re = oe.trys, re = re.length > 0 && re[re.length - 1]) && (6 === se[0] || 2 === se[0])) {
-              oe = 0;
-              continue;
-            }
-            if (3 === se[0] && (!re || se[1] > re[0] && se[1] < re[3])) {
-              oe.label = se[1];
-              break;
-            }
-            if (6 === se[0] && oe.label < re[1]) {
-              oe.label = re[1];
-              re = se;
-              break;
-            }
-            if (re && oe.label < re[2]) {
-              oe.label = re[2];
-              oe.ops.push(se);
-              break;
-            }
-            if (re[2]) oe.ops.pop();
-            oe.trys.pop();
-            continue;
-          }
-          se = ee.call(_, oe);
-        } catch (_) {
-          se = [ 6, _ ];
-          ie = 0;
-        } finally {
-          ne = re = 0;
-        }
-        if (5 & se[0]) throw se[1];
-        return {
-          value: se[0] ? se[1] : void 0,
-          done: true
-        };
-      }([ se, le ]);
-    };
-  }
-}
-
-function __createBinding7(_, ee, ne, ie) {
-  if (void 0 === ie) ie = ne;
-  _[ie] = ee[ne];
-}
-
-function __exportStar7(_, ee) {
-  for (var ne in _) if ("default" !== ne && !ee.hasOwnProperty(ne)) ee[ne] = _[ne];
-}
-
-function __values7(_) {
-  var ee = "function" == typeof Symbol && Symbol.iterator, ne = ee && _[ee], ie = 0;
-  if (ne) return ne.call(_);
-  if (_ && "number" == typeof _.length) return {
-    next: function() {
-      if (_ && ie >= _.length) _ = void 0;
-      return {
-        value: _ && _[ie++],
-        done: !_
-      };
-    }
-  };
-  throw new TypeError(ee ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __read7(_, ee) {
-  var ne = "function" == typeof Symbol && _[Symbol.iterator];
-  if (!ne) return _;
-  var ie, re, se = ne.call(_), oe = [];
-  try {
-    for (;(void 0 === ee || ee-- > 0) && !(ie = se.next()).done; ) oe.push(ie.value);
-  } catch (_) {
-    re = {
-      error: _
-    };
-  } finally {
-    try {
-      if (ie && !ie.done && (ne = se["return"])) ne.call(se);
-    } finally {
-      if (re) throw re.error;
-    }
-  }
-  return oe;
-}
-
-function __spread7() {
-  for (var _ = [], ee = 0; ee < arguments.length; ee++) _ = _.concat(__read7(arguments[ee]));
-  return _;
-}
-
-function __spreadArrays7() {
-  for (var _ = 0, ee = 0, ne = arguments.length; ee < ne; ee++) _ += arguments[ee].length;
-  var ie = Array(_), re = 0;
-  for (ee = 0; ee < ne; ee++) for (var se = arguments[ee], oe = 0, le = se.length; oe < le; oe++, 
-  re++) ie[re] = se[oe];
-  return ie;
-}
-
-function __await7(_) {
-  return this instanceof __await7 ? (this.v = _, this) : new __await7(_);
-}
-
-function __asyncGenerator7(_, ee, ne) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ie, re = ne.apply(_, ee || []), se = [];
-  return ie = {}, verb("next"), verb("throw"), verb("return"), ie[Symbol.asyncIterator] = function() {
-    return this;
-  }, ie;
-  function verb(_) {
-    if (re[_]) ie[_] = function(ee) {
-      return new Promise((function(ne, ie) {
-        se.push([ _, ee, ne, ie ]) > 1 || resume(_, ee);
-      }));
-    };
-  }
-  function resume(_, ee) {
-    try {
-      (function step(_) {
-        _.value instanceof __await7 ? Promise.resolve(_.value.v).then(fulfill, reject) : settle(se[0][2], _);
-      })(re[_](ee));
-    } catch (_) {
-      settle(se[0][3], _);
-    }
-  }
-  function fulfill(_) {
-    resume("next", _);
-  }
-  function reject(_) {
-    resume("throw", _);
-  }
-  function settle(_, ee) {
-    if (_(ee), se.shift(), se.length) resume(se[0][0], se[0][1]);
-  }
-}
-
-function __asyncDelegator7(_) {
-  var ee, ne;
-  return ee = {}, verb("next"), verb("throw", (function(_) {
-    throw _;
-  })), verb("return"), ee[Symbol.iterator] = function() {
-    return this;
-  }, ee;
-  function verb(ie, re) {
-    ee[ie] = _[ie] ? function(ee) {
-      return (ne = !ne) ? {
-        value: __await7(_[ie](ee)),
-        done: "return" === ie
-      } : re ? re(ee) : ee;
-    } : re;
-  }
-}
-
-function __asyncValues7(_) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-  var ee, ne = _[Symbol.asyncIterator];
-  return ne ? ne.call(_) : (_ = "function" == typeof __values7 ? __values7(_) : _[Symbol.iterator](), 
-  ee = {}, verb("next"), verb("throw"), verb("return"), ee[Symbol.asyncIterator] = function() {
-    return this;
-  }, ee);
-  function verb(ne) {
-    ee[ne] = _[ne] && function(ee) {
-      return new Promise((function(ie, re) {
-        (function settle(_, ee, ne, ie) {
-          Promise.resolve(ie).then((function(ee) {
-            _({
-              value: ee,
-              done: ne
-            });
-          }), ee);
-        })(ie, re, (ee = _[ne](ee)).done, ee.value);
-      }));
-    };
-  }
-}
-
-function __makeTemplateObject7(_, ee) {
-  if (Object.defineProperty) Object.defineProperty(_, "raw", {
-    value: ee
-  }); else _.raw = ee;
-  return _;
-}
-
-function __importStar7(_) {
-  if (_ && _.__esModule) return _;
-  var ee = {};
-  if (null != _) for (var ne in _) if (Object.hasOwnProperty.call(_, ne)) ee[ne] = _[ne];
-  ee.default = _;
-  return ee;
-}
-
-function __importDefault7(_) {
-  return _ && _.__esModule ? _ : {
-    default: _
-  };
-}
-
-function __classPrivateFieldGet7(_, ee) {
-  if (!ee.has(_)) throw new TypeError("attempted to get private field on non-instance");
-  return ee.get(_);
-}
-
-function __classPrivateFieldSet7(_, ee, ne) {
-  if (!ee.has(_)) throw new TypeError("attempted to set private field on non-instance");
-  ee.set(_, ne);
-  return ne;
-}
-
-var init_tslib_es67 = __esm({
-  "node_modules/@aws-crypto/crc32c/node_modules/tslib/tslib.es6.js"() {
-    extendStatics7 = function(_, ee) {
-      return (extendStatics7 = Object.setPrototypeOf || {
-        __proto__: []
-      } instanceof Array && function(_, ee) {
-        _.__proto__ = ee;
-      } || function(_, ee) {
-        for (var ne in ee) if (ee.hasOwnProperty(ne)) _[ne] = ee[ne];
-      })(_, ee);
-    };
-    __assign7 = function() {
-      __assign7 = Object.assign || function __assign8(_) {
-        for (var ee, ne = 1, ie = arguments.length; ne < ie; ne++) {
-          ee = arguments[ne];
-          for (var re in ee) if (Object.prototype.hasOwnProperty.call(ee, re)) _[re] = ee[re];
-        }
-        return _;
-      };
-      return __assign7.apply(this, arguments);
-    };
-  }
-}), require_aws_crc32c = __commonJS({
-  "node_modules/@aws-crypto/crc32c/build/aws_crc32c.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.AwsCrc32c = void 0;
-    var ee = (init_tslib_es67(), __toCommonJS(tslib_es6_exports7)), ne = require_build3(), ie = require_build8(), re = function() {
-      function AwsCrc32c3() {
-        this.crc32c = new ie.Crc32c;
-      }
-      AwsCrc32c3.prototype.update = function(_) {
-        if (!(0, ne.isEmptyData)(_)) this.crc32c.update((0, ne.convertToBuffer)(_));
-      };
-      AwsCrc32c3.prototype.digest = function() {
-        return ee.__awaiter(this, void 0, void 0, (function() {
-          return ee.__generator(this, (function(_) {
-            return [ 2, (0, ne.numToUint8)(this.crc32c.digest()) ];
-          }));
-        }));
-      };
-      AwsCrc32c3.prototype.reset = function() {
-        this.crc32c = new ie.Crc32c;
-      };
-      return AwsCrc32c3;
-    }();
-    _.AwsCrc32c = re;
-  }
-}), require_build8 = __commonJS({
-  "node_modules/@aws-crypto/crc32c/build/index.js"(_) {
-    "use strict";
-    Object.defineProperty(_, "__esModule", {
-      value: true
-    });
-    _.AwsCrc32c = _.Crc32c = _.crc32c = void 0;
-    var ee = (init_tslib_es67(), __toCommonJS(tslib_es6_exports7)), ne = require_build3();
-    _.crc32c = function crc32c(_) {
-      return (new ie).update(_).digest();
-    };
-    var ie = function() {
-      function Crc32c2() {
-        this.checksum = 4294967295;
-      }
-      Crc32c2.prototype.update = function(_) {
-        var ne, ie;
-        try {
-          for (var se = ee.__values(_), oe = se.next(); !oe.done; oe = se.next()) {
-            var le = oe.value;
-            this.checksum = this.checksum >>> 8 ^ re[255 & (this.checksum ^ le)];
-          }
-        } catch (_) {
-          ne = {
-            error: _
-          };
-        } finally {
-          try {
-            if (oe && !oe.done && (ie = se.return)) ie.call(se);
-          } finally {
-            if (ne) throw ne.error;
-          }
-        }
-        return this;
-      };
-      Crc32c2.prototype.digest = function() {
-        return (4294967295 ^ this.checksum) >>> 0;
-      };
-      return Crc32c2;
-    }();
-    _.Crc32c = ie;
-    var re = (0, ne.uint32ArrayFrom)([ 0, 4067132163, 3778769143, 324072436, 3348797215, 904991772, 648144872, 3570033899, 2329499855, 2024987596, 1809983544, 2575936315, 1296289744, 3207089363, 2893594407, 1578318884, 274646895, 3795141740, 4049975192, 51262619, 3619967088, 632279923, 922689671, 3298075524, 2592579488, 1760304291, 2075979607, 2312596564, 1562183871, 2943781820, 3156637768, 1313733451, 549293790, 3537243613, 3246849577, 871202090, 3878099393, 357341890, 102525238, 4101499445, 2858735121, 1477399826, 1264559846, 3107202533, 1845379342, 2677391885, 2361733625, 2125378298, 820201905, 3263744690, 3520608582, 598981189, 4151959214, 85089709, 373468761, 3827903834, 3124367742, 1213305469, 1526817161, 2842354314, 2107672161, 2412447074, 2627466902, 1861252501, 1098587580, 3004210879, 2688576843, 1378610760, 2262928035, 1955203488, 1742404180, 2511436119, 3416409459, 969524848, 714683780, 3639785095, 205050476, 4266873199, 3976438427, 526918040, 1361435347, 2739821008, 2954799652, 1114974503, 2529119692, 1691668175, 2005155131, 2247081528, 3690758684, 697762079, 986182379, 3366744552, 476452099, 3993867776, 4250756596, 255256311, 1640403810, 2477592673, 2164122517, 1922457750, 2791048317, 1412925310, 1197962378, 3037525897, 3944729517, 427051182, 170179418, 4165941337, 746937522, 3740196785, 3451792453, 1070968646, 1905808397, 2213795598, 2426610938, 1657317369, 3053634322, 1147748369, 1463399397, 2773627110, 4215344322, 153784257, 444234805, 3893493558, 1021025245, 3467647198, 3722505002, 797665321, 2197175160, 1889384571, 1674398607, 2443626636, 1164749927, 3070701412, 2757221520, 1446797203, 137323447, 4198817972, 3910406976, 461344835, 3484808360, 1037989803, 781091935, 3705997148, 2460548119, 1623424788, 1939049696, 2180517859, 1429367560, 2807687179, 3020495871, 1180866812, 410100952, 3927582683, 4182430767, 186734380, 3756733383, 763408580, 1053836080, 3434856499, 2722870694, 1344288421, 1131464017, 2971354706, 1708204729, 2545590714, 2229949006, 1988219213, 680717673, 3673779818, 3383336350, 1002577565, 4010310262, 493091189, 238226049, 4233660802, 2987750089, 1082061258, 1395524158, 2705686845, 1972364758, 2279892693, 2494862625, 1725896226, 952904198, 3399985413, 3656866545, 731699698, 4283874585, 222117402, 510512622, 3959836397, 3280807620, 837199303, 582374963, 3504198960, 68661723, 4135334616, 3844915500, 390545967, 1230274059, 3141532936, 2825850620, 1510247935, 2395924756, 2091215383, 1878366691, 2644384480, 3553878443, 565732008, 854102364, 3229815391, 340358836, 3861050807, 4117890627, 119113024, 1493875044, 2875275879, 3090270611, 1247431312, 2660249211, 1828433272, 2141937292, 2378227087, 3811616794, 291187481, 34330861, 4032846830, 615137029, 3603020806, 3314634738, 939183345, 1776939221, 2609017814, 2295496738, 2058945313, 2926798794, 1545135305, 1330124605, 3173225534, 4084100981, 17165430, 307568514, 3762199681, 888469610, 3332340585, 3587147933, 665062302, 2042050490, 2346497209, 2559330125, 1793573966, 3190661285, 1279665062, 1595330642, 2910671697 ]), se = require_aws_crc32c();
-    Object.defineProperty(_, "AwsCrc32c", {
-      enumerable: true,
-      get: function() {
-        return se.AwsCrc32c;
-      }
-    });
-  }
 }), main_exports = {};
 
 __export(main_exports, {
@@ -8013,7 +4296,8 @@ var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"
   displayLanguage: "",
   enableChunkSplitterV2: false,
   disableWorkerForGeneratingChunks: false,
-  processSmallFilesInUIThread: false
+  processSmallFilesInUIThread: false,
+  notifyThresholdOfRemoteStorageSize: -1
 }, PREFERRED_SETTING_CLOUDANT = {
   syncMaxSizeInMB: 50,
   customChunkSize: 0,
@@ -8039,11 +4323,11 @@ var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"
   customChunkSize: 0,
   useDynamicIterationCount: false,
   hashAlg: "xxhash64",
-  enableChunkSplitterV2: true
-}, TweakValuesRecommendedTemplate = {
+  enableChunkSplitterV2: true,
   maxChunksInEden: 10,
   maxTotalLengthInEden: 1024,
-  maxAgeInEden: 10,
+  maxAgeInEden: 10
+}, TweakValuesRecommendedTemplate = {
   useIgnoreFiles: false,
   useCustomRequestHandler: false,
   batch_size: 25,
@@ -8095,6 +4379,18 @@ var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"
   enableChunkSplitterV2: {
     name: "Use splitting-limit-capped chunk splitter",
     desc: "If enabled, chunks will be split into no more than 100 items. However, dedupe is slightly weaker."
+  },
+  maxChunksInEden: {
+    name: "Maximum Incubating Chunks",
+    desc: "The maximum number of chunks that can be incubated within the document. Chunks exceeding this number will immediately graduate to independent chunks."
+  },
+  maxTotalLengthInEden: {
+    name: "Maximum Incubating Chunk Size",
+    desc: "The maximum total size of chunks that can be incubated within the document. Chunks exceeding this size will immediately graduate to independent chunks."
+  },
+  maxAgeInEden: {
+    name: "Maximum Incubation Period",
+    desc: "The maximum duration for which chunks can be incubated within the document. Chunks exceeding this period will graduate to independent chunks."
   }
 };
 
@@ -8110,10 +4406,10 @@ function confName(_, ee = "") {
   if (_ in configurationNames) return `${null == (ne = configurationNames[_]) ? void 0 : ne.name}${statusDisplay(null == (ie = configurationNames[_]) ? void 0 : ie.status)}`; else return `${ee || ""}`;
 }
 
-var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs, _options, _toString, _emptyExt, _fillNegs, fillNegs_fn, _parseAST, parseAST_fn, _partsToRegExp, partsToRegExp_fn, _parseGlob, parseGlob_fn, TweakValuesTemplate = {
+var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs, _options, _toString, _emptyExt, _AST_instances, fillNegs_fn, _AST_static, parseAST_fn, partsToRegExp_fn, parseGlob_fn, TweakValuesTemplate = {
   ...TweakValuesRecommendedTemplate,
   ...TweakValuesShouldMatchedTemplate
-}, PREFIXMD_LOGFILE = "LIVESYNC_LOG_", FLAGMD_REDFLAG = "redflag.md", FLAGMD_REDFLAG2 = "redflag2.md", FLAGMD_REDFLAG2_HR = "flag_rebuild.md", FLAGMD_REDFLAG3 = "redflag3.md", FLAGMD_REDFLAG3_HR = "flag_fetch.md", SYNCINFO_ID = "syncinfo", SALT_OF_PASSPHRASE = "rHGMPtr6oWw7VSa3W3wpa8fT8U", PREFIX_OBFUSCATED = "f:", PREFIX_CHUNK = "h:", PREFIX_ENCRYPTED_CHUNK = "h:+", import_obsidian = require("obsidian"), import_obsidian2 = require("obsidian"), import_diff_match_patch = __toESM(require_diff_match_patch(), 1), normalizePath = import_obsidian2.normalizePath, PERIODIC_PLUGIN_SWEEP = 60, CHeader = "h:", PSCHeader = "ps:", ICHeader = "i:", ICHeaderEnd = "i;", ICHeaderLength = ICHeader.length, ICXHeader = "ix:", configURIBase = "obsidian://setuplivesync?settings=", LRUCache = class {
+}, DEVICE_ID_PREFERRED = "PREFERRED", PREFIXMD_LOGFILE = "LIVESYNC_LOG_", FLAGMD_REDFLAG = "redflag.md", FLAGMD_REDFLAG2 = "redflag2.md", FLAGMD_REDFLAG2_HR = "flag_rebuild.md", FLAGMD_REDFLAG3 = "redflag3.md", FLAGMD_REDFLAG3_HR = "flag_fetch.md", SYNCINFO_ID = "syncinfo", SALT_OF_PASSPHRASE = "rHGMPtr6oWw7VSa3W3wpa8fT8U", PREFIX_OBFUSCATED = "f:", PREFIX_CHUNK = "h:", PREFIX_ENCRYPTED_CHUNK = "h:+", import_obsidian = require("obsidian"), import_obsidian2 = require("obsidian"), import_diff_match_patch = __toESM(require_diff_match_patch(), 1), normalizePath = import_obsidian2.normalizePath, PERIODIC_PLUGIN_SWEEP = 60, CHeader = "h:", PSCHeader = "ps:", ICHeader = "i:", ICHeaderEnd = "i;", ICHeaderLength = ICHeader.length, ICXHeader = "ix:", configURIBase = "obsidian://setuplivesync?settings=", LRUCache = class {
   constructor(_, ee, ne = false) {
     Object.defineProperty(this, "cache", {
       enumerable: true,
@@ -8269,19 +4565,18 @@ var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs,
   return [ ie.length && re.length ? "(" + pe + "|" + ge + ")" : ie.length ? pe : ge, le, fe - ne, true ];
 }, unescape2 = (_, {windowsPathsNoEscape: ee = false} = {}) => ee ? _.replace(/\[([^\/\\])\]/g, "$1") : _.replace(/((?!\\).|^)\[([^\/\\])\]/g, "$1$2").replace(/\\([^\/])/g, "$1"), types = new Set([ "!", "?", "+", "*", "@" ]), isExtglobType = _ => types.has(_), startNoTraversal = "(?!(?:^|/)\\.\\.?(?:$|/))", startNoDot = "(?!\\.)", addPatternStart = new Set([ "[", "." ]), justDots = new Set([ "..", "." ]), reSpecials = new Set("().*{}+?[]^$\\!"), regExpEscape = _ => _.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), qmark = "[^/]", star = qmark + "*?", starNoEmpty = qmark + "+?", _AST = class _AST {
   constructor(_, ee, ne = {}) {
-    __privateAdd(this, _fillNegs);
-    __privateAdd(this, _partsToRegExp);
+    __privateAdd(this, _AST_instances);
     __publicField(this, "type");
-    __privateAdd(this, _root, void 0);
-    __privateAdd(this, _hasMagic, void 0);
+    __privateAdd(this, _root);
+    __privateAdd(this, _hasMagic);
     __privateAdd(this, _uflag, false);
     __privateAdd(this, _parts, []);
-    __privateAdd(this, _parent, void 0);
-    __privateAdd(this, _parentIndex, void 0);
-    __privateAdd(this, _negs, void 0);
+    __privateAdd(this, _parent);
+    __privateAdd(this, _parentIndex);
+    __privateAdd(this, _negs);
     __privateAdd(this, _filledNegs, false);
-    __privateAdd(this, _options, void 0);
-    __privateAdd(this, _toString, void 0);
+    __privateAdd(this, _options);
+    __privateAdd(this, _toString);
     __privateAdd(this, _emptyExt, false);
     this.type = _;
     if (_) __privateSet(this, _hasMagic, true);
@@ -8346,7 +4641,7 @@ var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs,
   static fromGlob(_, ee = {}) {
     var ne;
     const ie = new _AST(null, void 0, ee);
-    __privateMethod(ne = _AST, _parseAST, parseAST_fn).call(ne, _, ie, 0, ee);
+    __privateMethod(ne = _AST, _AST_static, parseAST_fn).call(ne, _, ie, 0, ee);
     return ie;
   }
   toMMPattern() {
@@ -8359,14 +4654,17 @@ var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs,
       _glob: _
     });
   }
+  get options() {
+    return __privateGet(this, _options);
+  }
   toRegExpSource(_) {
     var ee;
     const ne = null != _ ? _ : !!__privateGet(this, _options).dot;
-    if (__privateGet(this, _root) === this) __privateMethod(this, _fillNegs, fillNegs_fn).call(this);
+    if (__privateGet(this, _root) === this) __privateMethod(this, _AST_instances, fillNegs_fn).call(this);
     if (!this.type) {
       const ie = this.isStart() && this.isEnd(), re = __privateGet(this, _parts).map((ee => {
         var ne;
-        const [re, se, oe, le] = "string" == typeof ee ? __privateMethod(ne = _AST, _parseGlob, parseGlob_fn).call(ne, ee, __privateGet(this, _hasMagic), ie) : ee.toRegExpSource(_);
+        const [re, se, oe, le] = "string" == typeof ee ? __privateMethod(ne = _AST, _AST_static, parseGlob_fn).call(ne, ee, __privateGet(this, _hasMagic), ie) : ee.toRegExpSource(_);
         __privateSet(this, _hasMagic, __privateGet(this, _hasMagic) || oe);
         __privateSet(this, _uflag, __privateGet(this, _uflag) || le);
         return re;
@@ -8381,7 +4679,7 @@ var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs,
       return [ se + re + oe, unescape2(re), __privateSet(this, _hasMagic, !!__privateGet(this, _hasMagic)), __privateGet(this, _uflag) ];
     }
     const ie = "*" === this.type || "+" === this.type, re = "!" === this.type ? "(?:(?!(?:" : "(?:";
-    let se = __privateMethod(this, _partsToRegExp, partsToRegExp_fn).call(this, ne);
+    let se = __privateMethod(this, _AST_instances, partsToRegExp_fn).call(this, ne);
     if (this.isStart() && this.isEnd() && !se && "!" !== this.type) {
       const _ = this.toString();
       __privateSet(this, _parts, [ _ ]);
@@ -8389,7 +4687,7 @@ var _root, _hasMagic, _uflag, _parts, _parent, _parentIndex, _negs, _filledNegs,
       __privateSet(this, _hasMagic, void 0);
       return [ _, unescape2(this.toString()), false, false ];
     }
-    let oe = !ie || _ || ne || !startNoDot ? "" : __privateMethod(this, _partsToRegExp, partsToRegExp_fn).call(this, true);
+    let oe = !ie || _ || ne || !startNoDot ? "" : __privateMethod(this, _AST_instances, partsToRegExp_fn).call(this, true);
     if (oe === se) oe = "";
     if (oe) se = `(?:${se})(?:${oe})*?`;
     let le = "";
@@ -8420,7 +4718,7 @@ _toString = new WeakMap;
 
 _emptyExt = new WeakMap;
 
-_fillNegs = new WeakSet;
+_AST_instances = new WeakSet;
 
 fillNegs_fn = function() {
   if (this !== __privateGet(this, _root)) throw new Error("should only call on root");
@@ -8443,7 +4741,7 @@ fillNegs_fn = function() {
   return this;
 };
 
-_parseAST = new WeakSet;
+_AST_static = new WeakSet;
 
 parseAST_fn = function(_, ee, ne, ie) {
   var re, se;
@@ -8464,7 +4762,7 @@ parseAST_fn = function(_, ee, ne, ie) {
           ee.push(fe);
           fe = "";
           const oe = new _AST(ne, ee);
-          se = __privateMethod(re = _AST, _parseAST, parseAST_fn).call(re, _, oe, se, ie);
+          se = __privateMethod(re = _AST, _AST_static, parseAST_fn).call(re, _, oe, se, ie);
           ee.push(oe);
         }
       } else {
@@ -8512,7 +4810,7 @@ parseAST_fn = function(_, ee, ne, ie) {
         ge = "";
         const ee = new _AST(ne, he);
         he.push(ee);
-        fe = __privateMethod(se = _AST, _parseAST, parseAST_fn).call(se, _, ee, fe, ie);
+        fe = __privateMethod(se = _AST, _AST_static, parseAST_fn).call(se, _, ee, fe, ie);
       }
     } else {
       if (fe === ue + 1) {
@@ -8530,8 +4828,6 @@ parseAST_fn = function(_, ee, ne, ie) {
   return fe;
 };
 
-_partsToRegExp = new WeakSet;
-
 partsToRegExp_fn = function(_) {
   return __privateGet(this, _parts).map((ee => {
     if ("string" == typeof ee) throw new Error("string type in extglob ast??");
@@ -8540,8 +4836,6 @@ partsToRegExp_fn = function(_) {
     return ne;
   })).filter((_ => !(this.isStart() && this.isEnd() && !_))).join("|");
 };
-
-_parseGlob = new WeakSet;
 
 parseGlob_fn = function(_, ee, ne = false) {
   let ie = false, re = "", se = false;
@@ -8573,9 +4867,7 @@ parseGlob_fn = function(_, ee, ne = false) {
   return [ re, unescape2(_), !!ee, se ];
 };
 
-__privateAdd(_AST, _parseAST);
-
-__privateAdd(_AST, _parseGlob);
+__privateAdd(_AST, _AST_static);
 
 var AST = _AST, escape = (_, {windowsPathsNoEscape: ee = false} = {}) => ee ? _.replace(/[?*()[\]]/g, "[$&]") : _.replace(/[?*()[\]\\]/g, "\\$&"), minimatch = (_, ee, ne = {}) => {
   assertValidPattern(ee);
@@ -8877,8 +5169,9 @@ var globMagic = /[?*]|[+@!]\(.*?\)|\[|\]/, regExpEscape2 = _ => _.replace(/[-[\]
     for (let ee = 0; ee < _.length - 1; ee++) for (let ne = ee + 1; ne < _.length; ne++) {
       const ie = this.partsMatch(_[ee], _[ne], !this.preserveMultipleSlashes);
       if (ie) {
-        _[ee] = ie;
-        _[ne] = [];
+        _[ee] = [];
+        _[ne] = ie;
+        break;
       }
     }
     return _.filter((_ => _.length));
@@ -8998,9 +5291,10 @@ var globMagic = /[?*]|[+@!]\(.*?\)|\[|\]/, regExpEscape2 = _ => _.replace(/[-[\]
     let ne, ie = null;
     if (ne = _.match(starRE)) ie = ee.dot ? starTestDot : starTest; else if (ne = _.match(starDotExtRE)) ie = (ee.nocase ? ee.dot ? starDotExtTestNocaseDot : starDotExtTestNocase : ee.dot ? starDotExtTestDot : starDotExtTest)(ne[1]); else if (ne = _.match(qmarksRE)) ie = (ee.nocase ? ee.dot ? qmarksTestNocaseDot : qmarksTestNocase : ee.dot ? qmarksTestDot : qmarksTest)(ne); else if (ne = _.match(starDotStarRE)) ie = ee.dot ? starDotStarTestDot : starDotStarTest; else if (ne = _.match(dotStarRE)) ie = dotStarTest;
     const re = AST.fromGlob(_, this.options).toMMPattern();
-    return ie ? Object.assign(re, {
-      test: ie
-    }) : re;
+    if (ie && "object" == typeof re) Reflect.defineProperty(re, "test", {
+      value: ie
+    });
+    return re;
   }
   makeRe() {
     if (this.regexp || false === this.regexp) return this.regexp;
@@ -9183,46 +5477,6 @@ function readString(_) {
   return ie;
 }
 
-function concatUInt8Array(_) {
-  const ee = _.reduce(((_, ee) => _ + ee.length), 0), ne = new Uint8Array(ee);
-  let ie = 0;
-  for (const ee of _) {
-    ne.set(ee, ie);
-    ie += ee.length;
-  }
-  return ne;
-}
-
-var revMap = {}, numMap = {};
-
-for (let _ = 0; _ < 256; _++) {
-  revMap[`00${_.toString(16)}`.slice(-2)] = _;
-  numMap[_] = `00${_.toString(16)}`.slice(-2);
-}
-
-function* range(_, ee) {
-  for (let ne = _; ne <= ee; ne++) yield ne;
-}
-
-var table = {}, revTable = {};
-
-[ ...range(192, 447) ].forEach(((_, ee) => {
-  table[ee] = _;
-  revTable[_] = ee;
-}));
-
-var BINARY_CHUNK_MAX = 31457280;
-
-function hexStringToUint8Array(_) {
-  const ee = _.length / 2, ne = new Uint8Array(ee);
-  for (let ie = 0; ie < ee; ie++) ne[ie] = revMap[_[2 * ie] + _[2 * ie + 1]];
-  return ne;
-}
-
-function uint8ArrayToHexString(_) {
-  return [ ..._ ].map((_ => numMap[_])).join("");
-}
-
 var regexpBase64 = /^[A-Za-z0-9+/]+=*$/;
 
 function tryConvertBase64ToArrayBuffer(_) {
@@ -9239,20 +5493,28 @@ function tryConvertBase64ToArrayBuffer(_) {
   }
 }
 
-function versionNumberString2Number(_) {
-  return _.split(".").reverse().map(((_, ee) => _ / 1 * 1e3 ** ee)).reduce(((_, ee) => _ + ee), 0);
+function* arrayToChunkedArray(_, ee) {
+  const ne = [ ..._ ];
+  for (;ne.length; ) {
+    const _ = ne.splice(0, ee);
+    yield _;
+  }
 }
 
-var escapeStringToHTML = _ => {
-  if (!_) return ""; else return _.replace(/[<>&"'`]/g, (_ => ({
-    "<": "&lt;",
-    ">": "&gt;",
-    "&": "&amp;",
-    '"': "&quot;",
-    "'": "&#39;",
-    "`": "&#x60;"
-  }[_])));
-};
+function unique(_) {
+  return [ ...new Set(_) ];
+}
+
+function* range(_, ee) {
+  for (let ne = _; ne <= ee; ne++) yield ne;
+}
+
+var BINARY_CHUNK_MAX = 31457280, table = {}, revTable = {};
+
+[ ...range(192, 447) ].forEach(((_, ee) => {
+  table[ee] = _;
+  revTable[_] = ee;
+}));
 
 function decodeToArrayBuffer(_) {
   if (1 == _.length) return _decodeToArrayBuffer(_[0]);
@@ -9274,6 +5536,33 @@ function _decodeToArrayBuffer(_) {
   return ee.buffer;
 }
 
+var revMap = {}, numMap = {};
+
+for (let _ = 0; _ < 256; _++) {
+  revMap[`00${_.toString(16)}`.slice(-2)] = _;
+  numMap[_] = `00${_.toString(16)}`.slice(-2);
+}
+
+function hexStringToUint8Array(_) {
+  const ee = _.length / 2, ne = new Uint8Array(ee);
+  for (let ie = 0; ie < ee; ie++) ne[ie] = revMap[_[2 * ie] + _[2 * ie + 1]];
+  return ne;
+}
+
+function uint8ArrayToHexString(_) {
+  return [ ..._ ].map((_ => numMap[_])).join("");
+}
+
+function concatUInt8Array(_) {
+  const ee = _.reduce(((_, ee) => _ + ee.length), 0), ne = new Uint8Array(ee);
+  let ie = 0;
+  for (const ee of _) {
+    ne.set(ee, ie);
+    ie += ee.length;
+  }
+  return ne;
+}
+
 function decodeBinary(_) {
   if (0 == _.length) return (new Uint8Array).buffer;
   if ("string" == typeof _) {
@@ -9285,16 +5574,29 @@ function decodeBinary(_) {
   return base64ToArrayBuffer(_);
 }
 
-function* arrayToChunkedArray(_, ee) {
-  const ne = [ ..._ ];
-  for (;ne.length; ) {
-    const _ = ne.splice(0, ee);
-    yield _;
-  }
+function replaceAll(_, ee, ne) {
+  if ("replaceAll" in String.prototype) return _.replaceAll(ee, ne); else return _.split(ee).join(ne);
 }
 
-function unique(_) {
-  return [ ...new Set(_) ];
+function replaceAllPairs(_, ...ee) {
+  let ne = `${_}`;
+  for (const [_, ie] of ee) ne = replaceAll(ne, _, ie);
+  return ne;
+}
+
+function escapeStringToHTML(_) {
+  if (!_) return ""; else return _.replace(/[<>&"'`]/g, (_ => ({
+    "<": "&lt;",
+    ">": "&gt;",
+    "&": "&amp;",
+    '"': "&quot;",
+    "'": "&#39;",
+    "`": "&#x60;"
+  }[_])));
+}
+
+function versionNumberString2Number(_) {
+  return _.split(".").reverse().map(((_, ee) => _ / 1 * 1e3 ** ee)).reduce(((_, ee) => _ + ee), 0);
 }
 
 function isValidFilenameInWidows(_) {
@@ -9504,7 +5806,7 @@ function Semaphore(_, ee) {
   };
 }
 
-var semiStaticFieldBuffer, KeyBuffs = new Map, decKeyBuffs = new Map, KEY_RECYCLE_COUNT = 100, nonceBuffer = new Uint32Array(1);
+var semiStaticFieldBuffer, KeyBuffs = new Map, decKeyBuffs = new Map, KEY_RECYCLE_COUNT = 100, nonceBuffer = new Uint32Array(1), webcrypto2 = globalThis.crypto;
 
 async function getKeyForEncrypt(_, ee) {
   const ne = `${_}-${ee}`, ie = KeyBuffs.get(ne);
@@ -9513,11 +5815,11 @@ async function getKeyForEncrypt(_, ee) {
     if (ie.count > 0) return [ ie.key, ie.salt ];
     ie.count--;
   }
-  const re = 15 - _.length, se = ee ? 1e3 * (re > 0 ? re : 0) + 121 - re : 1e5, oe = (new TextEncoder).encode(_), le = await webcrypto.subtle.digest({
+  const re = 15 - _.length, se = ee ? 1e3 * (re > 0 ? re : 0) + 121 - re : 1e5, oe = (new TextEncoder).encode(_), le = await webcrypto2.subtle.digest({
     name: "SHA-256"
-  }, oe), ue = await webcrypto.subtle.importKey("raw", le, {
+  }, oe), ue = await webcrypto2.subtle.importKey("raw", le, {
     name: "PBKDF2"
-  }, false, [ "deriveKey" ]), de = webcrypto.getRandomValues(new Uint8Array(16)), fe = await webcrypto.subtle.deriveKey({
+  }, false, [ "deriveKey" ]), de = webcrypto2.getRandomValues(new Uint8Array(16)), fe = await webcrypto2.subtle.deriveKey({
     name: "PBKDF2",
     salt: de,
     iterations: se,
@@ -9551,11 +5853,11 @@ async function getKeyForDecryption(_, ee, ne) {
     re.count = decKeyIdx;
     return [ re.key, re.salt ];
   }
-  const se = 15 - _.length, oe = ne ? 1e3 * (se > 0 ? se : 0) + 121 - se : 1e5, le = (new TextEncoder).encode(_), ue = await webcrypto.subtle.digest({
+  const se = 15 - _.length, oe = ne ? 1e3 * (se > 0 ? se : 0) + 121 - se : 1e5, le = (new TextEncoder).encode(_), ue = await webcrypto2.subtle.digest({
     name: "SHA-256"
-  }, le), de = await webcrypto.subtle.importKey("raw", ue, {
+  }, le), de = await webcrypto2.subtle.importKey("raw", ue, {
     name: "PBKDF2"
-  }, false, [ "deriveKey" ]), fe = await webcrypto.subtle.deriveKey({
+  }, false, [ "deriveKey" ]), fe = await webcrypto2.subtle.deriveKey({
     name: "PBKDF2",
     salt: ee,
     iterations: oe,
@@ -9573,7 +5875,7 @@ async function getKeyForDecryption(_, ee, ne) {
 }
 
 function getSemiStaticField(_) {
-  if (null != semiStaticFieldBuffer && !_) return semiStaticFieldBuffer; else return semiStaticFieldBuffer = webcrypto.getRandomValues(new Uint8Array(12));
+  if (null != semiStaticFieldBuffer && !_) return semiStaticFieldBuffer; else return semiStaticFieldBuffer = webcrypto2.getRandomValues(new Uint8Array(12));
 }
 
 function getNonce() {
@@ -9583,7 +5885,7 @@ function getNonce() {
 }
 
 async function encrypt(_, ee, ne) {
-  const [ie, re] = await getKeyForEncrypt(ee, ne), se = getSemiStaticField(), oe = getNonce(), le = new Uint8Array([ ...se, ...new Uint8Array(oe.buffer) ]), ue = writeString(_), de = await webcrypto.subtle.encrypt({
+  const [ie, re] = await getKeyForEncrypt(ee, ne), se = getSemiStaticField(), oe = getNonce(), le = new Uint8Array([ ...se, ...new Uint8Array(oe.buffer) ]), ue = writeString(_), de = await webcrypto2.subtle.encrypt({
     name: "AES-GCM",
     iv: le
   }, ie, ue), fe = "" + await arrayBufferToBase64Single(new Uint8Array(de));
@@ -9591,14 +5893,14 @@ async function encrypt(_, ee, ne) {
 }
 
 async function getKeyForObfuscatePath(_, ee, ne) {
-  const ie = 15 - _.length, re = ne ? 1e3 * (ie > 0 ? ie : 0) + 121 - ie : 1e5, se = (new TextEncoder).encode(_), oe = await webcrypto.subtle.digest({
+  const ie = 15 - _.length, re = ne ? 1e3 * (ie > 0 ? ie : 0) + 121 - ie : 1e5, se = (new TextEncoder).encode(_), oe = await webcrypto2.subtle.digest({
     name: "SHA-256"
-  }, se), le = new Uint8Array(await webcrypto.subtle.digest({
+  }, se), le = new Uint8Array(await webcrypto2.subtle.digest({
     name: "SHA-256"
-  }, new Uint8Array([ ...ee, ...se ]))), ue = le.slice(0, 16), de = le.slice(16, 32), fe = await webcrypto.subtle.importKey("raw", oe, {
+  }, new Uint8Array([ ...ee, ...se ]))), ue = le.slice(0, 16), de = le.slice(16, 32), fe = await webcrypto2.subtle.importKey("raw", oe, {
     name: "PBKDF2"
   }, false, [ "deriveKey" ]);
-  return [ await webcrypto.subtle.deriveKey({
+  return [ await webcrypto2.subtle.deriveKey({
     name: "PBKDF2",
     salt: ue,
     iterations: re,
@@ -9610,16 +5912,20 @@ async function getKeyForObfuscatePath(_, ee, ne) {
 }
 
 async function obfuscatePath(_, ee, ne) {
-  const ie = writeString(_), [re, se, oe] = await getKeyForObfuscatePath(ee, ie, ne), le = await webcrypto.subtle.encrypt({
+  const ie = writeString(_), [re, se, oe] = await getKeyForObfuscatePath(ee, ie, ne), le = await webcrypto2.subtle.encrypt({
     name: "AES-GCM",
     iv: oe
   }, re, ie), ue = await arrayBufferToBase64Single(new Uint8Array(le));
   return `%${uint8ArrayToHexString(oe)}${uint8ArrayToHexString(se)}${ue}`;
 }
 
+function isPathProbablyObfuscated(_) {
+  return _.startsWith("%") && _.length > 64;
+}
+
 async function decryptV2(_, ee, ne) {
   try {
-    const ie = _.substring(1, 33), re = _.substring(33, 65), se = _.substring(65), [oe] = await getKeyForDecryption(ee, hexStringToUint8Array(re), ne), le = hexStringToUint8Array(ie), ue = decodeBinary(se), de = await webcrypto.subtle.decrypt({
+    const ie = _.substring(1, 33), re = _.substring(33, 65), se = _.substring(65), [oe] = await getKeyForDecryption(ee, hexStringToUint8Array(re), ne), le = hexStringToUint8Array(ie), ue = decodeBinary(se), de = await webcrypto2.subtle.decrypt({
       name: "AES-GCM",
       iv: le
     }, oe, ue);
@@ -9637,7 +5943,7 @@ async function decrypt(_, ee, ne) {
     if (!_.startsWith("[") || !_.endsWith("]")) throw new Error("Encrypted data corrupted!");
     const ie = _.substring(1, _.length - 1).split(",").map((_ => '"' == _[0] ? _.substring(1, _.length - 1) : _)), [re, se, oe] = ie, [le] = await getKeyForDecryption(ee, hexStringToUint8Array(oe), ne), ue = hexStringToUint8Array(se), de = atob(re), fe = de.length, he = new Uint8Array(fe);
     for (let _ = fe; _ >= 0; --_) he[_] = de.charCodeAt(_);
-    const pe = await webcrypto.subtle.decrypt({
+    const pe = await webcrypto2.subtle.decrypt({
       name: "AES-GCM",
       iv: ue
     }, le, he), ge = readString(new Uint8Array(pe));
@@ -9675,7 +5981,7 @@ async function testCrypt() {
 }
 
 async function encryptBinary(_, ee, ne) {
-  const [ie, re] = await getKeyForEncrypt(ee, ne), se = getSemiStaticField(), oe = getNonce(), le = new Uint8Array([ ...se, ...new Uint8Array(oe.buffer) ]), ue = _, de = new Uint8Array(await webcrypto.subtle.encrypt({
+  const [ie, re] = await getKeyForEncrypt(ee, ne), se = getSemiStaticField(), oe = getNonce(), le = new Uint8Array([ ...se, ...new Uint8Array(oe.buffer) ]), ue = _, de = new Uint8Array(await webcrypto2.subtle.encrypt({
     name: "AES-GCM",
     iv: le
   }, ie, ue)), fe = new Uint8Array(de.byteLength + le.byteLength + re.byteLength);
@@ -9687,7 +5993,7 @@ async function encryptBinary(_, ee, ne) {
 
 async function decryptBinary(_, ee, ne) {
   try {
-    const ie = _.slice(0, 16), re = _.slice(16, 32), se = _.slice(32), [oe] = await getKeyForDecryption(ee, re, ne), le = await webcrypto.subtle.decrypt({
+    const ie = _.slice(0, 16), re = _.slice(16, 32), se = _.slice(32), [oe] = await getKeyForDecryption(ee, re, ne), le = await webcrypto2.subtle.decrypt({
       name: "AES-GCM",
       iv: ie
     }, oe, se);
@@ -10372,81 +6678,81 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
       ie.set(ne);
       ne = ie;
     }
-  }, de = ee.f || 0, fe = ee.p || 0, he = ee.b || 0, pe = ee.l, ge = ee.d, me = ee.m, ye = ee.n, ve = 8 * re;
+  }, de = ee.f || 0, fe = ee.p || 0, he = ee.b || 0, pe = ee.l, ge = ee.d, me = ee.m, ye = ee.n, Se = 8 * re;
   do {
     if (!pe) {
       de = bits(_, fe, 1);
-      var Se = bits(_, fe + 1, 3);
+      var Ee = bits(_, fe + 1, 3);
       fe += 3;
-      if (!Se) {
-        var Ee = _[(Ie = shft(fe) + 4) - 4] | _[Ie - 3] << 8, Ce = Ie + Ee;
+      if (!Ee) {
+        var ve = _[(Ie = shft(fe) + 4) - 4] | _[Ie - 3] << 8, Ce = Ie + ve;
         if (Ce > re) {
           if (ue) err(0);
           break;
         }
-        if (le) cbuf(he + Ee);
+        if (le) cbuf(he + ve);
         ne.set(_.subarray(Ie, Ce), he);
-        ee.b = he += Ee, ee.p = fe = 8 * Ce, ee.f = de;
+        ee.b = he += ve, ee.p = fe = 8 * Ce, ee.f = de;
         continue;
-      } else if (1 == Se) pe = flrm, ge = fdrm, me = 9, ye = 5; else if (2 == Se) {
-        var we = bits(_, fe, 31) + 257, Oe = bits(_, fe + 10, 15) + 4, ke = we + bits(_, fe + 5, 31) + 1;
+      } else if (1 == Ee) pe = flrm, ge = fdrm, me = 9, ye = 5; else if (2 == Ee) {
+        var we = bits(_, fe, 31) + 257, ke = bits(_, fe + 10, 15) + 4, Le = we + bits(_, fe + 5, 31) + 1;
         fe += 14;
-        for (var xe = new u8(ke), Ae = new u8(19), Le = 0; Le < Oe; ++Le) Ae[clim[Le]] = bits(_, fe + 3 * Le, 7);
-        fe += 3 * Oe;
+        for (var Oe = new u8(Le), Ae = new u8(19), xe = 0; xe < ke; ++xe) Ae[clim[xe]] = bits(_, fe + 3 * xe, 7);
+        fe += 3 * ke;
         var Re = max(Ae), Te = (1 << Re) - 1, Pe = hMap(Ae, Re, 1);
-        for (Le = 0; Le < ke; ) {
+        for (xe = 0; xe < Le; ) {
           var Ie, De = Pe[bits(_, fe, Te)];
           fe += 15 & De;
-          if ((Ie = De >> 4) < 16) xe[Le++] = Ie; else {
+          if ((Ie = De >> 4) < 16) Oe[xe++] = Ie; else {
             var Be = 0, Ne = 0;
-            if (16 == Ie) Ne = 3 + bits(_, fe, 3), fe += 2, Be = xe[Le - 1]; else if (17 == Ie) Ne = 3 + bits(_, fe, 7), 
+            if (16 == Ie) Ne = 3 + bits(_, fe, 3), fe += 2, Be = Oe[xe - 1]; else if (17 == Ie) Ne = 3 + bits(_, fe, 7), 
             fe += 3; else if (18 == Ie) Ne = 11 + bits(_, fe, 127), fe += 7;
-            for (;Ne--; ) xe[Le++] = Be;
+            for (;Ne--; ) Oe[xe++] = Be;
           }
         }
-        var Me = xe.subarray(0, we), Fe = xe.subarray(we);
+        var Me = Oe.subarray(0, we), Fe = Oe.subarray(we);
         me = max(Me);
         ye = max(Fe);
         pe = hMap(Me, me, 1);
         ge = hMap(Fe, ye, 1);
       } else err(1);
-      if (fe > ve) {
+      if (fe > Se) {
         if (ue) err(0);
         break;
       }
     }
     if (le) cbuf(he + 131072);
-    for (var je = (1 << me) - 1, $e = (1 << ye) - 1, Ge = fe; ;Ge = fe) {
-      var Ve = (Be = pe[bits16(_, fe) & je]) >> 4;
-      if ((fe += 15 & Be) > ve) {
+    for (var Ve = (1 << me) - 1, $e = (1 << ye) - 1, Ge = fe; ;Ge = fe) {
+      var Ue = (Be = pe[bits16(_, fe) & Ve]) >> 4;
+      if ((fe += 15 & Be) > Se) {
         if (ue) err(0);
         break;
       }
       if (!Be) err(2);
-      if (Ve < 256) ne[he++] = Ve; else if (256 == Ve) {
+      if (Ue < 256) ne[he++] = Ue; else if (256 == Ue) {
         Ge = fe, pe = null;
         break;
       } else {
-        var Ue = Ve - 254;
-        if (Ve > 264) {
-          var ze = fleb[Le = Ve - 257];
-          Ue = bits(_, fe, (1 << ze) - 1) + fl[Le];
-          fe += ze;
+        var ze = Ue - 254;
+        if (Ue > 264) {
+          var je = fleb[xe = Ue - 257];
+          ze = bits(_, fe, (1 << je) - 1) + fl[xe];
+          fe += je;
         }
-        var qe = ge[bits16(_, fe) & $e], He = qe >> 4;
-        if (!qe) err(3);
-        fe += 15 & qe;
-        Fe = fd[He];
-        if (He > 3) {
-          ze = fdeb[He];
-          Fe += bits16(_, fe) & (1 << ze) - 1, fe += ze;
+        var He = ge[bits16(_, fe) & $e], qe = He >> 4;
+        if (!He) err(3);
+        fe += 15 & He;
+        Fe = fd[qe];
+        if (qe > 3) {
+          je = fdeb[qe];
+          Fe += bits16(_, fe) & (1 << je) - 1, fe += je;
         }
-        if (fe > ve) {
+        if (fe > Se) {
           if (ue) err(0);
           break;
         }
         if (le) cbuf(he + 131072);
-        var Ke = he + Ue;
+        var Ke = he + ze;
         if (he < Fe) {
           var We = se - Fe, Xe = Math.min(Fe, Ke);
           if (We + he < 0) err(3);
@@ -10517,18 +6823,18 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
   var ge = new u16(pe + 1), me = ln(ne[fe - 1], ge, 0);
   if (me > ee) {
     ie = 0;
-    var ye = 0, ve = me - ee, Se = 1 << ve;
+    var ye = 0, Se = me - ee, Ee = 1 << Se;
     se.sort((function(_, ee) {
       return ge[ee.s] - ge[_.s] || _.f - ee.f;
     }));
     for (;ie < re; ++ie) {
-      var Ee = se[ie].s;
-      if (ge[Ee] > ee) {
-        ye += Se - (1 << me - ge[Ee]);
-        ge[Ee] = ee;
+      var ve = se[ie].s;
+      if (ge[ve] > ee) {
+        ye += Ee - (1 << me - ge[ve]);
+        ge[ve] = ee;
       } else break;
     }
-    ye >>= ve;
+    ye >>= Se;
     for (;ye > 0; ) {
       var Ce = se[ie].s;
       if (ge[Ce] < ee) ye -= 1 << ee - ge[Ce]++ - 1; else ++ie;
@@ -10586,39 +6892,39 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
 }, wblk = function(_, ee, ne, ie, re, se, oe, le, ue, de, fe) {
   wbits(ee, fe++, ne);
   ++re[256];
-  for (var he = hTree(re, 15), pe = he.t, ge = he.l, me = hTree(se, 15), ye = me.t, ve = me.l, Se = lc(pe), Ee = Se.c, Ce = Se.n, we = lc(ye), Oe = we.c, ke = we.n, xe = new u16(19), Ae = 0; Ae < Ee.length; ++Ae) ++xe[31 & Ee[Ae]];
-  for (Ae = 0; Ae < Oe.length; ++Ae) ++xe[31 & Oe[Ae]];
-  for (var Le = hTree(xe, 7), Re = Le.t, Te = Le.l, Pe = 19; Pe > 4 && !Re[clim[Pe - 1]]; --Pe) ;
-  var Ie, De, Be, Ne, Me = de + 5 << 3, Fe = clen(re, flt) + clen(se, fdt) + oe, je = clen(re, pe) + clen(se, ye) + oe + 14 + 3 * Pe + clen(xe, Re) + 2 * xe[16] + 3 * xe[17] + 7 * xe[18];
-  if (ue >= 0 && Me <= Fe && Me <= je) return wfblk(ee, fe, _.subarray(ue, ue + de));
-  wbits(ee, fe, 1 + (je < Fe)), fe += 2;
-  if (je < Fe) {
-    Ie = hMap(pe, ge, 0), De = pe, Be = hMap(ye, ve, 0), Ne = ye;
+  for (var he = hTree(re, 15), pe = he.t, ge = he.l, me = hTree(se, 15), ye = me.t, Se = me.l, Ee = lc(pe), ve = Ee.c, Ce = Ee.n, we = lc(ye), ke = we.c, Le = we.n, Oe = new u16(19), Ae = 0; Ae < ve.length; ++Ae) ++Oe[31 & ve[Ae]];
+  for (Ae = 0; Ae < ke.length; ++Ae) ++Oe[31 & ke[Ae]];
+  for (var xe = hTree(Oe, 7), Re = xe.t, Te = xe.l, Pe = 19; Pe > 4 && !Re[clim[Pe - 1]]; --Pe) ;
+  var Ie, De, Be, Ne, Me = de + 5 << 3, Fe = clen(re, flt) + clen(se, fdt) + oe, Ve = clen(re, pe) + clen(se, ye) + oe + 14 + 3 * Pe + clen(Oe, Re) + 2 * Oe[16] + 3 * Oe[17] + 7 * Oe[18];
+  if (ue >= 0 && Me <= Fe && Me <= Ve) return wfblk(ee, fe, _.subarray(ue, ue + de));
+  wbits(ee, fe, 1 + (Ve < Fe)), fe += 2;
+  if (Ve < Fe) {
+    Ie = hMap(pe, ge, 0), De = pe, Be = hMap(ye, Se, 0), Ne = ye;
     var $e = hMap(Re, Te, 0);
     wbits(ee, fe, Ce - 257);
-    wbits(ee, fe + 5, ke - 1);
+    wbits(ee, fe + 5, Le - 1);
     wbits(ee, fe + 10, Pe - 4);
     fe += 14;
     for (Ae = 0; Ae < Pe; ++Ae) wbits(ee, fe + 3 * Ae, Re[clim[Ae]]);
     fe += 3 * Pe;
-    for (var Ge = [ Ee, Oe ], Ve = 0; Ve < 2; ++Ve) {
-      var Ue = Ge[Ve];
-      for (Ae = 0; Ae < Ue.length; ++Ae) {
-        var ze = 31 & Ue[Ae];
-        wbits(ee, fe, $e[ze]), fe += Re[ze];
-        if (ze > 15) wbits(ee, fe, Ue[Ae] >> 5 & 127), fe += Ue[Ae] >> 12;
+    for (var Ge = [ ve, ke ], Ue = 0; Ue < 2; ++Ue) {
+      var ze = Ge[Ue];
+      for (Ae = 0; Ae < ze.length; ++Ae) {
+        var je = 31 & ze[Ae];
+        wbits(ee, fe, $e[je]), fe += Re[je];
+        if (je > 15) wbits(ee, fe, ze[Ae] >> 5 & 127), fe += ze[Ae] >> 12;
       }
     }
   } else Ie = flm, De = flt, Be = fdm, Ne = fdt;
   for (Ae = 0; Ae < le; ++Ae) {
-    var qe = ie[Ae];
-    if (qe > 255) {
-      wbits16(ee, fe, Ie[257 + (ze = qe >> 18 & 31)]), fe += De[ze + 257];
-      if (ze > 7) wbits(ee, fe, qe >> 23 & 31), fe += fleb[ze];
-      var He = 31 & qe;
-      wbits16(ee, fe, Be[He]), fe += Ne[He];
-      if (He > 3) wbits16(ee, fe, qe >> 5 & 8191), fe += fdeb[He];
-    } else wbits16(ee, fe, Ie[qe]), fe += De[qe];
+    var He = ie[Ae];
+    if (He > 255) {
+      wbits16(ee, fe, Ie[257 + (je = He >> 18 & 31)]), fe += De[je + 257];
+      if (je > 7) wbits(ee, fe, He >> 23 & 31), fe += fleb[je];
+      var qe = 31 & He;
+      wbits16(ee, fe, Be[qe]), fe += Ne[qe];
+      if (qe > 3) wbits16(ee, fe, He >> 5 & 8191), fe += fdeb[qe];
+    } else wbits16(ee, fe, Ie[He]), fe += De[He];
   }
   wbits16(ee, fe, Ie[256]);
   return fe + De[256];
@@ -10626,68 +6932,68 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
   var oe = se.z || _.length, le = new u8(ie + oe + 5 * (1 + Math.ceil(oe / 7e3)) + re), ue = le.subarray(ie, le.length - re), de = se.l, fe = 7 & (se.r || 0);
   if (ee) {
     if (fe) ue[0] = se.r >> 3;
-    for (var he = deo[ee - 1], pe = he >> 13, ge = 8191 & he, me = (1 << ne) - 1, ye = se.p || new u16(32768), ve = se.h || new u16(me + 1), Se = Math.ceil(ne / 3), Ee = 2 * Se, hsh = function(ee) {
-      return (_[ee] ^ _[ee + 1] << Se ^ _[ee + 2] << Ee) & me;
-    }, Ce = new i32(25e3), we = new u16(288), Oe = new u16(32), ke = 0, xe = 0, Ae = se.i || 0, Le = 0, Re = se.w || 0, Te = 0; Ae + 2 < oe; ++Ae) {
-      var Pe = hsh(Ae), Ie = 32767 & Ae, De = ve[Pe];
+    for (var he = deo[ee - 1], pe = he >> 13, ge = 8191 & he, me = (1 << ne) - 1, ye = se.p || new u16(32768), Se = se.h || new u16(me + 1), Ee = Math.ceil(ne / 3), ve = 2 * Ee, hsh = function(ee) {
+      return (_[ee] ^ _[ee + 1] << Ee ^ _[ee + 2] << ve) & me;
+    }, Ce = new i32(25e3), we = new u16(288), ke = new u16(32), Le = 0, Oe = 0, Ae = se.i || 0, xe = 0, Re = se.w || 0, Te = 0; Ae + 2 < oe; ++Ae) {
+      var Pe = hsh(Ae), Ie = 32767 & Ae, De = Se[Pe];
       ye[Ie] = De;
-      ve[Pe] = Ie;
+      Se[Pe] = Ie;
       if (Re <= Ae) {
         var Be = oe - Ae;
-        if ((ke > 7e3 || Le > 24576) && (Be > 423 || !de)) {
-          fe = wblk(_, ue, 0, Ce, we, Oe, xe, Le, Te, Ae - Te, fe);
-          Le = ke = xe = 0, Te = Ae;
+        if ((Le > 7e3 || xe > 24576) && (Be > 423 || !de)) {
+          fe = wblk(_, ue, 0, Ce, we, ke, Oe, xe, Te, Ae - Te, fe);
+          xe = Le = Oe = 0, Te = Ae;
           for (var Ne = 0; Ne < 286; ++Ne) we[Ne] = 0;
-          for (Ne = 0; Ne < 30; ++Ne) Oe[Ne] = 0;
+          for (Ne = 0; Ne < 30; ++Ne) ke[Ne] = 0;
         }
-        var Me = 2, Fe = 0, je = ge, $e = Ie - De & 32767;
-        if (Be > 2 && Pe == hsh(Ae - $e)) for (var Ge = Math.min(pe, Be) - 1, Ve = Math.min(32767, Ae), Ue = Math.min(258, Be); $e <= Ve && --je && Ie != De; ) {
+        var Me = 2, Fe = 0, Ve = ge, $e = Ie - De & 32767;
+        if (Be > 2 && Pe == hsh(Ae - $e)) for (var Ge = Math.min(pe, Be) - 1, Ue = Math.min(32767, Ae), ze = Math.min(258, Be); $e <= Ue && --Ve && Ie != De; ) {
           if (_[Ae + Me] == _[Ae + Me - $e]) {
-            for (var ze = 0; ze < Ue && _[Ae + ze] == _[Ae + ze - $e]; ++ze) ;
-            if (ze > Me) {
-              Me = ze, Fe = $e;
-              if (ze > Ge) break;
-              var qe = Math.min($e, ze - 2), He = 0;
-              for (Ne = 0; Ne < qe; ++Ne) {
+            for (var je = 0; je < ze && _[Ae + je] == _[Ae + je - $e]; ++je) ;
+            if (je > Me) {
+              Me = je, Fe = $e;
+              if (je > Ge) break;
+              var He = Math.min($e, je - 2), qe = 0;
+              for (Ne = 0; Ne < He; ++Ne) {
                 var Ke = Ae - $e + Ne & 32767, We = Ke - ye[Ke] & 32767;
-                if (We > He) He = We, De = Ke;
+                if (We > qe) qe = We, De = Ke;
               }
             }
           }
           $e += (Ie = De) - (De = ye[Ie]) & 32767;
         }
         if (Fe) {
-          Ce[Le++] = 268435456 | revfl[Me] << 18 | revfd[Fe];
-          var Xe = 31 & revfl[Me], Je = 31 & revfd[Fe];
-          xe += fleb[Xe] + fdeb[Je];
+          Ce[xe++] = 268435456 | revfl[Me] << 18 | revfd[Fe];
+          var Xe = 31 & revfl[Me], Qe = 31 & revfd[Fe];
+          Oe += fleb[Xe] + fdeb[Qe];
           ++we[257 + Xe];
-          ++Oe[Je];
+          ++ke[Qe];
           Re = Ae + Me;
-          ++ke;
+          ++Le;
         } else {
-          Ce[Le++] = _[Ae];
+          Ce[xe++] = _[Ae];
           ++we[_[Ae]];
         }
       }
     }
     for (Ae = Math.max(Ae, Re); Ae < oe; ++Ae) {
-      Ce[Le++] = _[Ae];
+      Ce[xe++] = _[Ae];
       ++we[_[Ae]];
     }
-    fe = wblk(_, ue, de, Ce, we, Oe, xe, Le, Te, Ae - Te, fe);
+    fe = wblk(_, ue, de, Ce, we, ke, Oe, xe, Te, Ae - Te, fe);
     if (!de) {
       se.r = 7 & fe | ue[fe / 8 | 0] << 3;
       fe -= 7;
-      se.h = ve, se.p = ye, se.i = Ae, se.w = Re;
+      se.h = Se, se.p = ye, se.i = Ae, se.w = Re;
     }
   } else {
     for (Ae = se.w || 0; Ae < oe + de; Ae += 65535) {
-      var Qe = Ae + 65535;
-      if (Qe >= oe) {
+      var Ye = Ae + 65535;
+      if (Ye >= oe) {
         ue[fe / 8 | 0] = de;
-        Qe = oe;
+        Ye = oe;
       }
-      fe = wfblk(ue, fe + 1, _.subarray(Ae, Qe));
+      fe = wfblk(ue, fe + 1, _.subarray(Ae, Ye));
     }
     se.i = oe;
   }
@@ -10941,7 +7247,8 @@ var enableEncryption = (_, ee, ne, ie) => {
         }
       };
       if (isObfuscatedEntry(ie)) try {
-        ie.path = await obfuscatePath(getPath(ie), ee, ne);
+        const _ = getPath(ie);
+        if (!isPathProbablyObfuscated(_)) ie.path = await obfuscatePath(_, ee, ne);
       } catch (_) {
         Logger("Encryption failed.", LOG_LEVEL_NOTICE);
         Logger(_);
@@ -10958,13 +7265,19 @@ var enableEncryption = (_, ee, ne, ie) => {
         if (ie && re.has(le._id)) return le;
         try {
           if (ue) le.data = await decrypt(le.data, ee, ne);
-          if (de) le.path = await decrypt(getPath(le), ee, ne);
+          if (de) {
+            const _ = getPath(le);
+            if (isPathProbablyObfuscated(_)) le.path = await decrypt(_, ee, ne);
+          }
           if (fe) le.eden = JSON.parse(await decrypt(le.eden[EDEN_ENCRYPTED_KEY].data, ee, ne));
           if (ie) re.set(le._id, true);
         } catch (_) {
           if (ne) try {
             if (ue) le.data = await decrypt(le.data, ee, false);
-            if (de) le.path = await decrypt(getPath(le), ee, false);
+            if (de) {
+              const _ = getPath(le);
+              if (isPathProbablyObfuscated(_)) le.path = await decrypt(_, ee, false);
+            }
             if (fe) le.eden = JSON.parse(await decrypt(le.eden[EDEN_ENCRYPTED_KEY].data, ee, false));
             if (ie) re.set(le._id, true);
           } catch (_) {
@@ -11254,16 +7567,6 @@ async function fetchAllUsedChunks(_, ee) {
   }
 }
 
-function replaceAll(_, ee, ne) {
-  if ("replaceAll" in String.prototype) return _.replaceAll(ee, ne); else return _.split(ee).join(ne);
-}
-
-function replaceAllPairs(_, ...ee) {
-  let ne = `${_}`;
-  for (const [_, ie] of ee) ne = replaceAll(ne, _, ie);
-  return ne;
-}
-
 function extractObject(_, ee) {
   const ne = {
     ..._
@@ -11332,6 +7635,16 @@ var _a2, throttle = (_, ee) => {
     }
   };
 };
+
+function sizeToHumanReadable2(_) {
+  const ee = [ "B", "KB", "MB", "GB", "TB" ];
+  let ne = 0;
+  for (;_ >= 1024 && ne < ee.length; ) {
+    _ /= 1024;
+    ne++;
+  }
+  return _.toFixed(2) + ee[ne];
+}
 
 function resolveWithIgnoreKnownError(_, ee) {
   return new Promise(((ne, ie) => {
@@ -11429,7 +7742,7 @@ function onlyNot(_) {
   };
 }
 
-var ExportedSet, ExportedMap, globalConcurrencyController = Semaphore(50);
+var globalConcurrencyController = Semaphore(50);
 
 function determineTypeFromBlob(_) {
   return isTextBlob(_) ? "plain" : "newnote";
@@ -11474,96 +7787,7 @@ function escapeMarkdownValue(_) {
   if ("string" == typeof _) return replaceAllPairs(_, [ "|", "\\|" ], [ "`", "\\`" ]); else return _;
 }
 
-function mangle(_) {
-  return "$" + _;
-}
-
-function unmangle(_) {
-  return _.substring(1);
-}
-
-function Map$1() {
-  this._store = {};
-}
-
-Map$1.prototype.get = function(_) {
-  var ee = mangle(_);
-  return this._store[ee];
-};
-
-Map$1.prototype.set = function(_, ee) {
-  var ne = mangle(_);
-  this._store[ne] = ee;
-  return true;
-};
-
-Map$1.prototype.has = function(_) {
-  return mangle(_) in this._store;
-};
-
-Map$1.prototype.keys = function() {
-  return Object.keys(this._store).map((_ => unmangle(_)));
-};
-
-Map$1.prototype.delete = function(_) {
-  var ee = mangle(_), ne = ee in this._store;
-  delete this._store[ee];
-  return ne;
-};
-
-Map$1.prototype.forEach = function(_) {
-  for (var ee = Object.keys(this._store), ne = 0, ie = ee.length; ne < ie; ne++) {
-    var re = ee[ne];
-    _(this._store[re], re = unmangle(re));
-  }
-};
-
-Object.defineProperty(Map$1.prototype, "size", {
-  get: function() {
-    return Object.keys(this._store).length;
-  }
-});
-
-function Set$1(_) {
-  this._store = new Map$1;
-  if (_ && Array.isArray(_)) for (var ee = 0, ne = _.length; ee < ne; ee++) this.add(_[ee]);
-}
-
-Set$1.prototype.add = function(_) {
-  return this._store.set(_, true);
-};
-
-Set$1.prototype.has = function(_) {
-  return this._store.has(_);
-};
-
-Set$1.prototype.forEach = function(_) {
-  this._store.forEach((function(ee, ne) {
-    _(ne);
-  }));
-};
-
-Object.defineProperty(Set$1.prototype, "size", {
-  get: function() {
-    return this._store.size;
-  }
-});
-
-function supportsMapAndSet() {
-  if ("undefined" == typeof Symbol || "undefined" == typeof Map || "undefined" == typeof Set) return false;
-  var _ = Object.getOwnPropertyDescriptor(Map, Symbol.species);
-  return _ && "get" in _ && Map[Symbol.species] === Map;
-}
-
-if (supportsMapAndSet()) {
-  ExportedSet = Set;
-  ExportedMap = Map;
-} else {
-  ExportedSet = Set$1;
-  ExportedMap = Map$1;
-}
-
-var import_immediate = __toESM(require_lib()), PouchError = class extends Error {
+var PouchError = class extends Error {
   constructor(_, ee, ne) {
     super();
     this.status = _;
@@ -11713,46 +7937,7 @@ function readAsArrayBuffer(_, ee) {
   ne.readAsArrayBuffer(_);
 }
 
-var import_spark_md5 = __toESM(require_spark_md5()), setImmediateShim = self.setImmediate || self.setTimeout, MD5_CHUNK_SIZE = 32768;
-
-function rawToBase64(_) {
-  return thisBtoa(_);
-}
-
-function sliceBlob(_, ee, ne) {
-  if (_.webkitSlice) return _.webkitSlice(ee, ne); else return _.slice(ee, ne);
-}
-
-function appendBlob(_, ee, ne, ie, re) {
-  if (ne > 0 || ie < ee.size) ee = sliceBlob(ee, ne, ie);
-  readAsArrayBuffer(ee, (function(ee) {
-    _.append(ee);
-    re();
-  }));
-}
-
-function appendString(_, ee, ne, ie, re) {
-  if (ne > 0 || ie < ee.length) ee = ee.substring(ne, ie);
-  _.appendBinary(ee);
-  re();
-}
-
-function binaryMd5(_, ee) {
-  var ne = "string" == typeof _, ie = ne ? _.length : _.size, re = Math.min(MD5_CHUNK_SIZE, ie), se = Math.ceil(ie / re), oe = 0, le = ne ? new import_spark_md5.default : new import_spark_md5.default.ArrayBuffer, ue = ne ? appendString : appendBlob;
-  function next() {
-    setImmediateShim(loadNextChunk);
-  }
-  function done() {
-    var _ = rawToBase64(le.end(true));
-    ee(_);
-    le.destroy();
-  }
-  function loadNextChunk() {
-    var ee = oe * re, ne = ee + re;
-    if (++oe < se) ue(le, _, ee, ne, next); else ue(le, _, ee, ne, done);
-  }
-  loadNextChunk();
-}
+var import_spark_md5 = __toESM(require_spark_md5()), setImmediateShim = self.setImmediate || self.setTimeout;
 
 function stringMd5(_) {
   return import_spark_md5.default.hash(_);
@@ -11762,17 +7947,8 @@ function isBinaryObject(_) {
   return "undefined" != typeof ArrayBuffer && _ instanceof ArrayBuffer || "undefined" != typeof Blob && _ instanceof Blob;
 }
 
-function cloneArrayBuffer(_) {
-  if ("function" == typeof _.slice) return _.slice(0);
-  var ee = new ArrayBuffer(_.byteLength), ne = new Uint8Array(ee), ie = new Uint8Array(_);
-  ne.set(ie);
-  return ee;
-}
-
 function cloneBinaryObject(_) {
-  if (_ instanceof ArrayBuffer) return cloneArrayBuffer(_);
-  var ee = _.size, ne = _.type;
-  if ("function" == typeof _.slice) return _.slice(0, ee, ne); else return _.webkitSlice(0, ee, ne);
+  return _ instanceof ArrayBuffer ? _.slice(0) : _.slice(0, _.size, _.type);
 }
 
 var funcToString = Function.prototype.toString, objectCtorString = funcToString.call(Object);
@@ -11884,7 +8060,7 @@ function formatResultForOpenRevsGet(_) {
 }
 
 function bulkGet(_, ee, ne) {
-  var ie = ee.docs, re = new ExportedMap;
+  var ie = ee.docs, re = new Map;
   ie.forEach((function(_) {
     if (re.has(_.id)) re.get(_.id).push(_); else re.set(_.id, [ _ ]);
   }));
@@ -11958,7 +8134,9 @@ function hasLocalStorage() {
   return hasLocal;
 }
 
-var assign$1, Changes = class extends import_events.default {
+var nextTick = "function" == typeof queueMicrotask ? queueMicrotask : function nextTick2(_) {
+  Promise.resolve().then(_);
+}, Changes = class extends import_events.default {
   constructor() {
     super();
     this._listeners = {};
@@ -11982,7 +8160,7 @@ var assign$1, Changes = class extends import_events.default {
             ie.onChange(_);
           }
         })).on("complete", (function() {
-          if ("waiting" === re) (0, import_immediate.default)(eventFunction);
+          if ("waiting" === re) nextTick(eventFunction);
           re = false;
         })).on("error", (function onError() {
           re = false;
@@ -12033,16 +8211,6 @@ function explainError(_, ee) {
   guardedConsole("info", "The above " + _ + " is totally normal. " + ee);
 }
 
-if ("function" == typeof Object.assign) assign$1 = Object.assign; else assign$1 = function(_) {
-  for (var ee = Object(_), ne = 1; ne < arguments.length; ne++) {
-    var ie = arguments[ne];
-    if (null != ie) for (var re in ie) if (Object.prototype.hasOwnProperty.call(ie, re)) ee[re] = ie[re];
-  }
-  return ee;
-};
-
-var assign$2 = assign$1;
-
 function tryFilter(_, ee, ne) {
   try {
     return !_(ee, ne);
@@ -12063,11 +8231,6 @@ function filterChange(_) {
     if (!_.include_docs) delete ie.doc; else if (!_.attachments) for (var se in ie.doc._attachments) if (Object.prototype.hasOwnProperty.call(ie.doc._attachments, se)) ie.doc._attachments[se].stub = true;
     return true;
   };
-}
-
-function flatten(_) {
-  for (var ee = [], ne = 0, ie = _.length; ne < ie; ne++) ee = ee.concat(_[ne]);
-  return ee;
 }
 
 function f() {}
@@ -12166,7 +8329,7 @@ function tryAndPut(_, ee, ne) {
 
 function rev2(_, ee) {
   if (!ee) return v4_default().replace(/-/g, "").toLowerCase();
-  var ne = assign$2({}, _);
+  var ne = Object.assign({}, _);
   delete ne._rev_tree;
   return stringMd5(JSON.stringify(ne));
 }
@@ -12362,11 +8525,11 @@ function doMerge(_, ee, ne) {
       });
       for (;me.length > 0; ) {
         var ye = me.pop();
-        if (0 !== ye.diff) for (var ve = ye.ids[2], Se = 0, Ee = ve.length; Se < Ee; Se++) me.push({
-          ids: ve[Se],
+        if (0 !== ye.diff) for (var Se = ye.ids[2], Ee = 0, ve = Se.length; Ee < ve; Ee++) me.push({
+          ids: Se[Ee],
           diff: ye.diff - 1,
           parent: ye.ids,
-          parentIdx: Se
+          parentIdx: Ee
         }); else if (ye.ids[0] === he.ids[0]) ge.push(ye);
       }
       var Ce = ge[0];
@@ -12477,7 +8640,7 @@ function isDeleted(_, ee) {
 }
 
 function isLocalId(_) {
-  return /^_local/.test(_);
+  return "string" == typeof _ && _.startsWith("_local/");
 }
 
 function latest(_, ee) {
@@ -12501,11 +8664,7 @@ function latest(_, ee) {
   throw new Error("Unable to resolve latest revision for id " + ee.id + ", rev " + _);
 }
 
-var import_events2 = __toESM(require_events()), a = "undefined" != typeof AbortController ? AbortController : function() {
-  return {
-    abort: function() {}
-  };
-}, f2 = fetch, h = Headers;
+var import_events2 = __toESM(require_events()), f2 = fetch, h = Headers;
 
 function pad(_, ee, ne) {
   for (var ie = "", re = ne - _.length; ie.length < re; ) ie += ee;
@@ -13305,10 +9464,6 @@ var Changes2 = class extends import_events2.default {
   }
 };
 
-function compare2(_, ee) {
-  return _ < ee ? -1 : _ > ee ? 1 : 0;
-}
-
 function yankError(_, ee) {
   return function(ne, ie) {
     if (ne || ie[0] && ie[0].error) {
@@ -13329,8 +9484,7 @@ function cleanDocs(_) {
 }
 
 function compareByIdThenRev(_, ee) {
-  var ne = compare2(_._id, ee._id);
-  if (0 !== ne) return ne; else return compare2(_._revisions ? _._revisions.start : 0, ee._revisions ? ee._revisions.start : 0);
+  if (_._id === ee._id) return (_._revisions ? _._revisions.start : 0) - (ee._revisions ? ee._revisions.start : 0); else return _._id < ee._id ? -1 : 1;
 }
 
 function computeHeight(_) {
@@ -13370,7 +9524,7 @@ function doNextCompaction(_) {
     if (ee && ee.last_seq) ne.last_seq = ee.last_seq;
     _._compact(ne, (function(ee, ne) {
       if (ee) ie(ee); else ie(null, ne);
-      (0, import_immediate.default)((function() {
+      nextTick((function() {
         _._compactionQueue.shift();
         if (_._compactionQueue.length) doNextCompaction(_);
       }));
@@ -13409,6 +9563,16 @@ function attachmentNameError(_) {
   if ("_" === _.charAt(0)) return _ + " is not a valid attachment name, attachment names cannot start with '_'"; else return false;
 }
 
+function isNotSingleDoc(_) {
+  return null === _ || "object" != typeof _ || Array.isArray(_);
+}
+
+var validRevRegex = /^\d+-[^-]*$/;
+
+function isValidRev(_) {
+  return "string" == typeof _ && validRevRegex.test(_);
+}
+
 var AbstractPouchDB = class extends import_events2.default {
   _setup() {
     this.post = adapterFun("post", (function(_, ee, ne) {
@@ -13416,7 +9580,7 @@ var AbstractPouchDB = class extends import_events2.default {
         ne = ee;
         ee = {};
       }
-      if ("object" != typeof _ || Array.isArray(_)) return ne(createError(NOT_AN_OBJECT));
+      if (isNotSingleDoc(_)) return ne(createError(NOT_AN_OBJECT));
       this.bulkDocs({
         docs: [ _ ]
       }, ee, yankError(ne, _._id));
@@ -13426,8 +9590,9 @@ var AbstractPouchDB = class extends import_events2.default {
         ne = ee;
         ee = {};
       }
-      if ("object" != typeof _ || Array.isArray(_)) return ne(createError(NOT_AN_OBJECT));
+      if (isNotSingleDoc(_)) return ne(createError(NOT_AN_OBJECT));
       invalidIdError(_._id);
+      if ("_rev" in _ && !isValidRev(_._rev)) return ne(createError(INVALID_REV));
       if (isLocalId(_._id) && "function" == typeof this._putLocal) if (_._deleted) return this._removeLocal(_, ne); else return this._putLocal(_, ne);
       const putDoc = ne => {
         if ("function" == typeof this._put && false !== ee.new_edits) this._put(_, ee, ne); else this.bulkDocs({
@@ -13535,14 +9700,14 @@ var AbstractPouchDB = class extends import_events2.default {
       }
       var ie = Object.keys(_);
       if (!ie.length) return ne(null, {});
-      var re = 0, se = new ExportedMap;
+      var re = 0, se = new Map;
       function addToMissing(_, ee) {
         if (!se.has(_)) se.set(_, {
           missing: []
         });
         se.get(_).missing.push(ee);
       }
-      ie.map((function(ee) {
+      ie.forEach((function(ee) {
         this._getRevisionTree(ee, (function(oe, le) {
           if (oe && 404 === oe.status && "missing" === oe.message) se.set(ee, {
             missing: _[ee]
@@ -13604,6 +9769,7 @@ var AbstractPouchDB = class extends import_events2.default {
         ne = ee;
         ee = {};
       }
+      ee = ee || {};
       if ("string" != typeof _) return ne(createError(INVALID_ID));
       if (isLocalId(_) && "function" == typeof this._getLocal) return this._getLocal(_, ne);
       var ie = [];
@@ -13646,19 +9812,17 @@ var AbstractPouchDB = class extends import_events2.default {
         if (isDeleted(oe, se._rev)) se._deleted = true;
         if (ee.revs || ee.revs_info) {
           for (var de = se._rev.split("-"), fe = parseInt(de[0], 10), he = de[1], pe = rootToLeaf(oe.rev_tree), ge = null, me = 0; me < pe.length; me++) {
-            var ye = pe[me], ve = ye.ids.map((function(_) {
-              return _.id;
-            })).indexOf(he);
-            if (ve === fe - 1 || !ge && -1 !== ve) ge = ye;
+            var ye = pe[me];
+            const _ = ye.ids.findIndex((_ => _.id === he));
+            if (_ === fe - 1 || !ge && -1 !== _) ge = ye;
           }
           if (!ge) {
             (ie = new Error("invalid rev tree")).docId = _;
             return ne(ie);
           }
-          var Se = ge.ids.map((function(_) {
-            return _.id;
-          })).indexOf(se._rev.split("-")[1]) + 1, Ee = ge.ids.length - Se;
-          ge.ids.splice(Se, Ee);
+          const re = se._rev.split("-")[1], le = ge.ids.findIndex((_ => _.id === re)) + 1;
+          var Se = ge.ids.length - le;
+          ge.ids.splice(le, Se);
           ge.ids.reverse();
           if (ee.revs) se._revisions = {
             start: ge.pos + ge.ids.length - 1,
@@ -13667,33 +9831,33 @@ var AbstractPouchDB = class extends import_events2.default {
             }))
           };
           if (ee.revs_info) {
-            var Ce = ge.pos + ge.ids.length;
+            var Ee = ge.pos + ge.ids.length;
             se._revs_info = ge.ids.map((function(_) {
               return {
-                rev: --Ce + "-" + _.id,
+                rev: --Ee + "-" + _.id,
                 status: _.opts.status
               };
             }));
           }
         }
         if (ee.attachments && se._attachments) {
-          var we = se._attachments, Oe = Object.keys(we).length;
-          if (0 === Oe) return ne(null, se);
-          Object.keys(we).forEach((_ => {
-            this._getAttachment(se._id, _, we[_], {
-              rev: se._rev,
+          var ve = se._attachments, Ce = Object.keys(ve).length;
+          if (0 === Ce) return ne(null, se);
+          Object.keys(ve).forEach((_ => {
+            this._getAttachment(se._id, _, ve[_], {
               binary: ee.binary,
+              metadata: oe,
               ctx: le
             }, (function(ee, ie) {
               var re = se._attachments[_];
               re.data = ie;
               delete re.stub;
               delete re.length;
-              if (! --Oe) ne(null, se);
+              if (! --Ce) ne(null, se);
             }));
           }));
         } else {
-          if (se._attachments) for (var ke in se._attachments) if (Object.prototype.hasOwnProperty.call(se._attachments, ke)) se._attachments[ke].stub = true;
+          if (se._attachments) for (var we in se._attachments) if (Object.prototype.hasOwnProperty.call(se._attachments, we)) se._attachments[we].stub = true;
           ne(null, se);
         }
       })); else if ("all" === ee.open_revs) this._getRevisionTree(_, (function(_, ee) {
@@ -13704,10 +9868,7 @@ var AbstractPouchDB = class extends import_events2.default {
         finishOpenRevs();
       })); else if (Array.isArray(ee.open_revs)) {
         ie = ee.open_revs;
-        for (var re = 0; re < ie.length; re++) {
-          var se = ie[re];
-          if (!("string" == typeof se && /^\d+-/.test(se))) return ne(createError(INVALID_REV));
-        }
+        for (var re = 0; re < ie.length; re++) if (!isValidRev(ie[re])) return ne(createError(INVALID_REV));
         finishOpenRevs();
       } else return ne(createError(UNKNOWN_ERROR, "function_clause"));
     })).bind(this);
@@ -13721,6 +9882,7 @@ var AbstractPouchDB = class extends import_events2.default {
         if (se.doc._attachments && se.doc._attachments[ee]) {
           ne.ctx = se.ctx;
           ne.binary = true;
+          ne.metadata = se.metadata;
           this._getAttachment(_, ee, se.doc._attachments[ee], ne, ie);
         } else return ie(createError(MISSING_DOC));
       }));
@@ -13778,7 +9940,11 @@ var AbstractPouchDB = class extends import_events2.default {
         docs: _
       };
       if (!_ || !_.docs || !Array.isArray(_.docs)) return ne(createError(MISSING_BULK_DOCS));
-      for (var ie = 0; ie < _.docs.length; ++ie) if ("object" != typeof _.docs[ie] || Array.isArray(_.docs[ie])) return ne(createError(NOT_AN_OBJECT));
+      for (var ie = 0; ie < _.docs.length; ++ie) {
+        const ee = _.docs[ie];
+        if (isNotSingleDoc(ee)) return ne(createError(NOT_AN_OBJECT));
+        if ("_rev" in ee && !isValidRev(ee._rev)) return ne(createError(INVALID_REV));
+      }
       var re;
       _.docs.forEach((function(_) {
         if (_._attachments) Object.keys(_._attachments).forEach((function(ee) {
@@ -13848,7 +10014,8 @@ var AbstractPouchDB = class extends import_events2.default {
   _compact(_, ee) {
     var ne, ie = {
       return_docs: false,
-      last_seq: _.last_seq || 0
+      last_seq: _.last_seq || 0,
+      since: _.last_seq || 0
     }, re = [], se = 0;
     const onChange = _ => {
       this.activeTasks.update(ne, {
@@ -14076,7 +10243,7 @@ function setUpEventEmitter(_) {
   Object.keys(import_events2.default.prototype).forEach((function(ee) {
     if ("function" == typeof import_events2.default.prototype[ee]) _[ee] = eventEmitter[ee].bind(eventEmitter);
   }));
-  var ee = _._destructionListeners = new ExportedMap;
+  var ee = _._destructionListeners = new Map;
   _.on("ref", (function onConstructorRef(_) {
     if (!ee.has(_.name)) ee.set(_.name, []);
     ee.get(_.name).push(_);
@@ -14114,7 +10281,7 @@ PouchDB.plugin = function(_) {
   if ("function" == typeof _) _(PouchDB); else if ("object" != typeof _ || 0 === Object.keys(_).length) throw new Error('Invalid plugin: got "' + _ + '", expected an object or a function'); else Object.keys(_).forEach((function(ee) {
     PouchDB.prototype[ee] = _[ee];
   }));
-  if (this.__defaults) PouchDB.__defaults = assign$2({}, this.__defaults);
+  if (this.__defaults) PouchDB.__defaults = Object.assign({}, this.__defaults);
   return PouchDB;
 };
 
@@ -14125,14 +10292,14 @@ PouchDB.defaults = function(_) {
       _ = (ne = _).name;
       delete ne.name;
     }
-    ne = assign$2({}, ee.__defaults, ne);
+    ne = Object.assign({}, ee.__defaults, ne);
     PouchDB.call(this, _, ne);
   }));
   ee.preferredAdapters = PouchDB.preferredAdapters.slice();
   Object.keys(PouchDB).forEach((function(_) {
     if (!(_ in ee)) ee[_] = PouchDB[_];
   }));
-  ee.__defaults = assign$2({}, this.__defaults, _);
+  ee.__defaults = Object.assign({}, this.__defaults, _);
   return ee;
 };
 
@@ -14142,13 +10309,91 @@ PouchDB.fetch = function(_, ee) {
 
 PouchDB.prototype.activeTasks = PouchDB.activeTasks = new ActiveTasks;
 
-var version = "8.0.1";
+var version = "9.0.0";
 
 PouchDB.plugin(index_browser_es_default);
 
 PouchDB.version = version;
 
-var index_es_default = PouchDB;
+var index_es_default = PouchDB, import_vuvuzela = __toESM(require_vuvuzela());
+
+function safeJsonParse(_) {
+  try {
+    return JSON.parse(_);
+  } catch (ee) {
+    return import_vuvuzela.default.parse(_);
+  }
+}
+
+function safeJsonStringify(_) {
+  try {
+    return JSON.stringify(_);
+  } catch (ee) {
+    return import_vuvuzela.default.stringify(_);
+  }
+}
+
+var import_spark_md52 = __toESM(require_spark_md5()), setImmediateShim2 = self.setImmediate || self.setTimeout, MD5_CHUNK_SIZE = 32768;
+
+function rawToBase64(_) {
+  return thisBtoa(_);
+}
+
+function appendBlob(_, ee, ne, ie, re) {
+  if (ne > 0 || ie < ee.size) ee = ee.slice(ne, ie);
+  readAsArrayBuffer(ee, (function(ee) {
+    _.append(ee);
+    re();
+  }));
+}
+
+function appendString(_, ee, ne, ie, re) {
+  if (ne > 0 || ie < ee.length) ee = ee.substring(ne, ie);
+  _.appendBinary(ee);
+  re();
+}
+
+function binaryMd5(_, ee) {
+  var ne = "string" == typeof _, ie = ne ? _.length : _.size, re = Math.min(MD5_CHUNK_SIZE, ie), se = Math.ceil(ie / re), oe = 0, le = ne ? new import_spark_md52.default : new import_spark_md52.default.ArrayBuffer, ue = ne ? appendString : appendBlob;
+  function next() {
+    setImmediateShim2(loadNextChunk);
+  }
+  function done() {
+    var _ = rawToBase64(le.end(true));
+    ee(_);
+    le.destroy();
+  }
+  function loadNextChunk() {
+    var ee = oe * re, ne = ee + re;
+    if (++oe < se) ue(le, _, ee, ne, next); else ue(le, _, ee, ne, done);
+  }
+  loadNextChunk();
+}
+
+function checkBlobSupport(_, ee, ne) {
+  return new Promise((function(ie) {
+    var re = createBlob2([ "" ]);
+    let se;
+    if ("function" == typeof ne) {
+      const ie = ne(re);
+      se = _.objectStore(ee).put(ie);
+    } else {
+      const ie = ne;
+      se = _.objectStore(ee).put(re, ie);
+    }
+    se.onsuccess = function() {
+      var _ = navigator.userAgent.match(/Chrome\/(\d+)/), ee = navigator.userAgent.match(/Edge\//);
+      ie(ee || !_ || parseInt(_[1], 10) >= 43);
+    };
+    se.onerror = _.onabort = function(_) {
+      _.preventDefault();
+      _.stopPropagation();
+      ie(false);
+    };
+  })).catch((function() {
+    return false;
+  }));
+}
 
 function toObject(_) {
   return _.reduce((function(_, ee) {
@@ -14318,9 +10563,9 @@ function updateDoc(_, ee, ne, ie, re, se, oe, le) {
   ne.metadata.rev_tree = ge.tree;
   ne.stemmedRevs = ge.stemmedRevs || [];
   if (ee.rev_map) ne.metadata.rev_map = ee.rev_map;
-  var ve, Se = winningRev(ne.metadata), Ee = isDeleted(ne.metadata, Se), Ce = de === Ee ? 0 : de < Ee ? -1 : 1;
-  if (ye === Se) ve = Ee; else ve = isDeleted(ne.metadata, ye);
-  oe(ne, Se, Ee, ve, true, Ce, re, se);
+  var Se, Ee = winningRev(ne.metadata), ve = isDeleted(ne.metadata, Ee), Ce = de === ve ? 0 : de < ve ? -1 : 1;
+  if (ye === Ee) Se = ve; else Se = isDeleted(ne.metadata, ye);
+  oe(ne, Ee, ve, Se, true, Ce, re, se);
 }
 
 function rootIsMissing(_) {
@@ -14329,7 +10574,7 @@ function rootIsMissing(_) {
 
 function processDocs(_, ee, ne, ie, re, se, oe, le, ue) {
   _ = _ || 1e3;
-  var de = le.new_edits, fe = new ExportedMap, he = 0, pe = ee.length;
+  var de = le.new_edits, fe = new Map, he = 0, pe = ee.length;
   function checkAllDocsDone() {
     if (++he === pe && ue) ue();
   }
@@ -14378,24 +10623,6 @@ function processDocs(_, ee, ne, ie, re, se, oe, le, ue) {
     }
     nextDoc();
   }));
-}
-
-var import_vuvuzela = __toESM(require_vuvuzela());
-
-function safeJsonParse(_) {
-  try {
-    return JSON.parse(_);
-  } catch (ee) {
-    return import_vuvuzela.default.parse(_);
-  }
-}
-
-function safeJsonStringify(_) {
-  try {
-    return JSON.stringify(_);
-  } catch (ee) {
-    return import_vuvuzela.default.stringify(_);
-  }
 }
 
 var ADAPTER_VERSION = 5, DOC_STORE = "document-store", BY_SEQ_STORE = "by-sequence", ATTACH_STORE = "attach-store", ATTACH_AND_SEQ_STORE = "attach-seq-store", META_STORE = "meta-store", LOCAL_STORE = "local-store", DETECT_BLOB_SUPPORT_STORE = "detect-blob-support";
@@ -14475,7 +10702,7 @@ function postProcessAttachments(_, ee) {
           var re = ie.body, se = ie.content_type;
           return new Promise((function(oe) {
             readBlobData(re, se, ee, (function(ee) {
-              _.doc._attachments[ne] = assign$2(pick(ie, [ "digest", "content_type" ]), {
+              _.doc._attachments[ne] = Object.assign(pick(ie, [ "digest", "content_type" ]), {
                 data: ee
               });
               oe();
@@ -14532,13 +10759,13 @@ function openTransactionSafely(_, ee, ne) {
 var changesHandler$1 = new Changes;
 
 function idbBulkDocs(_, ee, ne, ie, re, se) {
-  for (var oe, le, ue, de, fe, he, pe, ge, me = ee.docs, ye = 0, ve = me.length; ye < ve; ye++) {
-    var Se = me[ye];
-    if (!Se._id || !isLocalId(Se._id)) if ((Se = me[ye] = parseDoc(Se, ne.new_edits, _)).error && !pe) pe = Se;
+  for (var oe, le, ue, de, fe, he, pe, ge, me = ee.docs, ye = 0, Se = me.length; ye < Se; ye++) {
+    var Ee = me[ye];
+    if (!Ee._id || !isLocalId(Ee._id)) if ((Ee = me[ye] = parseDoc(Ee, ne.new_edits, _)).error && !pe) pe = Ee;
   }
   if (pe) return se(pe);
-  var Ee = false, Ce = 0, we = new Array(me.length), Oe = new ExportedMap, ke = false, xe = ie._meta.blobSupport ? "blob" : "base64";
-  preprocessAttachments(me, xe, (function(ee) {
+  var ve = false, Ce = 0, we = new Array(me.length), ke = new Map, Le = false, Oe = ie._meta.blobSupport ? "blob" : "base64";
+  preprocessAttachments(me, Oe, (function(ee) {
     if (ee) return se(ee);
     (function startTransaction() {
       var ee = openTransactionSafely(re, [ DOC_STORE, BY_SEQ_STORE, ATTACH_STORE, LOCAL_STORE, ATTACH_AND_SEQ_STORE, META_STORE ], "readwrite");
@@ -14582,7 +10809,7 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
         }));
       })((function(ee) {
         if (ee) {
-          ke = true;
+          Le = true;
           return se(ee);
         }
         (function fetchExistingDocs() {
@@ -14592,12 +10819,12 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
           }
           function checkDone() {
             if (++ee === me.length) (function idbProcessDocs() {
-              processDocs(_.revs_limit, me, ie, Oe, oe, we, writeDoc, ne, onAllDocsProcessed);
+              processDocs(_.revs_limit, me, ie, ke, oe, we, writeDoc, ne, onAllDocsProcessed);
             })();
           }
           function readMetadata(_) {
             var ee = decodeMetadata(_.target.result);
-            if (ee) Oe.set(ee.id, ee);
+            if (ee) ke.set(ee.id, ee);
             checkDone();
           }
         })();
@@ -14605,17 +10832,17 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
     })();
   }));
   function onAllDocsProcessed() {
-    Ee = true;
+    ve = true;
     updateDocCountIfReady();
   }
   function updateDocCountIfReady() {
-    if (ge && Ee) {
+    if (ge && ve) {
       ge.docCount += Ce;
       he.put(ge);
     }
   }
   function complete() {
-    if (!ke) {
+    if (!Le) {
       changesHandler$1.notify(ie._meta.name);
       se(null, we);
     }
@@ -14681,7 +10908,7 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
         id: pe.id,
         rev: pe.rev
       };
-      Oe.set(_.metadata.id, _.metadata);
+      ke.set(_.metadata.id, _.metadata);
       (function insertAttachmentMappings(_, ee, ne) {
         var ie = 0, re = Object.keys(_.data._attachments || {});
         if (!re.length) return ne();
@@ -14803,26 +11030,17 @@ function idbAllDocs(_, ee, ne) {
   if (ge.error) return ne(ge.error);
   var me = ge.txn;
   me.oncomplete = function onTxnComplete() {
-    if (_.attachments) postProcessAttachments(Oe, _.binary).then(onResultsReady); else onResultsReady();
+    if (_.attachments) postProcessAttachments(ke, _.binary).then(onResultsReady); else onResultsReady();
   };
   me.onabort = idbError(ne);
-  var ye, ve, Se = me.objectStore(DOC_STORE), Ee = me.objectStore(BY_SEQ_STORE), Ce = me.objectStore(META_STORE), we = Ee.index("_doc_id_rev"), Oe = [];
+  var ye, Se, Ee = me.objectStore(DOC_STORE), ve = me.objectStore(BY_SEQ_STORE), Ce = me.objectStore(META_STORE), we = ve.index("_doc_id_rev"), ke = [];
   Ce.get(META_STORE).onsuccess = function(_) {
     ye = _.target.result.docCount;
   };
-  if (_.update_seq) (function getMaxUpdateSeq(_, ee) {
-    _.openCursor(null, "prev").onsuccess = function onCursor(_) {
-      var ne = _.target.result, ie = void 0;
-      if (ne && ne.key) ie = ne.key;
-      return ee({
-        target: {
-          result: [ ie ]
-        }
-      });
-    };
-  })(Ee, (function(_) {
-    if (_.target.result && _.target.result.length > 0) ve = _.target.result[0];
-  }));
+  if (_.update_seq) ve.openKeyCursor(null, "prev").onsuccess = _ => {
+    var ee = _.target.result;
+    if (ee && ee.key) Se = ee.key;
+  };
   function allDocsInner(ee, ne) {
     var ie = {
       id: ne.id,
@@ -14833,12 +11051,12 @@ function idbAllDocs(_, ee, ne) {
     };
     if (ne.deleted) {
       if (ue) {
-        Oe.push(ie);
+        ke.push(ie);
         ie.value.deleted = true;
         ie.doc = null;
       }
     } else if (de-- <= 0) {
-      Oe.push(ie);
+      ke.push(ie);
       if (_.include_docs) (function fetchDocAsynchronously(ee, ne, ie) {
         var re = ee.id + "::" + ie;
         we.get(re).onsuccess = function onGetDoc(ie) {
@@ -14853,55 +11071,38 @@ function idbAllDocs(_, ee, ne) {
     }
   }
   function processBatch(_) {
-    for (var ee = 0, ne = _.length; ee < ne && Oe.length !== fe; ee++) {
+    for (var ee = 0, ne = _.length; ee < ne && ke.length !== fe; ee++) {
       var ie = _[ee];
       if (!ie.error || !ue) {
         var re = decodeMetadata(ie);
         allDocsInner(re.winningRev, re);
-      } else Oe.push(ie);
+      } else ke.push(ie);
     }
   }
   function onBatch(_, ee, ne) {
     if (ne) {
       processBatch(ee);
-      if (Oe.length < fe) ne.continue();
+      if (ke.length < fe) ne.continue();
     }
   }
   function onResultsReady() {
     var ee = {
       total_rows: ye,
       offset: _.skip,
-      rows: Oe
+      rows: ke
     };
-    if (_.update_seq && void 0 !== ve) ee.update_seq = ve;
+    if (_.update_seq && void 0 !== Se) ee.update_seq = Se;
     ne(null, ee);
   }
   if (!re && 0 !== fe) {
-    if (ue) return allDocsKeys(_.keys, Se, onBatch);
-    if (-1 === fe) return getAll(Se, ie, (function onGetAll(ee) {
+    if (ue) return allDocsKeys(ue, Ee, onBatch);
+    if (-1 === fe) return getAll(Ee, ie, (function onGetAll(ee) {
       var ne = ee.target.result;
       if (_.descending) ne = ne.reverse();
       processBatch(ne);
     }));
-    runBatchedCursor(Se, ie, _.descending, fe + de, onBatch);
+    runBatchedCursor(Ee, ie, _.descending, fe + de, onBatch);
   }
-}
-
-function checkBlobSupport(_) {
-  return new Promise((function(ee) {
-    var ne = createBlob2([ "" ]), ie = _.objectStore(DETECT_BLOB_SUPPORT_STORE).put(ne, "key");
-    ie.onsuccess = function() {
-      var _ = navigator.userAgent.match(/Chrome\/(\d+)/), ne = navigator.userAgent.match(/Edge\//);
-      ee(ne || !_ || parseInt(_[1], 10) >= 43);
-    };
-    ie.onerror = _.onabort = function(_) {
-      _.preventDefault();
-      _.stopPropagation();
-      ee(false);
-    };
-  })).catch((function() {
-    return false;
-  }));
 }
 
 function countDocs(_, ee) {
@@ -14932,7 +11133,7 @@ function enqueueTask(_, ee, ne) {
     _((function runCallback(_, ie) {
       tryCode(ee, _, ie, ne);
       running = false;
-      (0, import_immediate.default)((function runNext() {
+      nextTick((function runNext() {
         applyNext(ne);
       }));
     }));
@@ -14951,11 +11152,11 @@ function changes(_, ee, ne, ie) {
       }
     };
   }
-  var se = _.doc_ids && new ExportedSet(_.doc_ids);
+  var se = _.doc_ids && new Set(_.doc_ids);
   _.since = _.since || 0;
   var oe = _.since, le = "limit" in _ ? _.limit : -1;
   if (0 === le) le = 1;
-  var ue, de, fe, he, pe = [], ge = 0, me = filterChange(_), ye = new ExportedMap;
+  var ue, de, fe, he, pe = [], ge = 0, me = filterChange(_), ye = new Map;
   function onGetMetadata(_, ee, ne, ie) {
     if (ne.seq !== ee) return ie();
     if (ne.winningRev === _._rev) return ie(ne, _);
@@ -14970,11 +11171,11 @@ function changes(_, ee, ne, ie) {
       last_seq: oe
     });
   }
-  var ve = [ DOC_STORE, BY_SEQ_STORE ];
-  if (_.attachments) ve.push(ATTACH_STORE);
-  var Se = openTransactionSafely(ie, ve, "readonly");
-  if (Se.error) return _.complete(Se.error);
-  (ue = Se.txn).onabort = idbError(_.complete);
+  var Se = [ DOC_STORE, BY_SEQ_STORE ];
+  if (_.attachments) Se.push(ATTACH_STORE);
+  var Ee = openTransactionSafely(ie, Se, "readonly");
+  if (Ee.error) return _.complete(Ee.error);
+  (ue = Ee.txn).onabort = idbError(_.complete);
   ue.oncomplete = function onTxnComplete() {
     if (!_.continuous && _.attachments) postProcessAttachments(pe).then(finish); else finish();
   };
@@ -15032,7 +11233,7 @@ function changes(_, ee, ne, ie) {
   }));
 }
 
-var blobSupportPromise, cachedDBs = new ExportedMap, openReqList = new ExportedMap;
+var blobSupportPromise, cachedDBs = new Map, openReqList = new Map;
 
 function IdbPouch(_, ee) {
   var ne = this;
@@ -15213,7 +11414,7 @@ function init(_, ee, ne) {
     oe.objectStore(META_STORE).get(META_STORE).onsuccess = function(_) {
       ie = _.target.result.docCount;
     };
-    oe.objectStore(BY_SEQ_STORE).openCursor(null, "prev").onsuccess = function(_) {
+    oe.objectStore(BY_SEQ_STORE).openKeyCursor(null, "prev").onsuccess = function(_) {
       var ee = _.target.result;
       ne = ee ? ee.key : 0;
     };
@@ -15369,7 +11570,7 @@ function init(_, ee, ne) {
   if (oe) {
     re = oe.idb;
     _._meta = oe.global;
-    return (0, import_immediate.default)((function() {
+    return nextTick((function() {
       ne(null, _);
     }));
   }
@@ -15476,7 +11677,7 @@ function init(_, ee, ne) {
       le = _;
       storeMetaDocIfReady();
     }));
-    if (!blobSupportPromise) blobSupportPromise = checkBlobSupport(fe);
+    if (!blobSupportPromise) blobSupportPromise = checkBlobSupport(fe, DETECT_BLOB_SUPPORT_STORE, "key");
     blobSupportPromise.then((function(_) {
       ue = _;
       completeSetup();
@@ -15507,7 +11708,44 @@ function index(_) {
   _.adapter("idb", IdbPouch, true);
 }
 
-var index_es_default2 = index, IDB_NULL = Number.MIN_SAFE_INTEGER, IDB_FALSE = Number.MIN_SAFE_INTEGER + 1, IDB_TRUE = Number.MIN_SAFE_INTEGER + 2, TEST_KEY_INVALID = /^[^a-zA-Z_$]|[^a-zA-Z0-9_$]+/, TEST_PATH_INVALID = /\\.|(^|\.)[^a-zA-Z_$]|[^a-zA-Z0-9_$.]+/;
+var index_es_default2 = index, import_spark_md53 = __toESM(require_spark_md5()), setImmediateShim3 = self.setImmediate || self.setTimeout, MD5_CHUNK_SIZE2 = 32768;
+
+function rawToBase642(_) {
+  return thisBtoa(_);
+}
+
+function appendBlob2(_, ee, ne, ie, re) {
+  if (ne > 0 || ie < ee.size) ee = ee.slice(ne, ie);
+  readAsArrayBuffer(ee, (function(ee) {
+    _.append(ee);
+    re();
+  }));
+}
+
+function appendString2(_, ee, ne, ie, re) {
+  if (ne > 0 || ie < ee.length) ee = ee.substring(ne, ie);
+  _.appendBinary(ee);
+  re();
+}
+
+function binaryMd52(_, ee) {
+  var ne = "string" == typeof _, ie = ne ? _.length : _.size, re = Math.min(MD5_CHUNK_SIZE2, ie), se = Math.ceil(ie / re), oe = 0, le = ne ? new import_spark_md53.default : new import_spark_md53.default.ArrayBuffer, ue = ne ? appendString2 : appendBlob2;
+  function next() {
+    setImmediateShim3(loadNextChunk);
+  }
+  function done() {
+    var _ = rawToBase642(le.end(true));
+    ee(_);
+    le.destroy();
+  }
+  function loadNextChunk() {
+    var ee = oe * re, ne = ee + re;
+    if (++oe < se) ue(le, _, ee, ne, next); else ue(le, _, ee, ne, done);
+  }
+  loadNextChunk();
+}
+
+var IDB_NULL = Number.MIN_SAFE_INTEGER, IDB_FALSE = Number.MIN_SAFE_INTEGER + 1, IDB_TRUE = Number.MIN_SAFE_INTEGER + 2, TEST_KEY_INVALID = /^[^a-zA-Z$]|[^a-zA-Z0-9$]+/, TEST_PATH_INVALID = /\\.|(^|\.)[^a-zA-Z$]|[^a-zA-Z0-9$.]+/;
 
 function needsSanitise(_, ee) {
   if (ee) return TEST_PATH_INVALID.test(_); else return TEST_KEY_INVALID.test(_);
@@ -15516,9 +11754,10 @@ function needsSanitise(_, ee) {
 var KEY_INVALID = new RegExp(TEST_KEY_INVALID.source, "g"), PATH_INVALID = new RegExp(TEST_PATH_INVALID.source, "g"), SLASH = "\\".charCodeAt(0), IS_DOT = ".".charCodeAt(0);
 
 function sanitise(_, ee) {
-  var correctCharacters = function(_) {
-    for (var ne = "", ie = 0; ie < _.length; ie++) {
-      var re = _.charCodeAt(ie);
+  const correctCharacters = function(_) {
+    let ne = "";
+    for (let ie = 0; ie < _.length; ie++) {
+      const re = _.charCodeAt(ie);
       if (re === IS_DOT && ee && 0 === ie) ne += "."; else if (re === SLASH && ee) continue; else ne += "_c" + re + "_";
     }
     return ne;
@@ -15527,31 +11766,39 @@ function sanitise(_, ee) {
 }
 
 function needsRewrite(_) {
-  for (var ee of Object.keys(_)) if (needsSanitise(ee)) return true; else if (null === _[ee] || "boolean" == typeof _[ee]) return true; else if ("object" == typeof _[ee]) return needsRewrite(_[ee]);
+  for (const ee of Object.keys(_)) if (needsSanitise(ee)) return true; else if (null === _[ee] || "boolean" == typeof _[ee]) return true; else if ("object" == typeof _[ee]) return needsRewrite(_[ee]);
 }
 
 function rewrite(_) {
   if (!needsRewrite(_)) return false;
-  var ee = Array.isArray(_), ne = ee ? [] : {};
+  const ee = Array.isArray(_), ne = ee ? [] : {};
   Object.keys(_).forEach((function(ie) {
-    var re = ee ? ie : sanitise(ie);
+    const re = ee ? ie : sanitise(ie);
     if (null === _[ie]) ne[re] = IDB_NULL; else if ("boolean" == typeof _[ie]) ne[re] = _[ie] ? IDB_TRUE : IDB_FALSE; else if ("object" == typeof _[ie]) ne[re] = rewrite(_[ie]); else ne[re] = _[ie];
   }));
   return ne;
 }
 
-var DOC_STORE2 = "docs", META_STORE2 = "meta";
+var DOC_STORE2 = "docs", META_LOCAL_STORE = "meta";
 
 function idbError2(_) {
   return function(ee) {
-    var ne = "unknown_error";
+    let ne = "unknown_error";
     if (ee.target && ee.target.error) ne = ee.target.error.name || ee.target.error.message;
     _(createError(IDB_ERROR, ne, ee.type));
   };
 }
 
-function processAttachment(_, ee, ne, ie) {
+function processAttachment(_, ee, ne, ie, re) {
   delete ne._attachments[_].stub;
+  if ("base64" === re) {
+    if (ie) {
+      const ie = ee.attachments[ne._attachments[_].digest];
+      ne._attachments[_].data = b64ToBluffer(ie.data, ie.content_type);
+    } else ne._attachments[_].data = ee.attachments[ne._attachments[_].digest].data;
+    delete ne._attachments[_].length;
+    return Promise.resolve();
+  }
   if (ie) {
     ne._attachments[_].data = ee.attachments[ne._attachments[_].digest].data;
     return Promise.resolve();
@@ -15585,7 +11832,7 @@ function correctIndexFields(_) {
   })));
 }
 
-var POUCHDB_IDB_VERSION = 1, versionMultiplier = Math.pow(10, 13);
+var POUCHDB_IDB_VERSION = 2, versionMultiplier = Math.pow(10, 13);
 
 function createIdbVersion() {
   return versionMultiplier * POUCHDB_IDB_VERSION + (new Date).getTime();
@@ -15596,23 +11843,23 @@ function getPouchDbVersion(_) {
 }
 
 function maintainNativeIndexes(_, ee) {
-  var ne = _.transaction.objectStore(DOC_STORE2);
+  const ne = _.transaction.objectStore(DOC_STORE2);
   ne.getAll(IDBKeyRange.bound("_design/", "_design/￿")).onsuccess = function(_) {
-    var ie = _.target.result, re = Array.from(ne.indexNames), se = ie.filter((function(_) {
+    const ie = _.target.result, re = Array.from(ne.indexNames), se = ie.filter((function(_) {
       return 0 === _.deleted && _.revs[_.rev].data.views;
     })).map((function(_) {
       return _.revs[_.rev].data;
     })).reduce((function(_, ee) {
       return Object.keys(ee.views).reduce((function(_, ne) {
-        var ie = rawIndexFields(ee, ne);
+        const ie = rawIndexFields(ee, ne);
         if (ie && ie.length > 0) _[naturalIndexName(ie)] = correctIndexFields(ie);
         return _;
       }), _);
-    }), {}), oe = Object.keys(se), le = [ "seq" ];
+    }), {}), oe = Object.keys(se), le = [ "seq", "deleted,id" ];
     re.forEach((function(_) {
       if (-1 === le.indexOf(_) && -1 === oe.indexOf(_)) ne.deleteIndex(_);
     }));
-    var ue = oe.filter((function(_) {
+    const ue = oe.filter((function(_) {
       return -1 === re.indexOf(_);
     }));
     try {
@@ -15625,73 +11872,106 @@ function maintainNativeIndexes(_, ee) {
   };
 }
 
-function upgradePouchDbSchema(_, ee) {
-  if (ee < 1) {
-    _.createObjectStore(DOC_STORE2, {
+function upgradePouchDbSchema(_, ee, ne, ie) {
+  if (ie < 1) {
+    ee.createObjectStore(DOC_STORE2, {
       keyPath: "id"
     }).createIndex("seq", "seq", {
       unique: true
     });
-    _.createObjectStore(META_STORE2, {
+    ee.createObjectStore(META_LOCAL_STORE, {
       keyPath: "id"
     });
+  }
+  if (ie < 2) {
+    const ee = ne.objectStore(DOC_STORE2);
+    ee.createIndex("deleted,id", [ "deleted", "id" ], {
+      unique: true
+    });
+    if (_.includes("-mrview-")) ee.deleteIndex("seq");
   }
 }
 
 function openDatabase(_, ee, ne, ie, re) {
-  var se = ne.versionchanged ? indexedDB.open(ne.name) : indexedDB.open(ne.name, createIdbVersion());
+  const se = ne.versionChangedWhileOpen ? indexedDB.open(ne.name) : indexedDB.open(ne.name, createIdbVersion());
   se.onupgradeneeded = function(_) {
     if (_.oldVersion > 0 && _.oldVersion < versionMultiplier) throw new Error('Incorrect adapter: you should specify the "idb" adapter to open this DB'); else if (0 === _.oldVersion && _.newVersion < versionMultiplier) {
       indexedDB.deleteDatabase(ne.name);
       throw new Error("Database was deleted while open");
     }
-    upgradePouchDbSchema(_.target.result, getPouchDbVersion(_.oldVersion));
+    const ee = _.target.transaction, ie = _.target.result, oe = getPouchDbVersion(_.oldVersion);
+    upgradePouchDbSchema(ne.name, ie, ee, oe);
     maintainNativeIndexes(se, re);
+    if (oe < 2) {
+      const _ = se.transaction.objectStore(DOC_STORE2), ee = se.transaction.objectStore(META_LOCAL_STORE);
+      _.openCursor().onsuccess = _ => {
+        const ne = _.target.result;
+        if (!ne) return;
+        const ie = ne.value;
+        if (!isLocalId(ie.id)) return ne.continue();
+        ee.put(ie).onsuccess = () => {
+          ne.delete(ie).onsuccess = () => {
+            ne.continue();
+          };
+        };
+      };
+    }
   };
   se.onblocked = function(_) {
     console.error("onblocked, this should never happen", _);
   };
-  se.onsuccess = function(ee) {
-    var re = ee.target.result;
-    re.onabort = function(ee) {
+  se.onsuccess = function(re) {
+    const se = re.target.result;
+    se.onabort = function(ee) {
       console.error("Database has a global failure", ee.target.error);
       delete _[ne.name];
-      re.close();
+      se.close();
     };
-    re.onversionchange = function() {
+    se.onversionchange = function() {
       console.log("Database was made stale, closing handle");
-      _[ne.name].versionchanged = true;
-      re.close();
+      _[ne.name].versionChangedWhileOpen = true;
+      se.close();
     };
-    re.onclose = function() {
+    se.onclose = function() {
       console.log("Database was made stale, closing handle");
-      if (ne.name in _) _[ne.name].versionchanged = true;
+      if (ne.name in _) _[ne.name].versionChangedWhileOpen = true;
     };
-    var se = {
-      id: META_STORE2
-    }, oe = re.transaction([ META_STORE2 ], "readwrite");
-    oe.oncomplete = function() {
+    let oe = {
+      id: META_LOCAL_STORE
+    };
+    const le = se.transaction([ META_LOCAL_STORE ], "readwrite");
+    le.oncomplete = function() {
       ie({
-        idb: re,
-        metadata: se
+        idb: se,
+        metadata: oe
       });
     };
-    var le = oe.objectStore(META_STORE2);
-    le.get(META_STORE2).onsuccess = function(_) {
-      var ee = false;
-      if (!("doc_count" in (se = _.target.result || se))) {
-        ee = true;
-        se.doc_count = 0;
+    const ue = le.objectStore(META_LOCAL_STORE);
+    ue.get(META_LOCAL_STORE).onsuccess = function(_) {
+      oe = _.target.result || oe;
+      let ne = false;
+      if (!("doc_count" in oe)) {
+        ne = true;
+        oe.doc_count = 0;
       }
-      if (!("seq" in se)) {
-        ee = true;
-        se.seq = 0;
+      if (!("seq" in oe)) {
+        ne = true;
+        oe.seq = 0;
       }
-      if (!("db_uuid" in se)) {
-        ee = true;
-        se.db_uuid = uuid();
+      if (!("db_uuid" in oe)) {
+        ne = true;
+        oe.db_uuid = uuid();
       }
-      if (ee) le.put(se);
+      if (!("idb_attachment_format" in oe)) checkBlobSupport(le, META_LOCAL_STORE, (_ => ({
+        id: "blob-support",
+        blob: _
+      }))).then((_ => {
+        ee.blobSupport = oe.idb_attachment_format = _ ? "binary" : "base64";
+        ue.put(oe);
+      })); else if (ne) {
+        ee.blobSupport = oe.idb_attachment_format;
+        ue.put(oe);
+      }
     };
   };
   se.onerror = function(_) {
@@ -15700,8 +11980,8 @@ function openDatabase(_, ee, ne, ie, re) {
 }
 
 function setup(_, ee, ne) {
-  if (!_[ne.name] || _[ne.name].versionchanged) {
-    ne.versionchanged = _[ne.name] && _[ne.name].versionchanged;
+  if (!_[ne.name] || _[ne.name].versionChangedWhileOpen) {
+    ne.versionChangedWhileOpen = _[ne.name] && _[ne.name].versionChangedWhileOpen;
     _[ne.name] = new Promise((function(ie, re) {
       openDatabase(_, ee, ne, ie, re);
     }));
@@ -15719,45 +11999,63 @@ function info(_, ee) {
 function get(_, ee, ne, ie) {
   if (_.error) return ie(_.error);
   _.txn.objectStore(DOC_STORE2).get(ee).onsuccess = function(ee) {
-    var re, se = ee.target.result;
-    if (!ne.rev) re = se && se.rev; else re = ne.latest ? latest(ne.rev, se) : ne.rev;
-    if (se && (!se.deleted || ne.rev) && re in se.revs) {
-      var oe = se.revs[re].data;
-      oe._id = se.id;
-      oe._rev = re;
-      ie(null, {
-        doc: oe,
-        metadata: se,
-        ctx: _
-      });
-    } else ie(createError(MISSING_DOC, "missing"));
+    const re = ee.target.result;
+    let se;
+    if (!ne.rev) se = re && re.rev; else se = ne.latest ? latest(ne.rev, re) : ne.rev;
+    if (!re || re.deleted && !ne.rev || !(se in re.revs)) {
+      ie(createError(MISSING_DOC, "missing"));
+      return;
+    }
+    const oe = re.revs[se].data;
+    oe._id = re.id;
+    oe._rev = se;
+    ie(null, {
+      doc: oe,
+      metadata: re,
+      ctx: _
+    });
   };
 }
 
-function parseAttachment(_, ee, ne) {
-  if (ee.binary) return ne(null, _); else readAsBinaryString(_, (function(_) {
-    ne(null, thisBtoa(_));
-  }));
+var BINARY_ATTACHMENTS = false;
+
+function getLocal(_, ee, ne, ie) {
+  if (_.error) return ie(_.error);
+  _.txn.objectStore(META_LOCAL_STORE).get(ee).onsuccess = function(_) {
+    const ee = _.target.result;
+    if (!ee) {
+      ie(createError(MISSING_DOC, "missing"));
+      return;
+    }
+    const re = ee.revs[ee.rev].data;
+    re._id = ee.id;
+    re._rev = ee.rev;
+    if (re._attachments) {
+      const _ = [];
+      for (const ie in re._attachments) _.push(processAttachment(ie, ee, re, BINARY_ATTACHMENTS, ne.blobSupport));
+      Promise.all(_).then((() => ie(null, re))).catch(ie);
+    } else ie(null, re);
+  };
 }
 
-function getAttachment(_, ee, ne, ie, re, se) {
-  if (_.error) return se(_.error);
-  var oe;
-  _.txn.objectStore(DOC_STORE2).get(ee).onsuccess = function(_) {
-    var ee = _.target.result, ie = ee.revs[re.rev || ee.rev].data._attachments[ne].digest;
-    oe = ee.attachments[ie].data;
-  };
-  _.txn.oncomplete = function() {
-    parseAttachment(oe, re, se);
-  };
-  _.txn.onabort = se;
+function getAttachment(_, ee, ne, ie, re) {
+  if (isLocalId(_)) {
+    re(createError(MISSING_DOC, "missing"));
+    return;
+  }
+  const se = ie.metadata.attachments[ne.digest].data;
+  if ("string" != typeof se) if (ie.binary) return re(null, se); else readAsBinaryString(se, (function(_) {
+    re(null, thisBtoa(_));
+  })); else if (ie.binary) re(null, b64ToBluffer(se, ne.content_type)); else re(null, se);
 }
 
 function bulkDocs(_, ee, ne, ie, re, se, oe) {
-  var le, ue, de, fe = [], he = [], pe = re.revs_limit || 1e3, ge = -1 === re.name.indexOf("-mrview-");
-  const me = re.auto_compaction;
+  let le, ue;
+  const de = [], fe = [];
+  let he;
+  const pe = re.revs_limit || 1e3, ge = -1 === re.name.indexOf("-mrview-"), me = re.auto_compaction;
   function docsRevsLimit(_) {
-    return /^_local/.test(_.id) ? 1 : pe;
+    return isLocalId(_.id) ? 1 : pe;
   }
   function revHasAttachment(_, ee, ne) {
     return _.revs[ee] && _.revs[ee].data._attachments && Object.values(_.revs[ee].data._attachments).find((function(_) {
@@ -15765,7 +12063,7 @@ function bulkDocs(_, ee, ne, ie, re, se, oe) {
     }));
   }
   function convertDocFormat(_) {
-    var ee = {
+    const ee = {
       id: _.metadata.id,
       rev: _.metadata.rev,
       rev_tree: _.metadata.rev_tree,
@@ -15778,41 +12076,49 @@ function bulkDocs(_, ee, ne, ie, re, se, oe) {
     return ee;
   }
   function updateSeq(_) {
-    if (_ === de) le.objectStore(META_STORE2).put(ie);
+    if (_ === he) le.objectStore(META_LOCAL_STORE).put(ie);
   }
-  for (var ye = 0, ve = ee.docs.length; ye < ve; ye++) {
-    var Se;
+  for (let _ = 0, ie = ee.docs.length; _ < ie; _++) {
+    let ie;
     try {
-      Se = parseDoc(ee.docs[ye], ne.new_edits, re);
+      ie = parseDoc(ee.docs[_], ne.new_edits, re);
     } catch (_) {
-      Se = _;
+      ie = _;
     }
-    if (Se.error) return oe(Se);
-    he.push(convertDocFormat(Se));
+    if (ie.error) return oe(ie);
+    fe.push(convertDocFormat(ie));
   }
   (function preProcessAttachments() {
-    var _ = he.map((function(_) {
-      var ee = _.revs[_.rev].data;
+    const _ = fe.map((function(_) {
+      const ee = _.revs[_.rev].data;
       if (!ee._attachments) return Promise.resolve(ee);
-      var ne = Object.keys(ee._attachments).map((function(_) {
+      const ne = Object.keys(ee._attachments).map((function(_) {
         ee._attachments[_].name = _;
         return function preProcessAttachment(_) {
           if (_.stub) return Promise.resolve(_);
-          var ee;
+          let ee;
           if ("string" == typeof _.data) {
-            if ((ee = function parseBase642(_) {
-              try {
-                return atob(_);
-              } catch (_) {
-                return {
-                  error: createError(BAD_ARG, "Attachment is not a valid base64 string")
-                };
-              }
-            }(_.data)).error) return Promise.reject(ee.error);
-            _.data = binStringToBluffer(ee, _.content_type);
-          } else ee = _.data;
+            try {
+              ee = thisAtob(_.data);
+            } catch (_) {
+              return Promise.reject(createError(BAD_ARG, "Attachment is not a valid base64 string"));
+            }
+            if ("binary" === ie.idb_attachment_format) _.data = binStringToBluffer(ee, _.content_type);
+          } else {
+            ee = _.data;
+            if ("base64" === ie.idb_attachment_format) return new Promise((ne => {
+              blobToBase64(_.data, (function(ie) {
+                _.data = ie;
+                binaryMd52(ee, (function(ie) {
+                  _.digest = "md5-" + ie;
+                  _.length = ee.size || ee.length || 0;
+                  ne(_);
+                }));
+              }));
+            }));
+          }
           return new Promise((function(ne) {
-            binaryMd5(ee, (function(ie) {
+            binaryMd52(ee, (function(ie) {
               _.digest = "md5-" + ie;
               _.length = ee.size || ee.length || 0;
               ne(_);
@@ -15821,7 +12127,7 @@ function bulkDocs(_, ee, ne, ie, re, se, oe) {
         }(ee._attachments[_]);
       }));
       return Promise.all(ne).then((function(_) {
-        var ne = {};
+        const ne = {};
         _.forEach((function(_) {
           ne[_.name] = _;
           delete _.name;
@@ -15832,64 +12138,66 @@ function bulkDocs(_, ee, ne, ie, re, se, oe) {
     }));
     return Promise.all(_);
   })().then((function() {
-    _._openTransactionSafely([ DOC_STORE2, META_STORE2 ], "readwrite", (function(_, ee) {
+    _._openTransactionSafely([ DOC_STORE2, META_LOCAL_STORE ], "readwrite", (function(_, ee) {
       if (_) return oe(_);
-      (le = ee).onabort = function() {
+      le = ee;
+      le.onabort = function() {
         oe(ue || createError(UNKNOWN_ERROR, "transaction was aborted"));
       };
       le.ontimeout = idbError2(oe);
       le.oncomplete = function() {
         se.notify(re.name);
-        oe(null, fe);
+        oe(null, de);
       };
       (function fetchExistingDocs(_, ee) {
-        var se = 0, oe = {};
+        let se = 0;
+        const oe = {};
         function readDone(le) {
           if (le.target.result) oe[le.target.result.id] = le.target.result;
           if (++se === ee.length) (function processDocs2(_, ee, se) {
             ee.forEach((function(ee, oe) {
-              var le;
+              let le;
               if ("was_delete" in ne && !Object.prototype.hasOwnProperty.call(se, ee.id)) le = createError(MISSING_DOC, "deleted"); else if (ne.new_edits && !Object.prototype.hasOwnProperty.call(se, ee.id) && function rootIsMissing2(_) {
                 return "missing" === _.rev_tree[0].ids[1].status;
               }(ee)) le = createError(REV_CONFLICT); else if (Object.prototype.hasOwnProperty.call(se, ee.id)) {
                 le = function update2(_, ee, ie) {
                   if (ee.rev in ie.revs && !ne.new_edits) return false;
-                  var se = /^1-/.test(ee.rev);
+                  const se = /^1-/.test(ee.rev);
                   if (ie.deleted && !ee.deleted && ne.new_edits && se) {
-                    var oe = ee.revs[ee.rev].data;
-                    oe._rev = ie.rev;
-                    oe._id = ie.id;
-                    ee = convertDocFormat(parseDoc(oe, ne.new_edits, re));
+                    const _ = ee.revs[ee.rev].data;
+                    _._rev = ie.rev;
+                    _._id = ie.id;
+                    ee = convertDocFormat(parseDoc(_, ne.new_edits, re));
                   }
-                  var le = merge(ie.rev_tree, ee.rev_tree[0], docsRevsLimit(ee));
-                  ee.stemmedRevs = le.stemmedRevs;
-                  ee.rev_tree = le.tree;
-                  var ue = ie.revs;
-                  ue[ee.rev] = ee.revs[ee.rev];
-                  ee.revs = ue;
+                  const oe = merge(ie.rev_tree, ee.rev_tree[0], docsRevsLimit(ee));
+                  ee.stemmedRevs = oe.stemmedRevs;
+                  ee.rev_tree = oe.tree;
+                  const le = ie.revs;
+                  le[ee.rev] = ee.revs[ee.rev];
+                  ee.revs = le;
                   ee.attachments = ie.attachments;
-                  if (ne.new_edits && (ie.deleted && ee.deleted || !ie.deleted && "new_leaf" !== le.conflicts || ie.deleted && !ee.deleted && "new_branch" === le.conflicts || ie.rev === ee.rev)) return createError(REV_CONFLICT);
+                  if (ne.new_edits && (ie.deleted && ee.deleted || !ie.deleted && "new_leaf" !== oe.conflicts || ie.deleted && !ee.deleted && "new_branch" === oe.conflicts || ie.rev === ee.rev)) return createError(REV_CONFLICT);
                   ee.wasDeleted = ie.deleted;
                   return ee;
                 }(0, ee, se[ee.id]);
                 if (false == le) return;
               } else {
-                var he = merge([], ee.rev_tree[0], docsRevsLimit(ee));
-                ee.rev_tree = he.tree;
-                ee.stemmedRevs = he.stemmedRevs;
-                (le = ee).isNewDoc = true;
+                const _ = merge([], ee.rev_tree[0], docsRevsLimit(ee));
+                ee.rev_tree = _.tree;
+                ee.stemmedRevs = _.stemmedRevs;
+                le = ee;
+                le.isNewDoc = true;
                 le.wasDeleted = ee.revs[ee.rev].deleted ? 1 : 0;
               }
-              if (le.error) fe[oe] = le; else {
+              if (le.error) de[oe] = le; else {
                 se[le.id] = le;
-                de = oe;
+                he = oe;
                 (function write(_, ee, ne) {
-                  var re = winningRev(ee), se = ee.rev, oe = /^_local/.test(ee.id), le = ee.revs[re].data;
-                  const de = ee.isNewDoc;
+                  const re = winningRev(ee), se = ee.rev, oe = isLocalId(ee.id), le = ee.revs[re].data, fe = ee.isNewDoc;
                   if (ge) {
-                    var he = rewrite(le);
-                    if (he) {
-                      ee.data = he;
+                    const _ = rewrite(le);
+                    if (_) {
+                      ee.data = _;
                       delete ee.data._attachments;
                     } else ee.data = le;
                   } else ee.data = le;
@@ -15897,70 +12205,74 @@ function bulkDocs(_, ee, ne, ie, re, se, oe) {
                   ee.deleted = ee.revs[re].deleted ? 1 : 0;
                   if (!oe) {
                     ee.seq = ++ie.seq;
-                    var pe = 0;
-                    if (ee.isNewDoc) pe = ee.deleted ? 0 : 1; else if (ee.wasDeleted !== ee.deleted) pe = ee.deleted ? -1 : 1;
-                    ie.doc_count += pe;
+                    let _ = 0;
+                    if (ee.isNewDoc) _ = ee.deleted ? 0 : 1; else if (ee.wasDeleted !== ee.deleted) _ = ee.deleted ? -1 : 1;
+                    ie.doc_count += _;
                   }
                   delete ee.isNewDoc;
                   delete ee.wasDeleted;
-                  let ye = ee.stemmedRevs || [];
-                  if (me && !de) {
+                  let he = ee.stemmedRevs || [];
+                  if (me && !fe) {
                     const _ = compactTree(ee);
-                    if (_.length) ye = ye.concat(_);
+                    if (_.length) he = he.concat(_);
                   }
-                  if (ye.length) ye.forEach((function(_) {
+                  if (he.length) he.forEach((function(_) {
                     delete ee.revs[_];
                   }));
                   delete ee.stemmedRevs;
                   if (!("attachments" in ee)) ee.attachments = {};
-                  if (le._attachments) for (var ve in le._attachments) {
-                    var Se = le._attachments[ve];
-                    if (Se.stub) {
-                      if (!(Se.digest in ee.attachments)) {
+                  if (le._attachments) for (const ne in le._attachments) {
+                    const ie = le._attachments[ne];
+                    if (ie.stub) {
+                      if (!(ie.digest in ee.attachments)) {
                         ue = createError(MISSING_STUB);
                         _.abort();
                         return;
                       }
-                      if (revHasAttachment(ee, se, Se.digest)) ee.attachments[Se.digest].revs[se] = true;
+                      if (revHasAttachment(ee, se, ie.digest)) ee.attachments[ie.digest].revs[se] = true;
                     } else {
-                      ee.attachments[Se.digest] = Se;
-                      ee.attachments[Se.digest].revs = {};
-                      ee.attachments[Se.digest].revs[se] = true;
-                      le._attachments[ve] = {
+                      ee.attachments[ie.digest] = ie;
+                      ee.attachments[ie.digest].revs = {};
+                      ee.attachments[ie.digest].revs[se] = true;
+                      le._attachments[ne] = {
                         stub: true,
-                        digest: Se.digest,
-                        content_type: Se.content_type,
-                        length: Se.length,
+                        digest: ie.digest,
+                        content_type: ie.content_type,
+                        length: ie.length,
                         revpos: parseInt(se, 10)
                       };
                     }
                   }
-                  if (!oe || !ee.deleted) _.objectStore(DOC_STORE2).put(ee).onsuccess = function() {
-                    fe[ne] = {
-                      ok: true,
-                      id: ee.id,
-                      rev: se
-                    };
-                    updateSeq(ne);
-                  }; else {
-                    _.objectStore(DOC_STORE2).delete(ee.id).onsuccess = function() {
-                      fe[ne] = {
+                  if (oe && ee.deleted) {
+                    _.objectStore(META_LOCAL_STORE).delete(ee.id).onsuccess = function() {
+                      de[ne] = {
                         ok: true,
                         id: ee.id,
                         rev: "0-0"
                       };
                     };
                     updateSeq(ne);
+                    return;
                   }
+                  const pe = oe ? META_LOCAL_STORE : DOC_STORE2;
+                  _.objectStore(pe).put(ee).onsuccess = function() {
+                    de[ne] = {
+                      ok: true,
+                      id: ee.id,
+                      rev: se
+                    };
+                    updateSeq(ne);
+                  };
                 })(_, le, oe);
               }
             }));
           })(_, ee, oe);
         }
         ee.forEach((function(ee) {
-          _.objectStore(DOC_STORE2).get(ee.id).onsuccess = readDone;
+          const ne = isLocalId(ee.id) ? META_LOCAL_STORE : DOC_STORE2;
+          _.objectStore(ne).get(ee.id).onsuccess = readDone;
         }));
-      })(le, he);
+      })(le, fe);
     }));
   })).catch((function(_) {
     oe(_);
@@ -15968,40 +12280,41 @@ function bulkDocs(_, ee, ne, ie, re, se, oe) {
 }
 
 function allDocsKeys2(_, ee, ne) {
-  var ie = new Array(_.length), re = 0;
+  const ie = new Array(_.length);
+  let re = 0;
   _.forEach((function(se, oe) {
     ee.get(se).onsuccess = function(ee) {
       if (ee.target.result) ie[oe] = ee.target.result; else ie[oe] = {
         key: se,
         error: "not_found"
       };
-      if (++re === _.length) ie.forEach((function(_) {
+      re++;
+      if (re === _.length) ie.forEach((function(_) {
         ne(_);
       }));
     };
   }));
 }
 
-function createKeyRange2(_, ee, ne, ie, re) {
+function createKeyRange2(_, ee, ne, ie, re, se) {
   try {
-    if (_ && ee) if (re) return IDBKeyRange.bound(ee, _, !ne, false); else return IDBKeyRange.bound(_, ee, false, !ne); else if (_) if (re) return IDBKeyRange.upperBound(_); else return IDBKeyRange.lowerBound(_); else if (ee) if (re) return IDBKeyRange.lowerBound(ee, !ne); else return IDBKeyRange.upperBound(ee, !ne); else if (ie) return IDBKeyRange.only(ie);
+    if (re) return IDBKeyRange.only([ 0, re ]); else if (se) return IDBKeyRange.bound(ee, _, !ie, !ne); else return IDBKeyRange.bound(_, ee, !ne, !ie);
   } catch (_) {
     return {
       error: _
     };
   }
-  return null;
 }
 
 function handleKeyRangeError(_, ee, ne, ie) {
   if ("DataError" === ne.name && 0 === ne.code) {
-    var re = {
+    const ne = {
       total_rows: ee.doc_count,
       offset: _.skip,
       rows: []
     };
-    if (_.update_seq) re.update_seq = ee.seq;
-    return ie(null, re);
+    if (_.update_seq) ne.update_seq = ee.seq;
+    return ie(null, ne);
   }
   ie(createError(IDB_ERROR, ne.name, ne.message));
 }
@@ -16009,127 +12322,182 @@ function handleKeyRangeError(_, ee, ne, ie) {
 function allDocs(_, ee, ne, ie) {
   if (_.error) return ie(_.error);
   if (0 === ne.limit) {
-    var re = {
+    const _ = {
       total_rows: ee.doc_count,
       offset: ne.skip,
       rows: []
     };
-    if (ne.update_seq) re.update_seq = ee.seq;
-    return ie(null, re);
+    if (ne.update_seq) _.update_seq = ee.seq;
+    return ie(null, _);
   }
-  var se, oe = [], le = [], ue = "startkey" in ne ? ne.startkey : false, de = "endkey" in ne ? ne.endkey : false, fe = "key" in ne ? ne.key : false, he = "keys" in ne ? ne.keys : false, pe = ne.skip || 0, ge = "number" == typeof ne.limit ? ne.limit : -1, me = false !== ne.inclusive_end, ye = "descending" in ne && ne.descending ? "prev" : null;
-  if (!he) if ((se = createKeyRange2(ue, de, me, fe, ye)) && se.error) return handleKeyRangeError(ne, ee, se.error, ie);
-  var ve = _.txn.objectStore(DOC_STORE2);
-  _.txn.oncomplete = function onTxnComplete() {
-    Promise.all(le).then((function() {
-      var _ = {
-        total_rows: ee.doc_count,
-        offset: 0,
-        rows: oe
+  const re = [], se = [], oe = "key" in ne ? ne.key : false, le = "keys" in ne ? ne.keys : false;
+  let ue = ne.skip || 0, de = "number" == typeof ne.limit ? ne.limit : void 0;
+  const fe = false !== ne.inclusive_end, he = "descending" in ne && ne.descending ? "prev" : null, pe = "startkey" in ne ? ne.startkey : he ? "￿" : "", ge = "endkey" in ne ? ne.endkey : he ? "" : "￿", me = _.txn.objectStore(DOC_STORE2);
+  if (le) {
+    _.txn.oncomplete = onTxnComplete;
+    return allDocsKeys2(le, me, (_ => {
+      if (_.error) return re.push(_);
+      const ee = {
+        id: _.id,
+        key: _.id,
+        value: {
+          rev: _.rev
+        }
       };
-      if (ne.update_seq) _.update_seq = ee.seq;
-      ie(null, _);
-    }));
-  };
-  if (he) return allDocsKeys2(ne.keys, ve, allDocsInner);
-  function allDocsInner(_) {
-    if (_.error && he) {
-      oe.push(_);
-      return true;
-    }
-    var ee = {
-      id: _.id,
-      key: _.id,
-      value: {
-        rev: _.rev
-      }
-    };
-    if (_.deleted) {
-      if (he) {
-        oe.push(ee);
+      if (_.deleted) {
         ee.value.deleted = true;
         ee.doc = null;
-      }
-    } else if (pe-- <= 0) {
-      oe.push(ee);
-      if (ne.include_docs) (function include_doc(_, ee) {
-        var ie = ee.revs[ee.rev].data;
-        _.doc = ie;
-        _.doc._id = ee.id;
-        _.doc._rev = ee.rev;
-        if (ne.conflicts) {
-          var re = collectConflicts(ee);
-          if (re.length) _.doc._conflicts = re;
-        }
-        if (ne.attachments && ie._attachments) for (var se in ie._attachments) le.push(processAttachment(se, ee, _.doc, ne.binary));
-      })(ee, _);
-      if (0 == --ge) return false;
-    }
-    return true;
+      } else if (ne.include_docs) include_doc(ee, _);
+      re.push(ee);
+    }));
   }
-  (ye ? ve.openCursor(se, ye) : ve.openCursor(se)).onsuccess = function(_) {
-    var ee = _.target.result && _.target.result.value;
-    if (ee) {
-      if (/^_local/.test(ee.id)) return _.target.result.continue();
-      if (allDocsInner(ee)) _.target.result.continue();
+  let ye = createKeyRange2([ 0, pe ], [ 0, ge ], true, fe, oe, he);
+  if (ye.error) return handleKeyRangeError(ne, ee, ye.error, ie);
+  _.txn.oncomplete = onTxnComplete;
+  function include_doc(_, ie) {
+    const re = ie.revs[ie.rev].data;
+    _.doc = re;
+    _.doc._id = ie.id;
+    _.doc._rev = ie.rev;
+    if (ne.conflicts) {
+      const ee = collectConflicts(ie);
+      if (ee.length) _.doc._conflicts = ee;
     }
-  };
+    if (ne.attachments && re._attachments) for (const oe in re._attachments) se.push(processAttachment(oe, ie, _.doc, ne.binary, ee.idb_attachment_format));
+  }
+  function onTxnComplete() {
+    const _ = {
+      total_rows: ee.doc_count,
+      offset: 0,
+      rows: re
+    };
+    if (ne.update_seq) _.update_seq = ee.seq;
+    if (se.length) Promise.all(se).then((function() {
+      ie(null, _);
+    })); else ie(null, _);
+  }
+  const Se = me.index("deleted,id");
+  if (!ue && !de) fetchResults(); else {
+    let re, se = de > 0;
+    Se.openKeyCursor(ye, he || "next").onsuccess = le => {
+      const pe = le.target.result;
+      if (!ue) {
+        if (void 0 === re) {
+          re = pe && pe.key;
+          if (!re) return _.txn.commit();
+        }
+        if (de) {
+          if (de > 1 && pe) {
+            pe.advance(de - 1);
+            de = void 0;
+            return;
+          }
+          de = void 0;
+        }
+        if (se) se = pe && pe.key;
+        if (!se) se = he ? ye.lower : ye.upper;
+        ye = createKeyRange2(re, se, true, fe, oe, he);
+        if (ye.error) {
+          _.txn.abort();
+          return handleKeyRangeError(ne, ee, ye.error, ie);
+        }
+        fetchResults();
+      } else {
+        if (!pe) return _.txn.commit();
+        pe.advance(ue);
+        ue = 0;
+      }
+    };
+  }
+  async function fetchResults() {
+    let ee = ye;
+    do {
+      ee = await fetchNextBatch(ee);
+    } while (ee);
+    if (he) re.reverse();
+    return _.txn.commit();
+    function fetchNextBatch(_) {
+      return new Promise((ee => {
+        Se.getAll(_, 100).onsuccess = ie => {
+          const se = ie.target.result;
+          for (let _ = 0; _ < se.length; ++_) {
+            const ee = se[_], ie = {
+              id: ee.id,
+              key: ee.id,
+              value: {
+                rev: ee.rev
+              }
+            };
+            if (ne.include_docs) include_doc(ie, ee);
+            re.push(ie);
+          }
+          if (se.length >= 100) {
+            const ne = [ 0, se[se.length - 1].id ], ie = he ? _.upper : ne, re = he ? ne : _.upper;
+            if (ie[1] !== re[1]) return ee(createKeyRange2(ie, re, he ? true : false, he ? false : fe, oe, he));
+          }
+          return ee();
+        };
+      }));
+    }
+  }
 }
 
 function changes2(_, ee, ne, ie, re) {
   if (_.error) return re.complete(_.error);
   if (re.continuous) {
-    var se = ie.name + ":" + uuid();
-    ee.addListener(ie.name, se, ne, re);
+    const _ = ie.name + ":" + uuid();
+    ee.addListener(ie.name, _, ne, re);
     ee.notify(ie.name);
     return {
       cancel: function() {
-        ee.removeListener(ie.name, se);
+        ee.removeListener(ie.name, _);
       }
     };
   }
-  var oe = "limit" in re ? re.limit : -1;
-  if (0 === oe) oe = 1;
-  var le, ue = _.txn.objectStore(DOC_STORE2).index("seq"), de = filterChange(re), fe = 0, he = re.since || 0, pe = [], ge = [];
-  if (re.descending) le = ue.openCursor(null, "prev"); else le = ue.openCursor(IDBKeyRange.lowerBound(re.since, true));
+  let se = "limit" in re ? re.limit : -1;
+  if (0 === se) se = 1;
+  const oe = _.txn.objectStore(DOC_STORE2).index("seq"), le = filterChange(re);
+  let ue = 0, de = re.since || 0;
+  const fe = [], he = [];
+  let pe;
+  if (re.descending) pe = oe.openCursor(null, "prev"); else pe = oe.openCursor(IDBKeyRange.lowerBound(re.since, true));
   _.txn.oncomplete = function onTxnComplete() {
-    Promise.all(ge).then((function() {
+    Promise.all(he).then((function() {
       re.complete(null, {
-        results: pe,
-        last_seq: he
+        results: fe,
+        last_seq: de
       });
     }));
   };
-  le.onsuccess = function onReqSuccess(_) {
-    if (_.target.result) {
-      var ee = _.target.result, ne = ee.value;
-      ne.data = ne.revs[ne.rev].data;
-      ne.data._id = ne.id;
-      ne.data._rev = ne.rev;
-      if (ne.deleted) ne.data._deleted = true;
-      if (re.doc_ids && -1 === re.doc_ids.indexOf(ne.id)) return ee.continue();
-      var ie = re.processChange(ne.data, ne, re);
-      ie.seq = ne.seq;
-      he = ne.seq;
-      var se = de(ie);
-      if ("object" == typeof se) return re.complete(se);
-      if (se) {
-        fe++;
-        if (re.return_docs) pe.push(ie);
-        if (re.include_docs && re.attachments && ne.data._attachments) {
-          var le = [];
-          for (var ue in ne.data._attachments) {
-            var me = processAttachment(ue, ne, ie.doc, re.binary);
-            le.push(me);
-            ge.push(me);
-          }
-          Promise.all(le).then((function() {
-            re.onChange(ie);
-          }));
-        } else re.onChange(ie);
-      }
-      if (fe !== oe) ee.continue();
+  pe.onsuccess = function onReqSuccess(_) {
+    if (!_.target.result) return;
+    const ee = _.target.result, ie = ee.value;
+    ie.data = ie.revs[ie.rev].data;
+    ie.data._id = ie.id;
+    ie.data._rev = ie.rev;
+    if (ie.deleted) ie.data._deleted = true;
+    if (re.doc_ids && -1 === re.doc_ids.indexOf(ie.id)) return ee.continue();
+    const oe = re.processChange(ie.data, ie, re);
+    oe.seq = ie.seq;
+    de = ie.seq;
+    const pe = le(oe);
+    if ("object" == typeof pe) return re.complete(pe);
+    if (pe) {
+      ue++;
+      if (re.return_docs) fe.push(oe);
+      if (re.include_docs && re.attachments && ie.data._attachments) {
+        const _ = [];
+        for (const ee in ie.data._attachments) {
+          const se = processAttachment(ee, ie, oe.doc, re.binary, ne.blobSupport);
+          _.push(se);
+          he.push(se);
+        }
+        Promise.all(_).then((function() {
+          re.onChange(oe);
+        }));
+      } else re.onChange(oe);
     }
+    if (ue !== se) ee.continue();
   };
 }
 
@@ -16142,17 +12510,17 @@ function getRevisionTree(_, ee, ne) {
 
 function doCompaction(_, ee, ne, ie) {
   if (_.error) return ie(_.error);
-  var re = _.txn.objectStore(DOC_STORE2);
+  const re = _.txn.objectStore(DOC_STORE2);
   re.get(ee).onsuccess = function(_) {
-    var ee = _.target.result;
+    const ee = _.target.result;
     traverseRevTree(ee.rev_tree, (function(_, ee, ie, re, se) {
-      var oe = ee + "-" + ie;
+      const oe = ee + "-" + ie;
       if (-1 !== ne.indexOf(oe)) se.status = "missing";
     }));
-    var ie = [];
+    const ie = [];
     ne.forEach((function(_) {
       if (_ in ee.revs) {
-        if (ee.revs[_].data._attachments) for (var ne in ee.revs[_].data._attachments) ie.push(ee.revs[_].data._attachments[ne].digest);
+        if (ee.revs[_].data._attachments) for (const ne in ee.revs[_].data._attachments) ie.push(ee.revs[_].data._attachments[ne].digest);
         delete ee.revs[_];
       }
     }));
@@ -16188,7 +12556,7 @@ function destroy(_, ee, ne, ie) {
 var COUCH_COLLATE_LO = null, COUCH_COLLATE_HI = "￿", IDB_COLLATE_LO = Number.NEGATIVE_INFINITY, IDB_COLLATE_HI = [ [ [ [ [ [ [ [ [ [ [ [] ] ] ] ] ] ] ] ] ] ] ];
 
 function externaliseRecord(_) {
-  var ee = _.revs[_.rev].data;
+  const ee = _.revs[_.rev].data;
   ee._id = _.id;
   ee._rev = _.rev;
   if (_.deleted) ee._deleted = true;
@@ -16209,7 +12577,7 @@ function generateKeyRange(_) {
   if (!defined(_, "inclusive_end")) _.inclusive_end = true;
   if (!defined(_, "inclusive_start")) _.inclusive_start = true;
   if (_.descending) {
-    var ee = _.startkey, ne = _.inclusive_start;
+    const ee = _.startkey, ne = _.inclusive_start;
     _.startkey = _.endkey;
     _.endkey = ee;
     _.inclusive_start = _.inclusive_end;
@@ -16227,7 +12595,7 @@ function generateKeyRange(_) {
 }
 
 function getIndexHandle(_, ee, ne) {
-  var ie = naturalIndexName(ee);
+  const ie = naturalIndexName(ee);
   return new Promise((function(re) {
     _._openTransactionSafely([ DOC_STORE2 ], "readonly", (function(se, oe) {
       if (se) return idbError2(ne)(se);
@@ -16241,18 +12609,18 @@ function getIndexHandle(_, ee, ne) {
 }
 
 function query(_, ee, ne, ie) {
-  var re = this, se = ee.split("/");
+  const re = this, se = ee.split("/");
   return new Promise((function(_, oe) {
     re.get("_design/" + se[0]).then((function(le) {
       if (isPartialFilterView(le, se[1])) return ie(ee, ne).then(_, oe);
-      var ue = rawIndexFields(le, se[1]);
+      const ue = rawIndexFields(le, se[1]);
       if (!ue) throw new Error("ddoc " + le._id + " with view " + se[1] + " does not have map.options.def.fields defined.");
-      var de = ne.skip, fe = Number.isInteger(ne.limit) && ne.limit;
+      let de = ne.skip, fe = Number.isInteger(ne.limit) && ne.limit;
       return getIndexHandle(re, ue, oe).then((function(ee) {
-        var ie = generateKeyRange(ne), re = ee.openCursor(ie, ne.descending ? "prev" : "next"), se = [];
+        const ie = generateKeyRange(ne), re = ee.openCursor(ie, ne.descending ? "prev" : "next"), se = [];
         re.onerror = idbError2(oe);
         re.onsuccess = function(ee) {
-          var ne = ee.target.result;
+          const ne = ee.target.result;
           if (!ne || 0 === fe) return _({
             rows: se
           });
@@ -16318,23 +12686,25 @@ function purge(_, ee, ne, ie) {
 
 var ADAPTER_NAME = "indexeddb", idbChanges = new Changes, openDatabases = {};
 
-function IdbPouch2(_, ee) {
+function IndexeddbPouch(_, ee) {
   if (_.view_adapter) console.log("Please note that the indexeddb adapter manages _find indexes itself, therefore it is not using your specified view_adapter");
-  var ne = this, ie = {}, $ = function(ee) {
+  const ne = this;
+  let ie = {};
+  const $ = function(ee) {
     return function() {
-      var re = Array.prototype.slice.call(arguments);
+      const re = Array.prototype.slice.call(arguments);
       setup(openDatabases, ne, _).then((function(_) {
         ie = _.metadata;
         re.unshift(_.idb);
         ee.apply(ne, re);
       })).catch((function(_) {
-        var ee = re.pop();
+        const ee = re.pop();
         if ("function" == typeof ee) ee(_); else console.error(_);
       }));
     };
   }, $p = function(ee) {
     return function() {
-      var re = Array.prototype.slice.call(arguments);
+      const re = Array.prototype.slice.call(arguments);
       return setup(openDatabases, ne, _).then((function(_) {
         ie = _.metadata;
         re.unshift(_.idb);
@@ -16342,10 +12712,9 @@ function IdbPouch2(_, ee) {
       }));
     };
   }, $t2 = function(ee, re, se) {
-    re = re || [ DOC_STORE2 ];
     se = se || "readonly";
     return function() {
-      var oe = Array.prototype.slice.call(arguments), le = {};
+      const oe = Array.prototype.slice.call(arguments), le = {};
       setup(openDatabases, ne, _).then((function(_) {
         ie = _.metadata;
         le.txn = _.idb.transaction(re, se);
@@ -16374,18 +12743,21 @@ function IdbPouch2(_, ee) {
   ne._info = $((function(_, ee) {
     return info(ie, ee);
   }));
-  ne._get = $t2(get);
+  ne._get = $t2(get, [ DOC_STORE2 ]);
+  ne._getLocal = $t2((function(_, ee, ie) {
+    return getLocal(_, ee, ne, ie);
+  }), [ META_LOCAL_STORE ]);
   ne._bulkDocs = $((function(ee, re, se, oe) {
     bulkDocs(ne, re, se, ie, _, idbChanges, oe);
   }));
   ne._allDocs = $t2((function(_, ee, ne) {
     allDocs(_, ie, ee, ne);
-  }));
-  ne._getAttachment = $t2(getAttachment);
+  }), [ DOC_STORE2 ]);
+  ne._getAttachment = getAttachment;
   ne._changes = $t2((function(ee, ie) {
     changes2(ee, idbChanges, ne, _, ie);
-  }));
-  ne._getRevisionTree = $t2(getRevisionTree);
+  }), [ DOC_STORE2 ]);
+  ne._getRevisionTree = $t2(getRevisionTree, [ DOC_STORE2 ]);
   ne._doCompaction = $t2(doCompaction, [ DOC_STORE2 ], "readwrite");
   ne._customFindAbstractMapper = {
     query: $p(query),
@@ -16412,12 +12784,12 @@ function IdbPouch2(_, ee) {
   }));
 }
 
-IdbPouch2.valid = function() {
+IndexeddbPouch.valid = function() {
   return true;
 };
 
 function index2(_) {
-  _.adapter(ADAPTER_NAME, IdbPouch2, true);
+  _.adapter(ADAPTER_NAME, IndexeddbPouch, true);
 }
 
 var index_es_default3 = index2;
@@ -16451,21 +12823,21 @@ function pool(_, ee) {
 var CHANGES_BATCH_SIZE = 25, MAX_SIMULTANEOUS_REVS = 50, CHANGES_TIMEOUT_BUFFER = 5e3, DEFAULT_HEARTBEAT = 1e4, supportsBulkGetMap = {};
 
 function readAttachmentsAsBlobOrBuffer(_) {
-  let ee = _.doc || _.ok, ne = ee && ee._attachments;
+  const ee = _.doc || _.ok, ne = ee && ee._attachments;
   if (ne) Object.keys(ne).forEach((function(_) {
-    let ee = ne[_];
+    const ee = ne[_];
     ee.data = b64ToBluffer(ee.data, ee.content_type);
   }));
 }
 
 function encodeDocId(_) {
   if (/^_design/.test(_)) return "_design/" + encodeURIComponent(_.slice(8));
-  if (/^_local/.test(_)) return "_local/" + encodeURIComponent(_.slice(7)); else return encodeURIComponent(_);
+  if (_.startsWith("_local/")) return "_local/" + encodeURIComponent(_.slice(7)); else return encodeURIComponent(_);
 }
 
 function preprocessAttachments2(_) {
   if (!_._attachments || !Object.keys(_._attachments)) return Promise.resolve(); else return Promise.all(Object.keys(_._attachments).map((function(ee) {
-    let ne = _._attachments[ee];
+    const ne = _._attachments[ee];
     if (ne.data && "string" != typeof ne.data) return new Promise((function(_) {
       blobToBase64(ne.data, _);
     })).then((function(_) {
@@ -16476,21 +12848,21 @@ function preprocessAttachments2(_) {
 
 function hasUrlPrefix(_) {
   if (!_.prefix) return false;
-  let ee = parseUri(_.prefix).protocol;
+  const ee = parseUri(_.prefix).protocol;
   return "http" === ee || "https" === ee;
 }
 
 function getHost(_, ee) {
   if (hasUrlPrefix(ee)) {
-    let ne = ee.name.substr(ee.prefix.length);
+    const ne = ee.name.substr(ee.prefix.length);
     _ = ee.prefix.replace(/\/?$/, "/") + encodeURIComponent(ne);
   }
-  let ne = parseUri(_);
+  const ne = parseUri(_);
   if (ne.user || ne.password) ne.auth = {
     username: ne.user,
     password: ne.password
   };
-  let ie = ne.path.replace(/(^\/|\/$)/g, "").split("/");
+  const ie = ne.path.replace(/(^\/|\/$)/g, "").split("/");
   ne.db = ie.pop();
   if (-1 === ne.db.indexOf("%")) ne.db = encodeURIComponent(ne.db);
   ne.path = ie.join("/");
@@ -16502,37 +12874,36 @@ function genDBUrl(_, ee) {
 }
 
 function genUrl(_, ee) {
-  let ne = !_.path ? "" : "/";
+  const ne = !_.path ? "" : "/";
   return _.protocol + "://" + _.host + (_.port ? ":" + _.port : "") + "/" + _.path + ne + ee;
 }
 
 function paramsToStr(_) {
-  return "?" + Object.keys(_).map((function(ee) {
-    return ee + "=" + encodeURIComponent(_[ee]);
-  })).join("&");
+  const ee = Object.keys(_);
+  if (0 === ee.length) return ""; else return "?" + ee.map((ee => ee + "=" + encodeURIComponent(_[ee]))).join("&");
 }
 
 function shouldCacheBust(_) {
-  let ee = "undefined" != typeof navigator && navigator.userAgent ? navigator.userAgent.toLowerCase() : "", ne = -1 !== ee.indexOf("msie"), ie = -1 !== ee.indexOf("trident"), re = -1 !== ee.indexOf("edge"), se = !("method" in _) || "GET" === _.method;
+  const ee = "undefined" != typeof navigator && navigator.userAgent ? navigator.userAgent.toLowerCase() : "", ne = -1 !== ee.indexOf("msie"), ie = -1 !== ee.indexOf("trident"), re = -1 !== ee.indexOf("edge"), se = !("method" in _) || "GET" === _.method;
   return (ne || ie || re) && se;
 }
 
 function HttpPouch(_, ee) {
-  let ne = this, ie = getHost(_.name, _), re = genDBUrl(ie, "");
+  const ne = this, ie = getHost(_.name, _), re = genDBUrl(ie, "");
   _ = clone(_);
   const ourFetch = async function(ee, ne) {
     (ne = ne || {}).headers = ne.headers || new h;
     ne.credentials = "include";
     if (_.auth || ie.auth) {
-      let ee = _.auth || ie.auth, re = ee.username + ":" + ee.password, se = thisBtoa(unescape(encodeURIComponent(re)));
+      const ee = _.auth || ie.auth, re = ee.username + ":" + ee.password, se = thisBtoa(unescape(encodeURIComponent(re)));
       ne.headers.set("Authorization", "Basic " + se);
     }
-    let re = _.headers || {};
+    const re = _.headers || {};
     Object.keys(re).forEach((function(_) {
       ne.headers.append(_, re[_]);
     }));
     if (shouldCacheBust(ne)) ee += (-1 === ee.indexOf("?") ? "?" : "&") + "_nonce=" + Date.now();
-    let se = _.fetch || f2;
+    const se = _.fetch || f2;
     return await se(ee, ne);
   };
   function adapterFun$$1(_, ee) {
@@ -16545,7 +12916,7 @@ function HttpPouch(_, ee) {
     })).bind(ne);
   }
   async function fetchJSON(_, ee) {
-    let ne = {};
+    const ne = {};
     (ee = ee || {}).headers = ee.headers || new h;
     if (!ee.headers.get("Content-Type")) ee.headers.set("Content-Type", "application/json");
     if (!ee.headers.get("Accept")) ee.headers.set("Accept", "application/json");
@@ -16582,7 +12953,7 @@ function HttpPouch(_, ee) {
     }));
     return se;
   }
-  (0, import_immediate.default)((function() {
+  nextTick((function() {
     ee(null, ne);
   }));
   ne._remote = true;
@@ -16617,9 +12988,9 @@ function HttpPouch(_, ee) {
     })();
   }));
   ne.bulkGet = adapterFun("bulkGet", (function(_, ee) {
-    let ne = this;
+    const ne = this;
     async function doBulkGet(ee) {
-      let ne = {};
+      const ne = {};
       if (_.revs) ne.revs = true;
       if (_.attachments) ne.attachments = true;
       if (_.latest) ne.latest = true;
@@ -16639,22 +13010,24 @@ function HttpPouch(_, ee) {
       }
     }
     function doBulkGetShim() {
-      let ie = MAX_SIMULTANEOUS_REVS, re = Math.ceil(_.docs.length / ie), se = 0, oe = new Array(re);
+      const ie = MAX_SIMULTANEOUS_REVS, re = Math.ceil(_.docs.length / ie);
+      let se = 0;
+      const oe = new Array(re);
       function onResult(_) {
         return function(ne, ie) {
           oe[_] = ie.results;
           if (++se === re) ee(null, {
-            results: flatten(oe)
+            results: oe.flat()
           });
         };
       }
       for (let ee = 0; ee < re; ee++) {
-        let re = pick(_, [ "revs", "attachments", "binary", "latest" ]);
+        const re = pick(_, [ "revs", "attachments", "binary", "latest" ]);
         re.docs = _.docs.slice(ee * ie, Math.min(_.docs.length, (ee + 1) * ie));
         bulkGet(ne, re, onResult(ee));
       }
     }
-    let re = genUrl(ie, ""), se = supportsBulkGetMap[re];
+    const re = genUrl(ie, ""), se = supportsBulkGetMap[re];
     if ("boolean" != typeof se) doBulkGet((function(_, ne) {
       if (_) {
         supportsBulkGetMap[re] = false;
@@ -16686,7 +13059,7 @@ function HttpPouch(_, ee) {
       ne = ee;
       ee = {};
     }
-    let re = {};
+    const re = {};
     if ((ee = clone(ee)).revs) re.revs = true;
     if (ee.revs_info) re.revs_info = true;
     if (ee.latest) re.latest = true;
@@ -16699,7 +13072,7 @@ function HttpPouch(_, ee) {
     if (ee.update_seq) re.update_seq = ee.update_seq;
     _ = encodeDocId(_);
     function fetchAttachments(_) {
-      let ne = _._attachments, re = ne && Object.keys(ne);
+      const ne = _._attachments, re = ne && Object.keys(ne);
       if (ne && re.length) return pool(re.map((function(re) {
         return function() {
           return async function fetchData(re) {
@@ -16707,7 +13080,7 @@ function HttpPouch(_, ee) {
             let ue, de;
             if ("buffer" in le) ue = await le.buffer(); else ue = await le.blob();
             if (ee.binary) {
-              let _ = Object.getOwnPropertyDescriptor(ue.__proto__, "type");
+              const _ = Object.getOwnPropertyDescriptor(ue.__proto__, "type");
               if (!_ || _.set) ue.type = se.content_type;
               de = ue;
             } else de = await new Promise((function(_) {
@@ -16783,8 +13156,8 @@ function HttpPouch(_, ee) {
       let ee;
       if ("undefined" != typeof process && !process.browser && "function" == typeof _.buffer) ee = await _.buffer(); else ee = await _.blob();
       if ("undefined" != typeof process && !process.browser) {
-        var ue = Object.getOwnPropertyDescriptor(ee.__proto__, "type");
-        if (!ue || ue.set) ee.type = le;
+        const _ = Object.getOwnPropertyDescriptor(ee.__proto__, "type");
+        if (!_ || _.set) ee.type = le;
       }
       re(null, ee);
     } catch (_) {
@@ -16863,47 +13236,49 @@ function HttpPouch(_, ee) {
       ee = _;
       _ = {};
     }
-    let ne, re = {}, se = "GET";
-    if ((_ = clone(_)).conflicts) re.conflicts = true;
-    if (_.update_seq) re.update_seq = true;
-    if (_.descending) re.descending = true;
-    if (_.include_docs) re.include_docs = true;
-    if (_.attachments) re.attachments = true;
-    if (_.key) re.key = JSON.stringify(_.key);
+    const ne = {};
+    let re, se = "GET";
+    if ((_ = clone(_)).conflicts) ne.conflicts = true;
+    if (_.update_seq) ne.update_seq = true;
+    if (_.descending) ne.descending = true;
+    if (_.include_docs) ne.include_docs = true;
+    if (_.attachments) ne.attachments = true;
+    if (_.key) ne.key = JSON.stringify(_.key);
     if (_.start_key) _.startkey = _.start_key;
-    if (_.startkey) re.startkey = JSON.stringify(_.startkey);
+    if (_.startkey) ne.startkey = JSON.stringify(_.startkey);
     if (_.end_key) _.endkey = _.end_key;
-    if (_.endkey) re.endkey = JSON.stringify(_.endkey);
-    if ("undefined" != typeof _.inclusive_end) re.inclusive_end = !!_.inclusive_end;
-    if ("undefined" != typeof _.limit) re.limit = _.limit;
-    if ("undefined" != typeof _.skip) re.skip = _.skip;
-    let oe = paramsToStr(re);
+    if (_.endkey) ne.endkey = JSON.stringify(_.endkey);
+    if ("undefined" != typeof _.inclusive_end) ne.inclusive_end = !!_.inclusive_end;
+    if ("undefined" != typeof _.limit) ne.limit = _.limit;
+    if ("undefined" != typeof _.skip) ne.skip = _.skip;
+    const oe = paramsToStr(ne);
     if ("undefined" != typeof _.keys) {
       se = "POST";
-      ne = {
+      re = {
         keys: _.keys
       };
     }
     try {
-      const re = await fetchJSON(genDBUrl(ie, "_all_docs" + oe), {
+      const ne = await fetchJSON(genDBUrl(ie, "_all_docs" + oe), {
         method: se,
-        body: JSON.stringify(ne)
+        body: JSON.stringify(re)
       });
-      if (_.include_docs && _.attachments && _.binary) re.data.rows.forEach(readAttachmentsAsBlobOrBuffer);
-      ee(null, re.data);
+      if (_.include_docs && _.attachments && _.binary) ne.data.rows.forEach(readAttachmentsAsBlobOrBuffer);
+      ee(null, ne.data);
     } catch (_) {
       ee(_);
     }
   }));
   ne._changes = function(_) {
-    let ee = "batch_size" in _ ? _.batch_size : CHANGES_BATCH_SIZE;
+    const ee = "batch_size" in _ ? _.batch_size : CHANGES_BATCH_SIZE;
     if ((_ = clone(_)).continuous && !("heartbeat" in _)) _.heartbeat = DEFAULT_HEARTBEAT;
     let ne = "timeout" in _ ? _.timeout : 3e4;
     if ("timeout" in _ && _.timeout && ne - _.timeout < CHANGES_TIMEOUT_BUFFER) ne = _.timeout + CHANGES_TIMEOUT_BUFFER;
     if ("heartbeat" in _ && _.heartbeat && ne - _.heartbeat < CHANGES_TIMEOUT_BUFFER) ne = _.heartbeat + CHANGES_TIMEOUT_BUFFER;
-    let re = {};
+    const re = {};
     if ("timeout" in _ && _.timeout) re.timeout = _.timeout;
-    let se = "undefined" != typeof _.limit ? _.limit : false, oe = se;
+    const se = "undefined" != typeof _.limit ? _.limit : false;
+    let oe = se;
     if (_.style) re.style = _.style;
     if (_.include_docs || _.filter && "function" == typeof _.filter) re.include_docs = true;
     if (_.attachments) re.attachments = true;
@@ -16918,7 +13293,7 @@ function HttpPouch(_, ee) {
       re.filter = "_view";
       re.view = _.view;
     }
-    if (_.query_params && "object" == typeof _.query_params) for (let ee in _.query_params) if (Object.prototype.hasOwnProperty.call(_.query_params, ee)) re[ee] = _.query_params[ee];
+    if (_.query_params && "object" == typeof _.query_params) for (const ee in _.query_params) if (Object.prototype.hasOwnProperty.call(_.query_params, ee)) re[ee] = _.query_params[ee];
     let le, ue = "GET";
     if (_.doc_ids) {
       re.filter = "_doc_ids";
@@ -16933,7 +13308,8 @@ function HttpPouch(_, ee) {
         selector: _.selector
       };
     }
-    let de, fe = new a;
+    const de = new AbortController;
+    let fe;
     const fetchData = async function(ne, he) {
       if (_.aborted) return;
       re.since = ne;
@@ -16941,23 +13317,21 @@ function HttpPouch(_, ee) {
       if (_.descending) {
         if (se) re.limit = oe;
       } else re.limit = !se || oe > ee ? ee : oe;
-      let pe = genDBUrl(ie, "_changes" + paramsToStr(re)), ge = {
-        signal: fe.signal,
+      const pe = genDBUrl(ie, "_changes" + paramsToStr(re)), ge = {
+        signal: de.signal,
         method: ue,
         body: JSON.stringify(le)
       };
-      de = ne;
+      fe = ne;
       if (!_.aborted) try {
         await setup2();
         he(null, (await fetchJSON(pe, ge)).data);
       } catch (_) {
         he(_);
       }
-    };
-    let he = {
+    }, he = {
       results: []
-    };
-    const fetched = function(ne, ie) {
+    }, fetched = function(ne, ie) {
       if (_.aborted) return;
       let re = 0;
       if (ie && ie.results) {
@@ -16969,7 +13343,7 @@ function HttpPouch(_, ee) {
         ({}).query = _.query_params;
         ie.results = ie.results.filter((function(ie) {
           oe--;
-          let re = filterChange(_)(ie);
+          const re = filterChange(_)(ie);
           if (re) {
             if (_.include_docs && _.attachments && _.binary) readAttachmentsAsBlobOrBuffer(ie);
             if (_.return_docs) he.results.push(ie);
@@ -16982,17 +13356,17 @@ function HttpPouch(_, ee) {
         _.complete(ne);
         return;
       }
-      if (ie && ie.last_seq) de = ie.last_seq;
-      let le = se && oe <= 0 || ie && re < ee || _.descending;
-      if (_.continuous && !(se && oe <= 0) || !le) (0, import_immediate.default)((function() {
-        fetchData(de, fetched);
+      if (ie && ie.last_seq) fe = ie.last_seq;
+      const le = se && oe <= 0 || ie && re < ee || _.descending;
+      if (_.continuous && !(se && oe <= 0) || !le) nextTick((function() {
+        fetchData(fe, fetched);
       })); else _.complete(null, he);
     };
     fetchData(_.since || 0, fetched);
     return {
       cancel: function() {
         _.aborted = true;
-        fe.abort();
+        de.abort();
       }
     };
   };
@@ -17072,11 +13446,11 @@ var index_es_default4 = index3, QueryParseError = class _QueryParseError extends
 
 function promisedCallback(_, ee) {
   if (ee) _.then((function(_) {
-    (0, import_immediate.default)((function() {
+    nextTick((function() {
       ee(null, _);
     }));
   }), (function(_) {
-    (0, import_immediate.default)((function() {
+    nextTick((function() {
       ee(_);
     }));
   }));
@@ -17113,7 +13487,7 @@ function sequentialize(_, ee) {
 }
 
 function uniq(_) {
-  var ee = new ExportedSet(_), ne = new Array(ee.size), ie = -1;
+  var ee = new Set(_), ne = new Array(ee.size), ie = -1;
   ee.forEach((function(_) {
     ne[++ie] = _;
   }));
@@ -17128,16 +13502,18 @@ function mapToKeysArray(_) {
   return ee;
 }
 
+var import_spark_md54 = __toESM(require_spark_md5()), setImmediateShim4 = self.setImmediate || self.setTimeout;
+
+function stringMd52(_) {
+  return import_spark_md54.default.hash(_);
+}
+
 var TaskQueue2 = class {
   constructor() {
-    this.promise = new Promise((function(_) {
-      _();
-    }));
+    this.promise = Promise.resolve();
   }
   add(_) {
-    this.promise = this.promise.catch((function() {})).then((function() {
-      return _();
-    }));
+    this.promise = this.promise.catch((() => {})).then((() => _()));
     return this.promise;
   }
   finish() {
@@ -17171,7 +13547,7 @@ async function createView(_, ee, ne, ie, re, se) {
     if (le[oe]) return le[oe];
   }
   const ue = _.info().then((async function(ue) {
-    const de = ue.db_name + "-mrview-" + (re ? "temp" : stringMd5(oe));
+    const de = ue.db_name + "-mrview-" + (re ? "temp" : stringMd52(oe));
     await upsert(_, "_local/" + se, (function diffFunction(_) {
       _.views = _.views || {};
       let ne = ee;
@@ -17271,13 +13647,13 @@ function createAbstractMapReduce(_, ee, ne, ie) {
   function postprocessAttachments(_) {
     return function(ee) {
       if (_.include_docs && _.attachments && _.binary) (function readAttachmentsAsBlobOrBuffer2(_) {
-        _.rows.forEach((function(_) {
-          const ee = _.doc && _.doc._attachments;
-          if (ee) Object.keys(ee).forEach((function(_) {
-            const ne = ee[_];
-            ee[_].data = b64ToBluffer(ne.data, ne.content_type);
-          }));
-        }));
+        for (const ee of _.rows) {
+          const _ = ee.doc && ee.doc._attachments;
+          if (_) for (const ee of Object.keys(_)) {
+            const ne = _[ee];
+            _[ee].data = b64ToBluffer(ne.data, ne.content_type);
+          }
+        }
       })(ee);
       return ee;
     };
@@ -17295,18 +13671,19 @@ function createAbstractMapReduce(_, ee, ne, ie) {
       if (!isNaN(ee) && ee === parseInt(_, 10)) return ee; else return _;
     }
   }
+  function checkPositiveInteger(_) {
+    if (_) {
+      if ("number" != typeof _) return new QueryParseError(`Invalid value for integer: "${_}"`);
+      if (_ < 0) return new QueryParseError(`Invalid value for positive integer: "${_}"`);
+    }
+  }
   function checkQueryParseError(_, ee) {
     const ne = _.descending ? "endkey" : "startkey", ie = _.descending ? "startkey" : "endkey";
     if ("undefined" != typeof _[ne] && "undefined" != typeof _[ie] && collate(_[ne], _[ie]) > 0) throw new QueryParseError("No rows can match your key range, reverse your start_key and end_key or set {descending : true}"); else if (ee.reduce && false !== _.reduce) if (_.include_docs) throw new QueryParseError("{include_docs:true} is invalid for reduce"); else if (_.keys && _.keys.length > 1 && !_.group && !_.group_level) throw new QueryParseError("Multi-key fetches for reduce views must use {group: true}");
-    [ "group_level", "limit", "skip" ].forEach((function(ee) {
-      const ne = function checkPositiveInteger(_) {
-        if (_) {
-          if ("number" != typeof _) return new QueryParseError(`Invalid value for integer: "${_}"`);
-          if (_ < 0) return new QueryParseError(`Invalid value for positive integer: "${_}"`);
-        }
-      }(_[ee]);
+    for (const ee of [ "group_level", "limit", "skip" ]) {
+      const ne = checkPositiveInteger(_[ee]);
       if (ne) throw ne;
-    }));
+    }
   }
   function defaultsTo(_) {
     return function(ee) {
@@ -17339,7 +13716,7 @@ function createAbstractMapReduce(_, ee, ne, ie) {
         _.sourceDB.emit("indexing", de);
         const fe = new TaskQueue2;
         function createIndexableKeysToKeyValues(_) {
-          const ee = new ExportedMap;
+          const ee = new Map;
           let ne;
           for (let ie = 0, re = _.length; ie < re; ie++) {
             const re = _[ie], se = [ re.key, re.id ];
@@ -17360,9 +13737,9 @@ function createAbstractMapReduce(_, ee, ne, ie) {
           }();
           await async function processNextBatch() {
             return function processBatch(ee, de) {
-              var he = ee.results;
+              const he = ee.results;
               if (!he.length && !de.length) return;
-              for (let _ of de) if (he.findIndex((function(ee) {
+              for (const _ of de) if (he.findIndex((function(ee) {
                 return ee.id === _.docId;
               })) < 0) {
                 const ee = {
@@ -17381,19 +13758,18 @@ function createAbstractMapReduce(_, ee, ne, ie) {
                 }
                 he.push(ee);
               }
-              var pe = function createDocIdsToChangesAndEmits(ee) {
-                const ne = new ExportedMap;
-                for (let se = 0, ue = ee.length; se < ue; se++) {
-                  const ue = ee[se];
-                  if ("_" !== ue.doc._id[0]) {
+              const pe = function createDocIdsToChangesAndEmits(ee) {
+                const ne = new Map;
+                for (const se of ee) {
+                  if ("_" !== se.doc._id[0]) {
                     ie = [];
-                    re = ue.doc;
+                    re = se.doc;
                     if (!re._deleted) tryMap(_.sourceDB, oe, re);
                     ie.sort(sortByKeyThenValue);
                     const ee = createIndexableKeysToKeyValues(ie);
-                    ne.set(ue.doc._id, [ ee, ue.changes ]);
+                    ne.set(se.doc._id, [ ee, se.changes ]);
                   }
-                  le = ue.seq;
+                  le = se.seq;
                 }
                 return ne;
               }(he);
@@ -17415,29 +13791,27 @@ function createAbstractMapReduce(_, ee, ne, ie) {
                             if (isGenOne(le)) return Promise.resolve(re); else return ee.db.get(ie).catch(defaultsTo(re));
                           }();
                           return function processKeyValueDocs(_, ee) {
-                            const ne = [], ie = new ExportedSet;
-                            for (let _ = 0, re = ee.rows.length; _ < re; _++) {
-                              const re = ee.rows[_].doc;
-                              if (re) {
-                                ne.push(re);
-                                ie.add(re._id);
-                                re._deleted = !oe.has(re._id);
-                                if (!re._deleted) {
-                                  const _ = oe.get(re._id);
-                                  if ("value" in _) re.value = _.value;
+                            const ne = [], ie = new Set;
+                            for (const _ of ee.rows) {
+                              const ee = _.doc;
+                              if (ee) {
+                                ne.push(ee);
+                                ie.add(ee._id);
+                                ee._deleted = !oe.has(ee._id);
+                                if (!ee._deleted) {
+                                  const _ = oe.get(ee._id);
+                                  if ("value" in _) ee.value = _.value;
                                 }
                               }
                             }
                             const re = mapToKeysArray(oe);
-                            re.forEach((function(_) {
-                              if (!ie.has(_)) {
-                                const ee = {
-                                  _id: _
-                                }, ie = oe.get(_);
-                                if ("value" in ie) ee.value = ie.value;
-                                ne.push(ee);
-                              }
-                            }));
+                            for (const _ of re) if (!ie.has(_)) {
+                              const ee = {
+                                _id: _
+                              }, ie = oe.get(_);
+                              if ("value" in ie) ee.value = ie.value;
+                              ne.push(ee);
+                            }
                             _.keys = uniq(re.concat(_.keys));
                             ne.push(_);
                             return ne;
@@ -17451,7 +13825,7 @@ function createAbstractMapReduce(_, ee, ne, ie) {
                           }(ue));
                         }(ne, _, ee);
                       }))).then((function(ee) {
-                        var re = flatten(ee);
+                        var re = ee.flat();
                         ie.seq = ne;
                         re.push(ie);
                         return _.db.bulkDocs({
@@ -17462,9 +13836,7 @@ function createAbstractMapReduce(_, ee, ne, ie) {
                           const ne = ee.purgeSeq;
                           return _.db.get("_local/purgeSeq").then((function(_) {
                             return _._rev;
-                          })).catch((function(_) {
-                            if (404 !== _.status) throw _;
-                          })).then((function(ee) {
+                          })).catch(defaultsTo(void 0)).then((function(ee) {
                             return _.db.put({
                               _id: "_local/purgeSeq",
                               _rev: ee,
@@ -17501,10 +13873,7 @@ function createAbstractMapReduce(_, ee, ne, ie) {
             }), await function getRecentPurges() {
               return _.db.get("_local/purgeSeq").then((function(_) {
                 return _.purgeSeq;
-              })).catch((function(_) {
-                if (_ && 404 !== _.status) throw _;
-                return -1;
-              })).then((function(ee) {
+              })).catch(defaultsTo(-1)).then((function(ee) {
                 return _.sourceDB.get("_local/purges").then((function(ne) {
                   const ie = ne.purges.filter((function(_, ne) {
                     return ne > ee;
@@ -17517,17 +13886,11 @@ function createAbstractMapReduce(_, ee, ne, ie) {
                         docId: ee,
                         doc: _
                       };
-                    })).catch((function(_) {
-                      if (404 !== _.status) throw _;
-                      return {
-                        docId: ee
-                      };
+                    })).catch(defaultsTo({
+                      docId: ee
                     }));
                   })));
-                })).catch((function(_) {
-                  if (_ && 404 !== _.status) throw _;
-                  return [];
-                }));
+                })).catch(defaultsTo([]));
               }));
             }());
           }();
@@ -17571,7 +13934,7 @@ function createAbstractMapReduce(_, ee, ne, ie) {
           if (re) le = function reduceView(_, ee, ie) {
             if (0 === ie.group_level) delete ie.group_level;
             const re = ie.group || ie.group_level, se = ne(_.reduceFun), oe = [], le = isNaN(ie.group_level) ? Number.POSITIVE_INFINITY : ie.group_level;
-            ee.forEach((function(_) {
+            for (const _ of ee) {
               const ee = oe[oe.length - 1];
               let ne = re ? _.key : null;
               if (re && Array.isArray(ne)) ne = ne.slice(0, le);
@@ -17583,14 +13946,14 @@ function createAbstractMapReduce(_, ee, ne, ie) {
                 ee.keys.push([ _.key, _.id ]);
                 ee.values.push(_.value);
               }
-            }));
+            }
             ee = [];
-            for (let ne = 0, ie = oe.length; ne < ie; ne++) {
-              const ie = oe[ne], re = tryReduce(_.sourceDB, se, ie.keys, ie.values, false);
-              if (re.error && re.error instanceof BuiltInError) throw re.error;
+            for (const ne of oe) {
+              const ie = tryReduce(_.sourceDB, se, ne.keys, ne.values, false);
+              if (ie.error && ie.error instanceof BuiltInError) throw ie.error;
               ee.push({
-                value: re.error ? null : re.output,
-                key: ie.groupKey
+                value: ie.error ? null : ie.output,
+                key: ne.groupKey
               });
             }
             return {
@@ -17613,17 +13976,14 @@ function createAbstractMapReduce(_, ee, ne, ie) {
               conflicts: ee.conflicts,
               attachments: ee.attachments,
               binary: ee.binary
-            });
-            var ue = new ExportedMap;
-            ie.rows.forEach((function(_) {
-              ue.set(_.id, _.doc);
-            }));
-            oe.forEach((function(_) {
-              var ee = rowToDocId(_), ne = ue.get(ee);
+            }), re = new Map;
+            for (const _ of ie.rows) re.set(_.id, _.doc);
+            for (const _ of oe) {
+              const ee = rowToDocId(_), ne = re.get(ee);
               if (ne) _.doc = ne;
-            }));
-            return le;
-          } else return le;
+            }
+          }
+          return le;
         }
         if ("undefined" != typeof ee.keys) {
           const _ = ee.keys.map((function(_) {
@@ -17634,7 +13994,7 @@ function createAbstractMapReduce(_, ee, ne, ie) {
             if (ee.update_seq) ne.update_seq = true;
             return fetchFromView(ne);
           }));
-          return onMapResultsReady(flatten(await Promise.all(_)));
+          return onMapResultsReady((await Promise.all(_)).flat());
         } else {
           const _ = {
             descending: ee.descending
@@ -17740,17 +14100,13 @@ function createAbstractMapReduce(_, ee, ne, ie) {
                 de.status = ue.status;
                 throw generateErrorFromResponse(de);
               }
-              de.rows.forEach((function(_) {
-                if (_.value && _.value.error && "builtin_reduce_error" === _.value.error) throw new Error(_.reason);
-              }));
+              for (const _ of de.rows) if (_.value && _.value.error && "builtin_reduce_error" === _.value.error) throw new Error(_.reason);
               return new Promise((function(_) {
                 _(de);
               })).then(postprocessAttachments(ne));
             }
             ie = ie || {};
-            Object.keys(ee).forEach((function(_) {
-              if (Array.isArray(ee[_])) ie[_] = ee[_]; else ie[_] = ee[_].toString();
-            }));
+            for (const _ of Object.keys(ee)) if (Array.isArray(ee[_])) ie[_] = ee[_]; else ie[_] = ee[_].toString();
             const le = await _.fetch("_temp_view" + se, {
               headers: new h({
                 "Content-Type": "application/json"
@@ -17789,7 +14145,7 @@ function createAbstractMapReduce(_, ee, ne, ie) {
             checkQueryParseError(re, ne);
             const he = await createView(ee, oe, ne.map, ne.reduce, false, _);
             if ("ok" === re.stale || "update_after" === re.stale) {
-              if ("update_after" === re.stale) (0, import_immediate.default)((function() {
+              if ("update_after" === re.stale) nextTick((function() {
                 updateView(he, se);
               }));
               return queryView(he, re);
@@ -17822,31 +14178,29 @@ function createAbstractMapReduce(_, ee, ne, ie) {
         })).json();
       }(ee); else return async function localViewCleanup(ee) {
         try {
-          const ne = await ee.get("_local/" + _), ie = new ExportedMap;
-          Object.keys(ne.views).forEach((function(_) {
+          const ne = await ee.get("_local/" + _), ie = new Map;
+          for (const _ of Object.keys(ne.views)) {
             const ee = parseViewName(_), ne = "_design/" + ee[0], re = ee[1];
             let se = ie.get(ne);
             if (!se) {
-              se = new ExportedSet;
+              se = new Set;
               ie.set(ne, se);
             }
             se.add(re);
-          }));
+          }
           const re = {
             keys: mapToKeysArray(ie),
             include_docs: true
           }, se = await ee.allDocs(re), oe = {};
-          se.rows.forEach((function(_) {
+          for (const _ of se.rows) {
             const ee = _.key.substring(8);
-            ie.get(_.key).forEach((function(ie) {
-              let re = ee + "/" + ie;
-              if (!ne.views[re]) re = ie;
-              const se = Object.keys(ne.views[re]), le = _.doc && _.doc.views && _.doc.views[ie];
-              se.forEach((function(_) {
-                oe[_] = oe[_] || le;
-              }));
-            }));
-          }));
+            for (const re of ie.get(_.key)) {
+              let ie = ee + "/" + re;
+              if (!ne.views[ie]) ie = re;
+              const se = Object.keys(ne.views[ie]), le = _.doc && _.doc.views && _.doc.views[re];
+              for (const _ of se) oe[_] = oe[_] || le;
+            }
+          }
           const le = Object.keys(oe).filter((function(_) {
             return !oe[_];
           })).map((function(_) {
@@ -17999,12 +14353,17 @@ function updateCheckpoint(_, ee, ne, ie, re) {
 }
 
 var CheckpointerInternal = class {
-  constructor(_, ee, ne, ie, re) {
+  constructor(_, ee, ne, ie, re = {
+    writeSourceCheckpoint: true,
+    writeTargetCheckpoint: true
+  }) {
     this.src = _;
     this.target = ee;
     this.id = ne;
     this.returnValue = ie;
-    this.opts = re || {};
+    this.opts = re;
+    if ("undefined" == typeof re.writeSourceCheckpoint) re.writeSourceCheckpoint = true;
+    if ("undefined" == typeof re.writeTargetCheckpoint) re.writeTargetCheckpoint = true;
   }
   writeCheckpoint(_, ee) {
     var ne = this;
@@ -18029,6 +14388,7 @@ var CheckpointerInternal = class {
   }
   getCheckpoint() {
     var _ = this;
+    if (!_.opts.writeSourceCheckpoint && !_.opts.writeTargetCheckpoint) return Promise.resolve(LOWEST_SEQ);
     if (_.opts && _.opts.writeSourceCheckpoint && !_.opts.writeTargetCheckpoint) return _.src.get(_.id).then((function(_) {
       return _.last_seq || LOWEST_SEQ;
     })).catch((function(_) {
@@ -18106,7 +14466,42 @@ function Checkpointer(_, ee, ne, ie, re) {
   if (!(this instanceof CheckpointerInternal)) return new CheckpointerInternal(_, ee, ne, ie, re); else return Checkpointer;
 }
 
-var index_es_default6 = Checkpointer;
+var index_es_default6 = Checkpointer, import_spark_md55 = __toESM(require_spark_md5()), setImmediateShim5 = self.setImmediate || self.setTimeout, MD5_CHUNK_SIZE3 = 32768;
+
+function rawToBase643(_) {
+  return thisBtoa(_);
+}
+
+function appendBlob3(_, ee, ne, ie, re) {
+  if (ne > 0 || ie < ee.size) ee = ee.slice(ne, ie);
+  readAsArrayBuffer(ee, (function(ee) {
+    _.append(ee);
+    re();
+  }));
+}
+
+function appendString3(_, ee, ne, ie, re) {
+  if (ne > 0 || ie < ee.length) ee = ee.substring(ne, ie);
+  _.appendBinary(ee);
+  re();
+}
+
+function binaryMd53(_, ee) {
+  var ne = "string" == typeof _, ie = ne ? _.length : _.size, re = Math.min(MD5_CHUNK_SIZE3, ie), se = Math.ceil(ie / re), oe = 0, le = ne ? new import_spark_md55.default : new import_spark_md55.default.ArrayBuffer, ue = ne ? appendString3 : appendBlob3;
+  function next() {
+    setImmediateShim5(loadNextChunk);
+  }
+  function done() {
+    var _ = rawToBase643(le.end(true));
+    ee(_);
+    le.destroy();
+  }
+  function loadNextChunk() {
+    var ee = oe * re, ne = ee + re;
+    if (++oe < se) ue(le, _, ee, ne, next); else ue(le, _, ee, ne, done);
+  }
+  loadNextChunk();
+}
 
 function sortObjectPropertiesByKey(_) {
   return Object.keys(_).sort(collate).reduce((function(ee, ne) {
@@ -18123,7 +14518,7 @@ function generateReplicationId(_, ee, ne) {
   return Promise.all([ _.id(), ee.id() ]).then((function(_) {
     var ee = _[0] + _[1] + re + oe + se + ie + le;
     return new Promise((function(_) {
-      binaryMd5(ee, _);
+      binaryMd53(ee, _);
     }));
   })).then((function(_) {
     return "_local/" + (_ = _.replace(/\//g, ".").replace(/\+/g, "_"));
@@ -18185,7 +14580,7 @@ function getDocs(_, ee, ne, ie) {
         return Promise.all(ne.docs.map((function(ne) {
           var ie = ne.ok;
           if (ne.error) se = false;
-          if (!ie || !ie._attachments) return ie; else return getDocAttachmentsFromTargetOrSource(ee, _, ie).then((function(_) {
+          if (!ie || !ie._attachments) return ie; else return getDocAttachmentsFromTargetOrSource(ee, _, ie).then((_ => {
             var ee = Object.keys(ie._attachments);
             _.forEach((function(_, ne) {
               var re = ie._attachments[ee[ne]];
@@ -18197,7 +14592,7 @@ function getDocs(_, ee, ne, ie) {
           }));
         })));
       }))).then((function(_) {
-        re = re.concat(flatten(_).filter(Boolean));
+        re = re.concat(_.flat().filter(Boolean));
       }));
     }));
   })).then((function returnResult() {
@@ -18239,7 +14634,7 @@ function replicate(_, ee, ne, ie, re) {
     seq: 0,
     changes: [],
     docs: []
-  }, he = false, pe = false, ge = false, me = 0, ye = 0, ve = ne.continuous || ne.live || false, Se = ne.batch_size || 100, Ee = ne.batches_limit || 10, Ce = ne.style || "all_docs", we = false, Oe = ne.doc_ids, ke = ne.selector, xe = [], Ae = uuid();
+  }, he = false, pe = false, ge = false, me = 0, ye = 0, Se = ne.continuous || ne.live || false, Ee = ne.batch_size || 100, ve = ne.batches_limit || 10, Ce = ne.style || "all_docs", we = false, ke = ne.doc_ids, Le = ne.selector, Oe = [], Ae = uuid();
   re = re || {
     ok: true,
     start_time: (new Date).toISOString(),
@@ -18248,7 +14643,7 @@ function replicate(_, ee, ne, ie, re) {
     doc_write_failures: 0,
     errors: []
   };
-  var Le = {};
+  var xe = {};
   ie.ready(_, ee);
   function initCheckpointer() {
     if (le) return Promise.resolve(); else return index_es_default7(_, ee, ne).then((function(re) {
@@ -18271,7 +14666,7 @@ function replicate(_, ee, ne, ie, re) {
     }));
   }
   function writeDocs() {
-    xe = [];
+    Oe = [];
     if (0 !== se.docs.length) {
       var _ = se.docs, oe = {
         timeout: ne.timeout
@@ -18297,7 +14692,7 @@ function replicate(_, ee, ne, ie, re) {
             re.errors.push(ee);
             var se = (ee.name || "").toLowerCase();
             if ("unauthorized" === se || "forbidden" === se) ie.emit("denied", clone(ee)); else throw ee;
-          } else xe.push(_);
+          } else Oe.push(_);
         }));
       }), (function(ee) {
         re.doc_write_failures += _.length;
@@ -18309,8 +14704,8 @@ function replicate(_, ee, ne, ie, re) {
     if (se.error) throw new Error("There was a problem getting docs.");
     re.last_seq = ye = se.seq;
     var ee = clone(re);
-    if (xe.length) {
-      ee.docs = xe;
+    if (Oe.length) {
+      ee.docs = Oe;
       if ("number" == typeof se.pending) {
         ee.pending = se.pending;
         delete se.pending;
@@ -18384,7 +14779,7 @@ function replicate(_, ee, ne, ie, re) {
   }
   function processPendingBatch(_) {
     if (0 !== fe.changes.length) {
-      if (_ || pe || fe.changes.length >= Se) {
+      if (_ || pe || fe.changes.length >= Ee) {
         de.push(fe);
         fe = {
           seq: 0,
@@ -18398,7 +14793,7 @@ function replicate(_, ee, ne, ie, re) {
         startNextBatch();
       }
     } else if (0 === de.length && !se) {
-      if (ve && Le.live || pe) {
+      if (Se && xe.live || pe) {
         ie.state = "pending";
         ie.emit("paused");
       }
@@ -18454,8 +14849,8 @@ function replicate(_, ee, ne, ie, re) {
       ie.emit("checkpoint", {
         pending_batch: fe.seq
       });
-      (0, import_immediate.default)((function() {
-        processPendingBatch(0 === de.length && Le.live);
+      nextTick((function() {
+        processPendingBatch(0 === de.length && xe.live);
       }));
     } else {
       var oe = _.activeTasks.get(ue);
@@ -18471,13 +14866,13 @@ function replicate(_, ee, ne, ie, re) {
     we = false;
     if (ie.cancelled) return completeReplication();
     if (_.results.length > 0) {
-      Le.since = _.results[_.results.length - 1].seq;
+      xe.since = _.results[_.results.length - 1].seq;
       getChanges();
       processPendingBatch(true);
     } else {
       var complete = function() {
-        if (ve) {
-          Le.live = true;
+        if (Se) {
+          xe.live = true;
           getChanges();
         } else pe = true;
         processPendingBatch(true);
@@ -18501,14 +14896,14 @@ function replicate(_, ee, ne, ie, re) {
     abortReplication("changes rejected", _);
   }
   function getChanges() {
-    if (!we && !pe && de.length < Ee) {
+    if (!we && !pe && de.length < ve) {
       we = true;
       if (ie._changes) {
         ie.removeListener("cancel", ie._abortChanges);
         ie._changes.cancel();
       }
       ie.once("cancel", abortChanges);
-      var ee = _.changes(Le).on("change", onChange);
+      var ee = _.changes(xe).on("change", onChange);
       ee.then(removeListener, removeListener);
       ee.then(onChangesComplete).catch(onChangesError);
       if (ne.retry) {
@@ -18527,7 +14922,7 @@ function replicate(_, ee, ne, ie, re) {
     return _.info().then((function(ie) {
       var re = "undefined" == typeof ne.since ? parseInt(ie.update_seq, 10) - parseInt(ee, 10) : parseInt(ie.update_seq, 10);
       ue = _.activeTasks.add({
-        name: `${ve ? "continuous " : ""}replication from ${ie.db_name}`,
+        name: `${Se ? "continuous " : ""}replication from ${ie.db_name}`,
         total_items: re
       });
       return ee;
@@ -18537,20 +14932,20 @@ function replicate(_, ee, ne, ie, re) {
     initCheckpointer().then((function() {
       if (!ie.cancelled) return le.getCheckpoint().then(createTask).then((function(_) {
         me = _;
-        Le = {
+        xe = {
           since: ye = _,
-          limit: Se,
-          batch_size: Se,
+          limit: Ee,
+          batch_size: Ee,
           style: Ce,
-          doc_ids: Oe,
-          selector: ke,
+          doc_ids: ke,
+          selector: Le,
           return_docs: true
         };
-        if (ne.filter) if ("string" != typeof ne.filter) Le.include_docs = true; else Le.filter = ne.filter;
-        if ("heartbeat" in ne) Le.heartbeat = ne.heartbeat;
-        if ("timeout" in ne) Le.timeout = ne.timeout;
-        if (ne.query_params) Le.query_params = ne.query_params;
-        if (ne.view) Le.view = ne.view;
+        if (ne.filter) if ("string" != typeof ne.filter) xe.include_docs = true; else xe.filter = ne.filter;
+        if ("heartbeat" in ne) xe.heartbeat = ne.heartbeat;
+        if ("timeout" in ne) xe.timeout = ne.timeout;
+        if (ne.query_params) xe.query_params = ne.query_params;
+        if (ne.view) xe.view = ne.view;
         getChanges();
       })); else completeReplication();
     })).catch((function(_) {
@@ -18661,7 +15056,7 @@ var Sync = class extends import_events3.default {
   constructor(_, ee, ne, ie) {
     super();
     this.canceled = false;
-    const re = ne.push ? assign$2({}, ne, ne.push) : ne, se = ne.pull ? assign$2({}, ne, ne.pull) : ne;
+    const re = ne.push ? Object.assign({}, ne, ne.push) : ne, se = ne.pull ? Object.assign({}, ne, ne.pull) : ne;
     this.push = replicateWrapper(_, ee, re);
     this.pull = replicateWrapper(ee, _, se);
     this.pushPaused = true;
@@ -18803,168 +15198,35 @@ function replication(_) {
   };
 }
 
-var index_es_default8 = replication;
+var index_es_default8 = replication, import_spark_md56 = __toESM(require_spark_md5()), setImmediateShim6 = self.setImmediate || self.setTimeout;
 
-function massageCreateIndexRequest(_) {
-  if (!(_ = clone(_)).index) _.index = {};
-  [ "type", "name", "ddoc" ].forEach((function(ee) {
-    if (_.index[ee]) {
-      _[ee] = _.index[ee];
-      delete _.index[ee];
-    }
-  }));
-  if (_.fields) {
-    _.index.fields = _.fields;
-    delete _.fields;
-  }
-  if (!_.type) _.type = "json";
-  return _;
+function stringMd53(_) {
+  return import_spark_md56.default.hash(_);
 }
 
-function checkFieldValueType(_, ee, ne) {
-  var ie = "", re = ee, se = true;
-  if (-1 !== [ "$in", "$nin", "$or", "$and", "$mod", "$nor", "$all" ].indexOf(_)) if (!Array.isArray(ee)) ie = "Query operator " + _ + " must be an array.";
-  if (-1 !== [ "$not", "$elemMatch", "$allMatch" ].indexOf(_)) if (!(!Array.isArray(ee) && "object" == typeof ee && null !== ee)) ie = "Query operator " + _ + " must be an object.";
-  if ("$mod" === _ && Array.isArray(ee)) if (2 !== ee.length) ie = "Query operator $mod must be in the format [divisor, remainder], where divisor and remainder are both integers."; else {
-    var oe = ee[0], le = ee[1];
-    if (0 === oe) {
-      ie = "Query operator $mod's divisor cannot be 0, cannot divide by zero.";
-      se = false;
-    }
-    if ("number" != typeof oe || parseInt(oe, 10) !== oe) {
-      ie = "Query operator $mod's divisor is not an integer.";
-      re = oe;
-    }
-    if (parseInt(le, 10) !== le) {
-      ie = "Query operator $mod's remainder is not an integer.";
-      re = le;
-    }
-  }
-  if ("$exists" === _) if ("boolean" != typeof ee) ie = "Query operator $exists must be a boolean.";
-  if ("$type" === _) {
-    var ue = [ "null", "boolean", "number", "string", "array", "object" ], de = '"' + ue.slice(0, ue.length - 1).join('", "') + '", or "' + ue[ue.length - 1] + '"';
-    if ("string" != typeof ee) ie = "Query operator $type must be a string. Supported values: " + de + "."; else if (-1 == ue.indexOf(ee)) ie = "Query operator $type must be a string. Supported values: " + de + ".";
-  }
-  if ("$size" === _) if (parseInt(ee, 10) !== ee) ie = "Query operator $size must be a integer.";
-  if ("$regex" === _) if ("string" != typeof ee) if (ne) ie = "Query operator $regex must be a string."; else if (!(ee instanceof RegExp)) ie = "Query operator $regex must be a string or an instance of a javascript regular expression.";
-  if (ie) {
-    if (se) ie += " Received" + (null === re ? " " : Array.isArray(re) ? " array" : " " + typeof re) + ": " + ("object" == typeof re && null !== re ? JSON.stringify(re, null, "\t") : re);
-    throw new Error(ie);
-  }
-}
-
-var requireValidation = [ "$all", "$allMatch", "$and", "$elemMatch", "$exists", "$in", "$mod", "$nin", "$nor", "$not", "$or", "$regex", "$size", "$type" ], arrayTypeComparisonOperators = [ "$in", "$nin", "$mod", "$all" ], equalityOperators = [ "$eq", "$gt", "$gte", "$lt", "$lte" ];
-
-function validateSelector(_, ee) {
-  if (Array.isArray(_)) {
-    for (var ne of _) if ("object" == typeof ne && null !== oe) validateSelector(ne, ee);
-  } else for (var ie = Object.keys(_), re = 0; re < ie.length; re++) {
-    var se = ie[re], oe = _[se];
-    if (-1 !== requireValidation.indexOf(se)) checkFieldValueType(se, oe, ee);
-    if (-1 === equalityOperators.indexOf(se)) if (-1 === arrayTypeComparisonOperators.indexOf(se)) if ("object" == typeof oe && null !== oe) validateSelector(oe, ee);
-  }
-}
-
-function dbFetch(_, ee, ne, ie) {
-  var re, se;
-  ne.headers = new h({
-    "Content-type": "application/json"
-  });
-  _.fetch(ee, ne).then((function(_) {
-    re = _.status;
-    se = _.ok;
-    return _.json();
-  })).then((function(_) {
-    if (!se) {
-      _.status = re;
-      var ee = generateErrorFromResponse(_);
-      ie(ee);
-    } else ie(null, _);
-  })).catch(ie);
-}
-
-function createIndex(_, ee, ne) {
-  ee = massageCreateIndexRequest(ee);
-  dbFetch(_, "_index", {
-    method: "POST",
-    body: JSON.stringify(ee)
-  }, ne);
-}
-
-function find(_, ee, ne) {
-  validateSelector(ee.selector, true);
-  dbFetch(_, "_find", {
-    method: "POST",
-    body: JSON.stringify(ee)
-  }, ne);
-}
-
-function explain(_, ee, ne) {
-  dbFetch(_, "_explain", {
-    method: "POST",
-    body: JSON.stringify(ee)
-  }, ne);
-}
-
-function getIndexes(_, ee) {
-  dbFetch(_, "_index", {
-    method: "GET"
-  }, ee);
-}
-
-function deleteIndex(_, ee, ne) {
-  var ie = ee.ddoc, re = ee.type || "json", se = ee.name;
-  if (!ie) return ne(new Error("you must provide an index's ddoc"));
-  if (!se) return ne(new Error("you must provide an index's name"));
-  dbFetch(_, "_index/" + [ ie, re, se ].map(encodeURIComponent).join("/"), {
-    method: "DELETE"
-  }, ne);
-}
-
-function callbackify2(_) {
-  return function(...ee) {
-    var ne = ee.pop(), ie = _.apply(this, ee);
-    promisedCallback2(ie, ne);
-    return ie;
-  };
-}
-
-function promisedCallback2(_, ee) {
-  _.then((function(_) {
-    (0, import_immediate.default)((function() {
-      ee(null, _);
-    }));
-  }), (function(_) {
-    (0, import_immediate.default)((function() {
-      ee(_);
-    }));
-  }));
-  return _;
-}
-
-var flatten2 = function(..._) {
-  for (var ee = [], ne = 0, ie = _.length; ne < ie; ne++) {
-    var re = _[ne];
-    if (Array.isArray(re)) ee = ee.concat(flatten2.apply(null, re)); else ee.push(re);
-  }
+var nativeFlat = (..._) => _.flat(1 / 0), polyFlat = (..._) => {
+  let ee = [];
+  for (const ne of _) if (Array.isArray(ne)) ee = ee.concat(polyFlat(...ne)); else ee.push(ne);
   return ee;
-};
+}, flatten = "function" == typeof Array.prototype.flat ? nativeFlat : polyFlat;
 
 function mergeObjects(_) {
-  for (var ee = {}, ne = 0, ie = _.length; ne < ie; ne++) ee = assign$2(ee, _[ne]);
+  const ee = {};
+  for (const ne of _) Object.assign(ee, ne);
   return ee;
 }
 
 function pick2(_, ee) {
-  for (var ne = {}, ie = 0, re = ee.length; ie < re; ie++) {
-    var se = parseField(ee[ie]), oe = getFieldFromDoc(_, se);
-    if ("undefined" != typeof oe) setFieldInDoc(ne, se, oe);
+  const ne = {};
+  for (const ie of ee) {
+    const ee = parseField(ie), re = getFieldFromDoc(_, ee);
+    if ("undefined" != typeof re) setFieldInDoc(ne, ee, re);
   }
   return ne;
 }
 
 function oneArrayIsSubArrayOfOther(_, ee) {
-  for (var ne = 0, ie = Math.min(_.length, ee.length); ne < ie; ne++) if (_[ne] !== ee[ne]) return false;
+  for (let ne = 0, ie = Math.min(_.length, ee.length); ne < ie; ne++) if (_[ne] !== ee[ne]) return false;
   return true;
 }
 
@@ -18974,26 +15236,27 @@ function oneArrayIsStrictSubArrayOfOther(_, ee) {
 
 function oneSetIsSubArrayOfOther(_, ee) {
   _ = _.slice();
-  for (var ne = 0, ie = ee.length; ne < ie; ne++) {
-    var re = ee[ne];
+  for (const ne of ee) {
     if (!_.length) break;
-    var se = _.indexOf(re);
-    if (-1 === se) return false; else _.splice(se, 1);
+    const ee = _.indexOf(ne);
+    if (-1 === ee) return false; else _.splice(ee, 1);
   }
   return true;
 }
 
 function arrayToObject(_) {
-  for (var ee = {}, ne = 0, ie = _.length; ne < ie; ne++) ee[_[ne]] = true;
+  const ee = {};
+  for (const ne of _) ee[ne] = true;
   return ee;
 }
 
 function max2(_, ee) {
-  for (var ne = null, ie = -1, re = 0, se = _.length; re < se; re++) {
-    var oe = _[re], le = ee(oe);
-    if (le > ie) {
-      ie = le;
-      ne = oe;
+  let ne = null, ie = -1;
+  for (const re of _) {
+    const _ = ee(re);
+    if (_ > ie) {
+      ie = _;
+      ne = re;
     }
   }
   return ne;
@@ -19001,36 +15264,162 @@ function max2(_, ee) {
 
 function arrayEquals(_, ee) {
   if (_.length !== ee.length) return false;
-  for (var ne = 0, ie = _.length; ne < ie; ne++) if (_[ne] !== ee[ne]) return false;
+  for (let ne = 0, ie = _.length; ne < ie; ne++) if (_[ne] !== ee[ne]) return false;
   return true;
 }
 
 function uniq2(_) {
-  for (var ee = {}, ne = 0; ne < _.length; ne++) ee["$" + _[ne]] = true;
-  return Object.keys(ee).map((function(_) {
-    return _.substring(1);
-  }));
+  return Array.from(new Set(_));
+}
+
+function resolveToCallback(_) {
+  return function(...ee) {
+    const ne = ee[ee.length - 1];
+    if ("function" == typeof ne) {
+      const ie = ne.bind(null, null), re = ne.bind(null);
+      _.apply(this, ee.slice(0, -1)).then(ie, re);
+    } else return _.apply(this, ee);
+  };
+}
+
+function massageCreateIndexRequest(_) {
+  if (!(_ = clone(_)).index) _.index = {};
+  for (const ee of [ "type", "name", "ddoc" ]) if (_.index[ee]) {
+    _[ee] = _.index[ee];
+    delete _.index[ee];
+  }
+  if (_.fields) {
+    _.index.fields = _.fields;
+    delete _.fields;
+  }
+  if (!_.type) _.type = "json";
+  return _;
+}
+
+function isNonNullObject(_) {
+  return "object" == typeof _ && null !== _;
+}
+
+function checkFieldValueType(_, ee, ne) {
+  let ie = "", re = ee, se = true;
+  if (-1 !== [ "$in", "$nin", "$or", "$and", "$mod", "$nor", "$all" ].indexOf(_)) if (!Array.isArray(ee)) ie = "Query operator " + _ + " must be an array.";
+  if (-1 !== [ "$not", "$elemMatch", "$allMatch" ].indexOf(_)) if (!(!Array.isArray(ee) && isNonNullObject(ee))) ie = "Query operator " + _ + " must be an object.";
+  if ("$mod" === _ && Array.isArray(ee)) if (2 !== ee.length) ie = "Query operator $mod must be in the format [divisor, remainder], where divisor and remainder are both integers."; else {
+    const _ = ee[0], ne = ee[1];
+    if (0 === _) {
+      ie = "Query operator $mod's divisor cannot be 0, cannot divide by zero.";
+      se = false;
+    }
+    if ("number" != typeof _ || parseInt(_, 10) !== _) {
+      ie = "Query operator $mod's divisor is not an integer.";
+      re = _;
+    }
+    if (parseInt(ne, 10) !== ne) {
+      ie = "Query operator $mod's remainder is not an integer.";
+      re = ne;
+    }
+  }
+  if ("$exists" === _) if ("boolean" != typeof ee) ie = "Query operator $exists must be a boolean.";
+  if ("$type" === _) {
+    const _ = [ "null", "boolean", "number", "string", "array", "object" ], ne = '"' + _.slice(0, _.length - 1).join('", "') + '", or "' + _[_.length - 1] + '"';
+    if ("string" != typeof ee) ie = "Query operator $type must be a string. Supported values: " + ne + "."; else if (-1 == _.indexOf(ee)) ie = "Query operator $type must be a string. Supported values: " + ne + ".";
+  }
+  if ("$size" === _) if (parseInt(ee, 10) !== ee) ie = "Query operator $size must be a integer.";
+  if ("$regex" === _) if ("string" != typeof ee) if (ne) ie = "Query operator $regex must be a string."; else if (!(ee instanceof RegExp)) ie = "Query operator $regex must be a string or an instance of a javascript regular expression.";
+  if (ie) {
+    if (se) ie += " Received" + (null === re ? " " : Array.isArray(re) ? " array" : " " + typeof re) + ": " + (isNonNullObject(re) ? JSON.stringify(re, null, "\t") : re);
+    throw new Error(ie);
+  }
+}
+
+var requireValidation = [ "$all", "$allMatch", "$and", "$elemMatch", "$exists", "$in", "$mod", "$nin", "$nor", "$not", "$or", "$regex", "$size", "$type" ], arrayTypeComparisonOperators = [ "$in", "$nin", "$mod", "$all" ], equalityOperators = [ "$eq", "$gt", "$gte", "$lt", "$lte" ];
+
+function validateSelector(_, ee) {
+  if (Array.isArray(_)) {
+    for (const ne of _) if (isNonNullObject(ne)) validateSelector(ne, ee);
+  } else for (const [ne, ie] of Object.entries(_)) {
+    if (-1 !== requireValidation.indexOf(ne)) checkFieldValueType(ne, ie, ee);
+    if (-1 === equalityOperators.indexOf(ne)) if (-1 === arrayTypeComparisonOperators.indexOf(ne)) if (isNonNullObject(ie)) validateSelector(ie, ee);
+  }
+}
+
+async function dbFetch(_, ee, ne) {
+  if (ne.body) {
+    ne.body = JSON.stringify(ne.body);
+    ne.headers = new h({
+      "Content-type": "application/json"
+    });
+  }
+  const ie = await _.fetch(ee, ne), re = await ie.json();
+  if (!ie.ok) {
+    re.status = ie.status;
+    throw generateErrorFromResponse(createError(re));
+  }
+  return re;
+}
+
+async function createIndex(_, ee) {
+  return await dbFetch(_, "_index", {
+    method: "POST",
+    body: massageCreateIndexRequest(ee)
+  });
+}
+
+async function find(_, ee) {
+  validateSelector(ee.selector, true);
+  return await dbFetch(_, "_find", {
+    method: "POST",
+    body: ee
+  });
+}
+
+async function explain(_, ee) {
+  return await dbFetch(_, "_explain", {
+    method: "POST",
+    body: ee
+  });
+}
+
+async function getIndexes(_) {
+  return await dbFetch(_, "_index", {
+    method: "GET"
+  });
+}
+
+async function deleteIndex(_, ee) {
+  const ne = ee.ddoc, ie = ee.type || "json", re = ee.name;
+  if (!ne) throw new Error("you must provide an index's ddoc");
+  if (!re) throw new Error("you must provide an index's name");
+  const se = "_index/" + [ ne, ie, re ].map(encodeURIComponent).join("/");
+  return await dbFetch(_, se, {
+    method: "DELETE"
+  });
+}
+
+function getDeepValue(_, ee) {
+  for (const ne of ee) if (void 0 === (_ = _[ne])) return;
+  return _;
 }
 
 function createDeepMultiMapper(_, ee, ne) {
   return function(ie) {
-    if (!ne || matchesSelector(ie, ne)) {
-      for (var re = [], se = 0, oe = _.length; se < oe; se++) {
-        for (var le = parseField(_[se]), ue = ie, de = 0, fe = le.length; de < fe; de++) if ("undefined" == typeof (ue = ue[le[de]])) return;
-        re.push(ue);
-      }
-      ee(re);
+    if (ne && !matchesSelector(ie, ne)) return;
+    const re = [];
+    for (const ee of _) {
+      const _ = getDeepValue(ie, parseField(ee));
+      if (void 0 === _) return;
+      re.push(_);
     }
+    ee(re);
   };
 }
 
 function createDeepSingleMapper(_, ee, ne) {
-  var ie = parseField(_);
+  const ie = parseField(_);
   return function(_) {
-    if (!ne || matchesSelector(_, ne)) {
-      for (var re = _, se = 0, oe = ie.length; se < oe; se++) if ("undefined" == typeof (re = re[ie[se]])) return;
-      ee(re);
-    }
+    if (ne && !matchesSelector(_, ne)) return;
+    const re = getDeepValue(_, ie);
+    if (void 0 !== re) ee(re);
   };
 }
 
@@ -19042,20 +15431,18 @@ function createShallowSingleMapper(_, ee, ne) {
 
 function createShallowMultiMapper(_, ee, ne) {
   return function(ie) {
-    if (!ne || matchesSelector(ie, ne)) {
-      for (var re = [], se = 0, oe = _.length; se < oe; se++) re.push(ie[_[se]]);
-      ee(re);
-    }
+    if (ne && !matchesSelector(ie, ne)) return;
+    const re = _.map((_ => ie[_]));
+    ee(re);
   };
 }
 
 function checkShallow(_) {
-  for (var ee = 0, ne = _.length; ee < ne; ee++) if (-1 !== _[ee].indexOf(".")) return false;
-  return true;
+  return _.every((_ => -1 === _.indexOf(".")));
 }
 
 function createMapper(_, ee, ne) {
-  var ie = checkShallow(_), re = 1 === _.length;
+  const ie = checkShallow(_), re = 1 === _.length;
   if (ie) if (re) return createShallowSingleMapper(_[0], ee, ne); else return createShallowMultiMapper(_, ee, ne); else if (re) return createDeepSingleMapper(_[0], ee, ne); else return createDeepMultiMapper(_, ee, ne);
 }
 
@@ -19068,7 +15455,7 @@ function reducer2() {
 }
 
 function ddocValidator2(_, ee) {
-  var ne = _.views[ee];
+  const ne = _.views[ee];
   if (!ne.map || !ne.map.fields) throw new Error("ddoc " + _._id + " with view " + ee + " doesn't have map.fields defined. maybe it wasn't created by this plugin?");
 }
 
@@ -19077,11 +15464,11 @@ var abstractMapper = index_es_default5("indexes", mapper2, reducer2, ddocValidat
 function abstractMapper$1(_) {
   if (_._customFindAbstractMapper) return {
     query: function addQueryFallback(ee, ne) {
-      var ie = abstractMapper.query.bind(this);
+      const ie = abstractMapper.query.bind(this);
       return _._customFindAbstractMapper.query.call(this, ee, ne, ie);
     },
     viewCleanup: function addViewCleanupFallback() {
-      var ee = abstractMapper.viewCleanup.bind(this);
+      const ee = abstractMapper.viewCleanup.bind(this);
       return _._customFindAbstractMapper.viewCleanup.call(this, ee);
     }
   }; else return abstractMapper;
@@ -19091,25 +15478,27 @@ function massageSort(_) {
   if (!Array.isArray(_)) throw new Error("invalid sort json - should be an array");
   return _.map((function(_) {
     if ("string" == typeof _) {
-      var ee = {};
+      const ee = {};
       ee[_] = "asc";
       return ee;
     } else return _;
   }));
 }
 
+var ddocIdPrefix = /^_design\//;
+
 function massageUseIndex(_) {
-  var ee = [];
+  let ee = [];
   if ("string" == typeof _) ee.push(_); else ee = _;
   return ee.map((function(_) {
-    return _.replace("_design/", "");
+    return _.replace(ddocIdPrefix, "");
   }));
 }
 
 function massageIndexDef(_) {
   _.fields = _.fields.map((function(_) {
     if ("string" == typeof _) {
-      var ee = {};
+      const ee = {};
       ee[_] = "asc";
       return ee;
     }
@@ -19120,24 +15509,26 @@ function massageIndexDef(_) {
 }
 
 function getKeyFromDoc(_, ee) {
-  for (var ne = [], ie = 0; ie < ee.def.fields.length; ie++) {
-    var re = getKey(ee.def.fields[ie]);
-    ne.push(getFieldFromDoc(_, parseField(re)));
-  }
-  return ne;
+  return ee.def.fields.map((ee => {
+    const ne = getKey(ee);
+    return getFieldFromDoc(_, parseField(ne));
+  }));
 }
 
 function filterInclusiveStart(_, ee, ne) {
-  for (var ie = ne.def.fields, re = 0, se = _.length; re < se; re++) {
-    var oe = getKeyFromDoc(_[re].doc, ne);
-    if (1 === ie.length) oe = oe[0]; else for (;oe.length > ee.length; ) oe.pop();
-    if (Math.abs(collate(oe, ee)) > 0) break;
+  const ie = ne.def.fields;
+  let re = 0;
+  for (const se of _) {
+    let _ = getKeyFromDoc(se.doc, ne);
+    if (1 === ie.length) _ = _[0]; else for (;_.length > ee.length; ) _.pop();
+    if (Math.abs(collate(_, ee)) > 0) break;
+    ++re;
   }
   return re > 0 ? _.slice(re) : _;
 }
 
 function reverseOptions(_) {
-  var ee = clone(_);
+  const ee = clone(_);
   delete ee.startkey;
   delete ee.endkey;
   delete ee.inclusive_start;
@@ -19150,7 +15541,7 @@ function reverseOptions(_) {
 }
 
 function validateIndex(_) {
-  var ee = _.fields.filter((function(_) {
+  const ee = _.fields.filter((function(_) {
     return "asc" === getValue(_);
   }));
   if (0 !== ee.length && ee.length !== _.fields.length) throw new Error("unsupported mixed sorting");
@@ -19158,12 +15549,12 @@ function validateIndex(_) {
 
 function validateSort(_, ee) {
   if (ee.defaultUsed && _.sort) {
-    var ne = _.sort.filter((function(_) {
+    const ee = _.sort.filter((function(_) {
       return "_id" !== Object.keys(_)[0];
     })).map((function(_) {
       return Object.keys(_)[0];
     }));
-    if (ne.length > 0) throw new Error('Cannot sort on field(s) "' + ne.join(",") + '" when using the default index');
+    if (ee.length > 0) throw new Error('Cannot sort on field(s) "' + ee.join(",") + '" when using the default index');
   }
   if (!ee.defaultUsed) ;
 }
@@ -19173,36 +15564,42 @@ function validateFindRequest(_) {
 }
 
 function getUserFields(_, ee) {
-  var ne, ie = Object.keys(_), re = ee ? ee.map(getKey) : [];
-  if (ie.length >= re.length) ne = ie; else ne = re;
-  if (0 === re.length) return {
-    fields: ne
-  }; else return {
-    fields: ne = ne.sort((function(_, ee) {
-      var ne = re.indexOf(_);
-      if (-1 === ne) ne = Number.MAX_VALUE;
-      var ie = re.indexOf(ee);
-      if (-1 === ie) ie = Number.MAX_VALUE;
-      return ne < ie ? -1 : ne > ie ? 1 : 0;
-    })),
+  const ne = Object.keys(_), ie = ee ? ee.map(getKey) : [];
+  let re;
+  if (ne.length >= ie.length) re = ne; else re = ie;
+  if (0 === ie.length) return {
+    fields: re
+  };
+  re = re.sort((function(_, ee) {
+    let ne = ie.indexOf(_);
+    if (-1 === ne) ne = Number.MAX_VALUE;
+    let re = ie.indexOf(ee);
+    if (-1 === re) re = Number.MAX_VALUE;
+    return ne < re ? -1 : ne > re ? 1 : 0;
+  }));
+  return {
+    fields: re,
     sortOrder: ee.map(getKey)
   };
 }
 
-function createIndex$1(_, ee) {
-  var ne, ie = clone((ee = massageCreateIndexRequest(ee)).index);
+async function createIndex$1(_, ee) {
+  const ne = clone((ee = massageCreateIndexRequest(ee)).index);
   ee.index = massageIndexDef(ee.index);
   validateIndex(ee.index);
+  let ie;
   function getMd5() {
-    return ne || (ne = stringMd5(JSON.stringify(ee)));
+    return ie || (ie = stringMd53(JSON.stringify(ee)));
   }
-  var re = ee.name || "idx-" + getMd5(), se = ee.ddoc || "idx-" + getMd5(), oe = "_design/" + se, le = false, ue = false;
+  const re = ee.name || "idx-" + getMd5(), se = ee.ddoc || "idx-" + getMd5(), oe = "_design/" + se;
+  let le = false, ue = false;
   _.constructor.emit("debug", [ "find", "creating index", oe ]);
-  return upsert(_, oe, (function updateDdoc(_) {
+  await upsert(_, oe, (function updateDdoc(_) {
     if (_._rev && "query" !== _.language) le = true;
     _.language = "query";
     _.views = _.views || {};
-    if (ue = !!_.views[re]) return false;
+    ue = !!_.views[re];
+    if (ue) return false;
     _.views[re] = {
       map: {
         fields: mergeObjects(ee.index.fields),
@@ -19210,64 +15607,59 @@ function createIndex$1(_, ee) {
       },
       reduce: "_count",
       options: {
-        def: ie
+        def: ne
       }
     };
     return _;
-  })).then((function() {
-    if (le) throw new Error('invalid language for ddoc with id "' + oe + '" (should be "query")');
-  })).then((function() {
-    var ee = se + "/" + re;
-    return abstractMapper$1(_).query.call(_, ee, {
-      limit: 0,
-      reduce: false
-    }).then((function() {
-      return {
-        id: oe,
-        name: re,
-        result: ue ? "exists" : "created"
-      };
-    }));
   }));
+  if (le) throw new Error('invalid language for ddoc with id "' + oe + '" (should be "query")');
+  const de = se + "/" + re;
+  await abstractMapper$1(_).query.call(_, de, {
+    limit: 0,
+    reduce: false
+  });
+  return {
+    id: oe,
+    name: re,
+    result: ue ? "exists" : "created"
+  };
 }
 
-function getIndexes$1(_) {
-  return _.allDocs({
+async function getIndexes$1(_) {
+  const ee = await _.allDocs({
     startkey: "_design/",
     endkey: "_design/￿",
     include_docs: true
-  }).then((function(_) {
-    var ee = {
-      indexes: [ {
-        ddoc: null,
-        name: "_all_docs",
-        type: "special",
-        def: {
-          fields: [ {
-            _id: "asc"
-          } ]
-        }
-      } ]
-    };
-    ee.indexes = flatten2(ee.indexes, _.rows.filter((function(_) {
-      return "query" === _.doc.language;
-    })).map((function(_) {
-      return (void 0 !== _.doc.views ? Object.keys(_.doc.views) : []).map((function(ee) {
-        var ne = _.doc.views[ee];
-        return {
-          ddoc: _.id,
-          name: ee,
-          type: "json",
-          def: massageIndexDef(ne.options.def)
-        };
-      }));
-    })));
-    ee.indexes.sort((function(_, ee) {
-      return compare(_.name, ee.name);
+  }), ne = {
+    indexes: [ {
+      ddoc: null,
+      name: "_all_docs",
+      type: "special",
+      def: {
+        fields: [ {
+          _id: "asc"
+        } ]
+      }
+    } ]
+  };
+  ne.indexes = flatten(ne.indexes, ee.rows.filter((function(_) {
+    return "query" === _.doc.language;
+  })).map((function(_) {
+    return (void 0 !== _.doc.views ? Object.keys(_.doc.views) : []).map((function(ee) {
+      const ne = _.doc.views[ee];
+      return {
+        ddoc: _.id,
+        name: ee,
+        type: "json",
+        def: massageIndexDef(ne.options.def)
+      };
     }));
-    ee.total_rows = ee.indexes.length;
-    return ee;
+  })));
+  ne.indexes.sort((function(_, ee) {
+    return compare(_.name, ee.name);
   }));
+  ne.total_rows = ne.indexes.length;
+  return ne;
 }
 
 var COLLATE_LO = null, COLLATE_HI = {
@@ -19282,8 +15674,7 @@ var COLLATE_LO = null, COLLATE_HI = {
 };
 
 function checkFieldInIndex(_, ee) {
-  for (var ne = _.def.fields.map(getKey), ie = 0, re = ne.length; ie < re; ie++) if (ee === ne[ie]) return true;
-  return false;
+  return _.def.fields.some((_ => getKey(_) === ee));
 }
 
 function userOperatorLosesPrecision(_, ee) {
@@ -19291,9 +15682,9 @@ function userOperatorLosesPrecision(_, ee) {
 }
 
 function sortFieldsByIndex(_, ee) {
-  var ne = ee.def.fields.map(getKey);
+  const ne = ee.def.fields.map(getKey);
   return _.slice().sort((function(_, ee) {
-    var ie = ne.indexOf(_), re = ne.indexOf(ee);
+    let ie = ne.indexOf(_), re = ne.indexOf(ee);
     if (-1 === ie) ie = Number.MAX_VALUE;
     if (-1 === re) re = Number.MAX_VALUE;
     return compare(ie, re);
@@ -19301,8 +15692,9 @@ function sortFieldsByIndex(_, ee) {
 }
 
 function getBasicInMemoryFields(_, ee, ne) {
-  for (var ie = false, re = 0, se = (ne = sortFieldsByIndex(ne, _)).length; re < se; re++) {
-    var oe = ne[re];
+  let ie = false;
+  for (let re = 0, se = (ne = sortFieldsByIndex(ne, _)).length; re < se; re++) {
+    const oe = ne[re];
     if (ie || !checkFieldInIndex(_, oe)) return ne.slice(re);
     if (re < se - 1 && userOperatorLosesPrecision(ee, oe)) ie = true;
   }
@@ -19310,23 +15702,18 @@ function getBasicInMemoryFields(_, ee, ne) {
 }
 
 function getInMemoryFieldsFromNe(_) {
-  var ee = [];
-  Object.keys(_).forEach((function(ne) {
-    var ie = _[ne];
-    Object.keys(ie).forEach((function(_) {
-      if ("$ne" === _) ee.push(ne);
-    }));
-  }));
+  const ee = [];
+  for (const [ne, ie] of Object.entries(_)) for (const _ of Object.keys(ie)) if ("$ne" === _) ee.push(ne);
   return ee;
 }
 
 function getInMemoryFields(_, ee, ne, ie) {
-  return sortFieldsByIndex(uniq2(flatten2(_, getBasicInMemoryFields(ee, ne, ie), getInMemoryFieldsFromNe(ne))), ee);
+  return sortFieldsByIndex(uniq2(flatten(_, getBasicInMemoryFields(ee, ne, ie), getInMemoryFieldsFromNe(ne))), ee);
 }
 
 function checkIndexFieldsMatch(_, ee, ne) {
   if (ee) {
-    var ie = oneArrayIsStrictSubArrayOfOther(ee, _), re = oneArrayIsSubArrayOfOther(ne, _);
+    const ie = oneArrayIsStrictSubArrayOfOther(ee, _), re = oneArrayIsSubArrayOfOther(ne, _);
     return ie && re;
   }
   return oneSetIsSubArrayOfOther(ne, _);
@@ -19339,12 +15726,12 @@ function isNonLogicalMatcher(_) {
 }
 
 function checkFieldsLogicallySound(_, ee) {
-  var ne = ee[_[0]];
+  const ne = ee[_[0]];
   if ("undefined" == typeof ne) return true; else return !(1 === Object.keys(ne).length && "$ne" === getKey(ne));
 }
 
 function checkIndexMatches(_, ee, ne, ie) {
-  var re = _.def.fields.map(getKey);
+  const re = _.def.fields.map(getKey);
   if (!checkIndexFieldsMatch(re, ee, ne)) return false; else return checkFieldsLogicallySound(re, ie);
 }
 
@@ -19355,34 +15742,33 @@ function findMatchingIndexes(_, ee, ne, ie) {
 }
 
 function findBestMatchingIndex(_, ee, ne, ie, re) {
-  var se = findMatchingIndexes(_, ee, ne, ie);
+  const se = findMatchingIndexes(_, ee, ne, ie);
   if (0 === se.length) {
     if (re) throw {
       error: "no_usable_index",
       message: "There is no index available for this selector."
     };
-    var oe = ie[0];
-    oe.defaultUsed = true;
-    return oe;
+    const _ = ie[0];
+    _.defaultUsed = true;
+    return _;
   }
   if (1 === se.length && !re) return se[0];
-  var le = arrayToObject(ee);
+  const oe = arrayToObject(ee);
   if (re) {
-    var ue = "_design/" + re[0], de = 2 === re.length ? re[1] : false, fe = se.find((function(_) {
-      if (de && _.ddoc === ue && de === _.name) return true;
-      if (_.ddoc === ue) return true; else return false;
+    const _ = "_design/" + re[0], ee = 2 === re.length ? re[1] : false, ne = se.find((function(ne) {
+      if (ee && ne.ddoc === _ && ee === ne.name) return true;
+      if (ne.ddoc === _) return true; else return false;
     }));
-    if (!fe) throw {
+    if (!ne) throw {
       error: "unknown_error",
       message: "Could not find that index or could not use that index for the query"
     };
-    return fe;
+    return ne;
   }
   return max2(se, (function scoreIndex(_) {
-    for (var ee = _.def.fields.map(getKey), ne = 0, ie = 0, re = ee.length; ie < re; ie++) {
-      var se = ee[ie];
-      if (le[se]) ne++;
-    }
+    const ee = _.def.fields.map(getKey);
+    let ne = 0;
+    for (const _ of ee) if (oe[_]) ne++;
     return ne;
   }));
 }
@@ -19422,15 +15808,16 @@ function getSingleFieldQueryOptsFor(_, ee) {
 }
 
 function getSingleFieldCoreQueryPlan(_, ee) {
-  var ne, ie = getKey(ee.def.fields[0]), re = _[ie] || {}, se = [];
-  Object.keys(re).forEach((function(_) {
-    if (isNonLogicalMatcher(_)) se.push(ie);
-    var ee = getSingleFieldQueryOptsFor(_, re[_]);
-    if (ne) ne = mergeObjects([ ne, ee ]); else ne = ee;
-  }));
+  const ne = getKey(ee.def.fields[0]), ie = _[ne] || {}, re = [], se = Object.keys(ie);
+  let oe;
+  for (const _ of se) {
+    if (isNonLogicalMatcher(_)) re.push(ne);
+    const ee = getSingleFieldQueryOptsFor(_, ie[_]);
+    if (oe) oe = mergeObjects([ oe, ee ]); else oe = ee;
+  }
   return {
-    queryOpts: ne,
-    inMemoryFields: se
+    queryOpts: oe,
+    inMemoryFields: re
   };
 }
 
@@ -19467,45 +15854,50 @@ function getMultiFieldCoreQueryPlan(_, ee) {
 }
 
 function getMultiFieldQueryOpts(_, ee) {
-  var ne, ie, re = ee.def.fields.map(getKey), se = [], oe = [], le = [];
+  const ne = ee.def.fields.map(getKey);
+  let ie = [];
+  const re = [], se = [];
+  let oe, le;
   function finish(_) {
-    if (false !== ne) oe.push(COLLATE_LO);
-    if (false !== ie) le.push(COLLATE_HI);
-    se = re.slice(_);
+    if (false !== oe) re.push(COLLATE_LO);
+    if (false !== le) se.push(COLLATE_HI);
+    ie = ne.slice(_);
   }
-  for (var ue = 0, de = re.length; ue < de; ue++) {
-    var fe = _[re[ue]];
-    if (!fe || !Object.keys(fe).length) {
-      finish(ue);
+  for (let ee = 0, ie = ne.length; ee < ie; ee++) {
+    const ie = _[ne[ee]];
+    if (!ie || !Object.keys(ie).length) {
+      finish(ee);
       break;
-    } else if (Object.keys(fe).some(isNonLogicalMatcher)) {
-      finish(ue);
+    } else if (Object.keys(ie).some(isNonLogicalMatcher)) {
+      finish(ee);
       break;
-    } else if (ue > 0) {
-      var he = "$gt" in fe || "$gte" in fe || "$lt" in fe || "$lte" in fe, pe = Object.keys(_[re[ue - 1]]), ge = arrayEquals(pe, [ "$eq" ]), me = arrayEquals(pe, Object.keys(fe));
-      if (he && !ge && !me) {
-        finish(ue);
+    } else if (ee > 0) {
+      const re = "$gt" in ie || "$gte" in ie || "$lt" in ie || "$lte" in ie, se = Object.keys(_[ne[ee - 1]]), oe = arrayEquals(se, [ "$eq" ]), le = arrayEquals(se, Object.keys(ie));
+      if (re && !oe && !le) {
+        finish(ee);
         break;
       }
     }
-    for (var ye = Object.keys(fe), ve = null, Se = 0; Se < ye.length; Se++) {
-      var Ee = ye[Se], Ce = getMultiFieldCoreQueryPlan(Ee, fe[Ee]);
-      if (ve) ve = mergeObjects([ ve, Ce ]); else ve = Ce;
+    const ue = Object.keys(ie);
+    let de = null;
+    for (const _ of ue) {
+      const ee = getMultiFieldCoreQueryPlan(_, ie[_]);
+      if (de) de = mergeObjects([ de, ee ]); else de = ee;
     }
-    oe.push("startkey" in ve ? ve.startkey : COLLATE_LO);
-    le.push("endkey" in ve ? ve.endkey : COLLATE_HI);
-    if ("inclusive_start" in ve) ne = ve.inclusive_start;
-    if ("inclusive_end" in ve) ie = ve.inclusive_end;
+    re.push("startkey" in de ? de.startkey : COLLATE_LO);
+    se.push("endkey" in de ? de.endkey : COLLATE_HI);
+    if ("inclusive_start" in de) oe = de.inclusive_start;
+    if ("inclusive_end" in de) le = de.inclusive_end;
   }
-  var we = {
-    startkey: oe,
-    endkey: le
+  const ue = {
+    startkey: re,
+    endkey: se
   };
-  if ("undefined" != typeof ne) we.inclusive_start = ne;
-  if ("undefined" != typeof ie) we.inclusive_end = ie;
+  if ("undefined" != typeof oe) ue.inclusive_start = oe;
+  if ("undefined" != typeof le) ue.inclusive_end = le;
   return {
-    queryOpts: we,
-    inMemoryFields: se
+    queryOpts: ue,
+    inMemoryFields: ie
   };
 }
 
@@ -19532,11 +15924,11 @@ function getCoreQueryPlan(_, ee) {
 }
 
 function planQuery(_, ee) {
-  var ne = _.selector, ie = _.sort;
-  if (shouldShortCircuit(ne)) return assign$2({}, SHORT_CIRCUIT_QUERY, {
+  const ne = _.selector, ie = _.sort;
+  if (shouldShortCircuit(ne)) return Object.assign({}, SHORT_CIRCUIT_QUERY, {
     index: ee[0]
   });
-  var re = getUserFields(ne, ie), se = re.fields, oe = findBestMatchingIndex(ne, se, re.sortOrder, ee, _.use_index), le = getCoreQueryPlan(ne, oe);
+  const re = getUserFields(ne, ie), se = re.fields, oe = findBestMatchingIndex(ne, se, re.sortOrder, ee, _.use_index), le = getCoreQueryPlan(ne, oe);
   return {
     queryOpts: le.queryOpts,
     index: oe,
@@ -19548,8 +15940,8 @@ function indexToSignature(_) {
   return _.ddoc.substring(8) + "/" + _.name;
 }
 
-function doAllDocs(_, ee) {
-  var ne = clone(ee);
+async function doAllDocs(_, ee) {
+  const ne = clone(ee);
   if (ne.descending) {
     if ("endkey" in ne && "string" != typeof ne.endkey) ne.endkey = "";
     if ("startkey" in ne && "string" != typeof ne.startkey) ne.limit = 0;
@@ -19562,145 +15954,132 @@ function doAllDocs(_, ee) {
     ne.original_limit = ne.limit;
     ne.limit += ne.indexes_count;
   }
-  return _.allDocs(ne).then((function(_) {
-    _.rows = _.rows.filter((function(_) {
-      return !/^_design\//.test(_.id);
-    }));
-    if (ne.original_limit) ne.limit = ne.original_limit;
-    _.rows = _.rows.slice(0, ne.limit);
-    return _;
+  const ie = await _.allDocs(ne);
+  ie.rows = ie.rows.filter((function(_) {
+    return !/^_design\//.test(_.id);
   }));
+  if (ne.original_limit) ne.limit = ne.original_limit;
+  ie.rows = ie.rows.slice(0, ne.limit);
+  return ie;
 }
 
-function find$1(_, ee, ne) {
+async function queryAllOrIndex(_, ee, ne) {
+  if ("_all_docs" === ne.name) return doAllDocs(_, ee); else return abstractMapper$1(_).query.call(_, indexToSignature(ne), ee);
+}
+
+async function find$1(_, ee, ne) {
   if (ee.selector) {
     validateSelector(ee.selector, false);
     ee.selector = massageSelector(ee.selector);
   }
   if (ee.sort) ee.sort = massageSort(ee.sort);
   if (ee.use_index) ee.use_index = massageUseIndex(ee.use_index);
+  if (!("limit" in ee)) ee.limit = 25;
   validateFindRequest(ee);
-  return getIndexes$1(_).then((function(ie) {
-    _.constructor.emit("debug", [ "find", "planning query", ee ]);
-    var re = planQuery(ee, ie.indexes);
-    _.constructor.emit("debug", [ "find", "query plan", re ]);
-    var se = re.index;
-    validateSort(ee, se);
-    var oe = assign$2({
-      include_docs: true,
-      reduce: false,
-      indexes_count: ie.total_rows
-    }, re.queryOpts);
-    if ("startkey" in oe && "endkey" in oe && collate(oe.startkey, oe.endkey) > 0) return {
-      docs: []
-    };
-    if (ee.sort && "string" != typeof ee.sort[0] && "desc" === getValue(ee.sort[0])) {
-      oe.descending = true;
-      oe = reverseOptions(oe);
-    }
-    if (!re.inMemoryFields.length) {
-      if ("limit" in ee) oe.limit = ee.limit;
-      if ("skip" in ee) oe.skip = ee.skip;
-    }
-    if (ne) return Promise.resolve(re, oe); else return Promise.resolve().then((function() {
-      if ("_all_docs" === se.name) return doAllDocs(_, oe); else {
-        var ee = indexToSignature(se);
-        return abstractMapper$1(_).query.call(_, ee, oe);
-      }
-    })).then((function(_) {
-      if (false === oe.inclusive_start) _.rows = filterInclusiveStart(_.rows, oe.startkey, se);
-      if (re.inMemoryFields.length) _.rows = filterInMemoryFields(_.rows, ee, re.inMemoryFields);
-      var ne = {
-        docs: _.rows.map((function(_) {
-          var ne = _.doc;
-          if (ee.fields) return pick2(ne, ee.fields); else return ne;
-        }))
-      };
-      if (se.defaultUsed) ne.warning = "No matching index found, create an index to optimize query time.";
-      return ne;
-    }));
-  }));
+  const ie = await getIndexes$1(_);
+  _.constructor.emit("debug", [ "find", "planning query", ee ]);
+  const re = planQuery(ee, ie.indexes);
+  _.constructor.emit("debug", [ "find", "query plan", re ]);
+  const se = re.index;
+  validateSort(ee, se);
+  let oe = Object.assign({
+    include_docs: true,
+    reduce: false,
+    indexes_count: ie.total_rows
+  }, re.queryOpts);
+  if ("startkey" in oe && "endkey" in oe && collate(oe.startkey, oe.endkey) > 0) return {
+    docs: []
+  };
+  if (ee.sort && "string" != typeof ee.sort[0] && "desc" === getValue(ee.sort[0])) {
+    oe.descending = true;
+    oe = reverseOptions(oe);
+  }
+  if (!re.inMemoryFields.length) {
+    oe.limit = ee.limit;
+    if ("skip" in ee) oe.skip = ee.skip;
+  }
+  if (ne) return Promise.resolve(re, oe);
+  const le = await queryAllOrIndex(_, oe, se);
+  if (false === oe.inclusive_start) le.rows = filterInclusiveStart(le.rows, oe.startkey, se);
+  if (re.inMemoryFields.length) le.rows = filterInMemoryFields(le.rows, ee, re.inMemoryFields);
+  const ue = {
+    docs: le.rows.map((function(_) {
+      const ne = _.doc;
+      if (ee.fields) return pick2(ne, ee.fields); else return ne;
+    }))
+  };
+  if (se.defaultUsed) ue.warning = "No matching index found, create an index to optimize query time.";
+  return ue;
 }
 
-function explain$1(_, ee) {
-  return find$1(_, ee, true).then((function(ne) {
-    return {
-      dbname: _.name,
-      index: ne.index,
-      selector: ee.selector,
-      range: {
-        start_key: ne.queryOpts.startkey,
-        end_key: ne.queryOpts.endkey
-      },
-      opts: {
-        use_index: ee.use_index || [],
-        bookmark: "nil",
-        limit: ee.limit,
-        skip: ee.skip,
-        sort: ee.sort || {},
-        fields: ee.fields,
-        conflicts: false,
-        r: [ 49 ]
-      },
+async function explain$1(_, ee) {
+  const ne = await find$1(_, ee, true);
+  return {
+    dbname: _.name,
+    index: ne.index,
+    selector: ee.selector,
+    range: {
+      start_key: ne.queryOpts.startkey,
+      end_key: ne.queryOpts.endkey
+    },
+    opts: {
+      use_index: ee.use_index || [],
+      bookmark: "nil",
       limit: ee.limit,
-      skip: ee.skip || 0,
-      fields: ee.fields
-    };
-  }));
+      skip: ee.skip,
+      sort: ee.sort || {},
+      fields: ee.fields,
+      conflicts: false,
+      r: [ 49 ]
+    },
+    limit: ee.limit,
+    skip: ee.skip || 0,
+    fields: ee.fields
+  };
 }
 
-function deleteIndex$1(_, ee) {
+async function deleteIndex$1(_, ee) {
   if (!ee.ddoc) throw new Error("you must supply an index.ddoc when deleting");
   if (!ee.name) throw new Error("you must supply an index.name when deleting");
-  var ne = ee.ddoc, ie = ee.name;
-  return upsert(_, ne, (function deltaFun(_) {
+  const ne = ee.ddoc, ie = ee.name;
+  await upsert(_, ne, (function deltaFun(_) {
     if (1 === Object.keys(_.views).length && _.views[ie]) return {
       _id: ne,
       _deleted: true
     };
     delete _.views[ie];
     return _;
-  })).then((function() {
-    return abstractMapper$1(_).viewCleanup.apply(_);
-  })).then((function() {
-    return {
-      ok: true
-    };
   }));
+  await abstractMapper$1(_).viewCleanup.apply(_);
+  return {
+    ok: true
+  };
 }
 
-var createIndexAsCallback = callbackify2(createIndex$1), findAsCallback = callbackify2(find$1), explainAsCallback = callbackify2(explain$1), getIndexesAsCallback = callbackify2(getIndexes$1), deleteIndexAsCallback = callbackify2(deleteIndex$1), plugin = {};
+var plugin = {};
 
-plugin.createIndex = toPromise((function(_, ee) {
-  if ("object" != typeof _) return ee(new Error("you must provide an index to create"));
-  (isRemote(this) ? createIndex : createIndexAsCallback)(this, _, ee);
+plugin.createIndex = resolveToCallback((async function(_) {
+  if ("object" != typeof _) throw new Error("you must provide an index to create");
+  return (isRemote(this) ? createIndex : createIndex$1)(this, _);
 }));
 
-plugin.find = toPromise((function(_, ee) {
-  if ("undefined" == typeof ee) {
-    ee = _;
-    _ = void 0;
-  }
-  if ("object" != typeof _) return ee(new Error("you must provide search parameters to find()"));
-  (isRemote(this) ? find : findAsCallback)(this, _, ee);
+plugin.find = resolveToCallback((async function(_) {
+  if ("object" != typeof _) throw new Error("you must provide search parameters to find()");
+  return (isRemote(this) ? find : find$1)(this, _);
 }));
 
-plugin.explain = toPromise((function(_, ee) {
-  if ("undefined" == typeof ee) {
-    ee = _;
-    _ = void 0;
-  }
-  if ("object" != typeof _) return ee(new Error("you must provide search parameters to explain()"));
-  (isRemote(this) ? explain : explainAsCallback)(this, _, ee);
+plugin.explain = resolveToCallback((async function(_) {
+  if ("object" != typeof _) throw new Error("you must provide search parameters to explain()");
+  return (isRemote(this) ? explain : explain$1)(this, _);
 }));
 
-plugin.getIndexes = toPromise((function(_) {
-  (isRemote(this) ? getIndexes : getIndexesAsCallback)(this, _);
+plugin.getIndexes = resolveToCallback((async function() {
+  return (isRemote(this) ? getIndexes : getIndexes$1)(this);
 }));
 
-plugin.deleteIndex = toPromise((function(_, ee) {
-  if ("object" != typeof _) return ee(new Error("you must provide an index to delete"));
-  (isRemote(this) ? deleteIndex : deleteIndexAsCallback)(this, _, ee);
+plugin.deleteIndex = resolveToCallback((async function(_) {
+  if ("object" != typeof _) throw new Error("you must provide an index to delete");
+  return (isRemote(this) ? deleteIndex : deleteIndex$1)(this, _);
 }));
 
 var index_browser_es_default3 = plugin, import_transform_pouch = __toESM(require_transform_pouch(), 1);
@@ -20790,12 +17169,12 @@ function get_each_context_1(_, ee, ne) {
 }
 
 function create_else_block(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce, we, Oe, ke, xe, Ae, Le, Re = new Date(_[3].mtime).toLocaleString() + "", Te = _[5].length + "", Pe = new Date(_[4].mtime).toLocaleString() + "", Ie = _[6].length + "", De = ensure_array_like(_[11]), Be = [];
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe, Ae, xe, Re = new Date(_[3].mtime).toLocaleString() + "", Te = _[5].length + "", Pe = new Date(_[4].mtime).toLocaleString() + "", Ie = _[6].length + "", De = ensure_array_like(_[11]), Be = [];
   for (let ee = 0; ee < De.length; ee += 1) Be[ee] = create_each_block_1(get_each_context_1(_, De, ee));
   function select_block_type_1(_, ee) {
     if (false != _[8]) return create_if_block_3; else return create_else_block_1;
   }
-  let Ne = select_block_type_1(_), Me = Ne(_), Fe = _[3]._id == _[4]._id && create_if_block_2(_), je = _[3]._id == _[4]._id && create_if_block_1(_);
+  let Ne = select_block_type_1(_), Me = Ne(_), Fe = _[3]._id == _[4]._id && create_if_block_2(_), Ve = _[3]._id == _[4]._id && create_if_block_1(_);
   return {
     c() {
       ee = element("div");
@@ -20816,21 +17195,21 @@ function create_else_block(_) {
       ge = element("div");
       me = text(_[2]);
       ye = space();
-      if (je) je.c();
-      ve = text(" ,");
-      Se = text(Pe);
-      Ee = space();
+      if (Ve) Ve.c();
+      Se = text(" ,");
+      Ee = text(Pe);
+      ve = space();
       Ce = text(Ie);
       we = text(" letters");
-      Oe = space();
-      ke = element("div");
-      xe = element("button");
-      xe.textContent = "Apply";
+      ke = space();
+      Le = element("div");
+      Oe = element("button");
+      Oe.textContent = "Apply";
       attr(ee, "class", "options svelte-guf68w");
       attr(re, "class", "svelte-guf68w");
       attr(ge, "class", "svelte-guf68w");
-      attr(xe, "class", "svelte-guf68w");
-      attr(ke, "class", "buttons svelte-guf68w");
+      attr(Oe, "class", "svelte-guf68w");
+      attr(Le, "class", "buttons svelte-guf68w");
     },
     m(Re, Te) {
       insert(Re, ee, Te);
@@ -20851,17 +17230,17 @@ function create_else_block(_) {
       insert(Re, ge, Te);
       append(ge, me);
       append(ge, ye);
-      if (je) je.m(ge, null);
-      append(ge, ve);
+      if (Ve) Ve.m(ge, null);
       append(ge, Se);
       append(ge, Ee);
+      append(ge, ve);
       append(ge, Ce);
       append(ge, we);
-      insert(Re, Oe, Te);
       insert(Re, ke, Te);
-      append(ke, xe);
+      insert(Re, Le, Te);
+      append(Le, Oe);
       if (!Ae) {
-        Le = listen(xe, "click", _[12]);
+        xe = listen(Oe, "click", _[12]);
         Ae = true;
       }
     },
@@ -20900,15 +17279,15 @@ function create_else_block(_) {
       if (8 & ne && Re !== (Re = new Date(_[3].mtime).toLocaleString() + "")) set_data(ue, Re);
       if (32 & ne && Te !== (Te = _[5].length + "")) set_data(fe, Te);
       if (4 & ne) set_data(me, _[2]);
-      if (_[3]._id == _[4]._id) if (je) je.p(_, ne); else {
-        je = create_if_block_1(_);
-        je.c();
-        je.m(ge, ve);
-      } else if (je) {
-        je.d(1);
-        je = null;
+      if (_[3]._id == _[4]._id) if (Ve) Ve.p(_, ne); else {
+        Ve = create_if_block_1(_);
+        Ve.c();
+        Ve.m(ge, Se);
+      } else if (Ve) {
+        Ve.d(1);
+        Ve = null;
       }
-      if (16 & ne && Pe !== (Pe = new Date(_[4].mtime).toLocaleString() + "")) set_data(Se, Pe);
+      if (16 & ne && Pe !== (Pe = new Date(_[4].mtime).toLocaleString() + "")) set_data(Ee, Pe);
       if (64 & ne && Ie !== (Ie = _[6].length + "")) set_data(Ce, Ie);
     },
     d(_) {
@@ -20919,15 +17298,15 @@ function create_else_block(_) {
         detach(re);
         detach(pe);
         detach(ge);
-        detach(Oe);
         detach(ke);
+        detach(Le);
       }
       destroy_each(Be, _);
       Me.d(_);
       if (Fe) Fe.d();
-      if (je) je.d();
+      if (Ve) Ve.d();
       Ae = false;
-      Le();
+      xe();
     }
   };
 }
@@ -21218,9 +17597,9 @@ function revStringToRevNumber(_) {
 }
 
 function instance(_, ee, ne) {
-  let ie, re, se, oe, le, ue, {docs: de = []} = ee, {callback: fe = (async (_, ee) => {
+  let ie, re, se, oe, le, ue, {docs: de = []} = ee, {callback: fe = async (_, ee) => {
     Promise.resolve();
-  })} = ee, {filename: he = ""} = ee, {nameA: pe = "A"} = ee, {nameB: ge = "B"} = ee, {defaultSelect: me = ""} = ee, ye = "", ve = "", Se = {}, Ee = {}, Ce = {}, we = {}, Oe = me;
+  }} = ee, {filename: he = ""} = ee, {nameA: pe = "A"} = ee, {nameB: ge = "B"} = ee, {defaultSelect: me = ""} = ee, ye = "", Se = "", Ee = {}, ve = {}, Ce = {}, we = {}, ke = me;
   function docToString(_) {
     return "plain" == _.datatype ? getDocData(_.data) : readString(new Uint8Array(decodeBinary(_.data)));
   }
@@ -21242,14 +17621,14 @@ function instance(_, ee, ne) {
         ne(4, le = de[0]);
       }
       ne(5, ye = docToString(oe));
-      ne(6, ve = docToString(le));
+      ne(6, Se = docToString(le));
       try {
-        ne(16, Se = false);
-        ne(17, Ee = false);
-        ne(16, Se = JSON.parse(ye));
-        ne(17, Ee = JSON.parse(ve));
-        ne(18, Ce = mergeObject(Se, Ee));
-        ne(19, we = mergeObject(Ee, Se));
+        ne(16, Ee = false);
+        ne(17, ve = false);
+        ne(16, Ee = JSON.parse(ye));
+        ne(17, ve = JSON.parse(Se));
+        ne(18, Ce = mergeObject(Ee, ve));
+        ne(19, we = mergeObject(ve, Ee));
         if (JSON.stringify(Ce) == JSON.stringify(we)) ne(19, we = false);
       } catch (_) {
         ne(19, we = false);
@@ -21258,35 +17637,35 @@ function instance(_, ee, ne) {
     }
     if (983040 & _.$$.dirty) ne(9, ie = {
       "": false,
-      A: Se,
-      B: Ee,
+      A: Ee,
+      B: ve,
       AB: Ce,
       BA: we
     });
-    if (640 & _.$$.dirty) ne(8, re = Oe in ie ? ie[Oe] : {});
+    if (640 & _.$$.dirty) ne(8, re = ke in ie ? ie[ke] : {});
     if (65792 & _.$$.dirty) ne(10, ue = function getJsonDiff(_, ee) {
       return function getDiff(_, ee) {
         const ne = new import_diff_match_patch.diff_match_patch, ie = ne.diff_linesToChars_(_, ee), re = ne.diff_main(ie.chars1, ie.chars2, false);
         ne.diff_charsToLines_(re, ie.lineArray);
         return re;
       }(JSON.stringify(_, null, 2), JSON.stringify(ee, null, 2));
-    }(Se, re));
+    }(Ee, re));
     if (6 & _.$$.dirty) ne(11, se = [ [ "", "Not now" ], [ "A", pe || "A" ], [ "B", ge || "B" ], [ "AB", `${pe || "A"} + ${ge || "B"}` ], [ "BA", `${ge || "B"} + ${pe || "A"}` ] ]);
   };
-  return [ he, pe, ge, oe, le, ye, ve, Oe, re, ie, ue, se, function apply() {
+  return [ he, pe, ge, oe, le, ye, Se, ke, re, ie, ue, se, function apply() {
     if (oe._id == le._id) {
-      if ("A" == Oe) return fe(oe._rev, void 0);
-      if ("B" == Oe) return fe(le._rev, void 0);
+      if ("A" == ke) return fe(oe._rev, void 0);
+      if ("B" == ke) return fe(le._rev, void 0);
     } else {
-      if ("A" == Oe) return fe(void 0, docToString(oe));
-      if ("B" == Oe) return fe(void 0, docToString(le));
+      if ("A" == ke) return fe(void 0, docToString(oe));
+      if ("B" == ke) return fe(void 0, docToString(le));
     }
-    if ("BA" == Oe) return fe(void 0, JSON.stringify(we, null, 2));
-    if ("AB" == Oe) return fe(void 0, JSON.stringify(Ce, null, 2));
+    if ("BA" == ke) return fe(void 0, JSON.stringify(we, null, 2));
+    if ("AB" == ke) return fe(void 0, JSON.stringify(Ce, null, 2));
     fe(void 0, void 0);
-  }, de, fe, me, Se, Ee, Ce, we, function input_change_handler() {
-    Oe = this.__value;
-    ne(7, Oe);
+  }, de, fe, me, Ee, ve, Ce, we, function input_change_handler() {
+    ke = this.__value;
+    ne(7, ke);
   }, [ [] ] ];
 }
 
@@ -22191,12 +18570,12 @@ function create_if_block2(_) {
 }
 
 function create_if_block_12(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce = ensure_array_like(_[8]), we = [];
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce = ensure_array_like(_[8]), we = [];
   for (let ee = 0; ee < Ce.length; ee += 1) we[ee] = create_each_block2(get_each_context2(_, Ce, ee));
   function select_block_type_1(_, ee) {
     if (_[6] || _[1] && "" != _[2]) return create_if_block_42; else return create_else_block_2;
   }
-  let Oe = select_block_type_1(_), ke = Oe(_), xe = _[1] && create_if_block_22(_);
+  let ke = select_block_type_1(_), Le = ke(_), Oe = _[1] && create_if_block_22(_);
   return {
     c() {
       ee = element("span");
@@ -22214,10 +18593,10 @@ function create_if_block_12(_) {
       pe.textContent = "-";
       for (let _ = 0; _ < we.length; _ += 1) we[_].c();
       me = space();
-      ke.c();
+      Le.c();
       ye = space();
-      if (xe) xe.c();
-      ve = empty();
+      if (Oe) Oe.c();
+      Se = empty();
       attr(ne, "class", "message svelte-tsbdtg");
       attr(se, "class", "message svelte-tsbdtg");
       attr(ue, "class", "message svelte-tsbdtg");
@@ -22242,13 +18621,13 @@ function create_if_block_12(_) {
       for (let _ = 0; _ < we.length; _ += 1) if (we[_]) we[_].m(he, null);
       select_option(he, _[2], true);
       insert(ge, me, Ce);
-      ke.m(ge, Ce);
+      Le.m(ge, Ce);
       insert(ge, ye, Ce);
-      if (xe) xe.m(ge, Ce);
-      insert(ge, ve, Ce);
-      if (!Se) {
-        Ee = listen(he, "change", _[24]);
-        Se = true;
+      if (Oe) Oe.m(ge, Ce);
+      insert(ge, Se, Ce);
+      if (!Ee) {
+        ve = listen(he, "change", _[24]);
+        Ee = true;
       }
     },
     p(_, ee) {
@@ -22270,21 +18649,21 @@ function create_if_block_12(_) {
         we.length = Ce.length;
       }
       if (260 & ee[0]) select_option(he, _[2]);
-      if (Oe === (Oe = select_block_type_1(_)) && ke) ke.p(_, ee); else {
-        ke.d(1);
-        ke = Oe(_);
-        if (ke) {
-          ke.c();
-          ke.m(ye.parentNode, ye);
+      if (ke === (ke = select_block_type_1(_)) && Le) Le.p(_, ee); else {
+        Le.d(1);
+        Le = ke(_);
+        if (Le) {
+          Le.c();
+          Le.m(ye.parentNode, ye);
         }
       }
-      if (_[1]) if (xe) xe.p(_, ee); else {
-        xe = create_if_block_22(_);
-        xe.c();
-        xe.m(ve.parentNode, ve);
-      } else if (xe) {
-        xe.d(1);
-        xe = null;
+      if (_[1]) if (Oe) Oe.p(_, ee); else {
+        Oe = create_if_block_22(_);
+        Oe.c();
+        Oe.m(Se.parentNode, Se);
+      } else if (Oe) {
+        Oe.d(1);
+        Oe = null;
       }
     },
     d(_) {
@@ -22294,13 +18673,13 @@ function create_if_block_12(_) {
         detach(he);
         detach(me);
         detach(ye);
-        detach(ve);
+        detach(Se);
       }
       destroy_each(we, _);
-      ke.d(_);
-      if (xe) xe.d(_);
-      Se = false;
-      Ee();
+      Le.d(_);
+      if (Oe) Oe.d(_);
+      Ee = false;
+      ve();
     }
   };
 }
@@ -22563,7 +18942,7 @@ function create_fragment2(_) {
 function instance2(_, ee, ne) {
   let {list: ie = []} = ee, {thisTerm: re = ""} = ee, {hideNotApplicable: se = false} = ee, {selectNewest: oe = 0} = ee, {applyAllPluse: le = 0} = ee, {applyData: ue} = ee, {compareData: de} = ee, {deleteData: fe} = ee, {hidden: he} = ee, {plugin: pe} = ee, {isMaintenanceMode: ge = false} = ee;
   const me = pe.addOnConfigSync;
-  let ye = "", ve = "", Se = "", Ee = "", Ce = false, we = false, Oe = 0, ke = 0, xe = [];
+  let ye = "", Se = "", Ee = "", ve = "", Ce = false, we = false, ke = 0, Le = 0, Oe = [];
   async function comparePlugin(_, ee) {
     var ne, ie;
     let re = "", se = "", oe = false, le = false;
@@ -22654,22 +19033,22 @@ function instance2(_, ee, ne) {
   };
   _.$$.update = () => {
     if (4268034 & _.$$.dirty[0]) {
-      const _ = oe != Oe;
-      ne(22, Oe = oe);
+      const _ = oe != ke;
+      ne(22, ke = oe);
       (async function updateTerms(_, ee, ie) {
         const oe = _.find((_ => _.term == re));
         ne(2, ye = "");
-        if (ie) ne(8, xe = [ ...new Set(_.map((_ => _.term))) ]); else if (se) {
+        if (ie) ne(8, Oe = [ ...new Set(_.map((_ => _.term))) ]); else if (se) {
           const ee = [], ie = [ ...new Set(_.map((_ => _.term))) ];
           for (const ne of ie) {
             const ie = _.find((_ => _.term == ne));
             if ((await comparePlugin(oe, ie)).canApply) ee.push(ne);
           }
-          ne(8, xe = [ ...ee ]);
-        } else ne(8, xe = [ ...new Set(_.map((_ => _.term))) ].filter((_ => _ != re)));
+          ne(8, Oe = [ ...ee ]);
+        } else ne(8, Oe = [ ...new Set(_.map((_ => _.term))) ].filter((_ => _ != re)));
         let le = oe;
         if (ee) {
-          for (const ee of xe) {
+          for (const ee of Oe) {
             const ne = _.find((_ => _.term == ee));
             if (ne && ne.mtime && ((null == le ? void 0 : le.mtime) || 0) < ne.mtime) le = ne;
           }
@@ -22678,31 +19057,31 @@ function instance2(_, ee, ne) {
       })(ie, _, ge);
     }
     if (8519685 & _.$$.dirty[0]) {
-      const _ = le != ke;
-      ne(23, ke = le);
+      const _ = le != Le;
+      ne(23, Le = le);
       if (_ && ye) if (!he) applySelected();
     }
     if (24580 & _.$$.dirty[0]) {
-      ne(3, ve = "");
-      ne(4, Se = "");
-      ne(5, Ee = "");
+      ne(3, Se = "");
+      ne(4, Ee = "");
+      ne(5, ve = "");
       ne(6, Ce = false);
       if ("" == ye) ; else if (ye == re) {
-        ne(3, ve = "This device");
+        ne(3, Se = "This device");
         ne(6, Ce = false);
       } else (async function performCompare(_, ee) {
         var ie, re, se;
         const oe = await comparePlugin(_, ee);
         ne(6, Ce = oe.canApply);
-        ne(3, ve = oe.freshness);
-        ne(4, Se = oe.equivalency);
-        ne(5, Ee = oe.version);
+        ne(3, Se = oe.freshness);
+        ne(4, Ee = oe.equivalency);
+        ne(5, ve = oe.version);
         ne(7, we = oe.canCompare);
         if (1 != (null == _ ? void 0 : _.files.length) || !(null === (se = null === (re = null === (ie = null == _ ? void 0 : _.files) || void 0 === ie ? void 0 : ie.first()) || void 0 === re ? void 0 : re.filename) || void 0 === se ? void 0 : se.endsWith(".json"))) ne(7, we = false);
       })(ie.find((_ => _.term == re)), ie.find((_ => _.term == ye)));
     }
   };
-  return [ he, ge, ye, ve, Se, Ee, Ce, we, xe, applySelected, async function compareSelected() {
+  return [ he, ge, ye, Se, Ee, ve, Ce, we, Oe, applySelected, async function compareSelected() {
     const _ = ie.find((_ => _.term == re)), ee = ie.find((_ => _.term == ye));
     if (_ && ee && await de(_, ee)) me.updatePluginList(true, _.documentPath);
   }, async function deleteSelected() {
@@ -22719,10 +19098,10 @@ function instance2(_, ee, ne) {
       await me.storeCustomizationFiles(ne, ee);
       await me.updatePluginList(false, me.filenameToUnifiedKey(ne, ee));
     }
-  }, ie, re, se, oe, le, ue, de, fe, pe, Oe, ke, function select_change_handler() {
+  }, ie, re, se, oe, le, ue, de, fe, pe, ke, Le, function select_change_handler() {
     ye = select_value(this);
     ne(2, ye);
-    ne(8, xe);
+    ne(8, Oe);
   } ];
 }
 
@@ -23019,16 +19398,16 @@ function create_if_block_6(_) {
 }
 
 function create_each_block_3(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye = _[18](_[71]) + "", ve = _[56] + "";
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye = _[18](_[71]) + "", Se = _[56] + "";
   function click_handler_6(...ee) {
     return _[32](_[66], _[56], _[70], ...ee);
   }
-  const Se = [ create_if_block_6, create_else_block_4 ], Ee = [];
+  const Ee = [ create_if_block_6, create_else_block_4 ], ve = [];
   function select_block_type_1(_, ee) {
     if (_[71] == MODE_SELECTIVE) return 0; else return 1;
   }
   de = select_block_type_1(_);
-  fe = Ee[de] = Se[de](_);
+  fe = ve[de] = Ee[de](_);
   return {
     c() {
       ee = element("div");
@@ -23037,7 +19416,7 @@ function create_each_block_3(_) {
       re = text(ye);
       se = space();
       oe = element("span");
-      le = text(ve);
+      le = text(Se);
       ue = space();
       fe.c();
       attr(ie, "class", "status svelte-1mend9p");
@@ -23054,7 +19433,7 @@ function create_each_block_3(_) {
       append(ne, oe);
       append(oe, le);
       append(ee, ue);
-      Ee[de].m(ee, null);
+      ve[de].m(ee, null);
       pe = true;
       if (!ge) {
         me = listen(ie, "click", click_handler_6);
@@ -23064,18 +19443,18 @@ function create_each_block_3(_) {
     p(ne, ie) {
       _ = ne;
       if ((!pe || 96 & ie[0]) && ye !== (ye = _[18](_[71]) + "")) set_data(re, ye);
-      if ((!pe || 64 & ie[0]) && ve !== (ve = _[56] + "")) set_data(le, ve);
+      if ((!pe || 64 & ie[0]) && Se !== (Se = _[56] + "")) set_data(le, Se);
       let se = de;
       de = select_block_type_1(_);
-      if (de === se) Ee[de].p(_, ie); else {
+      if (de === se) ve[de].p(_, ie); else {
         group_outros();
-        transition_out(Ee[se], 1, 1, (() => {
-          Ee[se] = null;
+        transition_out(ve[se], 1, 1, (() => {
+          ve[se] = null;
         }));
         check_outros();
-        fe = Ee[de];
+        fe = ve[de];
         if (!fe) {
-          fe = Ee[de] = Se[de](_);
+          fe = ve[de] = Ee[de](_);
           fe.c();
         } else fe.p(_, ie);
         transition_in(fe, 1);
@@ -23095,7 +19474,7 @@ function create_each_block_3(_) {
     },
     d(_) {
       if (_) detach(ee);
-      Ee[de].d();
+      ve[de].d();
       ge = false;
       me();
     }
@@ -23236,7 +19615,7 @@ function create_else_block_32(_) {
 }
 
 function create_if_block_23(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce, we, Oe, ke, xe, Ae, Le, Re = _[18](_[61]) + "", Te = _[18](_[63]) + "";
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe, Ae, xe, Re = _[18](_[61]) + "", Te = _[18](_[63]) + "";
   function click_handler_8(...ee) {
     return _[35](_[56], _[60], ...ee);
   }
@@ -23271,20 +19650,20 @@ function create_if_block_23(_) {
       ge = element("div");
       me = element("button");
       ye = text(Te);
+      Se = space();
+      Ee = element("span");
+      Ee.textContent = "DATA";
       ve = space();
-      Se = element("span");
-      Se.textContent = "DATA";
-      Ee = space();
       we.c();
-      Oe = space();
+      ke = space();
       attr(ie, "class", "status svelte-1mend9p");
       attr(oe, "class", "name");
       attr(ne, "class", "filetitle svelte-1mend9p");
       attr(ee, "class", fe = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p");
       attr(me, "class", "status svelte-1mend9p");
-      attr(Se, "class", "name");
+      attr(Ee, "class", "name");
       attr(ge, "class", "filetitle svelte-1mend9p");
-      attr(pe, "class", ke = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p");
+      attr(pe, "class", Le = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p");
     },
     m(_, de) {
       insert(_, ee, de);
@@ -23300,20 +19679,20 @@ function create_if_block_23(_) {
       append(pe, ge);
       append(ge, me);
       append(me, ye);
-      append(ge, ve);
       append(ge, Se);
-      append(pe, Ee);
+      append(ge, Ee);
+      append(pe, ve);
       Be[Ce].m(pe, null);
-      append(pe, Oe);
-      xe = true;
+      append(pe, ke);
+      Oe = true;
       if (!Ae) {
-        Le = [ listen(ie, "click", click_handler_8), listen(me, "click", click_handler_9) ];
+        xe = [ listen(ie, "click", click_handler_8), listen(me, "click", click_handler_9) ];
         Ae = true;
       }
     },
     p(ne, ie) {
       _ = ne;
-      if ((!xe || 33 & ie[0]) && Re !== (Re = _[18](_[61]) + "")) set_data(re, Re);
+      if ((!Oe || 33 & ie[0]) && Re !== (Re = _[18](_[61]) + "")) set_data(re, Re);
       let se = ue;
       ue = select_block_type_3(_);
       if (ue === se) Ie[ue].p(_, ie); else {
@@ -23330,8 +19709,8 @@ function create_if_block_23(_) {
         transition_in(de, 1);
         de.m(ee, null);
       }
-      if (!xe || 4 & ie[0] && fe !== (fe = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(ee, "class", fe);
-      if ((!xe || 33 & ie[0]) && Te !== (Te = _[18](_[63]) + "")) set_data(ye, Te);
+      if (!Oe || 4 & ie[0] && fe !== (fe = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(ee, "class", fe);
+      if ((!Oe || 33 & ie[0]) && Te !== (Te = _[18](_[63]) + "")) set_data(ye, Te);
       let oe = Ce;
       Ce = select_block_type_4(_);
       if (Ce === oe) Be[Ce].p(_, ie); else {
@@ -23346,21 +19725,21 @@ function create_if_block_23(_) {
           we.c();
         } else we.p(_, ie);
         transition_in(we, 1);
-        we.m(pe, Oe);
+        we.m(pe, ke);
       }
-      if (!xe || 4 & ie[0] && ke !== (ke = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(pe, "class", ke);
+      if (!Oe || 4 & ie[0] && Le !== (Le = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(pe, "class", Le);
     },
     i(_) {
-      if (!xe) {
+      if (!Oe) {
         transition_in(de);
         transition_in(we);
-        xe = true;
+        Oe = true;
       }
     },
     o(_) {
       transition_out(de);
       transition_out(we);
-      xe = false;
+      Oe = false;
     },
     d(_) {
       if (_) {
@@ -23371,7 +19750,7 @@ function create_if_block_23(_) {
       Ie[ue].d();
       Be[Ce].d();
       Ae = false;
-      run_all(Le);
+      run_all(xe);
     }
   };
 }
@@ -23507,26 +19886,26 @@ function create_if_block_33(_) {
 }
 
 function create_each_block_12(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se = _[18](_[59]) + "", Ee = _[56] + "";
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee = _[18](_[59]) + "", ve = _[56] + "";
   function click_handler_7(...ee) {
     return _[34](_[56], _[58], ...ee);
   }
   let Ce = _[59] == MODE_SELECTIVE && create_if_block_52(_);
-  const we = [ create_if_block_23, create_else_block_32 ], Oe = [];
+  const we = [ create_if_block_23, create_else_block_32 ], ke = [];
   function select_block_type_2(_, ee) {
     if (_[59] == MODE_SELECTIVE) return 0; else return 1;
   }
   he = select_block_type_2(_);
-  pe = Oe[he] = we[he](_);
+  pe = ke[he] = we[he](_);
   return {
     c() {
       ee = element("div");
       ne = element("div");
       ie = element("button");
-      re = text(Se);
+      re = text(Ee);
       se = space();
       oe = element("span");
-      le = text(Ee);
+      le = text(ve);
       ue = space();
       if (Ce) Ce.c();
       fe = space();
@@ -23548,18 +19927,18 @@ function create_each_block_12(_) {
       append(ee, ue);
       if (Ce) Ce.m(ee, null);
       insert(_, fe, de);
-      Oe[he].m(_, de);
+      ke[he].m(_, de);
       insert(_, ge, de);
       me = true;
       if (!ye) {
-        ve = listen(ie, "click", click_handler_7);
+        Se = listen(ie, "click", click_handler_7);
         ye = true;
       }
     },
     p(ne, ie) {
       _ = ne;
-      if ((!me || 33 & ie[0]) && Se !== (Se = _[18](_[59]) + "")) set_data(re, Se);
-      if ((!me || 1 & ie[0]) && Ee !== (Ee = _[56] + "")) set_data(le, Ee);
+      if ((!me || 33 & ie[0]) && Ee !== (Ee = _[18](_[59]) + "")) set_data(re, Ee);
+      if ((!me || 1 & ie[0]) && ve !== (ve = _[56] + "")) set_data(le, ve);
       if (_[59] == MODE_SELECTIVE) if (Ce) {
         Ce.p(_, ie);
         if (33 & ie[0]) transition_in(Ce, 1);
@@ -23578,15 +19957,15 @@ function create_each_block_12(_) {
       if (!me || 4 & ie[0] && de !== (de = "labelrow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(ee, "class", de);
       let se = he;
       he = select_block_type_2(_);
-      if (he === se) Oe[he].p(_, ie); else {
+      if (he === se) ke[he].p(_, ie); else {
         group_outros();
-        transition_out(Oe[se], 1, 1, (() => {
-          Oe[se] = null;
+        transition_out(ke[se], 1, 1, (() => {
+          ke[se] = null;
         }));
         check_outros();
-        pe = Oe[he];
+        pe = ke[he];
         if (!pe) {
-          pe = Oe[he] = we[he](_);
+          pe = ke[he] = we[he](_);
           pe.c();
         } else pe.p(_, ie);
         transition_in(pe, 1);
@@ -23612,9 +19991,9 @@ function create_each_block_12(_) {
         detach(ge);
       }
       if (Ce) Ce.d();
-      Oe[he].d(_);
+      ke[he].d(_);
       ye = false;
-      ve();
+      Se();
     }
   };
 }
@@ -23717,14 +20096,14 @@ function create_each_block3(_) {
 }
 
 function create_fragment3(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce, we, Oe, ke, xe, Ae, Le, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe = _[1] && create_if_block_8(_), je = _[3] && create_if_block_7(_);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe, Ae, xe, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe = _[1] && create_if_block_8(_), Ve = _[3] && create_if_block_7(_);
   const $e = [ create_if_block_13, create_else_block3 ], Ge = [];
   function select_block_type(_, ee) {
     if (0 == _[0].length) return 0; else return 1;
   }
-  Ee = select_block_type(_);
-  Ce = Ge[Ee] = $e[Ee](_);
-  let Ve = _[1] && create_if_block3(_);
+  ve = select_block_type(_);
+  Ce = Ge[ve] = $e[ve](_);
+  let Ue = _[1] && create_if_block3(_);
   return {
     c() {
       ee = element("div");
@@ -23748,18 +20127,18 @@ function create_fragment3(_) {
       me = element("button");
       me.textContent = "Apply All";
       ye = space();
-      if (je) je.c();
-      ve = space();
-      Se = element("div");
+      if (Ve) Ve.c();
+      Se = space();
+      Ee = element("div");
       Ce.c();
       we = space();
-      if (Ve) Ve.c();
-      Oe = space();
-      ke = element("div");
-      xe = element("label");
+      if (Ue) Ue.c();
+      ke = space();
+      Le = element("div");
+      Oe = element("label");
       Ae = element("span");
       Ae.textContent = "Hide not applicable items";
-      Le = element("input");
+      xe = element("input");
       Re = space();
       Te = element("div");
       Pe = element("label");
@@ -23773,11 +20152,11 @@ function create_fragment3(_) {
       attr(ie, "class", "buttons svelte-1mend9p");
       attr(me, "class", "svelte-1mend9p");
       attr(ge, "class", "buttons svelte-1mend9p");
-      attr(Se, "class", "list");
+      attr(Ee, "class", "list");
       attr(Ae, "class", "svelte-1mend9p");
-      attr(Le, "type", "checkbox");
-      attr(xe, "class", "svelte-1mend9p");
-      attr(ke, "class", "buttons svelte-1mend9p");
+      attr(xe, "type", "checkbox");
+      attr(Oe, "class", "svelte-1mend9p");
+      attr(Le, "class", "buttons svelte-1mend9p");
       attr(Ie, "class", "svelte-1mend9p");
       attr(De, "type", "checkbox");
       attr(Pe, "class", "svelte-1mend9p");
@@ -23800,18 +20179,18 @@ function create_fragment3(_) {
       append(ne, ge);
       append(ge, me);
       append(ee, ye);
-      if (je) je.m(ee, null);
-      append(ee, ve);
-      append(ee, Se);
-      Ge[Ee].m(Se, null);
-      append(ee, we);
       if (Ve) Ve.m(ee, null);
-      append(ee, Oe);
+      append(ee, Se);
+      append(ee, Ee);
+      Ge[ve].m(Ee, null);
+      append(ee, we);
+      if (Ue) Ue.m(ee, null);
       append(ee, ke);
-      append(ke, xe);
-      append(xe, Ae);
-      append(xe, Le);
-      Le.checked = _[2];
+      append(ee, Le);
+      append(Le, Oe);
+      append(Oe, Ae);
+      append(Oe, xe);
+      xe.checked = _[2];
       append(ee, Re);
       append(ee, Te);
       append(Te, Pe);
@@ -23820,7 +20199,7 @@ function create_fragment3(_) {
       De.checked = _[1];
       Be = true;
       if (!Ne) {
-        Me = [ listen(re, "click", _[25]), listen(oe, "click", _[26]), listen(ue, "click", _[27]), listen(he, "click", _[29]), listen(me, "click", _[30]), listen(Le, "change", _[39]), listen(De, "change", _[40]) ];
+        Me = [ listen(re, "click", _[25]), listen(oe, "click", _[26]), listen(ue, "click", _[27]), listen(he, "click", _[29]), listen(me, "click", _[30]), listen(xe, "change", _[39]), listen(De, "change", _[40]) ];
         Ne = true;
       }
     },
@@ -23833,39 +20212,39 @@ function create_fragment3(_) {
         Fe.d(1);
         Fe = null;
       }
-      if (_[3]) if (je) ; else {
-        je = create_if_block_7(_);
-        je.c();
-        je.m(ee, ve);
-      } else if (je) {
-        je.d(1);
-        je = null;
+      if (_[3]) if (Ve) ; else {
+        Ve = create_if_block_7(_);
+        Ve.c();
+        Ve.m(ee, Se);
+      } else if (Ve) {
+        Ve.d(1);
+        Ve = null;
       }
-      let re = Ee;
-      Ee = select_block_type(_);
-      if (Ee === re) Ge[Ee].p(_, ne); else {
+      let re = ve;
+      ve = select_block_type(_);
+      if (ve === re) Ge[ve].p(_, ne); else {
         group_outros();
         transition_out(Ge[re], 1, 1, (() => {
           Ge[re] = null;
         }));
         check_outros();
-        Ce = Ge[Ee];
+        Ce = Ge[ve];
         if (!Ce) {
-          Ce = Ge[Ee] = $e[Ee](_);
+          Ce = Ge[ve] = $e[ve](_);
           Ce.c();
         } else Ce.p(_, ne);
         transition_in(Ce, 1);
-        Ce.m(Se, null);
+        Ce.m(Ee, null);
       }
-      if (_[1]) if (Ve) Ve.p(_, ne); else {
-        Ve = create_if_block3(_);
-        Ve.c();
-        Ve.m(ee, Oe);
-      } else if (Ve) {
-        Ve.d(1);
-        Ve = null;
+      if (_[1]) if (Ue) Ue.p(_, ne); else {
+        Ue = create_if_block3(_);
+        Ue.c();
+        Ue.m(ee, ke);
+      } else if (Ue) {
+        Ue.d(1);
+        Ue = null;
       }
-      if (4 & ne[0]) Le.checked = _[2];
+      if (4 & ne[0]) xe.checked = _[2];
       if (2 & ne[0]) De.checked = _[1];
     },
     i(_) {
@@ -23881,9 +20260,9 @@ function create_fragment3(_) {
     d(_) {
       if (_) detach(ee);
       if (Fe) Fe.d();
-      if (je) je.d();
-      Ge[Ee].d();
       if (Ve) Ve.d();
+      Ge[ve].d();
+      if (Ue) Ue.d();
       Ne = false;
       run_all(Me);
     }
@@ -23955,9 +20334,9 @@ function instance3(_, ee, ne) {
     const re = new import_obsidian3.Menu;
     re.addItem((_ => _.setTitle(ee).setIsLabel(true)));
     re.addSeparator();
-    const se = null !== (ie = Se.get(ne)) && void 0 !== ie ? ie : MODE_SELECTIVE;
+    const se = null !== (ie = Ee.get(ne)) && void 0 !== ie ? ie : MODE_SELECTIVE;
     for (const ee of [ MODE_SELECTIVE, MODE_AUTOMATIC, MODE_PAUSED ]) re.addItem((ie => {
-      ie.setTitle(`${getIcon(ee)}:${ve[ee]}`).onClick((ie => {
+      ie.setTitle(`${getIcon(ee)}:${Se[ee]}`).onClick((ie => {
         if (ee === MODE_AUTOMATIC) askOverwriteModeForAutomatic(_, ne); else setMode(ne, ee);
       })).setChecked(se == ee).setDisabled(se == ee);
     }));
@@ -23992,7 +20371,7 @@ function instance3(_, ee, ne) {
     [MODE_SELECTIVE]: "🔀",
     [MODE_PAUSED]: "⛔",
     [MODE_AUTOMATIC]: "✨"
-  }, ve = {
+  }, Se = {
     [MODE_SELECTIVE]: "Selective",
     [MODE_PAUSED]: "Ignore",
     [MODE_AUTOMATIC]: "Automatic"
@@ -24003,8 +20382,8 @@ function instance3(_, ee, ne) {
       setMode(PREFIX_PLUGIN_MAIN + _.substring(PREFIX_PLUGIN_ALL.length), ee);
     }
     const ie = unique(ue.filter((ee => `${ee.category}/${ee.name}` == _)).map((_ => _.files)).flat().map((_ => _.filename)));
-    Se.set(_, ee);
-    ne(5, Ee = Se);
+    Ee.set(_, ee);
+    ne(5, ve = Ee);
     if (!(_ in oe.settings.pluginSyncExtendedSetting)) ne(20, oe.settings.pluginSyncExtendedSetting[_] = {
       key: _,
       mode: ee,
@@ -24017,9 +20396,9 @@ function instance3(_, ee, ne) {
   function getIcon(_) {
     if (_ in ye) return ye[_];
   }
-  let Se = new Map, Ee = new Map;
-  for (const {key: _, mode: ee} of Object.values(oe.settings.pluginSyncExtendedSetting)) Se.set(_, ee);
-  Ee = Se;
+  let Ee = new Map, ve = new Map;
+  for (const {key: _, mode: ee} of Object.values(oe.settings.pluginSyncExtendedSetting)) Ee.set(_, ee);
+  ve = Ee;
   let Ce = {}, we = "";
   async function deleteAllItems(_) {
     const ee = ue.filter((ee => ee.term == _));
@@ -24061,11 +20440,11 @@ function instance3(_, ee, ne) {
     }
   };
   ne(23, ie = false);
-  return [ ue, ge, fe, he, me, Ee, Ce, we, se, requestUpdate, requestReload, {
+  return [ ue, ge, fe, he, me, ve, Ce, we, se, requestUpdate, requestReload, {
     CONFIG: "Configuration",
     THEME: "Themes",
     SNIPPET: "Snippets"
-  }, scanAgain, replicate2, selectAllNewest, applyAll, askMode, ve, getIcon, deleteAllItems, oe, de, pe, ie, re, () => scanAgain(), () => replicate2(), () => requestUpdate(), () => requestReload(), () => selectAllNewest(), () => applyAll(), ([_, ee]) => _ in Ce, (_, ee, ne, ie) => askMode(ie, `${_}/${ee}`, ne), (_, ee, ne) => ne.category == _ && ne.name == ee, (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ALL}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_MAIN}/${_}/MAIN`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_DATA}/${_}`, ee), function select_change_handler() {
+  }, scanAgain, replicate2, selectAllNewest, applyAll, askMode, Se, getIcon, deleteAllItems, oe, de, pe, ie, re, () => scanAgain(), () => replicate2(), () => requestUpdate(), () => requestReload(), () => selectAllNewest(), () => applyAll(), ([_, ee]) => _ in Ce, (_, ee, ne, ie) => askMode(ie, `${_}/${ee}`, ne), (_, ee, ne) => ne.category == _ && ne.name == ee, (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ALL}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_MAIN}/${_}/MAIN`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_DATA}/${_}`, ee), function select_change_handler() {
     we = select_value(this);
     ne(7, we);
     ne(4, me);
@@ -24681,12 +21060,12 @@ function create_each_block4(_) {
 }
 
 function create_fragment4(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se = ensure_array_like(_[0]), Ee = [];
-  for (let ee = 0; ee < Se.length; ee += 1) Ee[ee] = create_each_block4(get_each_context4(_, Se, ee));
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee = ensure_array_like(_[0]), ve = [];
+  for (let ee = 0; ee < Ee.length; ee += 1) ve[ee] = create_each_block4(get_each_context4(_, Ee, ee));
   return {
     c() {
       ee = element("ul");
-      for (let _ = 0; _ < Ee.length; _ += 1) Ee[_].c();
+      for (let _ = 0; _ < ve.length; _ += 1) ve[_].c();
       ne = space();
       ie = element("li");
       re = element("label");
@@ -24708,7 +21087,7 @@ function create_fragment4(_) {
     },
     m(fe, me) {
       insert(fe, ee, me);
-      for (let _ = 0; _ < Ee.length; _ += 1) if (Ee[_]) Ee[_].m(ee, null);
+      for (let _ = 0; _ < ve.length; _ += 1) if (ve[_]) ve[_].m(ee, null);
       append(ee, ne);
       append(ee, ie);
       append(ie, re);
@@ -24721,24 +21100,24 @@ function create_fragment4(_) {
       append(le, pe);
       append(pe, ge);
       if (!ye) {
-        ve = [ listen(se, "click", _[10]), listen(ue, "click", _[12]), listen(pe, "click", _[14]) ];
+        Se = [ listen(se, "click", _[10]), listen(ue, "click", _[12]), listen(pe, "click", _[14]) ];
         ye = true;
       }
     },
     p(_, [ie]) {
       if (45 & ie) {
-        Se = ensure_array_like(_[0]);
+        Ee = ensure_array_like(_[0]);
         let re;
-        for (re = 0; re < Se.length; re += 1) {
-          const se = get_each_context4(_, Se, re);
-          if (Ee[re]) Ee[re].p(se, ie); else {
-            Ee[re] = create_each_block4(se);
-            Ee[re].c();
-            Ee[re].m(ee, ne);
+        for (re = 0; re < Ee.length; re += 1) {
+          const se = get_each_context4(_, Ee, re);
+          if (ve[re]) ve[re].p(se, ie); else {
+            ve[re] = create_each_block4(se);
+            ve[re].c();
+            ve[re].m(ee, ne);
           }
         }
-        for (;re < Ee.length; re += 1) Ee[re].d(1);
-        Ee.length = Se.length;
+        for (;re < ve.length; re += 1) ve[re].d(1);
+        ve.length = Ee.length;
       }
       if (12 & ie && fe !== (fe = _[3].some(_[11]) || _[2].every(func_1))) ue.disabled = fe;
       if (12 & ie && me !== (me = _[3].some(_[13]) || _[2].every(func_3))) pe.disabled = me;
@@ -24747,9 +21126,9 @@ function create_fragment4(_) {
     o: noop2,
     d(_) {
       if (_) detach(ee);
-      destroy_each(Ee, _);
+      destroy_each(ve, _);
       ye = false;
-      run_all(ve);
+      run_all(Se);
     }
   };
 }
@@ -24769,7 +21148,7 @@ function checkRegExp(_) {
 var func_1 = _ => "" == _, func_3 = _ => "" == _;
 
 function instance4(_, ee, ne) {
-  let ie, re, {patterns: se = []} = ee, {originals: oe = []} = ee, {apply: le = (_ => Promise.resolve())} = ee;
+  let ie, re, {patterns: se = []} = ee, {originals: oe = []} = ee, {apply: le = _ => Promise.resolve()} = ee;
   function revert() {
     ne(0, se = [ ...oe ]);
   }
@@ -24817,7 +21196,7 @@ function inlineWorker(_) {
 }
 
 function Worker2() {
-  return inlineWorker('var L=(t,e)=>(e=Symbol[t])?e:Symbol.for("Symbol."+t);var b=function(t,e){this[0]=t,this[1]=e},E=(t,e,n)=>{var r=(c,s,l,a)=>{try{var u=n[c](s),g=(s=u.value)instanceof b,x=u.done;Promise.resolve(g?s[0]:s).then(f=>g?r(c==="return"?c:"next",s[1]?{done:f.done,value:f.value}:f,l,a):l({value:f,done:x})).catch(f=>r("throw",f,l,a))}catch(f){a(f)}},o=c=>i[c]=s=>new Promise((l,a)=>r(c,s,l,a)),i={};return n=n.apply(t,e),i[L("asyncIterator")]=()=>i,o("next"),o("throw"),o("return"),i},m=t=>{var e=t[L("asyncIterator")],n=!1,r,o={};return e==null?(e=t[L("iterator")](),r=i=>o[i]=c=>e[i](c)):(e=e.call(t),r=i=>o[i]=c=>{if(n){if(n=!1,i==="throw")throw c;return c}return n=!0,{done:!1,value:new b(new Promise(s=>{var l=e[i](c);if(!(l instanceof Object))throw TypeError("Object expected");s(l)}),1)}}),o[L("iterator")]=()=>o,r("next"),"throw"in e?r("throw"):o.throw=i=>{throw i},"return"in e&&r("return"),o},B=(t,e,n)=>(e=t[L("asyncIterator")])?e.call(t):(t=t[L("iterator")](),e={},n=(r,o)=>(o=t[r])&&(e[r]=i=>new Promise((c,s,l)=>(i=o.call(t,i),l=i.done,Promise.resolve(i.value).then(a=>c({value:a,done:l}),s)))),n("next"),n("return"),e);var Z=3*5e7;function O(t){return new Promise((e,n)=>{let r=new Blob([t],{type:"application/octet-binary"}),o=new FileReader;o.onload=function(i){var l,a;let c=((a=(l=i.target)==null?void 0:l.result)==null?void 0:a.toString())||"";if(t.byteLength!=0&&(c==""||c=="data:"))return n(new TypeError("Could not parse the encoded string"));let s=c.substring(c.indexOf(",")+1);e(s)},o.readAsDataURL(r)})}async function A(t){let e=t instanceof Uint8Array?t:new Uint8Array(t);return e.byteLength<S?btoa(String.fromCharCode.apply(null,[...e])):await O(e)}var S=32768;var P={},N={};for(let t=0;t<256;t++)P[`00${t.toString(16)}`.slice(-2)]=t,N[t]=`00${t.toString(16)}`.slice(-2);function*v(t,e){for(let n=t;n<=e;n++)yield n}var R={},W={};[...v(192,447)].forEach((t,e)=>{R[e]=t,W[t]=e});var it=1024*1024*30;function T(t){return t.type==="text/plain"}function*$(t,e){let n="";t:do{let r=t.shift();if(typeof r=="undefined"){yield n;break t}if(r.startsWith("```")||r.startsWith(" ```")||r.startsWith("  ```")||r.startsWith("   ```")){yield n,n=r+(t.length!=0?`\n`:"");e:do{let s=t.shift();if(typeof s=="undefined")break e;n+=s+(t.length!=0?`\n`:"")}while(t.length>0&&!(t[0].startsWith("```")||t[0].startsWith(" ```")||t[0].startsWith("  ```")||t[0].startsWith("   ```")));let o=n.endsWith("="),i=n.length>2048,c=t.shift();if(typeof c!="undefined"&&(n+=c,n+=t.length!=0?`\n`:""),!o&&!i){let s=/(.*?[;,:<])/g,l=n.split(s).filter(a=>a!="");for(let a of l)yield a}else yield n;n=""}else n+=r+(t.length!=0?`\n`:""),(n.length>=e||t.length==0||t[0]=="#"||n[0]=="#")&&(yield n,n="")}while(t.length>0)}var U=10;function j(t,e,n,r){let o=typeof t=="string"?[t]:t;return function*(){for(let c of o)if(n){let s=c.split(`\n`),l=$(s,r);for(let a of l){let u=a;do{let g=e;u.charCodeAt(g-1)!=u.codePointAt(g-1)&&g++,yield u.substring(0,g),u=u.substring(g)}while(u!="")}}else{let s=c;do{let l=e,a=s.substring(0,l);s=s.substring(l),yield a}while(s!="")}}}function*z(t,e,n=25,r){let o="",i=!1,c=e.length;for(let s of t){let l=s.length;if(r&&l>r){yield o+s,i=!1,o="";continue}let a=-1,u=0;t:do{if(a=s.indexOf(e,u),a==-1)break t;o+=s.slice(u,a)+e,o.length>n?(yield o,o="",i=!1):i=!0,u=a+c}while(a<l);(u!=a||u==-1&&a==-1)&&(o+=s.slice(u),i=!0)}i&&(yield o)}function*_(t,e){let n=t.length;if(n>e){let r=0;do{let o=r+e;if(o>n){yield t.substring(r);break}for(;t.charCodeAt(o-1)!=t.codePointAt(o-1);)o++;yield t.substring(r,o),r=o}while(r<n)}else yield t}function*D(t,e){for(let n of t)yield*m(_(n,e))}function*H(t){for(let e of t)yield e}var X=100;async function G(t,e,n,r,o){if(t.size==0)return function*(){};if(T(t)){let g=await t.text();if(!n){let h=_(g,e);return function*(){yield*m(h)}}let x=g.length,f=r;for(;x/f>X;)f+=r;let y=H([g]),p=z(y,`\n`,f),d=D(p,e);return function*(){yield*m(d)}}let i=0;o&&o.endsWith(".pdf")&&(i=47);let l=Math.max(1e5,Math.min(1e8,t.size)),a=1,u=l;for(;u>10;)u/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return E(this,null,function*(){let x=t.size,f=0,y=new Uint8Array(yield new b(t.arrayBuffer()));do{let p=f+r,d=f+e,h,w=y.indexOf(i,p);w==-1&&(w=y.indexOf(U,p)),w==-1?h=d:h=w<d?w:d,yield yield new b(A(y.slice(f,h))),f=h}while(f<x)})}}async function F(t,e,n,r,o){if(T(t))return j(await t.text(),e,n,r);let i=0;o&&o.endsWith(".pdf")&&(i=47);let l=Math.max(1e5,Math.min(1e8,t.size)),a=1,u=l;for(;u>10;)u/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return E(this,null,function*(){let x=t.size,f=0;do{let y=e,p=new Uint8Array(yield new b(t.slice(f,f+e).arrayBuffer())),d=p.indexOf(i,r);y=d==-1?e:Math.min(e,d),d==-1&&(d=p.indexOf(U,r));let h=p.slice(0,y);f+=h.length,yield yield new b(A(h))}while(f<x)})}}self.onmessage=async t=>{let e=t.data.data,n=e.key,r=e.dataSrc,o=e.pieceSize,i=e.plainSplit,c=e.minimumChunkSize,s=e.filename,a=await(e.useV2?G:F)(r,o,i,c,s);try{for(var u=B(a()),g,x,f;g=!(x=await u.next()).done;g=!1){let y=x.value;self.postMessage([n,y])}}catch(x){f=[x]}finally{try{g&&(x=u.return)&&await x.call(u)}finally{if(f)throw f[0]}}self.postMessage([n,void 0])};\n');
+  return inlineWorker('var A=(e,t)=>(t=Symbol[e])?t:Symbol.for("Symbol."+e),O=e=>{throw TypeError(e)};var w=function(e,t){this[0]=e,this[1]=t},m=(e,t,n)=>{var r=(c,s,l,a)=>{try{var u=n[c](s),y=(s=u.value)instanceof w,x=u.done;Promise.resolve(y?s[0]:s).then(f=>y?r(c==="return"?c:"next",s[1]?{done:f.done,value:f.value}:f,l,a):l({value:f,done:x})).catch(f=>r("throw",f,l,a))}catch(f){a(f)}},o=c=>i[c]=s=>new Promise((l,a)=>r(c,s,l,a)),i={};return n=n.apply(e,t),i[A("asyncIterator")]=()=>i,o("next"),o("throw"),o("return"),i},E=e=>{var t=e[A("asyncIterator")],n=!1,r,o={};return t==null?(t=e[A("iterator")](),r=i=>o[i]=c=>t[i](c)):(t=t.call(e),r=i=>o[i]=c=>{if(n){if(n=!1,i==="throw")throw c;return c}return n=!0,{done:!1,value:new w(new Promise(s=>{var l=t[i](c);l instanceof Object||O("Object expected"),s(l)}),1)}}),o[A("iterator")]=()=>o,r("next"),"throw"in t?r("throw"):o.throw=i=>{throw i},"return"in t&&r("return"),o},B=(e,t,n)=>(t=e[A("asyncIterator")])?t.call(e):(e=e[A("iterator")](),t={},n=(r,o)=>(o=e[r])&&(t[r]=i=>new Promise((c,s,l)=>(i=o.call(e,i),l=i.done,Promise.resolve(i.value).then(a=>c({value:a,done:l}),s)))),n("next"),n("return"),t);var ie=3*5e7;function M(e){return new Promise((t,n)=>{let r=new Blob([e],{type:"application/octet-binary"}),o=new FileReader;o.onload=function(i){var l,a;let c=((a=(l=i.target)==null?void 0:l.result)==null?void 0:a.toString())||"";if(e.byteLength!=0&&(c==""||c=="data:"))return n(new TypeError("Could not parse the encoded string"));let s=c.substring(c.indexOf(",")+1);t(s)},o.readAsDataURL(r)})}async function L(e){let t=e instanceof Uint8Array?e:new Uint8Array(e);return t.byteLength<C?btoa(String.fromCharCode.apply(null,[...t])):await M(t)}var C=32768;function*T(e,t){for(let n=e;n<=t;n++)yield n}var le=1024*1024*30,V={},k={};[...T(192,447)].forEach((e,t)=>{V[t]=e,k[e]=t});var I={},v={};for(let e=0;e<256;e++)I[`00${e.toString(16)}`.slice(-2)]=e,v[e]=`00${e.toString(16)}`.slice(-2);function _(e){return e.type==="text/plain"}function*X(e,t){let n="";e:do{let r=e.shift();if(typeof r=="undefined"){yield n;break e}if(r.startsWith("```")||r.startsWith(" ```")||r.startsWith("  ```")||r.startsWith("   ```")){yield n,n=r+(e.length!=0?`\n`:"");t:do{let s=e.shift();if(typeof s=="undefined")break t;n+=s+(e.length!=0?`\n`:"")}while(e.length>0&&!(e[0].startsWith("```")||e[0].startsWith(" ```")||e[0].startsWith("  ```")||e[0].startsWith("   ```")));let o=n.endsWith("="),i=n.length>2048,c=e.shift();if(typeof c!="undefined"&&(n+=c,n+=e.length!=0?`\n`:""),!o&&!i){let s=/(.*?[;,:<])/g,l=n.split(s).filter(a=>a!="");for(let a of l)yield a}else yield n;n=""}else n+=r+(e.length!=0?`\n`:""),(n.length>=t||e.length==0||e[0]=="#"||n[0]=="#")&&(yield n,n="")}while(e.length>0)}var G=10;function J(e,t,n,r){let o=typeof e=="string"?[e]:e;return function*(){for(let c of o)if(n){let s=c.split(`\n`),l=X(s,r);for(let a of l){let u=a;do{let y=t;u.charCodeAt(y-1)!=u.codePointAt(y-1)&&y++,yield u.substring(0,y),u=u.substring(y)}while(u!="")}}else{let s=c;do{let l=t,a=s.substring(0,l);s=s.substring(l),yield a}while(s!="")}}}function*K(e,t,n=25,r){let o="",i=!1,c=t.length;for(let s of e){let l=s.length;if(r&&l>r){yield o+s,i=!1,o="";continue}let a=-1,u=0;e:do{if(a=s.indexOf(t,u),a==-1)break e;o+=s.slice(u,a)+t,o.length>n?(yield o,o="",i=!1):i=!0,u=a+c}while(a<l);(u!=a||u==-1&&a==-1)&&(o+=s.slice(u),i=!0)}i&&(yield o)}function*S(e,t){let n=e.length;if(n>t){let r=0;do{let o=r+t;if(o>n){yield e.substring(r);break}for(;e.charCodeAt(o-1)!=e.codePointAt(o-1);)o++;yield e.substring(r,o),r=o}while(r<n)}else yield e}function*Q(e,t){for(let n of e)yield*E(S(n,t))}function*Y(e){for(let t of e)yield t}var Z=100;async function U(e,t,n,r,o){if(e.size==0)return function*(){};if(_(e)){let y=await e.text();if(!n){let p=S(y,t);return function*(){yield*E(p)}}let x=y.length,f=r;for(;x/f>Z;)f+=r;let g=Y([y]),h=K(g,`\n`,f),d=Q(h,t);return function*(){yield*E(d)}}let i=0;o&&o.endsWith(".pdf")&&(i=47);let l=Math.max(1e5,Math.min(1e8,e.size)),a=1,u=l;for(;u>10;)u/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return m(this,null,function*(){let x=e.size,f=0,g=new Uint8Array(yield new w(e.arrayBuffer()));do{let h=f+r,d=f+t,p,b=g.indexOf(i,h);b==-1&&(b=g.indexOf(G,h)),b==-1?p=d:p=b<d?b:d,yield yield new w(L(g.slice(f,p))),f=p}while(f<x)})}}async function F(e,t,n,r,o){if(_(e))return J(await e.text(),t,n,r);let i=0;o&&o.endsWith(".pdf")&&(i=47);let l=Math.max(1e5,Math.min(1e8,e.size)),a=1,u=l;for(;u>10;)u/=12.5,a++;return r=Math.floor(10**(a-1)),function(){return m(this,null,function*(){let x=e.size,f=0;do{let g=t,h=new Uint8Array(yield new w(e.slice(f,f+t).arrayBuffer())),d=h.indexOf(i,r);g=d==-1?t:Math.min(t,d),d==-1&&(d=h.indexOf(G,r));let p=h.slice(0,g);f+=p.length,yield yield new w(L(p))}while(f<x)})}}self.onmessage=async e=>{let t=e.data.data,n=t.key,r=t.dataSrc,o=t.pieceSize,i=t.plainSplit,c=t.minimumChunkSize,s=t.filename,a=await(t.useV2?U:F)(r,o,i,c,s);try{for(var u=B(a()),y,x,f;y=!(x=await u.next()).done;y=!1){let g=x.value;self.postMessage([n,g])}}catch(x){f=[x]}finally{try{y&&(x=u.return)&&await x.call(u)}finally{if(f)throw f[0]}}self.postMessage([n,void 0])};\n');
 }
 
 var key = 0, buffers = new Map, notify = new Notifier, worker = Worker2(), isTerminated = false;
@@ -25134,38 +21513,38 @@ async function putDBEntry(_, ee) {
     Logger(`This document could not be saved:${re}`, LOG_LEVEL_NOTICE);
     return false;
   }
-  let ve = {}, Se = 0;
-  if ("eden" in ee) ve = ee.eden;
-  let Ee = [];
+  let Se = {}, Ee = 0;
+  if ("eden" in ee) Se = ee.eden;
+  let ve = [];
   if (_.settings.useEden) {
     try {
       const ne = await _.localDatabase.get(ee._id);
-      Se = getNoFromRev(ne._rev);
-      ve = {
+      Ee = getNoFromRev(ne._rev);
+      Se = {
         ..."eden" in ne ? ne.eden : {},
-        ...ve
+        ...Se
       };
     } catch (_) {
       if (isErrorOfMissingDoc(_)) ; else throw _;
     }
-    const ne = Object.keys(ve).length;
+    const ne = Object.keys(Se).length;
     let ie = 0;
-    const se = Object.keys(ve).filter((_ => ye.every((ee => ee.id !== _))));
+    const se = Object.keys(Se).filter((_ => ye.every((ee => ee.id !== _))));
     for (const _ of se) {
       ie++;
-      delete ve[_];
+      delete Se[_];
     }
     let oe = 0, le = 0;
-    for (const _ of ye) if (_.id in ve) le++; else {
+    for (const _ of ye) if (_.id in Se) le++; else {
       oe++;
-      ve[_.id] = {
-        epoch: Se + 1,
+      Se[_.id] = {
+        epoch: Ee + 1,
         data: _.piece
       };
     }
-    const ue = Object.entries(ve).sort(((_, ee) => ee[1].epoch - _[1].epoch));
+    const ue = Object.entries(Se).sort(((_, ee) => ee[1].epoch - _[1].epoch));
     let de = 0, fe = 0;
-    const he = Object.keys(ve);
+    const he = Object.keys(Se);
     let pe = 0, ge = 0;
     const me = (await _.localDatabase.allDocs({
       keys: he
@@ -25177,34 +21556,34 @@ async function putDBEntry(_, ee) {
       fe++;
       let ie = false;
       if (!(ee in me) || me[ee].error) {
-        if (ne.data.length > 1024) ie = true; else if (ne.epoch + _.settings.maxAgeInEden < Se) ie = true;
+        if (ne.data.length > 1024) ie = true; else if (ne.epoch + _.settings.maxAgeInEden < Ee) ie = true;
         if (de > _.settings.maxTotalLengthInEden) ie = true;
         if (fe > _.settings.maxChunksInEden) ie = true;
         if (ie) {
           fe--;
           ge++;
-          Ee.push({
+          ve.push({
             _id: ee,
             data: ne.data,
             type: "leaf"
           });
-          delete ve[ee];
+          delete Se[ee];
         } else de += ne.data.length;
       } else {
         fe--;
-        delete ve[ee];
+        delete Se[ee];
         pe++;
       }
     }
-    Logger(`Progress on Eden: doc: ${re} : ${ne}->${Object.keys(ve).length} (removed: ${ie}, new: ${oe}, exist: ${le}, alreadyIndependent:${pe}, independent:${ge})`, LOG_LEVEL_VERBOSE);
-  } else Ee = ye.filter((_ => _.isNew)).map((_ => ({
+    Logger(`Progress on Eden: doc: ${re} : ${ne}->${Object.keys(Se).length} (removed: ${ie}, new: ${oe}, exist: ${le}, alreadyIndependent:${pe}, independent:${ge})`, LOG_LEVEL_VERBOSE);
+  } else ve = ye.filter((_ => _.isNew)).map((_ => ({
     _id: _.id,
     data: _.piece,
     type: "leaf"
   })));
-  const Ce = se - Ee.length;
-  if (Ee.length) {
-    const ee = (await _.localDatabase.bulkDocs(Ee)).reduce(((_, ee) => {
+  const Ce = se - ve.length;
+  if (ve.length) {
+    const ee = (await _.localDatabase.bulkDocs(ve)).reduce(((_, ee) => {
       if ("ok" in ee) {
         _.ok.push(ee);
         return _;
@@ -25238,7 +21617,7 @@ async function putDBEntry(_, ee) {
     mtime: ee.mtime,
     size: ee.size,
     type: ee.datatype,
-    eden: ve
+    eden: Se
   };
   return null != (ne = await serialized("file:" + ie, (async () => {
     try {
@@ -25490,8 +21869,8 @@ async function deleteDBEntryPrefix(_, ee) {
 }
 
 async function ensureRemoteIsCompatible(_, ee, ne, ie, re) {
-  var se, oe;
-  const le = {
+  var se, oe, le, ue;
+  const de = {
     _id: MILSTONE_DOCID,
     type: "milestoneinfo",
     created: new Date / 1,
@@ -25502,43 +21881,39 @@ async function ensureRemoteIsCompatible(_, ee, ne, ie, re) {
     },
     tweak_values: {}
   };
-  let ue = _;
-  if (!ue) ue = le;
-  const de = extractObject(TweakValuesTemplate, ee);
-  ue.node_chunk_info = {
-    ...le.node_chunk_info,
-    ...ue.node_chunk_info
+  let fe = _;
+  if (!fe) fe = de;
+  const he = extractObject(TweakValuesTemplate, ee);
+  fe.node_chunk_info = {
+    ...de.node_chunk_info,
+    ...fe.node_chunk_info
   };
-  if (ue.node_chunk_info[ne].min != ie.min || ue.node_chunk_info[ne].max != ie.max || isObjectDifferent(null == (se = ue.tweak_values) ? void 0 : se[ne], de) || "undefined" == typeof ue._rev) {
-    ue.node_chunk_info[ne].min = ie.min;
-    ue.node_chunk_info[ne].max = ie.max;
-    ue.tweak_values = {
-      ...null != (oe = ue.tweak_values) ? oe : {},
-      [ne]: de
+  if (fe.node_chunk_info[ne].min != ie.min || fe.node_chunk_info[ne].max != ie.max || isObjectDifferent(null == (se = fe.tweak_values) ? void 0 : se[ne], he) || "undefined" == typeof fe._rev || !(DEVICE_ID_PREFERRED in fe.tweak_values)) {
+    fe.node_chunk_info[ne].min = ie.min;
+    fe.node_chunk_info[ne].max = ie.max;
+    fe.tweak_values = {
+      ...null != (oe = fe.tweak_values) ? oe : {},
+      [ne]: he
     };
-    await re(ue);
+    if (!(DEVICE_ID_PREFERRED in fe.tweak_values)) fe.tweak_values[DEVICE_ID_PREFERRED] = he;
+    await re(fe);
   }
-  let fe = ie.min, he = ie.max;
-  for (const _ of ue.accepted_nodes) if (_ != ne) if (_ in ue.node_chunk_info) {
-    const ee = ue.node_chunk_info[_];
-    fe = Math.max(ee.min, fe);
-    he = Math.min(ee.max, he);
+  let pe = ie.min, ge = ie.max;
+  for (const _ of fe.accepted_nodes) if (_ != ne) if (_ in fe.node_chunk_info) {
+    const ee = fe.node_chunk_info[_];
+    pe = Math.max(ee.min, pe);
+    ge = Math.min(ee.max, ge);
   } else {
-    fe = 0;
-    he = 0;
+    pe = 0;
+    ge = 0;
   }
-  if (he < fe) if (!ee.ignoreVersionCheck) return "INCOMPATIBLE";
+  if (ge < pe) if (!ee.ignoreVersionCheck) return "INCOMPATIBLE";
   if (!ee.disableCheckingConfigMismatch) {
-    const _ = Object.entries(ue.tweak_values).filter((([_, ee]) => isObjectDifferent(de, ee))).map((([_, ee]) => ({
-      key: _,
-      all: ee,
-      recommended: extractObject(TweakValuesRecommendedTemplate, ee),
-      shouldBeMatched: extractObject(TweakValuesShouldMatchedTemplate, ee)
-    }))), ee = _.map((_ => _.all)), ne = extractObject(TweakValuesShouldMatchedTemplate, de);
-    for (const ie of _) if (isObjectDifferent(ie.shouldBeMatched, ne, true)) return [ "MISMATCHED", ee ];
+    const _ = null != (ue = null == (le = fe.tweak_values) ? void 0 : le[DEVICE_ID_PREFERRED]) ? ue : he, ee = he;
+    if (isObjectDifferent(extractObject(TweakValuesShouldMatchedTemplate, _), extractObject(TweakValuesShouldMatchedTemplate, ee), true)) return [ "MISMATCHED", _ ];
   }
-  if (ue.locked) {
-    if (-1 == ue.accepted_nodes.indexOf(ne)) if (ue.cleaned) return "NODE_CLEANED"; else return "NODE_LOCKED";
+  if (fe.locked) {
+    if (-1 == fe.accepted_nodes.indexOf(ne)) if (fe.cleaned) return "NODE_CLEANED"; else return "NODE_LOCKED";
     return "LOCKED";
   }
   return "OK";
@@ -25565,7 +21940,6 @@ var LiveSyncAbstractReplicator = class {
     this.remoteCleaned = false;
     this.remoteLockedAndDeviceNotAccepted = false;
     this.tweakSettingsMismatched = false;
-    this.mismatchedTweakValues = [];
     this.updateInfo = () => {
       this.env.replicationStat.value = {
         sent: this.docSent,
@@ -25912,7 +22286,7 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
       this.remoteLocked = false;
       this.remoteLockedAndDeviceNotAccepted = false;
       this.tweakSettingsMismatched = false;
-      this.mismatchedTweakValues = [];
+      this.preferredTweakValue = void 0;
       const ee = await ensureDatabaseIsCompatible(oe.db, _, this.nodeid, currentVersionRange);
       if ("INCOMPATIBLE" == ee) {
         Logger("The remote database has no compatibility with the running version. Please upgrade the plugin.", LOG_LEVEL_NOTICE);
@@ -25928,10 +22302,10 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
         this.remoteLocked = true;
         this.remoteCleaned = true;
         return false;
-      } else if ("MISMATCHED" == ee[0]) {
+      } else if ("OK" == ee) ; else if ("MISMATCHED" == ee[0]) {
         Logger("Configuration mismatching between the clients has been detected. This can be harmful or extra capacity consumption. We have to make these value unified.", LOG_LEVEL_NOTICE);
         this.tweakSettingsMismatched = true;
-        this.mismatchedTweakValues = ee[1];
+        this.preferredTweakValue = ee[1];
         return false;
       }
     }
@@ -26147,6 +22521,20 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
       throw _;
     } else Logger("Remote database is newer or corrupted, make sure to latest version of self-hosted-livesync installed", LOG_LEVEL_NOTICE); else Logger(`could not connect to ${ee}:${ne}`, LOG_LEVEL_NOTICE);
   }
+  async setPreferredRemoteTweakSettings(_) {
+    const ee = _.couchDB_URI + ("" == _.couchDB_DBNAME ? "" : "/" + _.couchDB_DBNAME), ne = await this.connectRemoteCouchDBWithSetting(_, this.env.getIsMobile(), true);
+    if ("string" != typeof ne) if (await checkRemoteVersion(ne.db, this.migrate.bind(this), VER)) try {
+      const ee = await ne.db.get(MILSTONE_DOCID);
+      ee.tweak_values[DEVICE_ID_PREFERRED] = extractObject(TweakValuesTemplate, {
+        ..._
+      });
+      await ne.db.put(ee);
+      Logger("Preferred tweak values has been registered", LOG_LEVEL_VERBOSE);
+    } catch (_) {
+      Logger("Could not retrieve remote milestone", LOG_LEVEL_NOTICE);
+      throw _;
+    } else Logger("Remote database is newer or corrupted, make sure to latest version of self-hosted-livesync installed", LOG_LEVEL_NOTICE); else Logger(`could not connect to ${ee}:${ne}`, LOG_LEVEL_NOTICE);
+  }
   async compactRemote(_) {
     const ee = _.couchDB_URI + ("" == _.couchDB_DBNAME ? "" : "/" + _.couchDB_DBNAME), ne = await this.connectRemoteCouchDBWithSetting(_, this.env.getIsMobile(), true);
     if ("string" == typeof ne) {
@@ -26156,6 +22544,19 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
     return (await ne.db.compact({
       interval: 1e3
     })).ok;
+  }
+  async getRemoteStatus(_) {
+    var ee;
+    const ne = await this.connectRemoteCouchDBWithSetting(_, this.env.getIsMobile(), true);
+    if ("string" == typeof ne) {
+      Logger(`could not connect to ${_.couchDB_URI + ("" == _.couchDB_DBNAME ? "" : "/" + _.couchDB_DBNAME)}:${ne}`, LOG_LEVEL_NOTICE);
+      return false;
+    }
+    const ie = await ne.db.info();
+    return {
+      ...ie,
+      estimatedSize: (null == (ee = null == ie ? void 0 : ie.sizes) ? void 0 : ee.file) || 0
+    };
   }
 }, LANG_DE = "de", LANG_JA = "ja", LANG_RU = "ru", LANG_ZH = "zh", LANG_ZH_TW = "zh-tw", SUPPORTED_I18N_LANGS = [ LANG_DE, LANG_JA, LANG_RU, LANG_ZH, LANG_ZH_TW ], allMessages = {
   "Self-hosted LiveSync has undergone a major upgrade. Please open the setting dialog, and check the information pane.": {
@@ -26916,6 +23317,10 @@ var _a3, OnDialogSettingsDefault = {
   batchSaveMaximumDelay: {
     name: "Maximum delay for batch database updating",
     desc: "Saving will be performed forcefully after this number of seconds."
+  },
+  notifyThresholdOfRemoteStorageSize: {
+    name: "Notify when the estimated remote storage size exceeds on start up",
+    desc: "MB (0 to disable)."
   }
 };
 
@@ -27340,6 +23745,8 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       ..._
     }, ne = this.plugin.getNewReplicator(ee);
     await ne.tryConnectRemote(ee);
+    const ie = await ne.getRemoteStatus(ee);
+    if (ie) if (ie.estimatedSize) Logger(`Estimated size: ${sizeToHumanReadable2(ie.estimatedSize)}`, LOG_LEVEL_NOTICE);
   }
   closeSetting() {
     this.plugin.app.setting.close();
@@ -27439,7 +23846,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       text: "Updates"
     }), pe = this.createEl(fe, "div", {
       text: ""
-    }), ge = "0.23.15", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
+    }), ge = "0.23.17", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
     ye.addClass("sls-header-button");
     ye.innerHTML = "<button> OK, I read everything. </button>";
     if (me > ((null == (_ = this.editingSettings) ? void 0 : _.lastReadUpdates) || 0)) {
@@ -27450,7 +23857,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         _.remove();
       }));
     }
-    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.15:\n  - Maintenance Update:\n    - Library refining (Phase 1). There are no significant changes on the user side.\n- 0.23.14:\n  - Fixed:\n    - No longer batch-saving ignores editor inputs.\n    - The file-watching and serialisation processes have been changed to the one which is similar to previous implementations.\n    - We can configure the settings (Especially about text-boxes) even if we have configured the device name.\n  - Improved:\n    - We can configure the delay of batch-saving.\n      - Default: 5 seconds, the same as the previous hard-coded value. (Note: also, the previous behaviour was not correct).\n    - Also, we can configure the limit of delaying batch-saving.\n    - The performance of showing status indicators has been improved.\n- 0.23.13:\n  - Fixed:\n    - No longer files have been trimmed even delimiters have been continuous.\n    - Fixed the toggle title to `Do not split chunks in the background` from `Do not split chunks in the foreground`.\n    - Non-configured item mismatches are no longer detected.\n- 0.23.12:\n  - Improved:\n    - Now notes will be split into chunks in the background thread to improve smoothness.\n      - Default enabled, to disable, toggle `Do not split chunks in the foreground` on `Hatch` -> `Compatibility`.\n      - If you want to process very small notes in the foreground, please enable `Process small files in the foreground` on `Hatch` -> `Compatibility`.\n    - We can use a `splitting-limit-capped chunk splitter`; which performs more simple and make less amount of chunks.\n      - Default disabled, to enable, toggle `Use splitting-limit-capped chunk splitter` on `Sync settings` -> `Performance tweaks`\n  - Tidied\n    - Some files have been separated into multiple files to make them more explicit in what they are responsible for.\n\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
+    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.17:\n  - Improved:\n    - Overall performance has been improved by using PouchDB 9.0.0.\n    - Configuration mismatch detection is refined. We can resolve mismatches more smoothly and naturally.\n    More detail is on `troubleshooting.md` on the repository.\n  - Fixed:\n    - Customisation Sync will be disabled when a corrupted configuration is detected.\n      Therefore, the Device Name can be changed even in the event of a configuration mismatch.\n  - New feature:\n    - We can get a notification about the storage usage of the remote database.\n      - Default: We will be asked.\n      - If the remote storage usage approaches the configured value, we will be asked whether we want to Rebuild or increase the limit.\n- 0.23.16:\n  - Maintenance Update:\n    - Library refining (Phase 1 - step 2). There are no significant changes on the user side.\n    - Including the following fixes of potentially problems:\n      - the problem which the path had been obfuscating twice has been resolved.\n      - Note: Potential problems of the library; which has not happened in Self-hosted LiveSync for some reasons.\n- 0.23.15:\n  - Maintenance Update:\n    - Library refining (Phase 1). There are no significant changes on the user side.\n- 0.23.14:\n  - Fixed:\n    - No longer batch-saving ignores editor inputs.\n    - The file-watching and serialisation processes have been changed to the one which is similar to previous implementations.\n    - We can configure the settings (Especially about text-boxes) even if we have configured the device name.\n  - Improved:\n    - We can configure the delay of batch-saving.\n      - Default: 5 seconds, the same as the previous hard-coded value. (Note: also, the previous behaviour was not correct).\n    - Also, we can configure the limit of delaying batch-saving.\n    - The performance of showing status indicators has been improved.\n\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
     addScreenElement("100", fe);
     const isAnySyncEnabled = () => {
       var _, ee, ne, ie;
@@ -27465,25 +23872,25 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       if (this.isConfiguredAs("syncOnFileOpen", true)) return true;
       if ("CONNECTED" == (null == (ee = null == (_ = this.plugin) ? void 0 : _.replicator) ? void 0 : ee.syncStatus)) return true;
       if ("PAUSED" == (null == (ie = null == (ne = this.plugin) ? void 0 : ne.replicator) ? void 0 : ie.syncStatus)) return true; else return false;
-    }, ve = enableOnly((() => !isAnySyncEnabled()));
-    let Se = false;
-    if (oe.hasClass("inWizard")) Se = true;
-    const Ee = oe.createDiv();
-    this.createEl(Ee, "h3", {
+    }, Se = enableOnly((() => !isAnySyncEnabled()));
+    let Ee = false;
+    if (oe.hasClass("inWizard")) Ee = true;
+    const ve = oe.createDiv();
+    this.createEl(ve, "h3", {
       text: "Setup wizard"
     });
-    new Setting2(Ee).setName("Use the copied setup URI").setDesc("To setup Self-hosted LiveSync, this method is the most preferred one.").addButton((_ => {
+    new Setting2(ve).setName("Use the copied setup URI").setDesc("To setup Self-hosted LiveSync, this method is the most preferred one.").addButton((_ => {
       _.setButtonText("Use").onClick((async () => {
         this.closeSetting();
         await this.plugin.addOnSetup.command_openSetupURI();
       }));
     }));
-    if (this.editingSettings.isConfigured) new Setting2(Ee).setName("Copy current settings as a new setup URI").addButton((_ => {
+    if (this.editingSettings.isConfigured) new Setting2(ve).setName("Copy current settings as a new setup URI").addButton((_ => {
       _.setButtonText("Copy").onClick((async () => {
         await this.plugin.addOnSetup.command_copySetupURI();
       }));
     }));
-    new Setting2(Ee).setName("Minimal setup").addButton((_ => {
+    new Setting2(ve).setName("Minimal setup").addButton((_ => {
       _.setButtonText("Start").onClick((async () => {
         this.editingSettings.liveSync = false;
         this.editingSettings.periodicReplication = false;
@@ -27495,18 +23902,18 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         this.plugin.replicator.closeReplication();
         await this.saveAllDirtySettings();
         oe.addClass("isWizard");
-        Se = true;
+        Ee = true;
         changeDisplay("0");
       }));
     }));
-    new Setting2(Ee).setName("Enable LiveSync on this device as the setup was completed manually").addButton((_ => {
+    new Setting2(ve).setName("Enable LiveSync on this device as the setup was completed manually").addButton((_ => {
       _.setButtonText("Enable").onClick((async () => {
         this.editingSettings.isConfigured = true;
         await this.saveAllDirtySettings();
         this.plugin.askReload();
       }));
     })).addOnUpdate(visibleOnly((() => !this.isConfiguredAs("isConfigured", true))));
-    new Setting2(Ee).setName("Discard existing settings and databases").addButton((_ => {
+    new Setting2(ve).setName("Discard existing settings and databases").addButton((_ => {
       _.setButtonText("Discard").onClick((async () => {
         if ("yes" == await askYesNo(this.plugin.app, "Do you really want to discard existing settings and databases?")) {
           this.editingSettings = {
@@ -27519,38 +23926,38 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         }
       })).setWarning();
     })).addOnUpdate(visibleOnly((() => this.isConfiguredAs("isConfigured", true))));
-    this.createEl(Ee, "h3", {
+    this.createEl(ve, "h3", {
       text: "Online Tips"
     });
-    const Ce = "vrtmrz/obsidian-livesync", we = "/docs/troubleshooting.md", Oe = `https://raw.githubusercontent.com/${Ce}/main`;
-    this.createEl(Ee, "div", "", (_ => _.innerHTML = `<a href='https://github.com/${Ce}/blob/main${we}' target="_blank">Open in browser</a>`));
-    const ke = this.createEl(Ee, "div", {
+    const Ce = "vrtmrz/obsidian-livesync", we = "/docs/troubleshooting.md", ke = `https://raw.githubusercontent.com/${Ce}/main`;
+    this.createEl(ve, "div", "", (_ => _.innerHTML = `<a href='https://github.com/${Ce}/blob/main${we}' target="_blank">Open in browser</a>`));
+    const Le = this.createEl(ve, "div", {
       text: "",
       cls: "sls-troubleshoot-preview"
     }), loadMarkdownPage = async (_, ee = "") => {
       var ne, ie;
-      ke.style.minHeight = ke.clientHeight + "px";
-      ke.empty();
+      Le.style.minHeight = Le.clientHeight + "px";
+      Le.empty();
       const re = (_.startsWith("/") ? _ : `${ee}/${_}`).split("/"), se = re.pop(), oe = re.join("/");
       let le = "";
       try {
-        le = await (0, import_obsidian5.request)(`${Oe}${oe}/${se}`);
+        le = await (0, import_obsidian5.request)(`${ke}${oe}/${se}`);
       } catch (_) {
         le = "An error occurred!!\n" + _.toString();
       }
-      const ue = le.replace(/\((.*?(.png)|(.jpg))\)/g, `(${Oe}${oe}/$1)`);
-      await import_obsidian.MarkdownRenderer.render(this.plugin.app, `<a class='sls-troubleshoot-anchor'></a> [Tips and Troubleshooting](${we}) [PageTop](${se})\n\n${ue}`, ke, `${Oe}`, this.plugin);
-      null == (ie = null == (ne = ke.querySelector(".sls-troubleshoot-anchor")) ? void 0 : ne.parentElement) || ie.setCssStyles({
+      const ue = le.replace(/\((.*?(.png)|(.jpg))\)/g, `(${ke}${oe}/$1)`);
+      await import_obsidian.MarkdownRenderer.render(this.plugin.app, `<a class='sls-troubleshoot-anchor'></a> [Tips and Troubleshooting](${we}) [PageTop](${se})\n\n${ue}`, Le, `${ke}`, this.plugin);
+      null == (ie = null == (ne = Le.querySelector(".sls-troubleshoot-anchor")) ? void 0 : ne.parentElement) || ie.setCssStyles({
         position: "sticky",
         top: "-1em",
         backgroundColor: "var(--modal-background)"
       });
-      ke.querySelectorAll("a.internal-link").forEach((_ => {
+      Le.querySelectorAll("a.internal-link").forEach((_ => {
         _.addEventListener("click", (async ee => {
           const ne = _.getAttr("data-href");
           if (ne) if (ne.startsWith("#")) {
             ee.preventDefault();
-            const _ = Array.from(ke.querySelectorAll("[data-heading]")).find((_ => {
+            const _ = Array.from(Le.querySelectorAll("[data-heading]")).find((_ => {
               var ee;
               return (null == (ee = _.getAttr("data-heading")) ? void 0 : ee.toLowerCase().split(" ").join("-")) == ne.substring(1).toLowerCase();
             }));
@@ -27566,38 +23973,38 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
           } else {
             ee.preventDefault();
             await loadMarkdownPage(ne, oe);
-            ke.setCssStyles({
+            Le.setCssStyles({
               scrollMargin: "1em"
             });
-            ke.scrollIntoView({
+            Le.scrollIntoView({
               behavior: "instant",
               block: "start"
             });
           }
         }));
       }));
-      ke.style.minHeight = "";
+      Le.style.minHeight = "";
     };
     loadMarkdownPage(we);
-    addScreenElement("110", Ee);
-    const xe = oe.createDiv();
-    this.createEl(xe, "h3", {
+    addScreenElement("110", ve);
+    const Oe = oe.createDiv();
+    this.createEl(Oe, "h3", {
       text: "Remote configuration"
     });
-    new Setting2(xe).autoWireDropDown("remoteType", {
+    new Setting2(Oe).autoWireDropDown("remoteType", {
       holdValue: true,
       options: {
         [REMOTE_COUCHDB]: "CouchDB",
         [REMOTE_MINIO]: "Minio,S3,R2"
       },
-      onUpdate: ve
+      onUpdate: Se
     });
     const onlyOnCouchDB = () => ({
       visibility: this.isConfiguredAs("remoteType", REMOTE_COUCHDB)
     }), onlyOnMinIO = () => ({
       visibility: this.isConfiguredAs("remoteType", REMOTE_MINIO)
     });
-    this.createEl(xe, "div", void 0, (_ => {
+    this.createEl(Oe, "div", void 0, (_ => {
       const ee = this.createEl(_, "div", {
         text: ""
       });
@@ -27627,7 +24034,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }))));
       new Setting2(_).setName("Apply Settings").setClass("wizardHidden").addApplyButton([ "remoteType", "endpoint", "region", "accessKey", "secretKey", "bucket", "useCustomRequestHandler" ]).addOnUpdate(onlyOnMinIO);
     }), onlyOnMinIO);
-    this.createEl(xe, "div", void 0, (_ => {
+    this.createEl(Oe, "div", void 0, (_ => {
       if (this.plugin.isMobile) this.createEl(_, "div", {
         text: "Configured as using non-HTTPS. We cannot connect to the remote. Please set up the credentials and use HTTPS for the remote URI."
       }, void 0, visibleOnly((() => !this.editingSettings.couchDB_URI.startsWith("https://")))).addClass("op-warn"); else this.createEl(_, "div", {
@@ -27638,20 +24045,20 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }, void 0, visibleOnly((() => isAnySyncEnabled()))).addClass("sls-setting-hidden");
       new Setting2(_).autoWireText("couchDB_URI", {
         holdValue: true,
-        onUpdate: ve
+        onUpdate: Se
       });
       new Setting2(_).autoWireText("couchDB_USER", {
         holdValue: true,
-        onUpdate: ve
+        onUpdate: Se
       });
       new Setting2(_).autoWireText("couchDB_PASSWORD", {
         holdValue: true,
         isPassword: true,
-        onUpdate: ve
+        onUpdate: Se
       });
       new Setting2(_).autoWireText("couchDB_DBNAME", {
         holdValue: true,
-        onUpdate: ve
+        onUpdate: Se
       });
       new Setting2(_).setName("Test Database Connection").setClass("wizardHidden").setDesc("Open database connection. If the remote database is not found and you have the privilege to create a database, the database will be created.").addButton((_ => _.setButtonText("Test").setDisabled(false).onClick((async () => {
         await this.testConnection();
@@ -27766,42 +24173,46 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       });
       new Setting2(_).setName("Apply Settings").setClass("wizardHidden").addApplyButton([ "remoteType", "couchDB_URI", "couchDB_USER", "couchDB_PASSWORD", "couchDB_DBNAME" ]).addOnUpdate(onlyOnCouchDB);
     }), onlyOnCouchDB);
-    this.createEl(xe, "h4", {
+    this.createEl(Oe, "h4", {
+      text: "Notification"
+    }).addClass("wizardHidden");
+    new Setting2(Oe).autoWireNumeric("notifyThresholdOfRemoteStorageSize", {}).setClass("wizardHidden");
+    this.createEl(Oe, "h4", {
       text: "Effective Storage Using"
     }).addClass("wizardHidden");
-    new Setting2(xe).autoWireToggle("useEden").setClass("wizardHidden");
+    new Setting2(Oe).autoWireToggle("useEden").setClass("wizardHidden");
     const Ae = visibleOnly((() => this.isConfiguredAs("useEden", true)));
-    new Setting2(xe).autoWireNumeric("maxChunksInEden", {
+    new Setting2(Oe).autoWireNumeric("maxChunksInEden", {
       onUpdate: Ae
     }).setClass("wizardHidden");
-    new Setting2(xe).autoWireNumeric("maxTotalLengthInEden", {
+    new Setting2(Oe).autoWireNumeric("maxTotalLengthInEden", {
       onUpdate: Ae
     }).setClass("wizardHidden");
-    new Setting2(xe).autoWireNumeric("maxAgeInEden", {
+    new Setting2(Oe).autoWireNumeric("maxAgeInEden", {
       onUpdate: Ae
     }).setClass("wizardHidden");
-    new Setting2(xe).autoWireToggle("enableCompression").setClass("wizardHidden");
-    this.createEl(xe, "h4", {
+    new Setting2(Oe).autoWireToggle("enableCompression").setClass("wizardHidden");
+    this.createEl(Oe, "h4", {
       text: "Confidentiality"
     });
-    new Setting2(xe).autoWireToggle("encrypt", {
+    new Setting2(Oe).autoWireToggle("encrypt", {
       holdValue: true
     });
-    const Le = visibleOnly((() => this.isConfiguredAs("encrypt", true)));
-    new Setting2(xe).autoWireText("passphrase", {
+    const xe = visibleOnly((() => this.isConfiguredAs("encrypt", true)));
+    new Setting2(Oe).autoWireText("passphrase", {
       holdValue: true,
       isPassword: true,
-      onUpdate: Le
+      onUpdate: xe
     });
-    new Setting2(xe).autoWireToggle("usePathObfuscation", {
+    new Setting2(Oe).autoWireToggle("usePathObfuscation", {
       holdValue: true,
-      onUpdate: Le
+      onUpdate: xe
     });
-    new Setting2(xe).autoWireToggle("useDynamicIterationCount", {
+    new Setting2(Oe).autoWireToggle("useDynamicIterationCount", {
       holdValue: true,
-      onUpdate: Le
+      onUpdate: xe
     }).setClass("wizardHidden");
-    new Setting2(xe).setName("Apply").setDesc("Apply encryption settings").setClass("wizardHidden").addButton((_ => _.setButtonText("Just apply").setWarning().setDisabled(false).onClick((async () => {
+    new Setting2(Oe).setName("Apply").setDesc("Apply encryption settings").setClass("wizardHidden").addButton((_ => _.setButtonText("Just apply").setWarning().setDisabled(false).onClick((async () => {
       await applyEncryption(false);
     })))).addButton((_ => _.setButtonText("Apply and fetch").setWarning().setDisabled(false).onClick((async () => {
       await rebuildDB("localOnly");
@@ -27856,7 +24267,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         await performRebuildDB(this.plugin, _);
       } else Logger("WARNING! Your device does not support encryption.", LOG_LEVEL_NOTICE); else Logger("If you enable encryption, you have to set the passphrase", LOG_LEVEL_NOTICE);
     };
-    new Setting2(xe).setClass("wizardOnly").addButton((_ => _.setButtonText("Next").setCta().setDisabled(false).onClick((() => {
+    new Setting2(Oe).setClass("wizardOnly").addButton((_ => _.setButtonText("Next").setCta().setDisabled(false).onClick((() => {
       if (!this.editingSettings.encrypt) this.editingSettings.passphrase = "";
       if (isCloudantURI(this.editingSettings.couchDB_URI)) this.editingSettings = {
         ...this.editingSettings,
@@ -27870,7 +24281,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       };
       changeDisplay("30");
     }))));
-    addScreenElement("0", xe);
+    addScreenElement("0", Oe);
     const Re = oe.createDiv();
     this.createEl(Re, "h3", {
       text: "General Settings"
@@ -28023,7 +24434,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }
       await this.saveAllDirtySettings();
       await this.plugin.realizeSettingSyncMode();
-      if (Se) {
+      if (Ee) {
         this.closeSetting();
         if (!this.editingSettings.isConfigured) {
           this.editingSettings.isConfigured = true;
@@ -28123,12 +24534,12 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       clampMin: 10,
       acceptZero: true
     });
-    const Me = "\\/node_modules\\/, \\/\\.git\\/, ^\\.git\\/, \\/obsidian-livesync\\/", Fe = Me + ",\\/workspace$ ,\\/workspace.json$,\\/workspace-mobile.json$", je = this.editingSettings.syncInternalFilesIgnorePatterns.split(",").map((_ => _.trim())).filter((_ => "" != _)), $e = new Setting2(Pe).setName("Hidden files ignore patterns").setClass("wizardHidden").setDesc("");
+    const Me = "\\/node_modules\\/, \\/\\.git\\/, ^\\.git\\/, \\/obsidian-livesync\\/", Fe = Me + ",\\/workspace$ ,\\/workspace.json$,\\/workspace-mobile.json$", Ve = this.editingSettings.syncInternalFilesIgnorePatterns.split(",").map((_ => _.trim())).filter((_ => "" != _)), $e = new Setting2(Pe).setName("Hidden files ignore patterns").setClass("wizardHidden").setDesc("");
     new MultipleRegExpControl_default({
       target: $e.controlEl,
       props: {
-        patterns: je,
-        originals: [ ...je ],
+        patterns: Ve,
+        originals: [ ...Ve ],
         apply: async _ => {
           this.editingSettings.syncInternalFilesIgnorePatterns = _.map((_ => _.trim())).filter((_ => "" != _)).join(", ");
           await this.saveAllDirtySettings();
@@ -28186,9 +24597,9 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         }
       }
     });
-    const Ve = new Setting2(Pe).setName("Non-Synchronising files").setDesc("(RegExp) If this is set, any changes to local and remote files that match this will be skipped.").setClass("wizardHidden");
+    const Ue = new Setting2(Pe).setName("Non-Synchronising files").setDesc("(RegExp) If this is set, any changes to local and remote files that match this will be skipped.").setClass("wizardHidden");
     new MultipleRegExpControl_default({
-      target: Ve.controlEl,
+      target: Ue.controlEl,
       props: {
         patterns: this.editingSettings.syncIgnoreRegEx.split("|[]|"),
         originals: [ ...this.editingSettings.syncIgnoreRegEx.split("|[]|") ],
@@ -28232,11 +24643,11 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       onUpdate: onlyOnCouchDB
     });
     addScreenElement("30", Pe);
-    const Ue = oe.createDiv();
-    this.createEl(Ue, "h3", {
+    const ze = oe.createDiv();
+    this.createEl(ze, "h3", {
       text: "Hatch"
     });
-    new Setting2(Ue).setName("Make report to inform the issue").addButton((_ => _.setButtonText("Make report").setDisabled(false).onClick((async () => {
+    new Setting2(ze).setName("Make report to inform the issue").addButton((_ => _.setButtonText("Make report").setDisabled(false).onClick((async () => {
       let _ = {};
       const ee = "𝑅𝐸𝐷𝐴𝐶𝑇𝐸𝐷";
       if (this.editingSettings.remoteType == REMOTE_COUCHDB) try {
@@ -28278,7 +24689,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       Logger("Information has been copied to clipboard", LOG_LEVEL_NOTICE);
     }))));
     if (null == (ie = null == (ne = this.plugin) ? void 0 : ne.replicator) ? void 0 : ie.remoteLockedAndDeviceNotAccepted) {
-      const _ = this.createEl(Ue, "div", {
+      const _ = this.createEl(ze, "div", {
         text: "To prevent unwanted vault corruption, the remote database has been locked for synchronization, and this device was not marked as 'resolved'. It caused by some operations like this. Re-initialized. Local database initialization should be required. Please back your vault up, reset the local database, and press 'Mark this device as resolved'. "
       });
       this.createEl(_, "button", {
@@ -28292,7 +24703,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }));
       _.addClass("op-warn");
     } else if (null == (se = null == (re = this.plugin) ? void 0 : re.replicator) ? void 0 : se.remoteLocked) {
-      const _ = this.createEl(Ue, "div", {
+      const _ = this.createEl(ze, "div", {
         text: "To prevent unwanted vault corruption, the remote database has been locked for synchronization. (This device is marked 'resolved') When all your devices are marked 'resolved', unlock the database."
       });
       this.createEl(_, "button", {
@@ -28306,16 +24717,16 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }));
       _.addClass("op-warn");
     }
-    new Setting2(Ue).setName("Back to non-configured").addButton((_ => _.setButtonText("Back").setDisabled(false).onClick((async () => {
+    new Setting2(ze).setName("Back to non-configured").addButton((_ => _.setButtonText("Back").setDisabled(false).onClick((async () => {
       this.editingSettings.isConfigured = false;
       await this.saveAllDirtySettings();
       this.plugin.askReload();
     }))));
-    this.createEl(Ue, "div", {
+    this.createEl(ze, "div", {
       text: "To stop the boot up sequence for fixing problems on databases, you can put redflag.md on top of your vault (Rebooting obsidian is required)."
     }).addClass("op-warn-info");
     const addResult = (_, ee, ne) => {
-      ze.appendChild(this.createEl(ze, "div", {}, (ie => {
+      je.appendChild(this.createEl(je, "div", {}, (ie => {
         ie.appendChild(this.createEl(ie, "h6", {
           text: _
         }));
@@ -28359,7 +24770,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         addResult(_.path, _, ee);
       }
     };
-    new Setting2(Ue).setName("Verify and repair all files").setDesc("Compare the content of files between on local database and storage. If not matched, you will be asked which one you want to keep.").addButton((_ => _.setButtonText("Verify all").setDisabled(false).setWarning().onClick((async () => {
+    new Setting2(ze).setName("Verify and repair all files").setDesc("Compare the content of files between on local database and storage. If not matched, you will be asked which one you want to keep.").addButton((_ => _.setButtonText("Verify all").setDisabled(false).setWarning().onClick((async () => {
       const _ = this.app.vault.getFiles(), ee = [], ne = this.plugin.localDatabase.findAllNormalDocs();
       for await (const _ of ne) ee.push(this.plugin.getPath(_));
       const ie = [ ...new Set([ ...ee, ..._.map((_ => _.path)) ]) ];
@@ -28384,10 +24795,10 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }
       Logger("done", LOG_LEVEL_NOTICE, "verify");
     }))));
-    const ze = Ue.createDiv({
+    const je = ze.createDiv({
       text: ""
     });
-    new Setting2(Ue).setName("Check and convert non-path-obfuscated files").setDesc("").addButton((_ => _.setButtonText("Perform").setDisabled(false).setWarning().onClick((async () => {
+    new Setting2(ze).setName("Check and convert non-path-obfuscated files").setDesc("").addButton((_ => _.setButtonText("Perform").setDisabled(false).setWarning().onClick((async () => {
       var _, ee, ne;
       for await (const ie of this.plugin.localDatabase.findAllDocNames()) if (!ie.startsWith("f:")) {
         const re = await this.plugin.path2id(ie), se = await this.plugin.localDatabase.getRaw(ie);
@@ -28434,7 +24845,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }
       Logger("Converting finished", LOG_LEVEL_NOTICE);
     }))));
-    new Setting2(Ue).setName("Delete all customization sync data").addButton((_ => _.setButtonText("Delete").setDisabled(false).setWarning().onClick((async () => {
+    new Setting2(ze).setName("Delete all customization sync data").addButton((_ => _.setButtonText("Delete").setDisabled(false).setWarning().onClick((async () => {
       Logger("Deleting customization sync data", LOG_LEVEL_NOTICE);
       const _ = (await this.plugin.localDatabase.allDocsRaw({
         startkey: "ix:",
@@ -28446,37 +24857,37 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       })));
       Logger(`${(await this.plugin.localDatabase.bulkDocsRaw(_)).length} items have been removed, to confirm how many items are left, please perform it again.`, LOG_LEVEL_NOTICE);
     }))));
-    new Setting2(Ue).autoWireToggle("suspendFileWatching");
+    new Setting2(ze).autoWireToggle("suspendFileWatching");
     this.addOnSaved("suspendFileWatching", (() => this.plugin.askReload()));
-    new Setting2(Ue).autoWireToggle("suspendParseReplicationResult");
+    new Setting2(ze).autoWireToggle("suspendParseReplicationResult");
     this.addOnSaved("suspendParseReplicationResult", (() => this.plugin.askReload()));
-    new Setting2(Ue).autoWireToggle("writeLogToTheFile");
-    this.createEl(Ue, "h4", {
+    new Setting2(ze).autoWireToggle("writeLogToTheFile");
+    this.createEl(ze, "h4", {
       text: (0, import_obsidian.sanitizeHTMLToDom)("Compatibility"),
       cls: "wizardHidden"
     });
-    new Setting2(Ue).setClass("wizardHidden").autoWireToggle("deleteMetadataOfDeletedFiles");
-    new Setting2(Ue).setClass("wizardHidden").autoWireNumeric("automaticallyDeleteMetadataOfDeletedFiles", {
+    new Setting2(ze).setClass("wizardHidden").autoWireToggle("deleteMetadataOfDeletedFiles");
+    new Setting2(ze).setClass("wizardHidden").autoWireNumeric("automaticallyDeleteMetadataOfDeletedFiles", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("deleteMetadataOfDeletedFiles", true)))
     });
-    new Setting2(Ue).autoWireToggle("useIndexedDBAdapter", {
+    new Setting2(ze).autoWireToggle("useIndexedDBAdapter", {
       invert: true
     });
     this.addOnSaved("useIndexedDBAdapter", (async () => {
       await this.saveAllDirtySettings();
       await rebuildDB("localOnly");
     }));
-    new Setting2(Ue).autoWireToggle("watchInternalFileChanges", {
+    new Setting2(ze).autoWireToggle("watchInternalFileChanges", {
       invert: true
     });
-    new Setting2(Ue).autoWireText("additionalSuffixOfDatabaseName", {
+    new Setting2(ze).autoWireText("additionalSuffixOfDatabaseName", {
       holdValue: true
     }).addApplyButton([ "additionalSuffixOfDatabaseName" ]);
     this.addOnSaved("additionalSuffixOfDatabaseName", (async _ => {
       Logger("Suffix has been changed. Reopening database...", LOG_LEVEL_NOTICE);
       await this.plugin.initializeDatabase();
     }));
-    new Setting2(Ue).autoWireDropDown("hashAlg", {
+    new Setting2(ze).autoWireDropDown("hashAlg", {
       options: {
         "": "Old Algorithm",
         xxhash32: "xxhash32 (Fast)",
@@ -28487,40 +24898,40 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
     this.addOnSaved("hashAlg", (async () => {
       await this.plugin.localDatabase.prepareHashFunctions();
     }));
-    new Setting2(Ue).autoWireToggle("doNotSuspendOnFetching");
-    new Setting2(Ue).autoWireToggle("disableCheckingConfigMismatch");
-    new Setting2(Ue).autoWireToggle("disableWorkerForGeneratingChunks");
-    new Setting2(Ue).autoWireToggle("processSmallFilesInUIThread", {
+    new Setting2(ze).autoWireToggle("doNotSuspendOnFetching");
+    new Setting2(ze).autoWireToggle("disableCheckingConfigMismatch");
+    new Setting2(ze).autoWireToggle("disableWorkerForGeneratingChunks");
+    new Setting2(ze).autoWireToggle("processSmallFilesInUIThread", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("disableWorkerForGeneratingChunks", false)))
     });
-    addScreenElement("50", Ue);
-    const qe = oe.createDiv();
-    this.createEl(qe, "h3", {
+    addScreenElement("50", ze);
+    const He = oe.createDiv();
+    this.createEl(He, "h3", {
       text: "Customization sync (beta)"
     });
-    const He = enableOnly((() => this.isConfiguredAs("usePluginSync", false))), Ke = visibleOnly((() => this.isConfiguredAs("usePluginSync", true)));
-    new Setting2(qe).autoWireText("deviceAndVaultName", {
+    const qe = enableOnly((() => this.isConfiguredAs("usePluginSync", false))), Ke = visibleOnly((() => this.isConfiguredAs("usePluginSync", true)));
+    new Setting2(He).autoWireText("deviceAndVaultName", {
       placeHolder: "desktop",
-      onUpdate: He
+      onUpdate: qe
     });
-    new Setting2(qe).autoWireToggle("usePluginSync", {
+    new Setting2(He).autoWireToggle("usePluginSync", {
       onUpdate: enableOnly((() => !this.isConfiguredAs("deviceAndVaultName", "")))
     });
-    new Setting2(qe).autoWireToggle("autoSweepPlugins", {
+    new Setting2(He).autoWireToggle("autoSweepPlugins", {
       onUpdate: Ke
     });
-    new Setting2(qe).autoWireToggle("autoSweepPluginsPeriodic", {
+    new Setting2(He).autoWireToggle("autoSweepPluginsPeriodic", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("usePluginSync", true) && this.isConfiguredAs("autoSweepPlugins", true)))
     });
-    new Setting2(qe).autoWireToggle("notifyPluginOrSettingUpdated", {
+    new Setting2(He).autoWireToggle("notifyPluginOrSettingUpdated", {
       onUpdate: Ke
     });
-    new Setting2(qe).setName("Open").setDesc("Open the dialog").addButton((_ => {
+    new Setting2(He).setName("Open").setDesc("Open the dialog").addButton((_ => {
       _.setButtonText("Open").setDisabled(false).onClick((() => {
         this.plugin.addOnConfigSync.showPluginSyncModal();
       }));
     })).addOnUpdate(Ke);
-    addScreenElement("60", qe);
+    addScreenElement("60", He);
     const We = oe.createDiv();
     this.createEl(We, "h3", {
       text: "Maintenance"
@@ -29881,10 +26292,10 @@ var databaseCache = {}, OpenKeyValueDatabase = async _ => {
     };
     let ye = {};
     ye = await this.kvDB.get("diff-caches-internal") || {};
-    const ve = le.reduce(((_, ee) => {
+    const Se = le.reduce(((_, ee) => {
       _[ee.path] = ee;
       return _;
-    }), {}), Se = de.reduce(((_, ee) => {
+    }), {}), Ee = de.reduce(((_, ee) => {
       _[stripAllPrefixes(this.getPath(ee))] = ee;
       return _;
     }), {});
@@ -29895,7 +26306,7 @@ var databaseCache = {}, OpenKeyValueDatabase = async _ => {
       if (!ee) return [];
       if (se.some((_ => ee.match(_)))) return [];
       if (await this.plugin.isIgnoredByIgnoreFiles(ee)) return [];
-      const ne = ee in ve ? ve[ee] : void 0, ie = ee in Se ? Se[ee] : void 0;
+      const ne = ee in Se ? Se[ee] : void 0, ie = ee in Ee ? Ee[ee] : void 0;
       return [ {
         filename: ee,
         fileOnStorage: ne,
@@ -30682,7 +27093,7 @@ function create_if_block_14(_) {
 }
 
 function create_each_block5(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce, we, Oe, ke, xe = _[26].mtimeDisp + "", Ae = _[26].dirname.split("/").join("​/") + "", Le = _[26].filename + "", Re = _[26].changes + "";
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe = _[26].mtimeDisp + "", Ae = _[26].dirname.split("/").join("​/") + "", xe = _[26].filename + "", Re = _[26].changes + "";
   function click_handler_1() {
     return _[18](_[26]);
   }
@@ -30694,7 +27105,7 @@ function create_each_block5(_) {
     c() {
       ee = element("tr");
       ne = element("td");
-      ie = text(xe);
+      ie = text(Oe);
       re = space();
       se = element("td");
       oe = element("div");
@@ -30704,13 +27115,13 @@ function create_each_block5(_) {
       fe = space();
       he = element("span");
       pe = element("a");
-      ge = text(Le);
+      ge = text(xe);
       me = space();
       ye = element("td");
-      ve = element("span");
+      Se = element("span");
       Pe.c();
-      Se = space();
-      Ee = element("td");
+      Ee = space();
+      ve = element("td");
       Ce = text(Re);
       we = space();
       if (Ie) Ie.c();
@@ -30720,13 +27131,13 @@ function create_each_block5(_) {
       attr(he, "class", "filename svelte-1vjy5r1");
       attr(oe, "class", "filenames svelte-1vjy5r1");
       attr(se, "class", "path svelte-1vjy5r1");
-      attr(ve, "class", "rev svelte-1vjy5r1");
+      attr(Se, "class", "rev svelte-1vjy5r1");
       attr(ye, "class", "svelte-1vjy5r1");
-      attr(Ee, "class", "svelte-1vjy5r1");
+      attr(ve, "class", "svelte-1vjy5r1");
       attr(ee, "class", "svelte-1vjy5r1");
     },
-    m(_, xe) {
-      insert(_, ee, xe);
+    m(_, Oe) {
+      insert(_, ee, Oe);
       append(ee, ne);
       append(ne, ie);
       append(ee, re);
@@ -30741,29 +27152,29 @@ function create_each_block5(_) {
       append(pe, ge);
       append(ee, me);
       append(ee, ye);
-      append(ye, ve);
-      Pe.m(ve, null);
-      append(ee, Se);
+      append(ye, Se);
+      Pe.m(Se, null);
       append(ee, Ee);
-      append(Ee, Ce);
+      append(ee, ve);
+      append(ve, Ce);
       append(ee, we);
       if (Ie) Ie.m(ee, null);
-      if (!Oe) {
-        ke = listen(pe, "click", click_handler_1);
-        Oe = true;
+      if (!ke) {
+        Le = listen(pe, "click", click_handler_1);
+        ke = true;
       }
     },
     p(ne, re) {
       _ = ne;
-      if (32 & re && xe !== (xe = _[26].mtimeDisp + "")) set_data(ie, xe);
+      if (32 & re && Oe !== (Oe = _[26].mtimeDisp + "")) set_data(ie, Oe);
       if (32 & re && Ae !== (Ae = _[26].dirname.split("/").join("​/") + "")) set_data(de, Ae);
-      if (32 & re && Le !== (Le = _[26].filename + "")) set_data(ge, Le);
+      if (32 & re && xe !== (xe = _[26].filename + "")) set_data(ge, xe);
       if (Te === (Te = select_block_type_1(_)) && Pe) Pe.p(_, re); else {
         Pe.d(1);
         Pe = Te(_);
         if (Pe) {
           Pe.c();
-          Pe.m(ve, null);
+          Pe.m(Se, null);
         }
       }
       if (32 & re && Re !== (Re = _[26].changes + "")) set_data(Ce, Re);
@@ -30780,8 +27191,8 @@ function create_each_block5(_) {
       if (_) detach(ee);
       Pe.d();
       if (Ie) Ie.d();
-      Oe = false;
-      ke();
+      ke = false;
+      Le();
     }
   };
 }
@@ -30831,7 +27242,7 @@ function create_if_block4(_) {
 }
 
 function create_fragment5(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce, we, Oe, ke, xe, Ae, Le, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe, je, $e, Ge, Ve, Ue, ze, qe, He, Ke, We, Xe, Je, Qe, Ye = _[6] && create_if_block_53(_), Ze = _[1] && create_if_block_44(_);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe, Ae, xe, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe, Ve, $e, Ge, Ue, ze, je, He, qe, Ke, We, Xe, Qe, Ye, Je = _[6] && create_if_block_53(_), Ze = _[1] && create_if_block_44(_);
   function select_block_type(_, ee) {
     if (_[6]) return create_if_block_34; else return create_else_block_23;
   }
@@ -30862,22 +27273,22 @@ function create_fragment5(_) {
       me = element("label");
       me.textContent = "Info:";
       ye = space();
-      ve = element("label");
-      Se = element("input");
-      Ee = element("span");
-      Ee.textContent = "Diff";
+      Se = element("label");
+      Ee = element("input");
+      ve = element("span");
+      ve.textContent = "Diff";
       Ce = space();
       we = element("label");
-      Oe = element("input");
-      ke = element("span");
-      ke.textContent = "Chunks";
-      xe = space();
+      ke = element("input");
+      Le = element("span");
+      Le.textContent = "Chunks";
+      Oe = space();
       Ae = element("label");
-      Le = element("input");
+      xe = element("input");
       Re = element("span");
       Re.textContent = "File integrity";
       Te = space();
-      if (Ye) Ye.c();
+      if (Je) Je.c();
       Pe = space();
       Ie = element("table");
       De = element("tr");
@@ -30887,18 +27298,18 @@ function create_fragment5(_) {
       Me = element("th");
       Me.textContent = "Path";
       Fe = space();
-      je = element("th");
-      je.textContent = "Rev";
+      Ve = element("th");
+      Ve.textContent = "Rev";
       $e = space();
       Ge = element("th");
       Ge.textContent = "Stat";
-      Ve = space();
-      if (Ze) Ze.c();
       Ue = space();
-      ze = element("tr");
-      qe = element("td");
+      if (Ze) Ze.c();
+      ze = space();
+      je = element("tr");
+      He = element("td");
       nt.c();
-      He = space();
+      qe = space();
       for (let _ = 0; _ < rt.length; _ += 1) rt[_].c();
       Ke = space();
       We = element("tr");
@@ -30919,31 +27330,31 @@ function create_fragment5(_) {
       attr(de, "class", "row svelte-1vjy5r1");
       attr(me, "for", "");
       attr(me, "class", "svelte-1vjy5r1");
-      attr(Se, "type", "checkbox");
-      Se.disabled = _[6];
-      attr(Se, "class", "svelte-1vjy5r1");
+      attr(Ee, "type", "checkbox");
+      Ee.disabled = _[6];
       attr(Ee, "class", "svelte-1vjy5r1");
       attr(ve, "class", "svelte-1vjy5r1");
-      attr(Oe, "type", "checkbox");
-      Oe.disabled = _[6];
-      attr(Oe, "class", "svelte-1vjy5r1");
+      attr(Se, "class", "svelte-1vjy5r1");
+      attr(ke, "type", "checkbox");
+      ke.disabled = _[6];
       attr(ke, "class", "svelte-1vjy5r1");
-      attr(we, "class", "svelte-1vjy5r1");
-      attr(Le, "type", "checkbox");
-      Le.disabled = _[6];
       attr(Le, "class", "svelte-1vjy5r1");
+      attr(we, "class", "svelte-1vjy5r1");
+      attr(xe, "type", "checkbox");
+      xe.disabled = _[6];
+      attr(xe, "class", "svelte-1vjy5r1");
       attr(Re, "class", "svelte-1vjy5r1");
       attr(Ae, "class", "svelte-1vjy5r1");
       attr(ge, "class", "row svelte-1vjy5r1");
       attr(re, "class", "control svelte-1vjy5r1");
       attr(Be, "class", "svelte-1vjy5r1");
       attr(Me, "class", "svelte-1vjy5r1");
-      attr(je, "class", "svelte-1vjy5r1");
+      attr(Ve, "class", "svelte-1vjy5r1");
       attr(Ge, "class", "svelte-1vjy5r1");
       attr(De, "class", "svelte-1vjy5r1");
-      attr(qe, "colspan", "5");
-      attr(qe, "class", "more svelte-1vjy5r1");
-      attr(ze, "class", "svelte-1vjy5r1");
+      attr(He, "colspan", "5");
+      attr(He, "class", "more svelte-1vjy5r1");
+      attr(je, "class", "svelte-1vjy5r1");
       attr(Xe, "colspan", "5");
       attr(Xe, "class", "more svelte-1vjy5r1");
       attr(We, "class", "svelte-1vjy5r1");
@@ -30968,22 +27379,22 @@ function create_fragment5(_) {
       append(re, ge);
       append(ge, me);
       append(ge, ye);
-      append(ge, ve);
-      append(ve, Se);
-      Se.checked = _[0];
-      append(ve, Ee);
+      append(ge, Se);
+      append(Se, Ee);
+      Ee.checked = _[0];
+      append(Se, ve);
       append(ge, Ce);
       append(ge, we);
-      append(we, Oe);
-      Oe.checked = _[1];
       append(we, ke);
-      append(ge, xe);
+      ke.checked = _[1];
+      append(we, Le);
+      append(ge, Oe);
       append(ge, Ae);
-      append(Ae, Le);
-      Le.checked = _[2];
+      append(Ae, xe);
+      xe.checked = _[2];
       append(Ae, Re);
       append(ee, Te);
-      if (Ye) Ye.m(ee, null);
+      if (Je) Je.m(ee, null);
       append(ee, Pe);
       append(ee, Ie);
       append(Ie, De);
@@ -30991,24 +27402,24 @@ function create_fragment5(_) {
       append(De, Ne);
       append(De, Me);
       append(De, Fe);
-      append(De, je);
+      append(De, Ve);
       append(De, $e);
       append(De, Ge);
-      append(De, Ve);
+      append(De, Ue);
       if (Ze) Ze.m(De, null);
-      append(Ie, Ue);
       append(Ie, ze);
-      append(ze, qe);
-      nt.m(qe, null);
-      append(Ie, He);
+      append(Ie, je);
+      append(je, He);
+      nt.m(He, null);
+      append(Ie, qe);
       for (let _ = 0; _ < rt.length; _ += 1) if (rt[_]) rt[_].m(Ie, null);
       append(Ie, Ke);
       append(Ie, We);
       append(We, Xe);
       ot.m(Xe, null);
-      if (!Je) {
-        Qe = [ listen(le, "input", _[12]), listen(he, "input", _[13]), listen(Se, "change", _[14]), listen(Oe, "change", _[15]), listen(Le, "change", _[16]) ];
-        Je = true;
+      if (!Qe) {
+        Ye = [ listen(le, "input", _[12]), listen(he, "input", _[13]), listen(Ee, "change", _[14]), listen(ke, "change", _[15]), listen(xe, "change", _[16]) ];
+        Qe = true;
       }
     },
     p(_, [ne]) {
@@ -31016,19 +27427,19 @@ function create_fragment5(_) {
       if (8 & ne) set_input_value(le, _[3]);
       if (64 & ne) he.disabled = _[6];
       if (16 & ne) set_input_value(he, _[4]);
-      if (64 & ne) Se.disabled = _[6];
-      if (1 & ne) Se.checked = _[0];
-      if (64 & ne) Oe.disabled = _[6];
-      if (2 & ne) Oe.checked = _[1];
-      if (64 & ne) Le.disabled = _[6];
-      if (4 & ne) Le.checked = _[2];
-      if (_[6]) if (Ye) ; else {
-        Ye = create_if_block_53(_);
-        Ye.c();
-        Ye.m(ee, Pe);
-      } else if (Ye) {
-        Ye.d(1);
-        Ye = null;
+      if (64 & ne) Ee.disabled = _[6];
+      if (1 & ne) Ee.checked = _[0];
+      if (64 & ne) ke.disabled = _[6];
+      if (2 & ne) ke.checked = _[1];
+      if (64 & ne) xe.disabled = _[6];
+      if (4 & ne) xe.checked = _[2];
+      if (_[6]) if (Je) ; else {
+        Je = create_if_block_53(_);
+        Je.c();
+        Je.m(ee, Pe);
+      } else if (Je) {
+        Je.d(1);
+        Je = null;
       }
       if (_[1]) if (Ze) ; else {
         Ze = create_if_block_44(_);
@@ -31043,7 +27454,7 @@ function create_fragment5(_) {
         nt = tt(_);
         if (nt) {
           nt.c();
-          nt.m(qe, null);
+          nt.m(He, null);
         }
       }
       if (1570 & ne) {
@@ -31073,13 +27484,13 @@ function create_fragment5(_) {
     o: noop2,
     d(_) {
       if (_) detach(ee);
-      if (Ye) Ye.d();
+      if (Je) Je.d();
       if (Ze) Ze.d();
       nt.d();
       destroy_each(rt, _);
       ot.d();
-      Je = false;
-      run_all(Qe);
+      Qe = false;
+      run_all(Ye);
     }
   };
 }
@@ -31106,7 +27517,7 @@ function instance5(_, ee, ne) {
           let me;
           const ye = (null !== (_ = (await ne.getRaw(he._id, {
             revs_info: true
-          }))._revs_info) && void 0 !== _ ? _ : []).reverse(), ve = -1, Se = 0, Ee = 1;
+          }))._revs_info) && void 0 !== _ ? _ : []).reverse(), Se = -1, Ee = 0, ve = 1;
           for (const _ of ye) if ("available" == _.status) {
             const ye = !ge && re || oe && _.rev == he._rev ? await ne.getDBEntry(pe, {
               rev: _.rev
@@ -31117,7 +27528,7 @@ function instance5(_, ee, ne) {
             const Ce = _.rev, we = "mtime" in ye ? ye.mtime : 0;
             if (le > we) continue;
             if (ue < we) continue;
-            let Oe = "";
+            let ke = "";
             if (re && !ge) {
               const _ = getDocData(ye.data);
               if (void 0 === me) me = _;
@@ -31126,9 +27537,9 @@ function instance5(_, ee, ne) {
                 ee.diff_cleanupSemantic(ne);
                 me = _;
                 const ie = {
-                  [ve]: 0,
                   [Se]: 0,
-                  [Ee]: 0
+                  [Ee]: 0,
+                  [ve]: 0
                 }, re = ne.reduce(((_, ee) => {
                   var ne;
                   return {
@@ -31136,19 +27547,19 @@ function instance5(_, ee, ne) {
                     [ee[0]]: (null !== (ne = _[ee[0]]) && void 0 !== ne ? ne : 0) + ee[1].length
                   };
                 }), ie);
-                Oe = `-${re[ve]}, +${re[Ee]}`;
+                ke = `-${re[Se]}, +${re[ve]}`;
               }
             }
-            const ke = ye._deleted || (null == ye ? void 0 : ye.deleted) || false;
-            if (ke) Oe += " 🗑️";
+            const Le = ye._deleted || (null == ye ? void 0 : ye.deleted) || false;
+            if (Le) ke += " 🗑️";
             if (Ce == he._rev) if (oe) {
               const _ = ie.vaultAccess.getAbstractFileByPath(stripAllPrefixes(ie.getPath(he)));
               if (_ instanceof import_obsidian.TFile) {
                 const ee = await ie.vaultAccess.adapterReadAuto(_), ne = readAsBlob(ye);
-                if (await isDocContentSame(ee, ne)) Oe += " ⚖️"; else Oe += " ⚠️";
+                if (await isDocContentSame(ee, ne)) ke += " ⚖️"; else ke += " ⚠️";
               }
             }
-            const xe = ie.getPath(ye), [Ae, ...Le] = xe.split("/").reverse();
+            const Oe = ie.getPath(ye), [Ae, ...xe] = Oe.split("/").reverse();
             let Re = "";
             if (se) {
               const _ = null !== (ee = null == ye ? void 0 : ye.children) && void 0 !== ee ? ee : [], ie = await ne.allDocsRaw({
@@ -31159,14 +27570,14 @@ function instance5(_, ee, ne) {
             fe.push({
               id: ye._id,
               rev: ye._rev,
-              path: xe,
-              dirname: Le.reverse().join("/"),
+              path: Oe,
+              dirname: xe.reverse().join("/"),
               filename: Ae,
               mtime: we,
               mtimeDisp: mtimeToDate(we),
               size: null !== (de = null == ye ? void 0 : ye.size) && void 0 !== de ? de : 0,
-              isDeleted: ke,
-              changes: Oe,
+              isDeleted: Le,
+              changes: ke,
               chunks: Re,
               isPlain: ge
             });
@@ -31296,7 +27707,7 @@ function create_each_block6(_) {
 }
 
 function create_fragment6(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, ve, Se, Ee, Ce = ensure_array_like(_[0]), we = [];
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce = ensure_array_like(_[0]), we = [];
   for (let ee = 0; ee < Ce.length; ee += 1) we[ee] = create_each_block6(get_each_context6(_, Ce, ee));
   return {
     c() {
@@ -31318,7 +27729,7 @@ function create_fragment6(_) {
       me = element("span");
       me.textContent = "Pause";
       ye = space();
-      ve = element("div");
+      Se = element("div");
       for (let _ = 0; _ < we.length; _ += 1) we[_].c();
       attr(se, "type", "checkbox");
       attr(se, "class", "svelte-1j0mkaj");
@@ -31334,11 +27745,11 @@ function create_fragment6(_) {
       attr(pe, "class", "svelte-1j0mkaj");
       attr(ie, "class", "row svelte-1j0mkaj");
       attr(ne, "class", "control svelte-1j0mkaj");
-      attr(ve, "class", "log svelte-1j0mkaj");
+      attr(Se, "class", "log svelte-1j0mkaj");
       attr(ee, "class", "logpane svelte-1j0mkaj");
     },
-    m(Ce, Oe) {
-      insert(Ce, ee, Oe);
+    m(Ce, ke) {
+      insert(Ce, ee, ke);
       append(ee, ne);
       append(ne, ie);
       append(ie, re);
@@ -31356,12 +27767,12 @@ function create_fragment6(_) {
       ge.checked = _[3];
       append(pe, me);
       append(ee, ye);
-      append(ee, ve);
-      for (let _ = 0; _ < we.length; _ += 1) if (we[_]) we[_].m(ve, null);
-      _[8](ve);
-      if (!Se) {
-        Ee = [ listen(se, "change", _[5]), listen(de, "change", _[6]), listen(ge, "change", _[7]) ];
-        Se = true;
+      append(ee, Se);
+      for (let _ = 0; _ < we.length; _ += 1) if (we[_]) we[_].m(Se, null);
+      _[8](Se);
+      if (!Ee) {
+        ve = [ listen(se, "change", _[5]), listen(de, "change", _[6]), listen(ge, "change", _[7]) ];
+        Ee = true;
       }
     },
     p(_, [ee]) {
@@ -31376,7 +27787,7 @@ function create_fragment6(_) {
           if (we[ne]) we[ne].p(ie, ee); else {
             we[ne] = create_each_block6(ie);
             we[ne].c();
-            we[ne].m(ve, null);
+            we[ne].m(Se, null);
           }
         }
         for (;ne < we.length; ne += 1) we[ne].d(1);
@@ -31389,8 +27800,8 @@ function create_fragment6(_) {
       if (ne) detach(ee);
       destroy_each(we, ne);
       _[8](null);
-      Se = false;
-      run_all(Ee);
+      Ee = false;
+      run_all(ve);
     }
   };
 }
@@ -31715,14 +28126,15 @@ function isValidHostname(_) {
 
 function addExpectContinueMiddleware(_) {
   return ee => async ne => {
-    const {request: ie} = ne;
-    if (HttpRequest.isInstance(ie) && ie.body && "node" === _.runtime) ie.headers = {
-      ...ie.headers,
+    var ie, re;
+    const {request: se} = ne;
+    if (HttpRequest.isInstance(se) && se.body && "node" === _.runtime) if ("FetchHttpHandler" !== (null == (re = null == (ie = _.requestHandler) ? void 0 : ie.constructor) ? void 0 : re.name)) se.headers = {
+      ...se.headers,
       Expect: "100-continue"
     };
     return ee({
       ...ne,
-      request: ie
+      request: se
     });
   };
 }
@@ -32182,7 +28594,7 @@ function requestTimeout(_ = 0) {
 }
 
 var keepAliveSupport = {
-  supported: Boolean("undefined" != typeof Request && "keepalive" in new Request("https://[::1]"))
+  supported: void 0
 }, FetchHttpHandler = class _FetchHttpHandler {
   static create(_) {
     if ("function" == typeof (null == _ ? void 0 : _.handle)) return _; else return new _FetchHttpHandler(_);
@@ -32192,31 +28604,35 @@ var keepAliveSupport = {
       this.config = null != _ ? _ : {};
       this.configProvider = Promise.resolve(this.config);
     }
+    if (void 0 === keepAliveSupport.supported) keepAliveSupport.supported = Boolean("undefined" != typeof Request && "keepalive" in new Request("https://[::1]"));
   }
   destroy() {}
   async handle(_, {abortSignal: ee} = {}) {
     var ne, ie;
     if (!this.config) this.config = await this.configProvider;
-    const re = this.config.requestTimeout, se = true === this.config.keepAlive;
+    const re = this.config.requestTimeout, se = true === this.config.keepAlive, oe = this.config.credentials;
     if (null == ee ? void 0 : ee.aborted) {
       const _ = new Error("Request aborted");
       _.name = "AbortError";
       return Promise.reject(_);
     }
-    let oe = _.path;
-    const le = buildQueryString(_.query || {});
-    if (le) oe += `?${le}`;
-    if (_.fragment) oe += `#${_.fragment}`;
-    let ue = "";
-    if (null != _.username || null != _.password) ue = `${null != (ne = _.username) ? ne : ""}:${null != (ie = _.password) ? ie : ""}@`;
-    const {port: de, method: fe} = _, he = `${_.protocol}//${ue}${_.hostname}${de ? `:${de}` : ""}${oe}`, pe = {
-      body: "GET" === fe || "HEAD" === fe ? void 0 : _.body,
+    let le = _.path;
+    const ue = buildQueryString(_.query || {});
+    if (ue) le += `?${ue}`;
+    if (_.fragment) le += `#${_.fragment}`;
+    let de = "";
+    if (null != _.username || null != _.password) de = `${null != (ne = _.username) ? ne : ""}:${null != (ie = _.password) ? ie : ""}@`;
+    const {port: fe, method: he} = _, pe = `${_.protocol}//${de}${_.hostname}${fe ? `:${fe}` : ""}${le}`, ge = "GET" === he || "HEAD" === he ? void 0 : _.body, me = {
+      body: ge,
       headers: new Headers(_.headers),
-      method: fe
+      method: he,
+      credentials: oe
     };
-    if ("undefined" != typeof AbortController) pe["signal"] = ee;
-    if (keepAliveSupport.supported) pe["keepalive"] = se;
-    const ge = new Request(he, pe), me = [ fetch(ge).then((_ => {
+    if (ge) me.duplex = "half";
+    if ("undefined" != typeof AbortController) me.signal = ee;
+    if (keepAliveSupport.supported) me.keepalive = se;
+    let ye = null;
+    const Se = new Request(pe, me), Ee = [ fetch(Se).then((_ => {
       const ee = _.headers, ne = {};
       for (const _ of ee.entries()) ne[_[0]] = _[1];
       if (!(null != _.body)) return _.blob().then((ee => ({
@@ -32235,14 +28651,21 @@ var keepAliveSupport = {
         })
       };
     })), requestTimeout(re) ];
-    if (ee) me.push(new Promise(((_, ne) => {
-      ee.onabort = () => {
+    if (ee) Ee.push(new Promise(((_, ne) => {
+      const onAbort = () => {
         const _ = new Error("Request aborted");
         _.name = "AbortError";
         ne(_);
       };
+      if ("function" == typeof ee.addEventListener) {
+        const _ = ee;
+        _.addEventListener("abort", onAbort, {
+          once: true
+        });
+        ye = () => _.removeEventListener("abort", onAbort);
+      } else ee.onabort = onAbort;
     })));
-    return Promise.race(me);
+    return Promise.race(Ee).finally(ye);
   }
   updateHttpClientConfig(_, ee) {
     this.config = void 0;
@@ -32265,20 +28688,23 @@ async function collectBlob(_) {
 }
 
 async function collectStream(_) {
-  let ee = new Uint8Array(0);
-  const ne = _.getReader();
-  let ie = false;
+  const ee = [], ne = _.getReader();
+  let ie = false, re = 0;
   for (;!ie; ) {
-    const {done: _, value: re} = await ne.read();
-    if (re) {
-      const _ = ee;
-      ee = new Uint8Array(_.length + re.length);
-      ee.set(_);
-      ee.set(re, _.length);
+    const {done: _, value: se} = await ne.read();
+    if (se) {
+      ee.push(se);
+      re += se.length;
     }
     ie = _;
   }
-  return ee;
+  const se = new Uint8Array(re);
+  let oe = 0;
+  for (const _ of ee) {
+    se.set(_, oe);
+    oe += _.length;
+  }
+  return se;
 }
 
 function readToBase64(_) {
@@ -32417,7 +28843,7 @@ var ERR_MSG_STREAM_HAS_BEEN_TRANSFORMED = "The stream has already been transform
     this._commandName = ee;
     return this;
   }
-  f(_ = (_ => _), ee = (_ => _)) {
+  f(_ = _ => _, ee = _ => _) {
     this._inputFilterSensitiveLog = _;
     this._outputFilterSensitiveLog = ee;
     return this;
@@ -32826,7 +29252,7 @@ var mapWithFilter = (_, ee, ne) => map(_, Object.entries(ne).reduce(((_, [ne, ie
     _ = _.replace(re, se ? ee.split("/").map((_ => extendedEncodeURIComponent(_))).join("/") : extendedEncodeURIComponent(ee));
   } else throw new Error("No value provided for input HTTP label: " + ne + ".");
   return _;
-}, CONTENT_LENGTH_HEADER = "content-length";
+}, serializeDateTime = _ => _.toISOString().replace(".000Z", "Z"), CONTENT_LENGTH_HEADER = "content-length";
 
 function checkContentLengthHeader() {
   return (_, ee) => async ne => {
@@ -33596,17 +30022,17 @@ var validateBucketNameMiddlewareOptions = {
     })()) pe = await _.signer(he = me);
   } else pe = await _.signer(he = ge);
   let ye;
-  const ve = "sigv4a" === (null == he ? void 0 : he.name) ? null == (fe = null == he ? void 0 : he.signingRegionSet) ? void 0 : fe.join(",") : void 0, Se = {
+  const Se = "sigv4a" === (null == he ? void 0 : he.name) ? null == (fe = null == he ? void 0 : he.signingRegionSet) ? void 0 : fe.join(",") : void 0, Ee = {
     signingDate: getSkewCorrectedDate(_.systemClockOffset),
-    signingRegion: ve || ne["signing_region"],
+    signingRegion: Se || ne["signing_region"],
     signingService: ne["signing_service"]
   };
   if (ne.s3ExpressIdentity) {
     const _ = pe;
-    ye = await _.signWithCredentials(ie.request, ne.s3ExpressIdentity, Se);
+    ye = await _.signWithCredentials(ie.request, ne.s3ExpressIdentity, Ee);
     if (ye.headers["X-Amz-Security-Token"] || ye.headers["x-amz-security-token"]) throw new Error("X-Amz-Security-Token must not be set for s3-express requests.");
-  } else ye = await pe.sign(ie.request, Se);
-  const Ee = await ee({
+  } else ye = await pe.sign(ie.request, Ee);
+  const ve = await ee({
     ...ie,
     request: ye
   }).catch((ee => {
@@ -33614,9 +30040,9 @@ var validateBucketNameMiddlewareOptions = {
     const ie = null != (ne = ee.ServerTime) ? ne : getDateHeader(ee.$response);
     if (ie) _.systemClockOffset = getUpdatedSystemClockOffset(ie, _.systemClockOffset);
     throw ee;
-  })), Ce = getDateHeader(Ee.response);
+  })), Ce = getDateHeader(ve.response);
   if (Ce) _.systemClockOffset = getUpdatedSystemClockOffset(Ce, _.systemClockOffset);
-  return Ee;
+  return ve;
 }, getDateHeader = _ => {
   var ee, ne, ie;
   return HttpResponse.isInstance(_) ? null != (ie = null == (ee = _.headers) ? void 0 : ee.date) ? ie : null == (ne = _.headers) ? void 0 : ne.Date : void 0;
@@ -33762,7 +30188,7 @@ var EndpointError = class extends Error {
   var ie, re;
   if (_ && _ in ne.referenceRecord) throw new EndpointError(`'${_}' is already defined in Reference Record.`);
   const se = callFunction(ee, ne);
-  null == (re = null == (ie = ne.logger) ? void 0 : ie.debug) || re.call(ie, debugId, `evaluateCondition: ${toDebugString(ee)} = ${toDebugString(se)}`);
+  null == (re = null == (ie = ne.logger) ? void 0 : ie.debug) || re.call(ie, `${debugId} evaluateCondition: ${toDebugString(ee)} = ${toDebugString(se)}`);
   return {
     result: "" === se ? true : !!se,
     ...null != _ && {
@@ -33788,7 +30214,7 @@ var EndpointError = class extends Error {
     };
     if (oe) {
       re[oe.name] = oe.value;
-      null == (ie = null == (ne = ee.logger) ? void 0 : ne.debug) || ie.call(ne, debugId, `assign: ${oe.name} := ${toDebugString(oe.value)}`);
+      null == (ie = null == (ne = ee.logger) ? void 0 : ne.debug) || ie.call(ne, `${debugId} assign: ${oe.name} := ${toDebugString(oe.value)}`);
     }
   }
   return {
@@ -33841,7 +30267,7 @@ var EndpointError = class extends Error {
       ...le
     }
   }, {url: de, properties: fe, headers: he} = se;
-  null == (ie = null == (ne = ee.logger) ? void 0 : ne.debug) || ie.call(ne, debugId, `Resolving endpoint from template: ${toDebugString(se)}`);
+  null == (ie = null == (ne = ee.logger) ? void 0 : ne.debug) || ie.call(ne, `${debugId} Resolving endpoint from template: ${toDebugString(se)}`);
   return {
     ...null != he && {
       headers: getEndpointHeaders(he, ue)
@@ -34118,7 +30544,11 @@ var EndpointError = class extends Error {
       supportsFIPS: true
     },
     regionRegex: "^eu\\-isoe\\-\\w+\\-\\d+$",
-    regions: {}
+    regions: {
+      "eu-isoe-west-1": {
+        description: "EU ISOE West"
+      }
+    }
   }, {
     id: "aws-iso-f",
     outputs: {
@@ -34371,7 +30801,7 @@ var parseUrl = _ => {
   return ne({
     ...re
   });
-}, deserializerMiddleware = (_, ee) => (ne, ie) => async ie => {
+}, deserializerMiddleware = (_, ee) => ne => async ie => {
   const {response: re} = await ne(ie);
   try {
     return {
@@ -35463,7 +31893,6 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   ne.p("Bucket", (() => _.Bucket), "{Bucket}", false);
   ne.p("Key", (() => _.Key), "{Key+}", true);
   const re = map({
-    [_xi]: [ , "CompleteMultipartUpload" ],
     [_uI]: [ , expectNonNull(_[_UI], "UploadId") ]
   });
   let se, oe;
@@ -35512,7 +31941,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
     [_xarp]: _[_RP],
     [_xat]: _[_T],
     [_xaolm]: _[_OLM],
-    [_xaolrud]: [ () => isSerializableHeaderValue(_[_OLRUD]), () => (_[_OLRUD].toISOString().split(".")[0] + "Z").toString() ],
+    [_xaolrud]: [ () => isSerializableHeaderValue(_[_OLRUD]), () => serializeDateTime(_[_OLRUD]).toString() ],
     [_xaollh]: _[_OLLHS],
     [_xaebo]: _[_EBO],
     [_xasebo]: _[_ESBO],
@@ -35577,7 +32006,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
     [_xarp]: _[_RP],
     [_xat]: _[_T],
     [_xaolm]: _[_OLM],
-    [_xaolrud]: [ () => isSerializableHeaderValue(_[_OLRUD]), () => (_[_OLRUD].toISOString().split(".")[0] + "Z").toString() ],
+    [_xaolrud]: [ () => isSerializableHeaderValue(_[_OLRUD]), () => serializeDateTime(_[_OLRUD]).toString() ],
     [_xaollh]: _[_OLLHS],
     [_xaebo]: _[_EBO],
     [_xaca]: _[_CA],
@@ -35590,8 +32019,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   ne.p("Bucket", (() => _.Bucket), "{Bucket}", false);
   ne.p("Key", (() => _.Key), "{Key+}", true);
   const re = map({
-    [_u]: [ , "" ],
-    [_xi]: [ , "CreateMultipartUpload" ]
+    [_u]: [ , "" ]
   });
   ne.m("POST").h(ie).q(re).b(void 0);
   return ne.build();
@@ -35776,8 +32204,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   ne.bp("/");
   ne.p("Bucket", (() => _.Bucket), "{Bucket}", false);
   const re = map({
-    [_d]: [ , "" ],
-    [_xi]: [ , "DeleteObjects" ]
+    [_d]: [ , "" ]
   });
   let se, oe;
   if (void 0 !== _.Delete) {
@@ -36206,6 +32633,12 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   ne.p("Bucket", (() => _.Bucket), "{Bucket}", false);
   ne.p("Key", (() => _.Key), "{Key+}", true);
   const re = map({
+    [_rcc]: [ , _[_RCC] ],
+    [_rcd]: [ , _[_RCD] ],
+    [_rce]: [ , _[_RCE] ],
+    [_rcl]: [ , _[_RCL] ],
+    [_rct]: [ , _[_RCT] ],
+    [_re]: [ () => void 0 !== _.ResponseExpires, () => dateToUtcString(_[_RE]).toString() ],
     [_vI]: [ , _[_VI] ],
     [_pN]: [ () => void 0 !== _.PartNumber, () => _[_PN].toString() ]
   });
@@ -36267,11 +32700,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   const ie = map({
     [_xi]: [ , "ListBuckets" ]
   });
-  let re;
-  re = "";
-  ne.m("GET").h({
-    "content-type": "application/xml"
-  }).q(ie).b("");
+  ne.m("GET").h({}).q(ie).b(void 0);
   return ne.build();
 }, se_ListDirectoryBucketsCommand = async (_, ee) => {
   const ne = requestBuilder(_, ee);
@@ -36785,7 +33214,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
     [_xarp]: _[_RP],
     [_xat]: _[_T],
     [_xaolm]: _[_OLM],
-    [_xaolrud]: [ () => isSerializableHeaderValue(_[_OLRUD]), () => (_[_OLRUD].toISOString().split(".")[0] + "Z").toString() ],
+    [_xaolrud]: [ () => isSerializableHeaderValue(_[_OLRUD]), () => serializeDateTime(_[_OLRUD]).toString() ],
     [_xaollh]: _[_OLLHS],
     [_xaebo]: _[_EBO],
     ...void 0 !== _.Metadata && Object.keys(_.Metadata).reduce(((ee, ne) => {
@@ -36967,7 +33396,6 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   ne.p("Key", (() => _.Key), "{Key+}", true);
   const re = map({
     [_res]: [ , "" ],
-    [_xi]: [ , "RestoreObject" ],
     [_vI]: [ , _[_VI] ]
   });
   let se, oe;
@@ -36992,8 +33420,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   ne.p("Key", (() => _.Key), "{Key+}", true);
   const re = map({
     [_se]: [ , "" ],
-    [_st]: [ , "2" ],
-    [_xi]: [ , "SelectObjectContent" ]
+    [_st]: [ , "2" ]
   });
   let se;
   se = _ve;
@@ -37096,7 +33523,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
     [_xafhxamm]: [ () => isSerializableHeaderValue(_[_MM]), () => _[_MM].toString() ],
     [_xafhxaolm]: _[_OLM],
     [_xafhxaollh]: _[_OLLHS],
-    [_xafhxaolrud]: [ () => isSerializableHeaderValue(_[_OLRUD]), () => (_[_OLRUD].toISOString().split(".")[0] + "Z").toString() ],
+    [_xafhxaolrud]: [ () => isSerializableHeaderValue(_[_OLRUD]), () => serializeDateTime(_[_OLRUD]).toString() ],
     [_xafhxampc]: [ () => isSerializableHeaderValue(_[_PC]), () => _[_PC].toString() ],
     [_xafhxars]: _[_RS],
     [_xafhxarc]: _[_RC],
@@ -37115,23 +33542,20 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
     }), {})
   });
   ne.bp("/WriteGetObjectResponse");
-  const re = map({
-    [_xi]: [ , "WriteGetObjectResponse" ]
-  });
-  let se, oe;
+  let re, se;
   if (void 0 !== _.Body) {
-    oe = _.Body;
-    se = oe;
+    se = _.Body;
+    re = se;
   }
-  let {hostname: le} = await ee.endpoint();
+  let {hostname: oe} = await ee.endpoint();
   if (true !== ee.disableHostPrefix) {
-    le = "{RequestRoute}." + le;
+    oe = "{RequestRoute}." + oe;
     if (void 0 === _.RequestRoute) throw new Error("Empty value provided for input host prefix: RequestRoute.");
-    le = le.replace("{RequestRoute}", _.RequestRoute);
-    if (!isValidHostname(le)) throw new Error("ValidationError: prefixed hostname must be hostname compatible.");
+    oe = oe.replace("{RequestRoute}", _.RequestRoute);
+    if (!isValidHostname(oe)) throw new Error("ValidationError: prefixed hostname must be hostname compatible.");
   }
-  ne.hn(le);
-  ne.m("POST").h(ie).q(re).b(se);
+  ne.hn(oe);
+  ne.m("POST").h(ie).b(re);
   return ne.build();
 }, de_AbortMultipartUploadCommand = async (_, ee) => {
   if (204 !== _.statusCode && _.statusCode >= 300) return de_CommandError(_, ee);
@@ -38479,7 +34903,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   return ne;
 }, se_LambdaFunctionConfigurationList = (_, ee) => _.filter((_ => null != _)).map((_ => se_LambdaFunctionConfiguration(_, ee).n(_me))), se_LifecycleExpiration = (_, ee) => {
   const ne = new XmlNode(_LEi);
-  if (null != _[_Dat]) ne.c(XmlNode.of(_Dat, (_[_Dat].toISOString().split(".")[0] + "Z").toString()).n(_Dat));
+  if (null != _[_Dat]) ne.c(XmlNode.of(_Dat, serializeDateTime(_[_Dat]).toString()).n(_Dat));
   if (null != _[_Da]) ne.c(XmlNode.of(_Da, String(_[_Da])).n(_Da));
   if (null != _[_EODM]) ne.c(XmlNode.of(_EODM, String(_[_EODM])).n(_EODM));
   return ne;
@@ -38619,7 +35043,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
 }, se_ObjectLockRetention = (_, ee) => {
   const ne = new XmlNode(_OLR);
   if (null != _[_Mo]) ne.c(XmlNode.of(_OLRM, _[_Mo]).n(_Mo));
-  if (null != _[_RUD]) ne.c(XmlNode.of(_Dat, (_[_RUD].toISOString().split(".")[0] + "Z").toString()).n(_RUD));
+  if (null != _[_RUD]) ne.c(XmlNode.of(_Dat, serializeDateTime(_[_RUD]).toString()).n(_RUD));
   return ne;
 }, se_ObjectLockRule = (_, ee) => {
   const ne = new XmlNode(_OLRb);
@@ -38854,7 +35278,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   return ne;
 }, se_TopicConfigurationList = (_, ee) => _.filter((_ => null != _)).map((_ => se_TopicConfiguration(_, ee).n(_me))), se_Transition = (_, ee) => {
   const ne = new XmlNode(_Tra);
-  if (null != _[_Dat]) ne.c(XmlNode.of(_Dat, (_[_Dat].toISOString().split(".")[0] + "Z").toString()).n(_Dat));
+  if (null != _[_Dat]) ne.c(XmlNode.of(_Dat, serializeDateTime(_[_Dat]).toString()).n(_Dat));
   if (null != _[_Da]) ne.c(XmlNode.of(_Da, String(_[_Da])).n(_Da));
   if (null != _[_SC]) ne.c(XmlNode.of(_TSC, _[_SC]).n(_SC));
   return ne;
@@ -39498,7 +35922,7 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
 })).s("AmazonS3", "CreateSession", {}).n("S3Client", "CreateSessionCommand").f(void 0, CreateSessionOutputFilterSensitiveLog).ser(se_CreateSessionCommand).de(de_CreateSessionCommand).build()){}, package_default = {
   name: "@aws-sdk/client-s3",
   description: "AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native",
-  version: "3.563.0",
+  version: "3.614.0",
   scripts: {
     build: "concurrently 'yarn:build:cjs' 'yarn:build:es' 'yarn:build:types'",
     "build:cjs": "node ../../scripts/compilation/inline client-s3",
@@ -39520,78 +35944,78 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
   module: "./dist-es/index.js",
   sideEffects: false,
   dependencies: {
-    "@aws-crypto/sha1-browser": "3.0.0",
-    "@aws-crypto/sha256-browser": "3.0.0",
-    "@aws-crypto/sha256-js": "3.0.0",
-    "@aws-sdk/client-sts": "3.556.0",
-    "@aws-sdk/core": "3.556.0",
-    "@aws-sdk/credential-provider-node": "3.563.0",
-    "@aws-sdk/middleware-bucket-endpoint": "3.535.0",
-    "@aws-sdk/middleware-expect-continue": "3.535.0",
-    "@aws-sdk/middleware-flexible-checksums": "3.535.0",
-    "@aws-sdk/middleware-host-header": "3.535.0",
-    "@aws-sdk/middleware-location-constraint": "3.535.0",
-    "@aws-sdk/middleware-logger": "3.535.0",
-    "@aws-sdk/middleware-recursion-detection": "3.535.0",
-    "@aws-sdk/middleware-sdk-s3": "3.556.0",
-    "@aws-sdk/middleware-signing": "3.556.0",
-    "@aws-sdk/middleware-ssec": "3.537.0",
-    "@aws-sdk/middleware-user-agent": "3.540.0",
-    "@aws-sdk/region-config-resolver": "3.535.0",
-    "@aws-sdk/signature-v4-multi-region": "3.556.0",
-    "@aws-sdk/types": "3.535.0",
-    "@aws-sdk/util-endpoints": "3.540.0",
-    "@aws-sdk/util-user-agent-browser": "3.535.0",
-    "@aws-sdk/util-user-agent-node": "3.535.0",
-    "@aws-sdk/xml-builder": "3.535.0",
-    "@smithy/config-resolver": "^2.2.0",
-    "@smithy/core": "^1.4.2",
-    "@smithy/eventstream-serde-browser": "^2.2.0",
-    "@smithy/eventstream-serde-config-resolver": "^2.2.0",
-    "@smithy/eventstream-serde-node": "^2.2.0",
-    "@smithy/fetch-http-handler": "^2.5.0",
-    "@smithy/hash-blob-browser": "^2.2.0",
-    "@smithy/hash-node": "^2.2.0",
-    "@smithy/hash-stream-node": "^2.2.0",
-    "@smithy/invalid-dependency": "^2.2.0",
-    "@smithy/md5-js": "^2.2.0",
-    "@smithy/middleware-content-length": "^2.2.0",
-    "@smithy/middleware-endpoint": "^2.5.1",
-    "@smithy/middleware-retry": "^2.3.1",
-    "@smithy/middleware-serde": "^2.3.0",
-    "@smithy/middleware-stack": "^2.2.0",
-    "@smithy/node-config-provider": "^2.3.0",
-    "@smithy/node-http-handler": "^2.5.0",
-    "@smithy/protocol-http": "^3.3.0",
-    "@smithy/smithy-client": "^2.5.1",
-    "@smithy/types": "^2.12.0",
-    "@smithy/url-parser": "^2.2.0",
-    "@smithy/util-base64": "^2.3.0",
-    "@smithy/util-body-length-browser": "^2.2.0",
-    "@smithy/util-body-length-node": "^2.3.0",
-    "@smithy/util-defaults-mode-browser": "^2.2.1",
-    "@smithy/util-defaults-mode-node": "^2.3.1",
-    "@smithy/util-endpoints": "^1.2.0",
-    "@smithy/util-retry": "^2.2.0",
-    "@smithy/util-stream": "^2.2.0",
-    "@smithy/util-utf8": "^2.3.0",
-    "@smithy/util-waiter": "^2.2.0",
+    "@aws-crypto/sha1-browser": "5.2.0",
+    "@aws-crypto/sha256-browser": "5.2.0",
+    "@aws-crypto/sha256-js": "5.2.0",
+    "@aws-sdk/client-sso-oidc": "3.614.0",
+    "@aws-sdk/client-sts": "3.614.0",
+    "@aws-sdk/core": "3.614.0",
+    "@aws-sdk/credential-provider-node": "3.614.0",
+    "@aws-sdk/middleware-bucket-endpoint": "3.614.0",
+    "@aws-sdk/middleware-expect-continue": "3.609.0",
+    "@aws-sdk/middleware-flexible-checksums": "3.614.0",
+    "@aws-sdk/middleware-host-header": "3.609.0",
+    "@aws-sdk/middleware-location-constraint": "3.609.0",
+    "@aws-sdk/middleware-logger": "3.609.0",
+    "@aws-sdk/middleware-recursion-detection": "3.609.0",
+    "@aws-sdk/middleware-sdk-s3": "3.614.0",
+    "@aws-sdk/middleware-signing": "3.609.0",
+    "@aws-sdk/middleware-ssec": "3.609.0",
+    "@aws-sdk/middleware-user-agent": "3.614.0",
+    "@aws-sdk/region-config-resolver": "3.614.0",
+    "@aws-sdk/signature-v4-multi-region": "3.614.0",
+    "@aws-sdk/types": "3.609.0",
+    "@aws-sdk/util-endpoints": "3.614.0",
+    "@aws-sdk/util-user-agent-browser": "3.609.0",
+    "@aws-sdk/util-user-agent-node": "3.614.0",
+    "@aws-sdk/xml-builder": "3.609.0",
+    "@smithy/config-resolver": "^3.0.5",
+    "@smithy/core": "^2.2.6",
+    "@smithy/eventstream-serde-browser": "^3.0.4",
+    "@smithy/eventstream-serde-config-resolver": "^3.0.3",
+    "@smithy/eventstream-serde-node": "^3.0.4",
+    "@smithy/fetch-http-handler": "^3.2.1",
+    "@smithy/hash-blob-browser": "^3.1.2",
+    "@smithy/hash-node": "^3.0.3",
+    "@smithy/hash-stream-node": "^3.1.2",
+    "@smithy/invalid-dependency": "^3.0.3",
+    "@smithy/md5-js": "^3.0.3",
+    "@smithy/middleware-content-length": "^3.0.3",
+    "@smithy/middleware-endpoint": "^3.0.5",
+    "@smithy/middleware-retry": "^3.0.9",
+    "@smithy/middleware-serde": "^3.0.3",
+    "@smithy/middleware-stack": "^3.0.3",
+    "@smithy/node-config-provider": "^3.1.4",
+    "@smithy/node-http-handler": "^3.1.2",
+    "@smithy/protocol-http": "^4.0.3",
+    "@smithy/smithy-client": "^3.1.7",
+    "@smithy/types": "^3.3.0",
+    "@smithy/url-parser": "^3.0.3",
+    "@smithy/util-base64": "^3.0.0",
+    "@smithy/util-body-length-browser": "^3.0.0",
+    "@smithy/util-body-length-node": "^3.0.0",
+    "@smithy/util-defaults-mode-browser": "^3.0.9",
+    "@smithy/util-defaults-mode-node": "^3.0.9",
+    "@smithy/util-endpoints": "^2.0.5",
+    "@smithy/util-retry": "^3.0.3",
+    "@smithy/util-stream": "^3.0.6",
+    "@smithy/util-utf8": "^3.0.0",
+    "@smithy/util-waiter": "^3.1.2",
     tslib: "^2.6.2"
   },
   devDependencies: {
-    "@aws-sdk/signature-v4-crt": "3.556.0",
-    "@smithy/service-client-documentation-generator": "^2.2.0",
-    "@tsconfig/node14": "1.0.3",
+    "@aws-sdk/signature-v4-crt": "3.614.0",
+    "@tsconfig/node16": "16.1.3",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^8.0.4",
-    "@types/node": "^14.14.31",
+    "@types/node": "^16.18.96",
     concurrently: "7.0.0",
     "downlevel-dts": "0.10.1",
     rimraf: "3.0.2",
     typescript: "~4.9.5"
   },
   engines: {
-    node: ">=14.0.0"
+    node: ">=16.0.0"
   },
   typesVersions: {
     "<4.0": {
@@ -39616,12 +36040,496 @@ var PutObjectOutputFilterSensitiveLog = _ => ({
     url: "https://github.com/aws/aws-sdk-js-v3.git",
     directory: "clients/client-s3"
   }
-}, import_sha1_browser = __toESM(require_build4()), import_sha256_browser = __toESM(require_build6()), import_bowser = __toESM(require_es5()), defaultUserAgent = ({serviceId: _, clientVersion: ee}) => async () => {
+}, fromUtf82 = _ => (new TextEncoder).encode(_);
+
+function isEmptyData(_) {
+  if ("string" == typeof _) return 0 === _.length; else return 0 === _.byteLength;
+}
+
+var SHA_1_HASH = {
+  name: "SHA-1"
+}, SHA_1_HMAC_ALGO = {
+  name: "HMAC",
+  hash: SHA_1_HASH
+}, EMPTY_DATA_SHA_1 = new Uint8Array([ 218, 57, 163, 238, 94, 107, 75, 13, 50, 85, 191, 239, 149, 96, 24, 144, 175, 216, 7, 9 ]), fallbackWindow = {};
+
+function locateWindow() {
+  if ("undefined" != typeof window) return window; else if ("undefined" != typeof self) return self;
+  return fallbackWindow;
+}
+
+var Sha1 = function() {
+  function Sha13(_) {
+    this.toHash = new Uint8Array(0);
+    if (void 0 !== _) {
+      this.key = new Promise((function(ee, ne) {
+        locateWindow().crypto.subtle.importKey("raw", convertToBuffer(_), SHA_1_HMAC_ALGO, false, [ "sign" ]).then(ee, ne);
+      }));
+      this.key.catch((function() {}));
+    }
+  }
+  Sha13.prototype.update = function(_) {
+    if (!isEmptyData(_)) {
+      var ee = convertToBuffer(_), ne = new Uint8Array(this.toHash.byteLength + ee.byteLength);
+      ne.set(this.toHash, 0);
+      ne.set(ee, this.toHash.byteLength);
+      this.toHash = ne;
+    }
+  };
+  Sha13.prototype.digest = function() {
+    var _ = this;
+    if (this.key) return this.key.then((function(ee) {
+      return locateWindow().crypto.subtle.sign(SHA_1_HMAC_ALGO, ee, _.toHash).then((function(_) {
+        return new Uint8Array(_);
+      }));
+    }));
+    if (isEmptyData(this.toHash)) return Promise.resolve(EMPTY_DATA_SHA_1); else return Promise.resolve().then((function() {
+      return locateWindow().crypto.subtle.digest(SHA_1_HASH, _.toHash);
+    })).then((function(_) {
+      return Promise.resolve(new Uint8Array(_));
+    }));
+  };
+  Sha13.prototype.reset = function() {
+    this.toHash = new Uint8Array(0);
+  };
+  return Sha13;
+}();
+
+function convertToBuffer(_) {
+  if ("string" == typeof _) return fromUtf82(_);
+  if (ArrayBuffer.isView(_)) return new Uint8Array(_.buffer, _.byteOffset, _.byteLength / Uint8Array.BYTES_PER_ELEMENT); else return new Uint8Array(_);
+}
+
+function __awaiter(_, ee, ne, ie) {
+  return new (ne || (ne = Promise))((function(re, se) {
+    function fulfilled(_) {
+      try {
+        step(ie.next(_));
+      } catch (_) {
+        se(_);
+      }
+    }
+    function rejected(_) {
+      try {
+        step(ie["throw"](_));
+      } catch (_) {
+        se(_);
+      }
+    }
+    function step(_) {
+      _.done ? re(_.value) : function adopt(_) {
+        return _ instanceof ne ? _ : new ne((function(ee) {
+          ee(_);
+        }));
+      }(_.value).then(fulfilled, rejected);
+    }
+    step((ie = ie.apply(_, ee || [])).next());
+  }));
+}
+
+function __generator(_, ee) {
+  var ne, ie, re, se, oe = {
+    label: 0,
+    sent: function() {
+      if (1 & re[0]) throw re[1];
+      return re[1];
+    },
+    trys: [],
+    ops: []
+  };
+  return se = {
+    next: verb(0),
+    throw: verb(1),
+    return: verb(2)
+  }, "function" == typeof Symbol && (se[Symbol.iterator] = function() {
+    return this;
+  }), se;
+  function verb(le) {
+    return function(ue) {
+      return function step(le) {
+        if (ne) throw new TypeError("Generator is already executing.");
+        for (;se && (se = 0, le[0] && (oe = 0)), oe; ) try {
+          if (ne = 1, ie && (re = 2 & le[0] ? ie["return"] : le[0] ? ie["throw"] || ((re = ie["return"]) && re.call(ie), 
+          0) : ie.next) && !(re = re.call(ie, le[1])).done) return re;
+          if (ie = 0, re) le = [ 2 & le[0], re.value ];
+          switch (le[0]) {
+           case 0:
+           case 1:
+            re = le;
+            break;
+
+           case 4:
+            oe.label++;
+            return {
+              value: le[1],
+              done: false
+            };
+
+           case 5:
+            oe.label++;
+            ie = le[1];
+            le = [ 0 ];
+            continue;
+
+           case 7:
+            le = oe.ops.pop();
+            oe.trys.pop();
+            continue;
+
+           default:
+            if (!(re = oe.trys, re = re.length > 0 && re[re.length - 1]) && (6 === le[0] || 2 === le[0])) {
+              oe = 0;
+              continue;
+            }
+            if (3 === le[0] && (!re || le[1] > re[0] && le[1] < re[3])) {
+              oe.label = le[1];
+              break;
+            }
+            if (6 === le[0] && oe.label < re[1]) {
+              oe.label = re[1];
+              re = le;
+              break;
+            }
+            if (re && oe.label < re[2]) {
+              oe.label = re[2];
+              oe.ops.push(le);
+              break;
+            }
+            if (re[2]) oe.ops.pop();
+            oe.trys.pop();
+            continue;
+          }
+          le = ee.call(_, oe);
+        } catch (_) {
+          le = [ 6, _ ];
+          ie = 0;
+        } finally {
+          ne = re = 0;
+        }
+        if (5 & le[0]) throw le[1];
+        return {
+          value: le[0] ? le[1] : void 0,
+          done: true
+        };
+      }([ le, ue ]);
+    };
+  }
+}
+
+function __values(_) {
+  var ee = "function" == typeof Symbol && Symbol.iterator, ne = ee && _[ee], ie = 0;
+  if (ne) return ne.call(_);
+  if (_ && "number" == typeof _.length) return {
+    next: function() {
+      if (_ && ie >= _.length) _ = void 0;
+      return {
+        value: _ && _[ie++],
+        done: !_
+      };
+    }
+  };
+  throw new TypeError(ee ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+var subtleCryptoMethods = [ "decrypt", "digest", "encrypt", "exportKey", "generateKey", "importKey", "sign", "verify" ];
+
+function supportsWebCrypto(_) {
+  if (supportsSecureRandom(_) && "object" == typeof _.crypto.subtle) return supportsSubtleCrypto(_.crypto.subtle); else return false;
+}
+
+function supportsSecureRandom(_) {
+  if ("object" == typeof _ && "object" == typeof _.crypto) return "function" == typeof _.crypto.getRandomValues; else return false;
+}
+
+function supportsSubtleCrypto(_) {
+  return _ && subtleCryptoMethods.every((function(ee) {
+    return "function" == typeof _[ee];
+  }));
+}
+
+var fromUtf83 = _ => (new TextEncoder).encode(_), fromUtf84 = "undefined" != typeof Buffer && Buffer.from ? function(_) {
+  return Buffer.from(_, "utf8");
+} : fromUtf83;
+
+function convertToBuffer2(_) {
+  if (_ instanceof Uint8Array) return _;
+  if ("string" == typeof _) return fromUtf84(_);
+  if (ArrayBuffer.isView(_)) return new Uint8Array(_.buffer, _.byteOffset, _.byteLength / Uint8Array.BYTES_PER_ELEMENT); else return new Uint8Array(_);
+}
+
+function isEmptyData2(_) {
+  if ("string" == typeof _) return 0 === _.length; else return 0 === _.byteLength;
+}
+
+function numToUint8(_) {
+  return new Uint8Array([ (4278190080 & _) >> 24, (16711680 & _) >> 16, (65280 & _) >> 8, 255 & _ ]);
+}
+
+function uint32ArrayFrom(_) {
+  if (!Uint32Array.from) {
+    for (var ee = new Uint32Array(_.length), ne = 0; ne < _.length; ) {
+      ee[ne] = _[ne];
+      ne += 1;
+    }
+    return ee;
+  }
+  return Uint32Array.from(_);
+}
+
+var Sha12 = function() {
+  function Sha13(_) {
+    if (supportsWebCrypto(locateWindow())) this.hash = new Sha1(_); else throw new Error("SHA1 not supported");
+  }
+  Sha13.prototype.update = function(_, ee) {
+    this.hash.update(convertToBuffer2(_));
+  };
+  Sha13.prototype.digest = function() {
+    return this.hash.digest();
+  };
+  Sha13.prototype.reset = function() {
+    this.hash.reset();
+  };
+  return Sha13;
+}(), SHA_256_HASH = {
+  name: "SHA-256"
+}, SHA_256_HMAC_ALGO = {
+  name: "HMAC",
+  hash: SHA_256_HASH
+}, EMPTY_DATA_SHA_256 = new Uint8Array([ 227, 176, 196, 66, 152, 252, 28, 20, 154, 251, 244, 200, 153, 111, 185, 36, 39, 174, 65, 228, 100, 155, 147, 76, 164, 149, 153, 27, 120, 82, 184, 85 ]), Sha256 = function() {
+  function Sha2564(_) {
+    this.toHash = new Uint8Array(0);
+    this.secret = _;
+    this.reset();
+  }
+  Sha2564.prototype.update = function(_) {
+    if (!isEmptyData2(_)) {
+      var ee = convertToBuffer2(_), ne = new Uint8Array(this.toHash.byteLength + ee.byteLength);
+      ne.set(this.toHash, 0);
+      ne.set(ee, this.toHash.byteLength);
+      this.toHash = ne;
+    }
+  };
+  Sha2564.prototype.digest = function() {
+    var _ = this;
+    if (this.key) return this.key.then((function(ee) {
+      return locateWindow().crypto.subtle.sign(SHA_256_HMAC_ALGO, ee, _.toHash).then((function(_) {
+        return new Uint8Array(_);
+      }));
+    }));
+    if (isEmptyData2(this.toHash)) return Promise.resolve(EMPTY_DATA_SHA_256); else return Promise.resolve().then((function() {
+      return locateWindow().crypto.subtle.digest(SHA_256_HASH, _.toHash);
+    })).then((function(_) {
+      return Promise.resolve(new Uint8Array(_));
+    }));
+  };
+  Sha2564.prototype.reset = function() {
+    var _ = this;
+    this.toHash = new Uint8Array(0);
+    if (this.secret && void 0 !== this.secret) {
+      this.key = new Promise((function(ee, ne) {
+        locateWindow().crypto.subtle.importKey("raw", convertToBuffer2(_.secret), SHA_256_HMAC_ALGO, false, [ "sign" ]).then(ee, ne);
+      }));
+      this.key.catch((function() {}));
+    }
+  };
+  return Sha2564;
+}(), BLOCK_SIZE = 64, DIGEST_LENGTH = 32, KEY = new Uint32Array([ 1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774, 264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, 2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711, 113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291, 1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411, 3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344, 430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298 ]), INIT = [ 1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225 ], MAX_HASHABLE_LENGTH = Math.pow(2, 53) - 1, RawSha256 = function() {
+  function RawSha2562() {
+    this.state = Int32Array.from(INIT);
+    this.temp = new Int32Array(64);
+    this.buffer = new Uint8Array(64);
+    this.bufferLength = 0;
+    this.bytesHashed = 0;
+    this.finished = false;
+  }
+  RawSha2562.prototype.update = function(_) {
+    if (this.finished) throw new Error("Attempted to update an already finished hash.");
+    var ee = 0, ne = _.byteLength;
+    this.bytesHashed += ne;
+    if (8 * this.bytesHashed > MAX_HASHABLE_LENGTH) throw new Error("Cannot hash more than 2^53 - 1 bits");
+    for (;ne > 0; ) {
+      this.buffer[this.bufferLength++] = _[ee++];
+      ne--;
+      if (this.bufferLength === BLOCK_SIZE) {
+        this.hashBuffer();
+        this.bufferLength = 0;
+      }
+    }
+  };
+  RawSha2562.prototype.digest = function() {
+    if (!this.finished) {
+      var _ = 8 * this.bytesHashed, ee = new DataView(this.buffer.buffer, this.buffer.byteOffset, this.buffer.byteLength), ne = this.bufferLength;
+      ee.setUint8(this.bufferLength++, 128);
+      if (ne % BLOCK_SIZE >= BLOCK_SIZE - 8) {
+        for (var ie = this.bufferLength; ie < BLOCK_SIZE; ie++) ee.setUint8(ie, 0);
+        this.hashBuffer();
+        this.bufferLength = 0;
+      }
+      for (ie = this.bufferLength; ie < BLOCK_SIZE - 8; ie++) ee.setUint8(ie, 0);
+      ee.setUint32(BLOCK_SIZE - 8, Math.floor(_ / 4294967296), true);
+      ee.setUint32(BLOCK_SIZE - 4, _);
+      this.hashBuffer();
+      this.finished = true;
+    }
+    var re = new Uint8Array(DIGEST_LENGTH);
+    for (ie = 0; ie < 8; ie++) {
+      re[4 * ie] = this.state[ie] >>> 24 & 255;
+      re[4 * ie + 1] = this.state[ie] >>> 16 & 255;
+      re[4 * ie + 2] = this.state[ie] >>> 8 & 255;
+      re[4 * ie + 3] = this.state[ie] >>> 0 & 255;
+    }
+    return re;
+  };
+  RawSha2562.prototype.hashBuffer = function() {
+    for (var _ = this.buffer, ee = this.state, ne = ee[0], ie = ee[1], re = ee[2], se = ee[3], oe = ee[4], le = ee[5], ue = ee[6], de = ee[7], fe = 0; fe < BLOCK_SIZE; fe++) {
+      if (fe < 16) this.temp[fe] = (255 & _[4 * fe]) << 24 | (255 & _[4 * fe + 1]) << 16 | (255 & _[4 * fe + 2]) << 8 | 255 & _[4 * fe + 3]; else {
+        var he = this.temp[fe - 2], pe = (he >>> 17 | he << 15) ^ (he >>> 19 | he << 13) ^ he >>> 10, ge = ((he = this.temp[fe - 15]) >>> 7 | he << 25) ^ (he >>> 18 | he << 14) ^ he >>> 3;
+        this.temp[fe] = (pe + this.temp[fe - 7] | 0) + (ge + this.temp[fe - 16] | 0);
+      }
+      var me = (((oe >>> 6 | oe << 26) ^ (oe >>> 11 | oe << 21) ^ (oe >>> 25 | oe << 7)) + (oe & le ^ ~oe & ue) | 0) + (de + (KEY[fe] + this.temp[fe] | 0) | 0) | 0, ye = ((ne >>> 2 | ne << 30) ^ (ne >>> 13 | ne << 19) ^ (ne >>> 22 | ne << 10)) + (ne & ie ^ ne & re ^ ie & re) | 0;
+      de = ue;
+      ue = le;
+      le = oe;
+      oe = se + me | 0;
+      se = re;
+      re = ie;
+      ie = ne;
+      ne = me + ye | 0;
+    }
+    ee[0] += ne;
+    ee[1] += ie;
+    ee[2] += re;
+    ee[3] += se;
+    ee[4] += oe;
+    ee[5] += le;
+    ee[6] += ue;
+    ee[7] += de;
+  };
+  return RawSha2562;
+}(), Sha2562 = function() {
+  function Sha2564(_) {
+    this.secret = _;
+    this.hash = new RawSha256;
+    this.reset();
+  }
+  Sha2564.prototype.update = function(_) {
+    if (!isEmptyData2(_) && !this.error) try {
+      this.hash.update(convertToBuffer2(_));
+    } catch (_) {
+      this.error = _;
+    }
+  };
+  Sha2564.prototype.digestSync = function() {
+    if (this.error) throw this.error;
+    if (this.outer) {
+      if (!this.outer.finished) this.outer.update(this.hash.digest());
+      return this.outer.digest();
+    }
+    return this.hash.digest();
+  };
+  Sha2564.prototype.digest = function() {
+    return __awaiter(this, void 0, void 0, (function() {
+      return __generator(this, (function(_) {
+        return [ 2, this.digestSync() ];
+      }));
+    }));
+  };
+  Sha2564.prototype.reset = function() {
+    this.hash = new RawSha256;
+    if (this.secret) {
+      this.outer = new RawSha256;
+      var _ = bufferFromSecret(this.secret), ee = new Uint8Array(BLOCK_SIZE);
+      ee.set(_);
+      for (var ne = 0; ne < BLOCK_SIZE; ne++) {
+        _[ne] ^= 54;
+        ee[ne] ^= 92;
+      }
+      this.hash.update(_);
+      this.outer.update(ee);
+      for (ne = 0; ne < _.byteLength; ne++) _[ne] = 0;
+    }
+  };
+  return Sha2564;
+}();
+
+function bufferFromSecret(_) {
+  var ee = convertToBuffer2(_);
+  if (ee.byteLength > BLOCK_SIZE) {
+    var ne = new RawSha256;
+    ne.update(ee);
+    ee = ne.digest();
+  }
+  var ie = new Uint8Array(BLOCK_SIZE);
+  ie.set(ee);
+  return ie;
+}
+
+var Sha2563 = function() {
+  function Sha2564(_) {
+    if (supportsWebCrypto(locateWindow())) this.hash = new Sha256(_); else this.hash = new Sha2562(_);
+  }
+  Sha2564.prototype.update = function(_, ee) {
+    this.hash.update(convertToBuffer2(_));
+  };
+  Sha2564.prototype.digest = function() {
+    return this.hash.digest();
+  };
+  Sha2564.prototype.reset = function() {
+    this.hash.reset();
+  };
+  return Sha2564;
+}(), import_bowser = __toESM(require_es5()), defaultUserAgent = ({serviceId: _, clientVersion: ee}) => async () => {
   var ne, ie, re, se, oe, le, ue;
   const de = "undefined" != typeof window && (null == (ne = null == window ? void 0 : window.navigator) ? void 0 : ne.userAgent) ? import_bowser.default.parse(window.navigator.userAgent) : void 0, fe = [ [ "aws-sdk-js", ee ], [ "ua", "2.0" ], [ `os/${(null == (ie = null == de ? void 0 : de.os) ? void 0 : ie.name) || "other"}`, null == (re = null == de ? void 0 : de.os) ? void 0 : re.version ], [ "lang/js" ], [ "md/browser", `${null != (oe = null == (se = null == de ? void 0 : de.browser) ? void 0 : se.name) ? oe : "unknown"}_${null != (ue = null == (le = null == de ? void 0 : de.browser) ? void 0 : le.version) ? ue : "unknown"}` ] ];
   if (_) fe.push([ `api/${_}`, ee ]);
   return fe;
-}, import_crc322 = __toESM(require_build7()), Int642 = class _Int64 {
+}, AwsCrc32 = function() {
+  function AwsCrc322() {
+    this.crc32 = new Crc32;
+  }
+  AwsCrc322.prototype.update = function(_) {
+    if (!isEmptyData2(_)) this.crc32.update(convertToBuffer2(_));
+  };
+  AwsCrc322.prototype.digest = function() {
+    return __awaiter(this, void 0, void 0, (function() {
+      return __generator(this, (function(_) {
+        return [ 2, numToUint8(this.crc32.digest()) ];
+      }));
+    }));
+  };
+  AwsCrc322.prototype.reset = function() {
+    this.crc32 = new Crc32;
+  };
+  return AwsCrc322;
+}(), Crc32 = function() {
+  function Crc322() {
+    this.checksum = 4294967295;
+  }
+  Crc322.prototype.update = function(_) {
+    var ee, ne;
+    try {
+      for (var ie = __values(_), re = ie.next(); !re.done; re = ie.next()) {
+        var se = re.value;
+        this.checksum = this.checksum >>> 8 ^ lookupTable[255 & (this.checksum ^ se)];
+      }
+    } catch (_) {
+      ee = {
+        error: _
+      };
+    } finally {
+      try {
+        if (re && !re.done && (ne = ie.return)) ne.call(ie);
+      } finally {
+        if (ee) throw ee.error;
+      }
+    }
+    return this;
+  };
+  Crc322.prototype.digest = function() {
+    return (4294967295 ^ this.checksum) >>> 0;
+  };
+  return Crc322;
+}(), a_lookUpTable = [ 0, 1996959894, 3993919788, 2567524794, 124634137, 1886057615, 3915621685, 2657392035, 249268274, 2044508324, 3772115230, 2547177864, 162941995, 2125561021, 3887607047, 2428444049, 498536548, 1789927666, 4089016648, 2227061214, 450548861, 1843258603, 4107580753, 2211677639, 325883990, 1684777152, 4251122042, 2321926636, 335633487, 1661365465, 4195302755, 2366115317, 997073096, 1281953886, 3579855332, 2724688242, 1006888145, 1258607687, 3524101629, 2768942443, 901097722, 1119000684, 3686517206, 2898065728, 853044451, 1172266101, 3705015759, 2882616665, 651767980, 1373503546, 3369554304, 3218104598, 565507253, 1454621731, 3485111705, 3099436303, 671266974, 1594198024, 3322730930, 2970347812, 795835527, 1483230225, 3244367275, 3060149565, 1994146192, 31158534, 2563907772, 4023717930, 1907459465, 112637215, 2680153253, 3904427059, 2013776290, 251722036, 2517215374, 3775830040, 2137656763, 141376813, 2439277719, 3865271297, 1802195444, 476864866, 2238001368, 4066508878, 1812370925, 453092731, 2181625025, 4111451223, 1706088902, 314042704, 2344532202, 4240017532, 1658658271, 366619977, 2362670323, 4224994405, 1303535960, 984961486, 2747007092, 3569037538, 1256170817, 1037604311, 2765210733, 3554079995, 1131014506, 879679996, 2909243462, 3663771856, 1141124467, 855842277, 2852801631, 3708648649, 1342533948, 654459306, 3188396048, 3373015174, 1466479909, 544179635, 3110523913, 3462522015, 1591671054, 702138776, 2966460450, 3352799412, 1504918807, 783551873, 3082640443, 3233442989, 3988292384, 2596254646, 62317068, 1957810842, 3939845945, 2647816111, 81470997, 1943803523, 3814918930, 2489596804, 225274430, 2053790376, 3826175755, 2466906013, 167816743, 2097651377, 4027552580, 2265490386, 503444072, 1762050814, 4150417245, 2154129355, 426522225, 1852507879, 4275313526, 2312317920, 282753626, 1742555852, 4189708143, 2394877945, 397917763, 1622183637, 3604390888, 2714866558, 953729732, 1340076626, 3518719985, 2797360999, 1068828381, 1219638859, 3624741850, 2936675148, 906185462, 1090812512, 3747672003, 2825379669, 829329135, 1181335161, 3412177804, 3160834842, 628085408, 1382605366, 3423369109, 3138078467, 570562233, 1426400815, 3317316542, 2998733608, 733239954, 1555261956, 3268935591, 3050360625, 752459403, 1541320221, 2607071920, 3965973030, 1969922972, 40735498, 2617837225, 3943577151, 1913087877, 83908371, 2512341634, 3803740692, 2075208622, 213261112, 2463272603, 3855990285, 2094854071, 198958881, 2262029012, 4057260610, 1759359992, 534414190, 2176718541, 4139329115, 1873836001, 414664567, 2282248934, 4279200368, 1711684554, 285281116, 2405801727, 4167216745, 1634467795, 376229701, 2685067896, 3608007406, 1308918612, 956543938, 2808555105, 3495958263, 1231636301, 1047427035, 2932959818, 3654703836, 1088359270, 936918e3, 2847714899, 3736837829, 1202900863, 817233897, 3183342108, 3401237130, 1404277552, 615818150, 3134207493, 3453421203, 1423857449, 601450431, 3009837614, 3294710456, 1567103746, 711928724, 3020668471, 3272380065, 1510334235, 755167117 ], lookupTable = uint32ArrayFrom(a_lookUpTable), Int642 = class _Int64 {
   constructor(_) {
     this.bytes = _;
     if (8 !== _.byteLength) throw new Error("Int64 buffers must be exactly 8 bytes");
@@ -39836,13 +36744,13 @@ var HEADER_VALUE_TYPE2, HeaderMarshaller = class {
   _[_["uuid"] = 9] = "uuid";
 })(HEADER_VALUE_TYPE2 || (HEADER_VALUE_TYPE2 = {}));
 
-var BOOLEAN_TAG = "boolean", BYTE_TAG = "byte", SHORT_TAG = "short", INT_TAG = "integer", LONG_TAG = "long", BINARY_TAG = "binary", STRING_TAG = "string", TIMESTAMP_TAG = "timestamp", UUID_TAG = "uuid", UUID_PATTERN2 = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/, import_crc32 = __toESM(require_build7()), PRELUDE_MEMBER_LENGTH = 4, PRELUDE_LENGTH = 2 * PRELUDE_MEMBER_LENGTH, CHECKSUM_LENGTH = 4, MINIMUM_MESSAGE_LENGTH = PRELUDE_LENGTH + 2 * CHECKSUM_LENGTH;
+var BOOLEAN_TAG = "boolean", BYTE_TAG = "byte", SHORT_TAG = "short", INT_TAG = "integer", LONG_TAG = "long", BINARY_TAG = "binary", STRING_TAG = "string", TIMESTAMP_TAG = "timestamp", UUID_TAG = "uuid", UUID_PATTERN2 = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/, PRELUDE_MEMBER_LENGTH = 4, PRELUDE_LENGTH = 2 * PRELUDE_MEMBER_LENGTH, CHECKSUM_LENGTH = 4, MINIMUM_MESSAGE_LENGTH = PRELUDE_LENGTH + 2 * CHECKSUM_LENGTH;
 
 function splitMessage({byteLength: _, byteOffset: ee, buffer: ne}) {
   if (_ < MINIMUM_MESSAGE_LENGTH) throw new Error("Provided message too short to accommodate event stream message overhead");
   const ie = new DataView(ne, ee, _), re = ie.getUint32(0, false);
   if (_ !== re) throw new Error("Reported message length does not match received message length");
-  const se = ie.getUint32(PRELUDE_MEMBER_LENGTH, false), oe = ie.getUint32(PRELUDE_LENGTH, false), le = ie.getUint32(_ - CHECKSUM_LENGTH, false), ue = (new import_crc32.Crc32).update(new Uint8Array(ne, ee, PRELUDE_LENGTH));
+  const se = ie.getUint32(PRELUDE_MEMBER_LENGTH, false), oe = ie.getUint32(PRELUDE_LENGTH, false), le = ie.getUint32(_ - CHECKSUM_LENGTH, false), ue = (new Crc32).update(new Uint8Array(ne, ee, PRELUDE_LENGTH));
   if (oe !== ue.digest()) throw new Error(`The prelude checksum specified in the message (${oe}) does not match the calculated CRC32 checksum (${ue.digest()})`);
   ue.update(new Uint8Array(ne, ee + PRELUDE_LENGTH, _ - (PRELUDE_LENGTH + CHECKSUM_LENGTH)));
   if (le !== ue.digest()) throw new Error(`The message checksum (${ue.digest()}) did not match the expected value of ${le}`);
@@ -39881,7 +36789,7 @@ var EventStreamCodec = class {
     };
   }
   encode({headers: _, body: ee}) {
-    const ne = this.headerMarshaller.format(_), ie = ne.byteLength + ee.byteLength + 16, re = new Uint8Array(ie), se = new DataView(re.buffer, re.byteOffset, re.byteLength), oe = new import_crc322.Crc32;
+    const ne = this.headerMarshaller.format(_), ie = ne.byteLength + ee.byteLength + 16, re = new Uint8Array(ie), se = new DataView(re.buffer, re.byteOffset, re.byteLength), oe = new Crc32;
     se.setUint32(0, ie, false);
     se.setUint32(4, ne.byteLength, false);
     se.setUint32(8, oe.update(re.subarray(0, 8)).digest(), false);
@@ -40120,19 +37028,19 @@ var blobHasher = async function blobHasher2(_, ee) {
     ne.update(_);
   }));
   return ne.digest();
-}, invalidProvider = _ => () => Promise.reject(_), BLOCK_SIZE = 64, DIGEST_LENGTH = 16, INIT = [ 1732584193, 4023233417, 2562383102, 271733878 ], Md52 = class {
+}, invalidProvider = _ => () => Promise.reject(_), BLOCK_SIZE2 = 64, DIGEST_LENGTH2 = 16, INIT2 = [ 1732584193, 4023233417, 2562383102, 271733878 ], Md57 = class {
   constructor() {
     this.reset();
   }
   update(_) {
-    if (isEmptyData(_)) return; else if (this.finished) throw new Error("Attempted to update an already finished hash.");
-    const ee = convertToBuffer(_);
+    if (isEmptyData3(_)) return; else if (this.finished) throw new Error("Attempted to update an already finished hash.");
+    const ee = convertToBuffer3(_);
     let ne = 0, {byteLength: ie} = ee;
     this.bytesHashed += ie;
     for (;ie > 0; ) {
       this.buffer.setUint8(this.bufferLength++, ee[ne++]);
       ie--;
-      if (this.bufferLength === BLOCK_SIZE) {
+      if (this.bufferLength === BLOCK_SIZE2) {
         this.hashBuffer();
         this.bufferLength = 0;
       }
@@ -40142,18 +37050,18 @@ var blobHasher = async function blobHasher2(_, ee) {
     if (!this.finished) {
       const {buffer: _, bufferLength: ee, bytesHashed: ne} = this, ie = 8 * ne;
       _.setUint8(this.bufferLength++, 128);
-      if (ee % BLOCK_SIZE >= BLOCK_SIZE - 8) {
-        for (let ee = this.bufferLength; ee < BLOCK_SIZE; ee++) _.setUint8(ee, 0);
+      if (ee % BLOCK_SIZE2 >= BLOCK_SIZE2 - 8) {
+        for (let ee = this.bufferLength; ee < BLOCK_SIZE2; ee++) _.setUint8(ee, 0);
         this.hashBuffer();
         this.bufferLength = 0;
       }
-      for (let ee = this.bufferLength; ee < BLOCK_SIZE - 8; ee++) _.setUint8(ee, 0);
-      _.setUint32(BLOCK_SIZE - 8, ie >>> 0, true);
-      _.setUint32(BLOCK_SIZE - 4, Math.floor(ie / 4294967296), true);
+      for (let ee = this.bufferLength; ee < BLOCK_SIZE2 - 8; ee++) _.setUint8(ee, 0);
+      _.setUint32(BLOCK_SIZE2 - 8, ie >>> 0, true);
+      _.setUint32(BLOCK_SIZE2 - 4, Math.floor(ie / 4294967296), true);
       this.hashBuffer();
       this.finished = true;
     }
-    const _ = new DataView(new ArrayBuffer(DIGEST_LENGTH));
+    const _ = new DataView(new ArrayBuffer(DIGEST_LENGTH2));
     for (let ee = 0; ee < 4; ee++) _.setUint32(4 * ee, this.state[ee], true);
     return new Uint8Array(_.buffer, _.byteOffset, _.byteLength);
   }
@@ -40230,8 +37138,8 @@ var blobHasher = async function blobHasher2(_, ee) {
     ee[3] = se + ee[3] & 4294967295;
   }
   reset() {
-    this.state = Uint32Array.from(INIT);
-    this.buffer = new DataView(new ArrayBuffer(BLOCK_SIZE));
+    this.state = Uint32Array.from(INIT2);
+    this.buffer = new DataView(new ArrayBuffer(BLOCK_SIZE2));
     this.bufferLength = 0;
     this.bytesHashed = 0;
     this.finished = false;
@@ -40258,11 +37166,11 @@ function ii(_, ee, ne, ie, re, se, oe) {
   return cmn(ne ^ (ee | ~ie), _, ee, re, se, oe);
 }
 
-function isEmptyData(_) {
+function isEmptyData3(_) {
   if ("string" == typeof _) return 0 === _.length; else return 0 === _.byteLength;
 }
 
-function convertToBuffer(_) {
+function convertToBuffer3(_) {
   if ("string" == typeof _) return fromUtf8(_);
   if (ArrayBuffer.isView(_)) return new Uint8Array(_.buffer, _.byteOffset, _.byteLength / Uint8Array.BYTES_PER_ELEMENT); else return new Uint8Array(_);
 }
@@ -40328,7 +37236,7 @@ var TEXT_ENCODER = "function" == typeof TextEncoder ? new TextEncoder : null, ca
     }
     return this.sigv4aSigner;
   }
-}, ce = "required", cf = "type", cg = "conditions", ch3 = "fn", ci = "argv", cj = "ref", ck = "assign", cl = "url", cm = "properties", cn = "backend", co = "authSchemes", cp = "disableDoubleEncoding", cq = "signingName", cr = "signingRegion", cs = "headers", ct = "signingRegionSet", a2 = false, b = true, c = "isSet", d3 = "booleanEquals", e3 = "error", f3 = "aws.partition", g = "stringEquals", h2 = "getAttr", i = "name", j = "substring", k = "bucketSuffix", l = "parseURL", m = "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", n2 = "endpoint", o = "tree", p = "aws.isVirtualHostableS3Bucket", q = "{url#scheme}://{Bucket}.{url#authority}{url#path}", r = "not", s = "{url#scheme}://{url#authority}{url#path}", t3 = "hardwareType", u = "regionPrefix", v = "bucketAliasSuffix", w = "outpostId", x = "isValidHostLabel", y = "sigv4a", z = "s3-outposts", A = "s3", B = "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}", C = "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}", D = "https://{Bucket}.s3.{partitionResult#dnsSuffix}", E = "aws.parseArn", F = "bucketArn", G = "arnType", H = "", I = "s3-object-lambda", J = "accesspoint", K = "accessPointName", L = "{url#scheme}://{accessPointName}-{bucketArn#accountId}.{url#authority}{url#path}", M = "mrapPartition", N = "outpostType", O = "arnPrefix", P = "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}", Q = "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", R = "https://s3.{partitionResult#dnsSuffix}", S = {
+}, ce = "required", cf = "type", cg = "conditions", ch3 = "fn", ci = "argv", cj = "ref", ck = "assign", cl = "url", cm = "properties", cn = "backend", co = "authSchemes", cp = "disableDoubleEncoding", cq = "signingName", cr = "signingRegion", cs = "headers", ct = "signingRegionSet", a = false, b = true, c = "isSet", d3 = "booleanEquals", e3 = "error", f3 = "aws.partition", g = "stringEquals", h2 = "getAttr", i = "name", j = "substring", k = "bucketSuffix", l = "parseURL", m = "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", n2 = "endpoint", o = "tree", p = "aws.isVirtualHostableS3Bucket", q = "{url#scheme}://{Bucket}.{url#authority}{url#path}", r = "not", s = "{url#scheme}://{url#authority}{url#path}", t3 = "hardwareType", u = "regionPrefix", v = "bucketAliasSuffix", w = "outpostId", x = "isValidHostLabel", y = "sigv4a", z = "s3-outposts", A = "s3", B = "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}", C = "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}", D = "https://{Bucket}.s3.{partitionResult#dnsSuffix}", E = "aws.parseArn", F = "bucketArn", G = "arnType", H = "", I = "s3-object-lambda", J = "accesspoint", K = "accessPointName", L = "{url#scheme}://{accessPointName}-{bucketArn#accountId}.{url#authority}{url#path}", M = "mrapPartition", N = "outpostType", O = "arnPrefix", P = "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}", Q = "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", R = "https://s3.{partitionResult#dnsSuffix}", S = {
   [ce]: false,
   [cf]: "String"
 }, T = {
@@ -40888,6 +37796,7 @@ var TEXT_ENCODER = "function" == typeof TextEncoder ? new TextEncoder : null, ca
     UseObjectLambdaEndpoint: U,
     Key: S,
     Prefix: S,
+    CopySource: S,
     DisableAccessPoints: U,
     DisableMultiRegionAccessPoints: T,
     UseArnRegion: U,
@@ -41792,7 +38701,7 @@ var TEXT_ENCODER = "function" == typeof TextEncoder ? new TextEncoder : null, ca
       }, {
         [cg]: [ {
           [ch3]: j,
-          [ci]: [ ac, 0, 4, a2 ],
+          [ci]: [ ac, 0, 4, a ],
           [ck]: O
         }, {
           [ch3]: g,
@@ -42157,26 +39066,26 @@ var getRuntimeConfig = _ => {
   return "tablet" === ie || "mobile" === ie;
 }, getRuntimeConfig2 = _ => {
   var ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye;
-  const ve = resolveDefaultsModeConfig(_), defaultConfigProvider = () => ve().then(loadConfigsForDefaultMode), Se = getRuntimeConfig(_);
+  const Se = resolveDefaultsModeConfig(_), defaultConfigProvider = () => Se().then(loadConfigsForDefaultMode), Ee = getRuntimeConfig(_);
   return {
-    ...Se,
+    ...Ee,
     ..._,
     runtime: "browser",
-    defaultsMode: ve,
+    defaultsMode: Se,
     bodyLengthChecker: null != (ee = null == _ ? void 0 : _.bodyLengthChecker) ? ee : calculateBodyLength,
     credentialDefaultProvider: null != (ne = null == _ ? void 0 : _.credentialDefaultProvider) ? ne : _ => () => Promise.reject(new Error("Credential is missing")),
     defaultUserAgentProvider: null != (ie = null == _ ? void 0 : _.defaultUserAgentProvider) ? ie : defaultUserAgent({
-      serviceId: Se.serviceId,
+      serviceId: Ee.serviceId,
       clientVersion: package_default.version
     }),
     eventStreamSerdeProvider: null != (re = null == _ ? void 0 : _.eventStreamSerdeProvider) ? re : eventStreamSerdeProvider,
     maxAttempts: null != (se = null == _ ? void 0 : _.maxAttempts) ? se : DEFAULT_MAX_ATTEMPTS,
-    md5: null != (oe = null == _ ? void 0 : _.md5) ? oe : Md52,
+    md5: null != (oe = null == _ ? void 0 : _.md5) ? oe : Md57,
     region: null != (le = null == _ ? void 0 : _.region) ? le : invalidProvider("Region is missing"),
     requestHandler: FetchHttpHandler.create(null != (ue = null == _ ? void 0 : _.requestHandler) ? ue : defaultConfigProvider),
     retryMode: null != (de = null == _ ? void 0 : _.retryMode) ? de : async () => (await defaultConfigProvider()).retryMode || DEFAULT_RETRY_MODE,
-    sha1: null != (fe = null == _ ? void 0 : _.sha1) ? fe : import_sha1_browser.Sha1,
-    sha256: null != (he = null == _ ? void 0 : _.sha256) ? he : import_sha256_browser.Sha256,
+    sha1: null != (fe = null == _ ? void 0 : _.sha1) ? fe : Sha12,
+    sha256: null != (he = null == _ ? void 0 : _.sha256) ? he : Sha2563,
     streamCollector: null != (pe = null == _ ? void 0 : _.streamCollector) ? pe : streamCollector,
     streamHasher: null != (ge = null == _ ? void 0 : _.streamHasher) ? ge : blobHasher,
     useDualstackEndpoint: null != (me = null == _ ? void 0 : _.useDualstackEndpoint) ? me : () => Promise.resolve(DEFAULT_USE_DUALSTACK_ENDPOINT),
@@ -42320,6 +39229,14 @@ var CompleteMultipartUploadCommand = class extends(Command.classBuilder().ep({
   Bucket: {
     type: "contextParams",
     name: "Bucket"
+  },
+  Key: {
+    type: "contextParams",
+    name: "Key"
+  },
+  CopySource: {
+    type: "contextParams",
+    name: "CopySource"
   }
 }).m((function(_, ee, ne, ie) {
   return [ getSerdePlugin(ne, this.serialize, this.deserialize), getEndpointPlugin(ne, _.getEndpointParameterInstructions()), getThrow200ExceptionsPlugin(ne), getSsecPlugin(ne) ];
@@ -42571,10 +39488,56 @@ var DEFAULT_CHECKSUM_ALGORITHM = ChecksumAlgorithm.MD5, S3_EXPRESS_DEFAULT_CHECK
   const ne = _.toLowerCase();
   for (const _ of Object.keys(ee)) if (ne === _.toLowerCase()) return true;
   return false;
-}, isStreaming = _ => void 0 !== _ && "string" != typeof _ && !ArrayBuffer.isView(_) && !isArrayBuffer(_), import_crc323 = __toESM(require_build7()), import_crc32c = __toESM(require_build8()), selectChecksumAlgorithmFunction = (_, ee) => ({
+}, isStreaming = _ => void 0 !== _ && "string" != typeof _ && !ArrayBuffer.isView(_) && !isArrayBuffer(_), AwsCrc32c = function() {
+  function AwsCrc32c2() {
+    this.crc32c = new Crc32c;
+  }
+  AwsCrc32c2.prototype.update = function(_) {
+    if (!isEmptyData2(_)) this.crc32c.update(convertToBuffer2(_));
+  };
+  AwsCrc32c2.prototype.digest = function() {
+    return __awaiter(this, void 0, void 0, (function() {
+      return __generator(this, (function(_) {
+        return [ 2, numToUint8(this.crc32c.digest()) ];
+      }));
+    }));
+  };
+  AwsCrc32c2.prototype.reset = function() {
+    this.crc32c = new Crc32c;
+  };
+  return AwsCrc32c2;
+}(), Crc32c = function() {
+  function Crc32c2() {
+    this.checksum = 4294967295;
+  }
+  Crc32c2.prototype.update = function(_) {
+    var ee, ne;
+    try {
+      for (var ie = __values(_), re = ie.next(); !re.done; re = ie.next()) {
+        var se = re.value;
+        this.checksum = this.checksum >>> 8 ^ lookupTable2[255 & (this.checksum ^ se)];
+      }
+    } catch (_) {
+      ee = {
+        error: _
+      };
+    } finally {
+      try {
+        if (re && !re.done && (ne = ie.return)) ne.call(ie);
+      } finally {
+        if (ee) throw ee.error;
+      }
+    }
+    return this;
+  };
+  Crc32c2.prototype.digest = function() {
+    return (4294967295 ^ this.checksum) >>> 0;
+  };
+  return Crc32c2;
+}(), a_lookupTable = [ 0, 4067132163, 3778769143, 324072436, 3348797215, 904991772, 648144872, 3570033899, 2329499855, 2024987596, 1809983544, 2575936315, 1296289744, 3207089363, 2893594407, 1578318884, 274646895, 3795141740, 4049975192, 51262619, 3619967088, 632279923, 922689671, 3298075524, 2592579488, 1760304291, 2075979607, 2312596564, 1562183871, 2943781820, 3156637768, 1313733451, 549293790, 3537243613, 3246849577, 871202090, 3878099393, 357341890, 102525238, 4101499445, 2858735121, 1477399826, 1264559846, 3107202533, 1845379342, 2677391885, 2361733625, 2125378298, 820201905, 3263744690, 3520608582, 598981189, 4151959214, 85089709, 373468761, 3827903834, 3124367742, 1213305469, 1526817161, 2842354314, 2107672161, 2412447074, 2627466902, 1861252501, 1098587580, 3004210879, 2688576843, 1378610760, 2262928035, 1955203488, 1742404180, 2511436119, 3416409459, 969524848, 714683780, 3639785095, 205050476, 4266873199, 3976438427, 526918040, 1361435347, 2739821008, 2954799652, 1114974503, 2529119692, 1691668175, 2005155131, 2247081528, 3690758684, 697762079, 986182379, 3366744552, 476452099, 3993867776, 4250756596, 255256311, 1640403810, 2477592673, 2164122517, 1922457750, 2791048317, 1412925310, 1197962378, 3037525897, 3944729517, 427051182, 170179418, 4165941337, 746937522, 3740196785, 3451792453, 1070968646, 1905808397, 2213795598, 2426610938, 1657317369, 3053634322, 1147748369, 1463399397, 2773627110, 4215344322, 153784257, 444234805, 3893493558, 1021025245, 3467647198, 3722505002, 797665321, 2197175160, 1889384571, 1674398607, 2443626636, 1164749927, 3070701412, 2757221520, 1446797203, 137323447, 4198817972, 3910406976, 461344835, 3484808360, 1037989803, 781091935, 3705997148, 2460548119, 1623424788, 1939049696, 2180517859, 1429367560, 2807687179, 3020495871, 1180866812, 410100952, 3927582683, 4182430767, 186734380, 3756733383, 763408580, 1053836080, 3434856499, 2722870694, 1344288421, 1131464017, 2971354706, 1708204729, 2545590714, 2229949006, 1988219213, 680717673, 3673779818, 3383336350, 1002577565, 4010310262, 493091189, 238226049, 4233660802, 2987750089, 1082061258, 1395524158, 2705686845, 1972364758, 2279892693, 2494862625, 1725896226, 952904198, 3399985413, 3656866545, 731699698, 4283874585, 222117402, 510512622, 3959836397, 3280807620, 837199303, 582374963, 3504198960, 68661723, 4135334616, 3844915500, 390545967, 1230274059, 3141532936, 2825850620, 1510247935, 2395924756, 2091215383, 1878366691, 2644384480, 3553878443, 565732008, 854102364, 3229815391, 340358836, 3861050807, 4117890627, 119113024, 1493875044, 2875275879, 3090270611, 1247431312, 2660249211, 1828433272, 2141937292, 2378227087, 3811616794, 291187481, 34330861, 4032846830, 615137029, 3603020806, 3314634738, 939183345, 1776939221, 2609017814, 2295496738, 2058945313, 2926798794, 1545135305, 1330124605, 3173225534, 4084100981, 17165430, 307568514, 3762199681, 888469610, 3332340585, 3587147933, 665062302, 2042050490, 2346497209, 2559330125, 1793573966, 3190661285, 1279665062, 1595330642, 2910671697 ], lookupTable2 = uint32ArrayFrom(a_lookupTable), selectChecksumAlgorithmFunction = (_, ee) => ({
   [ChecksumAlgorithm.MD5]: ee.md5,
-  [ChecksumAlgorithm.CRC32]: import_crc323.AwsCrc32,
-  [ChecksumAlgorithm.CRC32C]: import_crc32c.AwsCrc32c,
+  [ChecksumAlgorithm.CRC32]: AwsCrc32,
+  [ChecksumAlgorithm.CRC32C]: AwsCrc32c,
   [ChecksumAlgorithm.SHA1]: ee.sha1,
   [ChecksumAlgorithm.SHA256]: ee.sha256
 }[_]), stringHasher = (_, ee) => {
@@ -44251,24 +41214,24 @@ var JournalSyncAbstract = class {
           continue;
         }
         let ge = 0, me = 0;
-        const ye = new TextDecoder, ve = [];
+        const ye = new TextDecoder, Se = [];
         do {
           me = pe.indexOf(10, ge);
           if (-1 == me) break;
           const _ = pe.slice(ge, me), ee = ye.decode(_);
           if (ee.startsWith("~")) {
             const [_, ne] = ee.substring(1).split(UNIT_SPLIT);
-            ve.push({
+            Se.push({
               _id: _,
               data: unescapeNewLineFromString(ne),
               type: "leaf",
               _rev: ""
             });
-          } else ve.push(JSON.parse(ee));
+          } else Se.push(JSON.parse(ee));
           ge = me + 1;
         } while (me > 0);
         try {
-          if (await this.processDocuments(ve)) {
+          if (await this.processDocuments(Se)) {
             await ue();
             se++;
             Logger(`${re}: ${oe} has been processed`, LOG_LEVEL_INFO);
@@ -44501,6 +41464,21 @@ var JournalSyncAbstract = class {
       return false;
     }
   }
+  async getUsage() {
+    const _ = this._getClient();
+    try {
+      const ee = await _.listObjectsV2({
+        Bucket: this.bucket
+      });
+      if (!ee.Contents) return {}; else return {
+        estimatedSize: ee.Contents.reduce(((_, ee) => _ + (ee.Size || 0)), 0)
+      };
+    } catch (_) {
+      Logger("Could not get status of the remote bucket", LOG_LEVEL_NOTICE);
+      Logger(_, LOG_LEVEL_VERBOSE);
+      return false;
+    }
+  }
 }, MILSTONE_DOCID2 = "_00000000-milestone.json", currentVersionRange2 = {
   min: 0,
   max: 2,
@@ -44589,10 +41567,10 @@ var JournalSyncAbstract = class {
         this.remoteLocked = true;
         this.remoteCleaned = true;
         return false;
-      } else if ("MISMATCHED" == _[0]) {
+      } else if ("OK" == _) ; else if ("MISMATCHED" == _[0]) {
         Logger("Configuration mismatching between the clients has been detected. This can be harmful or extra capacity consumption. We have to make these value unified.", LOG_LEVEL_NOTICE);
         this.tweakSettingsMismatched = true;
-        this.mismatchedTweakValues = _[1];
+        this.preferredTweakValue = _[1];
         return false;
       }
     }
@@ -44694,6 +41672,24 @@ var JournalSyncAbstract = class {
       Logger("Could not retrieve remote milestone", LOG_LEVEL_NOTICE);
       throw _;
     }
+  }
+  async setPreferredRemoteTweakSettings(_) {
+    try {
+      const ee = await this.client.downloadJson(MILSTONE_DOCID2);
+      if (!ee) throw new Error("Missing remote milestone");
+      ee.tweak_values[DEVICE_ID_PREFERRED] = extractObject(TweakValuesTemplate, {
+        ..._
+      });
+      Logger("tweak values on the remote database have been cleared", LOG_LEVEL_VERBOSE);
+      await this.client.uploadJson(MILSTONE_DOCID2, ee);
+    } catch (_) {
+      Logger("Could not retrieve remote milestone", LOG_LEVEL_NOTICE);
+      throw _;
+    }
+  }
+  async getRemoteStatus(_) {
+    const ee = _.accessKey, ne = _.secretKey, ie = _.bucket, re = _.region, se = _.endpoint, oe = _.useCustomRequestHandler, le = new JournalSyncMinio(ee, ne, se, ie, this.env.simpleStore, this.env, oe, re);
+    return await le.getUsage();
   }
 }, ObsHttpHandler = class extends FetchHttpHandler {
   constructor(_, ee) {
@@ -45353,15 +42349,48 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     } else Logger("Something went wrong! The local database is not ready", LOG_LEVEL_NOTICE);
   }
   async scanStat() {
-    const _ = [];
+    var _;
+    const ee = [];
     Logger("Additional safety scan..", LOG_LEVEL_VERBOSE);
-    for await (const ee of this.localDatabase.findAllDocs({
+    Logger("Checking storage sizes", LOG_LEVEL_VERBOSE);
+    if (this.settings.notifyThresholdOfRemoteStorageSize < 0) {
+      const _ = "Now, Self-hosted LiveSync is able to check the remote storage size on the start-up.\n\nYou can configure the threshold size for your remote storage. This will be different for your server.\n\nPlease choose the threshold size as you like.\n\n- 0: Do not warn about storage size.\n  This is recommended if you have enough space on the remote storage especially you have self-hosted. And you can check the storage size and rebuild manually.\n- 800: Warn if the remote storage size exceeds 800MB.\n  This is recommended if you are using fly.io with 1GB limit or IBM Cloudant.\n- 2000: Warn if the remote storage size exceeds 2GB.\n\nAnd if your actual storage size exceeds the threshold after the setup, you may warned again. But do not worry, you can enlarge the threshold (or rebuild everything to reduce the size).\n", ee = "Do not warn", ne = "800MB", ie = "2GB", re = await confirmWithMessage(this, "Remote storage size threshold", _, [ ee, ne, ie ], ne, 40);
+      if (re == ee) this.settings.notifyThresholdOfRemoteStorageSize = 0; else if (re == ne) this.settings.notifyThresholdOfRemoteStorageSize = 800; else this.settings.notifyThresholdOfRemoteStorageSize = 2e3;
+    }
+    if (this.settings.notifyThresholdOfRemoteStorageSize > 0) {
+      const ee = await (null == (_ = this.replicator) ? void 0 : _.getRemoteStatus(this.settings));
+      if (ee) {
+        const _ = ee.estimatedSize;
+        if (_) {
+          const ee = 1024 * this.settings.notifyThresholdOfRemoteStorageSize * 1024;
+          if (_ > ee) {
+            const ne = `Remote storage size: ${sizeToHumanReadable2(_)}. It exceeds the configured value ${sizeToHumanReadable2(ee)}.\nThis may cause the storage to be full. You should enlarge the remote storage, or rebuild everything to reduce the size. \n\n**Note:** If you are new to Self-hosted LiveSync, you should enlarge the threshold. \n\n\nSelf-hosted LiveSync will not release the storage automatically even if the file is deleted. This is why they need regular maintenance.\n\n\nIf you have enough space on the remote storage, you can enlarge the threshold. Otherwise, you should rebuild everything.\n\n\nHowever, **Please make sure that all devices have been synchronised**. \n\n\n`, ie = "Enlarge the limit", re = "Rebuild now", se = "Dismiss", oe = await confirmWithMessage(this, "Remote storage size exceeded", ne, [ ie, re, se ], se, 20);
+            if (oe == re) {
+              if ("yes" == await this.askYesNo("This may take a bit of a long time. Do you really want to rebuild everything now?")) {
+                Logger("Receiving all from the server before rebuilding", LOG_LEVEL_NOTICE);
+                await this.replicateAllFromServer(true);
+                await delay(3e3);
+                Logger("Obsidian will be reloaded to rebuild everything.", LOG_LEVEL_NOTICE);
+                await this.vaultAccess.vaultCreate(FLAGMD_REDFLAG2_HR, "");
+                this.performAppReload();
+              }
+            } else if (oe == ie) {
+              this.settings.notifyThresholdOfRemoteStorageSize = 100 + ~~(_ / 1024 / 1024);
+              Logger(`Threshold has been enlarged to ${this.settings.notifyThresholdOfRemoteStorageSize}MB`, LOG_LEVEL_NOTICE);
+              await this.saveSettings();
+            }
+            Logger(`Remote storage size: ${sizeToHumanReadable2(_)} exceeded ${sizeToHumanReadable2(this.settings.notifyThresholdOfRemoteStorageSize)} `, LOG_LEVEL_INFO);
+          } else Logger(`Remote storage size: ${sizeToHumanReadable2(_)}`, LOG_LEVEL_INFO);
+        }
+      }
+    }
+    for await (const _ of this.localDatabase.findAllDocs({
       conflicts: true
-    })) if ("_conflicts" in ee) _.push({
-      path: this.getPath(ee),
-      mtime: ee.mtime
+    })) if ("_conflicts" in _) ee.push({
+      path: this.getPath(_),
+      mtime: _.mtime
     });
-    if (_.length > 0) {
+    if (ee.length > 0) {
       this.askInPopup("conflicting-detected-on-safety", 'Some files have been left conflicted! Press {HERE} to resolve them, or you can do it later by "Pick a file to resolve conflict', (_ => {
         _.text = "HERE";
         _.addEventListener("click", (() => {
@@ -45369,7 +42398,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
         }));
       }));
       Logger('Some files have been left conflicted! Please resolve them by "Pick a file to resolve conflict". The list is written in the log.', LOG_LEVEL_VERBOSE);
-      for (const ee of _) Logger(`Conflicted: ${ee.path}`);
+      for (const _ of ee) Logger(`Conflicted: ${_.path}`);
     } else Logger("There are no conflicted files", LOG_LEVEL_VERBOSE);
     Logger("Additional safety scan done", LOG_LEVEL_VERBOSE);
   }
@@ -45541,7 +42570,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     this.settingTab = new ObsidianLiveSyncSettingTab(this.app, this);
     this.addSettingTab(this.settingTab);
     this.addUIs();
-    const _ = "0.23.15", ee = "0.23.14";
+    const _ = "0.23.17", ee = "0.23.17";
     this.manifestVersion = _;
     this.packageVersion = ee;
     Logger($f`Self-hosted LiveSync${" v"}${_} ${ee}`);
@@ -45698,6 +42727,10 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
       this.settings.customChunkSize = 0;
     }
     this.deviceAndVaultName = localStorage.getItem(ne) || "";
+    if ("" == this.deviceAndVaultName) if (this.settings.usePluginSync) {
+      Logger("Device name is not set. Plug-in sync has been disabled.", LOG_LEVEL_NOTICE);
+      this.settings.usePluginSync = false;
+    }
     this.ignoreFiles = this.settings.ignoreFiles.split(",").map((_ => _.trim()));
     this.settingTab.requestReload();
   }
@@ -46261,17 +43294,17 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
       return {
         message: `${de()}Sync: ${_} ↑ ${ee}${ne} ↓ ${ie}${re}${oe}${se}`
       };
-    })), ve = reactive((() => {
+    })), Se = reactive((() => {
       const _ = this.isReloadingScheduled ? "WARNING! RESTARTING OBSIDIAN IS SCHEDULED!\n" : "", {message: ee} = ye();
       return {
         message: ee,
         status: _ + this.statusLog.value
       };
-    })), Se = throttle((_ => {
+    })), Ee = throttle((_ => {
       const ee = _;
       this.applyStatusBarText(ee.message, ee.status);
     }), 20);
-    ve.onChanged((_ => Se(_.value)));
+    Se.onChanged((_ => Ee(_.value)));
   }
   applyStatusBarText(_, ee) {
     var ne;
@@ -46284,27 +43317,28 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
   }
   async askResolvingMismatchedTweaks() {
     if (!this.replicator.tweakSettingsMismatched) return "OK";
-    const _ = this.replicator.mismatchedTweakValues.map((_ => extractObject(TweakValuesShouldMatchedTemplate, _))), ee = Object.entries(TweakValuesShouldMatchedTemplate);
-    let ne = `| Value name | Ours | ${_.map(((_, ee) => `Remote ${ee + 1} |`)).join("")}\n|: --- |: --- :${"|: --- :".repeat(_.length)}|\n`;
-    for (const ie of ee) {
-      const ee = ie[0], re = _.map((_ => _[ee]));
-      ne += `| ${confName(ee)} | ${escapeMarkdownValue(this.settings[ee])} | ${re.map((_ => `${escapeMarkdownValue(_)} |`)).join("")}\n`;
+    const _ = extractObject(TweakValuesShouldMatchedTemplate, this.replicator.preferredTweakValue), ee = extractObject(TweakValuesShouldMatchedTemplate, this.settings), ne = Object.entries(TweakValuesShouldMatchedTemplate);
+    let ie = "| Value name | This device | Configured | \n|: --- |: --- :|: ---- :| \n";
+    for (const re of ne) {
+      const ne = re[0], se = escapeMarkdownValue(ee[ne]), oe = escapeMarkdownValue(_[ne]);
+      if (se != oe) ie += `| ${confName(ne)} | ${se} | ${oe} | \n`;
     }
-    const ie = `\nConfiguration mismatching between the clients has been detected.\nThis can be harmful or extra capacity consumption. We have to make these value unified.\n\nConfigured values:\n\n${ne}\n\nPlease select a unification method.\n\nHowever, even if we answer that you will \`Use mine\`, we will be prompted to accept it again on the other device and have to decide accept or not.`, re = "Dismiss", se = [ ..._.map(((_, ee) => [ `Use Remote  ${ee + 1}`, _ ])), [ "Use ours", true ], [ re, false ] ], oe = Object.fromEntries(se), le = await confirmWithMessage(this, "Locked", ie, Object.keys(oe), re, 60);
-    if (!le) return "IGNORE";
-    const ue = oe[le];
-    if (true === ue) {
-      await this.replicator.resetRemoteTweakSettings(this.settings);
-      Logger("Tweak values on the remote server have been cleared, and will be overwritten in next synchronisation.", LOG_LEVEL_NOTICE);
-      return "OK";
+    const re = `\nYour configuration has not been matched with the one on the remote server.\n(Which you had decided once before, or set by initially synchronised device).\n\nConfigured values:\n\n${ie}\n\nPlease select which one you want to use.\n\n- Use configured: Update settings of this device by configured one on the remote server.\n  You should select this if you have changed the settings on **another device**.\n- Update with mine: Update settings on the remote server by the settings of this device.\n  You should select this if you have changed the settings on **this device**.\n- Dismiss: Ignore this message and keep the current settings.\n  You cannot synchronise until you resolve this issue without enabling \`Do not check configuration mismatch before replication\`.`, se = "Dismiss", oe = [ [ "Use configured", _ ], [ "Update with mine", true ], [ se, false ] ], le = Object.fromEntries(oe), ue = await confirmWithMessage(this, "Tweaks Mismatched or Changed", re, Object.keys(le), se, 60);
+    if (!ue) return "IGNORE";
+    const de = le[ue];
+    if (true === de) {
+      await this.replicator.setPreferredRemoteTweakSettings(this.settings);
+      Logger("Tweak values on the remote server have been updated. Your other device will see this message.", LOG_LEVEL_NOTICE);
+      return "CHECKAGAIN";
     }
-    if (ue) {
+    if (de) {
       this.settings = {
         ...this.settings,
-        ...ue
+        ...de
       };
+      await this.replicator.setPreferredRemoteTweakSettings(this.settings);
       await this.saveSettingData();
-      Logger("Tweak Values have been overwritten by the chosen one.", LOG_LEVEL_NOTICE);
+      Logger("Configuration has been updated as configured by the other device.", LOG_LEVEL_NOTICE);
       return "CHECKAGAIN";
     }
     return "IGNORE";
@@ -46512,12 +43546,12 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
       delay: 10,
       suspended: false
     }));
-    const ve = fe.length;
-    let Se = ve;
+    const Se = fe.length;
+    let Ee = Se;
     ye.startPipeline().onUpdateProgress((() => (_ => {
-      if (Se - _ > 25) {
-        ge("sync", ` CHECK AND SYNC: ${ve - _} / ${ve}`);
-        Se = _;
+      if (Ee - _ > 25) {
+        ge("sync", ` CHECK AND SYNC: ${Se - _} / ${Se}`);
+        Ee = _;
       }
     })(ye.totalRemaining + ye.nowProcessing)));
     me.push(ye.waitForAllDoneAndTerminate());
@@ -46554,8 +43588,8 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     if (de.deleted && fe.deleted) return false;
     const pe = new import_diff_match_patch.diff_match_patch, ge = pe.diff_linesToChars_(ue.data, de.data), me = pe.diff_main(ge.chars1, ge.chars2, false);
     pe.diff_charsToLines_(me, ge.lineArray);
-    const ye = pe.diff_linesToChars_(ue.data, fe.data), ve = pe.diff_main(ye.chars1, ye.chars2, false);
-    pe.diff_charsToLines_(ve, ye.lineArray);
+    const ye = pe.diff_linesToChars_(ue.data, fe.data), Se = pe.diff_main(ye.chars1, ye.chars2, false);
+    pe.diff_charsToLines_(Se, ye.lineArray);
     function splitDiffPiece(_) {
       const ee = [];
       do {
@@ -46584,36 +43618,36 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
       } while (_.length > 0);
       return ee;
     }
-    const Se = splitDiffPiece(me), Ee = splitDiffPiece(ve);
+    const Ee = splitDiffPiece(me), ve = splitDiffPiece(Se);
     let Ce = 0, we = 0;
-    const Oe = [];
+    const ke = [];
     he = true;
     e: do {
-      if (we >= Se.length && Ce >= Ee.length) break e;
-      const _ = null != (re = Se[we]) ? re : [ 0, "" ], ee = null != (se = Ee[Ce]) ? se : [ 0, "" ];
+      if (we >= Ee.length && Ce >= ve.length) break e;
+      const _ = null != (re = Ee[we]) ? re : [ 0, "" ], ee = null != (se = ve[Ce]) ? se : [ 0, "" ];
       we++;
       Ce++;
       if (_[0] != import_diff_match_patch.DIFF_EQUAL || ee[0] != import_diff_match_patch.DIFF_EQUAL || _[1] != ee[1]) {
         if (_[0] == import_diff_match_patch.DIFF_DELETE && ee[0] == import_diff_match_patch.DIFF_DELETE && _[1] == ee[1]) {
-          const ee = we, ne = Ce, [ie, re] = [ null != (oe = Se[ee]) ? oe : [ 0, "" ], null != (le = Ee[ne]) ? le : [ 0, "" ] ];
+          const ee = we, ne = Ce, [ie, re] = [ null != (oe = Ee[ee]) ? oe : [ 0, "" ], null != (le = ve[ne]) ? le : [ 0, "" ] ];
           if (ie[0] == import_diff_match_patch.DIFF_INSERT && re[0] == import_diff_match_patch.DIFF_INSERT && ie[1] != re[1]) {
             he = false;
             break;
           } else {
-            Oe.push(_);
+            ke.push(_);
             continue;
           }
         }
         if (_[0] == import_diff_match_patch.DIFF_INSERT && ee[0] == import_diff_match_patch.DIFF_INSERT) if (_[1] == ee[1]) {
-          Oe.push(_);
+          ke.push(_);
           continue;
         } else if (de.mtime <= fe.mtime) {
-          Oe.push(_);
-          Oe.push(ee);
+          ke.push(_);
+          ke.push(ee);
           continue;
         } else {
-          Oe.push(ee);
-          Oe.push(_);
+          ke.push(ee);
+          ke.push(_);
           continue;
         }
         if (_[0] != import_diff_match_patch.DIFF_INSERT) if (ee[0] != import_diff_match_patch.DIFF_INSERT) {
@@ -46623,14 +43657,14 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
             break e;
           }
           if (_[0] == import_diff_match_patch.DIFF_DELETE) if (ee[0] == import_diff_match_patch.DIFF_EQUAL) {
-            Oe.push(_);
+            ke.push(_);
             continue;
           } else {
             he = false;
             break e;
           }
           if (ee[0] == import_diff_match_patch.DIFF_DELETE) if (_[0] == import_diff_match_patch.DIFF_EQUAL) {
-            Oe.push(ee);
+            ke.push(ee);
             continue;
           } else {
             he = false;
@@ -46640,16 +43674,16 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
           break e;
         } else {
           we--;
-          Oe.push(ee);
+          ke.push(ee);
         } else {
           Ce--;
-          Oe.push(_);
+          ke.push(_);
         }
-      } else Oe.push(_);
-    } while (we < Se.length || Ce < Ee.length);
+      } else ke.push(_);
+    } while (we < Ee.length || Ce < ve.length);
     if (he) {
       Logger("Sensibly merge available", LOG_LEVEL_VERBOSE);
-      return Oe;
+      return ke;
     } else return false;
   }
   async mergeObject(_, ee, ne, ie) {
@@ -47085,117 +44119,3 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     }
   }
 };
-/*! Bundled license information:
-
-tslib/tslib.es6.js:
-  (*! *****************************************************************************
-  Copyright (c) Microsoft Corporation.
-  
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-  
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** *)
-
-tslib/tslib.es6.js:
-  (*! *****************************************************************************
-  Copyright (c) Microsoft Corporation.
-  
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-  
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** *)
-
-tslib/tslib.es6.js:
-  (*! *****************************************************************************
-  Copyright (c) Microsoft Corporation.
-  
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-  
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** *)
-
-tslib/tslib.es6.js:
-  (*! *****************************************************************************
-  Copyright (c) Microsoft Corporation.
-  
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-  
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** *)
-
-tslib/tslib.es6.js:
-  (*! *****************************************************************************
-  Copyright (c) Microsoft Corporation.
-  
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-  
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** *)
-
-tslib/tslib.es6.js:
-  (*! *****************************************************************************
-  Copyright (c) Microsoft Corporation.
-  
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-  
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** *)
-
-tslib/tslib.es6.js:
-  (*! *****************************************************************************
-  Copyright (c) Microsoft Corporation.
-  
-  Permission to use, copy, modify, and/or distribute this software for any
-  purpose with or without fee is hereby granted.
-  
-  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-  PERFORMANCE OF THIS SOFTWARE.
-  ***************************************************************************** *)
-*/

@@ -3890,6 +3890,7 @@ var CreateLinkFromClipboardCommand = class extends CommandBase {
       const httpUrlRegEx = /^(http|https):\/\/[^ "]+$/i;
       const clipboardText = await this.obsidianProxy.clipboardReadText();
       const links = findLinks(clipboardText, 65535 /* All */);
+      let linkText = "";
       let linkDestination = "";
       if (links.length) {
         const link = links[0];
@@ -3900,6 +3901,7 @@ var CreateLinkFromClipboardCommand = class extends CommandBase {
               const filePath = url.searchParams.get("file");
               if (filePath) {
                 linkDestination = decodeURI(filePath);
+                linkText = getFileName(linkDestination);
               }
             }
           }
@@ -3909,7 +3911,9 @@ var CreateLinkFromClipboardCommand = class extends CommandBase {
       } else {
         linkDestination = clipboardText;
       }
-      let linkText = linkDestination;
+      if (!linkText) {
+        linkText = linkDestination;
+      }
       let selection = editor.getSelection();
       if (!selection && this.obsidianProxy.settings.autoselectWordOnCreateLink) {
         selection = selectWordUnderCursor(editor);
