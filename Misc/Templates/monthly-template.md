@@ -1,5 +1,24 @@
 # Tasks
-# Context 
+# Context
+# Habit
+
+```dataviewjs-
+const data = [
+    //{date: "2024-06-01", content: "666/111"},
+]
+<%*
+var title = tp.file.title;
+var [year, month] = title.split('-')
+var output = `
+renderHabitCalendar(this.container, dv, {
+    year: "${year}",
+    month: "${month}",
+    data: data,
+})`
+tR += output
+%>
+```
+
 # Diary
 <%*
 const weekdays = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']

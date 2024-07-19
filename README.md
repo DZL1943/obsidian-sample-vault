@@ -70,7 +70,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - journals: moc
     - tasks
     - context
-    - habits
+    - ~~habits~~
     - contacts
     - finance
     - things
