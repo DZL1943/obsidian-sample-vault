@@ -28,7 +28,7 @@ renderHabitCalendar(this.container, dv, {
 const weekdays = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
 var now = new Date()
 var year = now.getFullYear()
-var month = now.getMonth()
+var month = now.getMonth()+1
 var lastDate = new Date(year, month+1, 0).getDate()
 var days = new Array()
 for (i=0; i<lastDate; i++){
