@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-19 17:01"
+modified: "2024-07-19 20:07"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -70,7 +70,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - journals: moc
     - tasks
     - context
-    - ~~habits~~
+    - habits
     - contacts
     - finance
     - things

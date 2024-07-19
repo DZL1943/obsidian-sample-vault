@@ -10,13 +10,17 @@ const data = [
 var title = tp.file.title;
 var [year, month] = title.split('-')
 var output = `
-renderHabitCalendar(this.container, dv, {
-    year: "${year}",
-    month: "${month}",
-    data: data,
-})`
+const year = "${year}";
+const month = "${month}";
+`
 tR += output
 %>
+//Habit Calendar Plugin
+renderHabitCalendar(this.container, dv, {
+    year,
+    month,
+    data: data.filter((function(e){return e["date"].startsWith(`${year}-${month.toString().padStart(2,0)}`)})),
+})
 ```
 
 # Diary
