@@ -32,14 +32,26 @@
               "type": "markdown",
               "state": {
                 "file": "README.md",
-                "mode": "preview",
+                "mode": "source",
                 "source": true
               },
               "pinned": true
             }
+          },
+          {
+            "id": "3f4eca0477431db4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "20_Private/habits.md",
+                "mode": "preview",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -156,7 +168,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "20_Private/habits.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -173,7 +185,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "20_Private/habits.md",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": false
               }
@@ -185,7 +197,7 @@
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "README.md",
+                "file": "20_Private/habits.md",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -242,11 +254,12 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "dd0c724920d6ce07",
+  "active": "3f4eca0477431db4",
   "lastOpenFiles": [
+    "README.md",
+    "20_Private/habits.md",
     "quicknotes.md",
     "20_Private/context.md",
-    "README.md",
     "20_Private/journals.md",
     "20_Private/tasks.md",
     "Local/temp.md",

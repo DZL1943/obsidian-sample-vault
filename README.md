@@ -67,9 +67,10 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
         - YYYY-MM
         - YYYY-[W]WW
         - YYYY-MM-DD
-    - tasks
     - journals: moc
+    - tasks
     - context
+    - habits
     - contacts
     - finance
     - things
