@@ -1,31 +1,10 @@
 # Tasks
 # Context
 # Habit
-
-```dataviewjs-
-const data = [
-    //{date: "2024-06-01", content: "666/111"},
-]
-<%*
-var title = tp.file.title;
-var [year, month] = title.split('-')
-var output = `
-const year = "${year}";
-const month = "${month}";
-`
-tR += output
-%>
-//Habit Calendar Plugin
-renderHabitCalendar(this.container, dv, {
-    year,
-    month,
-    data: data.filter((function(e){return e["date"].startsWith(`${year}-${month.toString().padStart(2,0)}`)})),
-})
-```
-
 # Diary
 <%*
 const weekdays = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+//var [year, month] = tp.file.title.split('-')
 var now = new Date()
 var year = now.getFullYear()
 var month = now.getMonth()
