@@ -1,9 +1,9 @@
 # Weekly
 
-<% tp.file.include("[[week-h2]]") %>
+<% tp.file.include("[[weeks-h2]]") %>
 
 # Monthly
 
-<% tp.file.include("[[month-h2]]") %>
+<% tp.file.include("[[months-h2]]") %>
 
 # Quarterly
