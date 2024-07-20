@@ -38,8 +38,7 @@
               "pinned": true
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -155,7 +154,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "_canvas.canvas",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -172,7 +171,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "_canvas.canvas",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": false
               }
@@ -184,7 +183,7 @@
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "README.md",
+                "file": "_canvas.canvas",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -241,10 +240,12 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "dd0c724920d6ce07",
+  "active": "e6075a699d7cbb0a",
   "lastOpenFiles": [
-    "Misc/Templates/monthly-template.md",
     "README.md",
+    "links.md",
+    "All.md",
+    "Misc/Templates/monthly-template.md",
     "20_Private/2024/2024-07.md",
     "Misc/Templates/habit-calendar-t.md",
     "20_Private/2024",
@@ -254,7 +255,7 @@
     "quicknotes.md",
     "20_Private/context.md",
     "20_Private/tasks.md",
-    "Local/temp.md",
+    "10_Inbox/Local/temp.md",
     "_canvas.canvas",
     "20_Journals/2024/2024.md",
     "Misc/Templates/weekly-template.md",
