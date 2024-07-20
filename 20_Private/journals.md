@@ -1,12 +1,12 @@
 ---
 editor-width: 40
+cssclasses: wide
 ---
 # Daily
-
 ```dataview
 table without id
 dateformat(date, "MM/dd ccc") as date, weather, mood, habits, summary
-from "20_Private"
+where contains(file.folder, this.file.folder)
 where regexmatch("[0-9]{4}-[0-9]{2}", file.name)
 sort file.name desc
 limit 1
@@ -14,7 +14,7 @@ limit 1
 
 ```dataview
 list
-from "20_Private"
+where contains(file.folder, this.file.folder)
 where regexmatch("[0-9]{4}-[0-9]{2}-[0-9]{2}", file.name)
 sort file.name desc
 limit 30
@@ -23,7 +23,7 @@ limit 30
 
 ```dataview
 list
-from "20_Private"
+where contains(file.folder, this.file.folder)
 where regexmatch("[0-9]{4}-W[0-9]{2}", file.name)
 sort file.name desc
 limit 12
@@ -33,7 +33,7 @@ limit 12
 
 ```dataview
 list
-from "20_Private"
+where contains(file.folder, this.file.folder)
 where regexmatch("[0-9]{4}-[0-9]{2}", file.name)
 sort file.name desc
 limit 12
@@ -45,7 +45,7 @@ limit 12
 
 ```dataview
 list
-from "20_Private"
+where contains(file.folder, this.file.folder)
 where regexmatch("[0-9]{4}", file.name)
 sort file.name desc
 limit 10
