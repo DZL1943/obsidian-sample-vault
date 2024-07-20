@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-20 15:57"
+modified: "2024-07-20 22:34"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -55,7 +55,7 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 ## 目录结构说明
 
 ```bash title:"create essential dirs"
-folders=(10_Inbox 20_Private 30_Jottings 40_Pages 50_Projects 60_Areas 70_Resources 80_Archives Misc/{Attachments,Templates})
+folders=(10_Inbox/Local 20_Private 30_Jottings 40_Pages 50_Projects 60_Areas 70_Resources 80_Archives Misc/{Attachments,Templates})
 
 for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;done
 ```

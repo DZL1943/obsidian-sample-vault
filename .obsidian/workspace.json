@@ -233,6 +233,7 @@
       "obsidian-excalidraw-plugin:新建绘图文件": false,
       "daily-notes:打开/创建今天的日记": true,
       "cmdr:新建笔记": true,
+      "zk-prefixer:创建时间戳笔记": false,
       "cmdr:更换主题": false,
       "cmdr:Style Settings: Show style settings view": false,
       "cmdr:QuickAdd: Run QuickAdd": true,
