@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-20 15:31"
+modified: "2024-07-20 15:57"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -104,7 +104,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - Code/
     - Configs/
     - Dicts/
-- ext/: 可通过 `ln -s source_path ext/` 的方式临时处理其他位置的文件 (该方法目前还没有正式的支持, 也不被推荐)
+- Vaults/: 可通过 `ln -s source_path Vaults/` 的方式临时处理其他位置的文件 (该方法目前还没有正式的支持, 也不被推荐)
 - quicknotes: 快速记录
 - README
 

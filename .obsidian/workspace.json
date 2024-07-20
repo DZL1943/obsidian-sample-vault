@@ -38,7 +38,8 @@
               "pinned": true
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -154,7 +155,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "_canvas.canvas",
+                "file": "README.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -171,7 +172,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "_canvas.canvas",
+                "file": "README.md",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": false
               }
@@ -183,7 +184,7 @@
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "_canvas.canvas",
+                "file": "README.md",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -240,8 +241,9 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "e6075a699d7cbb0a",
+  "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
+    "_canvas.canvas",
     "README.md",
     "links.md",
     "All.md",
@@ -256,7 +258,6 @@
     "20_Private/context.md",
     "20_Private/tasks.md",
     "10_Inbox/Local/temp.md",
-    "_canvas.canvas",
     "20_Journals/2024/2024.md",
     "Misc/Templates/weekly-template.md",
     "20_Journals/2024",
