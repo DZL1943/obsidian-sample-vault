@@ -5,7 +5,7 @@ const data = [
 <%*
 var title = tp.file.title;
 if (/[0-9]{4}-[0-9]{2}/.test(title)) {
-    var [year, month] = title.split('-')
+    var [year, month, day] = title.split('-')
 } else {
     var now = new Date();
     var year = now.getFullYear();

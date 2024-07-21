@@ -1,11 +1,11 @@
 {
   "searchViewState": {
-    "query": "",
+    "query": "dv.",
     "matchingCase": false,
     "explainSearch": true,
     "collapseAll": true,
     "extraContext": true,
     "sortOrder": "alphabetical"
   },
-  "showFilePath": false
+  "showFilePath": true
 }
