@@ -7,8 +7,9 @@
 /Spaces/
 /Vaults/
 /ext/
-*[pP]rivate/*/
+*[iI]nbox/*
 [lL]ocal/
+*[pP]rivate/*/
 未命名*
 [uU]ntitled*
 draft*.md
