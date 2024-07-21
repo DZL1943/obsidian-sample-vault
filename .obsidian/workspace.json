@@ -17,7 +17,7 @@
                 "file": "home.canvas",
                 "viewState": {
                   "x": -1408.2447865694664,
-                  "y": 534.3030851797153,
+                  "y": 558.811580019378,
                   "zoom": 0.034980143100422356
                 }
               },
@@ -244,8 +244,11 @@
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
-    "quicknotes.md",
+    "home.canvas",
+    "10_Inbox/draft.md",
+    "10_Inbox/test-dv.md",
     "README.md",
+    "quicknotes.md",
     "links.md",
     "20_Private/tasks.md",
     "Misc/Templates/task-by-status.md",
@@ -263,7 +266,6 @@
     "10_Inbox/Local/temp.md",
     "All.md",
     "Misc/Templates/page-properties.md",
-    "home.canvas",
     "20_Private/2024/2024-07.md",
     "20_Private/2024",
     "20_Private/habits.md",
