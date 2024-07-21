@@ -5,7 +5,7 @@
     ```
     - [canvas](home.canvas)
 - [draft](10_Inbox/draft.md)
+- [context](20_Private/context.md)
 - [journals](20_Private/journals.md)
 - [tasks](20_Private/tasks.md)
-- [context](20_Private/context.md)
 - [syncthing]( http://localhost:8384 )
