@@ -2,11 +2,11 @@
 # Context
 # Habit
 
-<% tp.file.include("[[habit-calendar-dv]]") %>
+<% tp.file.include("[[habit-calendar-dv.md]]") %>
 
 # Diary
 
-<% tp.file.include("[[days-h2]]") %>
+<% tp.file.include("[[days-h2.md]]") %>
 # Summary
 ```dataview
 table without id
