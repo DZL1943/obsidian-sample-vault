@@ -1350,6 +1350,7 @@ var Metadata = class {
       }
     }
     root = getRootPath(this.parentPath, setting);
+    debugLog("getAttachmentPath - root", root);
     attachPath = path.join(
       root,
       setting.attachmentPath.replace(`${SETTINGS_VARIABLES_NOTEPATH}`, this.parentPath).replace(`${SETTINGS_VARIABLES_NOTENAME}`, this.basename).replace(`${SETTINGS_VARIABLES_NOTEPARENT}`, this.parentName).replace(`${SETTINGS_VARIABLES_DATES}`, dateTime)
@@ -1764,8 +1765,13 @@ var CreateHandler = class {
     const attachPath = metadata.getAttachmentPath(setting, this.settings.dateFormat);
     metadata.getAttachFileName(setting, this.settings.dateFormat, attach.basename, this.app.vault.adapter).then((attachName) => {
       attachName = attachName + "." + attach.extension;
-      this.app.vault.adapter.mkdir(attachPath).finally(() => {
-        debugLog("processAttach - create path:", attachPath);
+      this.app.vault.adapter.exists(attachPath, true).then((exists) => {
+        if (!exists) {
+          this.app.vault.adapter.mkdir(attachPath).finally(() => {
+            debugLog("processAttach - create path:", attachPath);
+          });
+        }
+      }).finally(() => {
         const attachPathFolder = this.app.vault.getAbstractFileByPath(attachPath);
         deduplicateNewName(attachName, attachPathFolder).then(({ name }) => {
           debugLog("processAttach - new path of file:", path.join(attachPath, name));

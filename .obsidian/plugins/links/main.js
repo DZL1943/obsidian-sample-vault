@@ -2599,11 +2599,25 @@ var ReplaceLinkModal = class extends import_obsidian3.Modal {
   }
 };
 
+// IVault.ts
+var VaultConfiguration = class {
+  constructor(vault) {
+    this.vault = vault;
+  }
+  get useMarkdownLinks() {
+    return this.vault.getConfig("useMarkdownLinks");
+  }
+  get newLinkFormat() {
+    return this.vault.getConfig("newLinkFormat");
+  }
+};
+
 // Vault.ts
 var import_obsidian4 = require("obsidian");
 var VaultImp = class {
   constructor(app2) {
     this.app = app2;
+    this.configuration = new VaultConfiguration(this);
   }
   getFilesInFolder(folder) {
     let folders = [];
@@ -2684,6 +2698,9 @@ var VaultImp = class {
   getAbstractFileByPath(path) {
     return this.app.vault.getAbstractFileByPath(path);
   }
+  getConfig(setting) {
+    return this.app.vault.getConfig(setting);
+  }
 };
 
 // commands/ObsidianProxy.ts
@@ -2716,6 +2733,10 @@ var ObsidianProxy = class {
   }
   showPromptModal(title, text, buttons, onSubmit) {
     this.uiFactory.createPromptModal(title, text, buttons, onSubmit).open();
+  }
+  generateLink(sourcePath, destination, destinationSubPath, text) {
+    const useMarkdownLinks = this.Vault.configuration.useMarkdownLinks;
+    return useMarkdownLinks ? `[${text}](${destination}${destinationSubPath})` : `[[${destination}${destinationSubPath}${text ? "|" + text : ""}]]`;
   }
 };
 

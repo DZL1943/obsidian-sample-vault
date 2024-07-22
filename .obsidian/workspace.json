@@ -155,7 +155,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "home.canvas",
+                "file": "README.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -172,7 +172,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "home.canvas",
+                "file": "README.md",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": false
               }
@@ -184,7 +184,7 @@
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "home.canvas",
+                "file": "README.md",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -242,15 +242,15 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "82484834b6c769a0",
+  "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
+    "home.canvas",
     "Misc/Templates/monthly-template.md",
     "README.md",
     "20_Private/context.md",
     "Misc/Templates/habit-calendar-dv.md",
     "10_Inbox/Local/2024-06.md",
     "10_Inbox/test-dv.md",
-    "home.canvas",
     "10_Inbox/draft.md",
     "quicknotes.md",
     "links.md",

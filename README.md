@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-20 22:34"
+modified: "2024-07-22 15:08"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -46,6 +46,13 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 > - 越小白, 越不该瞎折腾, 认真记笔记就行. (回答小白的问题尤其费劲)
 > - 当远离笔记工具一段时间后再回看, 你会发现曾经折腾的那些花里胡哨的东西并没有你想得那样完美和必要, 默认和精简才是王道.
 > - 越是复杂、长期的事情, 越应该尽量避免不必要的熵增.
+
+## 笔记分类
+
+- 生活记录
+- 随笔杂记
+- 知识笔记
+- 其他
 
 ## 安装
 
@@ -125,6 +132,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 > [!hint]+ 关键在于解耦笔记输入、笔记整理这两大过程. 并且尽量维持笔记的原本结构而用链接的方式组织整理.
 
 ## 已启用的[插件](https://obsidian.md/plugins)
+
 %% 以实际为准 %%
 ```json
 [
@@ -209,6 +217,7 @@ brat
 > [!hint]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
 
 ## 快捷键设置
+
 > [!attention] 此处快捷键基于 macOS 系统
 
 | command                                                               | keys                |
@@ -414,6 +423,7 @@ brat
 - [2024-07-20] 将 Local、draft 移到 Inbox 中
 
 #
+
 
 [^1]: 这里不要堆积知识类的笔记(放到 areas 里面), 不要分类用聚类.
 [^2]: 比如记录学习 xxx 的笔记, 可以先在 Projects 目录下建立一个 xxx 的目录, 在学习的过程中给每个知识点建立卡片笔记, 完事后归档到对应领域目录.
