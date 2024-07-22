@@ -13,7 +13,7 @@
   "dailyNotePattern": "'20_Private'/yyyy/yyyy-MM-dd",
   "dailyTemplateFilename": "",
   "weeklyNoteOption": true,
-  "weeklyNotePattern": "'20_Private'/yyyy/yyyy-'W'WW",
+  "weeklyNotePattern": "'20_Private'/kkkk/kkkk-'W'WW",
   "weeklyTemplateFilename": "weekly-template",
   "monthlyNoteOption": true,
   "monthlyNotePattern": "'20_Private'/yyyy/yyyy-MM",

@@ -98,7 +98,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "6af7bc7b0804df6c",
@@ -241,12 +242,12 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "82484834b6c769a0",
+  "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
+    "_canvas.canvas",
     "20_Private/journals_.md",
     "README.md",
     "60_Areas/filelist.md",
-    "_canvas.canvas",
     "Misc/Templates/yearly-template.md",
     "Misc/Templates/monthly-template.md",
     "20_Private/context.md",
@@ -270,7 +271,6 @@
     "20_Private/2024",
     "20_Private/habits.md",
     "20_Journals/2024/2024.md",
-    "Misc/Templates/weekly-template.md",
     "20_Journals/2024",
     "90_Misc/Attachments",
     "90_Misc"
