@@ -269,7 +269,7 @@ brat
 | workspace:split-horizontal                                            | Ctrl+Alt+ArrowDown  |
 | workspace:split-vertical                                              | Ctrl+Alt+ArrowRight |
 
-> [!tip]+ macOS 下按 `` cmd+ ` `` 可以在多个前台窗口之间切换.
+> [!tip]+ macOS 下按 cmd+\` 可以在多个前台窗口之间切换, 按 shift+cmd+w 可以关闭窗口.
 
 ## 主题
 
