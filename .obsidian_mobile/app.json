@@ -40,6 +40,6 @@
   "trashOption": "local",
   "newFileFolderPath": "10_Inbox/Local",
   "propertiesInDocument": "source",
-  "mobilePullAction": "switcher:open",
+  "mobilePullAction": "command-palette:open",
   "promptDelete": false
 }
