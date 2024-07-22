@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-22 15:08"
+modified: "2024-07-22 15:24"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -72,14 +72,14 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - draft: (进行中的)草稿, 可以每个设备单独一个文件, 互不冲突
 - 20_Private/
     - YYYY/: 日记 (每年一个目录, 每月或每周一个文件)
-        - YYYY: 周、月结
+        - YYYY: 总结
         - YYYY-MM: 以月为单位的日记
         - YYYY-[W]WW: 以周为单位的日记
-        - YYYY-MM-DD
+        - YYYY-MM-DD: dailynotes?
+    - Context/: 记录思想脉络
+    - tasks
     - journals: moc
     - habits
-    - tasks
-    - context
     - contacts
     - finance
     - things
