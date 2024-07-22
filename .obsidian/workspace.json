@@ -14,7 +14,7 @@
             "state": {
               "type": "canvas",
               "state": {
-                "file": "home.canvas",
+                "file": "_canvas.canvas",
                 "viewState": {
                   "x": -1408.2447865694664,
                   "y": 558.811580019378,
@@ -244,9 +244,11 @@
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
-    "Misc/Templates/yearly-template.md",
+    "20_Private/journals_.md",
     "README.md",
-    "home.canvas",
+    "60_Areas/filelist.md",
+    "_canvas.canvas",
+    "Misc/Templates/yearly-template.md",
     "Misc/Templates/monthly-template.md",
     "20_Private/context.md",
     "Misc/Templates/habit-calendar-dv.md",
@@ -259,7 +261,6 @@
     "Misc/Templates/task-by-status.md",
     "Misc/Templates/entry-block.md",
     "Misc/Templates/datetime.md",
-    "20_Private/journals.md",
     "Misc/Templates/days-h2.md",
     "Misc/Templates/months-h2.md",
     "Misc/Templates/weeks-h2.md",

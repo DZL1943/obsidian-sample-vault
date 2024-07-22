@@ -3,9 +3,9 @@
     LIST
     WHERE !file.folder and !econtains(["sortspec", "Vault", "broken links output"], file.name)
     ```
-    - [canvas](home.canvas)
+    - [canvas](_canvas.canvas)
 - [draft](10_Inbox/draft.md)
 - [context](20_Private/context.md)
-- [journals](20_Private/journals.md)
+- [journals_](20_Private/journals_.md)
 - [tasks](20_Private/tasks.md)
 - [syncthing]( http://localhost:8384 )
