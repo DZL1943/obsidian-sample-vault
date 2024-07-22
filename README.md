@@ -76,10 +76,9 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
         - YYYY-MM: 以月为单位的日记
         - YYYY-[W]WW: 以周为单位的日记
         - YYYY-MM-DD: dailynotes?
-    - context
+        - YYYYMMDDHHmm: 时间戳笔记
     - tasks
     - journals: moc
-    - habits
     - contacts
     - finance
     - things
