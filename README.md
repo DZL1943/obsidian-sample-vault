@@ -93,12 +93,11 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - Misc/: 杂项(比如附件、模版等)
     - Attachments/
         - docs/
-        - canvas/
-        - draws/
         - images/
-        - icons/
         - audios/
         - videos/
+    - Canvas/
+    - Excalidraw/
     - Templates/
     - Code/
     - Configs/
