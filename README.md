@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-22 15:24"
+modified: "2024-07-22 16:56"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -82,13 +82,6 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - contacts
     - finance
     - things
-    - bookmarks
-    - books
-    - movies
-    - music
-    - games
-    - sports
-    - secrets
 - 30_Jottings/: 非正式笔记
 - 40_Pages/: 原创笔记、主题笔记、MOC [^1]
 - 50_Projects/: 项目笔记[^2]
