@@ -6,7 +6,7 @@ const headings = ['Context']
 
 // You can update this to filter as you like.
 // Here it is only returning results inside the "Daily notes" folder
-const pages = dv.pages('"20_Private"').where(p=>dv.func.regexmatch("[0-9]{4}-[0-9]{2}", p.file.name))
+const pages = dv.pages('"20_Private"').where(p=>dv.func.regexmatch("[0-9]{4}-[0-9]{2}", p.file.name)).sort(p=>p.file.name, 'asc')
 
 const output = {}
 headings.forEach(x => output[x] = [])
