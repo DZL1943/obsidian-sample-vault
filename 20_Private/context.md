@@ -1,3 +1,5 @@
+# histories
+
 ```dataviewjs
 // Headings you would like to summarise the text for
 const headings = ['Context']
@@ -27,10 +29,12 @@ for (const page of pages) {
   }
 }
 Object.keys(output).forEach(heading => {
-  dv.header(1, heading)
+  dv.header(2, heading)
   output[heading].forEach(entry => {
-    dv.header(2, entry.title)
+    dv.header(3, entry.title)
     dv.paragraph(entry.text)
   })
 })
 ```
+# current
+
