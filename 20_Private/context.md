@@ -22,7 +22,7 @@ for (const page of pages) {
     for (const block of contents.match(new RegExp(regex, 'isg')) || []) {
       const match = block.match(new RegExp(regex, 'is'))
       output[heading].push({
-        title: file.basename,
+        title: page.file.link,
         text: match[1].trim()
       })
     }
