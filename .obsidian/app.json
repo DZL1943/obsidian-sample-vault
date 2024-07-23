@@ -13,13 +13,7 @@
   "showInlineTitle": false,
   "attachmentFolderPath": "Misc/Attachments",
   "useTab": false,
-  "userIgnoreFilters": [
-    "80_archives/",
-    "90_misc/attachments/",
-    "80_Archives/",
-    "90_Misc/Attachments/",
-    "Misc/Attachments/"
-  ],
+  "userIgnoreFilters": null,
   "pdfExportSettings": {
     "includeName": true,
     "pageSize": "A4",
