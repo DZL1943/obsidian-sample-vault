@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-22 21:38"
+modified: "2024-07-23 17:59"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -360,6 +360,7 @@ brat
 - Others
     - [Moment.js | Docs](https://momentjs.com/docs/#/displaying/format/)
     - [luxon - Immutable date wrapper](https://moment.github.io/luxon/#/formatting?id=table-of-tokens)
+    - [About Mermaid | Mermaid](https://mermaid.js.org/intro/)
     - [Git - gitignore Documentation](https://git-scm.com/docs/gitignore/zh_HANS-CN)
     - [Ignoring Files — Syncthing documentation](https://docs.syncthing.net/users/ignoring.html)
     - [Getting Started Guide | Kopia](https://kopia.io/docs/getting-started/)
