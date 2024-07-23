@@ -242,12 +242,13 @@
       "cmdr:打开设置": true
     }
   },
-  "active": "82484834b6c769a0",
+  "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
+    "links.md",
     "Misc/Attachments/attachments.md",
+    "_canvas.canvas",
     "Misc/Attachments/README-20240611204632938.png",
     "README.md",
-    "_canvas.canvas",
     "20_Private/journals_.md",
     "60_Areas/filelist.md",
     "Misc/Templates/yearly-template.md",
@@ -258,7 +259,6 @@
     "10_Inbox/test-dv.md",
     "10_Inbox/draft.md",
     "quicknotes.md",
-    "links.md",
     "20_Private/tasks.md",
     "Misc/Templates/task-by-status.md",
     "Misc/Templates/entry-block.md",

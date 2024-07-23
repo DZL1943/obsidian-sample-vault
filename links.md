@@ -8,4 +8,5 @@
 - [context](20_Private/context.md)
 - [journals_](20_Private/journals_.md)
 - [tasks](20_Private/tasks.md)
+- [attachments](Misc/Attachments/attachments.md)
 - [syncthing]( http://localhost:8384 )
