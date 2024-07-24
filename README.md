@@ -192,6 +192,7 @@ brat
     "aidan-gibson/obsidian-opener",
     "Fevol/obsidian-criticmarkup",
     "l1xnan/obsidian-better-export-pdf",
+    "obsidian-canzi/Enhanced-editing",
     "platon-ivanov/obsidian-visually-numbered-headings",
     "polyipseity/obsidian-show-hidden-files",
     "Quorafind/Obsidian-Legacy-Vault-Switcher",
