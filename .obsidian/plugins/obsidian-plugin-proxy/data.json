@@ -29,14 +29,14 @@
     {
       "id": "ghproxy",
       "download": "https://mirror.ghproxy.com/https://github.com/",
-      "raw": "https://mirror.ghproxy.com/https://github.com/",
+      "raw": "https://mirror.ghproxy.com/https://raw.githubusercontent.com/",
       "page": "https://mirror.ghproxy.com/https://github.com/"
     },
     {
       "id": "ghproxy2",
-      "download": "https://ghproxy.net/https://github.com/",
-      "raw": "https://ghproxy.net/https://raw.githubusercontent.com/",
-      "page": "https://ghproxy.net/https://github.com/"
+      "download": "https://ghproxy.org/https://github.com/",
+      "raw": "https://ghproxy.org/https://raw.githubusercontent.com/",
+      "page": "https://ghproxy.org/https://github.com/"
     },
     {
       "id": "github",
