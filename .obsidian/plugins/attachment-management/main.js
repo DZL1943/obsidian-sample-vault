@@ -1765,11 +1765,10 @@ var CreateHandler = class {
     const attachPath = metadata.getAttachmentPath(setting, this.settings.dateFormat);
     metadata.getAttachFileName(setting, this.settings.dateFormat, attach.basename, this.app.vault.adapter).then((attachName) => {
       attachName = attachName + "." + attach.extension;
-      this.app.vault.adapter.exists(attachPath, true).then((exists) => {
+      this.app.vault.adapter.exists(attachPath, true).then(async (exists) => {
         if (!exists) {
-          this.app.vault.adapter.mkdir(attachPath).finally(() => {
-            debugLog("processAttach - create path:", attachPath);
-          });
+          await this.app.vault.adapter.mkdir(attachPath);
+          debugLog("processAttach - create path:", attachPath);
         }
       }).finally(() => {
         const attachPathFolder = this.app.vault.getAbstractFileByPath(attachPath);

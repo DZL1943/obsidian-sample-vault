@@ -134,26 +134,26 @@ ne), require_diff_match_patch = __commonJS({
       for (var pe = re - se, ge = pe % 2 != 0, me = 0, ye = 0, Se = 0, Ee = 0, ve = 0; ve < oe && !((new Date).getTime() > ie); ve++) {
         for (var Ce = -ve + me; Ce <= ve - ye; Ce += 2) {
           var we = le + Ce;
-          if (Ce == -ve || Ce != ve && de[we - 1] < de[we + 1]) Re = de[we + 1]; else Re = de[we - 1] + 1;
-          for (var ke = Re - Ce; Re < re && ke < se && _.charAt(Re) == ee.charAt(ke); ) {
-            Re++;
-            ke++;
+          if (Ce == -ve || Ce != ve && de[we - 1] < de[we + 1]) Te = de[we + 1]; else Te = de[we - 1] + 1;
+          for (var Le = Te - Ce; Te < re && Le < se && _.charAt(Te) == ee.charAt(Le); ) {
+            Te++;
+            Le++;
           }
-          de[we] = Re;
-          if (Re > re) ye += 2; else if (ke > se) me += 2; else if (ge) if ((Ae = le + pe - Ce) >= 0 && Ae < ue && -1 != fe[Ae]) if (Re >= (Oe = re - fe[Ae])) return this.diff_bisectSplit_(_, ee, Re, ke, ie);
+          de[we] = Te;
+          if (Te > re) ye += 2; else if (Le > se) me += 2; else if (ge) if ((Ae = le + pe - Ce) >= 0 && Ae < ue && -1 != fe[Ae]) if (Te >= (ke = re - fe[Ae])) return this.diff_bisectSplit_(_, ee, Te, Le, ie);
         }
-        for (var Le = -ve + Se; Le <= ve - Ee; Le += 2) {
-          var Oe, Ae = le + Le;
-          if (Le == -ve || Le != ve && fe[Ae - 1] < fe[Ae + 1]) Oe = fe[Ae + 1]; else Oe = fe[Ae - 1] + 1;
-          for (var xe = Oe - Le; Oe < re && xe < se && _.charAt(re - Oe - 1) == ee.charAt(se - xe - 1); ) {
-            Oe++;
+        for (var Oe = -ve + Se; Oe <= ve - Ee; Oe += 2) {
+          var ke, Ae = le + Oe;
+          if (Oe == -ve || Oe != ve && fe[Ae - 1] < fe[Ae + 1]) ke = fe[Ae + 1]; else ke = fe[Ae - 1] + 1;
+          for (var xe = ke - Oe; ke < re && xe < se && _.charAt(re - ke - 1) == ee.charAt(se - xe - 1); ) {
+            ke++;
             xe++;
           }
-          fe[Ae] = Oe;
-          if (Oe > re) Ee += 2; else if (xe > se) Se += 2; else if (!ge) if ((we = le + pe - Le) >= 0 && we < ue && -1 != de[we]) {
-            var Re;
-            ke = le + (Re = de[we]) - we;
-            if (Re >= (Oe = re - Oe)) return this.diff_bisectSplit_(_, ee, Re, ke, ie);
+          fe[Ae] = ke;
+          if (ke > re) Ee += 2; else if (xe > se) Se += 2; else if (!ge) if ((we = le + pe - Oe) >= 0 && we < ue && -1 != de[we]) {
+            var Te;
+            Le = le + (Te = de[we]) - we;
+            if (Te >= (ke = re - ke)) return this.diff_bisectSplit_(_, ee, Te, Le, ie);
           }
         }
       }
@@ -1013,30 +1013,30 @@ ne), require_diff_match_patch = __commonJS({
             Ce *= -1;
             we = gte;
           }
-          var ke = fe.some(isPadded);
+          var Le = fe.some(isPadded);
           he = [];
-          for (var Le = Se; we(Le, Ee); Le += Ce) {
-            var Oe;
+          for (var Oe = Se; we(Oe, Ee); Oe += Ce) {
+            var ke;
             if (ge) {
-              if ("\\" === (Oe = String.fromCharCode(Le))) Oe = "";
+              if ("\\" === (ke = String.fromCharCode(Oe))) ke = "";
             } else {
-              Oe = String(Le);
-              if (ke) {
-                var Ae = ve - Oe.length;
+              ke = String(Oe);
+              if (Le) {
+                var Ae = ve - ke.length;
                 if (Ae > 0) {
                   var xe = new Array(Ae + 1).join("0");
-                  if (Le < 0) Oe = "-" + xe + Oe.slice(1); else Oe = xe + Oe;
+                  if (Oe < 0) ke = "-" + xe + ke.slice(1); else ke = xe + ke;
                 }
               }
             }
-            he.push(Oe);
+            he.push(ke);
           }
         } else {
           he = [];
-          for (var Re = 0; Re < fe.length; Re++) he.push.apply(he, expand2(fe[Re], false));
+          for (var Te = 0; Te < fe.length; Te++) he.push.apply(he, expand2(fe[Te], false));
         }
-        for (Re = 0; Re < he.length; Re++) for (ue = 0; ue < le.length; ue++) {
-          de = oe + he[Re] + le[ue];
+        for (Te = 0; Te < he.length; Te++) for (ue = 0; ue < le.length; ue++) {
+          de = oe + he[Te] + le[ue];
           if (!ee || me || de) ie.push(de);
         }
       }
@@ -4191,7 +4191,7 @@ function Logger(_, ee, ne) {
   _logger(_, ee, ne);
 }
 
-var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"), MAX_DOC_SIZE_BIN = 102400, VER = 10, LEAF_WAIT_TIMEOUT = 9e4, REPLICATION_BUSY_TIMEOUT = 3e6, CANCELLED = Symbol("cancelled"), AUTO_MERGED = Symbol("auto_merged"), NOT_CONFLICTED = Symbol("not_conflicted"), MISSING_OR_ERROR = Symbol("missing_or_error"), LEAVE_TO_SUBSEQUENT = Symbol("leave_to_subsequent_proc"), TIME_ARGUMENT_INFINITY = Symbol("infinity"), VERSIONINFO_DOCID = "obsydian_livesync_version", MILSTONE_DOCID = "_local/obsydian_livesync_milestone", NODEINFO_DOCID = "_local/obsydian_livesync_nodeinfo", MODE_SELECTIVE = 0, MODE_AUTOMATIC = 1, MODE_PAUSED = 2, REMOTE_COUCHDB = "", REMOTE_MINIO = "MINIO", DEFAULT_SETTINGS = {
+var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"), MAX_DOC_SIZE_BIN = 102400, VER = 10, LEAF_WAIT_TIMEOUT = 9e4, REPLICATION_BUSY_TIMEOUT = 3e6, CANCELLED = Symbol("cancelled"), AUTO_MERGED = Symbol("auto_merged"), NOT_CONFLICTED = Symbol("not_conflicted"), MISSING_OR_ERROR = Symbol("missing_or_error"), LEAVE_TO_SUBSEQUENT = Symbol("leave_to_subsequent_proc"), TIME_ARGUMENT_INFINITY = Symbol("infinity"), VERSIONING_DOCID = "obsydian_livesync_version", MILESTONE_DOCID = "_local/obsydian_livesync_milestone", NODEINFO_DOCID = "_local/obsydian_livesync_nodeinfo", MODE_SELECTIVE = 0, MODE_AUTOMATIC = 1, MODE_PAUSED = 2, MODE_SHINY = 3, REMOTE_COUCHDB = "", REMOTE_MINIO = "MINIO", DEFAULT_SETTINGS = {
   remoteType: REMOTE_COUCHDB,
   useCustomRequestHandler: false,
   couchDB_URI: "",
@@ -4297,7 +4297,9 @@ var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"
   enableChunkSplitterV2: false,
   disableWorkerForGeneratingChunks: false,
   processSmallFilesInUIThread: false,
-  notifyThresholdOfRemoteStorageSize: -1
+  notifyThresholdOfRemoteStorageSize: -1,
+  usePluginSyncV2: false,
+  usePluginEtc: false
 }, PREFERRED_SETTING_CLOUDANT = {
   syncMaxSizeInMB: 50,
   customChunkSize: 0,
@@ -4326,7 +4328,8 @@ var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"
   enableChunkSplitterV2: true,
   maxChunksInEden: 10,
   maxTotalLengthInEden: 1024,
-  maxAgeInEden: 10
+  maxAgeInEden: 10,
+  usePluginSyncV2: false
 }, TweakValuesRecommendedTemplate = {
   useIgnoreFiles: false,
   useCustomRequestHandler: false,
@@ -4341,7 +4344,10 @@ var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"
   minimumIntervalOfReadChunksOnline: 50,
   ignoreFiles: ".gitignore",
   syncMaxSizeInMB: 50,
-  enableChunkSplitterV2: true
+  enableChunkSplitterV2: true,
+  usePluginSyncV2: true
+}, TweakValuesDefault = {
+  usePluginSyncV2: false
 }, configurationNames = {
   minimumChunkSize: {
     name: "Minimum Chunk Size (Not Configurable from the UI Now)."
@@ -4391,6 +4397,10 @@ var RESULT_TIMED_OUT = Symbol("timed out"), RESULT_NOT_FOUND = Symbol("NotFound"
   maxAgeInEden: {
     name: "Maximum Incubation Period",
     desc: "The maximum duration for which chunks can be incubated within the document. Chunks exceeding this period will graduate to independent chunks."
+  },
+  usePluginSyncV2: {
+    name: "Per-file-saved customization sync",
+    desc: "If enabled per-filed efficient customization sync will be used. We need a small migration when enabling this. And all devices should be updated to v0.23.18. Once we enabled this, we lost a compatibility with old versions."
   }
 };
 
@@ -5475,6 +5485,19 @@ function readString(_) {
     ie += String.fromCharCode(...re);
   }
   return ie;
+}
+
+function base64ToString(_) {
+  try {
+    if ("string" != typeof _) return _.map((_ => base64ToString(_))).join("");
+    const ee = atob(_), ne = ee.length, ie = new Uint8Array(ne);
+    for (let _ = 0; _ < ne; _++) ie[_] = ee.charCodeAt(_);
+    return readString(ie);
+  } catch (ee) {
+    Logger("Base64 To String error", LOG_LEVEL_VERBOSE);
+    Logger(ee, LOG_LEVEL_VERBOSE);
+    if ("string" != typeof _) return _.join(""); else return _;
+  }
 }
 
 var regexpBase64 = /^[A-Za-z0-9+/]+=*$/;
@@ -6695,22 +6718,22 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
         ee.b = he += ve, ee.p = fe = 8 * Ce, ee.f = de;
         continue;
       } else if (1 == Ee) pe = flrm, ge = fdrm, me = 9, ye = 5; else if (2 == Ee) {
-        var we = bits(_, fe, 31) + 257, ke = bits(_, fe + 10, 15) + 4, Le = we + bits(_, fe + 5, 31) + 1;
+        var we = bits(_, fe, 31) + 257, Le = bits(_, fe + 10, 15) + 4, Oe = we + bits(_, fe + 5, 31) + 1;
         fe += 14;
-        for (var Oe = new u8(Le), Ae = new u8(19), xe = 0; xe < ke; ++xe) Ae[clim[xe]] = bits(_, fe + 3 * xe, 7);
-        fe += 3 * ke;
-        var Re = max(Ae), Te = (1 << Re) - 1, Pe = hMap(Ae, Re, 1);
-        for (xe = 0; xe < Le; ) {
-          var Ie, De = Pe[bits(_, fe, Te)];
+        for (var ke = new u8(Oe), Ae = new u8(19), xe = 0; xe < Le; ++xe) Ae[clim[xe]] = bits(_, fe + 3 * xe, 7);
+        fe += 3 * Le;
+        var Te = max(Ae), Re = (1 << Te) - 1, Pe = hMap(Ae, Te, 1);
+        for (xe = 0; xe < Oe; ) {
+          var Ie, De = Pe[bits(_, fe, Re)];
           fe += 15 & De;
-          if ((Ie = De >> 4) < 16) Oe[xe++] = Ie; else {
+          if ((Ie = De >> 4) < 16) ke[xe++] = Ie; else {
             var Be = 0, Ne = 0;
-            if (16 == Ie) Ne = 3 + bits(_, fe, 3), fe += 2, Be = Oe[xe - 1]; else if (17 == Ie) Ne = 3 + bits(_, fe, 7), 
+            if (16 == Ie) Ne = 3 + bits(_, fe, 3), fe += 2, Be = ke[xe - 1]; else if (17 == Ie) Ne = 3 + bits(_, fe, 7), 
             fe += 3; else if (18 == Ie) Ne = 11 + bits(_, fe, 127), fe += 7;
-            for (;Ne--; ) Oe[xe++] = Be;
+            for (;Ne--; ) ke[xe++] = Be;
           }
         }
-        var Me = Oe.subarray(0, we), Fe = Oe.subarray(we);
+        var Me = ke.subarray(0, we), Fe = ke.subarray(we);
         me = max(Me);
         ye = max(Fe);
         pe = hMap(Me, me, 1);
@@ -6733,26 +6756,26 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
         Ge = fe, pe = null;
         break;
       } else {
-        var ze = Ue - 254;
+        var je = Ue - 254;
         if (Ue > 264) {
-          var je = fleb[xe = Ue - 257];
-          ze = bits(_, fe, (1 << je) - 1) + fl[xe];
-          fe += je;
+          var ze = fleb[xe = Ue - 257];
+          je = bits(_, fe, (1 << ze) - 1) + fl[xe];
+          fe += ze;
         }
-        var He = ge[bits16(_, fe) & $e], qe = He >> 4;
-        if (!He) err(3);
-        fe += 15 & He;
-        Fe = fd[qe];
-        if (qe > 3) {
-          je = fdeb[qe];
-          Fe += bits16(_, fe) & (1 << je) - 1, fe += je;
+        var qe = ge[bits16(_, fe) & $e], He = qe >> 4;
+        if (!qe) err(3);
+        fe += 15 & qe;
+        Fe = fd[He];
+        if (He > 3) {
+          ze = fdeb[He];
+          Fe += bits16(_, fe) & (1 << ze) - 1, fe += ze;
         }
         if (fe > Se) {
           if (ue) err(0);
           break;
         }
         if (le) cbuf(he + 131072);
-        var Ke = he + ze;
+        var Ke = he + je;
         if (he < Fe) {
           var We = se - Fe, Xe = Math.min(Fe, Ke);
           if (We + he < 0) err(3);
@@ -6892,39 +6915,39 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
 }, wblk = function(_, ee, ne, ie, re, se, oe, le, ue, de, fe) {
   wbits(ee, fe++, ne);
   ++re[256];
-  for (var he = hTree(re, 15), pe = he.t, ge = he.l, me = hTree(se, 15), ye = me.t, Se = me.l, Ee = lc(pe), ve = Ee.c, Ce = Ee.n, we = lc(ye), ke = we.c, Le = we.n, Oe = new u16(19), Ae = 0; Ae < ve.length; ++Ae) ++Oe[31 & ve[Ae]];
-  for (Ae = 0; Ae < ke.length; ++Ae) ++Oe[31 & ke[Ae]];
-  for (var xe = hTree(Oe, 7), Re = xe.t, Te = xe.l, Pe = 19; Pe > 4 && !Re[clim[Pe - 1]]; --Pe) ;
-  var Ie, De, Be, Ne, Me = de + 5 << 3, Fe = clen(re, flt) + clen(se, fdt) + oe, Ve = clen(re, pe) + clen(se, ye) + oe + 14 + 3 * Pe + clen(Oe, Re) + 2 * Oe[16] + 3 * Oe[17] + 7 * Oe[18];
+  for (var he = hTree(re, 15), pe = he.t, ge = he.l, me = hTree(se, 15), ye = me.t, Se = me.l, Ee = lc(pe), ve = Ee.c, Ce = Ee.n, we = lc(ye), Le = we.c, Oe = we.n, ke = new u16(19), Ae = 0; Ae < ve.length; ++Ae) ++ke[31 & ve[Ae]];
+  for (Ae = 0; Ae < Le.length; ++Ae) ++ke[31 & Le[Ae]];
+  for (var xe = hTree(ke, 7), Te = xe.t, Re = xe.l, Pe = 19; Pe > 4 && !Te[clim[Pe - 1]]; --Pe) ;
+  var Ie, De, Be, Ne, Me = de + 5 << 3, Fe = clen(re, flt) + clen(se, fdt) + oe, Ve = clen(re, pe) + clen(se, ye) + oe + 14 + 3 * Pe + clen(ke, Te) + 2 * ke[16] + 3 * ke[17] + 7 * ke[18];
   if (ue >= 0 && Me <= Fe && Me <= Ve) return wfblk(ee, fe, _.subarray(ue, ue + de));
   wbits(ee, fe, 1 + (Ve < Fe)), fe += 2;
   if (Ve < Fe) {
     Ie = hMap(pe, ge, 0), De = pe, Be = hMap(ye, Se, 0), Ne = ye;
-    var $e = hMap(Re, Te, 0);
+    var $e = hMap(Te, Re, 0);
     wbits(ee, fe, Ce - 257);
-    wbits(ee, fe + 5, Le - 1);
+    wbits(ee, fe + 5, Oe - 1);
     wbits(ee, fe + 10, Pe - 4);
     fe += 14;
-    for (Ae = 0; Ae < Pe; ++Ae) wbits(ee, fe + 3 * Ae, Re[clim[Ae]]);
+    for (Ae = 0; Ae < Pe; ++Ae) wbits(ee, fe + 3 * Ae, Te[clim[Ae]]);
     fe += 3 * Pe;
-    for (var Ge = [ ve, ke ], Ue = 0; Ue < 2; ++Ue) {
-      var ze = Ge[Ue];
-      for (Ae = 0; Ae < ze.length; ++Ae) {
-        var je = 31 & ze[Ae];
-        wbits(ee, fe, $e[je]), fe += Re[je];
-        if (je > 15) wbits(ee, fe, ze[Ae] >> 5 & 127), fe += ze[Ae] >> 12;
+    for (var Ge = [ ve, Le ], Ue = 0; Ue < 2; ++Ue) {
+      var je = Ge[Ue];
+      for (Ae = 0; Ae < je.length; ++Ae) {
+        var ze = 31 & je[Ae];
+        wbits(ee, fe, $e[ze]), fe += Te[ze];
+        if (ze > 15) wbits(ee, fe, je[Ae] >> 5 & 127), fe += je[Ae] >> 12;
       }
     }
   } else Ie = flm, De = flt, Be = fdm, Ne = fdt;
   for (Ae = 0; Ae < le; ++Ae) {
-    var He = ie[Ae];
-    if (He > 255) {
-      wbits16(ee, fe, Ie[257 + (je = He >> 18 & 31)]), fe += De[je + 257];
-      if (je > 7) wbits(ee, fe, He >> 23 & 31), fe += fleb[je];
-      var qe = 31 & He;
-      wbits16(ee, fe, Be[qe]), fe += Ne[qe];
-      if (qe > 3) wbits16(ee, fe, He >> 5 & 8191), fe += fdeb[qe];
-    } else wbits16(ee, fe, Ie[He]), fe += De[He];
+    var qe = ie[Ae];
+    if (qe > 255) {
+      wbits16(ee, fe, Ie[257 + (ze = qe >> 18 & 31)]), fe += De[ze + 257];
+      if (ze > 7) wbits(ee, fe, qe >> 23 & 31), fe += fleb[ze];
+      var He = 31 & qe;
+      wbits16(ee, fe, Be[He]), fe += Ne[He];
+      if (He > 3) wbits16(ee, fe, qe >> 5 & 8191), fe += fdeb[He];
+    } else wbits16(ee, fe, Ie[qe]), fe += De[qe];
   }
   wbits16(ee, fe, Ie[256]);
   return fe + De[256];
@@ -6934,29 +6957,29 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
     if (fe) ue[0] = se.r >> 3;
     for (var he = deo[ee - 1], pe = he >> 13, ge = 8191 & he, me = (1 << ne) - 1, ye = se.p || new u16(32768), Se = se.h || new u16(me + 1), Ee = Math.ceil(ne / 3), ve = 2 * Ee, hsh = function(ee) {
       return (_[ee] ^ _[ee + 1] << Ee ^ _[ee + 2] << ve) & me;
-    }, Ce = new i32(25e3), we = new u16(288), ke = new u16(32), Le = 0, Oe = 0, Ae = se.i || 0, xe = 0, Re = se.w || 0, Te = 0; Ae + 2 < oe; ++Ae) {
+    }, Ce = new i32(25e3), we = new u16(288), Le = new u16(32), Oe = 0, ke = 0, Ae = se.i || 0, xe = 0, Te = se.w || 0, Re = 0; Ae + 2 < oe; ++Ae) {
       var Pe = hsh(Ae), Ie = 32767 & Ae, De = Se[Pe];
       ye[Ie] = De;
       Se[Pe] = Ie;
-      if (Re <= Ae) {
+      if (Te <= Ae) {
         var Be = oe - Ae;
-        if ((Le > 7e3 || xe > 24576) && (Be > 423 || !de)) {
-          fe = wblk(_, ue, 0, Ce, we, ke, Oe, xe, Te, Ae - Te, fe);
-          xe = Le = Oe = 0, Te = Ae;
+        if ((Oe > 7e3 || xe > 24576) && (Be > 423 || !de)) {
+          fe = wblk(_, ue, 0, Ce, we, Le, ke, xe, Re, Ae - Re, fe);
+          xe = Oe = ke = 0, Re = Ae;
           for (var Ne = 0; Ne < 286; ++Ne) we[Ne] = 0;
-          for (Ne = 0; Ne < 30; ++Ne) ke[Ne] = 0;
+          for (Ne = 0; Ne < 30; ++Ne) Le[Ne] = 0;
         }
         var Me = 2, Fe = 0, Ve = ge, $e = Ie - De & 32767;
-        if (Be > 2 && Pe == hsh(Ae - $e)) for (var Ge = Math.min(pe, Be) - 1, Ue = Math.min(32767, Ae), ze = Math.min(258, Be); $e <= Ue && --Ve && Ie != De; ) {
+        if (Be > 2 && Pe == hsh(Ae - $e)) for (var Ge = Math.min(pe, Be) - 1, Ue = Math.min(32767, Ae), je = Math.min(258, Be); $e <= Ue && --Ve && Ie != De; ) {
           if (_[Ae + Me] == _[Ae + Me - $e]) {
-            for (var je = 0; je < ze && _[Ae + je] == _[Ae + je - $e]; ++je) ;
-            if (je > Me) {
-              Me = je, Fe = $e;
-              if (je > Ge) break;
-              var He = Math.min($e, je - 2), qe = 0;
-              for (Ne = 0; Ne < He; ++Ne) {
+            for (var ze = 0; ze < je && _[Ae + ze] == _[Ae + ze - $e]; ++ze) ;
+            if (ze > Me) {
+              Me = ze, Fe = $e;
+              if (ze > Ge) break;
+              var qe = Math.min($e, ze - 2), He = 0;
+              for (Ne = 0; Ne < qe; ++Ne) {
                 var Ke = Ae - $e + Ne & 32767, We = Ke - ye[Ke] & 32767;
-                if (We > qe) qe = We, De = Ke;
+                if (We > He) He = We, De = Ke;
               }
             }
           }
@@ -6964,36 +6987,36 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
         }
         if (Fe) {
           Ce[xe++] = 268435456 | revfl[Me] << 18 | revfd[Fe];
-          var Xe = 31 & revfl[Me], Qe = 31 & revfd[Fe];
-          Oe += fleb[Xe] + fdeb[Qe];
+          var Xe = 31 & revfl[Me], Ye = 31 & revfd[Fe];
+          ke += fleb[Xe] + fdeb[Ye];
           ++we[257 + Xe];
-          ++ke[Qe];
-          Re = Ae + Me;
-          ++Le;
+          ++Le[Ye];
+          Te = Ae + Me;
+          ++Oe;
         } else {
           Ce[xe++] = _[Ae];
           ++we[_[Ae]];
         }
       }
     }
-    for (Ae = Math.max(Ae, Re); Ae < oe; ++Ae) {
+    for (Ae = Math.max(Ae, Te); Ae < oe; ++Ae) {
       Ce[xe++] = _[Ae];
       ++we[_[Ae]];
     }
-    fe = wblk(_, ue, de, Ce, we, ke, Oe, xe, Te, Ae - Te, fe);
+    fe = wblk(_, ue, de, Ce, we, Le, ke, xe, Re, Ae - Re, fe);
     if (!de) {
       se.r = 7 & fe | ue[fe / 8 | 0] << 3;
       fe -= 7;
-      se.h = Se, se.p = ye, se.i = Ae, se.w = Re;
+      se.h = Se, se.p = ye, se.i = Ae, se.w = Te;
     }
   } else {
     for (Ae = se.w || 0; Ae < oe + de; Ae += 65535) {
-      var Ye = Ae + 65535;
-      if (Ye >= oe) {
+      var Qe = Ae + 65535;
+      if (Qe >= oe) {
         ue[fe / 8 | 0] = de;
-        Ye = oe;
+        Qe = oe;
       }
-      fe = wfblk(ue, fe + 1, _.subarray(Ae, Ye));
+      fe = wfblk(ue, fe + 1, _.subarray(Ae, Qe));
     }
     se.i = oe;
   }
@@ -7115,7 +7138,7 @@ function isCloudantURI(_) {
 
 var checkRemoteVersion = async (_, ee, ne = VER) => {
   try {
-    const ie = await _.get(VERSIONINFO_DOCID);
+    const ie = await _.get(VERSIONING_DOCID);
     if ("versioninfo" != ie.type) return false;
     const re = ie.version;
     if (re < ne) if (await ee(re, ne)) {
@@ -7129,10 +7152,10 @@ var checkRemoteVersion = async (_, ee, ne = VER) => {
   }
 }, bumpRemoteVersion = async (_, ee = VER) => {
   const ne = {
-    _id: VERSIONINFO_DOCID,
+    _id: VERSIONING_DOCID,
     version: ee,
     type: "versioninfo"
-  }, ie = await resolveWithIgnoreKnownError(_.get(VERSIONINFO_DOCID), ne);
+  }, ie = await resolveWithIgnoreKnownError(_.get(VERSIONING_DOCID), ne);
   if ("versioninfo" != ie.type) return false;
   ne._rev = ie._rev;
   await _.put(ne);
@@ -7469,11 +7492,11 @@ async function purgeUnreferencedChunks(_, ee, ne, ie = false) {
   }, oe = ne ? "-remote" : "-local";
   Logger(`${ee ? "Counting" : "Cleaning"} ${ne ? "remote" : "local"} database`, LOG_LEVEL_NOTICE);
   if (ne) Logger(`Database active-size: ${sizeToHumanReadable(getSize(re, "active"))}, external-size:${sizeToHumanReadable(getSize(re, "external"))}, file-size: ${sizeToHumanReadable(getSize(re, "file"))}`, LOG_LEVEL_NOTICE);
-  Logger(`Collecting unreferenced chunks on ${re.db_name}`, LOG_LEVEL_NOTICE, "gc-countchunk" + oe);
+  Logger(`Collecting unreferenced chunks on ${re.db_name}`, LOG_LEVEL_NOTICE, "gc-count-chunk" + oe);
   const le = await collectUnreferencedChunks(_);
   se = le.length;
-  if (0 == le.length) Logger(`No unreferenced chunks! ${re.db_name}`, LOG_LEVEL_NOTICE, "gc-countchunk" + oe); else {
-    Logger(`Number of unreferenced chunks on ${re.db_name}: ${le.length}`, LOG_LEVEL_NOTICE, "gc-countchunk" + oe);
+  if (0 == le.length) Logger(`No unreferenced chunks! ${re.db_name}`, LOG_LEVEL_NOTICE, "gc-count-chunk" + oe); else {
+    Logger(`Number of unreferenced chunks on ${re.db_name}: ${le.length}`, LOG_LEVEL_NOTICE, "gc-count-chunk" + oe);
     if (ee) {
       Logger(`DryRun of cleaning ${ne ? "remote" : "local"} database up: Done`, LOG_LEVEL_NOTICE);
       return se;
@@ -7759,6 +7782,10 @@ function isAnyNote(_) {
   return "type" in _ && ("newnote" == _.type || "plain" == _.type);
 }
 
+function isLoadedEntry(_) {
+  return "type" in _ && ("newnote" == _.type || "plain" == _.type) && "data" in _;
+}
+
 function createSavingEntryFromLoadedEntry(_) {
   const ee = readAsBlob(_), ne = determineType(_.path, ee);
   return {
@@ -7785,6 +7812,17 @@ function unescapeNewLineFromString(_) {
 
 function escapeMarkdownValue(_) {
   if ("string" == typeof _) return replaceAllPairs(_, [ "|", "\\|" ], [ "`", "\\`" ]); else return _;
+}
+
+function timeDeltaToHumanReadable(_) {
+  const ee = _ / 1e3;
+  if (ee < 60) return `${ee.toFixed(2)}s`;
+  const ne = ee / 60;
+  if (ne < 60) return `${ne.toFixed(2)}m`;
+  const ie = ne / 60;
+  if (ie < 24) return `${ie.toFixed(2)}h`;
+  const re = ie / 24;
+  if (re < 365) return `${re.toFixed(2)}d`; else return `${(re / 365).toFixed(2)}y`;
 }
 
 var PouchError = class extends Error {
@@ -10764,8 +10802,8 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
     if (!Ee._id || !isLocalId(Ee._id)) if ((Ee = me[ye] = parseDoc(Ee, ne.new_edits, _)).error && !pe) pe = Ee;
   }
   if (pe) return se(pe);
-  var ve = false, Ce = 0, we = new Array(me.length), ke = new Map, Le = false, Oe = ie._meta.blobSupport ? "blob" : "base64";
-  preprocessAttachments(me, Oe, (function(ee) {
+  var ve = false, Ce = 0, we = new Array(me.length), Le = new Map, Oe = false, ke = ie._meta.blobSupport ? "blob" : "base64";
+  preprocessAttachments(me, ke, (function(ee) {
     if (ee) return se(ee);
     (function startTransaction() {
       var ee = openTransactionSafely(re, [ DOC_STORE, BY_SEQ_STORE, ATTACH_STORE, LOCAL_STORE, ATTACH_AND_SEQ_STORE, META_STORE ], "readwrite");
@@ -10809,7 +10847,7 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
         }));
       })((function(ee) {
         if (ee) {
-          Le = true;
+          Oe = true;
           return se(ee);
         }
         (function fetchExistingDocs() {
@@ -10819,12 +10857,12 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
           }
           function checkDone() {
             if (++ee === me.length) (function idbProcessDocs() {
-              processDocs(_.revs_limit, me, ie, ke, oe, we, writeDoc, ne, onAllDocsProcessed);
+              processDocs(_.revs_limit, me, ie, Le, oe, we, writeDoc, ne, onAllDocsProcessed);
             })();
           }
           function readMetadata(_) {
             var ee = decodeMetadata(_.target.result);
-            if (ee) ke.set(ee.id, ee);
+            if (ee) Le.set(ee.id, ee);
             checkDone();
           }
         })();
@@ -10842,7 +10880,7 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
     }
   }
   function complete() {
-    if (!Le) {
+    if (!Oe) {
       changesHandler$1.notify(ie._meta.name);
       se(null, we);
     }
@@ -10908,7 +10946,7 @@ function idbBulkDocs(_, ee, ne, ie, re, se) {
         id: pe.id,
         rev: pe.rev
       };
-      ke.set(_.metadata.id, _.metadata);
+      Le.set(_.metadata.id, _.metadata);
       (function insertAttachmentMappings(_, ee, ne) {
         var ie = 0, re = Object.keys(_.data._attachments || {});
         if (!re.length) return ne();
@@ -11030,10 +11068,10 @@ function idbAllDocs(_, ee, ne) {
   if (ge.error) return ne(ge.error);
   var me = ge.txn;
   me.oncomplete = function onTxnComplete() {
-    if (_.attachments) postProcessAttachments(ke, _.binary).then(onResultsReady); else onResultsReady();
+    if (_.attachments) postProcessAttachments(Le, _.binary).then(onResultsReady); else onResultsReady();
   };
   me.onabort = idbError(ne);
-  var ye, Se, Ee = me.objectStore(DOC_STORE), ve = me.objectStore(BY_SEQ_STORE), Ce = me.objectStore(META_STORE), we = ve.index("_doc_id_rev"), ke = [];
+  var ye, Se, Ee = me.objectStore(DOC_STORE), ve = me.objectStore(BY_SEQ_STORE), Ce = me.objectStore(META_STORE), we = ve.index("_doc_id_rev"), Le = [];
   Ce.get(META_STORE).onsuccess = function(_) {
     ye = _.target.result.docCount;
   };
@@ -11051,12 +11089,12 @@ function idbAllDocs(_, ee, ne) {
     };
     if (ne.deleted) {
       if (ue) {
-        ke.push(ie);
+        Le.push(ie);
         ie.value.deleted = true;
         ie.doc = null;
       }
     } else if (de-- <= 0) {
-      ke.push(ie);
+      Le.push(ie);
       if (_.include_docs) (function fetchDocAsynchronously(ee, ne, ie) {
         var re = ee.id + "::" + ie;
         we.get(re).onsuccess = function onGetDoc(ie) {
@@ -11071,25 +11109,25 @@ function idbAllDocs(_, ee, ne) {
     }
   }
   function processBatch(_) {
-    for (var ee = 0, ne = _.length; ee < ne && ke.length !== fe; ee++) {
+    for (var ee = 0, ne = _.length; ee < ne && Le.length !== fe; ee++) {
       var ie = _[ee];
       if (!ie.error || !ue) {
         var re = decodeMetadata(ie);
         allDocsInner(re.winningRev, re);
-      } else ke.push(ie);
+      } else Le.push(ie);
     }
   }
   function onBatch(_, ee, ne) {
     if (ne) {
       processBatch(ee);
-      if (ke.length < fe) ne.continue();
+      if (Le.length < fe) ne.continue();
     }
   }
   function onResultsReady() {
     var ee = {
       total_rows: ye,
       offset: _.skip,
-      rows: ke
+      rows: Le
     };
     if (_.update_seq && void 0 !== Se) ee.update_seq = Se;
     ne(null, ee);
@@ -14634,7 +14672,7 @@ function replicate(_, ee, ne, ie, re) {
     seq: 0,
     changes: [],
     docs: []
-  }, he = false, pe = false, ge = false, me = 0, ye = 0, Se = ne.continuous || ne.live || false, Ee = ne.batch_size || 100, ve = ne.batches_limit || 10, Ce = ne.style || "all_docs", we = false, ke = ne.doc_ids, Le = ne.selector, Oe = [], Ae = uuid();
+  }, he = false, pe = false, ge = false, me = 0, ye = 0, Se = ne.continuous || ne.live || false, Ee = ne.batch_size || 100, ve = ne.batches_limit || 10, Ce = ne.style || "all_docs", we = false, Le = ne.doc_ids, Oe = ne.selector, ke = [], Ae = uuid();
   re = re || {
     ok: true,
     start_time: (new Date).toISOString(),
@@ -14666,7 +14704,7 @@ function replicate(_, ee, ne, ie, re) {
     }));
   }
   function writeDocs() {
-    Oe = [];
+    ke = [];
     if (0 !== se.docs.length) {
       var _ = se.docs, oe = {
         timeout: ne.timeout
@@ -14692,7 +14730,7 @@ function replicate(_, ee, ne, ie, re) {
             re.errors.push(ee);
             var se = (ee.name || "").toLowerCase();
             if ("unauthorized" === se || "forbidden" === se) ie.emit("denied", clone(ee)); else throw ee;
-          } else Oe.push(_);
+          } else ke.push(_);
         }));
       }), (function(ee) {
         re.doc_write_failures += _.length;
@@ -14704,8 +14742,8 @@ function replicate(_, ee, ne, ie, re) {
     if (se.error) throw new Error("There was a problem getting docs.");
     re.last_seq = ye = se.seq;
     var ee = clone(re);
-    if (Oe.length) {
-      ee.docs = Oe;
+    if (ke.length) {
+      ee.docs = ke;
       if ("number" == typeof se.pending) {
         ee.pending = se.pending;
         delete se.pending;
@@ -14937,8 +14975,8 @@ function replicate(_, ee, ne, ie, re) {
           limit: Ee,
           batch_size: Ee,
           style: Ce,
-          doc_ids: ke,
-          selector: Le,
+          doc_ids: Le,
+          selector: Oe,
           return_docs: true
         };
         if (ne.filter) if ("string" != typeof ne.filter) xe.include_docs = true; else xe.filter = ne.filter;
@@ -16261,13 +16299,23 @@ index_es_default.prototype.purgeMulti = adapterFun("_purgeMulti", (function(_, e
 }));
 
 var import_diff_match_patch2 = __toESM(require_diff_match_patch(), 1), ConflictResolveModal = class extends import_obsidian.Modal {
-  constructor(_, ee, ne) {
+  constructor(_, ee, ne, ie, re) {
     super(_);
     this.response = CANCELLED;
     this.isClosed = false;
     this.consumed = false;
+    this.title = "Conflicting changes";
+    this.pluginPickMode = false;
+    this.localName = "Keep A";
+    this.remoteName = "Keep B";
     this.result = ne;
     this.filename = ee;
+    this.pluginPickMode = ie || false;
+    if (this.pluginPickMode) {
+      this.title = "Pick a version";
+      this.remoteName = `Use ${re || "Remote"}`;
+      this.localName = "Use Local";
+    }
     sendValue("cancel-resolve-conflict:" + this.filename, true);
   }
   onOpen() {
@@ -16276,7 +16324,7 @@ var import_diff_match_patch2 = __toESM(require_diff_match_patch(), 1), ConflictR
     setTimeout((async () => {
       if (await waitForValue("cancel-resolve-conflict:" + this.filename)) this.sendResponse(CANCELLED);
     }), 10);
-    this.titleEl.setText("Conflicting changes");
+    this.titleEl.setText(this.title);
     _.empty();
     _.createEl("span", {
       text: this.filename
@@ -16293,17 +16341,17 @@ var import_diff_match_patch2 = __toESM(require_diff_match_patch(), 1), ConflictR
     const ie = _.createDiv(""), re = new Date(this.result.left.mtime).toLocaleString() + (this.result.left.deleted ? " (Deleted)" : ""), se = new Date(this.result.right.mtime).toLocaleString() + (this.result.right.deleted ? " (Deleted)" : "");
     ie.innerHTML = `\n<span class='deleted'>A:${re}</span><br /><span class='added'>B:${se}</span><br> \n        `;
     _.createEl("button", {
-      text: "Keep A"
-    }, (_ => _.addEventListener("click", (() => this.sendResponse(this.result.right.rev)))));
+      text: this.localName
+    }, (_ => _.addEventListener("click", (() => this.sendResponse(this.result.right.rev))))).style.marginRight = "4px";
     _.createEl("button", {
-      text: "Keep B"
-    }, (_ => _.addEventListener("click", (() => this.sendResponse(this.result.left.rev)))));
-    _.createEl("button", {
+      text: this.remoteName
+    }, (_ => _.addEventListener("click", (() => this.sendResponse(this.result.left.rev))))).style.marginRight = "4px";
+    if (!this.pluginPickMode) _.createEl("button", {
       text: "Concat both"
-    }, (_ => _.addEventListener("click", (() => this.sendResponse(LEAVE_TO_SUBSEQUENT)))));
+    }, (_ => _.addEventListener("click", (() => this.sendResponse(LEAVE_TO_SUBSEQUENT))))).style.marginRight = "4px";
     _.createEl("button", {
-      text: "Not now"
-    }, (_ => _.addEventListener("click", (() => this.sendResponse(CANCELLED)))));
+      text: !this.pluginPickMode ? "Not now" : "Cancel"
+    }, (_ => _.addEventListener("click", (() => this.sendResponse(CANCELLED))))).style.marginRight = "4px";
   }
   sendResponse(_) {
     this.response = _;
@@ -16323,7 +16371,7 @@ var import_diff_match_patch2 = __toESM(require_diff_match_patch(), 1), ConflictR
     const _ = await waitForValue("close-resolve-conflict:" + this.filename);
     if (_ === RESULT_TIMED_OUT) return CANCELLED; else return _;
   }
-}, import_obsidian4 = require("obsidian");
+}, import_obsidian5 = require("obsidian");
 
 function noop2() {}
 
@@ -16354,6 +16402,19 @@ function safe_not_equal(_, ee) {
 
 function is_empty(_) {
   return 0 === Object.keys(_).length;
+}
+
+function subscribe(_, ...ee) {
+  if (null == _) {
+    for (const _ of ee) _(void 0);
+    return noop2;
+  }
+  const ne = _.subscribe(...ee);
+  return ne.unsubscribe ? () => ne.unsubscribe() : ne;
+}
+
+function component_subscribe(_, ee, ne) {
+  _.$$.on_destroy.push(subscribe(ee, ne));
 }
 
 function null_to_empty(_) {
@@ -17153,142 +17214,178 @@ var LiveSyncCommands = class {
 };
 
 function add_css(_) {
-  append_styles(_, "svelte-guf68w", ".deleted.svelte-guf68w{text-decoration:line-through}.svelte-guf68w{box-sizing:border-box}.scroller.svelte-guf68w{display:flex;flex-direction:column;overflow-y:scroll;max-height:60vh;user-select:text}.json-source.svelte-guf68w{white-space:pre;height:auto;overflow:auto;min-height:var(--font-ui-medium);flex-grow:1}");
+  append_styles(_, "svelte-10t8oe0", ".spacer.svelte-10t8oe0{flex-grow:1}.infos.svelte-10t8oe0{display:flex;justify-content:space-between;margin:4px 0.5em}.deleted.svelte-10t8oe0{text-decoration:line-through}.svelte-10t8oe0{box-sizing:border-box}.scroller.svelte-10t8oe0{display:flex;flex-direction:column;overflow-y:scroll;max-height:60vh;user-select:text}.json-source.svelte-10t8oe0{white-space:pre;height:auto;overflow:auto;min-height:var(--font-ui-medium);flex-grow:1}");
 }
 
 function get_each_context(_, ee, ne) {
-  const ie = _.slice();
-  ie[25] = ee[ne];
-  return ie;
-}
-
-function get_each_context_1(_, ee, ne) {
   const ie = _.slice();
   ie[28] = ee[ne];
   return ie;
 }
 
+function get_each_context_1(_, ee, ne) {
+  const ie = _.slice();
+  ie[31] = ee[ne];
+  return ie;
+}
+
 function create_else_block(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe, Ae, xe, Re = new Date(_[3].mtime).toLocaleString() + "", Te = _[5].length + "", Pe = new Date(_[4].mtime).toLocaleString() + "", Ie = _[6].length + "", De = ensure_array_like(_[11]), Be = [];
-  for (let ee = 0; ee < De.length; ee += 1) Be[ee] = create_each_block_1(get_each_context_1(_, De, ee));
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Te, Re, Pe, Ie, De, Be, Ne, Me, Fe, Ve = new Date(_[4].mtime).toLocaleString() + "", $e = _[6].length + "", Ge = new Date(_[5].mtime).toLocaleString() + "", Ue = _[7].length + "", je = ensure_array_like(_[12]), ze = [];
+  for (let ee = 0; ee < je.length; ee += 1) ze[ee] = create_each_block_1(get_each_context_1(_, je, ee));
   function select_block_type_1(_, ee) {
-    if (false != _[8]) return create_if_block_3; else return create_else_block_1;
+    if (false != _[9]) return create_if_block_4; else return create_else_block_1;
   }
-  let Ne = select_block_type_1(_), Me = Ne(_), Fe = _[3]._id == _[4]._id && create_if_block_2(_), Ve = _[3]._id == _[4]._id && create_if_block_1(_);
+  let qe = select_block_type_1(_), He = qe(_), Ke = _[4]._id == _[5]._id && create_if_block_3(_), We = _[4]._id == _[5]._id && create_if_block_2(_), Xe = _[3] && create_if_block_1(_);
   return {
     c() {
       ee = element("div");
-      for (let _ = 0; _ < Be.length; _ += 1) Be[_].c();
+      for (let _ = 0; _ < ze.length; _ += 1) ze[_].c();
       ne = space();
-      Me.c();
+      He.c();
       ie = space();
       re = element("div");
-      se = text(_[1]);
-      oe = space();
-      if (Fe) Fe.c();
-      le = text(" ,");
-      ue = text(Re);
+      se = element("table");
+      oe = element("tr");
+      le = element("th");
+      ue = text(_[1]);
       de = space();
-      fe = text(Te);
-      he = text(" letters");
-      pe = space();
-      ge = element("div");
-      me = text(_[2]);
-      ye = space();
-      if (Ve) Ve.c();
-      Se = text(" ,");
-      Ee = text(Pe);
-      ve = space();
-      Ce = text(Ie);
-      we = text(" letters");
+      fe = element("td");
+      if (Ke) Ke.c();
+      he = space();
+      pe = text(Ve);
+      ge = space();
+      me = element("td");
+      ye = text($e);
+      Se = text(" letters");
+      Ee = space();
+      ve = element("tr");
+      Ce = element("th");
+      we = text(_[2]);
+      Le = space();
+      Oe = element("td");
+      if (We) We.c();
       ke = space();
-      Le = element("div");
-      Oe = element("button");
-      Oe.textContent = "Apply";
-      attr(ee, "class", "options svelte-guf68w");
-      attr(re, "class", "svelte-guf68w");
-      attr(ge, "class", "svelte-guf68w");
-      attr(Oe, "class", "svelte-guf68w");
-      attr(Le, "class", "buttons svelte-guf68w");
+      Ae = text(Ge);
+      xe = space();
+      Te = element("td");
+      Re = text(Ue);
+      Pe = text(" letters");
+      Ie = space();
+      De = element("div");
+      if (Xe) Xe.c();
+      Be = space();
+      Ne = element("button");
+      Ne.textContent = "Apply";
+      attr(ee, "class", "options svelte-10t8oe0");
+      attr(le, "class", "svelte-10t8oe0");
+      attr(fe, "class", "svelte-10t8oe0");
+      attr(me, "class", "svelte-10t8oe0");
+      attr(oe, "class", "svelte-10t8oe0");
+      attr(Ce, "class", "svelte-10t8oe0");
+      attr(Oe, "class", "svelte-10t8oe0");
+      attr(Te, "class", "svelte-10t8oe0");
+      attr(ve, "class", "svelte-10t8oe0");
+      attr(se, "class", "svelte-10t8oe0");
+      attr(re, "class", "infos svelte-10t8oe0");
+      attr(Ne, "class", "svelte-10t8oe0");
+      attr(De, "class", "buttons svelte-10t8oe0");
     },
-    m(Re, Te) {
-      insert(Re, ee, Te);
-      for (let _ = 0; _ < Be.length; _ += 1) if (Be[_]) Be[_].m(ee, null);
-      insert(Re, ne, Te);
-      Me.m(Re, Te);
-      insert(Re, ie, Te);
-      insert(Re, re, Te);
+    m(Ve, $e) {
+      insert(Ve, ee, $e);
+      for (let _ = 0; _ < ze.length; _ += 1) if (ze[_]) ze[_].m(ee, null);
+      insert(Ve, ne, $e);
+      He.m(Ve, $e);
+      insert(Ve, ie, $e);
+      insert(Ve, re, $e);
       append(re, se);
-      append(re, oe);
-      if (Fe) Fe.m(re, null);
-      append(re, le);
-      append(re, ue);
-      append(re, de);
-      append(re, fe);
-      append(re, he);
-      insert(Re, pe, Te);
-      insert(Re, ge, Te);
-      append(ge, me);
-      append(ge, ye);
-      if (Ve) Ve.m(ge, null);
-      append(ge, Se);
-      append(ge, Ee);
-      append(ge, ve);
-      append(ge, Ce);
-      append(ge, we);
-      insert(Re, ke, Te);
-      insert(Re, Le, Te);
-      append(Le, Oe);
-      if (!Ae) {
-        xe = listen(Oe, "click", _[12]);
-        Ae = true;
+      append(se, oe);
+      append(oe, le);
+      append(le, ue);
+      append(oe, de);
+      append(oe, fe);
+      if (Ke) Ke.m(fe, null);
+      append(fe, he);
+      append(fe, pe);
+      append(oe, ge);
+      append(oe, me);
+      append(me, ye);
+      append(me, Se);
+      append(se, Ee);
+      append(se, ve);
+      append(ve, Ce);
+      append(Ce, we);
+      append(ve, Le);
+      append(ve, Oe);
+      if (We) We.m(Oe, null);
+      append(Oe, ke);
+      append(Oe, Ae);
+      append(ve, xe);
+      append(ve, Te);
+      append(Te, Re);
+      append(Te, Pe);
+      insert(Ve, Ie, $e);
+      insert(Ve, De, $e);
+      if (Xe) Xe.m(De, null);
+      append(De, Be);
+      append(De, Ne);
+      if (!Me) {
+        Fe = listen(Ne, "click", _[13]);
+        Me = true;
       }
     },
     p(_, ne) {
-      if (2688 & ne) {
-        De = ensure_array_like(_[11]);
+      if (5376 & ne[0]) {
+        je = ensure_array_like(_[12]);
         let ie;
-        for (ie = 0; ie < De.length; ie += 1) {
-          const re = get_each_context_1(_, De, ie);
-          if (Be[ie]) Be[ie].p(re, ne); else {
-            Be[ie] = create_each_block_1(re);
-            Be[ie].c();
-            Be[ie].m(ee, null);
+        for (ie = 0; ie < je.length; ie += 1) {
+          const re = get_each_context_1(_, je, ie);
+          if (ze[ie]) ze[ie].p(re, ne); else {
+            ze[ie] = create_each_block_1(re);
+            ze[ie].c();
+            ze[ie].m(ee, null);
           }
         }
-        for (;ie < Be.length; ie += 1) Be[ie].d(1);
-        Be.length = De.length;
+        for (;ie < ze.length; ie += 1) ze[ie].d(1);
+        ze.length = je.length;
       }
-      if (Ne === (Ne = select_block_type_1(_)) && Me) Me.p(_, ne); else {
-        Me.d(1);
-        Me = Ne(_);
-        if (Me) {
-          Me.c();
-          Me.m(ie.parentNode, ie);
+      if (qe === (qe = select_block_type_1(_)) && He) He.p(_, ne); else {
+        He.d(1);
+        He = qe(_);
+        if (He) {
+          He.c();
+          He.m(ie.parentNode, ie);
         }
       }
-      if (2 & ne) set_data(se, _[1]);
-      if (_[3]._id == _[4]._id) if (Fe) Fe.p(_, ne); else {
-        Fe = create_if_block_2(_);
-        Fe.c();
-        Fe.m(re, le);
-      } else if (Fe) {
-        Fe.d(1);
-        Fe = null;
+      if (2 & ne[0]) set_data(ue, _[1]);
+      if (_[4]._id == _[5]._id) if (Ke) Ke.p(_, ne); else {
+        Ke = create_if_block_3(_);
+        Ke.c();
+        Ke.m(fe, he);
+      } else if (Ke) {
+        Ke.d(1);
+        Ke = null;
       }
-      if (8 & ne && Re !== (Re = new Date(_[3].mtime).toLocaleString() + "")) set_data(ue, Re);
-      if (32 & ne && Te !== (Te = _[5].length + "")) set_data(fe, Te);
-      if (4 & ne) set_data(me, _[2]);
-      if (_[3]._id == _[4]._id) if (Ve) Ve.p(_, ne); else {
-        Ve = create_if_block_1(_);
-        Ve.c();
-        Ve.m(ge, Se);
-      } else if (Ve) {
-        Ve.d(1);
-        Ve = null;
+      if (16 & ne[0] && Ve !== (Ve = new Date(_[4].mtime).toLocaleString() + "")) set_data(pe, Ve);
+      if (64 & ne[0] && $e !== ($e = _[6].length + "")) set_data(ye, $e);
+      if (4 & ne[0]) set_data(we, _[2]);
+      if (_[4]._id == _[5]._id) if (We) We.p(_, ne); else {
+        We = create_if_block_2(_);
+        We.c();
+        We.m(Oe, ke);
+      } else if (We) {
+        We.d(1);
+        We = null;
       }
-      if (16 & ne && Pe !== (Pe = new Date(_[4].mtime).toLocaleString() + "")) set_data(Ee, Pe);
-      if (64 & ne && Ie !== (Ie = _[6].length + "")) set_data(Ce, Ie);
+      if (32 & ne[0] && Ge !== (Ge = new Date(_[5].mtime).toLocaleString() + "")) set_data(Ae, Ge);
+      if (128 & ne[0] && Ue !== (Ue = _[7].length + "")) set_data(Re, Ue);
+      if (_[3]) if (Xe) Xe.p(_, ne); else {
+        Xe = create_if_block_1(_);
+        Xe.c();
+        Xe.m(De, Be);
+      } else if (Xe) {
+        Xe.d(1);
+        Xe = null;
+      }
     },
     d(_) {
       if (_) {
@@ -17296,17 +17393,16 @@ function create_else_block(_) {
         detach(ne);
         detach(ie);
         detach(re);
-        detach(pe);
-        detach(ge);
-        detach(ke);
-        detach(Le);
+        detach(Ie);
+        detach(De);
       }
-      destroy_each(Be, _);
-      Me.d(_);
-      if (Fe) Fe.d();
-      if (Ve) Ve.d();
-      Ae = false;
-      xe();
+      destroy_each(ze, _);
+      He.d(_);
+      if (Ke) Ke.d();
+      if (We) We.d();
+      if (Xe) Xe.d();
+      Me = false;
+      Fe();
     }
   };
 }
@@ -17321,9 +17417,9 @@ function create_if_block(_) {
       ie = element("div");
       re = element("button");
       re.textContent = "Dismiss";
-      attr(ee, "class", "message svelte-guf68w");
-      attr(re, "class", "svelte-guf68w");
-      attr(ie, "class", "buttons svelte-guf68w");
+      attr(ee, "class", "message svelte-10t8oe0");
+      attr(re, "class", "svelte-10t8oe0");
+      attr(ie, "class", "buttons svelte-10t8oe0");
     },
     m(le, ue) {
       insert(le, ee, ue);
@@ -17331,7 +17427,7 @@ function create_if_block(_) {
       insert(le, ie, ue);
       append(ie, re);
       if (!se) {
-        oe = listen(re, "click", _[12]);
+        oe = listen(re, "click", _[13]);
         se = true;
       }
     },
@@ -17348,9 +17444,9 @@ function create_if_block(_) {
   };
 }
 
-function create_if_block_4(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he = false, pe = _[28][1] + "";
-  ue = init_binding_group(_[21][0]);
+function create_if_block_5(_) {
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he = false, pe = _[31][1] + "";
+  ue = init_binding_group(_[24][0]);
   return {
     c() {
       ee = element("label");
@@ -17360,34 +17456,34 @@ function create_if_block_4(_) {
       oe = text(pe);
       attr(ne, "type", "radio");
       attr(ne, "name", "disp");
-      ne.__value = ie = _[28][0];
+      ne.__value = ie = _[31][0];
       set_input_value(ne, ne.__value);
-      attr(ne, "class", "sls-setting-tab svelte-guf68w");
-      attr(se, "class", "sls-setting-menu-btn svelte-guf68w");
-      attr(ee, "class", le = null_to_empty("sls-setting-label " + (_[28][0] == _[7] ? "selected" : "")) + " svelte-guf68w");
+      attr(ne, "class", "sls-setting-tab svelte-10t8oe0");
+      attr(se, "class", "sls-setting-menu-btn svelte-10t8oe0");
+      attr(ee, "class", le = null_to_empty("sls-setting-label " + (_[31][0] == _[8] ? "selected" : "")) + " svelte-10t8oe0");
       ue.p(ne);
     },
     m(ie, le) {
       insert(ie, ee, le);
       append(ee, ne);
-      ne.checked = ne.__value === _[7];
+      ne.checked = ne.__value === _[8];
       append(ee, re);
       append(ee, se);
       append(se, oe);
       if (!de) {
-        fe = listen(ne, "change", _[20]);
+        fe = listen(ne, "change", _[23]);
         de = true;
       }
     },
     p(_, re) {
-      if (2048 & re && ie !== (ie = _[28][0])) {
+      if (4096 & re[0] && ie !== (ie = _[31][0])) {
         ne.__value = ie;
         set_input_value(ne, ne.__value);
         he = true;
       }
-      if (he || 2176 & re) ne.checked = ne.__value === _[7];
-      if (2048 & re && pe !== (pe = _[28][1] + "")) set_data(oe, pe);
-      if (2176 & re && le !== (le = null_to_empty("sls-setting-label " + (_[28][0] == _[7] ? "selected" : "")) + " svelte-guf68w")) attr(ee, "class", le);
+      if (he || 4352 & re[0]) ne.checked = ne.__value === _[8];
+      if (4096 & re[0] && pe !== (pe = _[31][1] + "")) set_data(oe, pe);
+      if (4352 & re[0] && le !== (le = null_to_empty("sls-setting-label " + (_[31][0] == _[8] ? "selected" : "")) + " svelte-10t8oe0")) attr(ee, "class", le);
     },
     d(_) {
       if (_) detach(ee);
@@ -17399,7 +17495,7 @@ function create_if_block_4(_) {
 }
 
 function create_each_block_1(_) {
-  let ee, ne = ("" == _[28][0] || false != _[9][_[28][0]]) && create_if_block_4(_);
+  let ee, ne = ("" == _[31][0] || false != _[10][_[31][0]]) && create_if_block_5(_);
   return {
     c() {
       if (ne) ne.c();
@@ -17410,8 +17506,8 @@ function create_each_block_1(_) {
       insert(_, ee, ie);
     },
     p(_, ie) {
-      if ("" == _[28][0] || false != _[9][_[28][0]]) if (ne) ne.p(_, ie); else {
-        ne = create_if_block_4(_);
+      if ("" == _[31][0] || false != _[10][_[31][0]]) if (ne) ne.p(_, ie); else {
+        ne = create_if_block_5(_);
         ne.c();
         ne.m(ee.parentNode, ee);
       } else if (ne) {
@@ -17442,22 +17538,22 @@ function create_else_block_1(_) {
   };
 }
 
-function create_if_block_3(_) {
-  let ee, ne = ensure_array_like(_[10]), ie = [];
+function create_if_block_4(_) {
+  let ee, ne = ensure_array_like(_[11]), ie = [];
   for (let ee = 0; ee < ne.length; ee += 1) ie[ee] = create_each_block(get_each_context(_, ne, ee));
   return {
     c() {
       ee = element("div");
       for (let _ = 0; _ < ie.length; _ += 1) ie[_].c();
-      attr(ee, "class", "op-scrollable json-source svelte-guf68w");
+      attr(ee, "class", "op-scrollable json-source svelte-10t8oe0");
     },
     m(_, ne) {
       insert(_, ee, ne);
       for (let _ = 0; _ < ie.length; _ += 1) if (ie[_]) ie[_].m(ee, null);
     },
     p(_, re) {
-      if (1024 & re) {
-        ne = ensure_array_like(_[10]);
+      if (2048 & re[0]) {
+        ne = ensure_array_like(_[11]);
         let se;
         for (se = 0; se < ne.length; se += 1) {
           const oe = get_each_context(_, ne, se);
@@ -17479,20 +17575,20 @@ function create_if_block_3(_) {
 }
 
 function create_each_block(_) {
-  let ee, ne, ie, re = _[25][1] + "";
+  let ee, ne, ie, re = _[28][1] + "";
   return {
     c() {
       ee = element("span");
       ne = text(re);
-      attr(ee, "class", ie = null_to_empty(_[25][0] == import_diff_match_patch.DIFF_DELETE ? "deleted" : _[25][0] == import_diff_match_patch.DIFF_INSERT ? "added" : "normal") + " svelte-guf68w");
+      attr(ee, "class", ie = null_to_empty(_[28][0] == import_diff_match_patch.DIFF_DELETE ? "deleted" : _[28][0] == import_diff_match_patch.DIFF_INSERT ? "added" : "normal") + " svelte-10t8oe0");
     },
     m(_, ie) {
       insert(_, ee, ie);
       append(ee, ne);
     },
     p(_, se) {
-      if (1024 & se && re !== (re = _[25][1] + "")) set_data(ne, re);
-      if (1024 & se && ie !== (ie = null_to_empty(_[25][0] == import_diff_match_patch.DIFF_DELETE ? "deleted" : _[25][0] == import_diff_match_patch.DIFF_INSERT ? "added" : "normal") + " svelte-guf68w")) attr(ee, "class", ie);
+      if (2048 & se[0] && re !== (re = _[28][1] + "")) set_data(ne, re);
+      if (2048 & se[0] && ie !== (ie = null_to_empty(_[28][0] == import_diff_match_patch.DIFF_DELETE ? "deleted" : _[28][0] == import_diff_match_patch.DIFF_INSERT ? "added" : "normal") + " svelte-10t8oe0")) attr(ee, "class", ie);
     },
     d(_) {
       if (_) detach(ee);
@@ -17500,30 +17596,7 @@ function create_each_block(_) {
   };
 }
 
-function create_if_block_2(_) {
-  let ee, ne, ie = revStringToRevNumber(_[3]._rev) + "";
-  return {
-    c() {
-      ee = text("Rev:");
-      ne = text(ie);
-    },
-    m(_, ie) {
-      insert(_, ee, ie);
-      insert(_, ne, ie);
-    },
-    p(_, ee) {
-      if (8 & ee && ie !== (ie = revStringToRevNumber(_[3]._rev) + "")) set_data(ne, ie);
-    },
-    d(_) {
-      if (_) {
-        detach(ee);
-        detach(ne);
-      }
-    }
-  };
-}
-
-function create_if_block_1(_) {
+function create_if_block_3(_) {
   let ee, ne, ie = revStringToRevNumber(_[4]._rev) + "";
   return {
     c() {
@@ -17535,7 +17608,7 @@ function create_if_block_1(_) {
       insert(_, ne, ie);
     },
     p(_, ee) {
-      if (16 & ee && ie !== (ie = revStringToRevNumber(_[4]._rev) + "")) set_data(ne, ie);
+      if (16 & ee[0] && ie !== (ie = revStringToRevNumber(_[4]._rev) + "")) set_data(ne, ie);
     },
     d(_) {
       if (_) {
@@ -17546,10 +17619,57 @@ function create_if_block_1(_) {
   };
 }
 
+function create_if_block_2(_) {
+  let ee, ne, ie = revStringToRevNumber(_[5]._rev) + "";
+  return {
+    c() {
+      ee = text("Rev:");
+      ne = text(ie);
+    },
+    m(_, ie) {
+      insert(_, ee, ie);
+      insert(_, ne, ie);
+    },
+    p(_, ee) {
+      if (32 & ee[0] && ie !== (ie = revStringToRevNumber(_[5]._rev) + "")) set_data(ne, ie);
+    },
+    d(_) {
+      if (_) {
+        detach(ee);
+        detach(ne);
+      }
+    }
+  };
+}
+
+function create_if_block_1(_) {
+  let ee, ne, ie;
+  return {
+    c() {
+      ee = element("button");
+      ee.textContent = "Cancel";
+      attr(ee, "class", "svelte-10t8oe0");
+    },
+    m(re, se) {
+      insert(re, ee, se);
+      if (!ne) {
+        ie = listen(ee, "click", _[14]);
+        ne = true;
+      }
+    },
+    p: noop2,
+    d(_) {
+      if (_) detach(ee);
+      ne = false;
+      ie();
+    }
+  };
+}
+
 function create_fragment(_) {
   let ee, ne, ie, re;
   function select_block_type(_, ee) {
-    if (!_[3] || !_[4]) return create_if_block; else return create_else_block;
+    if (!_[4] || !_[5]) return create_if_block; else return create_else_block;
   }
   let se = select_block_type(_), oe = se(_);
   return {
@@ -17559,7 +17679,7 @@ function create_fragment(_) {
       ie = space();
       oe.c();
       re = empty();
-      attr(ee, "class", "svelte-guf68w");
+      attr(ee, "class", "svelte-10t8oe0");
     },
     m(_, se) {
       insert(_, ee, se);
@@ -17568,8 +17688,8 @@ function create_fragment(_) {
       oe.m(_, se);
       insert(_, re, se);
     },
-    p(_, [ee]) {
-      if (1 & ee) set_data(ne, _[0]);
+    p(_, ee) {
+      if (1 & ee[0]) set_data(ne, _[0]);
       if (se === (se = select_block_type(_)) && oe) oe.p(_, ee); else {
         oe.d(1);
         oe = se(_);
@@ -17597,75 +17717,90 @@ function revStringToRevNumber(_) {
 }
 
 function instance(_, ee, ne) {
-  let ie, re, se, oe, le, ue, {docs: de = []} = ee, {callback: fe = async (_, ee) => {
+  let ie, re, se, oe, le, {docs: ue = []} = ee, {callback: de = async (_, ee) => {
     Promise.resolve();
-  }} = ee, {filename: he = ""} = ee, {nameA: pe = "A"} = ee, {nameB: ge = "B"} = ee, {defaultSelect: me = ""} = ee, ye = "", Se = "", Ee = {}, ve = {}, Ce = {}, we = {}, ke = me;
+  }} = ee, {filename: fe = ""} = ee, {nameA: he = "A"} = ee, {nameB: pe = "B"} = ee, {defaultSelect: ge = ""} = ee, {keepOrder: me = false} = ee, {hideLocal: ye = false} = ee, Se = "", Ee = "", ve = {}, Ce = {}, we = {}, Le = {}, Oe = ge;
   function docToString(_) {
     return "plain" == _.datatype ? getDocData(_.data) : readString(new Uint8Array(decodeBinary(_.data)));
   }
+  let ke = [];
   _.$$set = _ => {
-    if ("docs" in _) ne(13, de = _.docs);
-    if ("callback" in _) ne(14, fe = _.callback);
-    if ("filename" in _) ne(0, he = _.filename);
-    if ("nameA" in _) ne(1, pe = _.nameA);
-    if ("nameB" in _) ne(2, ge = _.nameB);
-    if ("defaultSelect" in _) ne(15, me = _.defaultSelect);
+    if ("docs" in _) ne(15, ue = _.docs);
+    if ("callback" in _) ne(16, de = _.callback);
+    if ("filename" in _) ne(0, fe = _.filename);
+    if ("nameA" in _) ne(1, he = _.nameA);
+    if ("nameB" in _) ne(2, pe = _.nameB);
+    if ("defaultSelect" in _) ne(17, ge = _.defaultSelect);
+    if ("keepOrder" in _) ne(18, me = _.keepOrder);
+    if ("hideLocal" in _) ne(3, ye = _.hideLocal);
   };
   _.$$.update = () => {
-    if (991352 & _.$$.dirty) if (de && de.length >= 1) {
-      if (de[0].mtime < de[1].mtime) {
-        ne(3, oe = de[0]);
-        ne(4, le = de[1]);
+    if (8159472 & _.$$.dirty[0]) if (ue && ue.length >= 1) {
+      if (me || ue[0].mtime < ue[1].mtime) {
+        ne(4, se = ue[0]);
+        ne(5, oe = ue[1]);
       } else {
-        ne(3, oe = de[1]);
-        ne(4, le = de[0]);
+        ne(4, se = ue[1]);
+        ne(5, oe = ue[0]);
       }
-      ne(5, ye = docToString(oe));
-      ne(6, Se = docToString(le));
+      ne(6, Se = docToString(se));
+      ne(7, Ee = docToString(oe));
       try {
-        ne(16, Ee = false);
-        ne(17, ve = false);
-        ne(16, Ee = JSON.parse(ye));
-        ne(17, ve = JSON.parse(Se));
-        ne(18, Ce = mergeObject(Ee, ve));
-        ne(19, we = mergeObject(ve, Ee));
-        if (JSON.stringify(Ce) == JSON.stringify(we)) ne(19, we = false);
+        ne(19, ve = false);
+        ne(20, Ce = false);
+        ne(19, ve = JSON.parse(Se));
+        ne(20, Ce = JSON.parse(Ee));
+        ne(21, we = mergeObject(ve, Ce));
+        ne(22, Le = mergeObject(Ce, ve));
+        if (JSON.stringify(we) == JSON.stringify(Le)) ne(22, Le = false);
       } catch (_) {
-        ne(19, we = false);
-        ne(18, Ce = false);
+        ne(22, Le = false);
+        ne(21, we = false);
       }
     }
-    if (983040 & _.$$.dirty) ne(9, ie = {
+    if (7864320 & _.$$.dirty[0]) ne(10, ie = {
       "": false,
-      A: Ee,
-      B: ve,
-      AB: Ce,
-      BA: we
+      A: ve,
+      B: Ce,
+      AB: we,
+      BA: Le
     });
-    if (640 & _.$$.dirty) ne(8, re = ke in ie ? ie[ke] : {});
-    if (65792 & _.$$.dirty) ne(10, ue = function getJsonDiff(_, ee) {
+    if (1280 & _.$$.dirty[0]) ne(9, re = Oe in ie ? ie[Oe] : {});
+    if (524800 & _.$$.dirty[0]) ne(11, le = function getJsonDiff(_, ee) {
       return function getDiff(_, ee) {
         const ne = new import_diff_match_patch.diff_match_patch, ie = ne.diff_linesToChars_(_, ee), re = ne.diff_main(ie.chars1, ie.chars2, false);
         ne.diff_charsToLines_(re, ie.lineArray);
         return re;
       }(JSON.stringify(_, null, 2), JSON.stringify(ee, null, 2));
-    }(Ee, re));
-    if (6 & _.$$.dirty) ne(11, se = [ [ "", "Not now" ], [ "A", pe || "A" ], [ "B", ge || "B" ], [ "AB", `${pe || "A"} + ${ge || "B"}` ], [ "BA", `${ge || "B"} + ${pe || "A"}` ] ]);
-  };
-  return [ he, pe, ge, oe, le, ye, Se, ke, re, ie, ue, se, function apply() {
-    if (oe._id == le._id) {
-      if ("A" == ke) return fe(oe._rev, void 0);
-      if ("B" == ke) return fe(le._rev, void 0);
-    } else {
-      if ("A" == ke) return fe(void 0, docToString(oe));
-      if ("B" == ke) return fe(void 0, docToString(le));
+    }(ve, re));
+    if (14 & _.$$.dirty[0]) {
+      let _ = [];
+      if (!ye) {
+        _.push([ "", "Not now" ]);
+        _.push([ "A", he || "A" ]);
+      }
+      _.push([ "B", pe || "B" ]);
+      _.push([ "AB", `${he || "A"} + ${pe || "B"}` ]);
+      _.push([ "BA", `${pe || "B"} + ${he || "A"}` ]);
+      ne(12, ke = _);
     }
-    if ("BA" == ke) return fe(void 0, JSON.stringify(we, null, 2));
-    if ("AB" == ke) return fe(void 0, JSON.stringify(Ce, null, 2));
-    fe(void 0, void 0);
-  }, de, fe, me, Ee, ve, Ce, we, function input_change_handler() {
-    ke = this.__value;
-    ne(7, ke);
+  };
+  return [ fe, he, pe, ye, se, oe, Se, Ee, Oe, re, ie, le, ke, function apply() {
+    if (se._id == oe._id) {
+      if ("A" == Oe) return de(se._rev, void 0);
+      if ("B" == Oe) return de(oe._rev, void 0);
+    } else {
+      if ("A" == Oe) return de(void 0, docToString(se));
+      if ("B" == Oe) return de(void 0, docToString(oe));
+    }
+    if ("BA" == Oe) return de(void 0, JSON.stringify(Le, null, 2));
+    if ("AB" == Oe) return de(void 0, JSON.stringify(we, null, 2));
+    de(void 0, void 0);
+  }, function cancel() {
+    de(void 0, void 0);
+  }, ue, de, ge, me, ve, Ce, we, Le, function input_change_handler() {
+    Oe = this.__value;
+    ne(8, Oe);
   }, [ [] ] ];
 }
 
@@ -17673,23 +17808,29 @@ var context, JsonResolvePane = class extends SvelteComponent {
   constructor(_) {
     super();
     init2(this, _, instance, create_fragment, safe_not_equal, {
-      docs: 13,
-      callback: 14,
+      docs: 15,
+      callback: 16,
       filename: 0,
       nameA: 1,
       nameB: 2,
-      defaultSelect: 15
-    }, add_css);
+      defaultSelect: 17,
+      keepOrder: 18,
+      hideLocal: 3
+    }, add_css, [ -1, -1 ]);
   }
 }, JsonResolvePane_default = JsonResolvePane, JsonResolveModal = class extends import_obsidian.Modal {
-  constructor(_, ee, ne, ie, re, se, oe) {
+  constructor(_, ee, ne, ie, re, se, oe, le, ue, de = "Conflicted Setting") {
     super(_);
+    this.title = "Conflicted Setting";
     this.callback = ie;
     this.filename = ee;
     this.docs = ne;
     this.nameA = re || "";
     this.nameB = se || "";
+    this.keepOrder = le || false;
     this.defaultSelect = oe || "";
+    this.title = de;
+    this.hideLocal = null != ue ? ue : false;
     waitForSignal(`cancel-internal-conflict:${ee}`).then((() => this.close()));
   }
   async UICallback(_, ee) {
@@ -17700,7 +17841,7 @@ var context, JsonResolvePane = class extends SvelteComponent {
   }
   onOpen() {
     const {contentEl: _} = this;
-    this.titleEl.setText("Conflicted Setting");
+    this.titleEl.setText(this.title);
     _.empty();
     if (null == this.component) this.component = new JsonResolvePane_default({
       target: _,
@@ -17710,6 +17851,8 @@ var context, JsonResolvePane = class extends SvelteComponent {
         nameA: this.nameA,
         nameB: this.nameB,
         defaultSelect: this.defaultSelect,
+        keepOrder: this.keepOrder,
+        hideLocal: this.hideLocal,
         callback: (_, ee) => this.UICallback(_, ee)
       }
     });
@@ -17829,6 +17972,15 @@ function serialize(_) {
   return oe;
 }
 
+var DUMMY_HEAD = serialize({
+  category: "CONFIG",
+  name: "migrated",
+  files: [],
+  mtime: 0,
+  term: "-",
+  displayName: "MIRAGED"
+}), DUMMY_END = d + d2 + "‌";
+
 function splitWithDelimiters(_) {
   const ee = [];
   for (const ne of _) {
@@ -17930,13 +18082,117 @@ function deserialize(_, ee) {
   }
 }
 
-var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync = class extends LiveSyncCommands {
+var pluginList = writable([]), pluginIsEnumerating = writable(false), pluginV2Progress = writable(0);
+
+function categoryToFolder(_, ee = "") {
+  switch (_) {
+   case "CONFIG":
+    return `${ee}/`;
+
+   case "THEME":
+    return `${ee}/themes/`;
+
+   case "SNIPPET":
+    return `${ee}/snippets/`;
+
+   case "PLUGIN_MAIN":
+    return `${ee}/plugins/`;
+
+   case "PLUGIN_DATA":
+    return `${ee}/plugins/`;
+
+   case "PLUGIN_ETC":
+    return `${ee}/plugins/`;
+
+   default:
+    return "";
+  }
+}
+
+var pluginManifests = new Map, pluginManifestStore = writable(pluginManifests);
+
+function setManifest(_, ee) {
+  const ne = pluginManifests.get(_);
+  if (!ne || isObjectDifferent(ee, ne)) {
+    pluginManifests.set(_, ee);
+    pluginManifestStore.set(pluginManifests);
+  }
+}
+
+var PluginDataExDisplayV2 = class {
+  constructor(_) {
+    this.files = [];
+    this.documentPath = `${_.documentPath}`;
+    this.category = `${_.category}`;
+    this.name = `${_.name}`;
+    this.term = `${_.term}`;
+    this.files = [ ..._.files ];
+    this.confKey = `${categoryToFolder(this.category, this.term)}${this.name}`;
+    this.applyLoadedManifest();
+  }
+  setFile(_) {
+    if (this.files.find((ee => ee.filename == _.filename))) this.files = this.files.filter((ee => ee.filename != _.filename));
+    this.files.push(_);
+    if ("manifest.json" == _.filename) this.applyLoadedManifest();
+  }
+  deleteFile(_) {
+    this.files = this.files.filter((ee => ee.filename != _));
+  }
+  applyLoadedManifest() {
+    const _ = pluginManifests.get(this.confKey);
+    if (_) {
+      this._displayName = _.name;
+      if ("PLUGIN_MAIN" == this.category || "THEME" == this.category) this._version = null == _ ? void 0 : _.version;
+    }
+  }
+  get displayName() {
+    return this._displayName || this.name;
+  }
+  get version() {
+    return this._version;
+  }
+  get mtime() {
+    return ~~this.files.reduce(((_, ee) => _ + ee.mtime), 0) / this.files.length;
+  }
+}, ConfigSync = class extends LiveSyncCommands {
   constructor(_) {
     super(_);
     this.pluginDialog = void 0;
     this.periodicPluginSweepProcessor = new PeriodicProcessor(this.plugin, (async () => await this.scanAllConfigFiles(false)));
     this.pluginList = [];
     this.pluginScanProcessor = new QueueProcessor((async _ => {
+      const ee = _[0];
+      if (this.useV2) {
+        await this.migrateV1ToV2(false, ee);
+        return [];
+      }
+      const ne = ee.path || this.getPath(ee), ie = this.pluginList.find((_ => _.documentPath == ne));
+      if (ie && ie.mtime == ee.mtime) return [];
+      try {
+        const _ = await this.loadPluginData(ne);
+        if (_) {
+          let ee = [ ...this.pluginList ];
+          ee = ee.filter((ee => ee.documentPath != _.documentPath));
+          ee.push(_);
+          this.pluginList = ee;
+          pluginList.set(ee);
+        }
+        return [];
+      } catch (_) {
+        Logger(`Something happened at enumerating customization :${ne}`, LOG_LEVEL_NOTICE);
+        Logger(_, LOG_LEVEL_VERBOSE);
+      }
+      return [];
+    }), {
+      suspended: false,
+      batchSize: 1,
+      concurrentLimit: 10,
+      delay: 100,
+      yieldThreshold: 10,
+      maintainDelay: false,
+      totalRemainingReactiveSource: pluginScanningCount
+    }).startPipeline();
+    this.pluginScanProcessorV2 = new QueueProcessor((async _ => {
       const ee = _[0], ne = ee.path || this.getPath(ee), ie = this.pluginList.find((_ => _.documentPath == ne));
       if (ie && ie.mtime == ee.mtime) return [];
       try {
@@ -17962,11 +18218,9 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
       yieldThreshold: 10,
       maintainDelay: false,
       totalRemainingReactiveSource: pluginScanningCount
-    }).startPipeline().root.onUpdateProgress((() => {
-      scheduleTask("checkMissingConfigurations", 250, (async () => {
-        if (this.pluginScanProcessor.isIdle()) await this.createMissingConfigurationEntry();
-      }));
-    }));
+    }).startPipeline();
+    this.loadedManifest_mTime = new Map;
+    this.updatingV2Count = 0;
     this.recentProcessedInternalFiles = [];
     pluginScanningCount.onChanged((_ => {
       const ee = _.value;
@@ -17975,6 +18229,12 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
   }
   get kvDB() {
     return this.plugin.kvDB;
+  }
+  get useV2() {
+    return this.plugin.settings.usePluginSyncV2;
+  }
+  get useSyncPluginEtc() {
+    return this.plugin.settings.usePluginEtc;
   }
   showPluginSyncModal() {
     if (this.settings.usePluginSync) if (this.pluginDialog) this.pluginDialog.open(); else {
@@ -18006,7 +18266,7 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
     if (2 == _.split("/").length && _.endsWith(".json")) return "CONFIG";
     if (4 == _.split("/").length && _.startsWith(`${this.app.vault.configDir}/themes/`)) return "THEME";
     if (_.startsWith(`${this.app.vault.configDir}/snippets/`) && _.endsWith(".css")) return "SNIPPET";
-    if (_.startsWith(`${this.app.vault.configDir}/plugins/`)) if (_.endsWith("/styles.css") || _.endsWith("/manifest.json") || _.endsWith("/main.js")) return "PLUGIN_MAIN"; else if (_.endsWith("/data.json")) return "PLUGIN_DATA"; else return "";
+    if (_.startsWith(`${this.app.vault.configDir}/plugins/`)) if (_.endsWith("/styles.css") || _.endsWith("/manifest.json") || _.endsWith("/main.js")) return "PLUGIN_MAIN"; else if (_.endsWith("/data.json")) return "PLUGIN_DATA"; else return this.useV2 && this.useSyncPluginEtc ? "PLUGIN_ETC" : "";
     return "";
   }
   isTargetPath(_) {
@@ -18033,6 +18293,7 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
   }
   async reloadPluginList(_) {
     this.pluginList = [];
+    this.loadedManifest_mTime.clear();
     pluginList.set(this.pluginList);
     await this.updatePluginList(_);
   }
@@ -18067,38 +18328,178 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
     }
     return false;
   }
-  async createMissingConfigurationEntry() {
-    let _ = false;
-    for (const ee of this.pluginList) {
-      const ne = `${ee.category}/${ee.name}`;
-      if (!(ne in this.plugin.settings.pluginSyncExtendedSetting)) this.plugin.settings.pluginSyncExtendedSetting[ne] = {
-        key: ne,
-        mode: MODE_SELECTIVE,
-        files: []
-      };
-      if (this.plugin.settings.pluginSyncExtendedSetting[ne].files.sort().join(",").toLowerCase() != ee.files.map((_ => _.filename)).sort().join(",").toLowerCase()) {
-        this.plugin.settings.pluginSyncExtendedSetting[ne].files = ee.files.map((_ => _.filename)).sort();
-        _ = true;
+  filenameToUnifiedKey(_, ee) {
+    const ne = ee || this.plugin.deviceAndVaultName, ie = this.getFileCategory(_), re = "CONFIG" == ie || "SNIPPET" == ie ? _.split("/").slice(-1)[0] : "PLUGIN_ETC" == ie ? _.split("/").slice(-2).join("/") : _.split("/").slice(-2)[0];
+    return `${ICXHeader}${ne}/${ie}/${re}.md`;
+  }
+  filenameWithUnifiedKey(_, ee) {
+    const ne = ee || this.plugin.deviceAndVaultName, ie = this.getFileCategory(_), re = "CONFIG" == ie || "SNIPPET" == ie ? _.split("/").slice(-1)[0] : _.split("/").slice(-2)[0], se = "CONFIG" == ie || "SNIPPET" == ie ? re : _.split("/").slice(3).join("/");
+    return `${ICXHeader}${ne}/${ie}/${re}%${se}`;
+  }
+  unifiedKeyPrefixOfTerminal(_) {
+    const ee = _ || this.plugin.deviceAndVaultName;
+    return `${ICXHeader}${ee}/`;
+  }
+  parseUnifiedPath(_) {
+    const [ee, ne, ...ie] = stripAllPrefixes(_).split("/"), re = ie.join("/"), [se, oe] = re.split("%");
+    return {
+      device: ee,
+      category: ne,
+      key: se,
+      filename: oe,
+      pathV1: _.split("%")[0] + ".md"
+    };
+  }
+  async createPluginDataExFileV2(_, ee) {
+    const {category: ne, key: ie, filename: re, device: se} = this.parseUnifiedPath(_);
+    if (!ee) {
+      const ne = await this.localDatabase.getDBEntry(_);
+      if (!ne) {
+        Logger(`The file ${_} is not found`, LOG_LEVEL_VERBOSE);
+        return false;
+      }
+      if (!isLoadedEntry(ne)) {
+        Logger(`The file ${_} is not a note`, LOG_LEVEL_VERBOSE);
+        return false;
+      }
+      ee = ne;
+    }
+    const oe = `${categoryToFolder(ne, se)}${ie}`, le = `${categoryToFolder(ne, "")}${"CONFIG" == ne || "SNIPPET" == ne ? "" : ie + "/"}${re}`.substring(1), ue = getDocData(ee.data), de = ue.indexOf(DUMMY_END), fe = ue.substring(de + DUMMY_END.length), he = {
+      ...ee,
+      hash: "",
+      data: [ base64ToString(fe) ],
+      filename: le,
+      displayName: re
+    };
+    if ("manifest.json" == re) if (this.loadedManifest_mTime.get(oe) != he.mtime && null == pluginManifests.get(oe)) {
+      try {
+        const _ = JSON.parse(base64ToString(fe));
+        setManifest(oe, _);
+        this.pluginList.filter((_ => _ instanceof PluginDataExDisplayV2 && _.confKey == oe)).forEach((_ => _.applyLoadedManifest()));
+        pluginList.set(this.pluginList);
+      } catch (_) {
+        Logger(`The file ${ee.path} seems to manifest, but could not be decoded as JSON`, LOG_LEVEL_VERBOSE);
+        Logger(_, LOG_LEVEL_VERBOSE);
+      }
+      this.loadedManifest_mTime.set(oe, he.mtime);
+    } else {
+      this.pluginList.filter((_ => _ instanceof PluginDataExDisplayV2 && _.confKey == oe)).forEach((_ => _.applyLoadedManifest()));
+      pluginList.set(this.pluginList);
+    }
+    return he;
+  }
+  createPluginDataFromV2(_) {
+    const {category: ee, device: ne, key: ie, pathV1: re} = this.parseUnifiedPath(_);
+    if ("" != ee) return new PluginDataExDisplayV2({
+      documentPath: re,
+      category: ee,
+      name: ie,
+      term: `${ne}`,
+      files: [],
+      mtime: 0
+    });
+  }
+  async updatePluginListV2(_, ee) {
+    try {
+      this.updatingV2Count++;
+      pluginV2Progress.set(this.updatingV2Count);
+      const {pathV1: _} = this.parseUnifiedPath(ee), ne = this.pluginList.find((ee => ee.documentPath == _));
+      let ie;
+      if (!(ne && ne instanceof PluginDataExDisplayV2)) {
+        const _ = this.createPluginDataFromV2(ee);
+        if (_) ie = _;
+      } else if (ne instanceof PluginDataExDisplayV2) ie = ne;
+      if (!ie) return;
+      const re = await this.createPluginDataExFileV2(ee);
+      if (re) ie.setFile(re); else {
+        ie.deleteFile(ee);
+        if (0 == ie.files.length) this.pluginList = this.pluginList.filter((ee => ee.documentPath != _));
+      }
+      const se = this.pluginList.filter((_ => _.documentPath != ie.documentPath));
+      se.push(ie);
+      this.pluginList = se;
+      scheduleTask("updatePluginListV2", 100, (() => {
+        pluginList.set(this.pluginList);
+      }));
+    } finally {
+      this.updatingV2Count--;
+      pluginV2Progress.set(this.updatingV2Count);
+    }
+  }
+  async migrateV1ToV2(_, ee) {
+    var ne;
+    const ie = ee.path;
+    Logger(`Migrating ${ee.path} to V2`, _ ? LOG_LEVEL_NOTICE : LOG_LEVEL_INFO);
+    if (ee.deleted) {
+      Logger(`The entry ${ie} is already deleted`, LOG_LEVEL_VERBOSE);
+      return;
+    }
+    if (!ie.endsWith(".md") && !ie.startsWith(ICXHeader)) {
+      Logger(`The entry ${ie} is not a customisation sync binder`, LOG_LEVEL_VERBOSE);
+      return;
+    }
+    if (-1 !== ie.indexOf("%")) {
+      Logger(`The entry ${ie} is already migrated`, LOG_LEVEL_VERBOSE);
+      return;
+    }
+    const re = await this.localDatabase.getDBEntry(ie);
+    if (!re) {
+      Logger(`The entry ${ie} is not found`, LOG_LEVEL_VERBOSE);
+      return;
+    }
+    const se = deserialize(getDocDataAsArray(re.data), {}), oe = ie.slice(0, -3) + "%", le = se.category;
+    for (const _ of se.files) {
+      const ee = {
+        CONFIG: 0,
+        THEME: 2,
+        SNIPPET: 1,
+        PLUGIN_MAIN: 2,
+        PLUGIN_DATA: 2,
+        PLUGIN_ETC: 2
+      }, se = null != (ne = null == ee ? void 0 : ee[le]) ? ne : 1, ue = _.filename.split("/").slice(se).join("/"), de = oe + ue;
+      Logger(`Migrating ${ie} / ${ue} to ${de}`, LOG_LEVEL_VERBOSE);
+      const fe = await this.plugin.path2id(de), he = createBlob([ DUMMY_HEAD, DUMMY_END, ...getDocDataAsArray(_.data) ]), pe = {
+        ...re,
+        _rev: void 0,
+        _id: fe,
+        path: de,
+        data: he,
+        datatype: "plain",
+        type: "plain",
+        children: [],
+        eden: {}
+      }, ge = await this.plugin.localDatabase.putDBEntry(pe);
+      if (ge && ge.ok) {
+        Logger(`Migrated ${ie} / ${_.filename} to ${de}`, LOG_LEVEL_INFO);
+        if (await this.deleteConfigOnDatabase(ie)) Logger(`Deleted ${ie} successfully`, LOG_LEVEL_INFO); else Logger(`Failed to delete ${ie}`, LOG_LEVEL_NOTICE);
       }
     }
-    if (_) await this.plugin.saveSettingData();
   }
   async updatePluginList(_, ee) {
     if (this.settings.usePluginSync) {
       try {
-        const _ = ee ? await this.path2id(ee) : "", ne = ee ? this.localDatabase.findEntries(_, _ + "􏿿", {
+        this.updatingV2Count++;
+        pluginV2Progress.set(this.updatingV2Count);
+        const ne = ee ? await this.path2id(ee) : "", ie = ee ? this.localDatabase.findEntries(ne, ne + "􏿿", {
           include_docs: true,
-          key: _,
+          key: ne,
           limit: 1
         }) : this.localDatabase.findEntries(ICXHeader + "", `${ICXHeader}􏿿`, {
           include_docs: true
         });
-        for await (const _ of ne) {
-          const ne = _.path || this.getPath(_);
-          if (!ee || ee == ne) this.pluginScanProcessor.enqueue(_);
+        for await (const ne of ie) {
+          if (ne.deleted || ne._deleted) continue;
+          if (-1 !== ne.path.indexOf("%")) {
+            fireAndForget((() => this.updatePluginListV2(_, ne.path)));
+            continue;
+          }
+          const ie = ne.path || this.getPath(ne);
+          if (!ee || ee == ie) this.pluginScanProcessor.enqueue(ne);
         }
       } finally {
         pluginIsEnumerating.set(false);
+        this.updatingV2Count--;
+        pluginV2Progress.set(this.updatingV2Count);
       }
       pluginIsEnumerating.set(false);
     } else {
@@ -18107,48 +18508,107 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
       pluginList.set(this.pluginList);
     }
   }
-  async compareUsingDisplayData(_, ee) {
-    const ne = await this.localDatabase.getDBEntry(_.documentPath), ie = await this.localDatabase.getDBEntry(ee.documentPath);
-    if (ne && ie) {
-      const re = deserialize(getDocDataAsArray(ne.data), {});
-      re.documentPath = _.documentPath;
-      const se = deserialize(getDocDataAsArray(ie.data), {});
-      se.documentPath = ee.documentPath;
-      return await this.showJSONMergeDialogAndMerge(ne, ie, re, se);
+  async compareUsingDisplayData(_, ee, ne = false) {
+    const loadFile = async _ => {
+      if (_ instanceof PluginDataExDisplayV2 || ne) return _.files[0];
+      const ee = await this.localDatabase.getDBEntry(_.documentPath);
+      if (!ee) return false;
+      const ie = deserialize(getDocDataAsArray(ee.data), {});
+      ie.documentPath = _.documentPath;
+      const re = ie.files[0];
+      return {
+        ...ee,
+        ...re,
+        datatype: "newnote"
+      };
+    }, ie = await loadFile(_), re = await loadFile(ee);
+    Logger(`Comparing: ${_.documentPath} <-> ${ee.documentPath}`, LOG_LEVEL_VERBOSE);
+    if (!ie || !re) {
+      Logger(`Could not load ${_.name} for comparison: ${!ie ? _.term : ""}${!re ? ee.term : ""}`, LOG_LEVEL_NOTICE);
+      return false;
     }
-    return false;
-  }
-  showJSONMergeDialogAndMerge(_, ee, ne, ie) {
-    const re = {
-      ...ne.files[0],
-      ctime: ne.files[0].mtime,
-      _id: `${ne.documentPath}`
-    }, se = ie.files[0], oe = {
-      ..._,
-      ...re,
-      datatype: "newnote"
-    }, le = {
-      ...ee,
-      ...se,
-      datatype: "newnote"
-    };
-    return serialized("config:merge-data", (() => new Promise((_ => {
+    let se = stripAllPrefixes(ie.path.split("/").slice(-1).join("/"));
+    if (-1 !== se.indexOf("%")) se = se.split("%")[1];
+    if (ie.path.endsWith(".json")) return serialized("config:merge-data", (() => new Promise((ne => {
       Logger("Opening data-merging dialog", LOG_LEVEL_VERBOSE);
-      const ee = stripAllPrefixes(oe.path.split("/").slice(-1).join("/"));
-      new JsonResolveModal(this.app, ee, [ oe, le ], (async (ee, ie) => {
-        if (null == ie) return _(false);
+      new JsonResolveModal(this.app, se, [ ie, re ], (async (ee, ie) => {
+        if (null == ie) return ne(false);
         try {
-          _(await this.applyData(ne, ie));
-        } catch (ee) {
+          ne(await this.applyData(_, ie));
+        } catch (_) {
           Logger("Could not apply merged file");
-          Logger(ee, LOG_LEVEL_VERBOSE);
-          _(false);
+          Logger(_, LOG_LEVEL_VERBOSE);
+          ne(false);
         }
-      }), "📡", "🛰️", "B").open();
-    }))));
+      }), "Local", `${ee.term}`, "B", true, true, "Difference between local and remote").open();
+    })))); else {
+      const ne = new import_diff_match_patch.diff_match_patch;
+      let oe = getDocData(ie.data), le = getDocData(re.data);
+      if ("plain" != (null == ie ? void 0 : ie.datatype)) oe = base64ToString(oe);
+      if ("plain" != (null == re ? void 0 : re.datatype)) le = base64ToString(le);
+      const ue = ne.diff_linesToChars_(oe, le), de = ne.diff_main(ue.chars1, ue.chars2, false);
+      ne.diff_charsToLines_(de, ue.lineArray);
+      ne.diff_cleanupSemantic(de);
+      const fe = {
+        left: {
+          rev: "A",
+          ...ie,
+          data: oe
+        },
+        right: {
+          rev: "B",
+          ...re,
+          data: le
+        },
+        diff: de
+      };
+      console.dir(fe);
+      const he = new ConflictResolveModal(this.app, se, fe, true, ee.term);
+      he.open();
+      const pe = await he.waitForResult();
+      if (pe === CANCELLED) return false;
+      if (pe === LEAVE_TO_SUBSEQUENT) return false;
+      const ge = "A" == pe ? oe : "B" == pe ? le : void 0;
+      if (ge) return await this.applyData(_, ge); else return false;
+    }
+  }
+  async applyDataV2(_, ee) {
+    const ne = this.app.vault.configDir;
+    try {
+      if (ee) {
+        const ie = _.files[0].filename;
+        Logger(`Applying ${ie} of ${_.displayName || _.name}..`);
+        const re = `${ne}/${ie}`;
+        await this.vaultAccess.ensureDirectory(re);
+        await this.vaultAccess.adapterWrite(re, ee);
+        await this.storeCustomisationFileV2(re, this.plugin.deviceAndVaultName);
+      } else {
+        const ee = _.files;
+        for (const ie of ee) {
+          const ee = `${ne}/${ie.filename}`;
+          Logger(`Applying ${ie.filename} of ${_.displayName || _.name}..`);
+          this.vaultAccess.ensureDirectory(ee);
+          if ("newnote" == ie.datatype) {
+            const _ = base64ToArrayBuffer(ie.data);
+            await this.vaultAccess.adapterWrite(ee, _);
+          } else {
+            const _ = getDocData(ie.data);
+            await this.vaultAccess.adapterWrite(ee, _);
+          }
+          Logger(`Applied ${ie.filename} of ${_.displayName || _.name}..`);
+          await this.storeCustomisationFileV2(ee, this.plugin.deviceAndVaultName);
+        }
+      }
+    } catch (ee) {
+      Logger(`Applying ${_.displayName || _.name}.. Failed`, LOG_LEVEL_NOTICE);
+      Logger(ee, LOG_LEVEL_VERBOSE);
+      return false;
+    }
+    return true;
   }
   async applyData(_, ee) {
     Logger(`Applying ${_.displayName || _.name}..`);
+    if (_ instanceof PluginDataExDisplayV2) return this.applyDataV2(_, ee);
     const ne = this.app.vault.configDir;
     try {
       if (!_.documentPath) throw "InternalError: Document path not exist";
@@ -18194,9 +18654,18 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
   async deleteData(_) {
     try {
       if (_.documentPath) {
-        await this.deleteConfigOnDatabase(_.documentPath);
-        await this.updatePluginList(false, _.documentPath);
-        Logger(`Delete: ${_.documentPath}`, LOG_LEVEL_NOTICE);
+        const ee = [];
+        if (this.useV2) {
+          const ne = this.pluginList.filter((ee => ee.documentPath == _.documentPath)).filter((_ => _ instanceof PluginDataExDisplayV2)).map((_ => _.files)).flat();
+          for (const _ of ne) ee.push(_.path);
+        }
+        ee.push(_.documentPath);
+        const ne = ee.map((async _ => {
+          await this.deleteConfigOnDatabase(_);
+          await this.updatePluginList(false, _);
+        }));
+        await Promise.allSettled(ne);
+        Logger(`Deleted: ${_.category}/${_.name} of ${_.category} (${ee.length} items)`, LOG_LEVEL_NOTICE);
       }
       return true;
     } catch (ee) {
@@ -18279,9 +18748,50 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
       displayName: ie
     };
   }
-  filenameToUnifiedKey(_, ee) {
-    const ne = ee || this.plugin.deviceAndVaultName, ie = this.getFileCategory(_), re = "CONFIG" == ie || "SNIPPET" == ie ? _.split("/").slice(-1)[0] : "PLUGIN_ETC" == ie ? _.split("/").slice(-2).join("/") : _.split("/").slice(-2)[0];
-    return `${ICXHeader}${ne}/${ie}/${re}.md`;
+  async storeCustomisationFileV2(_, ee, ne = false) {
+    const ie = this.filenameWithUnifiedKey(_, ee);
+    return await serialized(`plugin-${ie}`, (async () => {
+      const ee = ie, ne = await this.path2id(ee), re = await this.vaultAccess.adapterStat(_);
+      if (!re) return false;
+      const se = re.mtime, oe = await this.vaultAccess.adapterReadBinary(_), le = createBlob([ DUMMY_HEAD, DUMMY_END, ...await arrayBufferToBase64(oe) ]);
+      try {
+        const ie = await this.localDatabase.getDBEntryMeta(ee, void 0, false);
+        let re;
+        if (false === ie) re = {
+          _id: ne,
+          path: ee,
+          data: le,
+          mtime: se,
+          ctime: se,
+          datatype: "plain",
+          size: le.size,
+          children: [],
+          deleted: false,
+          type: "plain",
+          eden: {}
+        }; else {
+          if (ie.mtime == se) return true;
+          re = {
+            ...ie,
+            data: le,
+            mtime: se,
+            size: le.size,
+            datatype: "plain",
+            children: [],
+            deleted: false,
+            type: "plain"
+          };
+        }
+        const oe = await this.localDatabase.putDBEntry(re);
+        Logger(`STORAGE --\x3e DB:${ee}: (config) Done`);
+        fireAndForget((() => this.updatePluginListV2(false, this.filenameWithUnifiedKey(_))));
+        return oe;
+      } catch (_) {
+        Logger(`STORAGE --\x3e DB:${ee}: (config) Failed`);
+        Logger(_, LOG_LEVEL_VERBOSE);
+        return false;
+      }
+    }));
   }
   async storeCustomizationFiles(_, ee) {
     const ne = ee || this.plugin.deviceAndVaultName;
@@ -18289,6 +18799,7 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
       Logger("We have to configure the device name", LOG_LEVEL_NOTICE);
       return;
     }
+    if (this.useV2) return await this.storeCustomisationFileV2(_, ne);
     const ie = this.filenameToUnifiedKey(_, ne);
     return await serialized(`plugin-${ie}`, (async () => {
       const ee = this.getFileCategory(_);
@@ -18387,7 +18898,7 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
     const ee = await this.vaultAccess.adapterStat(_);
     if (ee && "file" != ee.type) return false;
     const ne = normalizePath(this.app.vault.configDir);
-    if (Object.values(this.settings.pluginSyncExtendedSetting).filter((_ => _.mode != MODE_SELECTIVE)).map((_ => _.files)).flat().map((_ => `${ne}/${_}`.toLowerCase())).some((ee => ee.startsWith(_.toLowerCase())))) {
+    if (Object.values(this.settings.pluginSyncExtendedSetting).filter((_ => _.mode != MODE_SELECTIVE && _.mode != MODE_SHINY)).map((_ => _.files)).flat().map((_ => `${ne}/${_}`.toLowerCase())).some((ee => ee.startsWith(_.toLowerCase())))) {
       Logger(`Customization file skipped: ${_}`, LOG_LEVEL_VERBOSE);
       return;
     }
@@ -18407,39 +18918,76 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
         Logger("We have to configure the device name", LOG_LEVEL_NOTICE);
         return;
       }
-      const ie = (await this.scanInternalFiles()).filter((_ => this.isTargetPath(_))).map((_ => ({
-        key: this.filenameToUnifiedKey(_),
-        file: _
-      }))), re = [ ...new Set(ie.map((_ => _.key))) ];
-      let se = (await this.localDatabase.allDocsRaw({
-        startkey: ICXHeader + "",
-        endkey: `${ICXHeader}􏿿`,
-        include_docs: true
-      })).rows.map((_ => _.doc)).filter((_ => !_.deleted)).map((_ => this.getPath(_))).filter((_ => _.startsWith(`${ICXHeader}${ne}/`)));
-      for (const _ of re) {
-        const ne = null == (ee = ie.find((ee => ee.key == _))) ? void 0 : ee.file;
-        if (ne) {
-          await this.storeCustomizationFiles(ne);
-          se = se.filter((ee => ee != _));
-        } else Logger(`scanAllConfigFiles - File not found: ${_}`, LOG_LEVEL_VERBOSE);
+      const ie = await this.scanInternalFiles();
+      if (this.useV2) {
+        const _ = ie.filter((_ => this.isTargetPath(_))).map((_ => [ this.filenameWithUnifiedKey(_, ne), _ ])), ee = new Map(_.map((_ => [ _[0], _[1] ]))), re = this.unifiedKeyPrefixOfTerminal(ne), se = this.localDatabase.findEntries(re + "", `${re}􏿿`, {
+          include_docs: true
+        }), oe = [], le = Semaphore(10);
+        for await (const _ of se) if (-1 === _.path.indexOf("%")) oe.push((async () => {
+          const ie = await le.acquire();
+          try {
+            const ie = `${_._id}`, re = ee.get(ie);
+            if (re) {
+              await this.storeCustomisationFileV2(re, ne);
+              ee.delete(ie);
+            } else await this.deleteConfigOnDatabase(ie);
+          } catch (ee) {
+            Logger(`scanAllConfigFiles - Error: ${_._id}`, LOG_LEVEL_VERBOSE);
+            Logger(ee, LOG_LEVEL_VERBOSE);
+          } finally {
+            ie();
+          }
+        }));
+        await Promise.all(oe.map((_ => _())));
+        const ue = [];
+        for (const [, _] of ee) ue.push((async () => {
+          const ee = await le.acquire();
+          try {
+            await this.storeCustomisationFileV2(_, ne);
+          } catch (ee) {
+            Logger(`scanAllConfigFiles - Error: ${_}`, LOG_LEVEL_VERBOSE);
+            Logger(ee, LOG_LEVEL_VERBOSE);
+          } finally {
+            ee();
+          }
+        }));
+        await Promise.all(ue.map((_ => _())));
+        this.updatePluginList(false).then();
+      } else {
+        const _ = ie.filter((_ => this.isTargetPath(_))).map((_ => ({
+          key: this.filenameToUnifiedKey(_),
+          file: _
+        }))), re = [ ...new Set(_.map((_ => _.key))) ];
+        let se = (await this.localDatabase.allDocsRaw({
+          startkey: ICXHeader + "",
+          endkey: `${ICXHeader}􏿿`,
+          include_docs: true
+        })).rows.map((_ => _.doc)).filter((_ => !_.deleted)).map((_ => this.getPath(_))).filter((_ => _.startsWith(`${ICXHeader}${ne}/`)));
+        for (const ne of re) {
+          const ie = null == (ee = _.find((_ => _.key == ne))) ? void 0 : ee.file;
+          if (ie) {
+            await this.storeCustomizationFiles(ie);
+            se = se.filter((_ => _ != ne));
+          } else Logger(`scanAllConfigFiles - File not found: ${ne}`, LOG_LEVEL_VERBOSE);
+        }
+        for (const _ of se) await this.deleteConfigOnDatabase(_);
+        this.updatePluginList(false).then();
       }
-      for (const _ of se) await this.deleteConfigOnDatabase(_);
-      this.updatePluginList(false).then();
     }));
   }
   async deleteConfigOnDatabase(_, ee = false) {
     const ne = (new Date).getTime();
-    await serialized("file-x-" + _, (async () => {
+    return await serialized("file-x-" + _, (async () => {
       try {
         const ee = await this.localDatabase.getDBEntryMeta(_, void 0, false);
         let ie;
         if (false === ee) {
           Logger(`STORAGE -x> DB:${_}: (config) already deleted (Not found on database)`);
-          return;
+          return true;
         } else {
           if (ee.deleted) {
             Logger(`STORAGE -x> DB:${_}: (config) already deleted`);
-            return;
+            return true;
           }
           ie = {
             ...ee,
@@ -18453,6 +19001,7 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
         await this.localDatabase.putRaw(ie);
         await this.updatePluginList(false, _);
         Logger(`STORAGE -x> DB:${_}: (config) Done`);
+        return true;
       } catch (ee) {
         Logger(`STORAGE -x> DB:${_}: (config) Failed`);
         Logger(ee, LOG_LEVEL_VERBOSE);
@@ -18477,19 +19026,19 @@ var pluginList = writable([]), pluginIsEnumerating = writable(false), ConfigSync
     for (const _ of ne.folders) ie = ie.concat(await this.getFiles(_, ee - 1));
     return ie;
   }
-};
+}, import_obsidian3 = require("obsidian");
 
 function add_css2(_) {
-  append_styles(_, "svelte-tsbdtg", ".spacer.svelte-tsbdtg{min-width:1px;flex-grow:1}button.svelte-tsbdtg{margin:2px 4px;min-width:3em;max-width:4em}button.svelte-tsbdtg:disabled{border:none;box-shadow:none;background-color:transparent;visibility:collapse}button.svelte-tsbdtg:disabled:hover{border:none;box-shadow:none;background-color:transparent;visibility:collapse}span.message.svelte-tsbdtg{color:var(--text-muted);font-size:var(--font-ui-smaller);padding:0 1em;line-height:var(--line-height-tight)}span.messages.svelte-tsbdtg{display:flex;flex-direction:column;align-items:center}.is-mobile .spacer.svelte-tsbdtg{margin-left:auto}");
+  append_styles(_, "svelte-21bw70", '.spacer.svelte-21bw70{min-width:1px;flex-grow:1}button.svelte-21bw70{margin:2px 4px;min-width:3em;max-width:4em}button.svelte-21bw70:disabled{border:none;box-shadow:none;background-color:transparent;visibility:collapse}button.svelte-21bw70:disabled:hover{border:none;box-shadow:none;background-color:transparent;visibility:collapse}span.message.svelte-21bw70{color:var(--text-muted);font-size:var(--font-ui-smaller);padding:0 1em;line-height:var(--line-height-tight)}.is-mobile .spacer.svelte-21bw70{margin-left:auto}.chip-wrap.svelte-21bw70{display:flex;gap:2px;flex-direction:column;justify-content:center;align-items:flex-start}.chip.svelte-21bw70{display:inline-block;border-radius:2px;font-size:0.8em;padding:0 4px;margin:0 2px;border-color:var(--tag-border-color);background-color:var(--tag-background);color:var(--tag-color)}.chip.svelte-21bw70:empty{display:none}.chip.svelte-21bw70:not(:empty)::before{min-width:1.8em;display:inline-block}.chip.content.svelte-21bw70:not(:empty)::before{content:"📄: "}.chip.version.svelte-21bw70:not(:empty)::before{content:"🏷️: "}.chip.modified.svelte-21bw70:not(:empty)::before{content:"📅: "}');
 }
 
 function get_each_context2(_, ee, ne) {
   const ie = _.slice();
-  ie[30] = ee[ne];
+  ie[35] = ee[ne];
   return ie;
 }
 
-function create_else_block_3(_) {
+function create_else_block_4(_) {
   let ee, ne, ie, re, se, oe, le;
   return {
     c() {
@@ -18501,12 +19050,12 @@ function create_else_block_3(_) {
       se = element("button");
       oe = space();
       le = element("button");
-      attr(ee, "class", "spacer svelte-tsbdtg");
-      attr(ie, "class", "message even svelte-tsbdtg");
+      attr(ee, "class", "spacer svelte-21bw70");
+      attr(ie, "class", "message even svelte-21bw70");
       se.disabled = true;
-      attr(se, "class", "svelte-tsbdtg");
+      attr(se, "class", "svelte-21bw70");
       le.disabled = true;
-      attr(le, "class", "svelte-tsbdtg");
+      attr(le, "class", "svelte-21bw70");
     },
     m(_, ue) {
       insert(_, ee, ue);
@@ -18533,14 +19082,14 @@ function create_else_block_3(_) {
 }
 
 function create_if_block2(_) {
-  let ee, ne, ie, re = !_[0] && create_if_block_12(_);
+  let ee, ne, ie, re = !_[1] && create_if_block_12(_);
   return {
     c() {
       ee = element("span");
       ne = space();
       if (re) re.c();
       ie = empty();
-      attr(ee, "class", "spacer svelte-tsbdtg");
+      attr(ee, "class", "spacer svelte-21bw70");
     },
     m(_, se) {
       insert(_, ee, se);
@@ -18549,7 +19098,7 @@ function create_if_block2(_) {
       insert(_, ie, se);
     },
     p(_, ee) {
-      if (!_[0]) if (re) re.p(_, ee); else {
+      if (!_[1]) if (re) re.p(_, ee); else {
         re = create_if_block_12(_);
         re.c();
         re.m(ie.parentNode, ie);
@@ -18570,12 +19119,12 @@ function create_if_block2(_) {
 }
 
 function create_if_block_12(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce = ensure_array_like(_[8]), we = [];
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce = ensure_array_like(_[9]), we = [];
   for (let ee = 0; ee < Ce.length; ee += 1) we[ee] = create_each_block2(get_each_context2(_, Ce, ee));
   function select_block_type_1(_, ee) {
-    if (_[6] || _[1] && "" != _[2]) return create_if_block_42; else return create_else_block_2;
+    if (_[6] || _[2] && "" != _[0]) return create_if_block_42; else return create_else_block_3;
   }
-  let ke = select_block_type_1(_), Le = ke(_), Oe = _[1] && create_if_block_22(_);
+  let Le = select_block_type_1(_), Oe = Le(_), ke = _[2] && create_if_block_22(_);
   return {
     c() {
       ee = element("span");
@@ -18593,17 +19142,17 @@ function create_if_block_12(_) {
       pe.textContent = "-";
       for (let _ = 0; _ < we.length; _ += 1) we[_].c();
       me = space();
-      Le.c();
+      Oe.c();
       ye = space();
-      if (Oe) Oe.c();
+      if (ke) ke.c();
       Se = empty();
-      attr(ne, "class", "message svelte-tsbdtg");
-      attr(se, "class", "message svelte-tsbdtg");
-      attr(ue, "class", "message svelte-tsbdtg");
-      attr(ee, "class", "messages svelte-tsbdtg");
+      attr(ne, "class", "chip modified svelte-21bw70");
+      attr(se, "class", "chip content svelte-21bw70");
+      attr(ue, "class", "chip version svelte-21bw70");
+      attr(ee, "class", "chip-wrap svelte-21bw70");
       pe.__value = ge = "";
       set_input_value(pe, pe.__value);
-      if (void 0 === _[2]) add_render_callback((() => _[24].call(he)));
+      if (void 0 === _[0]) add_render_callback((() => _[28].call(he)));
     },
     m(ge, Ce) {
       insert(ge, ee, Ce);
@@ -18619,14 +19168,14 @@ function create_if_block_12(_) {
       insert(ge, he, Ce);
       append(he, pe);
       for (let _ = 0; _ < we.length; _ += 1) if (we[_]) we[_].m(he, null);
-      select_option(he, _[2], true);
+      select_option(he, _[0], true);
       insert(ge, me, Ce);
-      Le.m(ge, Ce);
+      Oe.m(ge, Ce);
       insert(ge, ye, Ce);
-      if (Oe) Oe.m(ge, Ce);
+      if (ke) ke.m(ge, Ce);
       insert(ge, Se, Ce);
       if (!Ee) {
-        ve = listen(he, "change", _[24]);
+        ve = listen(he, "change", _[28]);
         Ee = true;
       }
     },
@@ -18634,8 +19183,8 @@ function create_if_block_12(_) {
       if (8 & ee[0]) set_data(ie, _[3]);
       if (16 & ee[0]) set_data(oe, _[4]);
       if (32 & ee[0]) set_data(de, _[5]);
-      if (256 & ee[0]) {
-        Ce = ensure_array_like(_[8]);
+      if (512 & ee[0]) {
+        Ce = ensure_array_like(_[9]);
         let ne;
         for (ne = 0; ne < Ce.length; ne += 1) {
           const ie = get_each_context2(_, Ce, ne);
@@ -18648,22 +19197,22 @@ function create_if_block_12(_) {
         for (;ne < we.length; ne += 1) we[ne].d(1);
         we.length = Ce.length;
       }
-      if (260 & ee[0]) select_option(he, _[2]);
-      if (ke === (ke = select_block_type_1(_)) && Le) Le.p(_, ee); else {
-        Le.d(1);
-        Le = ke(_);
-        if (Le) {
-          Le.c();
-          Le.m(ye.parentNode, ye);
+      if (513 & ee[0]) select_option(he, _[0]);
+      if (Le === (Le = select_block_type_1(_)) && Oe) Oe.p(_, ee); else {
+        Oe.d(1);
+        Oe = Le(_);
+        if (Oe) {
+          Oe.c();
+          Oe.m(ye.parentNode, ye);
         }
       }
-      if (_[1]) if (Oe) Oe.p(_, ee); else {
-        Oe = create_if_block_22(_);
-        Oe.c();
-        Oe.m(Se.parentNode, Se);
-      } else if (Oe) {
-        Oe.d(1);
-        Oe = null;
+      if (_[2]) if (ke) ke.p(_, ee); else {
+        ke = create_if_block_22(_);
+        ke.c();
+        ke.m(Se.parentNode, Se);
+      } else if (ke) {
+        ke.d(1);
+        ke = null;
       }
     },
     d(_) {
@@ -18676,8 +19225,8 @@ function create_if_block_12(_) {
         detach(Se);
       }
       destroy_each(we, _);
-      Le.d(_);
-      if (Oe) Oe.d(_);
+      Oe.d(_);
+      if (ke) ke.d(_);
       Ee = false;
       ve();
     }
@@ -18685,12 +19234,12 @@ function create_if_block_12(_) {
 }
 
 function create_each_block2(_) {
-  let ee, ne, ie, re = _[30] + "";
+  let ee, ne, ie, re = _[35] + "";
   return {
     c() {
       ee = element("option");
       ne = text(re);
-      ee.__value = ie = _[30];
+      ee.__value = ie = _[35];
       set_input_value(ee, ee.__value);
     },
     m(_, ie) {
@@ -18698,8 +19247,8 @@ function create_each_block2(_) {
       append(ee, ne);
     },
     p(_, se) {
-      if (256 & se[0] && re !== (re = _[30] + "")) set_data(ne, re);
-      if (256 & se[0] && ie !== (ie = _[30])) {
+      if (512 & se[0] && re !== (re = _[35] + "")) set_data(ne, re);
+      if (512 & se[0] && ie !== (ie = _[35])) {
         ee.__value = ie;
         set_input_value(ee, ee.__value);
       }
@@ -18710,7 +19259,7 @@ function create_each_block2(_) {
   };
 }
 
-function create_else_block_2(_) {
+function create_else_block_3(_) {
   let ee, ne, ie;
   return {
     c() {
@@ -18718,9 +19267,9 @@ function create_else_block_2(_) {
       ne = space();
       ie = element("button");
       ee.disabled = true;
-      attr(ee, "class", "svelte-tsbdtg");
+      attr(ee, "class", "svelte-21bw70");
       ie.disabled = true;
-      attr(ie, "class", "svelte-tsbdtg");
+      attr(ie, "class", "svelte-21bw70");
     },
     m(_, re) {
       insert(_, ee, re);
@@ -18741,7 +19290,7 @@ function create_else_block_2(_) {
 function create_if_block_42(_) {
   let ee, ne, ie, re;
   function select_block_type_2(_, ee) {
-    if (_[7]) return create_if_block_5; else return create_else_block_12;
+    if (_[7]) return create_if_block_52; else return create_else_block_2;
   }
   let se = select_block_type_2(_), oe = se(_);
   return {
@@ -18750,14 +19299,14 @@ function create_if_block_42(_) {
       ee = space();
       ne = element("button");
       ne.textContent = "✓";
-      attr(ne, "class", "svelte-tsbdtg");
+      attr(ne, "class", "svelte-21bw70");
     },
     m(se, le) {
       oe.m(se, le);
       insert(se, ee, le);
       insert(se, ne, le);
       if (!ie) {
-        re = listen(ne, "click", _[9]);
+        re = listen(ne, "click", _[10]);
         ie = true;
       }
     },
@@ -18783,13 +19332,13 @@ function create_if_block_42(_) {
   };
 }
 
-function create_else_block_12(_) {
+function create_else_block_2(_) {
   let ee;
   return {
     c() {
       ee = element("button");
       ee.disabled = true;
-      attr(ee, "class", "svelte-tsbdtg");
+      attr(ee, "class", "svelte-21bw70");
     },
     m(_, ne) {
       insert(_, ee, ne);
@@ -18801,34 +19350,10 @@ function create_else_block_12(_) {
   };
 }
 
-function create_if_block_5(_) {
-  let ee, ne, ie;
-  return {
-    c() {
-      ee = element("button");
-      ee.textContent = "🔍";
-      attr(ee, "class", "svelte-tsbdtg");
-    },
-    m(re, se) {
-      insert(re, ee, se);
-      if (!ne) {
-        ie = listen(ee, "click", _[10]);
-        ne = true;
-      }
-    },
-    p: noop2,
-    d(_) {
-      if (_) detach(ee);
-      ne = false;
-      ie();
-    }
-  };
-}
-
-function create_if_block_22(_) {
+function create_if_block_52(_) {
   let ee;
   function select_block_type_3(_, ee) {
-    if ("" != _[2]) return create_if_block_32; else return create_else_block2;
+    if (_[8]) return create_if_block_6; else return create_else_block_12;
   }
   let ne = select_block_type_3(_), ie = ne(_);
   return {
@@ -18857,18 +19382,98 @@ function create_if_block_22(_) {
   };
 }
 
+function create_else_block_12(_) {
+  let ee, ne, ie;
+  return {
+    c() {
+      ee = element("button");
+      ee.textContent = "⮂";
+      attr(ee, "class", "svelte-21bw70");
+    },
+    m(re, se) {
+      insert(re, ee, se);
+      if (!ne) {
+        ie = listen(ee, "click", _[11]);
+        ne = true;
+      }
+    },
+    p: noop2,
+    d(_) {
+      if (_) detach(ee);
+      ne = false;
+      ie();
+    }
+  };
+}
+
+function create_if_block_6(_) {
+  let ee, ne, ie;
+  return {
+    c() {
+      ee = element("button");
+      ee.textContent = "🗃️";
+      attr(ee, "class", "svelte-21bw70");
+    },
+    m(re, se) {
+      insert(re, ee, se);
+      if (!ne) {
+        ie = listen(ee, "click", _[12]);
+        ne = true;
+      }
+    },
+    p: noop2,
+    d(_) {
+      if (_) detach(ee);
+      ne = false;
+      ie();
+    }
+  };
+}
+
+function create_if_block_22(_) {
+  let ee;
+  function select_block_type_4(_, ee) {
+    if ("" != _[0]) return create_if_block_32; else return create_else_block2;
+  }
+  let ne = select_block_type_4(_), ie = ne(_);
+  return {
+    c() {
+      ie.c();
+      ee = empty();
+    },
+    m(_, ne) {
+      ie.m(_, ne);
+      insert(_, ee, ne);
+    },
+    p(_, re) {
+      if (ne === (ne = select_block_type_4(_)) && ie) ie.p(_, re); else {
+        ie.d(1);
+        ie = ne(_);
+        if (ie) {
+          ie.c();
+          ie.m(ee.parentNode, ee);
+        }
+      }
+    },
+    d(_) {
+      if (_) detach(ee);
+      ie.d(_);
+    }
+  };
+}
+
 function create_else_block2(_) {
   let ee, ne, ie;
   return {
     c() {
       ee = element("button");
       ee.textContent = "📑";
-      attr(ee, "class", "svelte-tsbdtg");
+      attr(ee, "class", "svelte-21bw70");
     },
     m(re, se) {
       insert(re, ee, se);
       if (!ne) {
-        ie = listen(ee, "click", _[12]);
+        ie = listen(ee, "click", _[14]);
         ne = true;
       }
     },
@@ -18887,12 +19492,12 @@ function create_if_block_32(_) {
     c() {
       ee = element("button");
       ee.textContent = "🗑️";
-      attr(ee, "class", "svelte-tsbdtg");
+      attr(ee, "class", "svelte-21bw70");
     },
     m(re, se) {
       insert(re, ee, se);
       if (!ne) {
-        ie = listen(ee, "click", _[11]);
+        ie = listen(ee, "click", _[13]);
         ne = true;
       }
     },
@@ -18908,7 +19513,7 @@ function create_if_block_32(_) {
 function create_fragment2(_) {
   let ee;
   function select_block_type(_, ee) {
-    if (_[8].length > 0) return create_if_block2; else return create_else_block_3;
+    if (_[9].length > 0) return create_if_block2; else return create_else_block_4;
   }
   let ne = select_block_type(_), ie = ne(_);
   return {
@@ -18940,45 +19545,47 @@ function create_fragment2(_) {
 }
 
 function instance2(_, ee, ne) {
-  let {list: ie = []} = ee, {thisTerm: re = ""} = ee, {hideNotApplicable: se = false} = ee, {selectNewest: oe = 0} = ee, {applyAllPluse: le = 0} = ee, {applyData: ue} = ee, {compareData: de} = ee, {deleteData: fe} = ee, {hidden: he} = ee, {plugin: pe} = ee, {isMaintenanceMode: ge = false} = ee;
-  const me = pe.addOnConfigSync;
-  let ye = "", Se = "", Ee = "", ve = "", Ce = false, we = false, ke = 0, Le = 0, Oe = [];
+  let {list: ie = []} = ee, {thisTerm: re = ""} = ee, {hideNotApplicable: se = false} = ee, {selectNewest: oe = 0} = ee, {selectNewestStyle: le = 0} = ee, {applyAllPluse: ue = 0} = ee, {applyData: de} = ee, {compareData: fe} = ee, {deleteData: he} = ee, {hidden: pe} = ee, {plugin: ge} = ee, {isMaintenanceMode: me = false} = ee, {isFlagged: ye = false} = ee;
+  const Se = ge.addOnConfigSync;
+  let {selected: Ee = ""} = ee, ve = "", Ce = "", we = "", Le = false, Oe = false, ke = false, Ae = 0, xe = 0, Te = [];
   async function comparePlugin(_, ee) {
     var ne, ie;
     let re = "", se = "", oe = false, le = false;
-    if (!_ && !ee) re = ""; else if (_ && !ee) re = "⚠ Local only"; else if (ee && !_) {
-      re = "✓ Remote only";
+    if (!_ && !ee) re = ""; else if (_ && !ee) re = "Local only"; else if (ee && !_) {
+      re = "Remote only";
       le = true;
     } else {
-      const se = (null !== (ne = null == _ ? void 0 : _.mtime) && void 0 !== ne ? ne : 0) - (null !== (ie = null == ee ? void 0 : ee.mtime) && void 0 !== ie ? ie : 0);
+      const se = (null !== (ne = null == _ ? void 0 : _.mtime) && void 0 !== ne ? ne : 0) - (null !== (ie = null == ee ? void 0 : ee.mtime) && void 0 !== ie ? ie : 0), ue = timeDeltaToHumanReadable(Math.abs(se / 1e3));
       if (se / 1e3 < -10) {
-        re = "✓ Newer";
+        re = `Newer (${ue})`;
         le = true;
         oe = true;
       } else if (se / 1e3 > 10) {
-        re = "⚠ Older";
+        re = `Older (${ue})`;
         le = true;
         oe = true;
       } else {
-        re = "⚖️ Same old";
+        re = "Same";
         le = false;
         oe = true;
       }
     }
     const ue = (null == _ ? void 0 : _.version) || "0.0.0", de = (null == ee ? void 0 : ee.version) || "0.0.0";
     if ((null == _ ? void 0 : _.version) || (null == ee ? void 0 : ee.version)) {
-      const _ = versionNumberString2Number(ue), ee = versionNumberString2Number(de);
-      if (_ == ee) se = "⚖️ Same ver."; else if (_ > ee) se = `⚠ Lower ${ue} > ${de}`; else if (_ < ee) se = `✓ Higher ${ue} < ${de}`;
+      const _ = `${ue}`.localeCompare(de, void 0, {
+        numeric: true
+      });
+      if (0 == _) se = "Same"; else if (_ < 0) se = `Lower (${ue} < ${de})`; else if (_ > 0) se = `Higher (${ue} > ${de})`;
     }
-    if (oe) {
+    if (oe) if (_ && ee) {
       const {canApply: ne, equivalency: ie, canCompare: oe} = await async function checkEquivalency(_, ee) {
         let ne = "", ie = false, re = false;
         const se = [ ...new Set([ ..._.files.map((_ => _.filename)), ...ee.files.map((_ => _.filename)) ]) ].map((ne => {
           const ie = _.files.find((_ => _.filename == ne)), re = ee.files.find((_ => _.filename == ne));
-          if (!ie && !re) return 0; else if (ie && !re) return 2; else if (!ie && re) return 8; else if (getDocData(ie.data) == getDocData(re.data)) return 4; else return 16;
+          if (!ie && !re) return 0; else if (ie && !re) return 2; else if (!ie && re) return 8; else if (ie && re) if (getDocData(ie.data) == getDocData(re.data)) return 4; else return 16; else return 16;
         })).reduce(((_, ee) => _ | ee), 0);
         if (4 == se) {
-          ne = "⚖️ Same";
+          ne = "Same";
           ie = false;
         } else if (se <= 4) {
           ne = "Same or local only";
@@ -18986,11 +19593,11 @@ function instance2(_, ee, ne) {
         } else if (16 == se) {
           ie = true;
           re = true;
-          ne = "≠ Different";
+          ne = "Different";
         } else {
           ie = true;
           re = true;
-          ne = "≠ Different";
+          ne = "Mixed";
         }
         return {
           equivalency: ne,
@@ -19015,93 +19622,131 @@ function instance2(_, ee, ne) {
     };
   }
   async function applySelected() {
-    const _ = ie.find((_ => _.term == re)), ee = ie.find((_ => _.term == ye));
-    if (ee && await ue(ee)) me.updatePluginList(true, null == _ ? void 0 : _.documentPath);
+    const _ = ie.find((_ => _.term == re)), ee = ie.find((_ => _.term == Ee));
+    if (ee && await de(ee)) Se.updatePluginList(true, null == _ ? void 0 : _.documentPath);
+  }
+  async function compareItems(_, ee, ne) {
+    if (!_ || !ee) {
+      if (!ee && !_) Logger("Could not find both remote and local item", LOG_LEVEL_INFO); else if (!ee) Logger("Could not find remote item", LOG_LEVEL_INFO); else if (!_) Logger("Could not locally item", LOG_LEVEL_INFO);
+    } else if (!ne) {
+      if (await fe(_, ee)) Se.updatePluginList(true, _.documentPath);
+      return;
+    } else {
+      const ie = _ instanceof PluginDataExDisplayV2 ? new PluginDataExDisplayV2(_) : {
+        ..._
+      }, re = ee instanceof PluginDataExDisplayV2 ? new PluginDataExDisplayV2(ee) : {
+        ...ee
+      };
+      ie.files = ie.files.filter((_ => _.filename == ne));
+      re.files = re.files.filter((_ => _.filename == ne));
+      if (await fe(ie, re, true)) Se.updatePluginList(true, _.documentPath);
+    }
   }
   _.$$set = _ => {
-    if ("list" in _) ne(13, ie = _.list);
-    if ("thisTerm" in _) ne(14, re = _.thisTerm);
-    if ("hideNotApplicable" in _) ne(15, se = _.hideNotApplicable);
-    if ("selectNewest" in _) ne(16, oe = _.selectNewest);
-    if ("applyAllPluse" in _) ne(17, le = _.applyAllPluse);
-    if ("applyData" in _) ne(18, ue = _.applyData);
-    if ("compareData" in _) ne(19, de = _.compareData);
-    if ("deleteData" in _) ne(20, fe = _.deleteData);
-    if ("hidden" in _) ne(0, he = _.hidden);
-    if ("plugin" in _) ne(21, pe = _.plugin);
-    if ("isMaintenanceMode" in _) ne(1, ge = _.isMaintenanceMode);
+    if ("list" in _) ne(15, ie = _.list);
+    if ("thisTerm" in _) ne(16, re = _.thisTerm);
+    if ("hideNotApplicable" in _) ne(17, se = _.hideNotApplicable);
+    if ("selectNewest" in _) ne(18, oe = _.selectNewest);
+    if ("selectNewestStyle" in _) ne(19, le = _.selectNewestStyle);
+    if ("applyAllPluse" in _) ne(20, ue = _.applyAllPluse);
+    if ("applyData" in _) ne(21, de = _.applyData);
+    if ("compareData" in _) ne(22, fe = _.compareData);
+    if ("deleteData" in _) ne(23, he = _.deleteData);
+    if ("hidden" in _) ne(1, pe = _.hidden);
+    if ("plugin" in _) ne(24, ge = _.plugin);
+    if ("isMaintenanceMode" in _) ne(2, me = _.isMaintenanceMode);
+    if ("isFlagged" in _) ne(25, ye = _.isFlagged);
+    if ("selected" in _) ne(0, Ee = _.selected);
   };
   _.$$.update = () => {
-    if (4268034 & _.$$.dirty[0]) {
-      const _ = oe != ke;
-      ne(22, ke = oe);
+    if (101482500 & _.$$.dirty[0]) {
+      let _ = false;
+      if (oe != Ae) if (1 == le) _ = true; else if (2 == le) _ = ye; else if (3 == le) ne(0, Ee = "");
       (async function updateTerms(_, ee, ie) {
         const oe = _.find((_ => _.term == re));
-        ne(2, ye = "");
-        if (ie) ne(8, Oe = [ ...new Set(_.map((_ => _.term))) ]); else if (se) {
+        if (ie) ne(9, Te = [ ...new Set(_.map((_ => _.term))) ]); else if (se) {
           const ee = [], ie = [ ...new Set(_.map((_ => _.term))) ];
           for (const ne of ie) {
             const ie = _.find((_ => _.term == ne));
             if ((await comparePlugin(oe, ie)).canApply) ee.push(ne);
           }
-          ne(8, Oe = [ ...ee ]);
-        } else ne(8, Oe = [ ...new Set(_.map((_ => _.term))) ].filter((_ => _ != re)));
+          ne(9, Te = [ ...ee ]);
+        } else ne(9, Te = [ ...new Set(_.map((_ => _.term))) ].filter((_ => _ != re)));
         let le = oe;
         if (ee) {
-          for (const ee of Oe) {
+          for (const ee of Te) {
             const ne = _.find((_ => _.term == ee));
             if (ne && ne.mtime && ((null == le ? void 0 : le.mtime) || 0) < ne.mtime) le = ne;
           }
-          if (le && le.term != re) ne(2, ye = le.term);
+          if (le && le.term != re) ne(0, Ee = le.term);
         }
-      })(ie, _, ge);
+        if (Te.indexOf(Ee) < 0) ne(0, Ee = "");
+      })(ie, _, me);
+      ne(26, Ae = oe);
     }
-    if (8519685 & _.$$.dirty[0]) {
-      const _ = le != Le;
-      ne(23, Le = le);
-      if (_ && ye) if (!he) applySelected();
+    if (135266307 & _.$$.dirty[0]) {
+      const _ = ue != xe;
+      ne(27, xe = ue);
+      if (_ && Ee) if (!pe) applySelected();
     }
-    if (24580 & _.$$.dirty[0]) {
-      ne(3, Se = "");
-      ne(4, Ee = "");
-      ne(5, ve = "");
-      ne(6, Ce = false);
-      if ("" == ye) ; else if (ye == re) {
-        ne(3, Se = "This device");
-        ne(6, Ce = false);
+    if (98305 & _.$$.dirty[0]) {
+      ne(3, ve = "");
+      ne(4, Ce = "");
+      ne(5, we = "");
+      ne(6, Le = false);
+      if ("" == Ee) ; else if (Ee == re) {
+        ne(3, ve = "This device");
+        ne(6, Le = false);
       } else (async function performCompare(_, ee) {
-        var ie, re, se;
-        const oe = await comparePlugin(_, ee);
-        ne(6, Ce = oe.canApply);
-        ne(3, Se = oe.freshness);
-        ne(4, Ee = oe.equivalency);
-        ne(5, ve = oe.version);
-        ne(7, we = oe.canCompare);
-        if (1 != (null == _ ? void 0 : _.files.length) || !(null === (se = null === (re = null === (ie = null == _ ? void 0 : _.files) || void 0 === ie ? void 0 : ie.first()) || void 0 === re ? void 0 : re.filename) || void 0 === se ? void 0 : se.endsWith(".json"))) ne(7, we = false);
-      })(ie.find((_ => _.term == re)), ie.find((_ => _.term == ye)));
+        const ie = await comparePlugin(_, ee);
+        ne(6, Le = ie.canApply);
+        ne(3, ve = ie.freshness);
+        ne(4, Ce = ie.equivalency);
+        ne(5, we = ie.version);
+        ne(7, Oe = ie.canCompare);
+        ne(8, ke = false);
+        if (Oe) if ((null == _ ? void 0 : _.files.length) == (null == ee ? void 0 : ee.files.length) && 1 == (null == _ ? void 0 : _.files.length) && (null == _ ? void 0 : _.files[0].filename) == (null == ee ? void 0 : ee.files[0].filename)) ne(8, ke = false); else ne(8, ke = true);
+      })(ie.find((_ => _.term == re)), ie.find((_ => _.term == Ee)));
     }
   };
-  return [ he, ge, ye, Se, Ee, ve, Ce, we, Oe, applySelected, async function compareSelected() {
-    const _ = ie.find((_ => _.term == re)), ee = ie.find((_ => _.term == ye));
-    if (_ && ee && await de(_, ee)) me.updatePluginList(true, _.documentPath);
+  return [ Ee, pe, me, ve, Ce, we, Le, Oe, ke, Te, applySelected, async function compareSelected() {
+    const _ = ie.find((_ => _.term == re)), ee = ie.find((_ => _.term == Ee));
+    await compareItems(_, ee);
+  }, async function pickCompareItem(_) {
+    const ee = ie.find((_ => _.term == re)), ne = ie.find((_ => _.term == Ee));
+    if (!ee) return;
+    if (!ne) return;
+    const se = new import_obsidian3.Menu;
+    se.addItem((_ => _.setTitle("Compare file").setIsLabel(true)));
+    se.addSeparator();
+    const oe = unique(ee.files.map((_ => _.filename)).concat(ne.files.map((_ => _.filename))));
+    for (const _ of oe) se.addItem((ie => {
+      ie.setTitle(_).onClick((ie => compareItems(ee, ne, _)));
+    }));
+    se.showAtMouseEvent(_);
   }, async function deleteSelected() {
-    const _ = ie.find((_ => _.term == ye));
-    if (_ && await fe(_)) me.reloadPluginList(true);
+    const _ = ie.find((_ => _.term == Ee));
+    if (_ && await he(_)) Se.reloadPluginList(true);
   }, async function duplicateItem() {
-    const _ = ie.find((_ => _.term == re)), ee = await askString(pe.app, "Duplicate", "device name", "");
+    const _ = ie.find((_ => _.term == re));
+    if (!_) {
+      Logger("Could not find local item", LOG_LEVEL_VERBOSE);
+      return;
+    }
+    const ee = await askString(ge.app, "Duplicate", "device name", "");
     if (ee) {
       if (ee.contains("/")) {
         Logger('We can not use "/" to the device name', LOG_LEVEL_NOTICE);
         return;
       }
-      const ne = `${pe.app.vault.configDir}/${_.files[0].filename}`;
-      await me.storeCustomizationFiles(ne, ee);
-      await me.updatePluginList(false, me.filenameToUnifiedKey(ne, ee));
+      const ne = `${ge.app.vault.configDir}/${_.files[0].filename}`;
+      await Se.storeCustomizationFiles(ne, ee);
+      await Se.updatePluginList(false, Se.filenameToUnifiedKey(ne, ee));
     }
-  }, ie, re, se, oe, le, ue, de, fe, pe, ke, Le, function select_change_handler() {
-    ye = select_value(this);
-    ne(2, ye);
-    ne(8, Oe);
+  }, ie, re, se, oe, le, ue, de, fe, he, ge, ye, Ae, xe, function select_change_handler() {
+    Ee = select_value(this);
+    ne(0, Ee), ne(18, oe), ne(26, Ae), ne(19, le), ne(25, ye), ne(15, ie), ne(2, me);
+    ne(9, Te);
   } ];
 }
 
@@ -19109,81 +19754,88 @@ var PluginCombo = class extends SvelteComponent {
   constructor(_) {
     super();
     init2(this, _, instance2, create_fragment2, safe_not_equal, {
-      list: 13,
-      thisTerm: 14,
-      hideNotApplicable: 15,
-      selectNewest: 16,
-      applyAllPluse: 17,
-      applyData: 18,
-      compareData: 19,
-      deleteData: 20,
-      hidden: 0,
-      plugin: 21,
-      isMaintenanceMode: 1
+      list: 15,
+      thisTerm: 16,
+      hideNotApplicable: 17,
+      selectNewest: 18,
+      selectNewestStyle: 19,
+      applyAllPluse: 20,
+      applyData: 21,
+      compareData: 22,
+      deleteData: 23,
+      hidden: 1,
+      plugin: 24,
+      isMaintenanceMode: 2,
+      isFlagged: 25,
+      selected: 0
     }, add_css2, [ -1, -1 ]);
   }
-}, PluginCombo_default = PluginCombo, import_obsidian3 = require("obsidian");
+}, PluginCombo_default = PluginCombo, import_obsidian4 = require("obsidian");
 
 function add_css3(_) {
-  append_styles(_, "svelte-1mend9p", "h3.svelte-1mend9p.svelte-1mend9p{position:sticky;top:0;background-color:var(--modal-background)}.labelrow.svelte-1mend9p.svelte-1mend9p{margin-left:0.4em;display:flex;justify-content:flex-start;align-items:center;border-top:1px solid var(--background-modifier-border);padding:4px;flex-wrap:wrap}.filerow.svelte-1mend9p.svelte-1mend9p{margin-left:1.25em;display:flex;justify-content:flex-start;align-items:center;padding-right:4px;flex-wrap:wrap}.filerow.hideeven.svelte-1mend9p.svelte-1mend9p:has(.even),.labelrow.hideeven.svelte-1mend9p.svelte-1mend9p:has(.even){display:none}.noterow.svelte-1mend9p.svelte-1mend9p{min-height:2em;display:flex}button.status.svelte-1mend9p.svelte-1mend9p{flex-grow:0;margin:2px 4px;min-width:3em;max-width:4em}.statusnote.svelte-1mend9p.svelte-1mend9p{display:flex;justify-content:flex-end;padding-right:var(--size-4-12);align-items:center;min-width:10em;flex-grow:1}.title.svelte-1mend9p.svelte-1mend9p{color:var(--text-normal);font-size:var(--font-ui-medium);line-height:var(--line-height-tight);margin-right:auto}.filetitle.svelte-1mend9p.svelte-1mend9p{color:var(--text-normal);font-size:var(--font-ui-medium);line-height:var(--line-height-tight);margin-right:auto}.buttons.svelte-1mend9p.svelte-1mend9p{display:flex;flex-direction:row;justify-content:flex-end;margin-top:8px;flex-wrap:wrap}.buttons.svelte-1mend9p>button.svelte-1mend9p{margin-left:4px;width:auto}label.svelte-1mend9p.svelte-1mend9p{display:flex;justify-content:center;align-items:center}label.svelte-1mend9p>span.svelte-1mend9p{margin-right:0.25em}.is-mobile .title.svelte-1mend9p.svelte-1mend9p,.is-mobile .filetitle.svelte-1mend9p.svelte-1mend9p{width:100%}.center.svelte-1mend9p.svelte-1mend9p{display:flex;justify-content:center;align-items:center;min-height:3em}.maintenancerow.svelte-1mend9p.svelte-1mend9p{display:flex;justify-content:flex-end;align-items:center}.maintenancerow.svelte-1mend9p label.svelte-1mend9p{margin-right:0.5em;margin-left:0.5em}");
+  append_styles(_, "svelte-if2qsj", ".buttonsWrap.svelte-if2qsj.svelte-if2qsj{padding-bottom:4px}h3.svelte-if2qsj.svelte-if2qsj{position:sticky;top:0;background-color:var(--modal-background)}.labelrow.svelte-if2qsj.svelte-if2qsj{margin-left:0.4em;display:flex;justify-content:flex-start;align-items:center;border-top:1px solid var(--background-modifier-border);padding:4px;flex-wrap:wrap}.filerow.svelte-if2qsj.svelte-if2qsj{margin-left:1.25em;display:flex;justify-content:flex-start;align-items:center;padding-right:4px;flex-wrap:wrap}.filerow.hideeven.svelte-if2qsj.svelte-if2qsj:has(.even),.labelrow.hideeven.svelte-if2qsj.svelte-if2qsj:has(.even){display:none}.noterow.svelte-if2qsj.svelte-if2qsj{min-height:2em;display:flex}button.status.svelte-if2qsj.svelte-if2qsj{flex-grow:0;margin:2px 4px;min-width:3em;max-width:4em}.statusnote.svelte-if2qsj.svelte-if2qsj{display:flex;justify-content:flex-end;padding-right:var(--size-4-12);align-items:center;min-width:10em;flex-grow:1}.list.svelte-if2qsj.svelte-if2qsj{overflow-y:auto}.title.svelte-if2qsj.svelte-if2qsj{color:var(--text-normal);font-size:var(--font-ui-medium);line-height:var(--line-height-tight);margin-right:auto}.body.svelte-if2qsj.svelte-if2qsj{margin-left:auto;display:flex;justify-content:flex-start;align-items:center}.filetitle.svelte-if2qsj.svelte-if2qsj{color:var(--text-normal);font-size:var(--font-ui-medium);line-height:var(--line-height-tight);margin-right:auto}.buttons.svelte-if2qsj.svelte-if2qsj{display:flex;flex-direction:row;justify-content:flex-end;margin-top:8px;flex-wrap:wrap}.buttons.svelte-if2qsj>button.svelte-if2qsj{margin-left:4px;width:auto}label.svelte-if2qsj.svelte-if2qsj{display:flex;justify-content:center;align-items:center}label.svelte-if2qsj>span.svelte-if2qsj{margin-right:0.25em}.is-mobile .title.svelte-if2qsj.svelte-if2qsj,.is-mobile .filetitle.svelte-if2qsj.svelte-if2qsj{width:100%}.center.svelte-if2qsj.svelte-if2qsj{display:flex;justify-content:center;align-items:center;min-height:3em}.maintenancerow.svelte-if2qsj.svelte-if2qsj{display:flex;justify-content:flex-end;align-items:center}.maintenancerow.svelte-if2qsj label.svelte-if2qsj{margin-right:0.5em;margin-left:0.5em}.loading.svelte-if2qsj.svelte-if2qsj{transition:height 0.25s ease-in-out;transition-delay:4ms;overflow-y:hidden;flex-shrink:0;display:flex;justify-content:flex-start;align-items:center}.loading.svelte-if2qsj.svelte-if2qsj:empty{height:0px;transition:height 0.25s ease-in-out;transition-delay:1s}.loading.svelte-if2qsj.svelte-if2qsj:not(:empty){height:2em;transition:height 0.25s ease-in-out;transition-delay:0}");
 }
 
 function get_each_context3(_, ee, ne) {
   const ie = _.slice();
-  ie[53] = ee[ne];
+  ie[66] = ee[ne];
   return ie;
 }
 
 function get_each_context_12(_, ee, ne) {
-  var ie, re, se;
-  const oe = _.slice();
-  oe[56] = ee[ne][0];
-  oe[57] = ee[ne][1];
-  const le = `${PREFIX_PLUGIN_ALL}/${oe[56]}`;
-  oe[58] = le;
-  const ue = null != (ie = oe[5].get(oe[58])) ? ie : MODE_SELECTIVE;
-  oe[59] = ue;
-  const de = `${PREFIX_PLUGIN_MAIN}/${oe[56]}`;
-  oe[60] = de;
-  const fe = null != (re = oe[5].get(oe[60])) ? re : MODE_SELECTIVE;
-  oe[61] = fe;
-  const he = `${PREFIX_PLUGIN_DATA}/${oe[56]}`;
-  oe[62] = he;
-  const pe = null != (se = oe[5].get(oe[62])) ? se : MODE_SELECTIVE;
-  oe[63] = pe;
-  return oe;
+  var ie, re, se, oe;
+  const le = _.slice();
+  le[69] = ee[ne][0];
+  le[70] = ee[ne][1];
+  const ue = `${PREFIX_PLUGIN_ALL}/${le[69]}`;
+  le[71] = ue;
+  const de = null != (ie = le[6].get(le[71])) ? ie : MODE_SELECTIVE;
+  le[72] = de;
+  const fe = `${PREFIX_PLUGIN_MAIN}/${le[69]}`;
+  le[73] = fe;
+  const he = null != (re = le[6].get(le[73])) ? re : MODE_SELECTIVE;
+  le[74] = he;
+  const pe = `${PREFIX_PLUGIN_DATA}/${le[69]}`;
+  le[75] = pe;
+  const ge = null != (se = le[6].get(le[75])) ? se : MODE_SELECTIVE;
+  le[76] = ge;
+  const me = `${PREFIX_PLUGIN_ETC}/${le[69]}`;
+  le[77] = me;
+  const ye = null != (oe = le[6].get(le[77])) ? oe : MODE_SELECTIVE;
+  le[78] = ye;
+  return le;
 }
 
 function get_each_context_2(_, ee, ne) {
   const ie = _.slice();
-  ie[66] = ee[ne][0];
-  ie[67] = ee[ne][1];
+  ie[81] = ee[ne][0];
+  ie[82] = ee[ne][1];
   return ie;
 }
 
 function get_each_context_3(_, ee, ne) {
   var ie;
   const re = _.slice();
-  re[56] = ee[ne];
-  const se = `${re[66]}/${re[56]}`;
-  re[70] = se;
-  const oe = null != (ie = re[5].get(re[70])) ? ie : MODE_SELECTIVE;
-  re[71] = oe;
+  re[69] = ee[ne];
+  const se = `${re[81]}/${re[69]}`;
+  re[85] = se;
+  const oe = null != (ie = re[6].get(re[85])) ? ie : MODE_SELECTIVE;
+  re[86] = oe;
   return re;
 }
 
-function create_if_block_8(_) {
+function create_if_block_10(_) {
   let ee, ne, ie;
   return {
     c() {
       ee = element("button");
       ee.textContent = "Reload";
-      attr(ee, "class", "svelte-1mend9p");
+      attr(ee, "class", "svelte-if2qsj");
     },
     m(re, se) {
       insert(re, ee, se);
       if (!ne) {
-        ie = listen(ee, "click", _[28]);
+        ie = listen(ee, "click", _[36]);
         ne = true;
       }
     },
@@ -19196,15 +19848,21 @@ function create_if_block_8(_) {
   };
 }
 
-function create_if_block_7(_) {
-  let ee;
+function create_if_block_9(_) {
+  let ee, ne, ie, re = 0 == _[12] ? "" : ` (${_[12]})`;
   return {
     c() {
-      ee = element("div");
-      ee.innerHTML = "<span>Updating list...</span>";
+      ee = element("span");
+      ne = text("Updating list...");
+      ie = text(re);
     },
-    m(_, ne) {
-      insert(_, ee, ne);
+    m(_, re) {
+      insert(_, ee, re);
+      append(ee, ne);
+      append(ee, ie);
+    },
+    p(_, ee) {
+      if (4096 & ee[0] && re !== (re = 0 == _[12] ? "" : ` (${_[12]})`)) set_data(ie, re);
     },
     d(_) {
       if (_) detach(ee);
@@ -19213,12 +19871,12 @@ function create_if_block_7(_) {
 }
 
 function create_else_block3(_) {
-  let ee, ne, ie, re, se, oe = ensure_array_like(Object.entries(_[11]).filter(_[31])), le = [];
+  let ee, ne, ie, re, se, oe = ensure_array_like(_[9]), le = [];
   for (let ee = 0; ee < oe.length; ee += 1) le[ee] = create_each_block_2(get_each_context_2(_, oe, ee));
   const out = _ => transition_out(le[_], 1, 1, (() => {
     le[_] = null;
   }));
-  let ue = ensure_array_like(groupBy(filterList(_[0], [ "PLUGIN_MAIN", "PLUGIN_DATA", "PLUGIN_ETC" ]), "name")), de = [];
+  let ue = ensure_array_like(_[10]), de = [];
   for (let ee = 0; ee < ue.length; ee += 1) de[ee] = create_each_block_12(get_each_context_12(_, ue, ee));
   const out_1 = _ => transition_out(de[_], 1, 1, (() => {
     de[_] = null;
@@ -19232,7 +19890,7 @@ function create_else_block3(_) {
       ie.textContent = "Plugins";
       re = space();
       for (let _ = 0; _ < de.length; _ += 1) de[_].c();
-      attr(ie, "class", "svelte-1mend9p");
+      attr(ie, "class", "svelte-if2qsj");
     },
     m(_, oe) {
       for (let ee = 0; ee < le.length; ee += 1) if (le[ee]) le[ee].m(_, oe);
@@ -19244,8 +19902,8 @@ function create_else_block3(_) {
       se = true;
     },
     p(_, ie) {
-      if (461157 & ie[0]) {
-        oe = ensure_array_like(Object.entries(_[11]).filter(_[31]));
+      if (13634381 & ie[0]) {
+        oe = ensure_array_like(_[9]);
         let ne;
         for (ne = 0; ne < oe.length; ne += 1) {
           const re = get_each_context_2(_, oe, ne);
@@ -19263,8 +19921,8 @@ function create_else_block3(_) {
         for (ne = oe.length; ne < le.length; ne += 1) out(ne);
         check_outros();
       }
-      if (459045 & ie[0]) {
-        ue = ensure_array_like(groupBy(filterList(_[0], [ "PLUGIN_MAIN", "PLUGIN_DATA", "PLUGIN_ETC" ]), "name"));
+      if (47189320 & ie[0]) {
+        ue = ensure_array_like(_[10]);
         let ee;
         for (ee = 0; ee < ue.length; ee += 1) {
           const re = get_each_context_12(_, ue, ee);
@@ -19314,7 +19972,7 @@ function create_if_block_13(_) {
     c() {
       ee = element("div");
       ee.textContent = "No Items.";
-      attr(ee, "class", "center svelte-1mend9p");
+      attr(ee, "class", "center svelte-if2qsj");
     },
     m(_, ne) {
       insert(_, ee, ne);
@@ -19328,20 +19986,20 @@ function create_if_block_13(_) {
   };
 }
 
-function create_else_block_4(_) {
-  let ee, ne, ie = _[17][_[71]] + "";
+function create_else_block_5(_) {
+  let ee, ne, ie = _[22][_[86]] + "";
   return {
     c() {
       ee = element("div");
       ne = text(ie);
-      attr(ee, "class", "statusnote svelte-1mend9p");
+      attr(ee, "class", "statusnote svelte-if2qsj");
     },
     m(_, ie) {
       insert(_, ee, ie);
       append(ee, ne);
     },
     p(_, ee) {
-      if (96 & ee[0] && ie !== (ie = _[17][_[71]] + "")) set_data(ne, ie);
+      if (580 & ee[0] && ie !== (ie = _[22][_[86]] + "")) set_data(ne, ie);
     },
     i: noop2,
     o: noop2,
@@ -19351,13 +20009,15 @@ function create_else_block_4(_) {
   };
 }
 
-function create_if_block_6(_) {
+function create_if_block_8(_) {
   let ee, ne;
-  function func_12(...ee) {
-    return _[33](_[66], _[56], ...ee);
+  function func(...ee) {
+    return _[42](_[81], _[69], ...ee);
   }
-  const ie = [ _[8], {
-    list: _[0].filter(func_12)
+  const ie = [ _[11], {
+    isFlagged: _[86] == MODE_SHINY
+  }, {
+    list: _[0].filter(func)
   }, {
     hidden: false
   } ];
@@ -19376,9 +20036,11 @@ function create_if_block_6(_) {
     },
     p(ne, re) {
       _ = ne;
-      const se = 2369 & re[0] ? get_spread_update(ie, [ 256 & re[0] && get_spread_object(_[8]), 2113 & re[0] && {
-        list: _[0].filter(func_12)
-      }, ie[2] ]) : {};
+      const se = 2629 & re[0] ? get_spread_update(ie, [ 2048 & re[0] && get_spread_object(_[11]), 580 & re[0] && {
+        isFlagged: _[86] == MODE_SHINY
+      }, 517 & re[0] && {
+        list: _[0].filter(func)
+      }, ie[3] ]) : {};
       ee.$set(se);
     },
     i(_) {
@@ -19398,34 +20060,36 @@ function create_if_block_6(_) {
 }
 
 function create_each_block_3(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye = _[18](_[71]) + "", Se = _[56] + "";
-  function click_handler_6(...ee) {
-    return _[32](_[66], _[56], _[70], ...ee);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se = _[23](_[86]) + "", Ee = ("THEME" == _[81] && _[8].get(`themes/${_[69]}`) || _[69]) + "";
+  function click_handler_8(...ee) {
+    return _[41](_[81], _[69], _[85], ...ee);
   }
-  const Ee = [ create_if_block_6, create_else_block_4 ], ve = [];
+  const ve = [ create_if_block_8, create_else_block_5 ], Ce = [];
   function select_block_type_1(_, ee) {
-    if (_[71] == MODE_SELECTIVE) return 0; else return 1;
+    if (_[86] == MODE_SELECTIVE || _[86] == MODE_SHINY) return 0; else return 1;
   }
-  de = select_block_type_1(_);
-  fe = ve[de] = Ee[de](_);
+  fe = select_block_type_1(_);
+  he = Ce[fe] = ve[fe](_);
   return {
     c() {
       ee = element("div");
       ne = element("div");
       ie = element("button");
-      re = text(ye);
+      re = text(Se);
       se = space();
       oe = element("span");
-      le = text(Se);
+      le = text(Ee);
       ue = space();
-      fe.c();
-      attr(ie, "class", "status svelte-1mend9p");
+      de = element("div");
+      he.c();
+      attr(ie, "class", "status svelte-if2qsj");
       attr(oe, "class", "name");
-      attr(ne, "class", "title svelte-1mend9p");
-      attr(ee, "class", he = "labelrow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p");
+      attr(ne, "class", "title svelte-if2qsj");
+      attr(de, "class", "body svelte-if2qsj");
+      attr(ee, "class", pe = "labelrow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj");
     },
-    m(_, fe) {
-      insert(_, ee, fe);
+    m(_, he) {
+      insert(_, ee, he);
       append(ee, ne);
       append(ne, ie);
       append(ie, re);
@@ -19433,56 +20097,57 @@ function create_each_block_3(_) {
       append(ne, oe);
       append(oe, le);
       append(ee, ue);
-      ve[de].m(ee, null);
-      pe = true;
-      if (!ge) {
-        me = listen(ie, "click", click_handler_6);
-        ge = true;
+      append(ee, de);
+      Ce[fe].m(de, null);
+      ge = true;
+      if (!me) {
+        ye = listen(ie, "click", click_handler_8);
+        me = true;
       }
     },
     p(ne, ie) {
       _ = ne;
-      if ((!pe || 96 & ie[0]) && ye !== (ye = _[18](_[71]) + "")) set_data(re, ye);
-      if ((!pe || 64 & ie[0]) && Se !== (Se = _[56] + "")) set_data(le, Se);
-      let se = de;
-      de = select_block_type_1(_);
-      if (de === se) ve[de].p(_, ie); else {
+      if ((!ge || 580 & ie[0]) && Se !== (Se = _[23](_[86]) + "")) set_data(re, Se);
+      if ((!ge || 772 & ie[0]) && Ee !== (Ee = ("THEME" == _[81] && _[8].get(`themes/${_[69]}`) || _[69]) + "")) set_data(le, Ee);
+      let se = fe;
+      fe = select_block_type_1(_);
+      if (fe === se) Ce[fe].p(_, ie); else {
         group_outros();
-        transition_out(ve[se], 1, 1, (() => {
-          ve[se] = null;
+        transition_out(Ce[se], 1, 1, (() => {
+          Ce[se] = null;
         }));
         check_outros();
-        fe = ve[de];
-        if (!fe) {
-          fe = ve[de] = Ee[de](_);
-          fe.c();
-        } else fe.p(_, ie);
-        transition_in(fe, 1);
-        fe.m(ee, null);
+        he = Ce[fe];
+        if (!he) {
+          he = Ce[fe] = ve[fe](_);
+          he.c();
+        } else he.p(_, ie);
+        transition_in(he, 1);
+        he.m(de, null);
       }
-      if (!pe || 4 & ie[0] && he !== (he = "labelrow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(ee, "class", he);
+      if (!ge || 8 & ie[0] && pe !== (pe = "labelrow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ee, "class", pe);
     },
     i(_) {
-      if (!pe) {
-        transition_in(fe);
-        pe = true;
+      if (!ge) {
+        transition_in(he);
+        ge = true;
       }
     },
     o(_) {
-      transition_out(fe);
-      pe = false;
+      transition_out(he);
+      ge = false;
     },
     d(_) {
       if (_) detach(ee);
-      ve[de].d();
-      ge = false;
-      me();
+      Ce[fe].d();
+      me = false;
+      ye();
     }
   };
 }
 
 function create_each_block_2(_) {
-  let ee, ne, ie, re, se, oe = _[67] + "", le = ensure_array_like(_[6][_[66]]), ue = [];
+  let ee, ne, ie, re, se, oe = _[82] + "", le = ensure_array_like(_[2][_[81]]), ue = [];
   for (let ee = 0; ee < le.length; ee += 1) ue[ee] = create_each_block_3(get_each_context_3(_, le, ee));
   const out = _ => transition_out(ue[_], 1, 1, (() => {
     ue[_] = null;
@@ -19494,7 +20159,7 @@ function create_each_block_2(_) {
       ie = text(oe);
       re = space();
       for (let _ = 0; _ < ue.length; _ += 1) ue[_].c();
-      attr(ne, "class", "svelte-1mend9p");
+      attr(ne, "class", "svelte-if2qsj");
     },
     m(_, oe) {
       insert(_, ee, oe);
@@ -19505,9 +20170,9 @@ function create_each_block_2(_) {
       se = true;
     },
     p(_, ne) {
-      if ((!se || 64 & ne[0]) && oe !== (oe = _[67] + "")) set_data(ie, oe);
-      if (461157 & ne[0]) {
-        le = ensure_array_like(_[6][_[66]]);
+      if ((!se || 512 & ne[0]) && oe !== (oe = _[82] + "")) set_data(ie, oe);
+      if (13634381 & ne[0]) {
+        le = ensure_array_like(_[2][_[81]]);
         let ie;
         for (ie = 0; ie < le.length; ie += 1) {
           const re = get_each_context_3(_, le, ie);
@@ -19544,10 +20209,12 @@ function create_each_block_2(_) {
   };
 }
 
-function create_if_block_52(_) {
+function create_if_block_7(_) {
   let ee, ne;
-  const ie = [ _[8], {
-    list: _[57]
+  const ie = [ _[11], {
+    isFlagged: _[72] == MODE_SHINY
+  }, {
+    list: _[70]
   }, {
     hidden: true
   } ];
@@ -19565,9 +20232,11 @@ function create_if_block_52(_) {
       ne = true;
     },
     p(_, ne) {
-      const re = 257 & ne[0] ? get_spread_update(ie, [ 256 & ne[0] && get_spread_object(_[8]), 1 & ne[0] && {
-        list: _[57]
-      }, ie[2] ]) : {};
+      const re = 3136 & ne[0] ? get_spread_update(ie, [ 2048 & ne[0] && get_spread_object(_[11]), 1088 & ne[0] && {
+        isFlagged: _[72] == MODE_SHINY
+      }, 1024 & ne[0] && {
+        list: _[70]
+      }, ie[3] ]) : {};
       ee.$set(re);
     },
     i(_) {
@@ -19586,16 +20255,16 @@ function create_if_block_52(_) {
   };
 }
 
-function create_else_block_32(_) {
-  let ee, ne, ie, re, se = _[17][_[59]] + "";
+function create_else_block_42(_) {
+  let ee, ne, ie, re, se = _[22][_[72]] + "";
   return {
     c() {
       ee = element("div");
       ne = element("div");
       ie = text(se);
       re = space();
-      attr(ne, "class", "statusnote svelte-1mend9p");
-      attr(ee, "class", "noterow svelte-1mend9p");
+      attr(ne, "class", "statusnote svelte-if2qsj");
+      attr(ee, "class", "noterow svelte-if2qsj");
     },
     m(_, se) {
       insert(_, ee, se);
@@ -19604,7 +20273,7 @@ function create_else_block_32(_) {
       append(ee, re);
     },
     p(_, ee) {
-      if (33 & ee[0] && se !== (se = _[17][_[59]] + "")) set_data(ie, se);
+      if (1088 & ee[0] && se !== (se = _[22][_[72]] + "")) set_data(ie, se);
     },
     i: noop2,
     o: noop2,
@@ -19615,160 +20284,402 @@ function create_else_block_32(_) {
 }
 
 function create_if_block_23(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe, Ae, xe, Re = _[18](_[61]) + "", Te = _[18](_[63]) + "";
-  function click_handler_8(...ee) {
-    return _[35](_[56], _[60], ...ee);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Te, Re, Pe, Ie = _[23](_[74]) + "", De = _[23](_[76]) + "";
+  function click_handler_10(...ee) {
+    return _[44](_[69], _[73], ...ee);
   }
-  const Pe = [ create_if_block_43, create_else_block_22 ], Ie = [];
+  const Be = [ create_if_block_62, create_else_block_32 ], Ne = [];
   function select_block_type_3(_, ee) {
-    if (_[61] == MODE_SELECTIVE) return 0; else return 1;
+    if (_[74] == MODE_SELECTIVE || _[74] == MODE_SHINY) return 0; else return 1;
   }
-  ue = select_block_type_3(_);
-  de = Ie[ue] = Pe[ue](_);
-  function click_handler_9(...ee) {
-    return _[36](_[56], _[62], ...ee);
+  de = select_block_type_3(_);
+  fe = Ne[de] = Be[de](_);
+  function click_handler_11(...ee) {
+    return _[45](_[69], _[75], ...ee);
   }
-  const De = [ create_if_block_33, create_else_block_13 ], Be = [];
+  const Me = [ create_if_block_53, create_else_block_22 ], Fe = [];
   function select_block_type_4(_, ee) {
-    if (_[63] == MODE_SELECTIVE) return 0; else return 1;
+    if (_[76] == MODE_SELECTIVE || _[76] == MODE_SHINY) return 0; else return 1;
   }
-  Ce = select_block_type_4(_);
-  we = Be[Ce] = De[Ce](_);
+  Le = select_block_type_4(_);
+  Oe = Fe[Le] = Me[Le](_);
+  let Ve = _[25] && create_if_block_33(_);
   return {
     c() {
       ee = element("div");
       ne = element("div");
       ie = element("button");
-      re = text(Re);
+      re = text(Ie);
       se = space();
       oe = element("span");
       oe.textContent = "MAIN";
       le = space();
-      de.c();
-      he = space();
-      pe = element("div");
+      ue = element("div");
+      fe.c();
+      pe = space();
       ge = element("div");
-      me = element("button");
-      ye = text(Te);
-      Se = space();
-      Ee = element("span");
-      Ee.textContent = "DATA";
-      ve = space();
-      we.c();
-      ke = space();
-      attr(ie, "class", "status svelte-1mend9p");
+      me = element("div");
+      ye = element("button");
+      Se = text(De);
+      Ee = space();
+      ve = element("span");
+      ve.textContent = "DATA";
+      Ce = space();
+      we = element("div");
+      Oe.c();
+      Ae = space();
+      if (Ve) Ve.c();
+      xe = empty();
+      attr(ie, "class", "status svelte-if2qsj");
       attr(oe, "class", "name");
-      attr(ne, "class", "filetitle svelte-1mend9p");
-      attr(ee, "class", fe = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p");
-      attr(me, "class", "status svelte-1mend9p");
-      attr(Ee, "class", "name");
-      attr(ge, "class", "filetitle svelte-1mend9p");
-      attr(pe, "class", Le = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p");
+      attr(ne, "class", "filetitle svelte-if2qsj");
+      attr(ue, "class", "body svelte-if2qsj");
+      attr(ee, "class", he = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj");
+      attr(ye, "class", "status svelte-if2qsj");
+      attr(ve, "class", "name");
+      attr(me, "class", "filetitle svelte-if2qsj");
+      attr(we, "class", "body svelte-if2qsj");
+      attr(ge, "class", ke = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj");
     },
-    m(_, de) {
-      insert(_, ee, de);
+    m(_, fe) {
+      insert(_, ee, fe);
       append(ee, ne);
       append(ne, ie);
       append(ie, re);
       append(ne, se);
       append(ne, oe);
       append(ee, le);
-      Ie[ue].m(ee, null);
-      insert(_, he, de);
-      insert(_, pe, de);
-      append(pe, ge);
+      append(ee, ue);
+      Ne[de].m(ue, null);
+      insert(_, pe, fe);
+      insert(_, ge, fe);
       append(ge, me);
       append(me, ye);
-      append(ge, Se);
-      append(ge, Ee);
-      append(pe, ve);
-      Be[Ce].m(pe, null);
-      append(pe, ke);
-      Oe = true;
-      if (!Ae) {
-        xe = [ listen(ie, "click", click_handler_8), listen(me, "click", click_handler_9) ];
-        Ae = true;
+      append(ye, Se);
+      append(me, Ee);
+      append(me, ve);
+      append(ge, Ce);
+      append(ge, we);
+      Fe[Le].m(we, null);
+      insert(_, Ae, fe);
+      if (Ve) Ve.m(_, fe);
+      insert(_, xe, fe);
+      Te = true;
+      if (!Re) {
+        Pe = [ listen(ie, "click", click_handler_10), listen(ye, "click", click_handler_11) ];
+        Re = true;
       }
     },
     p(ne, ie) {
       _ = ne;
-      if ((!Oe || 33 & ie[0]) && Re !== (Re = _[18](_[61]) + "")) set_data(re, Re);
-      let se = ue;
-      ue = select_block_type_3(_);
-      if (ue === se) Ie[ue].p(_, ie); else {
+      if ((!Te || 1088 & ie[0]) && Ie !== (Ie = _[23](_[74]) + "")) set_data(re, Ie);
+      let se = de;
+      de = select_block_type_3(_);
+      if (de === se) Ne[de].p(_, ie); else {
         group_outros();
-        transition_out(Ie[se], 1, 1, (() => {
-          Ie[se] = null;
+        transition_out(Ne[se], 1, 1, (() => {
+          Ne[se] = null;
         }));
         check_outros();
-        de = Ie[ue];
-        if (!de) {
-          de = Ie[ue] = Pe[ue](_);
-          de.c();
-        } else de.p(_, ie);
-        transition_in(de, 1);
-        de.m(ee, null);
+        fe = Ne[de];
+        if (!fe) {
+          fe = Ne[de] = Be[de](_);
+          fe.c();
+        } else fe.p(_, ie);
+        transition_in(fe, 1);
+        fe.m(ue, null);
       }
-      if (!Oe || 4 & ie[0] && fe !== (fe = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(ee, "class", fe);
-      if ((!Oe || 33 & ie[0]) && Te !== (Te = _[18](_[63]) + "")) set_data(ye, Te);
-      let oe = Ce;
-      Ce = select_block_type_4(_);
-      if (Ce === oe) Be[Ce].p(_, ie); else {
+      if (!Te || 8 & ie[0] && he !== (he = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ee, "class", he);
+      if ((!Te || 1088 & ie[0]) && De !== (De = _[23](_[76]) + "")) set_data(Se, De);
+      let oe = Le;
+      Le = select_block_type_4(_);
+      if (Le === oe) Fe[Le].p(_, ie); else {
         group_outros();
-        transition_out(Be[oe], 1, 1, (() => {
-          Be[oe] = null;
+        transition_out(Fe[oe], 1, 1, (() => {
+          Fe[oe] = null;
         }));
         check_outros();
-        we = Be[Ce];
-        if (!we) {
-          we = Be[Ce] = De[Ce](_);
-          we.c();
-        } else we.p(_, ie);
-        transition_in(we, 1);
-        we.m(pe, ke);
+        Oe = Fe[Le];
+        if (!Oe) {
+          Oe = Fe[Le] = Me[Le](_);
+          Oe.c();
+        } else Oe.p(_, ie);
+        transition_in(Oe, 1);
+        Oe.m(we, null);
       }
-      if (!Oe || 4 & ie[0] && Le !== (Le = "filerow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(pe, "class", Le);
+      if (!Te || 8 & ie[0] && ke !== (ke = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ge, "class", ke);
+      if (_[25]) Ve.p(_, ie);
     },
     i(_) {
-      if (!Oe) {
-        transition_in(de);
-        transition_in(we);
-        Oe = true;
+      if (!Te) {
+        transition_in(fe);
+        transition_in(Oe);
+        transition_in(Ve);
+        Te = true;
       }
     },
     o(_) {
-      transition_out(de);
-      transition_out(we);
-      Oe = false;
+      transition_out(fe);
+      transition_out(Oe);
+      transition_out(Ve);
+      Te = false;
     },
     d(_) {
       if (_) {
         detach(ee);
-        detach(he);
         detach(pe);
+        detach(ge);
+        detach(Ae);
+        detach(xe);
       }
-      Ie[ue].d();
-      Be[Ce].d();
-      Ae = false;
-      run_all(xe);
+      Ne[de].d();
+      Fe[Le].d();
+      if (Ve) Ve.d(_);
+      Re = false;
+      run_all(Pe);
     }
   };
 }
 
-function create_else_block_22(_) {
-  let ee, ne, ie = _[17][_[61]] + "";
+function create_else_block_32(_) {
+  let ee, ne, ie = _[22][_[74]] + "";
   return {
     c() {
       ee = element("div");
       ne = text(ie);
-      attr(ee, "class", "statusnote svelte-1mend9p");
+      attr(ee, "class", "statusnote svelte-if2qsj");
     },
     m(_, ie) {
       insert(_, ee, ie);
       append(ee, ne);
     },
     p(_, ee) {
-      if (33 & ee[0] && ie !== (ie = _[17][_[61]] + "")) set_data(ne, ie);
+      if (1088 & ee[0] && ie !== (ie = _[22][_[74]] + "")) set_data(ne, ie);
+    },
+    i: noop2,
+    o: noop2,
+    d(_) {
+      if (_) detach(ee);
+    }
+  };
+}
+
+function create_if_block_62(_) {
+  let ee, ne;
+  const ie = [ _[11], {
+    isFlagged: _[74] == MODE_SHINY
+  }, {
+    list: filterList(_[70], [ "PLUGIN_MAIN" ])
+  }, {
+    hidden: false
+  } ];
+  let re = {};
+  for (let _ = 0; _ < ie.length; _ += 1) re = assign(re, ie[_]);
+  ee = new PluginCombo_default({
+    props: re
+  });
+  return {
+    c() {
+      create_component(ee.$$.fragment);
+    },
+    m(_, ie) {
+      mount_component(ee, _, ie);
+      ne = true;
+    },
+    p(_, ne) {
+      const re = 3136 & ne[0] ? get_spread_update(ie, [ 2048 & ne[0] && get_spread_object(_[11]), 1088 & ne[0] && {
+        isFlagged: _[74] == MODE_SHINY
+      }, 1024 & ne[0] && {
+        list: filterList(_[70], [ "PLUGIN_MAIN" ])
+      }, ie[3] ]) : {};
+      ee.$set(re);
+    },
+    i(_) {
+      if (!ne) {
+        transition_in(ee.$$.fragment, _);
+        ne = true;
+      }
+    },
+    o(_) {
+      transition_out(ee.$$.fragment, _);
+      ne = false;
+    },
+    d(_) {
+      destroy_component(ee, _);
+    }
+  };
+}
+
+function create_else_block_22(_) {
+  let ee, ne, ie = _[22][_[76]] + "";
+  return {
+    c() {
+      ee = element("div");
+      ne = text(ie);
+      attr(ee, "class", "statusnote svelte-if2qsj");
+    },
+    m(_, ie) {
+      insert(_, ee, ie);
+      append(ee, ne);
+    },
+    p(_, ee) {
+      if (1088 & ee[0] && ie !== (ie = _[22][_[76]] + "")) set_data(ne, ie);
+    },
+    i: noop2,
+    o: noop2,
+    d(_) {
+      if (_) detach(ee);
+    }
+  };
+}
+
+function create_if_block_53(_) {
+  let ee, ne;
+  const ie = [ _[11], {
+    isFlagged: _[76] == MODE_SHINY
+  }, {
+    list: filterList(_[70], [ "PLUGIN_DATA" ])
+  }, {
+    hidden: false
+  } ];
+  let re = {};
+  for (let _ = 0; _ < ie.length; _ += 1) re = assign(re, ie[_]);
+  ee = new PluginCombo_default({
+    props: re
+  });
+  return {
+    c() {
+      create_component(ee.$$.fragment);
+    },
+    m(_, ie) {
+      mount_component(ee, _, ie);
+      ne = true;
+    },
+    p(_, ne) {
+      const re = 3136 & ne[0] ? get_spread_update(ie, [ 2048 & ne[0] && get_spread_object(_[11]), 1088 & ne[0] && {
+        isFlagged: _[76] == MODE_SHINY
+      }, 1024 & ne[0] && {
+        list: filterList(_[70], [ "PLUGIN_DATA" ])
+      }, ie[3] ]) : {};
+      ee.$set(re);
+    },
+    i(_) {
+      if (!ne) {
+        transition_in(ee.$$.fragment, _);
+        ne = true;
+      }
+    },
+    o(_) {
+      transition_out(ee.$$.fragment, _);
+      ne = false;
+    },
+    d(_) {
+      destroy_component(ee, _);
+    }
+  };
+}
+
+function create_if_block_33(_) {
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se = _[23](_[78]) + "";
+  function click_handler_12(...ee) {
+    return _[46](_[69], _[77], ...ee);
+  }
+  const Ee = [ create_if_block_43, create_else_block_13 ], ve = [];
+  function select_block_type_5(_, ee) {
+    if (_[78] == MODE_SELECTIVE || _[78] == MODE_SHINY) return 0; else return 1;
+  }
+  de = select_block_type_5(_);
+  fe = ve[de] = Ee[de](_);
+  return {
+    c() {
+      ee = element("div");
+      ne = element("div");
+      ie = element("button");
+      re = text(Se);
+      se = space();
+      oe = element("span");
+      oe.textContent = "Other files";
+      le = space();
+      ue = element("div");
+      fe.c();
+      he = space();
+      attr(ie, "class", "status svelte-if2qsj");
+      attr(oe, "class", "name");
+      attr(ne, "class", "filetitle svelte-if2qsj");
+      attr(ue, "class", "body svelte-if2qsj");
+      attr(ee, "class", pe = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj");
+    },
+    m(_, fe) {
+      insert(_, ee, fe);
+      append(ee, ne);
+      append(ne, ie);
+      append(ie, re);
+      append(ne, se);
+      append(ne, oe);
+      append(ee, le);
+      append(ee, ue);
+      ve[de].m(ue, null);
+      append(ee, he);
+      ge = true;
+      if (!me) {
+        ye = listen(ie, "click", click_handler_12);
+        me = true;
+      }
+    },
+    p(ne, ie) {
+      _ = ne;
+      if ((!ge || 1088 & ie[0]) && Se !== (Se = _[23](_[78]) + "")) set_data(re, Se);
+      let se = de;
+      de = select_block_type_5(_);
+      if (de === se) ve[de].p(_, ie); else {
+        group_outros();
+        transition_out(ve[se], 1, 1, (() => {
+          ve[se] = null;
+        }));
+        check_outros();
+        fe = ve[de];
+        if (!fe) {
+          fe = ve[de] = Ee[de](_);
+          fe.c();
+        } else fe.p(_, ie);
+        transition_in(fe, 1);
+        fe.m(ue, null);
+      }
+      if (!ge || 8 & ie[0] && pe !== (pe = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ee, "class", pe);
+    },
+    i(_) {
+      if (!ge) {
+        transition_in(fe);
+        ge = true;
+      }
+    },
+    o(_) {
+      transition_out(fe);
+      ge = false;
+    },
+    d(_) {
+      if (_) detach(ee);
+      ve[de].d();
+      me = false;
+      ye();
+    }
+  };
+}
+
+function create_else_block_13(_) {
+  let ee, ne, ie = _[22][_[78]] + "";
+  return {
+    c() {
+      ee = element("div");
+      ne = text(ie);
+      attr(ee, "class", "statusnote svelte-if2qsj");
+    },
+    m(_, ie) {
+      insert(_, ee, ie);
+      append(ee, ne);
+    },
+    p(_, ee) {
+      if (1088 & ee[0] && ie !== (ie = _[22][_[78]] + "")) set_data(ne, ie);
     },
     i: noop2,
     o: noop2,
@@ -19780,8 +20691,10 @@ function create_else_block_22(_) {
 
 function create_if_block_43(_) {
   let ee, ne;
-  const ie = [ _[8], {
-    list: filterList(_[57], [ "PLUGIN_MAIN" ])
+  const ie = [ _[11], {
+    isFlagged: _[78] == MODE_SHINY
+  }, {
+    list: filterList(_[70], [ "PLUGIN_ETC" ])
   }, {
     hidden: false
   } ];
@@ -19799,74 +20712,11 @@ function create_if_block_43(_) {
       ne = true;
     },
     p(_, ne) {
-      const re = 257 & ne[0] ? get_spread_update(ie, [ 256 & ne[0] && get_spread_object(_[8]), 1 & ne[0] && {
-        list: filterList(_[57], [ "PLUGIN_MAIN" ])
-      }, ie[2] ]) : {};
-      ee.$set(re);
-    },
-    i(_) {
-      if (!ne) {
-        transition_in(ee.$$.fragment, _);
-        ne = true;
-      }
-    },
-    o(_) {
-      transition_out(ee.$$.fragment, _);
-      ne = false;
-    },
-    d(_) {
-      destroy_component(ee, _);
-    }
-  };
-}
-
-function create_else_block_13(_) {
-  let ee, ne, ie = _[17][_[63]] + "";
-  return {
-    c() {
-      ee = element("div");
-      ne = text(ie);
-      attr(ee, "class", "statusnote svelte-1mend9p");
-    },
-    m(_, ie) {
-      insert(_, ee, ie);
-      append(ee, ne);
-    },
-    p(_, ee) {
-      if (33 & ee[0] && ie !== (ie = _[17][_[63]] + "")) set_data(ne, ie);
-    },
-    i: noop2,
-    o: noop2,
-    d(_) {
-      if (_) detach(ee);
-    }
-  };
-}
-
-function create_if_block_33(_) {
-  let ee, ne;
-  const ie = [ _[8], {
-    list: filterList(_[57], [ "PLUGIN_DATA" ])
-  }, {
-    hidden: false
-  } ];
-  let re = {};
-  for (let _ = 0; _ < ie.length; _ += 1) re = assign(re, ie[_]);
-  ee = new PluginCombo_default({
-    props: re
-  });
-  return {
-    c() {
-      create_component(ee.$$.fragment);
-    },
-    m(_, ie) {
-      mount_component(ee, _, ie);
-      ne = true;
-    },
-    p(_, ne) {
-      const re = 257 & ne[0] ? get_spread_update(ie, [ 256 & ne[0] && get_spread_object(_[8]), 1 & ne[0] && {
-        list: filterList(_[57], [ "PLUGIN_DATA" ])
-      }, ie[2] ]) : {};
+      const re = 3136 & ne[0] ? get_spread_update(ie, [ 2048 & ne[0] && get_spread_object(_[11]), 1088 & ne[0] && {
+        isFlagged: _[78] == MODE_SHINY
+      }, 1024 & ne[0] && {
+        list: filterList(_[70], [ "PLUGIN_ETC" ])
+      }, ie[3] ]) : {};
       ee.$set(re);
     },
     i(_) {
@@ -19886,38 +20736,40 @@ function create_if_block_33(_) {
 }
 
 function create_each_block_12(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee = _[18](_[59]) + "", ve = _[56] + "";
-  function click_handler_7(...ee) {
-    return _[34](_[56], _[58], ...ee);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve = _[23](_[72]) + "", Ce = (_[8].get(`plugins/${_[69]}`) || _[69]) + "";
+  function click_handler_9(...ee) {
+    return _[43](_[69], _[71], ...ee);
   }
-  let Ce = _[59] == MODE_SELECTIVE && create_if_block_52(_);
-  const we = [ create_if_block_23, create_else_block_32 ], ke = [];
+  let we = (_[72] == MODE_SELECTIVE || _[72] == MODE_SHINY) && create_if_block_7(_);
+  const Le = [ create_if_block_23, create_else_block_42 ], Oe = [];
   function select_block_type_2(_, ee) {
-    if (_[59] == MODE_SELECTIVE) return 0; else return 1;
+    if (_[72] == MODE_SELECTIVE || _[72] == MODE_SHINY) return 0; else return 1;
   }
-  he = select_block_type_2(_);
-  pe = ke[he] = we[he](_);
+  pe = select_block_type_2(_);
+  ge = Oe[pe] = Le[pe](_);
   return {
     c() {
       ee = element("div");
       ne = element("div");
       ie = element("button");
-      re = text(Ee);
+      re = text(ve);
       se = space();
       oe = element("span");
-      le = text(ve);
+      le = text(Ce);
       ue = space();
-      if (Ce) Ce.c();
-      fe = space();
-      pe.c();
-      ge = empty();
-      attr(ie, "class", "status svelte-1mend9p");
+      de = element("div");
+      if (we) we.c();
+      he = space();
+      ge.c();
+      me = empty();
+      attr(ie, "class", "status svelte-if2qsj");
       attr(oe, "class", "name");
-      attr(ne, "class", "title svelte-1mend9p");
-      attr(ee, "class", de = "labelrow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p");
+      attr(ne, "class", "title svelte-if2qsj");
+      attr(de, "class", "body svelte-if2qsj");
+      attr(ee, "class", fe = "labelrow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj");
     },
-    m(_, de) {
-      insert(_, ee, de);
+    m(_, fe) {
+      insert(_, ee, fe);
       append(ee, ne);
       append(ne, ie);
       append(ie, re);
@@ -19925,81 +20777,82 @@ function create_each_block_12(_) {
       append(ne, oe);
       append(oe, le);
       append(ee, ue);
-      if (Ce) Ce.m(ee, null);
-      insert(_, fe, de);
-      ke[he].m(_, de);
-      insert(_, ge, de);
-      me = true;
-      if (!ye) {
-        Se = listen(ie, "click", click_handler_7);
-        ye = true;
+      append(ee, de);
+      if (we) we.m(de, null);
+      insert(_, he, fe);
+      Oe[pe].m(_, fe);
+      insert(_, me, fe);
+      ye = true;
+      if (!Se) {
+        Ee = listen(ie, "click", click_handler_9);
+        Se = true;
       }
     },
     p(ne, ie) {
       _ = ne;
-      if ((!me || 33 & ie[0]) && Ee !== (Ee = _[18](_[59]) + "")) set_data(re, Ee);
-      if ((!me || 1 & ie[0]) && ve !== (ve = _[56] + "")) set_data(le, ve);
-      if (_[59] == MODE_SELECTIVE) if (Ce) {
-        Ce.p(_, ie);
-        if (33 & ie[0]) transition_in(Ce, 1);
+      if ((!ye || 1088 & ie[0]) && ve !== (ve = _[23](_[72]) + "")) set_data(re, ve);
+      if ((!ye || 1280 & ie[0]) && Ce !== (Ce = (_[8].get(`plugins/${_[69]}`) || _[69]) + "")) set_data(le, Ce);
+      if (_[72] == MODE_SELECTIVE || _[72] == MODE_SHINY) if (we) {
+        we.p(_, ie);
+        if (1088 & ie[0]) transition_in(we, 1);
       } else {
-        Ce = create_if_block_52(_);
-        Ce.c();
-        transition_in(Ce, 1);
-        Ce.m(ee, null);
-      } else if (Ce) {
+        we = create_if_block_7(_);
+        we.c();
+        transition_in(we, 1);
+        we.m(de, null);
+      } else if (we) {
         group_outros();
-        transition_out(Ce, 1, 1, (() => {
-          Ce = null;
+        transition_out(we, 1, 1, (() => {
+          we = null;
         }));
         check_outros();
       }
-      if (!me || 4 & ie[0] && de !== (de = "labelrow " + (_[2] ? "hideeven" : "") + " svelte-1mend9p")) attr(ee, "class", de);
-      let se = he;
-      he = select_block_type_2(_);
-      if (he === se) ke[he].p(_, ie); else {
+      if (!ye || 8 & ie[0] && fe !== (fe = "labelrow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ee, "class", fe);
+      let se = pe;
+      pe = select_block_type_2(_);
+      if (pe === se) Oe[pe].p(_, ie); else {
         group_outros();
-        transition_out(ke[se], 1, 1, (() => {
-          ke[se] = null;
+        transition_out(Oe[se], 1, 1, (() => {
+          Oe[se] = null;
         }));
         check_outros();
-        pe = ke[he];
-        if (!pe) {
-          pe = ke[he] = we[he](_);
-          pe.c();
-        } else pe.p(_, ie);
-        transition_in(pe, 1);
-        pe.m(ge.parentNode, ge);
+        ge = Oe[pe];
+        if (!ge) {
+          ge = Oe[pe] = Le[pe](_);
+          ge.c();
+        } else ge.p(_, ie);
+        transition_in(ge, 1);
+        ge.m(me.parentNode, me);
       }
     },
     i(_) {
-      if (!me) {
-        transition_in(Ce);
-        transition_in(pe);
-        me = true;
+      if (!ye) {
+        transition_in(we);
+        transition_in(ge);
+        ye = true;
       }
     },
     o(_) {
-      transition_out(Ce);
-      transition_out(pe);
-      me = false;
+      transition_out(we);
+      transition_out(ge);
+      ye = false;
     },
     d(_) {
       if (_) {
         detach(ee);
-        detach(fe);
-        detach(ge);
+        detach(he);
+        detach(me);
       }
-      if (Ce) Ce.d();
-      ke[he].d(_);
-      ye = false;
-      Se();
+      if (we) we.d();
+      Oe[pe].d(_);
+      Se = false;
+      Ee();
     }
   };
 }
 
 function create_if_block3(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge = ensure_array_like(_[4]), me = [];
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge = ensure_array_like(_[5]), me = [];
   for (let ee = 0; ee < ge.length; ee += 1) me[ee] = create_each_block3(get_each_context3(_, ge, ee));
   return {
     c() {
@@ -20017,13 +20870,13 @@ function create_if_block3(_) {
       de = space();
       fe = element("button");
       fe.textContent = "🗑️";
-      attr(ie, "class", "svelte-1mend9p");
+      attr(ie, "class", "svelte-if2qsj");
       attr(oe, "for", "");
-      attr(oe, "class", "svelte-1mend9p");
-      if (void 0 === _[7]) add_render_callback((() => _[37].call(ue)));
-      attr(fe, "class", "status svelte-1mend9p");
-      attr(se, "class", "maintenancerow svelte-1mend9p");
-      attr(ee, "class", "list");
+      attr(oe, "class", "svelte-if2qsj");
+      if (void 0 === _[7]) add_render_callback((() => _[47].call(ue)));
+      attr(fe, "class", "status svelte-if2qsj");
+      attr(se, "class", "maintenancerow svelte-if2qsj");
+      attr(ee, "class", "buttons svelte-if2qsj");
     },
     m(ge, ye) {
       insert(ge, ee, ye);
@@ -20039,13 +20892,13 @@ function create_if_block3(_) {
       append(se, de);
       append(se, fe);
       if (!he) {
-        pe = [ listen(ue, "change", _[37]), listen(fe, "click", _[38]) ];
+        pe = [ listen(ue, "change", _[47]), listen(fe, "click", _[48]) ];
         he = true;
       }
     },
     p(_, ee) {
-      if (16 & ee[0]) {
-        ge = ensure_array_like(_[4]);
+      if (32 & ee[0]) {
+        ge = ensure_array_like(_[5]);
         let ne;
         for (ne = 0; ne < ge.length; ne += 1) {
           const ie = get_each_context3(_, ge, ne);
@@ -20058,7 +20911,7 @@ function create_if_block3(_) {
         for (;ne < me.length; ne += 1) me[ne].d(1);
         me.length = ge.length;
       }
-      if (144 & ee[0]) select_option(ue, _[7]);
+      if (160 & ee[0]) select_option(ue, _[7]);
     },
     d(_) {
       if (_) detach(ee);
@@ -20070,12 +20923,12 @@ function create_if_block3(_) {
 }
 
 function create_each_block3(_) {
-  let ee, ne, ie, re = _[53] + "";
+  let ee, ne, ie, re = _[66] + "";
   return {
     c() {
       ee = element("option");
       ne = text(re);
-      ee.__value = ie = _[53];
+      ee.__value = ie = _[66];
       set_input_value(ee, ee.__value);
     },
     m(_, ie) {
@@ -20083,8 +20936,8 @@ function create_each_block3(_) {
       append(ee, ne);
     },
     p(_, se) {
-      if (16 & se[0] && re !== (re = _[53] + "")) set_data(ne, re);
-      if (16 & se[0] && ie !== (ie = _[53])) {
+      if (32 & se[0] && re !== (re = _[66] + "")) set_data(ne, re);
+      if (32 & se[0] && ie !== (ie = _[66])) {
         ee.__value = ie;
         set_input_value(ee, ee.__value);
       }
@@ -20096,180 +20949,205 @@ function create_each_block3(_) {
 }
 
 function create_fragment3(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe, Ae, xe, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe = _[1] && create_if_block_8(_), Ve = _[3] && create_if_block_7(_);
-  const $e = [ create_if_block_13, create_else_block3 ], Ge = [];
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Te, Re, Pe, Ie, De, Be, Ne, Me, Fe, Ve, $e, Ge, Ue = _[1] && create_if_block_10(_), je = (_[4] || 0 !== _[12]) && create_if_block_9(_);
+  const ze = [ create_if_block_13, create_else_block3 ], qe = [];
   function select_block_type(_, ee) {
     if (0 == _[0].length) return 0; else return 1;
   }
-  ve = select_block_type(_);
-  Ce = Ge[ve] = $e[ve](_);
-  let Ue = _[1] && create_if_block3(_);
+  Oe = select_block_type(_);
+  ke = qe[Oe] = ze[Oe](_);
+  let He = _[1] && create_if_block3(_);
   return {
     c() {
       ee = element("div");
       ne = element("div");
-      ie = element("div");
-      re = element("button");
-      re.textContent = "Scan changes";
-      se = space();
-      oe = element("button");
-      oe.textContent = "Sync once";
-      le = space();
-      ue = element("button");
-      ue.textContent = "Refresh";
+      ie = element("button");
+      ie.textContent = "Scan changes";
+      re = space();
+      se = element("button");
+      se.textContent = "Sync once";
+      oe = space();
+      le = element("button");
+      le.textContent = "Refresh";
+      ue = space();
+      if (Ue) Ue.c();
       de = space();
-      if (Fe) Fe.c();
-      fe = space();
+      fe = element("div");
       he = element("button");
       he.textContent = "Select All Shiny";
       pe = space();
-      ge = element("div");
-      me = element("button");
-      me.textContent = "Apply All";
-      ye = space();
-      if (Ve) Ve.c();
+      ge = element("button");
+      ge.textContent = `${_[21]} Select Flagged Shiny`;
+      me = space();
+      ye = element("button");
+      ye.textContent = "Deselect all";
       Se = space();
-      Ee = element("div");
-      Ce.c();
+      Ee = element("button");
+      Ee.textContent = "Apply All Selected";
+      ve = space();
+      Ce = element("div");
+      if (je) je.c();
       we = space();
-      if (Ue) Ue.c();
-      ke = space();
       Le = element("div");
-      Oe = element("label");
-      Ae = element("span");
-      Ae.textContent = "Hide not applicable items";
-      xe = element("input");
-      Re = space();
+      ke.c();
+      Ae = space();
+      if (He) He.c();
+      xe = space();
       Te = element("div");
-      Pe = element("label");
-      Ie = element("span");
-      Ie.textContent = "Maintenance mode";
-      De = element("input");
-      attr(re, "class", "svelte-1mend9p");
-      attr(oe, "class", "svelte-1mend9p");
-      attr(ue, "class", "svelte-1mend9p");
-      attr(he, "class", "svelte-1mend9p");
-      attr(ie, "class", "buttons svelte-1mend9p");
-      attr(me, "class", "svelte-1mend9p");
-      attr(ge, "class", "buttons svelte-1mend9p");
-      attr(Ee, "class", "list");
-      attr(Ae, "class", "svelte-1mend9p");
-      attr(xe, "type", "checkbox");
-      attr(Oe, "class", "svelte-1mend9p");
-      attr(Le, "class", "buttons svelte-1mend9p");
-      attr(Ie, "class", "svelte-1mend9p");
-      attr(De, "type", "checkbox");
-      attr(Pe, "class", "svelte-1mend9p");
-      attr(Te, "class", "buttons svelte-1mend9p");
+      Re = element("label");
+      Pe = element("span");
+      Pe.textContent = "Hide not applicable items";
+      Ie = element("input");
+      De = space();
+      Be = element("div");
+      Ne = element("label");
+      Me = element("span");
+      Me.textContent = "Maintenance mode";
+      Fe = element("input");
+      attr(ie, "class", "svelte-if2qsj");
+      attr(se, "class", "svelte-if2qsj");
+      attr(le, "class", "svelte-if2qsj");
+      attr(ne, "class", "buttons svelte-if2qsj");
+      attr(he, "class", "svelte-if2qsj");
+      attr(ge, "class", "svelte-if2qsj");
+      attr(ye, "class", "svelte-if2qsj");
+      attr(Ee, "class", "mod-cta svelte-if2qsj");
+      attr(fe, "class", "buttons svelte-if2qsj");
+      attr(ee, "class", "buttonsWrap svelte-if2qsj");
+      attr(Ce, "class", "loading svelte-if2qsj");
+      attr(Le, "class", "list svelte-if2qsj");
+      attr(Pe, "class", "svelte-if2qsj");
+      attr(Ie, "type", "checkbox");
+      attr(Re, "class", "svelte-if2qsj");
+      attr(Te, "class", "buttons svelte-if2qsj");
+      attr(Me, "class", "svelte-if2qsj");
+      attr(Fe, "type", "checkbox");
+      attr(Ne, "class", "svelte-if2qsj");
+      attr(Be, "class", "buttons svelte-if2qsj");
     },
-    m(Ce, $e) {
-      insert(Ce, ee, $e);
+    m(ke, ze) {
+      insert(ke, ee, ze);
       append(ee, ne);
       append(ne, ie);
-      append(ie, re);
-      append(ie, se);
-      append(ie, oe);
-      append(ie, le);
-      append(ie, ue);
-      append(ie, de);
-      if (Fe) Fe.m(ie, null);
-      append(ie, fe);
-      append(ie, he);
-      append(ne, pe);
-      append(ne, ge);
-      append(ge, me);
-      append(ee, ye);
-      if (Ve) Ve.m(ee, null);
-      append(ee, Se);
-      append(ee, Ee);
-      Ge[ve].m(Ee, null);
-      append(ee, we);
-      if (Ue) Ue.m(ee, null);
-      append(ee, ke);
-      append(ee, Le);
-      append(Le, Oe);
-      append(Oe, Ae);
-      append(Oe, xe);
-      xe.checked = _[2];
-      append(ee, Re);
-      append(ee, Te);
-      append(Te, Pe);
-      append(Pe, Ie);
-      append(Pe, De);
-      De.checked = _[1];
-      Be = true;
-      if (!Ne) {
-        Me = [ listen(re, "click", _[25]), listen(oe, "click", _[26]), listen(ue, "click", _[27]), listen(he, "click", _[29]), listen(me, "click", _[30]), listen(xe, "change", _[39]), listen(De, "change", _[40]) ];
-        Ne = true;
+      append(ne, re);
+      append(ne, se);
+      append(ne, oe);
+      append(ne, le);
+      append(ne, ue);
+      if (Ue) Ue.m(ne, null);
+      append(ee, de);
+      append(ee, fe);
+      append(fe, he);
+      append(fe, pe);
+      append(fe, ge);
+      append(fe, me);
+      append(fe, ye);
+      append(fe, Se);
+      append(fe, Ee);
+      insert(ke, ve, ze);
+      insert(ke, Ce, ze);
+      if (je) je.m(Ce, null);
+      insert(ke, we, ze);
+      insert(ke, Le, ze);
+      qe[Oe].m(Le, null);
+      insert(ke, Ae, ze);
+      if (He) He.m(ke, ze);
+      insert(ke, xe, ze);
+      insert(ke, Te, ze);
+      append(Te, Re);
+      append(Re, Pe);
+      append(Re, Ie);
+      Ie.checked = _[3];
+      insert(ke, De, ze);
+      insert(ke, Be, ze);
+      append(Be, Ne);
+      append(Ne, Me);
+      append(Ne, Fe);
+      Fe.checked = _[1];
+      Ve = true;
+      if (!$e) {
+        Ge = [ listen(ie, "click", _[33]), listen(se, "click", _[34]), listen(le, "click", _[35]), listen(he, "click", _[37]), listen(ge, "click", _[38]), listen(ye, "click", _[39]), listen(Ee, "click", _[40]), listen(Ie, "change", _[49]), listen(Fe, "change", _[50]) ];
+        $e = true;
       }
     },
-    p(_, ne) {
-      if (_[1]) if (Fe) Fe.p(_, ne); else {
-        Fe = create_if_block_8(_);
-        Fe.c();
-        Fe.m(ie, fe);
-      } else if (Fe) {
-        Fe.d(1);
-        Fe = null;
-      }
-      if (_[3]) if (Ve) ; else {
-        Ve = create_if_block_7(_);
-        Ve.c();
-        Ve.m(ee, Se);
-      } else if (Ve) {
-        Ve.d(1);
-        Ve = null;
-      }
-      let re = ve;
-      ve = select_block_type(_);
-      if (ve === re) Ge[ve].p(_, ne); else {
-        group_outros();
-        transition_out(Ge[re], 1, 1, (() => {
-          Ge[re] = null;
-        }));
-        check_outros();
-        Ce = Ge[ve];
-        if (!Ce) {
-          Ce = Ge[ve] = $e[ve](_);
-          Ce.c();
-        } else Ce.p(_, ne);
-        transition_in(Ce, 1);
-        Ce.m(Ee, null);
-      }
-      if (_[1]) if (Ue) Ue.p(_, ne); else {
-        Ue = create_if_block3(_);
+    p(_, ee) {
+      if (_[1]) if (Ue) Ue.p(_, ee); else {
+        Ue = create_if_block_10(_);
         Ue.c();
-        Ue.m(ee, ke);
+        Ue.m(ne, null);
       } else if (Ue) {
         Ue.d(1);
         Ue = null;
       }
-      if (4 & ne[0]) xe.checked = _[2];
-      if (2 & ne[0]) De.checked = _[1];
+      if (_[4] || 0 !== _[12]) if (je) je.p(_, ee); else {
+        je = create_if_block_9(_);
+        je.c();
+        je.m(Ce, null);
+      } else if (je) {
+        je.d(1);
+        je = null;
+      }
+      let ie = Oe;
+      Oe = select_block_type(_);
+      if (Oe === ie) qe[Oe].p(_, ee); else {
+        group_outros();
+        transition_out(qe[ie], 1, 1, (() => {
+          qe[ie] = null;
+        }));
+        check_outros();
+        ke = qe[Oe];
+        if (!ke) {
+          ke = qe[Oe] = ze[Oe](_);
+          ke.c();
+        } else ke.p(_, ee);
+        transition_in(ke, 1);
+        ke.m(Le, null);
+      }
+      if (_[1]) if (He) He.p(_, ee); else {
+        He = create_if_block3(_);
+        He.c();
+        He.m(xe.parentNode, xe);
+      } else if (He) {
+        He.d(1);
+        He = null;
+      }
+      if (8 & ee[0]) Ie.checked = _[3];
+      if (2 & ee[0]) Fe.checked = _[1];
     },
     i(_) {
-      if (!Be) {
-        transition_in(Ce);
-        Be = true;
+      if (!Ve) {
+        transition_in(ke);
+        Ve = true;
       }
     },
     o(_) {
-      transition_out(Ce);
-      Be = false;
+      transition_out(ke);
+      Ve = false;
     },
     d(_) {
-      if (_) detach(ee);
-      if (Fe) Fe.d();
-      if (Ve) Ve.d();
-      Ge[ve].d();
+      if (_) {
+        detach(ee);
+        detach(ve);
+        detach(Ce);
+        detach(we);
+        detach(Le);
+        detach(Ae);
+        detach(xe);
+        detach(Te);
+        detach(De);
+        detach(Be);
+      }
       if (Ue) Ue.d();
-      Ne = false;
-      run_all(Me);
+      if (je) je.d();
+      qe[Oe].d();
+      if (He) He.d(_);
+      $e = false;
+      run_all(Ge);
     }
   };
 }
 
-var PREFIX_PLUGIN_ALL = "PLUGIN_ALL", PREFIX_PLUGIN_DATA = "PLUGIN_DATA", PREFIX_PLUGIN_MAIN = "PLUGIN_MAIN";
+var PREFIX_PLUGIN_ALL = "PLUGIN_ALL", PREFIX_PLUGIN_DATA = "PLUGIN_DATA", PREFIX_PLUGIN_MAIN = "PLUGIN_MAIN", PREFIX_PLUGIN_ETC = "PLUGIN_ETC";
 
 function filterList(_, ee) {
   return _.filter((_ => -1 !== ee.indexOf(_.category))).sort(((_, ee) => `${_.category}-${_.name}`.localeCompare(`${ee.category}-${ee.name}`)));
@@ -20287,56 +21165,69 @@ function groupBy(_, ee) {
 }
 
 function instance3(_, ee, ne) {
-  let ie, re, se, {plugin: oe} = ee;
-  const le = oe.addOnConfigSync;
-  let ue = [], de = 0, fe = false, he = false, pe = 0, ge = false;
+  let ie, re, se, oe, le;
+  component_subscribe(_, pluginManifestStore, (_ => ne(32, oe = _)));
+  component_subscribe(_, pluginV2Progress, (_ => ne(12, le = _)));
+  let {plugin: ue} = ee;
+  const de = ue.addOnConfigSync;
+  let fe = [], he = 0, pe = 0, ge = false, me = false, ye = 0, Se = false;
   async function requestUpdate() {
-    await le.updatePluginList(true);
+    await de.updatePluginList(true);
   }
   async function requestReload() {
-    await le.reloadPluginList(true);
+    await de.reloadPluginList(true);
   }
-  let me = [];
+  let Ee = [];
   pluginList.subscribe((_ => {
-    ne(0, ue = _);
-    ne(4, me = unique(ue.map((_ => _.term))));
+    ne(0, fe = _);
+    ne(5, Ee = unique(fe.map((_ => _.term))));
   }));
   pluginIsEnumerating.subscribe((_ => {
-    ne(3, he = _);
+    ne(4, me = _);
   }));
   onMount((async () => {
     requestUpdate();
   }));
+  const ve = {
+    CONFIG: "Configuration",
+    THEME: "Themes",
+    SNIPPET: "Snippets"
+  };
   async function scanAgain() {
-    await le.scanAllConfigFiles(true);
+    await de.scanAllConfigFiles(true);
     await requestUpdate();
   }
   async function replicate2() {
-    await oe.replicate(true);
+    await ue.replicate(true);
   }
-  function selectAllNewest() {
-    ne(21, de++, de);
+  function selectAllNewest(_) {
+    ne(27, he++, he);
+    ne(28, pe = _ ? 1 : 2);
+  }
+  function resetSelectNewest() {
+    ne(27, he++, he);
+    ne(28, pe = 3);
   }
   function applyAll() {
-    ne(22, pe++, pe);
+    ne(29, ye++, ye);
   }
   async function applyData(_) {
-    return await le.applyData(_);
+    return await de.applyData(_);
   }
-  async function compareData(_, ee) {
-    return await le.compareUsingDisplayData(_, ee);
+  async function compareData(_, ee, ne = false) {
+    return await de.compareUsingDisplayData(_, ee, ne);
   }
   async function deleteData(_) {
-    return await le.deleteData(_);
+    return await de.deleteData(_);
   }
   function askMode(_, ee, ne) {
     var ie;
-    const re = new import_obsidian3.Menu;
+    const re = new import_obsidian4.Menu;
     re.addItem((_ => _.setTitle(ee).setIsLabel(true)));
     re.addSeparator();
-    const se = null !== (ie = Ee.get(ne)) && void 0 !== ie ? ie : MODE_SELECTIVE;
-    for (const ee of [ MODE_SELECTIVE, MODE_AUTOMATIC, MODE_PAUSED ]) re.addItem((ie => {
-      ie.setTitle(`${getIcon(ee)}:${Se[ee]}`).onClick((ie => {
+    const se = null !== (ie = Le.get(ne)) && void 0 !== ie ? ie : MODE_SELECTIVE;
+    for (const ee of [ MODE_SELECTIVE, MODE_AUTOMATIC, MODE_PAUSED, MODE_SHINY ]) re.addItem((ie => {
+      ie.setTitle(`${getIcon(ee)}:${we[ee]}`).onClick((ie => {
         if (ee === MODE_AUTOMATIC) askOverwriteModeForAutomatic(_, ne); else setMode(ne, ee);
       })).setChecked(se == ee).setDisabled(se == ee);
     }));
@@ -20345,11 +21236,11 @@ function instance3(_, ee, ne) {
   function applyAutomaticSync(_, ee) {
     var ne, ie;
     setMode(_, MODE_AUTOMATIC);
-    const re = normalizePath(oe.app.vault.configDir), se = (null !== (ie = null === (ne = oe.settings.pluginSyncExtendedSetting[_]) || void 0 === ne ? void 0 : ne.files) && void 0 !== ie ? ie : []).map((_ => `${re}/${_}`));
-    oe.addOnHiddenFileSync.syncInternalFilesAndDatabase(ee, true, false, se);
+    const re = normalizePath(ue.app.vault.configDir), se = (null !== (ie = null === (ne = ue.settings.pluginSyncExtendedSetting[_]) || void 0 === ne ? void 0 : ne.files) && void 0 !== ie ? ie : []).map((_ => `${re}/${_}`));
+    ue.addOnHiddenFileSync.syncInternalFilesAndDatabase(ee, true, false, se);
   }
   function askOverwriteModeForAutomatic(_, ee) {
-    const ne = new import_obsidian3.Menu;
+    const ne = new import_obsidian4.Menu;
     ne.addItem((_ => _.setTitle("Initial Action").setIsLabel(true)));
     ne.addSeparator();
     ne.addItem((_ => {
@@ -20367,63 +21258,73 @@ function instance3(_, ee, ne) {
     }));
     ne.showAtMouseEvent(_);
   }
-  const ye = {
+  const Ce = {
     [MODE_SELECTIVE]: "🔀",
     [MODE_PAUSED]: "⛔",
-    [MODE_AUTOMATIC]: "✨"
-  }, Se = {
+    [MODE_AUTOMATIC]: "✨",
+    [MODE_SHINY]: "🚩"
+  }, we = {
     [MODE_SELECTIVE]: "Selective",
     [MODE_PAUSED]: "Ignore",
-    [MODE_AUTOMATIC]: "Automatic"
+    [MODE_AUTOMATIC]: "Automatic",
+    [MODE_SHINY]: "Flagged Selective"
   };
   function setMode(_, ee) {
     if (_.startsWith(PREFIX_PLUGIN_ALL + "/")) {
       setMode(PREFIX_PLUGIN_DATA + _.substring(PREFIX_PLUGIN_ALL.length), ee);
       setMode(PREFIX_PLUGIN_MAIN + _.substring(PREFIX_PLUGIN_ALL.length), ee);
+      return;
     }
-    const ie = unique(ue.filter((ee => `${ee.category}/${ee.name}` == _)).map((_ => _.files)).flat().map((_ => _.filename)));
-    Ee.set(_, ee);
-    ne(5, ve = Ee);
-    if (!(_ in oe.settings.pluginSyncExtendedSetting)) ne(20, oe.settings.pluginSyncExtendedSetting[_] = {
-      key: _,
-      mode: ee,
-      files: []
-    }, oe);
-    ne(20, oe.settings.pluginSyncExtendedSetting[_].files = ie, oe);
-    ne(20, oe.settings.pluginSyncExtendedSetting[_].mode = ee, oe);
-    oe.saveSettingData();
+    const ie = unique(fe.filter((ee => `${ee.category}/${ee.name}` == _)).map((_ => _.files)).flat().map((_ => _.filename)));
+    if (ee == MODE_SELECTIVE) {
+      Le.delete(_);
+      delete ue.settings.pluginSyncExtendedSetting[_];
+      ne(6, Oe = Le);
+    } else {
+      Le.set(_, ee);
+      ne(6, Oe = Le);
+      if (!(_ in ue.settings.pluginSyncExtendedSetting)) ne(26, ue.settings.pluginSyncExtendedSetting[_] = {
+        key: _,
+        mode: ee,
+        files: []
+      }, ue);
+      ne(26, ue.settings.pluginSyncExtendedSetting[_].files = ie, ue);
+      ne(26, ue.settings.pluginSyncExtendedSetting[_].mode = ee, ue);
+    }
+    ue.saveSettingData();
   }
   function getIcon(_) {
-    if (_ in ye) return ye[_];
+    if (_ in Ce) return Ce[_];
   }
-  let Ee = new Map, ve = new Map;
-  for (const {key: _, mode: ee} of Object.values(oe.settings.pluginSyncExtendedSetting)) Ee.set(_, ee);
-  ve = Ee;
-  let Ce = {}, we = "";
+  let Le = new Map, Oe = new Map;
+  for (const {key: _, mode: ee} of Object.values(ue.settings.pluginSyncExtendedSetting)) Le.set(_, ee);
+  Oe = Le;
+  let ke = {}, Ae = "";
   async function deleteAllItems(_) {
-    const ee = ue.filter((ee => ee.term == _));
+    const ee = fe.filter((ee => ee.term == _));
     for (const _ of ee) await deleteData(_);
-    le.reloadPluginList(true);
+    de.reloadPluginList(true);
   }
+  let xe = new Map, Te = [], Re = [], Pe = ue.settings.usePluginEtc;
   _.$$set = _ => {
-    if ("plugin" in _) ne(20, oe = _.plugin);
+    if ("plugin" in _) ne(26, ue = _.plugin);
   };
   _.$$.update = () => {
-    if (1048576 & _.$$.dirty[0]) ne(24, re = oe.deviceAndVaultName);
-    if (32505858 & _.$$.dirty[0]) ne(8, se = {
+    if (67108864 & _.$$.dirty[0]) ne(31, re = ue.deviceAndVaultName);
+    if (2080374786 & _.$$.dirty[0] | 1 & _.$$.dirty[1]) ne(11, se = {
       thisTerm: re,
       hideNotApplicable: ie,
-      selectNewest: de,
-      applyAllPluse: pe,
+      selectNewest: he,
+      selectNewestStyle: pe,
+      applyAllPluse: ye,
       applyData,
       compareData,
       deleteData,
-      plugin: oe,
-      isMaintenanceMode: ge
+      plugin: ue,
+      isMaintenanceMode: Se
     });
-    if (1048577 & _.$$.dirty[0]) {
-      const _ = Object.keys(oe.settings.pluginSyncExtendedSetting);
-      ne(6, Ce = [ ...ue, ..._.map((_ => `${_}///`.split("/"))).filter((_ => _[0] && _[1])).map((_ => ({
+    if (1 & _.$$.dirty[0]) ne(2, ke = function computeDisplayKeys(_) {
+      return [ ..._, ...Object.keys(ue.settings.pluginSyncExtendedSetting).map((_ => `${_}///`.split("/"))).filter((_ => _[0] && _[1])).map((_ => ({
         category: _[0],
         name: _[1],
         displayName: _[1]
@@ -20436,26 +21337,36 @@ function instance3(_, ee, ne) {
           ..._,
           [ee.category]: unique(ee.category in _ ? [ ..._[ee.category], null !== (ne = ee.displayName) && void 0 !== ne ? ne : ee.name ] : [ null !== (ie = ee.displayName) && void 0 !== ie ? ie : ee.name ])
         };
-      }), {}));
-    }
+      }), {});
+    }(fe));
+    if (2 & _.$$.dirty[1]) (function updateNameMap(_) {
+      const ee = [ ..._.entries() ].map((([_, ee]) => [ _.split("/").slice(-2).join("/"), ee.name ])), ie = new Map(ee);
+      if (ie.size == xe.size) {
+        let _ = false;
+        for (const [ee, ne] of ie) if (xe.get(ee) != ne) {
+          _ = true;
+          break;
+        }
+        if (!_) return;
+      }
+      ne(8, xe = ie);
+    })(oe);
+    if (4 & _.$$.dirty[0]) ne(9, Te = Object.entries(ve).filter((([_, ee]) => _ in ke)));
+    if (1 & _.$$.dirty[0]) ne(10, Re = groupBy(filterList(fe, [ "PLUGIN_MAIN", "PLUGIN_DATA", "PLUGIN_ETC" ]), "name"));
   };
-  ne(23, ie = false);
-  return [ ue, ge, fe, he, me, ve, Ce, we, se, requestUpdate, requestReload, {
-    CONFIG: "Configuration",
-    THEME: "Themes",
-    SNIPPET: "Snippets"
-  }, scanAgain, replicate2, selectAllNewest, applyAll, askMode, Se, getIcon, deleteAllItems, oe, de, pe, ie, re, () => scanAgain(), () => replicate2(), () => requestUpdate(), () => requestReload(), () => selectAllNewest(), () => applyAll(), ([_, ee]) => _ in Ce, (_, ee, ne, ie) => askMode(ie, `${_}/${ee}`, ne), (_, ee, ne) => ne.category == _ && ne.name == ee, (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ALL}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_MAIN}/${_}/MAIN`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_DATA}/${_}`, ee), function select_change_handler() {
-    we = select_value(this);
-    ne(7, we);
-    ne(4, me);
+  ne(30, ie = false);
+  return [ fe, Se, ke, ge, me, Ee, Oe, Ae, xe, Te, Re, se, le, requestUpdate, requestReload, scanAgain, replicate2, selectAllNewest, resetSelectNewest, applyAll, askMode, "🚩", we, getIcon, deleteAllItems, Pe, ue, he, pe, ye, ie, re, oe, () => scanAgain(), () => replicate2(), () => requestUpdate(), () => requestReload(), () => selectAllNewest(true), () => selectAllNewest(false), () => resetSelectNewest(), () => applyAll(), (_, ee, ne, ie) => askMode(ie, `${_}/${ee}`, ne), (_, ee, ne) => ne.category == _ && ne.name == ee, (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ALL}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_MAIN}/${_}/MAIN`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_DATA}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ETC}/${_}`, ee), function select_change_handler() {
+    Ae = select_value(this);
+    ne(7, Ae);
+    ne(5, Ee);
   }, _ => {
-    deleteAllItems(we);
+    deleteAllItems(Ae);
   }, function input0_change_handler() {
-    fe = this.checked;
-    ne(2, fe);
-  }, function input1_change_handler() {
     ge = this.checked;
-    ne(1, ge);
+    ne(3, ge);
+  }, function input1_change_handler() {
+    Se = this.checked;
+    ne(1, Se);
   } ];
 }
 
@@ -20463,7 +21374,7 @@ var PluginPane = class extends SvelteComponent {
   constructor(_) {
     super();
     init2(this, _, instance3, create_fragment3, safe_not_equal, {
-      plugin: 20
+      plugin: 26
     }, add_css3, [ -1, -1, -1 ]);
   }
 }, PluginPane_default = PluginPane, PluginDialogModal = class extends import_obsidian.Modal {
@@ -20476,7 +21387,10 @@ var PluginPane = class extends SvelteComponent {
   }
   onOpen() {
     const {contentEl: _} = this;
-    this.titleEl.setText("Customization Sync (Beta2)");
+    this.contentEl.style.overflow = "auto";
+    this.contentEl.style.display = "flex";
+    this.contentEl.style.flexDirection = "column";
+    this.titleEl.setText("Customization Sync (Beta3)");
     if (!this.component) this.component = new PluginPane_default({
       target: _,
       props: {
@@ -20994,7 +21908,7 @@ function compareFileFreshness(_, ee) {
   if (ue && de && isMarkedAsSameChanges(_, [ ue, de ])) return EVEN; else return compareMTime(ue, de);
 }
 
-var import_obsidian5 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 function add_css4(_) {
   append_styles(_, "svelte-zh5x8", "label.svelte-zh5x8.svelte-zh5x8{min-width:4em;width:4em;display:inline-flex;flex-direction:row;justify-content:flex-end}ul.svelte-zh5x8.svelte-zh5x8{flex-grow:1;display:inline-flex;flex-direction:column;list-style-type:none;margin-block-start:0;margin-block-end:0;margin-inline-start:0px;margin-inline-end:0px;padding-inline-start:0}li.svelte-zh5x8.svelte-zh5x8{padding:var(--size-2-1) var(--size-4-1);display:inline-flex;flex-grow:1;align-items:center;justify-content:flex-end;gap:var(--size-4-2)}li.svelte-zh5x8 input.svelte-zh5x8{min-width:10em}button.iconbutton.svelte-zh5x8.svelte-zh5x8{max-width:4em}");
@@ -21871,7 +22785,7 @@ async function deleteDBEntryPrefix(_, ee) {
 async function ensureRemoteIsCompatible(_, ee, ne, ie, re) {
   var se, oe, le, ue;
   const de = {
-    _id: MILSTONE_DOCID,
+    _id: MILESTONE_DOCID,
     type: "milestoneinfo",
     created: new Date / 1,
     locked: false,
@@ -21910,7 +22824,13 @@ async function ensureRemoteIsCompatible(_, ee, ne, ie, re) {
   if (ge < pe) if (!ee.ignoreVersionCheck) return "INCOMPATIBLE";
   if (!ee.disableCheckingConfigMismatch) {
     const _ = null != (ue = null == (le = fe.tweak_values) ? void 0 : le[DEVICE_ID_PREFERRED]) ? ue : he, ee = he;
-    if (isObjectDifferent(extractObject(TweakValuesShouldMatchedTemplate, _), extractObject(TweakValuesShouldMatchedTemplate, ee), true)) return [ "MISMATCHED", _ ];
+    if (isObjectDifferent(extractObject(TweakValuesShouldMatchedTemplate, {
+      ...TweakValuesDefault,
+      ..._
+    }), extractObject(TweakValuesShouldMatchedTemplate, {
+      ...TweakValuesDefault,
+      ...ee
+    }), true)) return [ "MISMATCHED", _ ];
   }
   if (fe.locked) {
     if (-1 == fe.accepted_nodes.indexOf(ne)) if (fe.cleaned) return "NODE_CLEANED"; else return "NODE_LOCKED";
@@ -21920,7 +22840,7 @@ async function ensureRemoteIsCompatible(_, ee, ne, ie, re) {
 }
 
 async function ensureDatabaseIsCompatible(_, ee, ne, ie) {
-  const re = await resolveWithIgnoreKnownError(_.get(MILSTONE_DOCID), false);
+  const re = await resolveWithIgnoreKnownError(_.get(MILESTONE_DOCID), false);
   return await ensureRemoteIsCompatible(re, ee, ne, ie, (async ee => {
     await _.put(ee);
   }));
@@ -22422,7 +23342,7 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
       return;
     }
     const se = {
-      _id: MILSTONE_DOCID,
+      _id: MILESTONE_DOCID,
       type: "milestoneinfo",
       created: new Date / 1,
       locked: ee,
@@ -22434,7 +23354,7 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
       tweak_values: {}
     }, oe = {
       ...se,
-      ...await resolveWithIgnoreKnownError(re.db.get(MILSTONE_DOCID), se)
+      ...await resolveWithIgnoreKnownError(re.db.get(MILESTONE_DOCID), se)
     };
     oe.node_chunk_info = {
       ...se.node_chunk_info,
@@ -22457,7 +23377,7 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
       return;
     }
     const ie = {
-      _id: MILSTONE_DOCID,
+      _id: MILESTONE_DOCID,
       type: "milestoneinfo",
       created: new Date / 1,
       locked: false,
@@ -22468,7 +23388,7 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
       tweak_values: {}
     }, re = {
       ...ie,
-      ...await resolveWithIgnoreKnownError(ne.db.get(MILSTONE_DOCID), ie)
+      ...await resolveWithIgnoreKnownError(ne.db.get(MILESTONE_DOCID), ie)
     };
     re.node_chunk_info = {
       ...ie.node_chunk_info,
@@ -22512,7 +23432,7 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
   async resetRemoteTweakSettings(_) {
     const ee = _.couchDB_URI + ("" == _.couchDB_DBNAME ? "" : "/" + _.couchDB_DBNAME), ne = await this.connectRemoteCouchDBWithSetting(_, this.env.getIsMobile(), true);
     if ("string" != typeof ne) if (await checkRemoteVersion(ne.db, this.migrate.bind(this), VER)) try {
-      const _ = await ne.db.get(MILSTONE_DOCID);
+      const _ = await ne.db.get(MILESTONE_DOCID);
       _.tweak_values = {};
       await ne.db.put(_);
       Logger("tweak values on the remote database have been cleared", LOG_LEVEL_VERBOSE);
@@ -22524,7 +23444,7 @@ var LiveSyncCouchDBReplicator = class extends LiveSyncAbstractReplicator {
   async setPreferredRemoteTweakSettings(_) {
     const ee = _.couchDB_URI + ("" == _.couchDB_DBNAME ? "" : "/" + _.couchDB_DBNAME), ne = await this.connectRemoteCouchDBWithSetting(_, this.env.getIsMobile(), true);
     if ("string" != typeof ne) if (await checkRemoteVersion(ne.db, this.migrate.bind(this), VER)) try {
-      const ee = await ne.db.get(MILSTONE_DOCID);
+      const ee = await ne.db.get(MILESTONE_DOCID);
       ee.tweak_values[DEVICE_ID_PREFERRED] = extractObject(TweakValuesTemplate, {
         ..._
       });
@@ -23321,6 +24241,10 @@ var _a3, OnDialogSettingsDefault = {
   notifyThresholdOfRemoteStorageSize: {
     name: "Notify when the estimated remote storage size exceeds on start up",
     desc: "MB (0 to disable)."
+  },
+  usePluginSyncV2: {
+    name: "Enable per-file-saved customization sync",
+    desc: "If enabled per-filed efficient customization sync will be used. We need a small migration when enabling this. And all devices should be updated to v0.23.18. Once we enabled this, we lost a compatibility with old versions."
   }
 };
 
@@ -23412,7 +24336,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
   }
   autoWireComponent(_, ee, ne) {
     this.placeHolderBuf = (null == ee ? void 0 : ee.placeHolder) || (null == ne ? void 0 : ne.placeHolder) || "";
-    if (this.placeHolderBuf && _ instanceof import_obsidian5.TextComponent) _.setPlaceholder(this.placeHolderBuf);
+    if (this.placeHolderBuf && _ instanceof import_obsidian6.TextComponent) _.setPlaceholder(this.placeHolderBuf);
     if (null == ne ? void 0 : ne.onUpdate) this.addOnUpdate(ne.onUpdate);
   }
   async commitValue(_) {
@@ -23574,7 +24498,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
        case "isCta":
         {
           const ee = this.autoWiredComponent;
-          if (ee instanceof import_obsidian5.ButtonComponent) if (_[ne]) ee.setCta(); else ee.removeCta();
+          if (ee instanceof import_obsidian6.ButtonComponent) if (_[ne]) ee.setCta(); else ee.removeCta();
           this.prevStatus[ne] = _[ne];
         }
         break;
@@ -23582,7 +24506,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
        case "isWarning":
         {
           const ee = this.autoWiredComponent;
-          if (ee instanceof import_obsidian5.ButtonComponent) if (_[ne]) ee.setWarning();
+          if (ee instanceof import_obsidian6.ButtonComponent) if (_[ne]) ee.setWarning();
           this.prevStatus[ne] = _[ne];
         }
         break;
@@ -23846,7 +24770,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       text: "Updates"
     }), pe = this.createEl(fe, "div", {
       text: ""
-    }), ge = "0.23.17", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
+    }), ge = "0.23.18", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
     ye.addClass("sls-header-button");
     ye.innerHTML = "<button> OK, I read everything. </button>";
     if (me > ((null == (_ = this.editingSettings) ? void 0 : _.lastReadUpdates) || 0)) {
@@ -23857,7 +24781,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         _.remove();
       }));
     }
-    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.17:\n  - Improved:\n    - Overall performance has been improved by using PouchDB 9.0.0.\n    - Configuration mismatch detection is refined. We can resolve mismatches more smoothly and naturally.\n    More detail is on `troubleshooting.md` on the repository.\n  - Fixed:\n    - Customisation Sync will be disabled when a corrupted configuration is detected.\n      Therefore, the Device Name can be changed even in the event of a configuration mismatch.\n  - New feature:\n    - We can get a notification about the storage usage of the remote database.\n      - Default: We will be asked.\n      - If the remote storage usage approaches the configured value, we will be asked whether we want to Rebuild or increase the limit.\n- 0.23.16:\n  - Maintenance Update:\n    - Library refining (Phase 1 - step 2). There are no significant changes on the user side.\n    - Including the following fixes of potentially problems:\n      - the problem which the path had been obfuscating twice has been resolved.\n      - Note: Potential problems of the library; which has not happened in Self-hosted LiveSync for some reasons.\n- 0.23.15:\n  - Maintenance Update:\n    - Library refining (Phase 1). There are no significant changes on the user side.\n- 0.23.14:\n  - Fixed:\n    - No longer batch-saving ignores editor inputs.\n    - The file-watching and serialisation processes have been changed to the one which is similar to previous implementations.\n    - We can configure the settings (Especially about text-boxes) even if we have configured the device name.\n  - Improved:\n    - We can configure the delay of batch-saving.\n      - Default: 5 seconds, the same as the previous hard-coded value. (Note: also, the previous behaviour was not correct).\n    - Also, we can configure the limit of delaying batch-saving.\n    - The performance of showing status indicators has been improved.\n\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
+    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.18:\n  - New feature:\n    - Per-file-saved customization sync has been shipped.\n      - We can synchronise plug-igs etc., more smoothly.\n      - Default: disabled. We need a small migration when enabling this. And all devices should be updated to v0.23.18. Once we enabled this, we lost compatibility with old versions.\n    - Customisation sync has got beta3.\n      - We can set `Flag` to each item to select the newest, automatically.\n        - This configuration is per device.\n  - Improved:\n    - Start-up speed has been improved.\n  - Fixed:\n    - On the customisation sync dialogue, buttons are kept within the screen.\n    - No more unnecessary entries on `data.json` for customisation sync.\n    - Selections are no longer lost while updating customisation items.\n  - Tidied on source codes:\n    - Many typos have been fixed.\n    - Some unnecessary type casting removed.\n- 0.23.17:\n  - Improved:\n    - Overall performance has been improved by using PouchDB 9.0.0.\n    - Configuration mismatch detection is refined. We can resolve mismatches more smoothly and naturally.\n    More detail is on `troubleshooting.md` on the repository.\n  - Fixed:\n    - Customisation Sync will be disabled when a corrupted configuration is detected.\n      Therefore, the Device Name can be changed even in the event of a configuration mismatch.\n  - New feature:\n    - We can get a notification about the storage usage of the remote database.\n      - Default: We will be asked.\n      - If the remote storage usage approaches the configured value, we will be asked whether we want to Rebuild or increase the limit.\n- 0.23.16:\n  - Maintenance Update:\n    - Library refining (Phase 1 - step 2). There are no significant changes on the user side.\n    - Including the following fixes of potentially problems:\n      - the problem which the path had been obfuscating twice has been resolved.\n      - Note: Potential problems of the library; which has not happened in Self-hosted LiveSync for some reasons.\n- 0.23.15:\n  - Maintenance Update:\n    - Library refining (Phase 1). There are no significant changes on the user side.\n- 0.23.14:\n  - Fixed:\n    - No longer batch-saving ignores editor inputs.\n    - The file-watching and serialisation processes have been changed to the one which is similar to previous implementations.\n    - We can configure the settings (Especially about text-boxes) even if we have configured the device name.\n  - Improved:\n    - We can configure the delay of batch-saving.\n      - Default: 5 seconds, the same as the previous hard-coded value. (Note: also, the previous behaviour was not correct).\n    - Also, we can configure the limit of delaying batch-saving.\n    - The performance of showing status indicators has been improved.\n\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
     addScreenElement("100", fe);
     const isAnySyncEnabled = () => {
       var _, ee, ne, ie;
@@ -23929,35 +24853,35 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
     this.createEl(ve, "h3", {
       text: "Online Tips"
     });
-    const Ce = "vrtmrz/obsidian-livesync", we = "/docs/troubleshooting.md", ke = `https://raw.githubusercontent.com/${Ce}/main`;
+    const Ce = "vrtmrz/obsidian-livesync", we = "/docs/troubleshooting.md", Le = `https://raw.githubusercontent.com/${Ce}/main`;
     this.createEl(ve, "div", "", (_ => _.innerHTML = `<a href='https://github.com/${Ce}/blob/main${we}' target="_blank">Open in browser</a>`));
-    const Le = this.createEl(ve, "div", {
+    const Oe = this.createEl(ve, "div", {
       text: "",
       cls: "sls-troubleshoot-preview"
     }), loadMarkdownPage = async (_, ee = "") => {
       var ne, ie;
-      Le.style.minHeight = Le.clientHeight + "px";
-      Le.empty();
+      Oe.style.minHeight = Oe.clientHeight + "px";
+      Oe.empty();
       const re = (_.startsWith("/") ? _ : `${ee}/${_}`).split("/"), se = re.pop(), oe = re.join("/");
       let le = "";
       try {
-        le = await (0, import_obsidian5.request)(`${ke}${oe}/${se}`);
+        le = await (0, import_obsidian6.request)(`${Le}${oe}/${se}`);
       } catch (_) {
         le = "An error occurred!!\n" + _.toString();
       }
-      const ue = le.replace(/\((.*?(.png)|(.jpg))\)/g, `(${ke}${oe}/$1)`);
-      await import_obsidian.MarkdownRenderer.render(this.plugin.app, `<a class='sls-troubleshoot-anchor'></a> [Tips and Troubleshooting](${we}) [PageTop](${se})\n\n${ue}`, Le, `${ke}`, this.plugin);
-      null == (ie = null == (ne = Le.querySelector(".sls-troubleshoot-anchor")) ? void 0 : ne.parentElement) || ie.setCssStyles({
+      const ue = le.replace(/\((.*?(.png)|(.jpg))\)/g, `(${Le}${oe}/$1)`);
+      await import_obsidian.MarkdownRenderer.render(this.plugin.app, `<a class='sls-troubleshoot-anchor'></a> [Tips and Troubleshooting](${we}) [PageTop](${se})\n\n${ue}`, Oe, `${Le}`, this.plugin);
+      null == (ie = null == (ne = Oe.querySelector(".sls-troubleshoot-anchor")) ? void 0 : ne.parentElement) || ie.setCssStyles({
         position: "sticky",
         top: "-1em",
         backgroundColor: "var(--modal-background)"
       });
-      Le.querySelectorAll("a.internal-link").forEach((_ => {
+      Oe.querySelectorAll("a.internal-link").forEach((_ => {
         _.addEventListener("click", (async ee => {
           const ne = _.getAttr("data-href");
           if (ne) if (ne.startsWith("#")) {
             ee.preventDefault();
-            const _ = Array.from(Le.querySelectorAll("[data-heading]")).find((_ => {
+            const _ = Array.from(Oe.querySelectorAll("[data-heading]")).find((_ => {
               var ee;
               return (null == (ee = _.getAttr("data-heading")) ? void 0 : ee.toLowerCase().split(" ").join("-")) == ne.substring(1).toLowerCase();
             }));
@@ -23973,25 +24897,25 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
           } else {
             ee.preventDefault();
             await loadMarkdownPage(ne, oe);
-            Le.setCssStyles({
+            Oe.setCssStyles({
               scrollMargin: "1em"
             });
-            Le.scrollIntoView({
+            Oe.scrollIntoView({
               behavior: "instant",
               block: "start"
             });
           }
         }));
       }));
-      Le.style.minHeight = "";
+      Oe.style.minHeight = "";
     };
     loadMarkdownPage(we);
     addScreenElement("110", ve);
-    const Oe = oe.createDiv();
-    this.createEl(Oe, "h3", {
+    const ke = oe.createDiv();
+    this.createEl(ke, "h3", {
       text: "Remote configuration"
     });
-    new Setting2(Oe).autoWireDropDown("remoteType", {
+    new Setting2(ke).autoWireDropDown("remoteType", {
       holdValue: true,
       options: {
         [REMOTE_COUCHDB]: "CouchDB",
@@ -24004,7 +24928,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
     }), onlyOnMinIO = () => ({
       visibility: this.isConfiguredAs("remoteType", REMOTE_MINIO)
     });
-    this.createEl(Oe, "div", void 0, (_ => {
+    this.createEl(ke, "div", void 0, (_ => {
       const ee = this.createEl(_, "div", {
         text: ""
       });
@@ -24034,7 +24958,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }))));
       new Setting2(_).setName("Apply Settings").setClass("wizardHidden").addApplyButton([ "remoteType", "endpoint", "region", "accessKey", "secretKey", "bucket", "useCustomRequestHandler" ]).addOnUpdate(onlyOnMinIO);
     }), onlyOnMinIO);
-    this.createEl(Oe, "div", void 0, (_ => {
+    this.createEl(ke, "div", void 0, (_ => {
       if (this.plugin.isMobile) this.createEl(_, "div", {
         text: "Configured as using non-HTTPS. We cannot connect to the remote. Please set up the credentials and use HTTPS for the remote URI."
       }, void 0, visibleOnly((() => !this.editingSettings.couchDB_URI.startsWith("https://")))).addClass("op-warn"); else this.createEl(_, "div", {
@@ -24173,46 +25097,46 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       });
       new Setting2(_).setName("Apply Settings").setClass("wizardHidden").addApplyButton([ "remoteType", "couchDB_URI", "couchDB_USER", "couchDB_PASSWORD", "couchDB_DBNAME" ]).addOnUpdate(onlyOnCouchDB);
     }), onlyOnCouchDB);
-    this.createEl(Oe, "h4", {
+    this.createEl(ke, "h4", {
       text: "Notification"
     }).addClass("wizardHidden");
-    new Setting2(Oe).autoWireNumeric("notifyThresholdOfRemoteStorageSize", {}).setClass("wizardHidden");
-    this.createEl(Oe, "h4", {
+    new Setting2(ke).autoWireNumeric("notifyThresholdOfRemoteStorageSize", {}).setClass("wizardHidden");
+    this.createEl(ke, "h4", {
       text: "Effective Storage Using"
     }).addClass("wizardHidden");
-    new Setting2(Oe).autoWireToggle("useEden").setClass("wizardHidden");
+    new Setting2(ke).autoWireToggle("useEden").setClass("wizardHidden");
     const Ae = visibleOnly((() => this.isConfiguredAs("useEden", true)));
-    new Setting2(Oe).autoWireNumeric("maxChunksInEden", {
+    new Setting2(ke).autoWireNumeric("maxChunksInEden", {
       onUpdate: Ae
     }).setClass("wizardHidden");
-    new Setting2(Oe).autoWireNumeric("maxTotalLengthInEden", {
+    new Setting2(ke).autoWireNumeric("maxTotalLengthInEden", {
       onUpdate: Ae
     }).setClass("wizardHidden");
-    new Setting2(Oe).autoWireNumeric("maxAgeInEden", {
+    new Setting2(ke).autoWireNumeric("maxAgeInEden", {
       onUpdate: Ae
     }).setClass("wizardHidden");
-    new Setting2(Oe).autoWireToggle("enableCompression").setClass("wizardHidden");
-    this.createEl(Oe, "h4", {
+    new Setting2(ke).autoWireToggle("enableCompression").setClass("wizardHidden");
+    this.createEl(ke, "h4", {
       text: "Confidentiality"
     });
-    new Setting2(Oe).autoWireToggle("encrypt", {
+    new Setting2(ke).autoWireToggle("encrypt", {
       holdValue: true
     });
     const xe = visibleOnly((() => this.isConfiguredAs("encrypt", true)));
-    new Setting2(Oe).autoWireText("passphrase", {
+    new Setting2(ke).autoWireText("passphrase", {
       holdValue: true,
       isPassword: true,
       onUpdate: xe
     });
-    new Setting2(Oe).autoWireToggle("usePathObfuscation", {
+    new Setting2(ke).autoWireToggle("usePathObfuscation", {
       holdValue: true,
       onUpdate: xe
     });
-    new Setting2(Oe).autoWireToggle("useDynamicIterationCount", {
+    new Setting2(ke).autoWireToggle("useDynamicIterationCount", {
       holdValue: true,
       onUpdate: xe
     }).setClass("wizardHidden");
-    new Setting2(Oe).setName("Apply").setDesc("Apply encryption settings").setClass("wizardHidden").addButton((_ => _.setButtonText("Just apply").setWarning().setDisabled(false).onClick((async () => {
+    new Setting2(ke).setName("Apply").setDesc("Apply encryption settings").setClass("wizardHidden").addButton((_ => _.setButtonText("Just apply").setWarning().setDisabled(false).onClick((async () => {
       await applyEncryption(false);
     })))).addButton((_ => _.setButtonText("Apply and fetch").setWarning().setDisabled(false).onClick((async () => {
       await rebuildDB("localOnly");
@@ -24267,7 +25191,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         await performRebuildDB(this.plugin, _);
       } else Logger("WARNING! Your device does not support encryption.", LOG_LEVEL_NOTICE); else Logger("If you enable encryption, you have to set the passphrase", LOG_LEVEL_NOTICE);
     };
-    new Setting2(Oe).setClass("wizardOnly").addButton((_ => _.setButtonText("Next").setCta().setDisabled(false).onClick((() => {
+    new Setting2(ke).setClass("wizardOnly").addButton((_ => _.setButtonText("Next").setCta().setDisabled(false).onClick((() => {
       if (!this.editingSettings.encrypt) this.editingSettings.passphrase = "";
       if (isCloudantURI(this.editingSettings.couchDB_URI)) this.editingSettings = {
         ...this.editingSettings,
@@ -24281,52 +25205,52 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       };
       changeDisplay("30");
     }))));
-    addScreenElement("0", Oe);
-    const Re = oe.createDiv();
-    this.createEl(Re, "h3", {
+    addScreenElement("0", ke);
+    const Te = oe.createDiv();
+    this.createEl(Te, "h3", {
       text: "General Settings"
     });
-    this.createEl(Re, "h4", {
+    this.createEl(Te, "h4", {
       text: "Appearance"
     });
-    const Te = Object.fromEntries([ [ "", "Default" ], ...SUPPORTED_I18N_LANGS.map((_ => [ _, $t(`lang-${_}`) ])) ]);
-    new Setting2(Re).autoWireDropDown("displayLanguage", {
-      options: Te
+    const Re = Object.fromEntries([ [ "", "Default" ], ...SUPPORTED_I18N_LANGS.map((_ => [ _, $t(`lang-${_}`) ])) ]);
+    new Setting2(Te).autoWireDropDown("displayLanguage", {
+      options: Re
     });
     this.addOnSaved("displayLanguage", (() => this.display()));
-    new Setting2(Re).autoWireToggle("showStatusOnEditor");
-    new Setting2(Re).autoWireToggle("showOnlyIconsOnEditor", {
+    new Setting2(Te).autoWireToggle("showStatusOnEditor");
+    new Setting2(Te).autoWireToggle("showOnlyIconsOnEditor", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("showStatusOnEditor", true)))
     });
-    new Setting2(Re).autoWireToggle("showStatusOnStatusbar");
-    this.createEl(Re, "h4", {
+    new Setting2(Te).autoWireToggle("showStatusOnStatusbar");
+    this.createEl(Te, "h4", {
       text: "Logging"
     });
-    new Setting2(Re).autoWireToggle("lessInformationInLog");
-    new Setting2(Re).autoWireToggle("showVerboseLog", {
+    new Setting2(Te).autoWireToggle("lessInformationInLog");
+    new Setting2(Te).autoWireToggle("showVerboseLog", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("lessInformationInLog", false)))
     });
-    this.createEl(Re, "h4", {
+    this.createEl(Te, "h4", {
       text: "Performance tweaks"
     });
-    new Setting2(Re).autoWireNumeric("hashCacheMaxCount", {
+    new Setting2(Te).autoWireNumeric("hashCacheMaxCount", {
       clampMin: 10
     });
-    new Setting2(Re).autoWireNumeric("hashCacheMaxAmount", {
+    new Setting2(Te).autoWireNumeric("hashCacheMaxAmount", {
       clampMin: 1
     });
-    this.createEl(Re, "h4", {
+    this.createEl(Te, "h4", {
       text: "Share settings via markdown"
     });
-    new Setting2(Re).autoWireText("settingSyncFile", {
+    new Setting2(Te).autoWireText("settingSyncFile", {
       holdValue: true
     }).addApplyButton([ "settingSyncFile" ]);
-    new Setting2(Re).autoWireToggle("writeCredentialsForSettingSync");
-    new Setting2(Re).autoWireToggle("notifyAllSettingSyncFile");
-    this.createEl(Re, "h4", {
+    new Setting2(Te).autoWireToggle("writeCredentialsForSettingSync");
+    new Setting2(Te).autoWireToggle("notifyAllSettingSyncFile");
+    this.createEl(Te, "h4", {
       text: "Advanced Confidentiality"
     });
-    new Setting2(Re).setName("Encrypting sensitive configuration items").autoWireDropDown("configPassphraseStore", {
+    new Setting2(Te).setName("Encrypting sensitive configuration items").autoWireDropDown("configPassphraseStore", {
       options: {
         "": "Default",
         LOCALSTORAGE: "Use a custom passphrase",
@@ -24334,14 +25258,14 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       },
       holdValue: true
     }).setClass("wizardHidden");
-    new Setting2(Re).autoWireText("configPassphrase", {
+    new Setting2(Te).autoWireText("configPassphrase", {
       isPassword: true,
       holdValue: true
     }).setClass("wizardHidden").addOnUpdate((() => ({
       disabled: !this.isConfiguredAs("configPassphraseStore", "LOCALSTORAGE")
     })));
-    new Setting2(Re).addApplyButton([ "configPassphrase", "configPassphraseStore" ]).setClass("wizardHidden");
-    addScreenElement("20", Re);
+    new Setting2(Te).addApplyButton([ "configPassphrase", "configPassphraseStore" ]).setClass("wizardHidden");
+    addScreenElement("20", Te);
     const Pe = oe.createDiv();
     this.createEl(Pe, "h3", {
       text: "Sync Settings"
@@ -24643,11 +25567,11 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       onUpdate: onlyOnCouchDB
     });
     addScreenElement("30", Pe);
-    const ze = oe.createDiv();
-    this.createEl(ze, "h3", {
+    const je = oe.createDiv();
+    this.createEl(je, "h3", {
       text: "Hatch"
     });
-    new Setting2(ze).setName("Make report to inform the issue").addButton((_ => _.setButtonText("Make report").setDisabled(false).onClick((async () => {
+    new Setting2(je).setName("Make report to inform the issue").addButton((_ => _.setButtonText("Make report").setDisabled(false).onClick((async () => {
       let _ = {};
       const ee = "𝑅𝐸𝐷𝐴𝐶𝑇𝐸𝐷";
       if (this.editingSettings.remoteType == REMOTE_COUCHDB) try {
@@ -24689,7 +25613,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       Logger("Information has been copied to clipboard", LOG_LEVEL_NOTICE);
     }))));
     if (null == (ie = null == (ne = this.plugin) ? void 0 : ne.replicator) ? void 0 : ie.remoteLockedAndDeviceNotAccepted) {
-      const _ = this.createEl(ze, "div", {
+      const _ = this.createEl(je, "div", {
         text: "To prevent unwanted vault corruption, the remote database has been locked for synchronization, and this device was not marked as 'resolved'. It caused by some operations like this. Re-initialized. Local database initialization should be required. Please back your vault up, reset the local database, and press 'Mark this device as resolved'. "
       });
       this.createEl(_, "button", {
@@ -24703,7 +25627,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }));
       _.addClass("op-warn");
     } else if (null == (se = null == (re = this.plugin) ? void 0 : re.replicator) ? void 0 : se.remoteLocked) {
-      const _ = this.createEl(ze, "div", {
+      const _ = this.createEl(je, "div", {
         text: "To prevent unwanted vault corruption, the remote database has been locked for synchronization. (This device is marked 'resolved') When all your devices are marked 'resolved', unlock the database."
       });
       this.createEl(_, "button", {
@@ -24717,16 +25641,16 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }));
       _.addClass("op-warn");
     }
-    new Setting2(ze).setName("Back to non-configured").addButton((_ => _.setButtonText("Back").setDisabled(false).onClick((async () => {
+    new Setting2(je).setName("Back to non-configured").addButton((_ => _.setButtonText("Back").setDisabled(false).onClick((async () => {
       this.editingSettings.isConfigured = false;
       await this.saveAllDirtySettings();
       this.plugin.askReload();
     }))));
-    this.createEl(ze, "div", {
+    this.createEl(je, "div", {
       text: "To stop the boot up sequence for fixing problems on databases, you can put redflag.md on top of your vault (Rebooting obsidian is required)."
     }).addClass("op-warn-info");
     const addResult = (_, ee, ne) => {
-      je.appendChild(this.createEl(je, "div", {}, (ie => {
+      ze.appendChild(this.createEl(ze, "div", {}, (ie => {
         ie.appendChild(this.createEl(ie, "h6", {
           text: _
         }));
@@ -24770,7 +25694,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         addResult(_.path, _, ee);
       }
     };
-    new Setting2(ze).setName("Verify and repair all files").setDesc("Compare the content of files between on local database and storage. If not matched, you will be asked which one you want to keep.").addButton((_ => _.setButtonText("Verify all").setDisabled(false).setWarning().onClick((async () => {
+    new Setting2(je).setName("Verify and repair all files").setDesc("Compare the content of files between on local database and storage. If not matched, you will be asked which one you want to keep.").addButton((_ => _.setButtonText("Verify all").setDisabled(false).setWarning().onClick((async () => {
       const _ = this.app.vault.getFiles(), ee = [], ne = this.plugin.localDatabase.findAllNormalDocs();
       for await (const _ of ne) ee.push(this.plugin.getPath(_));
       const ie = [ ...new Set([ ...ee, ..._.map((_ => _.path)) ]) ];
@@ -24779,7 +25703,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         re++;
         Logger(`${re}/${_.length}\n${ee}`, LOG_LEVEL_NOTICE, "verify");
         if (shouldBeIgnored(ee)) continue;
-        const ne = this.plugin.vaultAccess.getAbstractFileByPath(ee), ie = ne instanceof import_obsidian5.TFile ? ne : false;
+        const ne = this.plugin.vaultAccess.getAbstractFileByPath(ee), ie = ne instanceof import_obsidian6.TFile ? ne : false;
         if (!await this.plugin.isTargetFile(ee)) continue;
         if (ie && this.plugin.isFileSizeExceeded(ie.stat.size)) continue;
         const se = await this.plugin.localDatabase.getDBEntry(ee);
@@ -24795,10 +25719,10 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }
       Logger("done", LOG_LEVEL_NOTICE, "verify");
     }))));
-    const je = ze.createDiv({
+    const ze = je.createDiv({
       text: ""
     });
-    new Setting2(ze).setName("Check and convert non-path-obfuscated files").setDesc("").addButton((_ => _.setButtonText("Perform").setDisabled(false).setWarning().onClick((async () => {
+    new Setting2(je).setName("Check and convert non-path-obfuscated files").setDesc("").addButton((_ => _.setButtonText("Perform").setDisabled(false).setWarning().onClick((async () => {
       var _, ee, ne;
       for await (const ie of this.plugin.localDatabase.findAllDocNames()) if (!ie.startsWith("f:")) {
         const re = await this.plugin.path2id(ie), se = await this.plugin.localDatabase.getRaw(ie);
@@ -24845,7 +25769,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       }
       Logger("Converting finished", LOG_LEVEL_NOTICE);
     }))));
-    new Setting2(ze).setName("Delete all customization sync data").addButton((_ => _.setButtonText("Delete").setDisabled(false).setWarning().onClick((async () => {
+    new Setting2(je).setName("Delete all customization sync data").addButton((_ => _.setButtonText("Delete").setDisabled(false).setWarning().onClick((async () => {
       Logger("Deleting customization sync data", LOG_LEVEL_NOTICE);
       const _ = (await this.plugin.localDatabase.allDocsRaw({
         startkey: "ix:",
@@ -24857,37 +25781,37 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       })));
       Logger(`${(await this.plugin.localDatabase.bulkDocsRaw(_)).length} items have been removed, to confirm how many items are left, please perform it again.`, LOG_LEVEL_NOTICE);
     }))));
-    new Setting2(ze).autoWireToggle("suspendFileWatching");
+    new Setting2(je).autoWireToggle("suspendFileWatching");
     this.addOnSaved("suspendFileWatching", (() => this.plugin.askReload()));
-    new Setting2(ze).autoWireToggle("suspendParseReplicationResult");
+    new Setting2(je).autoWireToggle("suspendParseReplicationResult");
     this.addOnSaved("suspendParseReplicationResult", (() => this.plugin.askReload()));
-    new Setting2(ze).autoWireToggle("writeLogToTheFile");
-    this.createEl(ze, "h4", {
+    new Setting2(je).autoWireToggle("writeLogToTheFile");
+    this.createEl(je, "h4", {
       text: (0, import_obsidian.sanitizeHTMLToDom)("Compatibility"),
       cls: "wizardHidden"
     });
-    new Setting2(ze).setClass("wizardHidden").autoWireToggle("deleteMetadataOfDeletedFiles");
-    new Setting2(ze).setClass("wizardHidden").autoWireNumeric("automaticallyDeleteMetadataOfDeletedFiles", {
+    new Setting2(je).setClass("wizardHidden").autoWireToggle("deleteMetadataOfDeletedFiles");
+    new Setting2(je).setClass("wizardHidden").autoWireNumeric("automaticallyDeleteMetadataOfDeletedFiles", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("deleteMetadataOfDeletedFiles", true)))
     });
-    new Setting2(ze).autoWireToggle("useIndexedDBAdapter", {
+    new Setting2(je).autoWireToggle("useIndexedDBAdapter", {
       invert: true
     });
     this.addOnSaved("useIndexedDBAdapter", (async () => {
       await this.saveAllDirtySettings();
       await rebuildDB("localOnly");
     }));
-    new Setting2(ze).autoWireToggle("watchInternalFileChanges", {
+    new Setting2(je).autoWireToggle("watchInternalFileChanges", {
       invert: true
     });
-    new Setting2(ze).autoWireText("additionalSuffixOfDatabaseName", {
+    new Setting2(je).autoWireText("additionalSuffixOfDatabaseName", {
       holdValue: true
     }).addApplyButton([ "additionalSuffixOfDatabaseName" ]);
     this.addOnSaved("additionalSuffixOfDatabaseName", (async _ => {
       Logger("Suffix has been changed. Reopening database...", LOG_LEVEL_NOTICE);
       await this.plugin.initializeDatabase();
     }));
-    new Setting2(ze).autoWireDropDown("hashAlg", {
+    new Setting2(je).autoWireDropDown("hashAlg", {
       options: {
         "": "Old Algorithm",
         xxhash32: "xxhash32 (Fast)",
@@ -24898,40 +25822,41 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
     this.addOnSaved("hashAlg", (async () => {
       await this.plugin.localDatabase.prepareHashFunctions();
     }));
-    new Setting2(ze).autoWireToggle("doNotSuspendOnFetching");
-    new Setting2(ze).autoWireToggle("disableCheckingConfigMismatch");
-    new Setting2(ze).autoWireToggle("disableWorkerForGeneratingChunks");
-    new Setting2(ze).autoWireToggle("processSmallFilesInUIThread", {
+    new Setting2(je).autoWireToggle("doNotSuspendOnFetching");
+    new Setting2(je).autoWireToggle("disableCheckingConfigMismatch");
+    new Setting2(je).autoWireToggle("disableWorkerForGeneratingChunks");
+    new Setting2(je).autoWireToggle("processSmallFilesInUIThread", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("disableWorkerForGeneratingChunks", false)))
     });
-    addScreenElement("50", ze);
-    const He = oe.createDiv();
-    this.createEl(He, "h3", {
-      text: "Customization sync (beta)"
+    addScreenElement("50", je);
+    const qe = oe.createDiv();
+    this.createEl(qe, "h3", {
+      text: "Customization sync (beta 3)"
     });
-    const qe = enableOnly((() => this.isConfiguredAs("usePluginSync", false))), Ke = visibleOnly((() => this.isConfiguredAs("usePluginSync", true)));
-    new Setting2(He).autoWireText("deviceAndVaultName", {
+    const He = enableOnly((() => this.isConfiguredAs("usePluginSync", false))), Ke = visibleOnly((() => this.isConfiguredAs("usePluginSync", true)));
+    new Setting2(qe).autoWireText("deviceAndVaultName", {
       placeHolder: "desktop",
-      onUpdate: qe
+      onUpdate: He
     });
-    new Setting2(He).autoWireToggle("usePluginSync", {
+    new Setting2(qe).autoWireToggle("usePluginSyncV2");
+    new Setting2(qe).autoWireToggle("usePluginSync", {
       onUpdate: enableOnly((() => !this.isConfiguredAs("deviceAndVaultName", "")))
     });
-    new Setting2(He).autoWireToggle("autoSweepPlugins", {
+    new Setting2(qe).autoWireToggle("autoSweepPlugins", {
       onUpdate: Ke
     });
-    new Setting2(He).autoWireToggle("autoSweepPluginsPeriodic", {
+    new Setting2(qe).autoWireToggle("autoSweepPluginsPeriodic", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("usePluginSync", true) && this.isConfiguredAs("autoSweepPlugins", true)))
     });
-    new Setting2(He).autoWireToggle("notifyPluginOrSettingUpdated", {
+    new Setting2(qe).autoWireToggle("notifyPluginOrSettingUpdated", {
       onUpdate: Ke
     });
-    new Setting2(He).setName("Open").setDesc("Open the dialog").addButton((_ => {
+    new Setting2(qe).setName("Open").setDesc("Open the dialog").addButton((_ => {
       _.setButtonText("Open").setDisabled(false).onClick((() => {
         this.plugin.addOnConfigSync.showPluginSyncModal();
       }));
     })).addOnUpdate(Ke);
-    addScreenElement("60", He);
+    addScreenElement("60", qe);
     const We = oe.createDiv();
     this.createEl(We, "h3", {
       text: "Maintenance"
@@ -25786,7 +26711,7 @@ var idbProxyableTypes, cursorAdvanceMethods, StorageEventManager = class {}, Sto
     const ee = [ () => this.findEntryNames("", "_", null != _ ? _ : {}), () => this.findEntryNames("_􏿿", "h:", null != _ ? _ : {}), () => this.findEntryNames("h:􏿿", "i:", null != _ ? _ : {}), () => this.findEntryNames("i:􏿿", "ix:", null != _ ? _ : {}), () => this.findEntryNames("ix:􏿿", "ps:", null != _ ? _ : {}), () => this.findEntryNames("ps:􏿿", "", null != _ ? _ : {}) ];
     for (const _ of ee) {
       const ee = _();
-      for await (const _ of ee) if (!_.startsWith("_")) if (_ != VERSIONINFO_DOCID) yield _;
+      for await (const _ of ee) if (!_.startsWith("_")) if (_ != VERSIONING_DOCID) yield _;
     }
   }
   async* findAllNormalDocs(_) {
@@ -26944,7 +27869,7 @@ function get_each_context5(_, ee, ne) {
   return ie;
 }
 
-function create_if_block_53(_) {
+function create_if_block_54(_) {
   let ee;
   return {
     c() {
@@ -27093,19 +28018,19 @@ function create_if_block_14(_) {
 }
 
 function create_each_block5(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe = _[26].mtimeDisp + "", Ae = _[26].dirname.split("/").join("​/") + "", xe = _[26].filename + "", Re = _[26].changes + "";
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke = _[26].mtimeDisp + "", Ae = _[26].dirname.split("/").join("​/") + "", xe = _[26].filename + "", Te = _[26].changes + "";
   function click_handler_1() {
     return _[18](_[26]);
   }
   function select_block_type_1(_, ee) {
     if (_[26].isPlain) return create_if_block_24; else return create_else_block_14;
   }
-  let Te = select_block_type_1(_), Pe = Te(_), Ie = _[1] && create_if_block_14(_);
+  let Re = select_block_type_1(_), Pe = Re(_), Ie = _[1] && create_if_block_14(_);
   return {
     c() {
       ee = element("tr");
       ne = element("td");
-      ie = text(Oe);
+      ie = text(ke);
       re = space();
       se = element("td");
       oe = element("div");
@@ -27122,7 +28047,7 @@ function create_each_block5(_) {
       Pe.c();
       Ee = space();
       ve = element("td");
-      Ce = text(Re);
+      Ce = text(Te);
       we = space();
       if (Ie) Ie.c();
       attr(ne, "class", "mtime svelte-1vjy5r1");
@@ -27136,8 +28061,8 @@ function create_each_block5(_) {
       attr(ve, "class", "svelte-1vjy5r1");
       attr(ee, "class", "svelte-1vjy5r1");
     },
-    m(_, Oe) {
-      insert(_, ee, Oe);
+    m(_, ke) {
+      insert(_, ee, ke);
       append(ee, ne);
       append(ne, ie);
       append(ee, re);
@@ -27159,25 +28084,25 @@ function create_each_block5(_) {
       append(ve, Ce);
       append(ee, we);
       if (Ie) Ie.m(ee, null);
-      if (!ke) {
-        Le = listen(pe, "click", click_handler_1);
-        ke = true;
+      if (!Le) {
+        Oe = listen(pe, "click", click_handler_1);
+        Le = true;
       }
     },
     p(ne, re) {
       _ = ne;
-      if (32 & re && Oe !== (Oe = _[26].mtimeDisp + "")) set_data(ie, Oe);
+      if (32 & re && ke !== (ke = _[26].mtimeDisp + "")) set_data(ie, ke);
       if (32 & re && Ae !== (Ae = _[26].dirname.split("/").join("​/") + "")) set_data(de, Ae);
       if (32 & re && xe !== (xe = _[26].filename + "")) set_data(ge, xe);
-      if (Te === (Te = select_block_type_1(_)) && Pe) Pe.p(_, re); else {
+      if (Re === (Re = select_block_type_1(_)) && Pe) Pe.p(_, re); else {
         Pe.d(1);
-        Pe = Te(_);
+        Pe = Re(_);
         if (Pe) {
           Pe.c();
           Pe.m(Se, null);
         }
       }
-      if (32 & re && Re !== (Re = _[26].changes + "")) set_data(Ce, Re);
+      if (32 & re && Te !== (Te = _[26].changes + "")) set_data(Ce, Te);
       if (_[1]) if (Ie) Ie.p(_, re); else {
         Ie = create_if_block_14(_);
         Ie.c();
@@ -27191,8 +28116,8 @@ function create_each_block5(_) {
       if (_) detach(ee);
       Pe.d();
       if (Ie) Ie.d();
-      ke = false;
-      Le();
+      Le = false;
+      Oe();
     }
   };
 }
@@ -27242,7 +28167,7 @@ function create_if_block4(_) {
 }
 
 function create_fragment5(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, ke, Le, Oe, Ae, xe, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe, Ve, $e, Ge, Ue, ze, je, He, qe, Ke, We, Xe, Qe, Ye, Je = _[6] && create_if_block_53(_), Ze = _[1] && create_if_block_44(_);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Te, Re, Pe, Ie, De, Be, Ne, Me, Fe, Ve, $e, Ge, Ue, je, ze, qe, He, Ke, We, Xe, Ye, Qe, Je = _[6] && create_if_block_54(_), Ze = _[1] && create_if_block_44(_);
   function select_block_type(_, ee) {
     if (_[6]) return create_if_block_34; else return create_else_block_23;
   }
@@ -27279,15 +28204,15 @@ function create_fragment5(_) {
       ve.textContent = "Diff";
       Ce = space();
       we = element("label");
-      ke = element("input");
-      Le = element("span");
-      Le.textContent = "Chunks";
-      Oe = space();
+      Le = element("input");
+      Oe = element("span");
+      Oe.textContent = "Chunks";
+      ke = space();
       Ae = element("label");
       xe = element("input");
-      Re = element("span");
-      Re.textContent = "File integrity";
-      Te = space();
+      Te = element("span");
+      Te.textContent = "File integrity";
+      Re = space();
       if (Je) Je.c();
       Pe = space();
       Ie = element("table");
@@ -27305,11 +28230,11 @@ function create_fragment5(_) {
       Ge.textContent = "Stat";
       Ue = space();
       if (Ze) Ze.c();
-      ze = space();
-      je = element("tr");
-      He = element("td");
+      je = space();
+      ze = element("tr");
+      qe = element("td");
       nt.c();
-      qe = space();
+      He = space();
       for (let _ = 0; _ < rt.length; _ += 1) rt[_].c();
       Ke = space();
       We = element("tr");
@@ -27335,15 +28260,15 @@ function create_fragment5(_) {
       attr(Ee, "class", "svelte-1vjy5r1");
       attr(ve, "class", "svelte-1vjy5r1");
       attr(Se, "class", "svelte-1vjy5r1");
-      attr(ke, "type", "checkbox");
-      ke.disabled = _[6];
-      attr(ke, "class", "svelte-1vjy5r1");
+      attr(Le, "type", "checkbox");
+      Le.disabled = _[6];
       attr(Le, "class", "svelte-1vjy5r1");
+      attr(Oe, "class", "svelte-1vjy5r1");
       attr(we, "class", "svelte-1vjy5r1");
       attr(xe, "type", "checkbox");
       xe.disabled = _[6];
       attr(xe, "class", "svelte-1vjy5r1");
-      attr(Re, "class", "svelte-1vjy5r1");
+      attr(Te, "class", "svelte-1vjy5r1");
       attr(Ae, "class", "svelte-1vjy5r1");
       attr(ge, "class", "row svelte-1vjy5r1");
       attr(re, "class", "control svelte-1vjy5r1");
@@ -27352,9 +28277,9 @@ function create_fragment5(_) {
       attr(Ve, "class", "svelte-1vjy5r1");
       attr(Ge, "class", "svelte-1vjy5r1");
       attr(De, "class", "svelte-1vjy5r1");
-      attr(He, "colspan", "5");
-      attr(He, "class", "more svelte-1vjy5r1");
-      attr(je, "class", "svelte-1vjy5r1");
+      attr(qe, "colspan", "5");
+      attr(qe, "class", "more svelte-1vjy5r1");
+      attr(ze, "class", "svelte-1vjy5r1");
       attr(Xe, "colspan", "5");
       attr(Xe, "class", "more svelte-1vjy5r1");
       attr(We, "class", "svelte-1vjy5r1");
@@ -27385,15 +28310,15 @@ function create_fragment5(_) {
       append(Se, ve);
       append(ge, Ce);
       append(ge, we);
-      append(we, ke);
-      ke.checked = _[1];
       append(we, Le);
-      append(ge, Oe);
+      Le.checked = _[1];
+      append(we, Oe);
+      append(ge, ke);
       append(ge, Ae);
       append(Ae, xe);
       xe.checked = _[2];
-      append(Ae, Re);
-      append(ee, Te);
+      append(Ae, Te);
+      append(ee, Re);
       if (Je) Je.m(ee, null);
       append(ee, Pe);
       append(ee, Ie);
@@ -27407,19 +28332,19 @@ function create_fragment5(_) {
       append(De, Ge);
       append(De, Ue);
       if (Ze) Ze.m(De, null);
-      append(Ie, ze);
       append(Ie, je);
-      append(je, He);
-      nt.m(He, null);
-      append(Ie, qe);
+      append(Ie, ze);
+      append(ze, qe);
+      nt.m(qe, null);
+      append(Ie, He);
       for (let _ = 0; _ < rt.length; _ += 1) if (rt[_]) rt[_].m(Ie, null);
       append(Ie, Ke);
       append(Ie, We);
       append(We, Xe);
       ot.m(Xe, null);
-      if (!Qe) {
-        Ye = [ listen(le, "input", _[12]), listen(he, "input", _[13]), listen(Ee, "change", _[14]), listen(ke, "change", _[15]), listen(xe, "change", _[16]) ];
-        Qe = true;
+      if (!Ye) {
+        Qe = [ listen(le, "input", _[12]), listen(he, "input", _[13]), listen(Ee, "change", _[14]), listen(Le, "change", _[15]), listen(xe, "change", _[16]) ];
+        Ye = true;
       }
     },
     p(_, [ne]) {
@@ -27429,12 +28354,12 @@ function create_fragment5(_) {
       if (16 & ne) set_input_value(he, _[4]);
       if (64 & ne) Ee.disabled = _[6];
       if (1 & ne) Ee.checked = _[0];
-      if (64 & ne) ke.disabled = _[6];
-      if (2 & ne) ke.checked = _[1];
+      if (64 & ne) Le.disabled = _[6];
+      if (2 & ne) Le.checked = _[1];
       if (64 & ne) xe.disabled = _[6];
       if (4 & ne) xe.checked = _[2];
       if (_[6]) if (Je) ; else {
-        Je = create_if_block_53(_);
+        Je = create_if_block_54(_);
         Je.c();
         Je.m(ee, Pe);
       } else if (Je) {
@@ -27454,7 +28379,7 @@ function create_fragment5(_) {
         nt = tt(_);
         if (nt) {
           nt.c();
-          nt.m(He, null);
+          nt.m(qe, null);
         }
       }
       if (1570 & ne) {
@@ -27489,8 +28414,8 @@ function create_fragment5(_) {
       nt.d();
       destroy_each(rt, _);
       ot.d();
-      Qe = false;
-      run_all(Ye);
+      Ye = false;
+      run_all(Qe);
     }
   };
 }
@@ -27528,7 +28453,7 @@ function instance5(_, ee, ne) {
             const Ce = _.rev, we = "mtime" in ye ? ye.mtime : 0;
             if (le > we) continue;
             if (ue < we) continue;
-            let ke = "";
+            let Le = "";
             if (re && !ge) {
               const _ = getDocData(ye.data);
               if (void 0 === me) me = _;
@@ -27547,38 +28472,38 @@ function instance5(_, ee, ne) {
                     [ee[0]]: (null !== (ne = _[ee[0]]) && void 0 !== ne ? ne : 0) + ee[1].length
                   };
                 }), ie);
-                ke = `-${re[Se]}, +${re[ve]}`;
+                Le = `-${re[Se]}, +${re[ve]}`;
               }
             }
-            const Le = ye._deleted || (null == ye ? void 0 : ye.deleted) || false;
-            if (Le) ke += " 🗑️";
+            const Oe = ye._deleted || (null == ye ? void 0 : ye.deleted) || false;
+            if (Oe) Le += " 🗑️";
             if (Ce == he._rev) if (oe) {
               const _ = ie.vaultAccess.getAbstractFileByPath(stripAllPrefixes(ie.getPath(he)));
               if (_ instanceof import_obsidian.TFile) {
                 const ee = await ie.vaultAccess.adapterReadAuto(_), ne = readAsBlob(ye);
-                if (await isDocContentSame(ee, ne)) ke += " ⚖️"; else ke += " ⚠️";
+                if (await isDocContentSame(ee, ne)) Le += " ⚖️"; else Le += " ⚠️";
               }
             }
-            const Oe = ie.getPath(ye), [Ae, ...xe] = Oe.split("/").reverse();
-            let Re = "";
+            const ke = ie.getPath(ye), [Ae, ...xe] = ke.split("/").reverse();
+            let Te = "";
             if (se) {
               const _ = null !== (ee = null == ye ? void 0 : ye.children) && void 0 !== ee ? ee : [], ie = await ne.allDocsRaw({
                 keys: [ ..._ ]
               }), re = ie.rows.length, se = ie.rows.filter((_ => "error" in _)).length;
-              if (0 == se) Re = `✅ ${re}`; else Re = `🔎 ${se} ✅ ${re}`;
+              if (0 == se) Te = `✅ ${re}`; else Te = `🔎 ${se} ✅ ${re}`;
             }
             fe.push({
               id: ye._id,
               rev: ye._rev,
-              path: Oe,
+              path: ke,
               dirname: xe.reverse().join("/"),
               filename: Ae,
               mtime: we,
               mtimeDisp: mtimeToDate(we),
               size: null !== (de = null == ye ? void 0 : ye.size) && void 0 !== de ? de : 0,
-              isDeleted: Le,
-              changes: ke,
-              chunks: Re,
+              isDeleted: Oe,
+              changes: Le,
+              chunks: Te,
               isPlain: ge
             });
           }
@@ -27671,7 +28596,7 @@ var GlobalHistory = class extends SvelteComponent {
     var _;
     null == (_ = this.component) || _.$destroy();
   }
-}, import_obsidian6 = require("obsidian");
+}, import_obsidian7 = require("obsidian");
 
 function add_css6(_) {
   append_styles(_, "svelte-1j0mkaj", ".svelte-1j0mkaj.svelte-1j0mkaj{box-sizing:border-box}.logpane.svelte-1j0mkaj.svelte-1j0mkaj{display:flex;height:100%;flex-direction:column}.log.svelte-1j0mkaj.svelte-1j0mkaj{overflow-y:scroll;user-select:text;padding-bottom:2em}.log.svelte-1j0mkaj>pre.svelte-1j0mkaj{margin:0}.log.svelte-1j0mkaj>pre.wrap-right.svelte-1j0mkaj{word-break:break-all;max-width:100%;width:100%;white-space:normal}.row.svelte-1j0mkaj.svelte-1j0mkaj{display:flex;flex-direction:row;justify-content:flex-end}.row.svelte-1j0mkaj>label.svelte-1j0mkaj{display:flex;align-items:center;min-width:5em;margin-right:1em}");
@@ -27748,8 +28673,8 @@ function create_fragment6(_) {
       attr(Se, "class", "log svelte-1j0mkaj");
       attr(ee, "class", "logpane svelte-1j0mkaj");
     },
-    m(Ce, ke) {
-      insert(Ce, ee, ke);
+    m(Ce, Le) {
+      insert(Ce, ee, Le);
       append(ee, ne);
       append(ne, ie);
       append(ie, re);
@@ -27847,7 +28772,7 @@ var LogPane = class extends SvelteComponent {
     super();
     init2(this, _, instance6, create_fragment6, safe_not_equal, {}, add_css6);
   }
-}, LogPane_default = LogPane, VIEW_TYPE_LOG = "log-log", LogPaneView = class extends import_obsidian6.ItemView {
+}, LogPane_default = LogPane, VIEW_TYPE_LOG = "log-log", LogPaneView = class extends import_obsidian7.ItemView {
   constructor(_, ee) {
     super(_);
     this.icon = "view-log";
@@ -41479,7 +42404,7 @@ var JournalSyncAbstract = class {
       return false;
     }
   }
-}, MILSTONE_DOCID2 = "_00000000-milestone.json", currentVersionRange2 = {
+}, MILSTONE_DOCID = "_00000000-milestone.json", currentVersionRange2 = {
   min: 0,
   max: 2,
   current: 2
@@ -41523,9 +42448,9 @@ var JournalSyncAbstract = class {
     return this._client;
   }
   async ensureBucketIsCompatible(_, ee) {
-    const ne = await this.client.downloadJson(MILSTONE_DOCID2);
+    const ne = await this.client.downloadJson(MILSTONE_DOCID);
     return await ensureRemoteIsCompatible(ne, this.env.getSettings(), _, ee, (async _ => {
-      await this.client.uploadJson(MILSTONE_DOCID2, _);
+      await this.client.uploadJson(MILSTONE_DOCID, _);
     }));
   }
   async migrate(_, ee) {
@@ -41602,7 +42527,7 @@ var JournalSyncAbstract = class {
   }
   async markRemoteLocked(_, ee, ne) {
     const ie = {
-      _id: MILSTONE_DOCID2,
+      _id: MILSTONE_DOCID,
       type: "milestoneinfo",
       created: new Date / 1,
       locked: ee,
@@ -41614,7 +42539,7 @@ var JournalSyncAbstract = class {
       tweak_values: {}
     }, re = {
       ...ie,
-      ...await this.client.downloadJson(MILSTONE_DOCID2) || {}
+      ...await this.client.downloadJson(MILSTONE_DOCID) || {}
     };
     re.node_chunk_info = {
       ...ie.node_chunk_info,
@@ -41624,11 +42549,11 @@ var JournalSyncAbstract = class {
     re.locked = ee;
     re.cleaned = re.cleaned || ne;
     if (ee) Logger("Lock remote bucket to prevent data corruption", LOG_LEVEL_NOTICE); else Logger("Unlock remote bucket to prevent data corruption", LOG_LEVEL_NOTICE);
-    await this.client.uploadJson(MILSTONE_DOCID2, re);
+    await this.client.uploadJson(MILSTONE_DOCID, re);
   }
   async markRemoteResolved(_) {
     const ee = {
-      _id: MILSTONE_DOCID2,
+      _id: MILSTONE_DOCID,
       type: "milestoneinfo",
       created: new Date / 1,
       locked: false,
@@ -41639,7 +42564,7 @@ var JournalSyncAbstract = class {
       tweak_values: {}
     }, ne = {
       ...ee,
-      ...await this.client.downloadJson(MILSTONE_DOCID2) || {}
+      ...await this.client.downloadJson(MILSTONE_DOCID) || {}
     };
     ne.node_chunk_info = {
       ...ee.node_chunk_info,
@@ -41647,7 +42572,7 @@ var JournalSyncAbstract = class {
     };
     ne.accepted_nodes = Array.from(new Set([ ...ne.accepted_nodes, this.nodeid ]));
     Logger("Mark this device as 'resolved'.", LOG_LEVEL_NOTICE);
-    await this.client.uploadJson(MILSTONE_DOCID2, ne);
+    await this.client.uploadJson(MILSTONE_DOCID, ne);
   }
   async tryConnectRemote(_, ee = true) {
     const ne = _.accessKey, ie = _.secretKey, re = _.bucket, se = _.region, oe = _.endpoint, le = _.useCustomRequestHandler, ue = new JournalSyncMinio(ne, ie, oe, re, this.env.simpleStore, this.env, le, se);
@@ -41663,11 +42588,11 @@ var JournalSyncAbstract = class {
   }
   async resetRemoteTweakSettings(_) {
     try {
-      const _ = await this.client.downloadJson(MILSTONE_DOCID2);
+      const _ = await this.client.downloadJson(MILSTONE_DOCID);
       if (!_) throw new Error("Missing remote milestone");
       _.tweak_values = {};
       Logger("tweak values on the remote database have been cleared", LOG_LEVEL_VERBOSE);
-      await this.client.uploadJson(MILSTONE_DOCID2, _);
+      await this.client.uploadJson(MILSTONE_DOCID, _);
     } catch (_) {
       Logger("Could not retrieve remote milestone", LOG_LEVEL_NOTICE);
       throw _;
@@ -41675,13 +42600,13 @@ var JournalSyncAbstract = class {
   }
   async setPreferredRemoteTweakSettings(_) {
     try {
-      const ee = await this.client.downloadJson(MILSTONE_DOCID2);
+      const ee = await this.client.downloadJson(MILSTONE_DOCID);
       if (!ee) throw new Error("Missing remote milestone");
       ee.tweak_values[DEVICE_ID_PREFERRED] = extractObject(TweakValuesTemplate, {
         ..._
       });
       Logger("tweak values on the remote database have been cleared", LOG_LEVEL_VERBOSE);
-      await this.client.uploadJson(MILSTONE_DOCID2, ee);
+      await this.client.uploadJson(MILSTONE_DOCID, ee);
     } catch (_) {
       Logger("Could not retrieve remote milestone", LOG_LEVEL_NOTICE);
       throw _;
@@ -41756,7 +42681,7 @@ var JournalSyncAbstract = class {
     })));
     return Promise.race(he);
   }
-}, import_obsidian7 = require("obsidian"), isDebug = false;
+}, import_obsidian8 = require("obsidian"), isDebug = false;
 
 setNoticeClass(import_obsidian.Notice);
 
@@ -42570,7 +43495,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     this.settingTab = new ObsidianLiveSyncSettingTab(this.app, this);
     this.addSettingTab(this.settingTab);
     this.addUIs();
-    const _ = "0.23.17", ee = "0.23.17";
+    const _ = "0.23.18", ee = "0.23.18";
     this.manifestVersion = _;
     this.packageVersion = ee;
     Logger($f`Self-hosted LiveSync${" v"}${_} ${ee}`);
@@ -43533,18 +44458,27 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
         doc: ne[_.id]
       })));
     }), {
-      batchSize: 10,
-      concurrentLimit: 5,
+      batchSize: 100,
+      concurrentLimit: 1,
       delay: 10,
-      suspended: false
+      suspended: false,
+      maintainDelay: true,
+      yieldThreshold: 100
     })).pipeTo(new QueueProcessor((async _ => {
-      const ee = _[0];
-      await this.syncFileBetweenDBandStorage(ee.file, ee.doc);
+      for (const ee of _) try {
+        const _ = ee;
+        await this.syncFileBetweenDBandStorage(_.file, _.doc);
+      } catch (_) {
+        Logger("Error while syncFileBetweenDBandStorage", LOG_LEVEL_NOTICE);
+        Logger(_, LOG_LEVEL_VERBOSE);
+      }
     }), {
-      batchSize: 1,
-      concurrentLimit: 5,
+      batchSize: 5,
+      concurrentLimit: 10,
       delay: 10,
-      suspended: false
+      suspended: false,
+      yieldThreshold: 10,
+      maintainDelay: true
     }));
     const Se = fe.length;
     let Ee = Se;
@@ -43620,7 +44554,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     }
     const Ee = splitDiffPiece(me), ve = splitDiffPiece(Se);
     let Ce = 0, we = 0;
-    const ke = [];
+    const Le = [];
     he = true;
     e: do {
       if (we >= Ee.length && Ce >= ve.length) break e;
@@ -43634,20 +44568,20 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
             he = false;
             break;
           } else {
-            ke.push(_);
+            Le.push(_);
             continue;
           }
         }
         if (_[0] == import_diff_match_patch.DIFF_INSERT && ee[0] == import_diff_match_patch.DIFF_INSERT) if (_[1] == ee[1]) {
-          ke.push(_);
+          Le.push(_);
           continue;
         } else if (de.mtime <= fe.mtime) {
-          ke.push(_);
-          ke.push(ee);
+          Le.push(_);
+          Le.push(ee);
           continue;
         } else {
-          ke.push(ee);
-          ke.push(_);
+          Le.push(ee);
+          Le.push(_);
           continue;
         }
         if (_[0] != import_diff_match_patch.DIFF_INSERT) if (ee[0] != import_diff_match_patch.DIFF_INSERT) {
@@ -43657,14 +44591,14 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
             break e;
           }
           if (_[0] == import_diff_match_patch.DIFF_DELETE) if (ee[0] == import_diff_match_patch.DIFF_EQUAL) {
-            ke.push(_);
+            Le.push(_);
             continue;
           } else {
             he = false;
             break e;
           }
           if (ee[0] == import_diff_match_patch.DIFF_DELETE) if (_[0] == import_diff_match_patch.DIFF_EQUAL) {
-            ke.push(ee);
+            Le.push(ee);
             continue;
           } else {
             he = false;
@@ -43674,16 +44608,16 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
           break e;
         } else {
           we--;
-          ke.push(ee);
+          Le.push(ee);
         } else {
           Ce--;
-          ke.push(_);
+          Le.push(_);
         }
-      } else ke.push(_);
+      } else Le.push(_);
     } while (we < Ee.length || Ce < ve.length);
     if (he) {
       Logger("Sensibly merge available", LOG_LEVEL_VERBOSE);
-      return ke;
+      return Le;
     } else return false;
   }
   async mergeObject(_, ee, ne, ie) {
