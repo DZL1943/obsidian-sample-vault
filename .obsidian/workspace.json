@@ -212,18 +212,17 @@
       "float-search:Search Obsidian In Modal": true,
       "obsidian-kanban:创建新看板": true,
       "graph:查看关系图谱": true,
+      "cmdr:更换主题": false,
+      "cmdr:Style Settings: Show style settings view": false,
+      "zk-prefixer:创建时间戳笔记": false,
       "canvas:新建白板": false,
       "obsidian-excalidraw-plugin:新建绘图文件": false,
       "daily-notes:打开/创建今天的日记": true,
       "cmdr:新建笔记": true,
-      "zk-prefixer:创建时间戳笔记": false,
-      "cmdr:更换主题": false,
-      "cmdr:Style Settings: Show style settings view": false,
       "cmdr:QuickAdd: Run QuickAdd": true,
       "cmdr:Shell commands: Execute: gcam": true,
       "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
-      "cmdr:打开设置": true,
-      "custom-sort:Toggle custom sorting": false
+      "cmdr:打开设置": true
     }
   },
   "active": "dd0c724920d6ce07",
