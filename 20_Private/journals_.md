@@ -6,7 +6,7 @@ cssclasses: wide
 # Timestamp
 
 ```dataview
-list title
+list rows.title
 where contains(file.folder, this.file.folder)
 where regexmatch("[0-9]{8,15}", file.name)
 sort file.name desc
