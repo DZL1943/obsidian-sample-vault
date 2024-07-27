@@ -2,6 +2,17 @@
 editor-width: 40
 cssclasses: wide
 ---
+
+# Timestamp
+
+```dataview
+list
+where contains(file.folder, this.file.folder)
+where regexmatch("[0-9]{8,15}", file.name)
+sort file.name desc
+limit 30
+```
+
 # Daily
 ```dataview
 table without id

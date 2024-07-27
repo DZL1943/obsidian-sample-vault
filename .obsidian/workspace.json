@@ -222,13 +222,16 @@
       "cmdr:QuickAdd: Run QuickAdd": true,
       "cmdr:Shell commands: Execute: gcam": true,
       "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
-      "cmdr:打开设置": true
+      "cmdr:打开设置": true,
+      "custom-sort:Toggle custom sorting": false
     }
   },
-  "active": "82484834b6c769a0",
+  "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
-    "_canvas.canvas",
+    "sortspec.md",
     "README.md",
+    "20_Private/journals_.md",
+    "_canvas.canvas",
     "20_Private/context.md",
     "Misc/Templates/datetime.md",
     "Misc/Templates/datetime-li.md",
@@ -236,7 +239,6 @@
     "links.md",
     "Misc/Attachments/attachments.md",
     "Misc/Attachments/README-20240611204632938.png",
-    "20_Private/journals_.md",
     "60_Areas/areas.md",
     "Misc/Templates/yearly-template.md",
     "Misc/Templates/monthly-template.md",

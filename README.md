@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-23 17:59"
+modified: "2024-07-27 21:39"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -62,9 +62,11 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 ## 目录结构说明
 
 ```bash title:"create essential dirs"
-folders=(10_Inbox/Local 20_Private 30_Jottings 40_Pages 50_Projects 60_Areas 70_Resources 80_Archives Misc/{Attachments,Templates})
+folders=(10_Inbox/{,Local} 20_Private 30_Jottings 40_Pages 50_Projects 60_Areas 70_Resources 80_Archives Misc/{Attachments,Templates})
 
 for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;done
+# remove prefix
+#for folder in $(find . -mindepth 1 -maxdepth 1 -type d|cut -c3-); do [[ "$folder" =~ ^[0-9]{2}_ ]] && mv "$folder" "$(echo $folder|cut -d'_' -f2)";done
 ```
 
 - 10_Inbox/: 临时笔记
@@ -106,7 +108,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - quicknotes: 快速记录
 - README
 
-> [!hint]+ 这里的目录结构实际上是为了避免分库而设定的, 子库可以作为一个目录存在甚至拥有独立的 git. 但是如果有明确的目的或结构, 个人还是推荐将其独立成库(folder 就跟 heading 一样层级越多越不利于维护), 如此 PARA 其实也就不再需要, 整个库会更加的轻量和专注, 也减轻了对分类的焦虑.
+> [!tip]+ 基本上顶层目录都能够作为独立库存在. 独立库的优势之一是能够独立进行版本控制.
 
 > [!hint]+ 最简单的笔记结构, 只需要一个 inbox 和 outbox (此处 inbox 指记笔记, outbox 指整理笔记, 类似于卢曼的闪念笔记和永久笔记)  
 > 上述目录结构中的 in/out 关系:
@@ -389,6 +391,8 @@ brat
 > - warning 黄色
 > - caution 红色
 
+> [!bug]+ minimal 主题调整侧边栏按钮有问题, 建议切换到默认主题调好后再切回来.
+
 > [!bug]+ %% 2024-06-18 %% minimal 主题 7.7.3 版本, [dataview 表格空属性错行问题](https://github.com/kepano/obsidian-minimal/issues/754). 降至 [7.4.3](https://github.com/kepano/obsidian-minimal/releases/tag/7.4.3) 无此问题.
 
 > [!bug]+ %% 2024-06-12 %%create-note-in-folder 插件在修改配置之后可能需要重启才能生效.
@@ -414,10 +418,11 @@ brat
 - [2024-07-18] 重命名 20_Journals 为 20_Private; 增加 Changelog
 - [2024-07-18] 更改日期格式 YYYY/MM/DD 为 YYYY-MM-DD
 - [2024-07-20] 将 Local、draft 移到 Inbox 中
+- [2024-07-27] ~~取消顶层目录名中的前缀编号~~
 
 #
 
 
 [^1]: 这里不要堆积知识类的笔记(放到 areas 里面), 不要分类用聚类.
 [^2]: 比如记录学习 xxx 的笔记, 可以先在 Projects 目录下建立一个 xxx 的目录, 在学习的过程中给每个知识点建立卡片笔记, 完事后归档到对应领域目录.
-[^3]: 如果有完整的体系并且能够在别处存储, 那么还是建议独立成库. 这里的 areas 可以是学科但是不要层级分类, 只列举你感兴趣的, 扁平直达更好.
+[^3]: 如果有完整的体系或者需要在别处存放, 那么还是建议独立成库(folder 就跟 heading 一样层级越多越不利于维护). 这里的 areas 可以是学科但是不要层级分类, 只列举你感兴趣的, 扁平直达更好.

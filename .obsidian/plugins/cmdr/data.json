@@ -193,7 +193,8 @@
       "backlink",
       "word-count",
       "various-complements",
-      "properties"
+      "properties",
+      "custom-sort"
     ],
     "leftRibbon": [
       "Export Vault to HTML",
