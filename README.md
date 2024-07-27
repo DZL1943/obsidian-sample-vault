@@ -80,7 +80,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
         - YYYY-MM-DD: dailynotes?
         - YYYYMMDDHHmm: 时间戳笔记
     - tasks
-    - journals_index
+    - journals: index
     - contacts
     - finance
     - things

@@ -80,7 +80,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "6af7bc7b0804df6c",
@@ -221,14 +222,15 @@
       "cmdr:QuickAdd: Run QuickAdd": true,
       "cmdr:Shell commands: Execute: gcam": true,
       "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
-      "cmdr:打开设置": true
+      "cmdr:打开设置": true,
+      "custom-sort:Toggle custom sorting": false
     }
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
     "All.md",
     "README.md",
-    "20_Private/journals_.md",
+    "20_Private/journals.md",
     "sortspec.md",
     "_canvas.canvas",
     "20_Private/context.md",
