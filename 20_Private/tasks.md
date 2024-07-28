@@ -10,11 +10,15 @@ tags:
 
 
 
-## 工作学习
+## 工作事业
 
 
 
-## 思想心理
+## 学习思考
+
+
+
+## 社交娱乐
 
 
 
@@ -26,6 +30,6 @@ tags:
 
 %% kanban:settings
 ```
-{"kanban-plugin":"board","lane-width":240,"list-collapse":[false,null],"show-checkboxes":true}
+{"kanban-plugin":"board","lane-width":240,"list-collapse":[false,null,false,null],"show-checkboxes":true}
 ```
 %%
