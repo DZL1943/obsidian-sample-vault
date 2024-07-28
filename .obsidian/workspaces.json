@@ -209,7 +209,6 @@
           "workspaces:管理工作区布局": false,
           "switcher:打开快速切换": true,
           "command-palette:打开命令面板": true,
-          "fuzzy-chinese-pinyin:FuzzySearch": true,
           "float-search:Search Obsidian In Modal": true,
           "obsidian-kanban:创建新看板": true,
           "graph:查看关系图谱": true,
@@ -223,11 +222,12 @@
           "cmdr:QuickAdd: Run QuickAdd": true,
           "cmdr:Shell commands: Execute: gcam": true,
           "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
-          "cmdr:打开设置": true
+          "cmdr:打开设置": true,
+          "fuzzy-chinese-pinyin:FuzzySearch": false
         }
       },
       "active": "dd0c724920d6ce07",
-      "mtime": "2024-07-27T23:46:02+08:00"
+      "mtime": "2024-07-28T08:46:31+08:00"
     }
   },
   "active": "minimal"

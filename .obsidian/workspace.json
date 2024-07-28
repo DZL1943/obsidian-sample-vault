@@ -208,7 +208,6 @@
       "workspaces:管理工作区布局": false,
       "switcher:打开快速切换": true,
       "command-palette:打开命令面板": true,
-      "fuzzy-chinese-pinyin:FuzzySearch": true,
       "float-search:Search Obsidian In Modal": true,
       "obsidian-kanban:创建新看板": true,
       "graph:查看关系图谱": true,
@@ -222,15 +221,18 @@
       "cmdr:QuickAdd: Run QuickAdd": true,
       "cmdr:Shell commands: Execute: gcam": true,
       "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
-      "cmdr:打开设置": true
+      "cmdr:打开设置": true,
+      "fuzzy-chinese-pinyin:FuzzySearch": false
     }
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
-    "20_Private/tasks.md",
-    "README.md",
-    "_canvas.canvas",
     "links.md",
+    "Misc/Attachments/attachments.md",
+    "README.md",
+    "Misc/Templates/page-properties.md",
+    "20_Private/tasks.md",
+    "_canvas.canvas",
     "20_Private/context.md",
     "20_Private/journals.md",
     "Misc/Templates/monthly-template.md",
@@ -241,7 +243,6 @@
     "Misc/Templates/datetime.md",
     "Misc/Templates/datetime-li.md",
     "Misc/Templates/datetime-h2.md",
-    "Misc/Attachments/attachments.md",
     "Misc/Attachments/README-20240611204632938.png",
     "60_Areas/areas.md",
     "Misc/Templates/yearly-template.md",

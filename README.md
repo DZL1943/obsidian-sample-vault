@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-27 21:39"
+modified: "2024-07-28 10:09"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -419,6 +419,7 @@ brat
 - [2024-07-18] 更改日期格式 YYYY/MM/DD 为 YYYY-MM-DD
 - [2024-07-20] 将 Local、draft 移到 Inbox 中
 - [2024-07-27] ~~取消顶层目录名中的前缀编号~~
+- [2024-07-28] 默认禁用 Surfing 插件
 
 #
 
