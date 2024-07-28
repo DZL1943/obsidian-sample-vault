@@ -225,11 +225,12 @@
       "fuzzy-chinese-pinyin:FuzzySearch": false
     }
   },
-  "active": "dd0c724920d6ce07",
+  "active": "82484834b6c769a0",
   "lastOpenFiles": [
+    "Misc/Templates/breadcrumbs-t.md",
+    "README.md",
     "links.md",
     "Misc/Attachments/attachments.md",
-    "README.md",
     "Misc/Templates/page-properties.md",
     "20_Private/tasks.md",
     "_canvas.canvas",
@@ -254,7 +255,6 @@
     "Misc/Templates/entry-block.md",
     "Misc/Templates/months-h2.md",
     "Misc/Templates/weeks-h2.md",
-    "10_Inbox/Local/temp.md",
     "20_Private/2024",
     "20_Journals/2024",
     "90_Misc/Attachments",
