@@ -5,6 +5,7 @@ sorting-spec: |
   /folders Private
   /folders Jottings
   /folders Pages
+  /folders Thoughts
   %
   /folders Projects
   /folders Areas

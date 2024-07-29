@@ -227,8 +227,9 @@
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
-    "Misc/Templates/breadcrumbs-t.md",
+    "sortspec.md",
     "README.md",
+    "Misc/Templates/breadcrumbs-t.md",
     "links.md",
     "Misc/Attachments/attachments.md",
     "Misc/Templates/page-properties.md",
@@ -240,7 +241,6 @@
     "Misc/Templates/days-h2.md",
     "Misc/Templates/habit-calendar-dv.md",
     "All.md",
-    "sortspec.md",
     "Misc/Templates/datetime.md",
     "Misc/Templates/datetime-li.md",
     "Misc/Templates/datetime-h2.md",
