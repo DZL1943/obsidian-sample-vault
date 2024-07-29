@@ -241,11 +241,11 @@ brat
 - obsidian42-brat
 - obsidian-tagfolder
 - file-tree-alternative
+- obsidian-git
 - vscode-editor
 - dust-calendar
-- obsidian-git
-- surfing
 - floating-toc
+- surfing
 - obsidian-excalidraw-plugin
 ```
 
