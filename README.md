@@ -86,6 +86,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
     - things
 - 30_Jottings/: 非正式笔记
 - 40_Pages/: 原创笔记、主题笔记、MOC [^1]
+- 42_Thoughts/
 - 50_Projects/: 项目笔记[^2]
 - 60_Areas/: 领域知识笔记、卡片笔记 [^3]
 - 70_Resources/: 附件以外的资源文件
