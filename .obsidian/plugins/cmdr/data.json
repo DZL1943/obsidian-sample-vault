@@ -126,12 +126,6 @@
   "titleBar": [],
   "statusBar": [
     {
-      "id": "obsidian-minimal-settings:toggle-minimal-focus-mode",
-      "icon": "view",
-      "name": "Minimal Theme Settings: Toggle focus mode",
-      "mode": "any"
-    },
-    {
       "id": "show-whitespace-cm6:whitespace-toggle",
       "icon": "pilcrow",
       "name": "Show Whitespace: Toggle Show Whitespace",
