@@ -16,7 +16,7 @@
               "state": {
                 "file": "README.md",
                 "mode": "preview",
-                "source": true
+                "source": false
               },
               "pinned": true
             }
@@ -227,9 +227,11 @@
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
+    "10_Inbox/Local/temp.md",
+    "README.md",
+    "10_Inbox/Local/未命名看板.md",
     "20_Private/journals.md",
     "Misc/Templates/yearly-template.md",
-    "README.md",
     "sortspec.md",
     "Misc/Templates/breadcrumbs-t.md",
     "links.md",
@@ -253,8 +255,6 @@
     "quicknotes.md",
     "Misc/Templates/task-by-status.md",
     "Misc/Templates/entry-block.md",
-    "Misc/Templates/months-h2.md",
-    "Misc/Templates/weeks-h2.md",
     "20_Private/2024",
     "20_Journals/2024",
     "90_Misc/Attachments",

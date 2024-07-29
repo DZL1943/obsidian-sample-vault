@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-28 10:09"
+modified: "2024-07-30 00:12"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -49,10 +49,12 @@ url: "https://github.com/DZL1943/obsidian-sample-vault"
 
 ## 笔记分类
 
+- 草稿速记
 - 生活记录
-- 随笔杂记
-- 知识笔记
-- 其他
+- 随笔博文
+- 领域知识
+- 项目管理
+- 收集摘录
 
 ## 安装
 
@@ -207,6 +209,44 @@ brat
     "yan42685/obsidian-clever-search",
     "Yaozhuwa/AttachFlow",
 ]
+```
+
+按重要性排序
+```md
+- obsidian-style-settings
+- templater-obsidian
+- obsidian-linter
+- easy-typing-obsidian
+- various-complements
+- obsidian-completr
+- fuzzy-chinese-pinyin
+- cmdr
+- editor-width-slider
+- editing-toolbar
+- obsidian-hover-editor
+- quickadd
+- obsidian-outliner
+- table-editor-obsidian
+- url-into-selection
+- obsidian-kanban
+- dataview
+- any-block
+- obsidian-columns
+- tabs
+- code-styler
+- obsidian-tasks-plugin
+- obsidian-projects
+- attachment-management
+- janitor
+- obsidian42-brat
+- obsidian-tagfolder
+- file-tree-alternative
+- vscode-editor
+- dust-calendar
+- obsidian-git
+- surfing
+- floating-toc
+- obsidian-excalidraw-plugin
 ```
 
 > [!hint]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
