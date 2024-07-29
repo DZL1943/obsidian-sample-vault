@@ -1,3 +1,8 @@
+---
+obsidianUIMode: preview
+obsidianEditingMode: source
+---
+
 # Weekly
 
 <% tp.file.include("[[weeks-h2.md]]") %>

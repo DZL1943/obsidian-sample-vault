@@ -1,6 +1,8 @@
 ---
-editor-width: 40
 cssclasses: wide
+editor-width: 40
+obsidianUIMode: preview
+obsidianEditingMode: source
 ---
 
 # Habit, Task, Context
