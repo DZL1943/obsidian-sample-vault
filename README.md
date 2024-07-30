@@ -114,9 +114,9 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 > [!tip]+ 基本上顶层目录都能够作为独立库存在. 独立库的优势之一是能够独立进行版本控制. 主库以输入为主.
 > - Private: ~~推荐~~
 > - Pages: 推荐
-> - Projects: ~~推荐~~
+> - Projects: 推荐
 > - Areas: 推荐
-> - Resources: ~~推荐~~
+> - Resources: 推荐
 > - Archives
 
 > [!hint]+ 最简单的笔记结构, 只需要一个 inbox 和 outbox (此处 inbox 指记笔记, outbox 指整理笔记, 类似于卢曼的闪念笔记和永久笔记)  
