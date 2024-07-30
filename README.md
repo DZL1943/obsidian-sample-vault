@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-30 00:12"
+modified: "2024-07-30 09:41"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -111,7 +111,13 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - quicknotes: 快速记录
 - README
 
-> [!tip]+ 基本上顶层目录都能够作为独立库存在. 独立库的优势之一是能够独立进行版本控制.
+> [!tip]+ 基本上顶层目录都能够作为独立库存在. 独立库的优势之一是能够独立进行版本控制. 主库以输入为主.
+> - Private: ~~推荐~~
+> - Pages: 推荐
+> - Projects: ~~推荐~~
+> - Areas: 推荐
+> - Resources: ~~推荐~~
+> - Archives
 
 > [!hint]+ 最简单的笔记结构, 只需要一个 inbox 和 outbox (此处 inbox 指记笔记, outbox 指整理笔记, 类似于卢曼的闪念笔记和永久笔记)  
 > 上述目录结构中的 in/out 关系:
@@ -211,41 +217,44 @@ brat
 ]
 ```
 
-按重要性排序
+按必要性排序
 ```md
-- obsidian-style-settings
-- templater-obsidian
 - obsidian-linter
 - easy-typing-obsidian
-- various-complements
 - obsidian-completr
-- fuzzy-chinese-pinyin
+- various-complements
+- templater-obsidian
+- refresh-preview
+- update-relative-links
+- better-markdown-links
+- attachment-management
+- janitor
 - cmdr
 - editor-width-slider
-- editing-toolbar
-- obsidian-hover-editor
-- quickadd
 - obsidian-outliner
+- dataview
+- obsidian-kanban
 - table-editor-obsidian
 - url-into-selection
-- obsidian-kanban
-- dataview
+- code-styler
 - any-block
 - obsidian-columns
 - tabs
-- code-styler
-- obsidian-tasks-plugin
-- obsidian-projects
-- attachment-management
-- janitor
-- obsidian42-brat
+- fuzzy-chinese-pinyin
+- editing-toolbar
+- obsidian-hover-editor
+- dust-calendar
 - obsidian-tagfolder
 - file-tree-alternative
+- obsidian-style-settings
+- obsidian-tasks-plugin
+- obsidian-projects
+- quickadd
+- obsidian42-brat
 - obsidian-git
 - vscode-editor
-- dust-calendar
-- floating-toc
 - surfing
+- floating-toc
 - obsidian-excalidraw-plugin
 ```
 
