@@ -1,11 +1,5 @@
 ## 计划
 
-## 周一  (date:: <%tp.date.weekday("YYYY-MM-DD", 0)%>)  (weather:: )  (mood:: )  (habits:: )  (diet:: )  (summary:: )  
-## 周二  (date:: <%tp.date.weekday("YYYY-MM-DD", 1)%>)  (weather:: )  (mood:: )  (habits:: )  (diet:: )  (summary:: )  
-## 周三  (date:: <%tp.date.weekday("YYYY-MM-DD", 2)%>)  (weather:: )  (mood:: )  (habits:: )  (diet:: )  (summary:: )  
-## 周四  (date:: <%tp.date.weekday("YYYY-MM-DD", 3)%>)  (weather:: )  (mood:: )  (habits:: )  (diet:: )  (summary:: )  
-## 周五  (date:: <%tp.date.weekday("YYYY-MM-DD", 4)%>)  (weather:: )  (mood:: )  (habits:: )  (diet:: )  (summary:: )  
-## 周六  (date:: <%tp.date.weekday("YYYY-MM-DD", 5)%>)  (weather:: )  (mood:: )  (habits:: )  (diet:: )  (summary:: )  
-## 周日  (date:: <%tp.date.weekday("YYYY-MM-DD", 6)%>)  (weather:: )  (mood:: )  (habits:: )  (diet:: )  (summary:: )  
+<% tp.file.include("[[weekdays-h2.md]]") %>
 
 ## 总结

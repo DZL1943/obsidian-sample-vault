@@ -80,8 +80,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "6af7bc7b0804df6c",
@@ -137,7 +136,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "Misc/Templates/weekdays-list.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -154,7 +153,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "Misc/Templates/weekdays-list.md",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": false
               }
@@ -166,7 +165,7 @@
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "README.md",
+                "file": "Misc/Templates/weekdays-list.md",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -225,10 +224,15 @@
       "fuzzy-chinese-pinyin:FuzzySearch": false
     }
   },
-  "active": "dd0c724920d6ce07",
+  "active": "82484834b6c769a0",
   "lastOpenFiles": [
-    "10_Inbox/Local/temp.md",
+    "Misc/Templates/weekdays-h2.md",
+    "Misc/Templates/weekdays-list.md",
     "README.md",
+    "Misc/Templates/datetime-li.md",
+    "Misc/Templates/weekly-template.md",
+    "Misc/Templates/monthly-template.md",
+    "10_Inbox/Local/temp.md",
     "10_Inbox/Local/未命名看板.md",
     "20_Private/journals.md",
     "Misc/Templates/yearly-template.md",
@@ -240,21 +244,16 @@
     "20_Private/tasks.md",
     "_canvas.canvas",
     "20_Private/context.md",
-    "Misc/Templates/monthly-template.md",
     "Misc/Templates/days-h2.md",
     "Misc/Templates/habit-calendar-dv.md",
     "All.md",
     "Misc/Templates/datetime.md",
-    "Misc/Templates/datetime-li.md",
     "Misc/Templates/datetime-h2.md",
     "Misc/Attachments/README-20240611204632938.png",
     "60_Areas/areas.md",
     "10_Inbox/Local/2024-06.md",
     "10_Inbox/test-dv.md",
     "10_Inbox/draft.md",
-    "quicknotes.md",
-    "Misc/Templates/task-by-status.md",
-    "Misc/Templates/entry-block.md",
     "20_Private/2024",
     "20_Journals/2024",
     "90_Misc/Attachments",
