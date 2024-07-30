@@ -53,3 +53,9 @@ Object.keys(output).forEach(heading => {
 ```
 
 # Summary
+
+```dataview
+table without id
+dateformat(date, "MM/dd ccc") as date, weather, mood, habits, summary
+where file.path=this.file.path
+```
