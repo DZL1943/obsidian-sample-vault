@@ -1,6 +1,6 @@
 ---
 created: "2024-06-11 10:48"
-modified: "2024-07-30 09:41"
+modified: "2024-07-30 10:52"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -112,7 +112,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 - README
 
 > [!tip]+ 基本上顶层目录都能够作为独立库存在. 独立库的优势之一是能够独立进行版本控制. 主库以输入为主.
-> - Private: ~~推荐~~
+> - Private: 推荐
 > - Pages: 推荐
 > - Projects: 推荐
 > - Areas: 推荐
