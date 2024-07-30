@@ -10,7 +10,7 @@ obsidianEditingMode: source
 ```dataview
 list rows.file.link + title + ":" + description
 where contains(file.folder, this.file.folder)
-where regexmatch("[0-9]{8,15}", file.name)
+where regexmatch("^[0-9]{8,15}.*", file.name)
 sort file.name desc
 limit 30
 ```
