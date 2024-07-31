@@ -352,6 +352,7 @@ brat
 
 ## 剪藏、发布、导出
 
+剪藏
 - 简悦
 - [mika-cn/maoxian-web-clipper](https://github.com/mika-cn/maoxian-web-clipper)
 - [web-clipper](https://github.com/webclipper/web-clipper): 不支持 Obsidian
@@ -368,6 +369,11 @@ brat
 - GitHub/Enveloppe 插件
 - Docusaurus/Obisidiosaurus 插件
 - Digital Garden 插件
+
+SSG
+- VitePress
+- Docusaurus
+- Hugo
 
 ## 参考
 
