@@ -228,6 +228,7 @@ brat
 - update-relative-links
 - better-markdown-links
 - find-unlinked-files
+- obsidian-front-matter-title-plugin
 - attachment-management
 - janitor
 - cmdr
