@@ -34,9 +34,9 @@
       "yaml-keys-to-remove": ""
     },
     "yaml-key-sort": {
-      "enabled": false,
-      "yaml-key-priority-sort-order": "created\nmodified\nstatus\ntype\ncategories\ntags\naliases\nurl\ncssclass",
-      "priority-keys-at-start-of-yaml": false,
+      "enabled": true,
+      "yaml-key-priority-sort-order": "title\nauthors\ndescription\ncreated\nmodified\ncategories\ntags\naliases\ncssclass",
+      "priority-keys-at-start-of-yaml": true,
       "yaml-sort-order-for-other-keys": "Ascending Alphabetical"
     },
     "yaml-timestamp": {
@@ -49,7 +49,7 @@
       "format": "\"YYYY-MM-DD HH:mm\""
     },
     "yaml-title": {
-      "enabled": false,
+      "enabled": true,
       "title-key": "title",
       "mode": "first-h1-or-filename-if-h1-missing"
     },
@@ -267,9 +267,7 @@
   "settingsConvertedToConfigKeyValues": true,
   "foldersToIgnore": [
     "70_Resources",
-    "80_Archives",
     "90_Misc",
-    "20_Journals",
     "Misc",
     "20_Private"
   ],
