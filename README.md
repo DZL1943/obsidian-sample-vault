@@ -373,7 +373,7 @@ brat
 SSG
 - VitePress
 - Docusaurus
-- Hugo
+- Hugo: 附件不太好处理
 
 ## 参考
 
