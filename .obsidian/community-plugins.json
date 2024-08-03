@@ -58,5 +58,6 @@
   "refresh-preview",
   "note-gallery",
   "tabs",
-  "obsidian-view-mode-by-frontmatter"
+  "obsidian-view-mode-by-frontmatter",
+  "plugin-proxy"
 ]

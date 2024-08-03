@@ -152,26 +152,26 @@ async function retryWithTimeout(asyncFn, {
   retryDelayInMilliseconds = 100
 } = {}) {
   await runWithTimeout(timeoutInMilliseconds, async () => {
-    let failedBefore = false;
+    let attempt = 0;
     while (true) {
+      attempt++;
       if (await asyncFn()) {
-        if (failedBefore) {
-          console.debug("Retry completed successfully");
+        if (attempt > 1) {
+          console.debug(`Retry completed successfully after ${attempt} attempts`);
         }
         return;
       }
-      failedBefore = true;
-      console.debug(`Retry completed unsuccessfully. Trying again in ${retryDelayInMilliseconds} milliseconds`);
+      console.debug(`Retry attempt ${attempt} completed unsuccessfully. Trying again in ${retryDelayInMilliseconds} milliseconds`);
       await sleep(retryDelayInMilliseconds);
     }
   });
 }
 async function runWithTimeout(timeoutInMilliseconds, asyncFn) {
-  return await Promise.race([asyncFn(), timeout()]);
-  async function timeout() {
-    await sleep(timeoutInMilliseconds);
-    throw new Error(`Timed out in ${timeoutInMilliseconds} milliseconds`);
-  }
+  return await Promise.race([asyncFn(), timeout(timeoutInMilliseconds)]);
+}
+async function timeout(timeoutInMilliseconds) {
+  await sleep(timeoutInMilliseconds);
+  throw new Error(`Timed out in ${timeoutInMilliseconds} milliseconds`);
 }
 function convertToSync(promise) {
   promise.catch(showError);
@@ -181,6 +181,9 @@ function convertToSync(promise) {
 async function getCacheSafe(app, file) {
   let cache = null;
   await retryWithTimeout(async () => {
+    if (file.deleted) {
+      throw new Error(`File ${file.path} is deleted`);
+    }
     const fileInfo = app.metadataCache.getFileInfo(file.path);
     const stat = await app.vault.adapter.stat(file.path);
     if (!fileInfo) {
@@ -345,31 +348,47 @@ async function processWithRetry(app, file, processFn) {
   });
 }
 async function applyFileChanges(app, file, changesFn) {
-  await processWithRetry(app, file, async (content) => {
-    let changes = await changesFn();
-    changes.sort((a, b) => a.startIndex - b.startIndex);
-    changes = changes.filter((change, index) => {
-      if (index === 0) {
-        return true;
+  await retryWithTimeout(async () => {
+    let doChangesMatchContent = true;
+    await processWithRetry(app, file, async (content) => {
+      let changes = await changesFn();
+      for (const change of changes) {
+        const actualContent = content.slice(change.startIndex, change.endIndex);
+        if (actualContent !== change.oldContent) {
+          console.warn(`Content mismatch at ${change.startIndex}-${change.endIndex} in ${file.path}:
+Expected: ${change.oldContent}
+Actual: ${actualContent}`);
+          doChangesMatchContent = false;
+          return content;
+        }
       }
-      return !deepEqual(change, changes[index - 1]);
+      changes.sort((a, b) => a.startIndex - b.startIndex);
+      changes = changes.filter((change, index) => {
+        if (index === 0) {
+          return true;
+        }
+        return !deepEqual(change, changes[index - 1]);
+      });
+      for (let i = 1; i < changes.length; i++) {
+        const change = changes[i];
+        const previousChange = changes[i - 1];
+        if (previousChange.endIndex >= change.startIndex) {
+          throw new Error(`Overlapping changes:
+${toJson(previousChange)}
+${toJson(change)}`);
+        }
+      }
+      let newContent = "";
+      let lastIndex = 0;
+      for (const change of changes) {
+        newContent += content.slice(lastIndex, change.startIndex);
+        newContent += change.newContent;
+        lastIndex = change.endIndex;
+      }
+      newContent += content.slice(lastIndex);
+      return newContent;
     });
-    for (let i = 1; i < changes.length; i++) {
-      if (changes[i - 1].endIndex >= changes[i].startIndex) {
-        throw new Error(`Overlapping changes:
-${toJson(changes[i - 1])}
-${toJson(changes[i])}`);
-      }
-    }
-    let newContent = "";
-    let lastIndex = 0;
-    for (const change of changes) {
-      newContent += content.slice(lastIndex, change.startIndex);
-      newContent += change.newContent;
-      lastIndex = change.endIndex;
-    }
-    newContent += content.slice(lastIndex);
-    return newContent;
+    return doChangesMatchContent;
   });
 }
 
@@ -391,6 +410,7 @@ async function convertLinksInFile(plugin, file) {
   await applyFileChanges(plugin.app, file, async () => getAllLinks(await getCacheSafe(plugin.app, file)).map((link) => ({
     startIndex: link.position.start.offset,
     endIndex: link.position.end.offset,
+    oldContent: link.original,
     newContent: convertLink(plugin, link, file)
   })));
 }
@@ -415,11 +435,17 @@ async function convertLinksInEntireVault(plugin) {
   notice.hide();
 }
 async function applyLinkChangeUpdates(plugin, file, updates) {
-  await applyFileChanges(plugin.app, file, () => updates.map((update) => ({
-    startIndex: update.reference.position.start.offset,
-    endIndex: update.reference.position.end.offset,
-    newContent: fixChange(plugin, update.change, file)
-  })));
+  await applyFileChanges(plugin.app, file, async () => {
+    const changes = updates.map((update) => ({
+      startIndex: update.reference.position.start.offset,
+      endIndex: update.reference.position.end.offset,
+      oldContent: update.reference.original,
+      newContent: fixChange(plugin, update.change, file)
+    }));
+    const content = await plugin.app.vault.read(file);
+    const doUpdatesMatchContent = changes.every((change) => content.slice(change.startIndex, change.endIndex) === change.oldContent);
+    return doUpdatesMatchContent ? changes : [];
+  });
 }
 function fixChange(plugin, change, file) {
   const match = change.match(/^!?\[(.*?)\]\(([^<]+?) .+?>\)$/);
@@ -441,6 +467,7 @@ async function updateLinksInFile(plugin, file, oldPath) {
   await applyFileChanges(app, file, async () => getAllLinks(await getCacheSafe(app, file)).map((link) => ({
     startIndex: link.position.start.offset,
     endIndex: link.position.end.offset,
+    oldContent: link.original,
     newContent: convertLink(plugin, link, file, oldPath)
   })));
 }
@@ -559,6 +586,7 @@ var BetterMarkdownLinksPlugin = class extends import_obsidian5.Plugin {
       await applyFileChanges(this.app, parentNote, () => (this.app.metadataCache.getBacklinksForFile(file).get(parentNotePath) ?? []).map((link) => ({
         startIndex: link.position.start.offset,
         endIndex: link.position.end.offset,
+        oldContent: link.original,
         newContent: updateLink(this, link, file, parentNote)
       })));
     }

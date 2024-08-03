@@ -134,13 +134,13 @@ ne), require_diff_match_patch = __commonJS({
       for (var pe = re - se, ge = pe % 2 != 0, me = 0, ye = 0, Se = 0, Ee = 0, ve = 0; ve < oe && !((new Date).getTime() > ie); ve++) {
         for (var Ce = -ve + me; Ce <= ve - ye; Ce += 2) {
           var we = le + Ce;
-          if (Ce == -ve || Ce != ve && de[we - 1] < de[we + 1]) Te = de[we + 1]; else Te = de[we - 1] + 1;
-          for (var Le = Te - Ce; Te < re && Le < se && _.charAt(Te) == ee.charAt(Le); ) {
-            Te++;
+          if (Ce == -ve || Ce != ve && de[we - 1] < de[we + 1]) Re = de[we + 1]; else Re = de[we - 1] + 1;
+          for (var Le = Re - Ce; Re < re && Le < se && _.charAt(Re) == ee.charAt(Le); ) {
+            Re++;
             Le++;
           }
-          de[we] = Te;
-          if (Te > re) ye += 2; else if (Le > se) me += 2; else if (ge) if ((Ae = le + pe - Ce) >= 0 && Ae < ue && -1 != fe[Ae]) if (Te >= (ke = re - fe[Ae])) return this.diff_bisectSplit_(_, ee, Te, Le, ie);
+          de[we] = Re;
+          if (Re > re) ye += 2; else if (Le > se) me += 2; else if (ge) if ((Ae = le + pe - Ce) >= 0 && Ae < ue && -1 != fe[Ae]) if (Re >= (ke = re - fe[Ae])) return this.diff_bisectSplit_(_, ee, Re, Le, ie);
         }
         for (var Oe = -ve + Se; Oe <= ve - Ee; Oe += 2) {
           var ke, Ae = le + Oe;
@@ -151,9 +151,9 @@ ne), require_diff_match_patch = __commonJS({
           }
           fe[Ae] = ke;
           if (ke > re) Ee += 2; else if (xe > se) Se += 2; else if (!ge) if ((we = le + pe - Oe) >= 0 && we < ue && -1 != de[we]) {
-            var Te;
-            Le = le + (Te = de[we]) - we;
-            if (Te >= (ke = re - ke)) return this.diff_bisectSplit_(_, ee, Te, Le, ie);
+            var Re;
+            Le = le + (Re = de[we]) - we;
+            if (Re >= (ke = re - ke)) return this.diff_bisectSplit_(_, ee, Re, Le, ie);
           }
         }
       }
@@ -1033,10 +1033,10 @@ ne), require_diff_match_patch = __commonJS({
           }
         } else {
           he = [];
-          for (var Te = 0; Te < fe.length; Te++) he.push.apply(he, expand2(fe[Te], false));
+          for (var Re = 0; Re < fe.length; Re++) he.push.apply(he, expand2(fe[Re], false));
         }
-        for (Te = 0; Te < he.length; Te++) for (ue = 0; ue < le.length; ue++) {
-          de = oe + he[Te] + le[ue];
+        for (Re = 0; Re < he.length; Re++) for (ue = 0; ue < le.length; ue++) {
+          de = oe + he[Re] + le[ue];
           if (!ee || me || de) ie.push(de);
         }
       }
@@ -6722,9 +6722,9 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
         fe += 14;
         for (var ke = new u8(Oe), Ae = new u8(19), xe = 0; xe < Le; ++xe) Ae[clim[xe]] = bits(_, fe + 3 * xe, 7);
         fe += 3 * Le;
-        var Te = max(Ae), Re = (1 << Te) - 1, Pe = hMap(Ae, Te, 1);
+        var Re = max(Ae), Te = (1 << Re) - 1, Pe = hMap(Ae, Re, 1);
         for (xe = 0; xe < Oe; ) {
-          var Ie, De = Pe[bits(_, fe, Re)];
+          var Ie, De = Pe[bits(_, fe, Te)];
           fe += 15 & De;
           if ((Ie = De >> 4) < 16) ke[xe++] = Ie; else {
             var Be = 0, Ne = 0;
@@ -6917,24 +6917,24 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
   ++re[256];
   for (var he = hTree(re, 15), pe = he.t, ge = he.l, me = hTree(se, 15), ye = me.t, Se = me.l, Ee = lc(pe), ve = Ee.c, Ce = Ee.n, we = lc(ye), Le = we.c, Oe = we.n, ke = new u16(19), Ae = 0; Ae < ve.length; ++Ae) ++ke[31 & ve[Ae]];
   for (Ae = 0; Ae < Le.length; ++Ae) ++ke[31 & Le[Ae]];
-  for (var xe = hTree(ke, 7), Te = xe.t, Re = xe.l, Pe = 19; Pe > 4 && !Te[clim[Pe - 1]]; --Pe) ;
-  var Ie, De, Be, Ne, Me = de + 5 << 3, Fe = clen(re, flt) + clen(se, fdt) + oe, Ve = clen(re, pe) + clen(se, ye) + oe + 14 + 3 * Pe + clen(ke, Te) + 2 * ke[16] + 3 * ke[17] + 7 * ke[18];
+  for (var xe = hTree(ke, 7), Re = xe.t, Te = xe.l, Pe = 19; Pe > 4 && !Re[clim[Pe - 1]]; --Pe) ;
+  var Ie, De, Be, Ne, Me = de + 5 << 3, Fe = clen(re, flt) + clen(se, fdt) + oe, Ve = clen(re, pe) + clen(se, ye) + oe + 14 + 3 * Pe + clen(ke, Re) + 2 * ke[16] + 3 * ke[17] + 7 * ke[18];
   if (ue >= 0 && Me <= Fe && Me <= Ve) return wfblk(ee, fe, _.subarray(ue, ue + de));
   wbits(ee, fe, 1 + (Ve < Fe)), fe += 2;
   if (Ve < Fe) {
     Ie = hMap(pe, ge, 0), De = pe, Be = hMap(ye, Se, 0), Ne = ye;
-    var $e = hMap(Te, Re, 0);
+    var $e = hMap(Re, Te, 0);
     wbits(ee, fe, Ce - 257);
     wbits(ee, fe + 5, Oe - 1);
     wbits(ee, fe + 10, Pe - 4);
     fe += 14;
-    for (Ae = 0; Ae < Pe; ++Ae) wbits(ee, fe + 3 * Ae, Te[clim[Ae]]);
+    for (Ae = 0; Ae < Pe; ++Ae) wbits(ee, fe + 3 * Ae, Re[clim[Ae]]);
     fe += 3 * Pe;
     for (var Ge = [ ve, Le ], Ue = 0; Ue < 2; ++Ue) {
       var je = Ge[Ue];
       for (Ae = 0; Ae < je.length; ++Ae) {
         var ze = 31 & je[Ae];
-        wbits(ee, fe, $e[ze]), fe += Te[ze];
+        wbits(ee, fe, $e[ze]), fe += Re[ze];
         if (ze > 15) wbits(ee, fe, je[Ae] >> 5 & 127), fe += je[Ae] >> 12;
       }
     }
@@ -6957,15 +6957,15 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
     if (fe) ue[0] = se.r >> 3;
     for (var he = deo[ee - 1], pe = he >> 13, ge = 8191 & he, me = (1 << ne) - 1, ye = se.p || new u16(32768), Se = se.h || new u16(me + 1), Ee = Math.ceil(ne / 3), ve = 2 * Ee, hsh = function(ee) {
       return (_[ee] ^ _[ee + 1] << Ee ^ _[ee + 2] << ve) & me;
-    }, Ce = new i32(25e3), we = new u16(288), Le = new u16(32), Oe = 0, ke = 0, Ae = se.i || 0, xe = 0, Te = se.w || 0, Re = 0; Ae + 2 < oe; ++Ae) {
+    }, Ce = new i32(25e3), we = new u16(288), Le = new u16(32), Oe = 0, ke = 0, Ae = se.i || 0, xe = 0, Re = se.w || 0, Te = 0; Ae + 2 < oe; ++Ae) {
       var Pe = hsh(Ae), Ie = 32767 & Ae, De = Se[Pe];
       ye[Ie] = De;
       Se[Pe] = Ie;
-      if (Te <= Ae) {
+      if (Re <= Ae) {
         var Be = oe - Ae;
         if ((Oe > 7e3 || xe > 24576) && (Be > 423 || !de)) {
-          fe = wblk(_, ue, 0, Ce, we, Le, ke, xe, Re, Ae - Re, fe);
-          xe = Oe = ke = 0, Re = Ae;
+          fe = wblk(_, ue, 0, Ce, we, Le, ke, xe, Te, Ae - Te, fe);
+          xe = Oe = ke = 0, Te = Ae;
           for (var Ne = 0; Ne < 286; ++Ne) we[Ne] = 0;
           for (Ne = 0; Ne < 30; ++Ne) Le[Ne] = 0;
         }
@@ -6991,7 +6991,7 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
           ke += fleb[Xe] + fdeb[Ye];
           ++we[257 + Xe];
           ++Le[Ye];
-          Te = Ae + Me;
+          Re = Ae + Me;
           ++Oe;
         } else {
           Ce[xe++] = _[Ae];
@@ -6999,15 +6999,15 @@ var flm = hMap(flt, 9, 0), flrm = hMap(flt, 9, 1), fdm = hMap(fdt, 5, 0), fdrm =
         }
       }
     }
-    for (Ae = Math.max(Ae, Te); Ae < oe; ++Ae) {
+    for (Ae = Math.max(Ae, Re); Ae < oe; ++Ae) {
       Ce[xe++] = _[Ae];
       ++we[_[Ae]];
     }
-    fe = wblk(_, ue, de, Ce, we, Le, ke, xe, Re, Ae - Re, fe);
+    fe = wblk(_, ue, de, Ce, we, Le, ke, xe, Te, Ae - Te, fe);
     if (!de) {
       se.r = 7 & fe | ue[fe / 8 | 0] << 3;
       fe -= 7;
-      se.h = Se, se.p = ye, se.i = Ae, se.w = Te;
+      se.h = Se, se.p = ye, se.i = Ae, se.w = Re;
     }
   } else {
     for (Ae = se.w || 0; Ae < oe + de; Ae += 65535) {
@@ -17230,7 +17230,7 @@ function get_each_context_1(_, ee, ne) {
 }
 
 function create_else_block(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Te, Re, Pe, Ie, De, Be, Ne, Me, Fe, Ve = new Date(_[4].mtime).toLocaleString() + "", $e = _[6].length + "", Ge = new Date(_[5].mtime).toLocaleString() + "", Ue = _[7].length + "", je = ensure_array_like(_[12]), ze = [];
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe, Ve = new Date(_[4].mtime).toLocaleString() + "", $e = _[6].length + "", Ge = new Date(_[5].mtime).toLocaleString() + "", Ue = _[7].length + "", je = ensure_array_like(_[12]), ze = [];
   for (let ee = 0; ee < je.length; ee += 1) ze[ee] = create_each_block_1(get_each_context_1(_, je, ee));
   function select_block_type_1(_, ee) {
     if (false != _[9]) return create_if_block_4; else return create_else_block_1;
@@ -17267,8 +17267,8 @@ function create_else_block(_) {
       ke = space();
       Ae = text(Ge);
       xe = space();
-      Te = element("td");
-      Re = text(Ue);
+      Re = element("td");
+      Te = text(Ue);
       Pe = text(" letters");
       Ie = space();
       De = element("div");
@@ -17283,7 +17283,7 @@ function create_else_block(_) {
       attr(oe, "class", "svelte-10t8oe0");
       attr(Ce, "class", "svelte-10t8oe0");
       attr(Oe, "class", "svelte-10t8oe0");
-      attr(Te, "class", "svelte-10t8oe0");
+      attr(Re, "class", "svelte-10t8oe0");
       attr(ve, "class", "svelte-10t8oe0");
       attr(se, "class", "svelte-10t8oe0");
       attr(re, "class", "infos svelte-10t8oe0");
@@ -17320,9 +17320,9 @@ function create_else_block(_) {
       append(Oe, ke);
       append(Oe, Ae);
       append(ve, xe);
-      append(ve, Te);
-      append(Te, Re);
-      append(Te, Pe);
+      append(ve, Re);
+      append(Re, Te);
+      append(Re, Pe);
       insert(Ve, Ie, $e);
       insert(Ve, De, $e);
       if (Xe) Xe.m(De, null);
@@ -17377,7 +17377,7 @@ function create_else_block(_) {
         We = null;
       }
       if (32 & ne[0] && Ge !== (Ge = new Date(_[5].mtime).toLocaleString() + "")) set_data(Ae, Ge);
-      if (128 & ne[0] && Ue !== (Ue = _[7].length + "")) set_data(Re, Ue);
+      if (128 & ne[0] && Ue !== (Ue = _[7].length + "")) set_data(Te, Ue);
       if (_[3]) if (Xe) Xe.p(_, ne); else {
         Xe = create_if_block_1(_);
         Xe.c();
@@ -18130,8 +18130,12 @@ var PluginDataExDisplayV2 = class {
     this.confKey = `${categoryToFolder(this.category, this.term)}${this.name}`;
     this.applyLoadedManifest();
   }
-  setFile(_) {
-    if (this.files.find((ee => ee.filename == _.filename))) this.files = this.files.filter((ee => ee.filename != _.filename));
+  async setFile(_) {
+    const ee = this.files.find((ee => ee.filename == _.filename));
+    if (ee) {
+      if (ee.mtime == _.mtime && await isDocContentSame(ee.data, _.data)) return;
+      this.files = this.files.filter((ee => ee.filename != _.filename));
+    }
     this.files.push(_);
     if ("manifest.json" == _.filename) this.applyLoadedManifest();
   }
@@ -18411,7 +18415,7 @@ var PluginDataExDisplayV2 = class {
       } else if (ne instanceof PluginDataExDisplayV2) ie = ne;
       if (!ie) return;
       const re = await this.createPluginDataExFileV2(ee);
-      if (re) ie.setFile(re); else {
+      if (re) await ie.setFile(re); else {
         ie.deleteFile(ee);
         if (0 == ie.files.length) this.pluginList = this.pluginList.filter((ee => ee.documentPath != _));
       }
@@ -18585,18 +18589,41 @@ var PluginDataExDisplayV2 = class {
       } else {
         const ee = _.files;
         for (const ie of ee) {
-          const ee = `${ne}/${ie.filename}`;
+          const ee = {
+            mtime: ie.mtime,
+            ctime: ie.ctime
+          }, re = `${ne}/${ie.filename}`;
           Logger(`Applying ${ie.filename} of ${_.displayName || _.name}..`);
-          this.vaultAccess.ensureDirectory(ee);
+          this.vaultAccess.ensureDirectory(re);
           if ("newnote" == ie.datatype) {
-            const _ = base64ToArrayBuffer(ie.data);
-            await this.vaultAccess.adapterWrite(ee, _);
+            let _;
+            try {
+              _ = await this.vaultAccess.adapterReadBinary(re);
+            } catch (ee) {
+              _ = new ArrayBuffer(0);
+            }
+            const ne = base64ToArrayBuffer(ie.data);
+            if (await isDocContentSame(_, ne)) {
+              Logger(`The file ${ie.filename} is already up-to-date`, LOG_LEVEL_VERBOSE);
+              continue;
+            }
+            await this.vaultAccess.adapterWrite(re, ne, ee);
           } else {
-            const _ = getDocData(ie.data);
-            await this.vaultAccess.adapterWrite(ee, _);
+            let _;
+            try {
+              _ = await this.vaultAccess.adapterRead(re);
+            } catch (ee) {
+              _ = "";
+            }
+            const ne = getDocData(ie.data);
+            if (await isDocContentSame(_, ne)) {
+              Logger(`The file ${ie.filename} is already up-to-date`, LOG_LEVEL_VERBOSE);
+              continue;
+            }
+            await this.vaultAccess.adapterWrite(re, ne, ee);
           }
           Logger(`Applied ${ie.filename} of ${_.displayName || _.name}..`);
-          await this.storeCustomisationFileV2(ee, this.plugin.deviceAndVaultName);
+          await this.storeCustomisationFileV2(re, this.plugin.deviceAndVaultName);
         }
       }
     } catch (ee) {
@@ -18770,7 +18797,18 @@ var PluginDataExDisplayV2 = class {
           type: "plain",
           eden: {}
         }; else {
-          if (ie.mtime == se) return true;
+          if (isMarkedAsSameChanges(ee, [ ie.mtime, se + 1 ]) == EVEN) {
+            Logger(`STORAGE --\x3e DB:${ee}: (config) Skipped (Already checked the same)`, LOG_LEVEL_DEBUG);
+            return;
+          }
+          const _ = await this.localDatabase.getDBEntryFromMeta(ie, {}, false, false);
+          if (false == _) throw "Could not load the document";
+          const ne = getDocData(_.data), ue = ne.indexOf(DUMMY_END), de = base64ToArrayBuffer(ne.substring(ue + DUMMY_END.length));
+          if (await isDocContentSame(de, oe)) {
+            Logger(`STORAGE --\x3e DB:${ee}: (config) Skipped (the same content)`, LOG_LEVEL_VERBOSE);
+            markChangesAreSame(ee, ie.mtime, se + 1);
+            return true;
+          }
           re = {
             ...ie,
             data: le,
@@ -18782,10 +18820,10 @@ var PluginDataExDisplayV2 = class {
             type: "plain"
           };
         }
-        const oe = await this.localDatabase.putDBEntry(re);
+        const ue = await this.localDatabase.putDBEntry(re);
         Logger(`STORAGE --\x3e DB:${ee}: (config) Done`);
         fireAndForget((() => this.updatePluginListV2(false, this.filenameWithUnifiedKey(_))));
-        return oe;
+        return ue;
       } catch (_) {
         Logger(`STORAGE --\x3e DB:${ee}: (config) Failed`);
         Logger(_, LOG_LEVEL_VERBOSE);
@@ -19547,7 +19585,7 @@ function create_fragment2(_) {
 function instance2(_, ee, ne) {
   let {list: ie = []} = ee, {thisTerm: re = ""} = ee, {hideNotApplicable: se = false} = ee, {selectNewest: oe = 0} = ee, {selectNewestStyle: le = 0} = ee, {applyAllPluse: ue = 0} = ee, {applyData: de} = ee, {compareData: fe} = ee, {deleteData: he} = ee, {hidden: pe} = ee, {plugin: ge} = ee, {isMaintenanceMode: me = false} = ee, {isFlagged: ye = false} = ee;
   const Se = ge.addOnConfigSync;
-  let {selected: Ee = ""} = ee, ve = "", Ce = "", we = "", Le = false, Oe = false, ke = false, Ae = 0, xe = 0, Te = [];
+  let {selected: Ee = ""} = ee, ve = "", Ce = "", we = "", Le = false, Oe = false, ke = false, Ae = 0, xe = 0, Re = [];
   async function comparePlugin(_, ee) {
     var ne, ie;
     let re = "", se = "", oe = false, le = false;
@@ -19555,7 +19593,7 @@ function instance2(_, ee, ne) {
       re = "Remote only";
       le = true;
     } else {
-      const se = (null !== (ne = null == _ ? void 0 : _.mtime) && void 0 !== ne ? ne : 0) - (null !== (ie = null == ee ? void 0 : ee.mtime) && void 0 !== ie ? ie : 0), ue = timeDeltaToHumanReadable(Math.abs(se / 1e3));
+      const se = (null !== (ne = null == _ ? void 0 : _.mtime) && void 0 !== ne ? ne : 0) - (null !== (ie = null == ee ? void 0 : ee.mtime) && void 0 !== ie ? ie : 0), ue = timeDeltaToHumanReadable(Math.abs(se));
       if (se / 1e3 < -10) {
         re = `Newer (${ue})`;
         le = true;
@@ -19664,23 +19702,23 @@ function instance2(_, ee, ne) {
       if (oe != Ae) if (1 == le) _ = true; else if (2 == le) _ = ye; else if (3 == le) ne(0, Ee = "");
       (async function updateTerms(_, ee, ie) {
         const oe = _.find((_ => _.term == re));
-        if (ie) ne(9, Te = [ ...new Set(_.map((_ => _.term))) ]); else if (se) {
+        if (ie) ne(9, Re = [ ...new Set(_.map((_ => _.term))) ]); else if (se) {
           const ee = [], ie = [ ...new Set(_.map((_ => _.term))) ];
           for (const ne of ie) {
             const ie = _.find((_ => _.term == ne));
             if ((await comparePlugin(oe, ie)).canApply) ee.push(ne);
           }
-          ne(9, Te = [ ...ee ]);
-        } else ne(9, Te = [ ...new Set(_.map((_ => _.term))) ].filter((_ => _ != re)));
+          ne(9, Re = [ ...ee ]);
+        } else ne(9, Re = [ ...new Set(_.map((_ => _.term))) ].filter((_ => _ != re)));
         let le = oe;
         if (ee) {
-          for (const ee of Te) {
+          for (const ee of Re) {
             const ne = _.find((_ => _.term == ee));
             if (ne && ne.mtime && ((null == le ? void 0 : le.mtime) || 0) < ne.mtime) le = ne;
           }
           if (le && le.term != re) ne(0, Ee = le.term);
         }
-        if (Te.indexOf(Ee) < 0) ne(0, Ee = "");
+        if (Re.indexOf(Ee) < 0) ne(0, Ee = "");
       })(ie, _, me);
       ne(26, Ae = oe);
     }
@@ -19709,7 +19747,7 @@ function instance2(_, ee, ne) {
       })(ie.find((_ => _.term == re)), ie.find((_ => _.term == Ee)));
     }
   };
-  return [ Ee, pe, me, ve, Ce, we, Le, Oe, ke, Te, applySelected, async function compareSelected() {
+  return [ Ee, pe, me, ve, Ce, we, Le, Oe, ke, Re, applySelected, async function compareSelected() {
     const _ = ie.find((_ => _.term == re)), ee = ie.find((_ => _.term == Ee));
     await compareItems(_, ee);
   }, async function pickCompareItem(_) {
@@ -19746,7 +19784,7 @@ function instance2(_, ee, ne) {
   }, ie, re, se, oe, le, ue, de, fe, he, ge, ye, Ae, xe, function select_change_handler() {
     Ee = select_value(this);
     ne(0, Ee), ne(18, oe), ne(26, Ae), ne(19, le), ne(25, ye), ne(15, ie), ne(2, me);
-    ne(9, Te);
+    ne(9, Re);
   } ];
 }
 
@@ -20284,7 +20322,7 @@ function create_else_block_42(_) {
 }
 
 function create_if_block_23(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Te, Re, Pe, Ie = _[23](_[74]) + "", De = _[23](_[76]) + "";
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Re, Te, Pe, Ie = _[23](_[74]) + "", De = _[23](_[76]) + "";
   function click_handler_10(...ee) {
     return _[44](_[69], _[73], ...ee);
   }
@@ -20364,15 +20402,15 @@ function create_if_block_23(_) {
       insert(_, Ae, fe);
       if (Ve) Ve.m(_, fe);
       insert(_, xe, fe);
-      Te = true;
-      if (!Re) {
+      Re = true;
+      if (!Te) {
         Pe = [ listen(ie, "click", click_handler_10), listen(ye, "click", click_handler_11) ];
-        Re = true;
+        Te = true;
       }
     },
     p(ne, ie) {
       _ = ne;
-      if ((!Te || 1088 & ie[0]) && Ie !== (Ie = _[23](_[74]) + "")) set_data(re, Ie);
+      if ((!Re || 1088 & ie[0]) && Ie !== (Ie = _[23](_[74]) + "")) set_data(re, Ie);
       let se = de;
       de = select_block_type_3(_);
       if (de === se) Ne[de].p(_, ie); else {
@@ -20389,8 +20427,8 @@ function create_if_block_23(_) {
         transition_in(fe, 1);
         fe.m(ue, null);
       }
-      if (!Te || 8 & ie[0] && he !== (he = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ee, "class", he);
-      if ((!Te || 1088 & ie[0]) && De !== (De = _[23](_[76]) + "")) set_data(Se, De);
+      if (!Re || 8 & ie[0] && he !== (he = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ee, "class", he);
+      if ((!Re || 1088 & ie[0]) && De !== (De = _[23](_[76]) + "")) set_data(Se, De);
       let oe = Le;
       Le = select_block_type_4(_);
       if (Le === oe) Fe[Le].p(_, ie); else {
@@ -20407,22 +20445,22 @@ function create_if_block_23(_) {
         transition_in(Oe, 1);
         Oe.m(we, null);
       }
-      if (!Te || 8 & ie[0] && ke !== (ke = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ge, "class", ke);
+      if (!Re || 8 & ie[0] && ke !== (ke = "filerow " + (_[3] ? "hideeven" : "") + " svelte-if2qsj")) attr(ge, "class", ke);
       if (_[25]) Ve.p(_, ie);
     },
     i(_) {
-      if (!Te) {
+      if (!Re) {
         transition_in(fe);
         transition_in(Oe);
         transition_in(Ve);
-        Te = true;
+        Re = true;
       }
     },
     o(_) {
       transition_out(fe);
       transition_out(Oe);
       transition_out(Ve);
-      Te = false;
+      Re = false;
     },
     d(_) {
       if (_) {
@@ -20435,7 +20473,7 @@ function create_if_block_23(_) {
       Ne[de].d();
       Fe[Le].d();
       if (Ve) Ve.d(_);
-      Re = false;
+      Te = false;
       run_all(Pe);
     }
   };
@@ -20949,7 +20987,7 @@ function create_each_block3(_) {
 }
 
 function create_fragment3(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Te, Re, Pe, Ie, De, Be, Ne, Me, Fe, Ve, $e, Ge, Ue = _[1] && create_if_block_10(_), je = (_[4] || 0 !== _[12]) && create_if_block_9(_);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe, Ve, $e, Ge, Ue = _[1] && create_if_block_10(_), je = (_[4] || 0 !== _[12]) && create_if_block_9(_);
   const ze = [ create_if_block_13, create_else_block3 ], qe = [];
   function select_block_type(_, ee) {
     if (0 == _[0].length) return 0; else return 1;
@@ -20993,8 +21031,8 @@ function create_fragment3(_) {
       Ae = space();
       if (He) He.c();
       xe = space();
-      Te = element("div");
-      Re = element("label");
+      Re = element("div");
+      Te = element("label");
       Pe = element("span");
       Pe.textContent = "Hide not applicable items";
       Ie = element("input");
@@ -21018,8 +21056,8 @@ function create_fragment3(_) {
       attr(Le, "class", "list svelte-if2qsj");
       attr(Pe, "class", "svelte-if2qsj");
       attr(Ie, "type", "checkbox");
-      attr(Re, "class", "svelte-if2qsj");
-      attr(Te, "class", "buttons svelte-if2qsj");
+      attr(Te, "class", "svelte-if2qsj");
+      attr(Re, "class", "buttons svelte-if2qsj");
       attr(Me, "class", "svelte-if2qsj");
       attr(Fe, "type", "checkbox");
       attr(Ne, "class", "svelte-if2qsj");
@@ -21053,10 +21091,10 @@ function create_fragment3(_) {
       insert(ke, Ae, ze);
       if (He) He.m(ke, ze);
       insert(ke, xe, ze);
-      insert(ke, Te, ze);
-      append(Te, Re);
-      append(Re, Pe);
-      append(Re, Ie);
+      insert(ke, Re, ze);
+      append(Re, Te);
+      append(Te, Pe);
+      append(Te, Ie);
       Ie.checked = _[3];
       insert(ke, De, ze);
       insert(ke, Be, ze);
@@ -21133,7 +21171,7 @@ function create_fragment3(_) {
         detach(Le);
         detach(Ae);
         detach(xe);
-        detach(Te);
+        detach(Re);
         detach(De);
         detach(Be);
       }
@@ -21305,7 +21343,7 @@ function instance3(_, ee, ne) {
     for (const _ of ee) await deleteData(_);
     de.reloadPluginList(true);
   }
-  let xe = new Map, Te = [], Re = [], Pe = ue.settings.usePluginEtc;
+  let xe = new Map, Re = [], Te = [], Pe = ue.settings.usePluginEtc;
   _.$$set = _ => {
     if ("plugin" in _) ne(26, ue = _.plugin);
   };
@@ -21351,11 +21389,11 @@ function instance3(_, ee, ne) {
       }
       ne(8, xe = ie);
     })(oe);
-    if (4 & _.$$.dirty[0]) ne(9, Te = Object.entries(ve).filter((([_, ee]) => _ in ke)));
-    if (1 & _.$$.dirty[0]) ne(10, Re = groupBy(filterList(fe, [ "PLUGIN_MAIN", "PLUGIN_DATA", "PLUGIN_ETC" ]), "name"));
+    if (4 & _.$$.dirty[0]) ne(9, Re = Object.entries(ve).filter((([_, ee]) => _ in ke)));
+    if (1 & _.$$.dirty[0]) ne(10, Te = groupBy(filterList(fe, [ "PLUGIN_MAIN", "PLUGIN_DATA", "PLUGIN_ETC" ]), "name"));
   };
   ne(30, ie = false);
-  return [ fe, Se, ke, ge, me, Ee, Oe, Ae, xe, Te, Re, se, le, requestUpdate, requestReload, scanAgain, replicate2, selectAllNewest, resetSelectNewest, applyAll, askMode, "🚩", we, getIcon, deleteAllItems, Pe, ue, he, pe, ye, ie, re, oe, () => scanAgain(), () => replicate2(), () => requestUpdate(), () => requestReload(), () => selectAllNewest(true), () => selectAllNewest(false), () => resetSelectNewest(), () => applyAll(), (_, ee, ne, ie) => askMode(ie, `${_}/${ee}`, ne), (_, ee, ne) => ne.category == _ && ne.name == ee, (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ALL}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_MAIN}/${_}/MAIN`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_DATA}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ETC}/${_}`, ee), function select_change_handler() {
+  return [ fe, Se, ke, ge, me, Ee, Oe, Ae, xe, Re, Te, se, le, requestUpdate, requestReload, scanAgain, replicate2, selectAllNewest, resetSelectNewest, applyAll, askMode, "🚩", we, getIcon, deleteAllItems, Pe, ue, he, pe, ye, ie, re, oe, () => scanAgain(), () => replicate2(), () => requestUpdate(), () => requestReload(), () => selectAllNewest(true), () => selectAllNewest(false), () => resetSelectNewest(), () => applyAll(), (_, ee, ne, ie) => askMode(ie, `${_}/${ee}`, ne), (_, ee, ne) => ne.category == _ && ne.name == ee, (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ALL}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_MAIN}/${_}/MAIN`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_DATA}/${_}`, ee), (_, ee, ne) => askMode(ne, `${PREFIX_PLUGIN_ETC}/${_}`, ee), function select_change_handler() {
     Ae = select_value(this);
     ne(7, Ae);
     ne(5, Ee);
@@ -24770,7 +24808,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       text: "Updates"
     }), pe = this.createEl(fe, "div", {
       text: ""
-    }), ge = "0.23.18", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
+    }), ge = "0.23.20", me = ~~(versionNumberString2Number(ge) / 1e3), ye = createSpan();
     ye.addClass("sls-header-button");
     ye.innerHTML = "<button> OK, I read everything. </button>";
     if (me > ((null == (_ = this.editingSettings) ? void 0 : _.lastReadUpdates) || 0)) {
@@ -24781,7 +24819,7 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
         _.remove();
       }));
     }
-    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.18:\n  - New feature:\n    - Per-file-saved customization sync has been shipped.\n      - We can synchronise plug-igs etc., more smoothly.\n      - Default: disabled. We need a small migration when enabling this. And all devices should be updated to v0.23.18. Once we enabled this, we lost compatibility with old versions.\n    - Customisation sync has got beta3.\n      - We can set `Flag` to each item to select the newest, automatically.\n        - This configuration is per device.\n  - Improved:\n    - Start-up speed has been improved.\n  - Fixed:\n    - On the customisation sync dialogue, buttons are kept within the screen.\n    - No more unnecessary entries on `data.json` for customisation sync.\n    - Selections are no longer lost while updating customisation items.\n  - Tidied on source codes:\n    - Many typos have been fixed.\n    - Some unnecessary type casting removed.\n- 0.23.17:\n  - Improved:\n    - Overall performance has been improved by using PouchDB 9.0.0.\n    - Configuration mismatch detection is refined. We can resolve mismatches more smoothly and naturally.\n    More detail is on `troubleshooting.md` on the repository.\n  - Fixed:\n    - Customisation Sync will be disabled when a corrupted configuration is detected.\n      Therefore, the Device Name can be changed even in the event of a configuration mismatch.\n  - New feature:\n    - We can get a notification about the storage usage of the remote database.\n      - Default: We will be asked.\n      - If the remote storage usage approaches the configured value, we will be asked whether we want to Rebuild or increase the limit.\n- 0.23.16:\n  - Maintenance Update:\n    - Library refining (Phase 1 - step 2). There are no significant changes on the user side.\n    - Including the following fixes of potentially problems:\n      - the problem which the path had been obfuscating twice has been resolved.\n      - Note: Potential problems of the library; which has not happened in Self-hosted LiveSync for some reasons.\n- 0.23.15:\n  - Maintenance Update:\n    - Library refining (Phase 1). There are no significant changes on the user side.\n- 0.23.14:\n  - Fixed:\n    - No longer batch-saving ignores editor inputs.\n    - The file-watching and serialisation processes have been changed to the one which is similar to previous implementations.\n    - We can configure the settings (Especially about text-boxes) even if we have configured the device name.\n  - Improved:\n    - We can configure the delay of batch-saving.\n      - Default: 5 seconds, the same as the previous hard-coded value. (Note: also, the previous behaviour was not correct).\n    - Also, we can configure the limit of delaying batch-saving.\n    - The performance of showing status indicators has been improved.\n\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
+    import_obsidian.MarkdownRenderer.render(this.plugin.app, "### 0.23.0\nIncredibly new features!\n\nNow, we can use object storage (MinIO, S3, R2 or anything you like) for synchronising! Moreover, despite that, we can use all the features as if we were using CouchDB.\nNote: As this is a pretty experimental feature, hence we have some limitations.\n- This is built on the append-only architecture. It will not shrink used storage if we do not perform a rebuild.\n- A bit fragile. However, our version x.yy.0 is always so.\n- When the first synchronisation, the entire history to date is transferred. For this reason, it is preferable to do this under the WiFi network.\n- Do not worry, from the second synchronisation, we always transfer only differences.\n\nI hope this feature empowers users to maintain independence and self-host their data, offering an alternative for those who prefer to manage their own storage solutions and avoid being stuck on the right side of a sudden change in business model.\n\nOf course, I use Self-hosted MinIO for testing and recommend this. It is for the same reason as using CouchDB. -- open, controllable, auditable and indeed already audited by numerous eyes.\n\nLet me write one more acknowledgement.\n\nI have a lot of respect for that plugin, even though it is sometimes treated as if it is a competitor, remotely-save. I think it is a great architecture that embodies a different approach to my approach of recreating history. This time, with all due respect, I have used some of its code as a reference.\nHooray for open source, and generous licences, and the sharing of knowledge by experts.\n\n#### Version history\n- 0.23.20:\n  - Fixed:\n    - Customisation Sync now checks the difference while storing or applying the configuration.\n      - No longer storing the same configuration multiple times.\n    - Time difference in the dialogue has been fixed.\n    - Remote Storage Limit Notification dialogue has been fixed, now the chosen value is saved.\n  - Improved:\n    - The Enlarging button on the enlarging threshold dialogue now displays the new value.\n- 0.23.19:\n  - Not released.\n- 0.23.18:\n  - New feature:\n    - Per-file-saved customization sync has been shipped.\n      - We can synchronise plug-igs etc., more smoothly.\n      - Default: disabled. We need a small migration when enabling this. And all devices should be updated to v0.23.18. Once we enabled this, we lost compatibility with old versions.\n    - Customisation sync has got beta3.\n      - We can set `Flag` to each item to select the newest, automatically.\n        - This configuration is per device.\n  - Improved:\n    - Start-up speed has been improved.\n  - Fixed:\n    - On the customisation sync dialogue, buttons are kept within the screen.\n    - No more unnecessary entries on `data.json` for customisation sync.\n    - Selections are no longer lost while updating customisation items.\n  - Tidied on source codes:\n    - Many typos have been fixed.\n    - Some unnecessary type casting removed.\n- 0.23.17:\n  - Improved:\n    - Overall performance has been improved by using PouchDB 9.0.0.\n    - Configuration mismatch detection is refined. We can resolve mismatches more smoothly and naturally.\n    More detail is on `troubleshooting.md` on the repository.\n  - Fixed:\n    - Customisation Sync will be disabled when a corrupted configuration is detected.\n      Therefore, the Device Name can be changed even in the event of a configuration mismatch.\n  - New feature:\n    - We can get a notification about the storage usage of the remote database.\n      - Default: We will be asked.\n      - If the remote storage usage approaches the configured value, we will be asked whether we want to Rebuild or increase the limit.\n\nOlder notes is in [updates_old.md](https://github.com/vrtmrz/obsidian-livesync/blob/main/updates_old.md).", pe, "/", this.plugin);
     addScreenElement("100", fe);
     const isAnySyncEnabled = () => {
       var _, ee, ne, ie;
@@ -25206,51 +25244,51 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       changeDisplay("30");
     }))));
     addScreenElement("0", ke);
-    const Te = oe.createDiv();
-    this.createEl(Te, "h3", {
+    const Re = oe.createDiv();
+    this.createEl(Re, "h3", {
       text: "General Settings"
     });
-    this.createEl(Te, "h4", {
+    this.createEl(Re, "h4", {
       text: "Appearance"
     });
-    const Re = Object.fromEntries([ [ "", "Default" ], ...SUPPORTED_I18N_LANGS.map((_ => [ _, $t(`lang-${_}`) ])) ]);
-    new Setting2(Te).autoWireDropDown("displayLanguage", {
-      options: Re
+    const Te = Object.fromEntries([ [ "", "Default" ], ...SUPPORTED_I18N_LANGS.map((_ => [ _, $t(`lang-${_}`) ])) ]);
+    new Setting2(Re).autoWireDropDown("displayLanguage", {
+      options: Te
     });
     this.addOnSaved("displayLanguage", (() => this.display()));
-    new Setting2(Te).autoWireToggle("showStatusOnEditor");
-    new Setting2(Te).autoWireToggle("showOnlyIconsOnEditor", {
+    new Setting2(Re).autoWireToggle("showStatusOnEditor");
+    new Setting2(Re).autoWireToggle("showOnlyIconsOnEditor", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("showStatusOnEditor", true)))
     });
-    new Setting2(Te).autoWireToggle("showStatusOnStatusbar");
-    this.createEl(Te, "h4", {
+    new Setting2(Re).autoWireToggle("showStatusOnStatusbar");
+    this.createEl(Re, "h4", {
       text: "Logging"
     });
-    new Setting2(Te).autoWireToggle("lessInformationInLog");
-    new Setting2(Te).autoWireToggle("showVerboseLog", {
+    new Setting2(Re).autoWireToggle("lessInformationInLog");
+    new Setting2(Re).autoWireToggle("showVerboseLog", {
       onUpdate: visibleOnly((() => this.isConfiguredAs("lessInformationInLog", false)))
     });
-    this.createEl(Te, "h4", {
+    this.createEl(Re, "h4", {
       text: "Performance tweaks"
     });
-    new Setting2(Te).autoWireNumeric("hashCacheMaxCount", {
+    new Setting2(Re).autoWireNumeric("hashCacheMaxCount", {
       clampMin: 10
     });
-    new Setting2(Te).autoWireNumeric("hashCacheMaxAmount", {
+    new Setting2(Re).autoWireNumeric("hashCacheMaxAmount", {
       clampMin: 1
     });
-    this.createEl(Te, "h4", {
+    this.createEl(Re, "h4", {
       text: "Share settings via markdown"
     });
-    new Setting2(Te).autoWireText("settingSyncFile", {
+    new Setting2(Re).autoWireText("settingSyncFile", {
       holdValue: true
     }).addApplyButton([ "settingSyncFile" ]);
-    new Setting2(Te).autoWireToggle("writeCredentialsForSettingSync");
-    new Setting2(Te).autoWireToggle("notifyAllSettingSyncFile");
-    this.createEl(Te, "h4", {
+    new Setting2(Re).autoWireToggle("writeCredentialsForSettingSync");
+    new Setting2(Re).autoWireToggle("notifyAllSettingSyncFile");
+    this.createEl(Re, "h4", {
       text: "Advanced Confidentiality"
     });
-    new Setting2(Te).setName("Encrypting sensitive configuration items").autoWireDropDown("configPassphraseStore", {
+    new Setting2(Re).setName("Encrypting sensitive configuration items").autoWireDropDown("configPassphraseStore", {
       options: {
         "": "Default",
         LOCALSTORAGE: "Use a custom passphrase",
@@ -25258,14 +25296,14 @@ var Setting2 = class _Setting extends import_obsidian.Setting {
       },
       holdValue: true
     }).setClass("wizardHidden");
-    new Setting2(Te).autoWireText("configPassphrase", {
+    new Setting2(Re).autoWireText("configPassphrase", {
       isPassword: true,
       holdValue: true
     }).setClass("wizardHidden").addOnUpdate((() => ({
       disabled: !this.isConfiguredAs("configPassphraseStore", "LOCALSTORAGE")
     })));
-    new Setting2(Te).addApplyButton([ "configPassphrase", "configPassphraseStore" ]).setClass("wizardHidden");
-    addScreenElement("20", Te);
+    new Setting2(Re).addApplyButton([ "configPassphrase", "configPassphraseStore" ]).setClass("wizardHidden");
+    addScreenElement("20", Re);
     const Pe = oe.createDiv();
     this.createEl(Pe, "h3", {
       text: "Sync Settings"
@@ -28018,14 +28056,14 @@ function create_if_block_14(_) {
 }
 
 function create_each_block5(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke = _[26].mtimeDisp + "", Ae = _[26].dirname.split("/").join("​/") + "", xe = _[26].filename + "", Te = _[26].changes + "";
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke = _[26].mtimeDisp + "", Ae = _[26].dirname.split("/").join("​/") + "", xe = _[26].filename + "", Re = _[26].changes + "";
   function click_handler_1() {
     return _[18](_[26]);
   }
   function select_block_type_1(_, ee) {
     if (_[26].isPlain) return create_if_block_24; else return create_else_block_14;
   }
-  let Re = select_block_type_1(_), Pe = Re(_), Ie = _[1] && create_if_block_14(_);
+  let Te = select_block_type_1(_), Pe = Te(_), Ie = _[1] && create_if_block_14(_);
   return {
     c() {
       ee = element("tr");
@@ -28047,7 +28085,7 @@ function create_each_block5(_) {
       Pe.c();
       Ee = space();
       ve = element("td");
-      Ce = text(Te);
+      Ce = text(Re);
       we = space();
       if (Ie) Ie.c();
       attr(ne, "class", "mtime svelte-1vjy5r1");
@@ -28094,15 +28132,15 @@ function create_each_block5(_) {
       if (32 & re && ke !== (ke = _[26].mtimeDisp + "")) set_data(ie, ke);
       if (32 & re && Ae !== (Ae = _[26].dirname.split("/").join("​/") + "")) set_data(de, Ae);
       if (32 & re && xe !== (xe = _[26].filename + "")) set_data(ge, xe);
-      if (Re === (Re = select_block_type_1(_)) && Pe) Pe.p(_, re); else {
+      if (Te === (Te = select_block_type_1(_)) && Pe) Pe.p(_, re); else {
         Pe.d(1);
-        Pe = Re(_);
+        Pe = Te(_);
         if (Pe) {
           Pe.c();
           Pe.m(Se, null);
         }
       }
-      if (32 & re && Te !== (Te = _[26].changes + "")) set_data(Ce, Te);
+      if (32 & re && Re !== (Re = _[26].changes + "")) set_data(Ce, Re);
       if (_[1]) if (Ie) Ie.p(_, re); else {
         Ie = create_if_block_14(_);
         Ie.c();
@@ -28167,7 +28205,7 @@ function create_if_block4(_) {
 }
 
 function create_fragment5(_) {
-  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Te, Re, Pe, Ie, De, Be, Ne, Me, Fe, Ve, $e, Ge, Ue, je, ze, qe, He, Ke, We, Xe, Ye, Qe, Je = _[6] && create_if_block_54(_), Ze = _[1] && create_if_block_44(_);
+  let ee, ne, ie, re, se, oe, le, ue, de, fe, he, pe, ge, me, ye, Se, Ee, ve, Ce, we, Le, Oe, ke, Ae, xe, Re, Te, Pe, Ie, De, Be, Ne, Me, Fe, Ve, $e, Ge, Ue, je, ze, qe, He, Ke, We, Xe, Ye, Qe, Je = _[6] && create_if_block_54(_), Ze = _[1] && create_if_block_44(_);
   function select_block_type(_, ee) {
     if (_[6]) return create_if_block_34; else return create_else_block_23;
   }
@@ -28210,9 +28248,9 @@ function create_fragment5(_) {
       ke = space();
       Ae = element("label");
       xe = element("input");
-      Te = element("span");
-      Te.textContent = "File integrity";
-      Re = space();
+      Re = element("span");
+      Re.textContent = "File integrity";
+      Te = space();
       if (Je) Je.c();
       Pe = space();
       Ie = element("table");
@@ -28268,7 +28306,7 @@ function create_fragment5(_) {
       attr(xe, "type", "checkbox");
       xe.disabled = _[6];
       attr(xe, "class", "svelte-1vjy5r1");
-      attr(Te, "class", "svelte-1vjy5r1");
+      attr(Re, "class", "svelte-1vjy5r1");
       attr(Ae, "class", "svelte-1vjy5r1");
       attr(ge, "class", "row svelte-1vjy5r1");
       attr(re, "class", "control svelte-1vjy5r1");
@@ -28317,8 +28355,8 @@ function create_fragment5(_) {
       append(ge, Ae);
       append(Ae, xe);
       xe.checked = _[2];
-      append(Ae, Te);
-      append(ee, Re);
+      append(Ae, Re);
+      append(ee, Te);
       if (Je) Je.m(ee, null);
       append(ee, Pe);
       append(ee, Ie);
@@ -28485,12 +28523,12 @@ function instance5(_, ee, ne) {
               }
             }
             const ke = ie.getPath(ye), [Ae, ...xe] = ke.split("/").reverse();
-            let Te = "";
+            let Re = "";
             if (se) {
               const _ = null !== (ee = null == ye ? void 0 : ye.children) && void 0 !== ee ? ee : [], ie = await ne.allDocsRaw({
                 keys: [ ..._ ]
               }), re = ie.rows.length, se = ie.rows.filter((_ => "error" in _)).length;
-              if (0 == se) Te = `✅ ${re}`; else Te = `🔎 ${se} ✅ ${re}`;
+              if (0 == se) Re = `✅ ${re}`; else Re = `🔎 ${se} ✅ ${re}`;
             }
             fe.push({
               id: ye._id,
@@ -28503,7 +28541,7 @@ function instance5(_, ee, ne) {
               size: null !== (de = null == ye ? void 0 : ye.size) && void 0 !== de ? de : 0,
               isDeleted: Oe,
               changes: Le,
-              chunks: Te,
+              chunks: Re,
               isPlain: ge
             });
           }
@@ -43280,7 +43318,16 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     Logger("Checking storage sizes", LOG_LEVEL_VERBOSE);
     if (this.settings.notifyThresholdOfRemoteStorageSize < 0) {
       const _ = "Now, Self-hosted LiveSync is able to check the remote storage size on the start-up.\n\nYou can configure the threshold size for your remote storage. This will be different for your server.\n\nPlease choose the threshold size as you like.\n\n- 0: Do not warn about storage size.\n  This is recommended if you have enough space on the remote storage especially you have self-hosted. And you can check the storage size and rebuild manually.\n- 800: Warn if the remote storage size exceeds 800MB.\n  This is recommended if you are using fly.io with 1GB limit or IBM Cloudant.\n- 2000: Warn if the remote storage size exceeds 2GB.\n\nAnd if your actual storage size exceeds the threshold after the setup, you may warned again. But do not worry, you can enlarge the threshold (or rebuild everything to reduce the size).\n", ee = "Do not warn", ne = "800MB", ie = "2GB", re = await confirmWithMessage(this, "Remote storage size threshold", _, [ ee, ne, ie ], ne, 40);
-      if (re == ee) this.settings.notifyThresholdOfRemoteStorageSize = 0; else if (re == ne) this.settings.notifyThresholdOfRemoteStorageSize = 800; else this.settings.notifyThresholdOfRemoteStorageSize = 2e3;
+      if (re == ee) {
+        this.settings.notifyThresholdOfRemoteStorageSize = 0;
+        await this.saveSettings();
+      } else if (re == ne) {
+        this.settings.notifyThresholdOfRemoteStorageSize = 800;
+        await this.saveSettings();
+      } else {
+        this.settings.notifyThresholdOfRemoteStorageSize = 2e3;
+        await this.saveSettings();
+      }
     }
     if (this.settings.notifyThresholdOfRemoteStorageSize > 0) {
       const ee = await (null == (_ = this.replicator) ? void 0 : _.getRemoteStatus(this.settings));
@@ -43289,7 +43336,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
         if (_) {
           const ee = 1024 * this.settings.notifyThresholdOfRemoteStorageSize * 1024;
           if (_ > ee) {
-            const ne = `Remote storage size: ${sizeToHumanReadable2(_)}. It exceeds the configured value ${sizeToHumanReadable2(ee)}.\nThis may cause the storage to be full. You should enlarge the remote storage, or rebuild everything to reduce the size. \n\n**Note:** If you are new to Self-hosted LiveSync, you should enlarge the threshold. \n\n\nSelf-hosted LiveSync will not release the storage automatically even if the file is deleted. This is why they need regular maintenance.\n\n\nIf you have enough space on the remote storage, you can enlarge the threshold. Otherwise, you should rebuild everything.\n\n\nHowever, **Please make sure that all devices have been synchronised**. \n\n\n`, ie = "Enlarge the limit", re = "Rebuild now", se = "Dismiss", oe = await confirmWithMessage(this, "Remote storage size exceeded", ne, [ ie, re, se ], se, 20);
+            const ne = `Remote storage size: ${sizeToHumanReadable2(_)}. It exceeds the configured value ${sizeToHumanReadable2(ee)}.\nThis may cause the storage to be full. You should enlarge the remote storage, or rebuild everything to reduce the size. \n\n**Note:** If you are new to Self-hosted LiveSync, you should enlarge the threshold. \n\n\nSelf-hosted LiveSync will not release the storage automatically even if the file is deleted. This is why they need regular maintenance.\n\n\nIf you have enough space on the remote storage, you can enlarge the threshold. Otherwise, you should rebuild everything.\n\n\nHowever, **Please make sure that all devices have been synchronised**. \n\n\n`, ie = `Enlarge to ${100 + ~~(_ / 1024 / 1024)}MB`, re = "Rebuild now", se = "Dismiss", oe = await confirmWithMessage(this, "Remote storage size exceeded", ne, [ ie, re, se ], se, 20);
             if (oe == re) {
               if ("yes" == await this.askYesNo("This may take a bit of a long time. Do you really want to rebuild everything now?")) {
                 Logger("Receiving all from the server before rebuilding", LOG_LEVEL_NOTICE);
@@ -43304,7 +43351,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
               Logger(`Threshold has been enlarged to ${this.settings.notifyThresholdOfRemoteStorageSize}MB`, LOG_LEVEL_NOTICE);
               await this.saveSettings();
             }
-            Logger(`Remote storage size: ${sizeToHumanReadable2(_)} exceeded ${sizeToHumanReadable2(this.settings.notifyThresholdOfRemoteStorageSize)} `, LOG_LEVEL_INFO);
+            Logger(`Remote storage size: ${sizeToHumanReadable2(_)} exceeded ${sizeToHumanReadable2(1024 * this.settings.notifyThresholdOfRemoteStorageSize * 1024)} `, LOG_LEVEL_INFO);
           } else Logger(`Remote storage size: ${sizeToHumanReadable2(_)}`, LOG_LEVEL_INFO);
         }
       }
@@ -43495,7 +43542,7 @@ var SETTING_HEADER = "````yaml:livesync-setting\n", SETTING_FOOTER = "\n````", O
     this.settingTab = new ObsidianLiveSyncSettingTab(this.app, this);
     this.addSettingTab(this.settingTab);
     this.addUIs();
-    const _ = "0.23.18", ee = "0.23.18";
+    const _ = "0.23.20", ee = "0.23.20";
     this.manifestVersion = _;
     this.packageVersion = ee;
     Logger($f`Self-hosted LiveSync${" v"}${_} ${ee}`);
