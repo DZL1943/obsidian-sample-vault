@@ -39,7 +39,6 @@
   "obsidian-plugin-update-tracker",
   "obsidian-quiet-outline",
   "obsidian-regex-replace",
-  "obsidian-sidebar-expand-on-hover",
   "obsidian-style-settings",
   "obsidian-tagfolder",
   "obsidian-tasks-plugin",
@@ -59,5 +58,6 @@
   "note-gallery",
   "tabs",
   "obsidian-view-mode-by-frontmatter",
-  "plugin-proxy"
+  "plugin-proxy",
+  "obsidian-auto-hide"
 ]
