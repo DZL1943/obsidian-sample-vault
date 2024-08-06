@@ -1,7 +1,7 @@
 ---
 title: obsidian-sample-vault
 created: "2024-06-11 10:48"
-modified: "2024-08-06 12:15"
+modified: "2024-08-06 22:22"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -141,6 +141,7 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 any-block
 attachment-management
 better-markdown-links
+chronology
 cmdr
 code-styler
 dataview
@@ -161,8 +162,11 @@ obsidian-heading-shifter
 obsidian-hover-editor
 obsidian-kanban
 obsidian-linter
+obsidian-opener
 obsidian-outliner
+obsidian-plugin-proxy
 obsidian-style-settings
+obsidian42-brat
 quickadd
 refresh-preview
 table-editor-obsidian
