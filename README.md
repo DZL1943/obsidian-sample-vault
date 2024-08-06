@@ -1,6 +1,7 @@
 ---
+title: obsidian-sample-vault
 created: "2024-06-11 10:48"
-modified: "2024-07-30 16:27"
+modified: "2024-08-06 12:15"
 tags: [Obsidian]
 url: "https://github.com/DZL1943/obsidian-sample-vault"
 ---
@@ -133,68 +134,42 @@ for folder in "${folders[@]}";do mkdir -p "$folder" && touch "$folder"/.gitkeep;
 
 > [!hint]+ 关键在于解耦笔记输入、笔记整理这两大过程. 并且尽量维持笔记的原本结构而用链接的方式组织整理.
 
-## 已启用的[插件](https://obsidian.md/plugins)
+## [插件](https://obsidian.md/plugins)
 
-%% 以实际为准 %%
-```json
-[
-  "any-block",
-  "attachment-flow-plugin",
-  "attachment-management",
-  "better-fn",
-  "canvas-keyboard-pan",
-  "cmdr",
-  "code-styler",
-  "cycle-in-sidebar",
-  "dataview",
-  "dust-calendar",
-  "easy-typing-obsidian",
-  "editing-toolbar",
-  "editor-width-slider",
-  "file-tree-alternative",
-  "find-unlinked-files",
-  "float-search",
-  "floating-toc",
-  "fuzzy-chinese-pinyin",
-  "hotkey-helper",
-  "janitor",
-  "keyboard-analyzer",
-  "legacy-vault-switcher",
-  "nldates-obsidian",
-  "note-refactor-obsidian",
-  "obsidian-advanced-uri",
-  "obsidian-columns",
-  "obsidian-completr",
-  "obsidian-excalidraw-plugin",
-  "obsidian-excel-to-markdown-table",
-  "obsidian-footnotes",
-  "obsidian-git",
-  "obsidian-heading-shifter",
-  "obsidian-hider",
-  "obsidian-hover-editor",
-  "obsidian-kanban",
-  "obsidian-linter",
-  "obsidian-minimal-settings",
-  "obsidian-opener",
-  "obsidian-outliner",
-  "obsidian-plugin-update-tracker",
-  "obsidian-quiet-outline",
-  "obsidian-regex-replace",
-  "obsidian-sidebar-expand-on-hover",
-  "obsidian-style-settings",
-  "obsidian-tagfolder",
-  "obsidian-tasks-plugin",
-  "quick-explorer",
-  "quickadd",
-  "settings-search",
-  "show-whitespace-cm6",
-  "surfing",
-  "table-editor-obsidian",
-  "tag-wrangler",
-  "templater-obsidian",
-  "url-into-selection",
-  "various-complements"
-]
+必备推荐
+```md
+any-block
+attachment-management
+better-markdown-links
+cmdr
+code-styler
+dataview
+easy-typing-obsidian
+editing-toolbar
+editor-width-slider
+file-tree-alternative
+find-unlinked-files
+floating-toc
+fuzzy-chinese-pinyin
+janitor
+obsidian-auto-hide
+obsidian-auto-link-title
+obsidian-columns
+obsidian-completr
+obsidian-front-matter-title-plugin
+obsidian-heading-shifter
+obsidian-hover-editor
+obsidian-kanban
+obsidian-linter
+obsidian-outliner
+obsidian-style-settings
+quickadd
+refresh-preview
+table-editor-obsidian
+tabs
+templater-obsidian
+update-relative-links
+url-into-selection
 ```
 
 brat
@@ -215,49 +190,6 @@ brat
     "yan42685/obsidian-clever-search",
     "Yaozhuwa/AttachFlow",
 ]
-```
-
-按必要性排序
-```md
-- obsidian-linter
-- easy-typing-obsidian
-- obsidian-completr
-- various-complements
-- templater-obsidian
-- refresh-preview
-- update-relative-links
-- better-markdown-links
-- find-unlinked-files
-- obsidian-front-matter-title-plugin
-- attachment-management
-- janitor
-- cmdr
-- editor-width-slider
-- obsidian-outliner
-- dataview
-- obsidian-kanban
-- table-editor-obsidian
-- url-into-selection
-- code-styler
-- any-block
-- obsidian-columns
-- tabs
-- fuzzy-chinese-pinyin
-- editing-toolbar
-- obsidian-hover-editor
-- dust-calendar
-- obsidian-tagfolder
-- file-tree-alternative
-- obsidian-style-settings
-- obsidian-tasks-plugin
-- obsidian-projects
-- quickadd
-- obsidian42-brat
-- obsidian-git
-- vscode-editor
-- surfing
-- floating-toc
-- obsidian-excalidraw-plugin
 ```
 
 > [!hint]+ 希望后续 obsidian 插件能够以中央库的方式集中管理而不必每个库都冗余.
