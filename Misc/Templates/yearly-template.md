@@ -56,6 +56,9 @@ Object.keys(output).forEach(heading => {
 
 ```dataview
 table without id
-dateformat(date, "MM/dd ccc") as date, weather, mood, habits, summary
-where file.path=this.file.path
+dateformat(L.date, "MM/dd ccc") as date, L.weather as weather, L.mood as mood, L.habits as habits, L.summary as summary
+where file.path = this.file.path
+flatten file.lists as L
+sort L desc
+limit 30
 ```
