@@ -16,7 +16,7 @@
               "state": {
                 "file": "README.md",
                 "mode": "preview",
-                "source": false
+                "source": true
               },
               "pinned": true
             }
@@ -227,12 +227,12 @@
   },
   "active": "dd0c724920d6ce07",
   "lastOpenFiles": [
+    "Misc/Templates/yearly-template.md",
     "README.md",
     "Misc/Templates/page-properties.md",
     "Misc/Templates/monthly-template.md",
     "Misc/Templates/habit-calendar-dv.md",
     "20_Private/index.md",
-    "Misc/Templates/yearly-template.md",
     "Misc/Templates/weekdays-h2.md",
     "Misc/Templates/weekdays-list.md",
     "Misc/Templates/datetime-li.md",
