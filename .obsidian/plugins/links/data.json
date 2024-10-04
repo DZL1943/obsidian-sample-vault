@@ -16,8 +16,7 @@
   "ffHighlightBrokenLinks": false,
   "ffSetLinkDestinationFromClipbard": false,
   "ffSkipFrontmatterInNoteWideCommands": false,
-  "ffCopyLinkToHeading": false,
-  "ffCopyLinkToBlock": false,
+  "ffCopyLinkToObject": false,
   "contexMenu": {
     "editLinkText": true,
     "setLinkText": true,

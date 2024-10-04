@@ -1,6 +1,6 @@
 {
   "debounceTimeout": 300,
-  "ignoreOpenFiles": false,
+  "ignoreOpenFiles": true,
   "ignoreForceViewAll": true,
   "folders": [
     {

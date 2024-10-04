@@ -1,12 +1,12 @@
 {
   "includeFirstLineAsNoteHeading": false,
-  "excludeFirstLineInNote": true,
+  "excludeFirstLineInNote": false,
   "openNewNote": true,
   "headingFormat": "#",
   "newFileLocation": 2,
-  "customFolder": "30_Jottings",
+  "customFolder": "10_Inbox",
   "fileNamePrefix": "",
-  "transcludeByDefault": false,
+  "transcludeByDefault": true,
   "noteLinkTemplate": "",
   "refactoredNoteTemplate": "",
   "normalizeHeaderLevels": true

@@ -1,5 +1,5 @@
 {
   "debug": false,
-  "zoomOnClick": true,
+  "zoomOnClick": false,
   "zoomOnClickMobile": false
 }

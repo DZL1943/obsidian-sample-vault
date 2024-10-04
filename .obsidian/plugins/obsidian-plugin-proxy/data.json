@@ -45,6 +45,12 @@
       "page": "https://www.ghproxy.cn/https://github.com/"
     },
     {
+      "id": "idayer",
+      "download": "https://gh.idayer.com/https://github.com/",
+      "raw": "https://gh.idayer.com/https://raw.githubusercontent.com/",
+      "page": "https://gh.idayer.com/https://github.com/"
+    },
+    {
       "id": "github",
       "download": "https://github.com/",
       "raw": "https://raw.githubusercontent.com/",

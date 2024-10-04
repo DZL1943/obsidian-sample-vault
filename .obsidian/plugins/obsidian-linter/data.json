@@ -91,7 +91,8 @@
     },
     "auto-correct-common-misspellings": {
       "enabled": false,
-      "ignore-words": ""
+      "ignore-words": "",
+      "extra-auto-correct-files": []
     },
     "blockquote-style": {
       "enabled": true,
@@ -267,9 +268,10 @@
   "settingsConvertedToConfigKeyValues": true,
   "foldersToIgnore": [
     "70_Resources",
-    "90_Misc",
     "Misc",
-    "20_Private"
+    "20_Private",
+    "Archives",
+    "Ext"
   ],
   "filesToIgnore": [],
   "linterLocale": "system-default",

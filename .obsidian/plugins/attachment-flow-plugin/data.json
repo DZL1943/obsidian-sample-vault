@@ -2,7 +2,7 @@
   "deleteOption": ".trash",
   "logsModal": true,
   "dragResize": true,
-  "resizeInterval": 5,
+  "resizeInterval": 10,
   "clickView": true,
   "adaptiveRatio": 0.9,
   "moveFileMenu": false,

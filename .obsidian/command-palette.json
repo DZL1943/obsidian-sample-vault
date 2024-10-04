@@ -1,7 +1,9 @@
 {
   "pinned": [
     "templater-obsidian:insert-templater",
-    "obsidian-tasks-plugin:edit-task",
-    "obsidian-another-quick-switcher:search-command_file-name-search"
+    "zk-prefixer",
+    "nldates-obsidian:nlp-now",
+    "omnisearch:show-modal",
+    "ledger-obsidian:ledger-add-transaction"
   ]
 }

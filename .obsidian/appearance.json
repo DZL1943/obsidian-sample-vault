@@ -1,15 +1,24 @@
 {
-  "accentColor": "",
-  "theme": "system",
-  "cssTheme": "Minimal",
+  "accentColor": "#00a86b",
+  "interfaceFontFamily": "Menlo,Monaco",
+  "textFontFamily": "UbuntuMono Nerd Font Mono,Sarasa Mono SC,Menlo,Monaco",
+  "monospaceFontFamily": "Menlo,Monaco",
   "baseFontSize": 18,
+  "baseFontSizeAction": true,
+  "translucency": false,
+  "theme": "system",
   "enabledCssSnippets": [
+    "basic",
+    "supercharged-links-gen",
+    "font",
+    "guideline",
+    "he",
     "S - Embed Adjustments",
-    "bullet-list-live-preview-highlight",
-    "bullet-list-live-preview-threading",
-    "indent-line"
+    "S - Images Adjustments",
+    "checklist",
+    "statusbar",
+    "ribbon"
   ],
-  "showViewHeader": true,
-  "textFontFamily": "Monaco,Menlo",
-  "interfaceFontFamily": "Menlo"
+  "showViewHeader": false,
+  "cssTheme": ""
 }

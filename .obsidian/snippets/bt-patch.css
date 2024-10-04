@@ -1,8 +1,0 @@
-.list-collapse-indicator.collapse-indicator.collapse-icon.is-collapsed:after {
-	color: transparent;
-	display：none;
-}
-
-.markdown-rendered .list-collapse-indicator {
-	padding-right:unset;
-}

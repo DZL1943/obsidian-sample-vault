@@ -14,14 +14,14 @@
   "dailyTemplateFilename": "",
   "weeklyNoteOption": true,
   "weeklyNotePattern": "'20_Private'/kkkk/kkkk-'W'WW",
-  "weeklyTemplateFilename": "weekly-template",
+  "weeklyTemplateFilename": "Journal/weekly-template",
   "monthlyNoteOption": true,
   "monthlyNotePattern": "'20_Private'/yyyy/yyyy-MM",
-  "monthlyTemplateFilename": "monthly-template",
+  "monthlyTemplateFilename": "Journal/monthly-template",
   "quarterlyNoteOption": true,
   "quarterlyNotePattern": "'20_Private'/yyyy/yyyy-qq",
   "quarterlyTemplateFilename": "",
   "yearlyNoteOption": true,
   "yearlyNotePattern": "'20_Private'/yyyy/yyyy",
-  "yearlyTemplateFilename": "yearly-template"
+  "yearlyTemplateFilename": "Journal/yearly-template"
 }

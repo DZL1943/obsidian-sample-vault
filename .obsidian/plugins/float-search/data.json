@@ -2,10 +2,10 @@
   "searchViewState": {
     "query": "",
     "matchingCase": false,
-    "explainSearch": true,
-    "collapseAll": true,
-    "extraContext": true,
+    "explainSearch": false,
+    "collapseAll": false,
+    "extraContext": false,
     "sortOrder": "alphabetical"
   },
-  "showFilePath": true
+  "showFilePath": false
 }

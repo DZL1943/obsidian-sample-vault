@@ -9283,12 +9283,14 @@ class DateSuggest extends require$$0$1.EditorSuggest {
     getSuggestions(context) {
         const suggestions = this.getDateSuggestions(context);
         if (suggestions.length) {
+            // console.log(suggestions)
             return suggestions;
         }
         // catch-all if there are no matches
         return [{ label: context.query }];
     }
     getDateSuggestions(context) {
+        // console.log(`begin suggestions: ${context}`)
         if (context.query.match(/^time/)) {
             return ["now", "+15 minutes", "+1 hour", "-15 minutes", "-1 hour"]
                 .map((val) => ({ label: `time:${val}` }))
@@ -9325,7 +9327,7 @@ class DateSuggest extends require$$0$1.EditorSuggest {
                 { label: `${timeDelta} months ago` },
             ].filter((items) => items.label.toLowerCase().startsWith(context.query));
         }
-        return [{ label: "Today" }, { label: "Yesterday" }, { label: "Tomorrow" }].filter((items) => items.label.toLowerCase().startsWith(context.query));
+        return [{ label: "Now" },{ label: "Today" }, { label: "Yesterday" }, { label: "Tomorrow" }].filter((items) => items.label.toLowerCase().startsWith(context.query));
     }
     renderSuggestion(suggestion, el) {
         el.setText(suggestion.label);
@@ -9335,10 +9337,18 @@ class DateSuggest extends require$$0$1.EditorSuggest {
         const includeAlias = event.shiftKey;
         let dateStr = "";
         let makeIntoLink = this.plugin.settings.autosuggestToggleLink;
+        // console.log(suggestion)
         if (suggestion.label.startsWith("time:")) {
             const timePart = suggestion.label.substring(5);
             dateStr = this.plugin.parseTime(timePart).formattedString;
             makeIntoLink = false;
+        }
+        else if(suggestion.label.toLowerCase().startsWith("now")){
+            const format = `${this.plugin.settings.format}${this.plugin.settings.separator}${this.plugin.settings.timeFormat}`;
+            const date = new Date();
+
+            dateStr = window.moment(date).format(format);
+            // console.log(`!!${format}`)
         }
         else {
             dateStr = this.plugin.parseDate(suggestion.label).formattedString;
@@ -9346,6 +9356,7 @@ class DateSuggest extends require$$0$1.EditorSuggest {
         if (makeIntoLink) {
             dateStr = generateMarkdownLink(this.app, dateStr, includeAlias ? suggestion.label : undefined);
         }
+        // console.log(dateStr)
         editor.replaceRange(dateStr, this.context.start, this.context.end);
     }
     onTrigger(cursor, editor, file) {
@@ -9423,6 +9434,7 @@ function insertMomentCommand(plugin, date, format) {
 }
 function getNowCommand(plugin) {
     const format = `${plugin.settings.format}${plugin.settings.separator}${plugin.settings.timeFormat}`;
+    //console.log(format)
     const date = new Date();
     insertMomentCommand(plugin, date, format);
 }
@@ -9524,6 +9536,7 @@ class NaturalLanguageDates extends require$$0$1.Plugin {
     parse(dateString, format) {
         const date = this.parser.getParsedDate(dateString, this.settings.weekStart);
         const formattedString = getFormattedDate(date, format);
+        console.log(formattedString)
         if (formattedString === "Invalid date") {
             console.debug("Input date " + dateString + " can't be parsed by nldates");
         }

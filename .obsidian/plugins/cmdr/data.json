@@ -10,27 +10,9 @@
       "mode": "any"
     },
     {
-      "id": "obsidian-comments:add-comment",
-      "icon": "highlighter",
-      "name": "Comments: Add Comment",
-      "mode": "any"
-    },
-    {
-      "id": "note-refactor-obsidian:app:extract-selection-first-line",
-      "icon": "arrow-left-right",
-      "name": "Note Refactor: Extract selection to new note - first line as file name",
-      "mode": "any"
-    },
-    {
-      "id": "unicode-search:search-unicode-chars",
-      "icon": "command",
-      "name": "Unicode Search: Search Unicode characters",
-      "mode": "any"
-    },
-    {
-      "id": "obsidian-emoji-toolbar:emoji-picker:open-picker",
-      "icon": "smile",
-      "name": "Emoji Toolbar: Open emoji picker",
+      "id": "show-whitespace-cm6:whitespace-toggle",
+      "icon": "pilcrow",
+      "name": "Show Whitespace: Toggle Show Whitespace",
       "mode": "any"
     },
     {
@@ -44,76 +26,81 @@
       "icon": "eye",
       "name": "Privacy Glasses: Privacy Glasses - do not hide anything",
       "mode": "any"
+    },
+    {
+      "id": "templater-obsidian:insert-templater",
+      "icon": "templater-icon",
+      "name": "Templater: Open insert template modal",
+      "mode": "any"
+    },
+    {
+      "id": "editor:fold-all",
+      "icon": "lucide-minimize-2",
+      "name": "折叠所有标题和列表",
+      "mode": "any"
     }
   ],
   "fileMenu": [
-    {
-      "id": "obsidian-kanban:toggle-kanban-view",
-      "icon": "align-start-horizontal",
-      "name": "Kanban: 在看板和 Markdown 模式之间进行切换",
-      "mode": "any"
-    },
-    {
-      "id": "obsidian-mindmap-nextgen:mindmapnextgen:pinned",
-      "icon": "map",
-      "name": "Mindmap NextGen: Open pinned mindmap",
-      "mode": "any"
-    },
-    {
-      "id": "obsidian-export-image:copy-as-image-zh",
-      "icon": "image",
-      "name": "Export Image plugin: Copy as image",
-      "mode": "any"
-    },
-    {
-      "id": "workspace:copy-path",
-      "icon": "lucide-copy",
-      "name": "复制当前文件的路径",
-      "mode": "any"
-    },
     {
       "id": "obsidian-markmind:Toggle to markdown or mindmap",
       "icon": "map",
       "name": "Markmind: 切换为Markdown或思维导图模式",
       "mode": "any"
+    },
+    {
+      "id": "zk-prefixer",
+      "icon": "box-glyph",
+      "name": "时间戳笔记生成器: 创建时间戳笔记",
+      "mode": "any"
     }
   ],
   "leftRibbon": [
+    {
+      "id": "app:open-settings",
+      "icon": "lucide-settings",
+      "name": "打开设置",
+      "mode": "any"
+    },
+    {
+      "id": "app:open-vault",
+      "icon": "vault",
+      "name": "打开其他仓库",
+      "mode": "any"
+    },
     {
       "id": "theme:switch",
       "icon": "brush",
       "name": "更换主题",
       "mode": "any"
-    },
+    }
+  ],
+  "rightRibbon": [],
+  "titleBar": [],
+  "statusBar": [],
+  "pageHeader": [
     {
-      "id": "quickadd:runQuickAdd",
-      "icon": "activity",
-      "name": "QuickAdd: Run QuickAdd",
+      "id": "templater-obsidian:insert-templater",
+      "icon": "templater-icon",
+      "name": "Templater: Open insert template modal",
       "mode": "any"
     },
     {
-      "id": "file-explorer:new-file",
-      "icon": "lucide-file-plus",
-      "name": "新建笔记",
+      "id": "zk-prefixer",
+      "icon": "box-glyph",
+      "name": "时间戳笔记生成器: 创建时间戳笔记",
       "mode": "any"
     },
     {
-      "id": "obsidian-shellcommands:shell-command-3r8rkgqqf5",
-      "icon": "git-commit",
-      "name": "Shell commands: Execute: gcam",
-      "mode": "any"
+      "id": "workspace:split-vertical",
+      "icon": "lucide-separator-vertical",
+      "name": "左右分屏",
+      "mode": "desktop"
     },
     {
-      "id": "keyboard-analyzer:show-shortcuts-analyzer-view",
-      "icon": "keyboard",
-      "name": "Keyboard Analyzer: Open keyboard shortcuts view",
-      "mode": "any"
-    },
-    {
-      "id": "obsidian-style-settings:show-style-settings-leaf",
-      "icon": "palette",
-      "name": "Style Settings: Show style settings view",
-      "mode": "any"
+      "id": "workspace:split-horizontal",
+      "icon": "lucide-separator-horizontal",
+      "name": "上下分屏",
+      "mode": "desktop"
     },
     {
       "id": "app:open-settings",
@@ -122,77 +109,29 @@
       "mode": "any"
     }
   ],
-  "rightRibbon": [],
-  "titleBar": [],
-  "statusBar": [
-    {
-      "id": "show-whitespace-cm6:whitespace-toggle",
-      "icon": "pilcrow",
-      "name": "Show Whitespace: Toggle Show Whitespace",
-      "mode": "any"
-    }
-  ],
-  "pageHeader": [
-    {
-      "id": "open-with-default-app:open",
-      "icon": "lucide-arrow-up-right",
-      "name": "使用默认应用打开",
-      "mode": "any"
-    },
-    {
-      "id": "obsidian-minimal-settings:toggle-minimal-switch",
-      "icon": "sun",
-      "name": "Minimal Theme Settings: Switch between light and dark mode",
-      "mode": "any"
-    },
-    {
-      "id": "editor:fold-all",
-      "icon": "lucide-minimize-2",
-      "name": "折叠所有标题和列表",
-      "mode": "any"
-    },
-    {
-      "id": "float-search:search-in-current-file",
-      "icon": "lucide-search",
-      "name": "Floating Search: Search In Current File",
-      "mode": "any"
-    },
-    {
-      "id": "workspace:split-vertical",
-      "icon": "lucide-separator-vertical",
-      "name": "左右分屏",
-      "mode": "any"
-    },
-    {
-      "id": "workspace:split-horizontal",
-      "icon": "lucide-separator-horizontal",
-      "name": "上下分屏",
-      "mode": "any"
-    },
-    {
-      "id": "file-explorer:new-file",
-      "icon": "lucide-file-plus",
-      "name": "新建笔记",
-      "mode": "any"
-    }
-  ],
   "macros": [],
   "explorer": [],
   "hide": {
     "statusbar": [
-      "theme-picker",
+      "word-count",
+      "backlink",
       "keyboard-analyzer",
       "editing-toolbar",
-      "mysnippets-plugin",
-      "backlink",
-      "word-count",
-      "various-complements",
-      "properties"
+      "vim-im-control",
+      "solve",
+      "janitor"
     ],
     "leftRibbon": [
-      "Export Vault to HTML",
-      "Open Chronology",
-      "Advanced Tables Toolbar"
+      "插入模板",
+      "Toggle Vim Mode",
+      "Hide all",
+      "Reveal non-private",
+      "Reveal headlines only",
+      "Reveal all",
+      "创建新看板",
+      "Add to Ledger",
+      "BRAT",
+      "Open Chronology"
     ]
   },
   "spacing": 8,

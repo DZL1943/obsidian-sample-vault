@@ -1,14 +1,11 @@
 {
   "pluginList": [
-    "aidan-gibson/obsidian-opener",
-    "l1xnan/obsidian-better-export-pdf",
-    "platon-ivanov/obsidian-visually-numbered-headings",
-    "polyipseity/obsidian-show-hidden-files",
     "Quorafind/Obsidian-Legacy-Vault-Switcher",
-    "Quorafind/Obsidian-Node-Auto-Resize",
-    "Quorafind/Outliner.MD",
+    "LincZero/obsidian-any-block",
+    "vran-dev/obsidian-attachment-pro",
     "wish5115/obsidian-floating-settings",
-    "Yaozhuwa/AttachFlow"
+    "Yaozhuwa/AttachFlow",
+    "aidan-gibson/obsidian-opener"
   ],
   "pluginSubListFrozenVersion": [],
   "themesList": [],

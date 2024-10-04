@@ -1,24 +1,22 @@
 {
   "main": {
-    "id": "cb2377fb020a1ff9",
+    "id": "d9c96d0f51091dde",
     "type": "split",
     "children": [
       {
-        "id": "54abdfbcf06a53b1",
+        "id": "04d1c25a96d885f9",
         "type": "tabs",
         "children": [
           {
-            "id": "dd0c724920d6ce07",
+            "id": "cb38b7783614f75e",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
                 "file": "README.md",
                 "mode": "preview",
-                "source": true
-              },
-              "pinned": true
+                "source": false
+              }
             }
           }
         ]
@@ -27,15 +25,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "df0546e6361ce644",
+    "id": "c8bb9cda0343617f",
     "type": "split",
     "children": [
       {
-        "id": "20e00c13dbcc0e6c",
+        "id": "e93de0b3966fa913",
         "type": "tabs",
         "children": [
           {
-            "id": "b360e5bd0828bad7",
+            "id": "8d8893d561ab788b",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -45,7 +43,7 @@
             }
           },
           {
-            "id": "82484834b6c769a0",
+            "id": "96f71b7f58880ac2",
             "type": "leaf",
             "state": {
               "type": "file-tree-view",
@@ -53,24 +51,16 @@
             }
           },
           {
-            "id": "4bebf0e7282d48b0",
-            "type": "leaf",
-            "state": {
-              "type": "tagfolder-view",
-              "state": {}
-            }
-          },
-          {
-            "id": "2236c43629aff91d",
+            "id": "c977d589b7118ed8",
             "type": "leaf",
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#task",
+                "query": "",
                 "matchingCase": false,
-                "explainSearch": true,
-                "collapseAll": true,
-                "extraContext": true,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
                 "sortOrder": "alphabetical"
               }
             }
@@ -84,24 +74,16 @@
     "collapsed": true
   },
   "right": {
-    "id": "6af7bc7b0804df6c",
+    "id": "85f6ff27a037d542",
     "type": "split",
     "children": [
       {
-        "id": "9bbb39ce85738cff",
+        "id": "297ef271baed4074",
         "type": "tabs",
-        "dimension": 48.56770833333334,
+        "dimension": 52.141057934508815,
         "children": [
           {
-            "id": "e3ab673e1ce52da5",
-            "type": "leaf",
-            "state": {
-              "type": "calendar-view",
-              "state": {}
-            }
-          },
-          {
-            "id": "b9d37edd91968223",
+            "id": "a6fae1cf0ae0a586",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -109,155 +91,120 @@
             }
           },
           {
-            "id": "117a823cb947b7cb",
+            "id": "0b7df3ba298930f4",
             "type": "leaf",
             "state": {
-              "type": "git-view",
+              "type": "calendar-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "7e1e7018feeefcd9",
+            "type": "leaf",
+            "state": {
+              "type": "chronology-calendar-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "504083fc7063dde6",
+            "type": "leaf",
+            "state": {
+              "type": "annotations-outline",
               "state": {}
             }
           }
         ]
       },
       {
-        "id": "dda52860917a3c25",
+        "id": "48418e7cafcd6cd2",
         "type": "tabs",
-        "dimension": 51.43229166666666,
+        "dimension": 47.858942065491185,
         "children": [
           {
-            "id": "8dee6768aa08510c",
+            "id": "1e6203add889c4c9",
             "type": "leaf",
             "state": {
-              "type": "quiet-outline",
-              "state": {}
+              "type": "outline",
+              "state": {
+                "file": "README.md"
+              }
             }
           },
           {
-            "id": "224027cad3cf3690",
+            "id": "66f76de4c7008a40",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "8a5ae44ab2ac0a36",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
                 "file": "README.md",
-                "collapseAll": true,
+                "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
                 "backlinkCollapsed": false,
-                "unlinkedCollapsed": false
+                "unlinkedCollapsed": true
               }
             }
           },
           {
-            "id": "2658dc0f9dc3a97b",
+            "id": "d7369a4970a4d6f8",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
                 "file": "README.md",
-                "linksCollapsed": true,
+                "linksCollapsed": false,
                 "unlinkedCollapsed": false
               }
             }
-          },
-          {
-            "id": "0138c207d1a3a827",
-            "type": "leaf",
-            "state": {
-              "type": "localgraph",
-              "state": {
-                "file": "README.md",
-                "options": {
-                  "collapse-filter": true,
-                  "search": "",
-                  "localJumps": 1,
-                  "localBacklinks": true,
-                  "localForelinks": true,
-                  "localInterlinks": false,
-                  "showTags": false,
-                  "showAttachments": false,
-                  "hideUnresolved": false,
-                  "collapse-color-groups": true,
-                  "colorGroups": [],
-                  "collapse-display": true,
-                  "showArrow": true,
-                  "textFadeMultiplier": 0,
-                  "nodeSizeMultiplier": 1,
-                  "lineSizeMultiplier": 1.53474934895833,
-                  "collapse-forces": true,
-                  "centerStrength": 1,
-                  "repelStrength": 4.10074869791667,
-                  "linkStrength": 0.52294921875,
-                  "linkDistance": 106,
-                  "scale": 0.8276068547580308,
-                  "close": true
-                }
-              }
-            }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
-    "width": 237.5,
+    "width": 246.5,
     "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
-      "templater-obsidian:Templater": true,
       "workspaces:管理工作区布局": false,
-      "switcher:打开快速切换": true,
-      "command-palette:打开命令面板": true,
-      "float-search:Search Obsidian In Modal": true,
-      "obsidian-kanban:创建新看板": true,
       "graph:查看关系图谱": true,
-      "cmdr:更换主题": false,
-      "cmdr:Style Settings: Show style settings view": false,
-      "zk-prefixer:创建时间戳笔记": false,
+      "random-note:开始漫游笔记": true,
       "canvas:新建白板": false,
-      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "command-palette:打开命令面板": true,
+      "switcher:打开快速切换": true,
+      "zk-prefixer:创建时间戳笔记": false,
+      "fuzzy-chinese-pinyin:FuzzySearch": true,
       "daily-notes:打开/创建今天的日记": true,
-      "cmdr:新建笔记": true,
-      "cmdr:QuickAdd: Run QuickAdd": true,
-      "cmdr:Shell commands: Execute: gcam": true,
-      "cmdr:Keyboard Analyzer: Open keyboard shortcuts view": true,
-      "cmdr:打开设置": true,
-      "fuzzy-chinese-pinyin:FuzzySearch": false
+      "templates:插入模板": true,
+      "chronology:Open Chronology": true,
+      "cmdr:打开设置": false,
+      "cmdr:打开其他仓库": false,
+      "cmdr:更换主题": false,
+      "obsidian-kanban:创建新看板": true,
+      "ledger-obsidian:Add to Ledger": true,
+      "markdown-table-editor:Open Markdown Table Editor": true,
+      "darlal-switcher-plus:Open in Headings Mode": false,
+      "templater-obsidian:Templater": false,
+      "vim-toggle:Toggle Vim Mode": true,
+      "obsidian42-brat:BRAT": true,
+      "obsidian-excalidraw-plugin:新建绘图文件": false
     }
   },
-  "active": "dd0c724920d6ce07",
-  "lastOpenFiles": [
-    "sortspec.md",
-    "README.md",
-    "Misc/Templates/yearly-template.md",
-    "Misc/Templates/page-properties.md",
-    "Misc/Templates/monthly-template.md",
-    "Misc/Templates/habit-calendar-dv.md",
-    "20_Private/index.md",
-    "Misc/Templates/weekdays-h2.md",
-    "Misc/Templates/weekdays-list.md",
-    "Misc/Templates/datetime-li.md",
-    "Misc/Templates/weekly-template.md",
-    "10_Inbox/Local/temp.md",
-    "10_Inbox/Local/未命名看板.md",
-    "Misc/Templates/breadcrumbs-t.md",
-    "links.md",
-    "Misc/Attachments/attachments.md",
-    "20_Private/tasks.md",
-    "_canvas.canvas",
-    "20_Private/context.md",
-    "Misc/Templates/days-h2.md",
-    "All.md",
-    "Misc/Templates/datetime.md",
-    "Misc/Templates/datetime-h2.md",
-    "Misc/Attachments/README-20240611204632938.png",
-    "60_Areas/areas.md",
-    "10_Inbox/Local/2024-06.md",
-    "10_Inbox/test-dv.md",
-    "10_Inbox/draft.md",
-    "20_Private/2024",
-    "20_Journals/2024",
-    "90_Misc/Attachments",
-    "90_Misc"
-  ]
+  "active": "a6fae1cf0ae0a586",
+  "lastOpenFiles": []
 }

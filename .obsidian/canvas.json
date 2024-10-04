@@ -1,6 +1,6 @@
 {
   "snapToObjects": true,
   "snapToGrid": true,
-  "newFileLocation": "folder",
+  "newFileLocation": "current",
   "newFileFolderPath": "10_Inbox"
 }

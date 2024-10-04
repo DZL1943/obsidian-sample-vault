@@ -17,7 +17,11 @@
     "70_Resources/",
     ".doc",
     ".canvas",
-    "90_Misc/Scripts/",
-    ".icns"
+    ".icns",
+    "Misc/Attachments/Resources/",
+    "Misc/Code/",
+    "Misc/Configs/",
+    "Ext/",
+    ".ledger"
   ]
 }

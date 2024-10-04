@@ -15,15 +15,6 @@
       "key": "ArrowDown"
     }
   ],
-  "darlal-switcher-plus:switcher-plus:open-commands": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "P"
-    }
-  ],
   "cycle-in-sidebar:cycle-left-sidebar": [
     {
       "modifiers": [
@@ -129,22 +120,6 @@
         "Alt"
       ],
       "key": "I"
-    }
-  ],
-  "darlal-switcher-plus:switcher-plus:open-headings": [
-    {
-      "modifiers": [
-        "Ctrl"
-      ],
-      "key": "H"
-    }
-  ],
-  "darlal-switcher-plus:switcher-plus:open-starred": [
-    {
-      "modifiers": [
-        "Ctrl"
-      ],
-      "key": "M"
     }
   ],
   "workspace:split-horizontal": [
@@ -355,8 +330,8 @@
   "editor:toggle-source": [
     {
       "modifiers": [
-        "Alt",
-        "Mod"
+        "Mod",
+        "Alt"
       ],
       "key": "E"
     }
@@ -375,6 +350,84 @@
         "Ctrl"
       ],
       "key": "V"
+    }
+  ],
+  "canvas:new-file": [
+    {
+      "modifiers": [
+        "Ctrl"
+      ],
+      "key": "N"
+    }
+  ],
+  "app:toggle-ribbon": [
+    {
+      "modifiers": [
+        "Mod",
+        "Ctrl"
+      ],
+      "key": "B"
+    }
+  ],
+  "omnisearch:show-modal": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "F"
+    }
+  ],
+  "zk-prefixer": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "T"
+    }
+  ],
+  "refresh-preview:refresh-preview": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "R"
+    }
+  ],
+  "typewriter-mode:move-typewriter-down": [],
+  "typewriter-mode:move-typewriter-up": [],
+  "darlal-switcher-plus:switcher-plus:open": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "O"
+    }
+  ],
+  "darlal-switcher-plus:switcher-plus:open-commands": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "P"
+    }
+  ],
+  "templater-obsidian:insert-templater": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "E"
+    }
+  ],
+  "random-note": [
+    {
+      "modifiers": [
+        "Ctrl"
+      ],
+      "key": "T"
     }
   ]
 }

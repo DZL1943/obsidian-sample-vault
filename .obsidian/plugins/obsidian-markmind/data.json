@@ -14,6 +14,9 @@
   "annotateBottom": 0,
   "useCustomShortcut": false,
   "highlightFormat": "\nPage:{{page}}\n<span style=\"color:rgb({{color}})\">■</span>:{{highlightText}}\nComment:{{comment}}\n[📌]({{link}})\n^{{id}}\n",
-  "setup": 1686555499242,
-  "uid": "00p01001201000t00t00t01001100s00o01300q"
+  "setup": 1725019696530,
+  "openCodeBlock": true,
+  "useAnimate": true,
+  "removeSpace": false,
+  "uid": "00p01100q00t00o00p01301200t01301000s00r"
 }

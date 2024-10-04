@@ -3,7 +3,7 @@
   "blurLevel": 0.3,
   "blurOnIdleTimeoutSeconds": -1,
   "hoverToReveal": true,
-  "revealUnderCaret": false,
-  "privateDirs": "",
+  "revealUnderCaret": true,
+  "privateDirs": "20_Private",
   "privateNoteMarker": "#private"
 }

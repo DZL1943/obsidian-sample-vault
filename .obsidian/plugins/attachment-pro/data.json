@@ -1,0 +1,88 @@
+{
+  "version": 0,
+  "rules": [
+    {
+      "id": "4952e5bd-8037-4586-9033-295896d03a6a",
+      "sort": 0,
+      "enabled": true,
+      "scopes": [
+        {
+          "id": "1bdc28ad-868a-4930-a3bf-5bed9c4002c7",
+          "type": "SPECIFIC_FILE_FOLDER",
+          "ranges": [
+            {
+              "id": "1723690011461_20_Private",
+              "value": "20_Private"
+            }
+          ]
+        }
+      ],
+      "repository": {
+        "type": "CUSTOMIZE",
+        "path": "Misc/Attachments/Private"
+      },
+      "nameFormat": {
+        "type": "DATETIME",
+        "format": "yyyyMMddHHmmss"
+      }
+    },
+    {
+      "id": "358f7a2f-2150-4cd4-a644-aa0783a308bf",
+      "sort": 0,
+      "enabled": true,
+      "scopes": [
+        {
+          "id": "b60afb73-d3c8-4dba-9482-7a52a46b3026",
+          "type": "SPECIFIC_FILE_FOLDER",
+          "ranges": [
+            {
+              "id": "1723875186120_70_Resources",
+              "value": "70_Resources"
+            }
+          ]
+        }
+      ],
+      "repository": {
+        "type": "CUSTOMIZE",
+        "path": "Misc/Attachments/Resources"
+      },
+      "nameFormat": {
+        "type": "ORIGINAL"
+      }
+    },
+    {
+      "id": "f3040faa-213b-4653-a742-5727f3fc96a0",
+      "sort": 0,
+      "enabled": true,
+      "scopes": [
+        {
+          "id": "b93567d5-557e-4758-8f6c-fc7925c4d604",
+          "type": "ATTACHMENT_FILE_EXTENSION",
+          "ranges": [
+            {
+              "id": "1723708337769_png",
+              "value": "png"
+            },
+            {
+              "id": "1724768150966_jpg",
+              "value": "jpg"
+            },
+            {
+              "id": "1724768152903_jpeg",
+              "value": "jpeg"
+            }
+          ]
+        }
+      ],
+      "repository": {
+        "type": "CUSTOMIZE",
+        "path": "Misc/Attachments"
+      },
+      "nameFormat": {
+        "type": "CUSTOMIZE",
+        "format": "${notename}-${now.toFormat('yyyyMMddHHmmss')}"
+      }
+    }
+  ],
+  "debug": false
+}
