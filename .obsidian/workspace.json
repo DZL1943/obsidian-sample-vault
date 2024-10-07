@@ -191,20 +191,15 @@
       "fuzzy-chinese-pinyin:FuzzySearch": true,
       "daily-notes:打开/创建今天的日记": true,
       "templates:插入模板": true,
-      "chronology:Open Chronology": true,
+      "chronology:Open Chronology": false,
       "cmdr:打开设置": false,
       "cmdr:打开其他仓库": false,
       "cmdr:更换主题": false,
-      "obsidian-kanban:创建新看板": true,
-      "ledger-obsidian:Add to Ledger": true,
-      "markdown-table-editor:Open Markdown Table Editor": true,
-      "darlal-switcher-plus:Open in Headings Mode": false,
-      "templater-obsidian:Templater": false,
-      "vim-toggle:Toggle Vim Mode": true,
-      "obsidian42-brat:BRAT": true,
-      "obsidian-excalidraw-plugin:新建绘图文件": false
+      "obsidian-kanban:创建新看板": false,
+      "ledger-obsidian:Add to Ledger": false,
+      "markdown-table-editor:Open Markdown Table Editor": false
     }
   },
-  "active": "a6fae1cf0ae0a586",
+  "active": "cb38b7783614f75e",
   "lastOpenFiles": []
 }

@@ -274,6 +274,36 @@
       },
       "markdown-table-editor": {
         "startupType": "short"
+      },
+      "custom-sort": {
+        "startupType": "disabled"
+      },
+      "obsidian-latex-suite": {
+        "startupType": "disabled"
+      },
+      "make-md": {
+        "startupType": "disabled"
+      },
+      "markwhen": {
+        "startupType": "disabled"
+      },
+      "obsidian-projects": {
+        "startupType": "disabled"
+      },
+      "obsidian-quiet-outline": {
+        "startupType": "disabled"
+      },
+      "remotely-save": {
+        "startupType": "disabled"
+      },
+      "slash-commander": {
+        "startupType": "disabled"
+      },
+      "tag-wrangler": {
+        "startupType": "disabled"
+      },
+      "obsidian-memos": {
+        "startupType": "disabled"
       }
     }
   }
