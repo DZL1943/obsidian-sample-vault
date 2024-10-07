@@ -105,16 +105,9 @@
               "type": "chronology-calendar-view",
               "state": {}
             }
-          },
-          {
-            "id": "504083fc7063dde6",
-            "type": "leaf",
-            "state": {
-              "type": "annotations-outline",
-              "state": {}
-            }
           }
-        ]
+        ],
+        "currentTab": 1
       },
       {
         "id": "48418e7cafcd6cd2",
@@ -197,9 +190,16 @@
       "cmdr:更换主题": false,
       "obsidian-kanban:创建新看板": false,
       "ledger-obsidian:Add to Ledger": false,
-      "markdown-table-editor:Open Markdown Table Editor": false
+      "markdown-table-editor:Open Markdown Table Editor": false,
+      "darlal-switcher-plus:Open in Headings Mode": false,
+      "templater-obsidian:Templater": false,
+      "vim-toggle:Toggle Vim Mode": false,
+      "obsidian42-brat:BRAT": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false
     }
   },
   "active": "cb38b7783614f75e",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "README.md"
+  ]
 }

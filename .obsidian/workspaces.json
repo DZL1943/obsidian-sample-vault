@@ -107,16 +107,9 @@
                   "type": "chronology-calendar-view",
                   "state": {}
                 }
-              },
-              {
-                "id": "504083fc7063dde6",
-                "type": "leaf",
-                "state": {
-                  "type": "annotations-outline",
-                  "state": {}
-                }
               }
-            ]
+            ],
+            "currentTab": 1
           },
           {
             "id": "48418e7cafcd6cd2",
@@ -193,22 +186,22 @@
           "fuzzy-chinese-pinyin:FuzzySearch": true,
           "daily-notes:打开/创建今天的日记": true,
           "templates:插入模板": true,
-          "chronology:Open Chronology": true,
+          "chronology:Open Chronology": false,
           "cmdr:打开设置": false,
           "cmdr:打开其他仓库": false,
           "cmdr:更换主题": false,
-          "obsidian-kanban:创建新看板": true,
-          "ledger-obsidian:Add to Ledger": true,
-          "markdown-table-editor:Open Markdown Table Editor": true,
+          "obsidian-kanban:创建新看板": false,
+          "ledger-obsidian:Add to Ledger": false,
+          "markdown-table-editor:Open Markdown Table Editor": false,
           "darlal-switcher-plus:Open in Headings Mode": false,
           "templater-obsidian:Templater": false,
-          "vim-toggle:Toggle Vim Mode": true,
-          "obsidian42-brat:BRAT": true,
+          "vim-toggle:Toggle Vim Mode": false,
+          "obsidian42-brat:BRAT": false,
           "obsidian-excalidraw-plugin:新建绘图文件": false
         }
       },
-      "active": "a6fae1cf0ae0a586",
-      "mtime": "2024-10-04T20:29:28+08:00"
+      "active": "cb38b7783614f75e",
+      "mtime": "2024-10-07T09:04:58+08:00"
     },
     "init": {
       "main": {
@@ -317,16 +310,9 @@
                   "type": "chronology-calendar-view",
                   "state": {}
                 }
-              },
-              {
-                "id": "504083fc7063dde6",
-                "type": "leaf",
-                "state": {
-                  "type": "annotations-outline",
-                  "state": {}
-                }
               }
-            ]
+            ],
+            "currentTab": 1
           },
           {
             "id": "48418e7cafcd6cd2",
@@ -403,22 +389,22 @@
           "fuzzy-chinese-pinyin:FuzzySearch": true,
           "daily-notes:打开/创建今天的日记": true,
           "templates:插入模板": true,
-          "chronology:Open Chronology": true,
+          "chronology:Open Chronology": false,
           "cmdr:打开设置": false,
           "cmdr:打开其他仓库": false,
           "cmdr:更换主题": false,
-          "obsidian-kanban:创建新看板": true,
-          "ledger-obsidian:Add to Ledger": true,
-          "markdown-table-editor:Open Markdown Table Editor": true,
+          "obsidian-kanban:创建新看板": false,
+          "ledger-obsidian:Add to Ledger": false,
+          "markdown-table-editor:Open Markdown Table Editor": false,
           "darlal-switcher-plus:Open in Headings Mode": false,
           "templater-obsidian:Templater": false,
-          "vim-toggle:Toggle Vim Mode": true,
-          "obsidian42-brat:BRAT": true,
+          "vim-toggle:Toggle Vim Mode": false,
+          "obsidian42-brat:BRAT": false,
           "obsidian-excalidraw-plugin:新建绘图文件": false
         }
       },
-      "active": "a6fae1cf0ae0a586",
-      "mtime": "2024-10-04T20:29:40+08:00"
+      "active": "cb38b7783614f75e",
+      "mtime": "2024-10-07T09:05:03+08:00"
     }
   },
   "active": "init"

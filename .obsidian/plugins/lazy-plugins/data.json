@@ -261,7 +261,7 @@
         "startupType": "disabled"
       },
       "enhanced-annotations": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "open-sidebar-on-hover": {
         "startupType": "disabled"
