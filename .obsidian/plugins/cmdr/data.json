@@ -52,6 +52,18 @@
       "icon": "box-glyph",
       "name": "时间戳笔记生成器: 创建时间戳笔记",
       "mode": "any"
+    },
+    {
+      "id": "refresh-preview:refresh-preview",
+      "icon": "refresh-cw",
+      "name": "Refresh Preview: Refresh",
+      "mode": "any"
+    },
+    {
+      "id": "workspace:copy-path",
+      "icon": "lucide-copy",
+      "name": "复制当前文件的路径",
+      "mode": "any"
     }
   ],
   "leftRibbon": [

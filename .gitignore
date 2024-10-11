@@ -6,9 +6,10 @@
 /.stfolder/
 /.trash/
 /.makemd/
-/.space/
+.space/
 /Spaces/
 /Vaults/
+/Vault.md
 /[eE]xt/
 *[iI]nbox/*
 [lL]ocal/
