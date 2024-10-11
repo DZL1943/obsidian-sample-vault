@@ -1,7 +1,7 @@
 ---
 title: README
 created: "2024-07-30 13:30"
-modified: "2024-10-04 16:09"
+modified: "2024-10-11 16:11"
 editor-width: 88
 ---
 
@@ -200,6 +200,7 @@ better-markdown-links
 chronology
 cmdr
 code-styler
+custom-sort
 cycle-in-sidebar
 darlal-switcher-plus
 dataview
@@ -221,7 +222,9 @@ keyboard-analyzer
 lazy-plugins
 ledger-obsidian
 links
+make-md
 markdown-table-editor
+markwhen
 nldates-obsidian
 note-refactor-obsidian
 obsidian-advanced-uri
@@ -237,13 +240,15 @@ obsidian-git
 obsidian-heading-shifter
 obsidian-hover-editor
 obsidian-kanban
+obsidian-latex-suite
 obsidian-linter
 obsidian-list-callouts
 obsidian-markmind
+obsidian-memos
 obsidian-opener
 obsidian-outliner
 obsidian-plugin-proxy
-obsidian-plugin-update-tracker
+obsidian-projects
 obsidian-quiet-outline
 obsidian-relative-line-numbers
 obsidian-style-settings
@@ -254,16 +259,18 @@ obsidian-zoom
 obsidian42-brat
 omnisearch
 open-sidebar-on-hover
-pinned-notes
 privacy-glasses
 quick-explorer
 quickadd
 refresh-preview
+remotely-save
 settings-search
 show-whitespace-cm6
+slash-commander
 solve
 surfing
 table-editor-obsidian
+tag-wrangler
 templater-obsidian
 typewriter-mode
 update-relative-links
