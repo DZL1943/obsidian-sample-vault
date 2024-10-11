@@ -245,6 +245,7 @@ obsidian-linter
 obsidian-list-callouts
 obsidian-markmind
 obsidian-memos
+obsidian-meta-bind-plugin
 obsidian-opener
 obsidian-outliner
 obsidian-plugin-proxy
