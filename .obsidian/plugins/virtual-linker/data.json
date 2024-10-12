@@ -1,5 +1,5 @@
 {
-  "advancedSettings": false,
+  "advancedSettings": true,
   "linkerActivated": true,
   "matchOnlyWholeWords": true,
   "matchBeginningOfWords": false,
@@ -8,7 +8,9 @@
   "linkerDirectories": [
     "Glossary"
   ],
-  "excludedDirectories": [],
+  "excludedDirectories": [
+    "Ext"
+  ],
   "excludedDirectoriesForLinking": [],
   "virtualLinkSuffix": "🔗",
   "virtualLinkAliasSuffix": "🔗",

@@ -38,6 +38,12 @@
       "icon": "lucide-minimize-2",
       "name": "折叠所有标题和列表",
       "mode": "any"
+    },
+    {
+      "id": "obsidian-linter:lint-file",
+      "icon": "lint-file",
+      "name": "Linter: 格式化当前文件",
+      "mode": "any"
     }
   ],
   "fileMenu": [
