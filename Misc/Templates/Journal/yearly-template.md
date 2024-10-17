@@ -3,11 +3,7 @@ obsidianUIMode: preview
 obsidianEditingMode: source
 ---
 
-```dataviewjs
-dv.span(dv.func.link(dv.func.join(dv.func.list("#", dv.func.dateformat(dv.date("today"), "yyyy-'W'WW"), " (", moment().startOf("isoweek").format("MM/DD"), " ~ ", moment().endOf("isoweek").format("MM/DD"), ")"), ""), "本周"))
-```
-
-`=link("#"+dateformat(date(today), "yyyy-MM"), "本月")`
+`$=dv.span(dv.func.link(dv.func.join(dv.func.list("#", dv.func.dateformat(dv.date("today"), "yyyy-'W'WW"), " (", moment().startOf("isoweek").format("MM/DD"), " ~ ", moment().endOf("isoweek").format("MM/DD"), ")"), ""), "本周"))` | `=link("#"+dateformat(date(today), "yyyy-MM"), "本月")`
 
 # Daily
 
