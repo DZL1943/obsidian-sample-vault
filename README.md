@@ -1,7 +1,7 @@
 ---
 title: README
 created: "2024-07-30 13:30"
-modified: "2024-10-11 16:11"
+modified: "2024-10-17 08:31"
 editor-width: 88
 ---
 
@@ -244,7 +244,6 @@ obsidian-latex-suite
 obsidian-linter
 obsidian-list-callouts
 obsidian-markmind
-obsidian-memos
 obsidian-meta-bind-plugin
 obsidian-opener
 obsidian-outliner
@@ -269,6 +268,7 @@ settings-search
 show-whitespace-cm6
 slash-commander
 solve
+statusbar-organizer
 surfing
 table-editor-obsidian
 tag-wrangler

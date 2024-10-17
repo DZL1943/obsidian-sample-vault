@@ -1835,6 +1835,10 @@ var require_MetadataCache = __commonJS({
         } else if (!stat) {
           console.debug(`File stat for ${file.path} is missing`);
           return false;
+        } else if (file.stat.mtime < stat.mtime) {
+          app.vault.onChange("modified", file.path, void 0, stat);
+          console.debug(`Cached timestamp for ${file.path} is from ${new Date(file.stat.mtime).toString()} which is older than the file system modification timestamp ${new Date(stat.mtime).toString()}`);
+          return false;
         } else if (fileInfo.mtime < stat.mtime) {
           console.debug(`File cache info for ${file.path} is from ${new Date(fileInfo.mtime).toString()} which is older than the file modification timestamp ${new Date(stat.mtime).toString()}`);
           return false;
@@ -3082,15 +3086,15 @@ var require_RenameDeleteHandler = __commonJS({
       const renameDeleteHandlersMap = getRenameDeleteHandlersMap(plugin.app);
       const pluginId = plugin.manifest.id;
       renameDeleteHandlersMap.set(pluginId, settingsBuilder);
-      logPluginSettingsOrder(plugin.app);
+      logRegisteredHandlers(plugin.app);
       plugin.register(() => {
         renameDeleteHandlersMap.delete(pluginId);
-        logPluginSettingsOrder(plugin.app);
+        logRegisteredHandlers(plugin.app);
       });
       const app = plugin.app;
       plugin.registerEvent(
         app.vault.on("delete", (file) => {
-          if (!shouldInvokeHandler(app, pluginId, "Delete")) {
+          if (!shouldInvokeHandler(app, pluginId)) {
             return;
           }
           const path = file.path;
@@ -3099,7 +3103,7 @@ var require_RenameDeleteHandler = __commonJS({
       );
       plugin.registerEvent(
         app.vault.on("rename", (file, oldPath) => {
-          if (!shouldInvokeHandler(app, pluginId, "Rename")) {
+          if (!shouldInvokeHandler(app, pluginId)) {
             return;
           }
           const newPath = file.path;
@@ -3112,11 +3116,10 @@ var require_RenameDeleteHandler = __commonJS({
         })
       );
     }
-    function shouldInvokeHandler(app, pluginId, handlerType) {
+    function shouldInvokeHandler(app, pluginId) {
       const renameDeleteHandlerPluginIds = getRenameDeleteHandlersMap(app);
       const mainPluginId = Array.from(renameDeleteHandlerPluginIds.keys())[0];
       if (mainPluginId !== pluginId) {
-        console.debug(`${handlerType} handler for plugin ${pluginId} is skipped, because it is handled by plugin ${mainPluginId ?? "(none)"}`);
         return false;
       }
       return true;
@@ -3124,9 +3127,9 @@ var require_RenameDeleteHandler = __commonJS({
     function getRenameDeleteHandlersMap(app) {
       return (0, import_App.getObsidianDevUtilsState)(app, "renameDeleteHandlersMap", /* @__PURE__ */ new Map()).value;
     }
-    function logPluginSettingsOrder(app) {
+    function logRegisteredHandlers(app) {
       const renameDeleteHandlersMap = getRenameDeleteHandlersMap(app);
-      console.debug(`Rename/delete handlers will use plugin settings in the following order: ${Array.from(renameDeleteHandlersMap.keys()).join(", ")}`);
+      console.debug(`Plugins with registered rename/delete handlers: ${Array.from(renameDeleteHandlersMap.keys()).join(", ")}`);
     }
     async function handleRename(app, oldPath, newPath) {
       console.debug(`Handle Rename ${oldPath} -> ${newPath}`);
@@ -3968,3 +3971,5 @@ var __process8 = globalThis["process"] ?? {
   "env": {},
   "platform": "android"
 };
+
+/* nosourcemap */

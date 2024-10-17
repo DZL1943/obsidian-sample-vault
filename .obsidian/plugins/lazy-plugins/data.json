@@ -304,6 +304,9 @@
       },
       "obsidian-memos": {
         "startupType": "disabled"
+      },
+      "statusbar-organizer": {
+        "startupType": "short"
       }
     }
   }
