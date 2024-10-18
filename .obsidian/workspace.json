@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "85f6ff27a037d542",
@@ -213,11 +212,7 @@
       "obsidian-kanban:创建新看板": false,
       "ledger-obsidian:Add to Ledger": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
-      "darlal-switcher-plus:Open in Headings Mode": false,
-      "templater-obsidian:Templater": false,
-      "vim-toggle:Toggle Vim Mode": false,
-      "obsidian42-brat:BRAT": false,
-      "obsidian-excalidraw-plugin:新建绘图文件": false
+      "darlal-switcher-plus:Open in Headings Mode": false
     }
   },
   "active": "cb38b7783614f75e",
