@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "85f6ff27a037d542",
@@ -107,16 +108,6 @@
               "state": {},
               "icon": "lucide-calendar-check",
               "title": "日历"
-            }
-          },
-          {
-            "id": "7e1e7018feeefcd9",
-            "type": "leaf",
-            "state": {
-              "type": "chronology-calendar-view",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "插件不再活动"
             }
           }
         ],
@@ -205,14 +196,16 @@
       "fuzzy-chinese-pinyin:FuzzySearch": true,
       "daily-notes:打开/创建今天的日记": true,
       "templates:插入模板": true,
-      "chronology:Open Chronology": false,
       "cmdr:打开设置": false,
       "cmdr:打开其他仓库": false,
       "cmdr:更换主题": false,
       "obsidian-kanban:创建新看板": false,
-      "ledger-obsidian:Add to Ledger": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
-      "darlal-switcher-plus:Open in Headings Mode": false
+      "darlal-switcher-plus:Open in Headings Mode": false,
+      "templater-obsidian:Templater": false,
+      "vim-toggle:Toggle Vim Mode": false,
+      "obsidian42-brat:BRAT": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false
     }
   },
   "active": "cb38b7783614f75e",

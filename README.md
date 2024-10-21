@@ -1,7 +1,7 @@
 ---
 title: README
 created: "2024-07-30 13:30"
-modified: "2024-10-18 17:51"
+modified: "2024-10-21 15:31"
 editor-width: 88
 ---
 
@@ -148,7 +148,6 @@ attachment-pro
 better-export-pdf
 better-fn
 better-markdown-links
-chronology
 cmdr
 code-styler
 custom-sort
@@ -159,7 +158,6 @@ dust-calendar
 easy-typing-obsidian
 editing-toolbar
 editor-width-slider
-enhanced-annotations
 file-tree-alternative
 find-unlinked-files
 float-search
@@ -210,14 +208,12 @@ obsidian-zoom
 obsidian42-brat
 omnisearch
 open-sidebar-on-hover
-privacy-glasses
 quick-explorer
 quickadd
 refresh-preview
 remotely-save
 settings-search
 show-whitespace-cm6
-slash-commander
 solve
 statusbar-organizer
 surfing

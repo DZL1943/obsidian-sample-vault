@@ -129,7 +129,7 @@
         "startupType": "short"
       },
       "ledger-obsidian": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "links": {
         "startupType": "long"
@@ -153,7 +153,7 @@
         "startupType": "short"
       },
       "obsidian-opener": {
-        "startupType": "instant"
+        "startupType": "short"
       },
       "obsidian-outliner": {
         "startupType": "instant"

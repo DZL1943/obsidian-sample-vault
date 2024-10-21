@@ -16,7 +16,7 @@
   "showInlineTitle": false,
   "showRibbon": true,
   "vimMode": false,
-  "showLineNumber": true,
+  "showLineNumber": false,
   "pdfExportSettings": {
     "pageSize": "A4",
     "landscape": false,

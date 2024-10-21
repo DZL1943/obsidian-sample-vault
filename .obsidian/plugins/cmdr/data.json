@@ -16,18 +16,6 @@
       "mode": "any"
     },
     {
-      "id": "privacy-glasses:privacy-glasses-hide-all",
-      "icon": "eye-off",
-      "name": "Privacy Glasses: Privacy Glasses - hide all",
-      "mode": "any"
-    },
-    {
-      "id": "privacy-glasses:privacy-glasses-reveal-all",
-      "icon": "eye",
-      "name": "Privacy Glasses: Privacy Glasses - do not hide anything",
-      "mode": "any"
-    },
-    {
       "id": "templater-obsidian:insert-templater",
       "icon": "templater-icon",
       "name": "Templater: Open insert template modal",
