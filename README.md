@@ -89,9 +89,8 @@ editor-width: 88
 | app:go-back                                                           | Mod+[               |
 | app:go-forward                                                        | Mod+]               |
 | app:toggle-left-sidebar                                               | Ctrl+L              |
-| app:toggle-ribbon                                                     | Mod+Ctrl+B          |
 | app:toggle-right-sidebar                                              | Ctrl+R              |
-| canvas:new-file                                                       | Ctrl+N              |
+| app:toggle-ribbon                                                     | Mod+Ctrl+B          |
 | cycle-in-sidebar:cycle-left-sidebar                                   | Ctrl+[              |
 | cycle-in-sidebar:cycle-left-sidebar-reverse                           | Ctrl+Shift+[        |
 | cycle-in-sidebar:cycle-right-sidebar                                  | Ctrl+]              |
@@ -106,13 +105,14 @@ editor-width: 88
 | editing-toolbar:editor:toggle-italics                                 | Alt+I               |
 | editing-toolbar:editor:toggle-strikethrough                           | Alt+S               |
 | editing-toolbar:underline                                             | Alt+U               |
+| editor:fold-all                                                       | Alt+Z               |
 | editor:swap-line-down                                                 | Alt+ArrowDown       |
 | editor:swap-line-up                                                   | Alt+ArrowUp         |
 | editor:table-col-left                                                 | Mod+Alt+ArrowLeft   |
 | editor:table-col-right                                                | Mod+Alt+ArrowRight  |
 | editor:table-row-down                                                 | Mod+Alt+ArrowDown   |
 | editor:table-row-up                                                   | Mod+Alt+ArrowUp     |
-| editor:toggle-source                                                  | Mod+Alt+E           |
+| editor:toggle-source                                                  | Alt+Mod+E           |
 | float-search:search-obsidian-globally                                 | Mod+Shift+F         |
 | fuzzy-chinese-pinyin:execute-command                                  | Mod+P               |
 | fuzzy-chinese-pinyin:open-search                                      | Mod+O               |
@@ -125,14 +125,13 @@ editor-width: 88
 | obsidian-footnotes:insert-autonumbered-footnote                       | Alt+0               |
 | obsidian-footnotes:insert-named-footnote                              | Alt+-               |
 | obsidian-hover-editor:open-new-popover                                | Ctrl+Alt+H          |
-| obsidian-kanban:toggle-kanban-view                                    | Alt+V               |
+| obsidian-kanban:toggle-kanban-view                                    | Alt+K               |
+| obsidian-markmind:Toggle to markdown or mindmap                       | Alt+M               |
 | omnisearch:show-modal                                                 | Mod+Shift+F         |
 | quickadd:choice:3c55de5c-97b0-429c-9e0c-3335df22fa10                  | Ctrl+C              |
 | quickadd:choice:d03adf12-a165-4b3e-b1e0-4d05983a64dd                  | Mod+R               |
 | quickadd:runQuickAdd                                                  | Alt+Q               |
-| random-note                                                           | Ctrl+T              |
 | refresh-preview:refresh-preview                                       | Mod+R               |
-| templater-obsidian:insert-templater                                   | Alt+E               |
 | vim-toggle:toggle-vim                                                 | Ctrl+V              |
 | workspace:split-horizontal                                            | Ctrl+Alt+ArrowDown  |
 | workspace:split-vertical                                              | Ctrl+Alt+ArrowRight |
