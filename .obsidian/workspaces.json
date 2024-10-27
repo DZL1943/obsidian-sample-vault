@@ -10,15 +10,17 @@
             "type": "tabs",
             "children": [
               {
-                "id": "cb38b7783614f75e",
+                "id": "099a5ef38138632c",
                 "type": "leaf",
                 "state": {
                   "type": "markdown",
                   "state": {
-                    "file": "README.md",
+                    "file": "QuickLinks.md",
                     "mode": "preview",
-                    "source": false
-                  }
+                    "source": true
+                  },
+                  "icon": "lucide-file",
+                  "title": "QuickLinks"
                 }
               }
             ]
@@ -41,15 +43,9 @@
                   "type": "file-explorer",
                   "state": {
                     "sortOrder": "alphabetical"
-                  }
-                }
-              },
-              {
-                "id": "96f71b7f58880ac2",
-                "type": "leaf",
-                "state": {
-                  "type": "file-tree-view",
-                  "state": {}
+                  },
+                  "icon": "lucide-folder-closed",
+                  "title": "文件列表"
                 }
               },
               {
@@ -64,11 +60,23 @@
                     "collapseAll": false,
                     "extraContext": false,
                     "sortOrder": "alphabetical"
-                  }
+                  },
+                  "icon": "lucide-search",
+                  "title": "搜索"
+                }
+              },
+              {
+                "id": "d5dc09a73be6f5e7",
+                "type": "leaf",
+                "state": {
+                  "type": "file-tree-view",
+                  "state": {},
+                  "icon": "sheets-in-box",
+                  "title": "File Tree"
                 }
               }
             ],
-            "currentTab": 1
+            "currentTab": 2
           }
         ],
         "direction": "horizontal",
@@ -89,27 +97,33 @@
                 "type": "leaf",
                 "state": {
                   "type": "bookmarks",
-                  "state": {}
+                  "state": {},
+                  "icon": "lucide-bookmark",
+                  "title": "书签"
                 }
               },
               {
-                "id": "0b7df3ba298930f4",
+                "id": "66853f78792e70e7",
+                "type": "leaf",
+                "state": {
+                  "type": "recent-files",
+                  "state": {},
+                  "icon": "clock",
+                  "title": "Recent Files"
+                }
+              },
+              {
+                "id": "fbe5e13bb3906a3c",
                 "type": "leaf",
                 "state": {
                   "type": "calendar-view",
-                  "state": {}
-                }
-              },
-              {
-                "id": "7e1e7018feeefcd9",
-                "type": "leaf",
-                "state": {
-                  "type": "chronology-calendar-view",
-                  "state": {}
+                  "state": {},
+                  "icon": "lucide-calendar-check",
+                  "title": "日历"
                 }
               }
             ],
-            "currentTab": 1
+            "currentTab": 2
           },
           {
             "id": "48418e7cafcd6cd2",
@@ -122,8 +136,10 @@
                 "state": {
                   "type": "outline",
                   "state": {
-                    "file": "README.md"
-                  }
+                    "file": "QuickLinks.md"
+                  },
+                  "icon": "lucide-list",
+                  "title": "QuickLinks 的大纲"
                 }
               },
               {
@@ -134,7 +150,9 @@
                   "state": {
                     "sortOrder": "frequency",
                     "useHierarchy": true
-                  }
+                  },
+                  "icon": "lucide-tags",
+                  "title": "标签"
                 }
               },
               {
@@ -143,7 +161,7 @@
                 "state": {
                   "type": "backlink",
                   "state": {
-                    "file": "README.md",
+                    "file": "20_Private/2024/202410101746.md",
                     "collapseAll": false,
                     "extraContext": false,
                     "sortOrder": "alphabetical",
@@ -151,7 +169,9 @@
                     "searchQuery": "",
                     "backlinkCollapsed": false,
                     "unlinkedCollapsed": true
-                  }
+                  },
+                  "icon": "links-coming-in",
+                  "title": "202410101746 的反向链接列表"
                 }
               },
               {
@@ -160,14 +180,15 @@
                 "state": {
                   "type": "outgoing-link",
                   "state": {
-                    "file": "README.md",
+                    "file": "20_Private/2024/202410101746.md",
                     "linksCollapsed": false,
                     "unlinkedCollapsed": false
-                  }
+                  },
+                  "icon": "links-going-out",
+                  "title": "202410101746 的出链列表"
                 }
               }
-            ],
-            "currentTab": 2
+            ]
           }
         ],
         "direction": "horizontal",
@@ -186,7 +207,6 @@
           "fuzzy-chinese-pinyin:FuzzySearch": true,
           "daily-notes:打开/创建今天的日记": true,
           "templates:插入模板": true,
-          "chronology:Open Chronology": false,
           "cmdr:打开设置": false,
           "cmdr:打开其他仓库": false,
           "cmdr:更换主题": false,
@@ -200,8 +220,8 @@
           "obsidian-excalidraw-plugin:新建绘图文件": false
         }
       },
-      "active": "cb38b7783614f75e",
-      "mtime": "2024-10-07T09:04:58+08:00"
+      "active": "099a5ef38138632c",
+      "mtime": "2024-10-23T08:46:07+08:00"
     },
     "init": {
       "main": {
@@ -213,15 +233,17 @@
             "type": "tabs",
             "children": [
               {
-                "id": "cb38b7783614f75e",
+                "id": "099a5ef38138632c",
                 "type": "leaf",
                 "state": {
                   "type": "markdown",
                   "state": {
-                    "file": "README.md",
+                    "file": "QuickLinks.md",
                     "mode": "preview",
-                    "source": false
-                  }
+                    "source": true
+                  },
+                  "icon": "lucide-file",
+                  "title": "QuickLinks"
                 }
               }
             ]
@@ -244,15 +266,9 @@
                   "type": "file-explorer",
                   "state": {
                     "sortOrder": "alphabetical"
-                  }
-                }
-              },
-              {
-                "id": "96f71b7f58880ac2",
-                "type": "leaf",
-                "state": {
-                  "type": "file-tree-view",
-                  "state": {}
+                  },
+                  "icon": "lucide-folder-closed",
+                  "title": "文件列表"
                 }
               },
               {
@@ -267,11 +283,23 @@
                     "collapseAll": false,
                     "extraContext": false,
                     "sortOrder": "alphabetical"
-                  }
+                  },
+                  "icon": "lucide-search",
+                  "title": "搜索"
+                }
+              },
+              {
+                "id": "d5dc09a73be6f5e7",
+                "type": "leaf",
+                "state": {
+                  "type": "file-tree-view",
+                  "state": {},
+                  "icon": "sheets-in-box",
+                  "title": "File Tree"
                 }
               }
             ],
-            "currentTab": 1
+            "currentTab": 2
           }
         ],
         "direction": "horizontal",
@@ -292,27 +320,33 @@
                 "type": "leaf",
                 "state": {
                   "type": "bookmarks",
-                  "state": {}
+                  "state": {},
+                  "icon": "lucide-bookmark",
+                  "title": "书签"
                 }
               },
               {
-                "id": "0b7df3ba298930f4",
+                "id": "66853f78792e70e7",
+                "type": "leaf",
+                "state": {
+                  "type": "recent-files",
+                  "state": {},
+                  "icon": "clock",
+                  "title": "Recent Files"
+                }
+              },
+              {
+                "id": "fbe5e13bb3906a3c",
                 "type": "leaf",
                 "state": {
                   "type": "calendar-view",
-                  "state": {}
-                }
-              },
-              {
-                "id": "7e1e7018feeefcd9",
-                "type": "leaf",
-                "state": {
-                  "type": "chronology-calendar-view",
-                  "state": {}
+                  "state": {},
+                  "icon": "lucide-calendar-check",
+                  "title": "日历"
                 }
               }
             ],
-            "currentTab": 1
+            "currentTab": 2
           },
           {
             "id": "48418e7cafcd6cd2",
@@ -325,8 +359,10 @@
                 "state": {
                   "type": "outline",
                   "state": {
-                    "file": "README.md"
-                  }
+                    "file": "QuickLinks.md"
+                  },
+                  "icon": "lucide-list",
+                  "title": "QuickLinks 的大纲"
                 }
               },
               {
@@ -337,7 +373,9 @@
                   "state": {
                     "sortOrder": "frequency",
                     "useHierarchy": true
-                  }
+                  },
+                  "icon": "lucide-tags",
+                  "title": "标签"
                 }
               },
               {
@@ -346,7 +384,7 @@
                 "state": {
                   "type": "backlink",
                   "state": {
-                    "file": "README.md",
+                    "file": "20_Private/2024/202410101746.md",
                     "collapseAll": false,
                     "extraContext": false,
                     "sortOrder": "alphabetical",
@@ -354,7 +392,9 @@
                     "searchQuery": "",
                     "backlinkCollapsed": false,
                     "unlinkedCollapsed": true
-                  }
+                  },
+                  "icon": "links-coming-in",
+                  "title": "202410101746 的反向链接列表"
                 }
               },
               {
@@ -363,14 +403,15 @@
                 "state": {
                   "type": "outgoing-link",
                   "state": {
-                    "file": "README.md",
+                    "file": "20_Private/2024/202410101746.md",
                     "linksCollapsed": false,
                     "unlinkedCollapsed": false
-                  }
+                  },
+                  "icon": "links-going-out",
+                  "title": "202410101746 的出链列表"
                 }
               }
-            ],
-            "currentTab": 2
+            ]
           }
         ],
         "direction": "horizontal",
@@ -389,7 +430,6 @@
           "fuzzy-chinese-pinyin:FuzzySearch": true,
           "daily-notes:打开/创建今天的日记": true,
           "templates:插入模板": true,
-          "chronology:Open Chronology": false,
           "cmdr:打开设置": false,
           "cmdr:打开其他仓库": false,
           "cmdr:更换主题": false,
@@ -403,9 +443,9 @@
           "obsidian-excalidraw-plugin:新建绘图文件": false
         }
       },
-      "active": "cb38b7783614f75e",
-      "mtime": "2024-10-07T09:05:03+08:00"
+      "active": "099a5ef38138632c",
+      "mtime": "2024-10-23T08:46:05+08:00"
     }
   },
-  "active": "init"
+  "active": "bak"
 }

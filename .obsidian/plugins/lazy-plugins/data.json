@@ -129,7 +129,7 @@
         "startupType": "short"
       },
       "ledger-obsidian": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "links": {
         "startupType": "long"
@@ -138,7 +138,7 @@
         "startupType": "short"
       },
       "obsidian-markmind": {
-        "startupType": "short"
+        "startupType": "long"
       },
       "nldates-obsidian": {
         "startupType": "short"
@@ -147,13 +147,13 @@
         "startupType": "disabled"
       },
       "obsidian-columns": {
-        "startupType": "instant"
+        "startupType": "short"
       },
       "omnisearch": {
         "startupType": "short"
       },
       "obsidian-opener": {
-        "startupType": "short"
+        "startupType": "instant"
       },
       "obsidian-outliner": {
         "startupType": "instant"
@@ -270,9 +270,30 @@
         "startupType": "disabled"
       },
       "obsidian-plugin-update-tracker": {
+        "startupType": "long"
+      },
+      "obsidian-excel-to-markdown-table": {
         "startupType": "disabled"
       },
       "markdown-table-editor": {
+        "startupType": "short"
+      },
+      "obsidian-projects": {
+        "startupType": "disabled"
+      },
+      "obsidian-memos": {
+        "startupType": "disabled"
+      },
+      "make-md": {
+        "startupType": "disabled"
+      },
+      "statusbar-organizer": {
+        "startupType": "short"
+      },
+      "recent-files-obsidian": {
+        "startupType": "instant"
+      },
+      "mysnippets-plugin": {
         "startupType": "short"
       },
       "custom-sort": {
@@ -281,31 +302,16 @@
       "obsidian-latex-suite": {
         "startupType": "disabled"
       },
-      "make-md": {
-        "startupType": "disabled"
-      },
       "markwhen": {
-        "startupType": "disabled"
-      },
-      "obsidian-projects": {
-        "startupType": "disabled"
-      },
-      "obsidian-quiet-outline": {
         "startupType": "disabled"
       },
       "remotely-save": {
         "startupType": "disabled"
       },
-      "slash-commander": {
-        "startupType": "disabled"
+      "advanced-canvas": {
+        "startupType": "long"
       },
-      "tag-wrangler": {
-        "startupType": "disabled"
-      },
-      "obsidian-memos": {
-        "startupType": "disabled"
-      },
-      "statusbar-organizer": {
+      "plugins-annotations": {
         "startupType": "short"
       }
     }

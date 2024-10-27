@@ -1,19 +1,20 @@
 [
   "editor-width-slider",
-  "file-tree-alternative",
   "obsidian-footnotes",
   "fuzzy-chinese-pinyin",
   "obsidian-heading-shifter",
+  "obsidian-opener",
   "url-into-selection",
   "refresh-preview",
   "settings-search",
   "obsidian-view-mode-by-frontmatter",
-  "obsidian-relative-line-numbers",
   "obsidian-outliner",
   "obsidian-auto-hide",
-  "obsidian-columns",
   "quick-explorer",
   "lazy-plugins",
+  "obsidian-zoom",
+  "file-tree-alternative",
   "dust-calendar",
-  "obsidian-zoom"
+  "obsidian-relative-line-numbers",
+  "recent-files-obsidian"
 ]

@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "id": "4080ec5215d373e7",
+      "type": "group",
+      "x": -1040,
+      "y": -300,
+      "width": 1020,
+      "height": 580,
+      "label": "Obsidian"
+    },
+    {
+      "id": "93330d1dc3c36832",
+      "type": "link",
+      "url": "http://localhost:8384",
+      "styleAttributes": {},
+      "x": -1020,
+      "y": -760,
+      "width": 480,
+      "height": 400
+    },
+    {
+      "id": "2cc41528face3499",
+      "type": "file",
+      "file": "QuickLinks.md",
+      "x": -520,
+      "y": -760,
+      "width": 480,
+      "height": 400
+    },
+    {
+      "id": "a6e04070a1a34110",
+      "type": "link",
+      "url": "https://obsidian.md/changelog/",
+      "styleAttributes": {},
+      "x": -1020,
+      "y": -280,
+      "width": 580,
+      "height": 540
+    },
+    {
+      "id": "c3fa182914b8b345",
+      "type": "text",
+      "text": "### Obsidian 1.7.4 更新摘要(仅列举大众关心的变化)\n\n- 悬浮预览时可直接点击编辑\n- 增强了显示启动时间功能(在\"关于\"里面)\n- 增强脚注\n- 改进 Obsidian URI\n- 快速切换行号和栏宽\n\n>[!bug] makemd 暂时不可用\n",
+      "styleAttributes": {},
+      "x": -420,
+      "y": -280,
+      "width": 380,
+      "height": 540
+    }
+  ],
+  "edges": [],
+  "metadata": {}
+}

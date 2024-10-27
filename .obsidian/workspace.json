@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "cb38b7783614f75e",
+            "id": "2ee682c9667fb093",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -47,16 +47,6 @@
             }
           },
           {
-            "id": "96f71b7f58880ac2",
-            "type": "leaf",
-            "state": {
-              "type": "file-tree-view",
-              "state": {},
-              "icon": "sheets-in-box",
-              "title": "File Tree"
-            }
-          },
-          {
             "id": "c977d589b7118ed8",
             "type": "leaf",
             "state": {
@@ -72,9 +62,19 @@
               "icon": "lucide-search",
               "title": "搜索"
             }
+          },
+          {
+            "id": "d5dc09a73be6f5e7",
+            "type": "leaf",
+            "state": {
+              "type": "file-tree-view",
+              "state": {},
+              "icon": "sheets-in-box",
+              "title": "File Tree"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -101,7 +101,17 @@
             }
           },
           {
-            "id": "0b7df3ba298930f4",
+            "id": "66853f78792e70e7",
+            "type": "leaf",
+            "state": {
+              "type": "recent-files",
+              "state": {},
+              "icon": "clock",
+              "title": "Recent Files"
+            }
+          },
+          {
+            "id": "fbe5e13bb3906a3c",
             "type": "leaf",
             "state": {
               "type": "calendar-view",
@@ -111,7 +121,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       },
       {
         "id": "48418e7cafcd6cd2",
@@ -149,7 +159,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "20_Private/2024/202410101746.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -159,7 +169,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "README 的反向链接列表"
+              "title": "202410101746 的反向链接列表"
             }
           },
           {
@@ -168,16 +178,15 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "20_Private/2024/202410101746.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": false
               },
               "icon": "links-going-out",
-              "title": "README 的出链列表"
+              "title": "202410101746 的出链列表"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "horizontal",
@@ -200,6 +209,7 @@
       "cmdr:打开其他仓库": false,
       "cmdr:更换主题": false,
       "obsidian-kanban:创建新看板": false,
+      "ledger-obsidian:Add to Ledger": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
       "darlal-switcher-plus:Open in Headings Mode": false,
       "templater-obsidian:Templater": false,
@@ -208,9 +218,8 @@
       "obsidian-excalidraw-plugin:新建绘图文件": false
     }
   },
-  "active": "cb38b7783614f75e",
+  "active": "2ee682c9667fb093",
   "lastOpenFiles": [
-    "Misc/Templates/Journal/yearly-template.md",
-    "README.md"
+    "QuickLinks.md"
   ]
 }

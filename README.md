@@ -1,7 +1,7 @@
 ---
 title: README
 created: "2024-07-30 13:30"
-modified: "2024-10-21 15:31"
+modified: "2024-10-27 20:01"
 editor-width: 88
 ---
 
@@ -141,6 +141,7 @@ editor-width: 88
 ## Plugins
 
 ```md
+advanced-canvas
 any-block
 attachment-flow-plugin
 attachment-management
@@ -150,7 +151,6 @@ better-fn
 better-markdown-links
 cmdr
 code-styler
-custom-sort
 cycle-in-sidebar
 darlal-switcher-plus
 dataview
@@ -173,7 +173,7 @@ ledger-obsidian
 links
 make-md
 markdown-table-editor
-markwhen
+mysnippets-plugin
 nldates-obsidian
 note-refactor-obsidian
 obsidian-advanced-uri
@@ -198,7 +198,6 @@ obsidian-opener
 obsidian-outliner
 obsidian-plugin-proxy
 obsidian-projects
-obsidian-quiet-outline
 obsidian-relative-line-numbers
 obsidian-style-settings
 obsidian-tagfolder
@@ -210,6 +209,7 @@ omnisearch
 open-sidebar-on-hover
 quick-explorer
 quickadd
+recent-files-obsidian
 refresh-preview
 remotely-save
 settings-search
@@ -218,7 +218,6 @@ solve
 statusbar-organizer
 surfing
 table-editor-obsidian
-tag-wrangler
 templater-obsidian
 typewriter-mode
 update-relative-links

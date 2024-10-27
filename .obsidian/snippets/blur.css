@@ -1,0 +1,3 @@
+.markdown-source-view, .markdown-preview-view { 
+  filter: blur(8px);
+}

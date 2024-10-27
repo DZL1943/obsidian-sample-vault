@@ -3,7 +3,7 @@
   "livePreview": true,
   "readableLineLength": true,
   "strictLineBreaks": false,
-  "propertiesInDocument": "source",
+  "propertiesInDocument": "visible",
   "useTab": false,
   "trashOption": "local",
   "promptDelete": false,
@@ -14,7 +14,7 @@
   "showUnsupportedFiles": true,
   "attachmentFolderPath": "Misc/Attachments",
   "showInlineTitle": false,
-  "showRibbon": true,
+  "showRibbon": false,
   "vimMode": false,
   "showLineNumber": false,
   "pdfExportSettings": {

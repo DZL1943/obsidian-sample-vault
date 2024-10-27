@@ -1906,5 +1906,3 @@ var LinkerSettingTab = class extends import_obsidian5.PluginSettingTab {
     }
   }
 };
-
-/* nosourcemap */

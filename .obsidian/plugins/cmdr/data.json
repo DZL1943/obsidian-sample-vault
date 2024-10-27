@@ -58,6 +58,24 @@
       "icon": "lucide-copy",
       "name": "复制当前文件的路径",
       "mode": "any"
+    },
+    {
+      "id": "canvas:new-file",
+      "icon": "lucide-layout-dashboard",
+      "name": "白板: 新建白板",
+      "mode": "any"
+    },
+    {
+      "id": "app:go-forward",
+      "icon": "lucide-arrow-right",
+      "name": "前进",
+      "mode": "any"
+    },
+    {
+      "id": "app:go-back",
+      "icon": "lucide-arrow-left",
+      "name": "返回",
+      "mode": "any"
     }
   ],
   "leftRibbon": [

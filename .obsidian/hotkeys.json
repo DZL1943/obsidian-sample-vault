@@ -191,14 +191,6 @@
       "key": "Q"
     }
   ],
-  "obsidian-kanban:toggle-kanban-view": [
-    {
-      "modifiers": [
-        "Alt"
-      ],
-      "key": "V"
-    }
-  ],
   "cycle-through-panes:cycle-through-panes": [
     {
       "modifiers": [
@@ -284,15 +276,7 @@
       "key": "-"
     }
   ],
-  "make-md:mk-blink": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "O"
-    }
-  ],
+  "make-md:mk-blink": [],
   "obsidian-hover-editor:open-new-popover": [
     {
       "modifiers": [
@@ -428,6 +412,30 @@
         "Ctrl"
       ],
       "key": "T"
+    }
+  ],
+  "editor:fold-all": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "Z"
+    }
+  ],
+  "obsidian-kanban:toggle-kanban-view": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "K"
+    }
+  ],
+  "obsidian-markmind:Toggle to markdown or mindmap": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "M"
     }
   ]
 }

@@ -2653,8 +2653,7 @@ var VaultImp = class {
         return null;
       }
       const backlinksLinkData = {};
-      for (const sourceFile in backlinks) {
-        const linkCaches = backlinks[sourceFile];
+      for (const [sourceFile, linkCaches] of backlinks) {
         const linkDataArray = new Array();
         for (const linkCache of linkCaches) {
           const linkData = LinkData.parse(linkCache.original);
@@ -5437,3 +5436,5 @@ map-cache/index.js:
    * Licensed under the MIT License.
    *)
 */
+
+/* nosourcemap */

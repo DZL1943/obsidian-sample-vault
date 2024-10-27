@@ -16,7 +16,7 @@
   "inlineStylerColors": false,
   "editorFlow": true,
   "internalLinkClickFlow": false,
-  "internalLinkSticker": true,
+  "internalLinkSticker": false,
   "contextEnabled": true,
   "spaceViewEnabled": true,
   "saveAllContextToFrontmatter": true,

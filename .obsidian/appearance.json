@@ -17,8 +17,8 @@
     "S - Images Adjustments",
     "checklist",
     "statusbar",
-    "ribbon"
+    "ribbon",
+    "list"
   ],
-  "showViewHeader": false,
-  "cssTheme": ""
+  "showViewHeader": false
 }
