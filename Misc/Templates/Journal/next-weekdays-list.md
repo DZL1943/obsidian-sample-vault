@@ -1,0 +1,7 @@
+- 周一  (date:: <%tp.date.weekday("YYYY-MM-DD", 0, tp.date.weekday("YYYY-MM-DD", 7))%>)  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )  
+- 周二  (date:: <%tp.date.weekday("YYYY-MM-DD", 1, tp.date.weekday("YYYY-MM-DD", 7))%>)  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )  
+- 周三  (date:: <%tp.date.weekday("YYYY-MM-DD", 2, tp.date.weekday("YYYY-MM-DD", 7))%>)  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )  
+- 周四  (date:: <%tp.date.weekday("YYYY-MM-DD", 3, tp.date.weekday("YYYY-MM-DD", 7))%>)  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )  
+- 周五  (date:: <%tp.date.weekday("YYYY-MM-DD", 4, tp.date.weekday("YYYY-MM-DD", 7))%>)  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )  
+- 周六  (date:: <%tp.date.weekday("YYYY-MM-DD", 5, tp.date.weekday("YYYY-MM-DD", 7))%>)  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )  
+- 周日  (date:: <%tp.date.weekday("YYYY-MM-DD", 6, tp.date.weekday("YYYY-MM-DD", 7))%>)  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )  
