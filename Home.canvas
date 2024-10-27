@@ -3,6 +3,7 @@
     {
       "id": "4080ec5215d373e7",
       "type": "group",
+      "styleAttributes": {},
       "x": -1040,
       "y": -300,
       "width": 1020,
@@ -23,6 +24,7 @@
       "id": "2cc41528face3499",
       "type": "file",
       "file": "QuickLinks.md",
+      "styleAttributes": {},
       "x": -520,
       "y": -760,
       "width": 480,

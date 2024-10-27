@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "QuickLinks.md",
+                "file": "README.md",
                 "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "QuickLinks"
+              "title": "README"
             }
           }
         ]
@@ -134,10 +134,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "QuickLinks.md"
+                "file": "README.md"
               },
               "icon": "lucide-list",
-              "title": "QuickLinks 的大纲"
+              "title": "README 的大纲"
             }
           },
           {
@@ -220,7 +220,8 @@
   },
   "active": "2ee682c9667fb093",
   "lastOpenFiles": [
-    "README.md",
-    "QuickLinks.md"
+    "QuickLinks.md",
+    "Home.canvas",
+    "README.md"
   ]
 }
