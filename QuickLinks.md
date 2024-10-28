@@ -1,34 +1,11 @@
 ---
 title: QuickLinks
-created: "2024-10-18 17:28"
-modified: "2024-10-18 17:43"
+created: 2024-10-18 17:28
+modified: 2024-10-18 17:43
+editor-width: 80
 ---
 
 # QuickLinks
-
-## ContributionGraph
-
-```contributionGraph
-title: Contributions
-graphType: default
-dateRangeValue: 90
-dateRangeType: LATEST_DAYS
-startOfWeek: 1
-showCellRuleIndicators: true
-titleStyle:
-  textAlign: center
-  fontSize: 15px
-  fontWeight: normal
-dataSource:
-  type: PAGE
-  value: ""
-  dateField: {}
-fillTheScreen: true
-enableMainContainerShadow: false
-mainContainerStyle:
-  boxShadow: rgba(0, 0, 0, 0.16) 0px 1px 4px
-cellStyleRules: []
-```
 
 ## Root files
 
@@ -41,21 +18,23 @@ WHERE !file.folder and !econtains(["sortspec", "Vault", "broken links output"], 
 
 ```dataview
 list
-file.path
+rows.file.link
 where file.starred
-sort file.path
+group by file.folder
 ```
 
 ## Recents
 
 ```dataview
-TABLE rows.file.link as file, rows.title as title, rows.file.path as path
-WHERE date(today) - file.mtime <= dur(3 days)
+TABLE rows.new_title as name
+WHERE date(today) - file.mtime <= dur(7 days)
 WHERE file.name != this.file.name and !startswith(file.path, "Misc/")
 SORT file.mtime DESC
-LIMIT 30
+LIMIT 50
+flatten choice(title=file.name, file.link, file.link+" "+title) as new_title
 group by file.mday as date
 sort date desc
+limit 3
 ```
 
 ## All
