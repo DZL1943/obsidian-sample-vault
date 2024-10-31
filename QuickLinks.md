@@ -9,9 +9,10 @@ editor-width: 80
 
 ## Root files
 
-```dataview
-LIST
-WHERE !file.folder and !econtains(["sortspec", "Vault", "broken links output"], file.name)
+```dataviewjs
+var files = app.vault.getFiles().filter(f => f.parent.path == "/" && !["sortspec", "Vault", "broken links output"].some(s => f.name.includes(s)));
+
+dv.list(files.map(f => dv.fileLink(f.path)));
 ```
 
 ## Starred
@@ -28,7 +29,7 @@ group by file.folder
 ```dataview
 TABLE rows.new_title as name
 WHERE date(today) - file.mtime <= dur(7 days)
-WHERE file.name != this.file.name and !startswith(file.path, "Misc/")
+WHERE !econtains(["sortspec", "broken links output"], file.name) and !startswith(file.path, "Misc/")
 SORT file.mtime DESC
 LIMIT 50
 flatten choice(title=file.name, file.link, file.link+" "+title) as new_title
