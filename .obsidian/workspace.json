@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "QuickLinks.md",
                 "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "QuickLinks"
             }
           }
         ]
@@ -220,8 +220,8 @@
   },
   "active": "2ee682c9667fb093",
   "lastOpenFiles": [
-    "QuickLinks.md",
     "README.md",
+    "QuickLinks.md",
     "Home.canvas"
   ]
 }
