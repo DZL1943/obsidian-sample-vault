@@ -277,6 +277,7 @@ var RegExPatterns = class {
 RegExPatterns.Email = /([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)/;
 //static readonly AbsoluteUri = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/;
 RegExPatterns.AbsoluteUri = /^[a-z][a-z+-\.]+:\/\/.+/;
+RegExPatterns.RelativePath = /^(?![A-Z]:\\)(?!\.{1,2}(\/|\\))(?!\/\w)([.\w\-\/\\]+)$/;
 RegExPatterns.Wikilink = /(!?)\[\[([^\[\]|]*)(\|([^\[\]]*))?\]\]/;
 // static readonly Markdownlink = /(!?)\[([^\]\[]*)\]\(([^)(]*)\)/;
 //TODO: revise
@@ -2683,6 +2684,12 @@ var VaultImp = class {
   getConfig(setting) {
     return this.app.vault.getConfig(setting);
   }
+  getFiles() {
+    return this.app.vault.getFiles();
+  }
+  getMarkdownFiles() {
+    return this.app.vault.getMarkdownFiles();
+  }
 };
 
 // commands/ObsidianProxy.ts
@@ -3249,12 +3256,22 @@ var DeleteLinkCommand = class extends CommandBase {
         if (hashIdx == 0) {
           return;
         }
-        const filePath = hashIdx > 0 ? destination.substring(0, hashIdx) : destination;
+        let filePath = hashIdx > 0 ? destination.substring(0, hashIdx) : destination;
         let file = this.obsidianProxy.Vault.getAbstractFileByPath(filePath);
         if (!file) {
           const path = (0, import_parse_filepath2.default)(filePath);
-          if (path.ext === "") {
-            file = this.obsidianProxy.Vault.getAbstractFileByPath(filePath + ".md");
+          let pathExt = path.ext;
+          if (pathExt === "") {
+            pathExt = ".md";
+            filePath += pathExt;
+            file = this.obsidianProxy.Vault.getAbstractFileByPath(filePath);
+          }
+          if (!file) {
+            const vaultFiles = pathExt === ".md" ? this.obsidianProxy.Vault.getMarkdownFiles() : this.obsidianProxy.Vault.getFiles();
+            const targetFile = vaultFiles.find((x) => x.path.endsWith(filePath));
+            if (targetFile) {
+              file = targetFile;
+            }
           }
         }
         if (!file) {

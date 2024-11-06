@@ -241,12 +241,15 @@ var import_state3 = require("@codemirror/state");
 var import_obsidian = require("obsidian");
 
 // src/utils.ts
-var DEBUG = true;
+var DEBUG = false;
 var print = (message, ...optionalParams) => {
   if (DEBUG) {
     console.log(message, ...optionalParams);
   }
 };
+function setDebug(value) {
+  DEBUG = value;
+}
 function offsetToPos(doc, offset) {
   let line = doc.lineAt(offset);
   return { line: line.number - 1, ch: offset - line.from };
@@ -2386,6 +2389,7 @@ var EasyTypingSettingTab = class extends import_obsidian2.PluginSettingTab {
     new import_obsidian2.Setting(containerEl).setName(locale5.settings.printDebugInfo.name).setDesc(locale5.settings.printDebugInfo.desc).addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.debug).onChange(async (value) => {
         this.plugin.settings.debug = value;
+        setDebug(value);
         await this.plugin.saveSettings();
       });
     });
@@ -2669,15 +2673,37 @@ function getCodeBlockInfoInPos(state, pos) {
   }
   return null;
 }
-function selectCodeBlockInPos(view, pos) {
+function selectCodeBlockInPos(view, selection) {
+  let pos = selection.anchor;
   let codeBlockInfos = getCodeBlocksInfos(view.state);
   for (let i = 0; i < codeBlockInfos.length; i++) {
     if (pos >= codeBlockInfos[i].start_pos && pos <= codeBlockInfos[i].end_pos) {
-      if (codeBlockInfos[i].code_start_pos == codeBlockInfos[i].code_end_pos)
+      if (codeBlockInfos[i].code_start_pos == codeBlockInfos[i].code_end_pos) {
+        view.dispatch({
+          selection: {
+            anchor: codeBlockInfos[i].start_pos,
+            head: codeBlockInfos[i].end_pos
+          }
+        });
+        return true;
+      }
+      let code_line_start = view.state.doc.lineAt(codeBlockInfos[i].code_start_pos);
+      let isCodeSelected = selection.anchor == code_line_start.from && selection.head == codeBlockInfos[i].code_end_pos;
+      let isCodeBlockSelected = selection.anchor == codeBlockInfos[i].start_pos && selection.head == codeBlockInfos[i].end_pos;
+      if (isCodeSelected) {
+        view.dispatch({
+          selection: {
+            anchor: codeBlockInfos[i].start_pos,
+            head: codeBlockInfos[i].end_pos
+          }
+        });
+        return true;
+      }
+      if (isCodeBlockSelected)
         return false;
       view.dispatch({
         selection: {
-          anchor: codeBlockInfos[i].code_start_pos,
+          anchor: code_line_start.from,
           head: codeBlockInfos[i].code_end_pos
         }
       });
@@ -3007,7 +3033,6 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
                 return base_indent + trimmed_line;
               }
             });
-            console.log("default indent: ", this.getDefaultIndentChar().length);
             let new_insertedStr = adjusted_lines.join("\n");
             changes.push({
               changes: { from: fromA, to: toA, insert: new_insertedStr },
@@ -3026,7 +3051,6 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
           return tr;
         }
         let codeblockinfo = getCodeBlockInfoInPos(tr.startState, toA);
-        print(codeblockinfo, toA);
         if (this.settings.BetterCodeEdit && changeTypeStr == "delete.backward" && !selected && codeblockinfo && toA > tr.startState.doc.lineAt(codeblockinfo.start_pos).to) {
           let line_number = tr.startState.doc.lineAt(toA).number;
           let cur_line = tr.startState.doc.lineAt(toA);
@@ -3456,11 +3480,7 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
       return false;
     };
     this.handleEnter = (view) => {
-      if (!this.settings.EnterTwice)
-        return false;
-      let strictLineBreaks = this.app.vault.config.strictLineBreaks || false;
-      if (!strictLineBreaks)
-        return false;
+      var _a;
       let state = view.state;
       let doc = state.doc;
       const tree = (0, import_language3.syntaxTree)(state);
@@ -3469,13 +3489,27 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
         return false;
       const pos = s.main.to;
       let line = doc.lineAt(pos);
+      let codeBlockInfo = getCodeBlockInfoInPos(state, pos);
+      if (this.settings.BetterCodeEdit && codeBlockInfo && codeBlockInfo.code_start_pos !== doc.lineAt(codeBlockInfo.start_pos).to && pos >= codeBlockInfo.code_start_pos && pos <= codeBlockInfo.code_end_pos) {
+        let line_indent_str = ((_a = line.text.match(/^\s*/)) == null ? void 0 : _a[0]) || "";
+        view.dispatch({
+          changes: { from: pos, to: pos, insert: "\n" + line_indent_str },
+          selection: { anchor: pos + line_indent_str.length + 1, head: pos + line_indent_str.length + 1 },
+          userEvent: "EasyTyping.handleEnter"
+        });
+        return true;
+      }
+      if (!this.settings.EnterTwice)
+        return false;
+      let strictLineBreaks = this.app.vault.config.strictLineBreaks || false;
+      if (!strictLineBreaks)
+        return false;
       if (/^\s*$/.test(line.text))
         return false;
       if (pos == line.from)
         return false;
       if (line.number < doc.lines && !/^\s*$/.test(doc.line(line.number + 1).text))
         return false;
-      let codeBlockInfo = getCodeBlockInfoInPos(state, pos);
       if (getPosLineType2(state, pos) == "text" /* text */ || codeBlockInfo && pos == codeBlockInfo.end_pos) {
         view.dispatch({
           changes: {
@@ -3495,12 +3529,7 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
         return false;
       let selected = false;
       let mainSelection = view.state.selection.asSingle().main;
-      if (mainSelection.anchor != mainSelection.head)
-        selected = true;
-      if (selected)
-        return false;
-      let cursor_pos = mainSelection.anchor;
-      return selectCodeBlockInPos(view, cursor_pos);
+      return selectCodeBlockInPos(view, mainSelection);
     };
     this.onKeyup = (event, view) => {
       if (this.settings.debug) {
@@ -3881,6 +3910,7 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
     this.compose_need_handle = false;
     this.Formater = new LineFormater();
     this.onFormatArticle = false;
+    setDebug(this.settings.debug);
     this.registerEditorExtension([
       import_state3.EditorState.transactionFilter.of(this.transactionFilterPlugin),
       import_view3.EditorView.updateListener.of(this.viewUpdatePlugin),
@@ -3907,7 +3937,6 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
       {
         key: "Mod-a",
         run: (view) => {
-          console.log("handle mod a in code block");
           const success = this.handleModAInCodeBlock(view);
           return success;
         }
@@ -3918,6 +3947,13 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
           if (!this.settings.BetterBackspace)
             return false;
           return this.handleBackspace(view);
+        }
+      },
+      {
+        key: "Shift-Enter",
+        run: (view) => {
+          const success = this.handleShiftEnter(view);
+          return success;
         }
       }
     ])));
@@ -4171,20 +4207,47 @@ var EasyTypingPlugin = class extends import_obsidian3.Plugin {
     };
     return commentSymbols[language] || null;
   }
+  handleShiftEnter(view) {
+    const state = view.state;
+    const doc = state.doc;
+    const selection = state.selection.main;
+    if (selection.anchor != selection.head)
+      return false;
+    const line = doc.lineAt(selection.head);
+    const lineContent = line.text;
+    const taskListMatch = lineContent.match(/^(\s*)([-*+] \[.\])\s/);
+    if (taskListMatch) {
+      const [, indent, listMarker] = taskListMatch;
+      let inserted = "\n" + indent + "  ";
+      view.dispatch({
+        changes: [{ from: selection.anchor, insert: inserted }],
+        selection: { anchor: selection.anchor + inserted.length, head: selection.anchor + inserted.length },
+        userEvent: "EasyTyping.handleShiftEnter"
+      });
+      return true;
+    }
+    return false;
+  }
   goNewLineAfterCurLine(view) {
     const state = view.state;
     const doc = state.doc;
     const selection = state.selection.main;
     const line = doc.lineAt(selection.head);
     const lineContent = line.text;
-    const listMatch = lineContent.match(/^(\s*)([-*+]|\d+\.)\s/);
+    const listMatch = lineContent.match(/^(\s*)([-*+] \[.\]|[-*+]|\d+\.)\s/);
     const quoteMatch = lineContent.match(/^(\s*>)+(\s)?/);
     let changes;
     let newCursorPos;
     let prefix = "";
     if (listMatch) {
       const [, indent, listMarker] = listMatch;
-      prefix = indent + (listMarker === "-" || listMarker === "*" || listMarker === "+" ? listMarker : parseInt(listMarker) + 1 + ".") + " ";
+      if (["-", "*", "+"].includes(listMarker)) {
+        prefix = indent + listMarker + " ";
+      } else if (listMarker.match(/[-*+] \[.\]/)) {
+        prefix = indent + listMarker.replace(/\[.\]/g, "[ ]") + " ";
+      } else {
+        prefix = indent + (parseInt(listMarker) + 1) + ". ";
+      }
     } else if (quoteMatch) {
       prefix = quoteMatch[0].replace(/>\s*/g, "> ");
     }
