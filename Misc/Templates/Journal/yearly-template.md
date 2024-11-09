@@ -10,7 +10,7 @@ editor-width: 80
 
 ```dataview
 table without id
-dateformat(L.date, "MM/dd ccc") as date, L.weather as weather, L.mood as mood, L.habits as habits, L.summary as summary, L.children.text as extras
+dateformat(L.date, "MM/dd ccc") as date, L.weather as weather, L.mood as mood, L.habits as habits, L.summary+"<br>"+join(L.children.text,"<br>") as summary
 where file.path = this.file.path
 flatten file.lists as L
 where L.summary or L.habits
