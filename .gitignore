@@ -6,6 +6,9 @@
 !*.png
 !*.jpg
 
+!.obsidian*/*
+
+.DS_Store
 *.sync-conflict-*
 未命名*
 [uU]ntitled*
