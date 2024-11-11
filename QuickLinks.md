@@ -46,6 +46,6 @@ from "" and -"Misc" and -"Ext"
 where !econtains(["sortspec", "broken links output"], file.name)
 sort file.name, created desc, modified desc
 flatten choice(title and title!=file.name, file.link+" "+title, file.link) as new_title
-group by file.folder
+group by file.folder as folder
 sort file.folder
 ```

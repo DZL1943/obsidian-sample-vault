@@ -280,7 +280,7 @@ var require_Error = __commonJS({
       const title = `${error.name}: ${error.message}`;
       entries.push({ level, message: title, shouldClearAnsiSequence: true });
       if (error.stack) {
-        const restStack = error.stack.startsWith(title) ? error.stack.substring(title.length + 1) : error.stack;
+        const restStack = error.stack.startsWith(title) ? error.stack.slice(title.length + 1) : error.stack;
         entries.push({ level, message: `Error stack:
 ${restStack}` });
       }
@@ -337,6 +337,7 @@ var require_Async = __commonJS({
       convertAsyncToSync: () => convertAsyncToSync,
       convertSyncToAsync: () => convertSyncToAsync,
       invokeAsyncSafely: () => invokeAsyncSafely,
+      marksAsTerminateRetry: () => marksAsTerminateRetry,
       retryWithTimeout: () => retryWithTimeout,
       runWithTimeout: () => runWithTimeout,
       sleep: () => sleep,
@@ -348,8 +349,9 @@ var require_Async = __commonJS({
     async function retryWithTimeout(fn, retryOptions = {}) {
       const stackTrace = (0, import_Error2.getStackTrace)();
       const DEFAULT_RETRY_OPTIONS = {
-        timeoutInMilliseconds: 5e3,
-        retryDelayInMilliseconds: 100
+        retryDelayInMilliseconds: 100,
+        shouldRetryOnError: true,
+        timeoutInMilliseconds: 5e3
       };
       const overriddenOptions = { ...DEFAULT_RETRY_OPTIONS, ...retryOptions };
       await runWithTimeout(overriddenOptions.timeoutInMilliseconds, async () => {
@@ -360,6 +362,9 @@ var require_Async = __commonJS({
           try {
             isSuccess = await fn();
           } catch (error) {
+            if (!overriddenOptions.shouldRetryOnError || error.__terminateRetry) {
+              throw error;
+            }
             (0, import_Error2.printError)(error);
             isSuccess = false;
           }
@@ -421,6 +426,9 @@ var require_Async = __commonJS({
         arr.push(item);
       }
       return arr;
+    }
+    function marksAsTerminateRetry(error) {
+      return Object.assign(error, { __terminateRetry: true });
     }
   }
 });
@@ -528,25 +536,25 @@ var require_Logger = __commonJS({
         stackTrace = (0, import_Error2.getStackTrace)().split("\n").slice(1).join("\n");
       }
       console.debug(`${title}:start`, {
-        timestampStart,
         fn,
-        stackTrace
+        stackTrace,
+        timestampStart
       });
       try {
         await fn();
         const timestampEnd = Date.now();
         console.debug(`${title}:end`, {
-          timestampStart,
+          duration: timestampEnd - timestampStart,
           timestampEnd,
-          duration: timestampEnd - timestampStart
+          timestampStart
         });
       } catch (error) {
         const timestampEnd = Date.now();
         console.debug(`${title}:error`, {
-          timestampStart,
-          timestampEnd: Date.now(),
           duration: timestampEnd - timestampStart,
-          error
+          error,
+          timestampEnd: Date.now(),
+          timestampStart
         });
         throw error;
       }
@@ -746,18 +754,6 @@ var require_implementations = __commonJS({
       file.deleted = true;
       return file;
     }
-    function isReferenceCache(reference) {
-      return !!reference.position;
-    }
-    function isEmbedCache(reference) {
-      return isReferenceCache(reference) && reference.original[0] === "!";
-    }
-    function isFrontmatterLinkCache(reference) {
-      return !!reference.key;
-    }
-    function isLinkCache(reference) {
-      return isReferenceCache(reference) && reference.original[0] !== "!";
-    }
     function constructInternalPlugins(app) {
       return new app.internalPlugins.constructor(app);
     }
@@ -771,6 +767,18 @@ var require_implementations = __commonJS({
     var import_obsidian32 = require("obsidian");
     function constructApp(adapter, appId) {
       return new import_obsidian32.App(adapter, appId);
+    }
+    function isReferenceCache(reference) {
+      return !!reference.position;
+    }
+    function isEmbedCache(reference) {
+      return isReferenceCache(reference) && reference.original[0] === "!";
+    }
+    function isFrontmatterLinkCache(reference) {
+      return !!reference.key;
+    }
+    function isLinkCache(reference) {
+      return isReferenceCache(reference) && reference.original[0] !== "!";
     }
   }
 });
@@ -1301,6 +1309,7 @@ var require_String = __commonJS({
       ensureEndsWith: () => ensureEndsWith,
       ensureStartsWith: () => ensureStartsWith,
       escape: () => escape,
+      insertAt: () => insertAt,
       makeValidVariableName: () => makeValidVariableName,
       normalize: () => normalize,
       replace: () => replace,
@@ -1314,14 +1323,14 @@ var require_String = __commonJS({
     var import_RegExp = require_RegExp();
     var import_ValueProvider = require_ValueProvider();
     var ESCAPE_MAP = {
-      "\\": "\\\\",
-      '"': '\\"',
-      "'": "\\'",
       "\n": "\\n",
       "\r": "\\r",
       "	": "\\t",
       "\b": "\\b",
-      "\f": "\\f"
+      "\f": "\\f",
+      "'": "\\'",
+      '"': '\\"',
+      "\\": "\\\\"
     };
     var UNESCAPE_MAP = {};
     for (const [key, value] of Object.entries(ESCAPE_MAP)) {
@@ -1375,6 +1384,10 @@ var require_String = __commonJS({
     function replace(str, replacementsMap) {
       const regExp = new RegExp(Object.keys(replacementsMap).map((source) => (0, import_RegExp.escapeRegExp)(source)).join("|"), "g");
       return str.replaceAll(regExp, (source) => replacementsMap[source] ?? (0, import_Error2.throwExpression)(new Error(`Unexpected replacement source: ${source}`)));
+    }
+    function insertAt(str, substring, startIndex, endIndex) {
+      endIndex ??= startIndex;
+      return str.slice(0, startIndex) + substring + str.slice(endIndex);
     }
   }
 });
@@ -1697,6 +1710,8 @@ var require_Object = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var Object_exports = {};
     __export2(Object_exports, {
+      assignWithNonEnumerableProperties: () => assignWithNonEnumerableProperties,
+      cloneWithNonEnumerableProperties: () => cloneWithNonEnumerableProperties,
       deepEqual: () => deepEqual,
       getNestedPropertyValue: () => getNestedPropertyValue,
       getPrototypeOf: () => getPrototypeOf,
@@ -1736,6 +1751,9 @@ var require_Object = __commonJS({
       return name;
     }
     function getPrototypeOf(instance) {
+      if (instance === void 0 || instance === null) {
+        return instance;
+      }
       return Object.getPrototypeOf(instance);
     }
     function toJson(value, options = {}) {
@@ -1786,6 +1804,23 @@ var require_Object = __commonJS({
       }
       node[lastKey] = value;
     }
+    function cloneWithNonEnumerableProperties(obj) {
+      return Object.create(getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+    }
+    function assignWithNonEnumerableProperties(target, ...sources) {
+      return _assignWithNonEnumerableProperties(target, ...sources);
+    }
+    function _assignWithNonEnumerableProperties(target, ...sources) {
+      for (const source of sources) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      }
+      const sourcePrototypes = sources.map((source) => getPrototypeOf(source)).filter((proto) => !!proto);
+      if (sourcePrototypes.length > 0) {
+        const targetPrototype = _assignWithNonEnumerableProperties({}, getPrototypeOf(target), ...sourcePrototypes);
+        Object.setPrototypeOf(target, targetPrototype);
+      }
+      return target;
+    }
   }
 });
 
@@ -1823,6 +1858,7 @@ var require_FrontMatter = __commonJS({
     });
     module2.exports = __toCommonJS2(FrontMatter_exports);
     var import_obsidian5 = require("obsidian");
+    var import_String = require_String();
     var __process = globalThis["process"] ?? {
       "cwd": () => "/",
       "env": {},
@@ -1838,7 +1874,7 @@ var require_FrontMatter = __commonJS({
         return content.slice(frontMatterInfo.contentStart);
       }
       const newFrontMatterStr = (0, import_obsidian5.stringifyYaml)(newFrontMatter);
-      return frontMatterInfo.exists ? content.slice(0, frontMatterInfo.from) + newFrontMatterStr + content.slice(frontMatterInfo.to) : "---\n" + newFrontMatterStr + "---\n" + content;
+      return frontMatterInfo.exists ? (0, import_String.insertAt)(content, newFrontMatterStr, frontMatterInfo.from, frontMatterInfo.to) : "---\n" + newFrontMatterStr + "---\n" + content;
     }
   }
 });
@@ -1943,16 +1979,16 @@ var require_Reference = __commonJS({
     function referenceToFileChange(reference, newContent) {
       if ((0, import_implementations.isReferenceCache)(reference)) {
         return {
-          startIndex: reference.position.start.offset,
           endIndex: reference.position.end.offset,
+          newContent,
           oldContent: reference.original,
-          newContent
+          startIndex: reference.position.start.offset
         };
       } else if ((0, import_implementations.isFrontmatterLinkCache)(reference)) {
         return {
-          oldContent: reference.original,
+          frontMatterKey: reference.key,
           newContent,
-          frontMatterKey: reference.key
+          oldContent: reference.original
         };
       }
       throw new Error("Unknown link type");
@@ -2274,6 +2310,9 @@ var require_Vault = __commonJS({
       const DEFAULT_RETRY_OPTIONS = { timeoutInMilliseconds: 6e4 };
       const overriddenOptions = { ...DEFAULT_RETRY_OPTIONS, ...retryOptions };
       await (0, import_Async.retryWithTimeout)(async () => {
+        if (file.deleted) {
+          throw (0, import_Async.marksAsTerminateRetry)(new Error(`File ${file.path} is deleted`));
+        }
         const oldContent = await app.vault.read(file);
         const newContent = await (0, import_ValueProvider.resolveValue)(newContentProvider, oldContent);
         if (newContent === null) {
@@ -2283,9 +2322,9 @@ var require_Vault = __commonJS({
         await app.vault.process(file, (content) => {
           if (content !== oldContent) {
             console.warn("Content has changed since it was read. Retrying...", {
-              path: file.path,
+              actualContent: content,
               expectedContent: oldContent,
-              actualContent: content
+              path: file.path
             });
             success = false;
             return content;
@@ -2536,11 +2575,11 @@ var require_FileChange = __commonJS({
             const actualContent = content.slice(change.startIndex, change.endIndex);
             if (actualContent !== change.oldContent) {
               console.warn("Content mismatch", {
-                startIndex: change.startIndex,
+                actualContent,
                 endIndex: change.endIndex,
-                path: (0, import_FileSystem3.getPath)(pathOrFile),
                 expectedContent: change.oldContent,
-                actualContent
+                path: (0, import_FileSystem3.getPath)(pathOrFile),
+                startIndex: change.startIndex
               });
               return null;
             }
@@ -2548,10 +2587,10 @@ var require_FileChange = __commonJS({
             const actualContent = (0, import_Object.getNestedPropertyValue)(frontMatter, change.frontMatterKey);
             if (actualContent !== change.oldContent) {
               console.warn("Content mismatch", {
-                path: (0, import_FileSystem3.getPath)(pathOrFile),
-                expectedContent: change.oldContent,
                 actualContent,
-                frontMatterKey: change.frontMatterKey
+                expectedContent: change.oldContent,
+                frontMatterKey: change.frontMatterKey,
+                path: (0, import_FileSystem3.getPath)(pathOrFile)
               });
               return null;
             }
@@ -2586,8 +2625,8 @@ var require_FileChange = __commonJS({
           }
           if (isContentChange(previousChange) && isContentChange(change) && previousChange.endIndex && change.startIndex && previousChange.endIndex > change.startIndex) {
             console.warn("Overlapping changes", {
-              previousChange,
-              change
+              change,
+              previousChange
             });
             return null;
           }
@@ -2720,11 +2759,11 @@ var require_Link = __commonJS({
     async function updateLinksInFile2(options) {
       const {
         app,
-        pathOrFile,
-        oldPathOrFile,
-        renameMap,
-        forceMarkdownLinks,
         embedOnlyLinks,
+        forceMarkdownLinks,
+        oldPathOrFile,
+        pathOrFile,
+        renameMap,
         shouldUpdateFilenameAlias
       } = options;
       await editLinks(app, pathOrFile, (link) => {
@@ -2734,25 +2773,25 @@ var require_Link = __commonJS({
         }
         return convertLink2({
           app,
+          forceMarkdownLinks,
           link,
-          sourcePathOrFile: pathOrFile,
           oldPathOrFile,
           renameMap,
-          forceMarkdownLinks,
-          shouldUpdateFilenameAlias
+          shouldUpdateFilenameAlias,
+          sourcePathOrFile: pathOrFile
         });
       });
     }
     function convertLink2(options) {
       return updateLink({
         app: options.app,
-        link: options.link,
-        pathOrFile: extractLinkFile(options.app, options.link, options.sourcePathOrFile),
-        oldPathOrFile: options.oldPathOrFile,
-        sourcePathOrFile: options.sourcePathOrFile,
-        renameMap: options.renameMap,
         forceMarkdownLinks: options.forceMarkdownLinks,
-        shouldUpdateFilenameAlias: options.shouldUpdateFilenameAlias
+        link: options.link,
+        oldPathOrFile: options.oldPathOrFile,
+        pathOrFile: extractLinkFile(options.app, options.link, options.sourcePathOrFile),
+        renameMap: options.renameMap,
+        shouldUpdateFilenameAlias: options.shouldUpdateFilenameAlias,
+        sourcePathOrFile: options.sourcePathOrFile
       });
     }
     function extractLinkFile(app, link, notePathOrFile) {
@@ -2762,13 +2801,13 @@ var require_Link = __commonJS({
     function updateLink(options) {
       const {
         app,
-        link,
-        pathOrFile,
-        oldPathOrFile,
-        sourcePathOrFile,
-        renameMap,
         forceMarkdownLinks,
-        shouldUpdateFilenameAlias
+        link,
+        oldPathOrFile,
+        pathOrFile,
+        renameMap,
+        shouldUpdateFilenameAlias,
+        sourcePathOrFile
       } = options;
       if (!pathOrFile) {
         return link.original;
@@ -2781,10 +2820,10 @@ var require_Link = __commonJS({
       let alias = shouldResetAlias({
         app,
         displayText: link.displayText,
-        pathOrFile,
+        isWikilink,
         otherPathOrFiles: [oldPath, newPath],
-        sourcePathOrFile,
-        isWikilink
+        pathOrFile,
+        sourcePathOrFile
       }) ? void 0 : link.displayText;
       if (shouldUpdateFilenameAlias ?? true) {
         if (alias?.toLowerCase() === (0, import_Path.basename)(oldPath, (0, import_Path.extname)(oldPath)).toLowerCase()) {
@@ -2797,13 +2836,13 @@ var require_Link = __commonJS({
         file = (0, import_FileSystem3.getFile)(app, newPath, true);
       }
       const newLink = generateMarkdownLink2({
+        alias,
         app,
+        isWikilink: forceMarkdownLinks ? false : void 0,
+        originalLink: link.original,
         pathOrFile: file,
         sourcePathOrFile,
-        subpath,
-        alias,
-        isWikilink: forceMarkdownLinks ? false : void 0,
-        originalLink: link.original
+        subpath
       });
       return newLink;
     }
@@ -2811,10 +2850,10 @@ var require_Link = __commonJS({
       const {
         app,
         displayText,
-        pathOrFile,
+        isWikilink,
         otherPathOrFiles,
-        sourcePathOrFile,
-        isWikilink
+        pathOrFile,
+        sourcePathOrFile
       } = options;
       if (isWikilink === false) {
         return false;
@@ -3020,32 +3059,56 @@ var require_PluginBase = __commonJS({
       "platform": "android"
     };
     var PluginBase2 = class extends import_obsidian5.Plugin {
+      _abortSignal;
       _settings;
       notice;
-      _abortSignal;
       /**
-       * Gets the AbortSignal used for aborting long-running operations.
+       * Called when the layout is ready. This method can be overridden by subclasses to perform actions once
+       * the layout is ready.
        *
-       * @returns The abort signal.
+       * @returns A promise or void indicating the completion of the layout setup.
        */
-      get abortSignal() {
-        return this._abortSignal;
+      onLayoutReady() {
+        (0, import_Function.noop)();
       }
       /**
-       * Gets a copy of the current plugin settings.
+       * Called when the plugin loading is complete. This method must be implemented by subclasses to perform
+       * any additional setup required after loading is complete.
        *
-       * @returns A copy of the plugin settings.
+       * @returns A promise or void indicating the completion of the load process.
        */
-      get settingsCopy() {
-        return (0, import_PluginSettings.clonePluginSettings)(this.createDefaultPluginSettings.bind(this), this.settings);
+      onloadComplete() {
+        (0, import_Function.noop)();
       }
       /**
-       * Gets the plugin settings.
+       * Parses the provided settings data and returns the parsed `PluginSettings`.
        *
-       * @returns The plugin settings.
+       * @param data - The raw data to be parsed into `PluginSettings`.
+       * @returns A promise that resolves to `PluginSettings` or the settings directly.
        */
-      get settings() {
-        return this._settings;
+      parseSettings(data) {
+        return (0, import_PluginSettings.loadPluginSettings)(this.createDefaultPluginSettings.bind(this), data);
+      }
+      /**
+       * Displays a notice message to the user.
+       *
+       * @param message - The message to display.
+       */
+      showNotice(message) {
+        if (this.notice) {
+          this.notice.hide();
+        }
+        this.notice = new import_obsidian5.Notice(`${this.manifest.name}
+${message}`);
+      }
+      /**
+       * Loads the plugin settings from the saved data.
+       *
+       * @returns A promise that resolves when the settings are loaded.
+       */
+      async loadSettings() {
+        const data = await this.loadData();
+        this._settings = await this.parseSettings(data);
       }
       /**
        * Called when the plugin is loaded
@@ -3068,42 +3131,6 @@ var require_PluginBase = __commonJS({
         this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));
       }
       /**
-       * Called when the plugin loading is complete. This method must be implemented by subclasses to perform
-       * any additional setup required after loading is complete.
-       *
-       * @returns A promise or void indicating the completion of the load process.
-       */
-      onloadComplete() {
-        (0, import_Function.noop)();
-      }
-      /**
-       * Called when the layout is ready. This method can be overridden by subclasses to perform actions once
-       * the layout is ready.
-       *
-       * @returns A promise or void indicating the completion of the layout setup.
-       */
-      onLayoutReady() {
-        (0, import_Function.noop)();
-      }
-      /**
-       * Loads the plugin settings from the saved data.
-       *
-       * @returns A promise that resolves when the settings are loaded.
-       */
-      async loadSettings() {
-        const data = await this.loadData();
-        this._settings = await this.parseSettings(data);
-      }
-      /**
-       * Parses the provided settings data and returns the parsed `PluginSettings`.
-       *
-       * @param data - The raw data to be parsed into `PluginSettings`.
-       * @returns A promise that resolves to `PluginSettings` or the settings directly.
-       */
-      parseSettings(data) {
-        return (0, import_PluginSettings.loadPluginSettings)(this.createDefaultPluginSettings.bind(this), data);
-      }
-      /**
        * Saves the new plugin settings.
        *
        * @param newSettings - The new settings to save.
@@ -3114,16 +3141,28 @@ var require_PluginBase = __commonJS({
         await this.saveData(this.settings);
       }
       /**
-       * Displays a notice message to the user.
+       * Gets the AbortSignal used for aborting long-running operations.
        *
-       * @param message - The message to display.
+       * @returns The abort signal.
        */
-      showNotice(message) {
-        if (this.notice) {
-          this.notice.hide();
-        }
-        this.notice = new import_obsidian5.Notice(`${this.manifest.name}
-${message}`);
+      get abortSignal() {
+        return this._abortSignal;
+      }
+      /**
+       * Gets the plugin settings.
+       *
+       * @returns The plugin settings.
+       */
+      get settings() {
+        return this._settings;
+      }
+      /**
+       * Gets a copy of the current plugin settings.
+       *
+       * @returns A copy of the plugin settings.
+       */
+      get settingsCopy() {
+        return (0, import_PluginSettings.clonePluginSettings)(this.createDefaultPluginSettings.bind(this), this.settings);
       }
     };
   }
@@ -3457,11 +3496,11 @@ var require_RenameDeleteHandler = __commonJS({
             return (0, import_Link4.updateLink)({
               app,
               link,
-              pathOrFile: newRelatedPath,
               oldPathOrFile: oldRelatedPath,
-              sourcePathOrFile: newBacklinkPath,
+              pathOrFile: newRelatedPath,
               renameMap,
-              shouldUpdateFilenameAlias: settings.shouldUpdateFilenameAliases
+              shouldUpdateFilenameAlias: settings.shouldUpdateFilenameAliases,
+              sourcePathOrFile: newBacklinkPath
             });
           });
         }
@@ -3489,8 +3528,8 @@ var require_RenameDeleteHandler = __commonJS({
         } else if ((0, import_FileSystem3.isMarkdownFile)(newPath)) {
           await (0, import_Link4.updateLinksInFile)({
             app,
-            pathOrFile: newPath,
             oldPathOrFile: oldPath,
+            pathOrFile: newPath,
             renameMap,
             shouldUpdateFilenameAlias: settings.shouldUpdateFilenameAliases
           });
@@ -3734,9 +3773,9 @@ var require_PluginSettingsTabBase = __commonJS({
   }
 });
 
-// node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/UIComponent.cjs
-var require_UIComponent = __commonJS({
-  "node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/UIComponent.cjs"(exports2, module2) {
+// node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/ValueComponent.cjs
+var require_ValueComponent = __commonJS({
+  "node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/ValueComponent.cjs"(exports2, module2) {
     (function patchRequireEsmDefault() {
       const __require = require;
       require = Object.assign((id) => {
@@ -3761,54 +3800,91 @@ var require_UIComponent = __commonJS({
       return to;
     };
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var UIComponent_exports = {};
-    __export2(UIComponent_exports, {
-      bindUiComponent: () => bindUiComponent2
+    var ValueComponent_exports = {};
+    __export2(ValueComponent_exports, {
+      extend: () => extend2
     });
-    module2.exports = __toCommonJS2(UIComponent_exports);
+    module2.exports = __toCommonJS2(ValueComponent_exports);
     var import_obsidian5 = require("obsidian");
-    function bindUiComponent2(plugin, uiComponent, property, options) {
-      const DEFAULT_OPTIONS = {
-        autoSave: true,
-        settingToUIValueConverter: (value) => value,
-        uiToSettingValueConverter: (value) => value
-      };
-      const optionsExt = { ...DEFAULT_OPTIONS, ...options };
-      const pluginExt = plugin;
-      const uiComponentExt = uiComponent;
-      const pluginSettingsFn = () => optionsExt.pluginSettings ?? pluginExt.settingsCopy;
-      uiComponentExt.setValue(optionsExt.settingToUIValueConverter(pluginSettingsFn()[property])).onChange(async (uiValue) => {
-        if (optionsExt.uiValueValidator) {
-          const errorMessage = optionsExt.uiValueValidator(uiValue);
-          const validatorElement = getValidatorElement(uiComponent);
-          if (validatorElement) {
-            validatorElement.setCustomValidity(errorMessage ?? "");
-            validatorElement.reportValidity();
+    var import_Object = require_Object();
+    var ValueComponentEx = class {
+      constructor(valueComponent) {
+        this.valueComponent = valueComponent;
+      }
+      /**
+       * Returns the ValueComponent with extended functionality.
+       */
+      asExtended() {
+        return (0, import_Object.assignWithNonEnumerableProperties)({}, this.valueComponent, this);
+      }
+      /**
+       * Binds the ValueComponent to a property in the plugin settings.
+       *
+       * @typeParam Plugin - The type of the plugin that extends `PluginBase`.
+       * @typeParam Property - The key of the plugin setting that the component is bound to.
+       * @typeParam PluginSettings - The type of the plugin settings object.
+       * @param plugin - The plugin.
+       * @param property - The property key in `PluginSettings` to bind to the UI component.
+       * @param options - Configuration options.
+       * @returns The `ValueComponent` instance that was bound to the property.
+       */
+      bind(plugin, property, options) {
+        const DEFAULT_OPTIONS = {
+          autoSave: true,
+          componentToPluginSettingsValueConverter: (value) => value,
+          pluginSettingsToComponentValueConverter: (value) => value
+        };
+        const optionsExt = { ...DEFAULT_OPTIONS, ...options };
+        const pluginExt = plugin;
+        const pluginSettingsFn = () => optionsExt.pluginSettings ?? pluginExt.settingsCopy;
+        const validate = (uiValue) => {
+          if (!optionsExt.valueValidator) {
+            return true;
           }
-          if (errorMessage) {
+          uiValue ??= this.valueComponent.getValue();
+          const errorMessage = optionsExt.valueValidator(uiValue);
+          const validatorElement2 = getValidatorElement(this.valueComponent);
+          if (validatorElement2) {
+            validatorElement2.setCustomValidity(errorMessage ?? "");
+            validatorElement2.reportValidity();
+          }
+          return !errorMessage;
+        };
+        this.valueComponent.setValue(optionsExt.pluginSettingsToComponentValueConverter(pluginSettingsFn()[property])).onChange(async (uiValue) => {
+          if (!validate(uiValue)) {
             return;
           }
+          const pluginSettings = pluginSettingsFn();
+          pluginSettings[property] = optionsExt.componentToPluginSettingsValueConverter(uiValue);
+          if (optionsExt.autoSave) {
+            await pluginExt.saveSettings(pluginSettings);
+          }
+          await optionsExt.onChanged?.();
+        });
+        validate();
+        const validatorElement = getValidatorElement(this.valueComponent);
+        if (validatorElement) {
+          validatorElement.addEventListener("focus", () => validate());
+          validatorElement.addEventListener("blur", () => validate());
         }
-        const pluginSettings = pluginSettingsFn();
-        pluginSettings[property] = optionsExt.uiToSettingValueConverter(uiValue);
-        if (optionsExt.autoSave) {
-          await pluginExt.saveSettings(pluginSettings);
-        }
-      });
-      return uiComponent;
+        return this.asExtended();
+      }
+    };
+    function extend2(valueComponent) {
+      return new ValueComponentEx(valueComponent).asExtended();
     }
-    function getValidatorElement(uiComponent) {
-      if (uiComponent instanceof import_obsidian5.DropdownComponent) {
-        return uiComponent.selectEl;
+    function getValidatorElement(valueComponent) {
+      if (valueComponent instanceof import_obsidian5.DropdownComponent) {
+        return valueComponent.selectEl;
       }
-      if (uiComponent instanceof import_obsidian5.SliderComponent) {
-        return uiComponent.sliderEl;
+      if (valueComponent instanceof import_obsidian5.SliderComponent) {
+        return valueComponent.sliderEl;
       }
-      if (uiComponent instanceof import_obsidian5.TextAreaComponent) {
-        return uiComponent.inputEl;
+      if (valueComponent instanceof import_obsidian5.TextAreaComponent) {
+        return valueComponent.inputEl;
       }
-      if (uiComponent instanceof import_obsidian5.TextComponent) {
-        return uiComponent.inputEl;
+      if (valueComponent instanceof import_obsidian5.TextComponent) {
+        return valueComponent.inputEl;
       }
       return null;
     }
@@ -3882,13 +3958,13 @@ var BetterMarkdownLinksPluginSettings = class {
 var import_obsidian = require("obsidian");
 var import_DocumentFragment = __toESM(require_DocumentFragment(), 1);
 var import_PluginSettingsTabBase = __toESM(require_PluginSettingsTabBase(), 1);
-var import_UIComponent = __toESM(require_UIComponent(), 1);
+var import_ValueComponent = __toESM(require_ValueComponent(), 1);
 var BetterMarkdownLinksPluginSettingsTab = class extends import_PluginSettingsTabBase.PluginSettingsTabBase {
   display() {
     this.containerEl.empty();
-    new import_obsidian.Setting(this.containerEl).setName("Use leading dot").setDesc("Use a leading dot in relative links").addToggle((toggle) => (0, import_UIComponent.bindUiComponent)(this.plugin, toggle, "useLeadingDot"));
-    new import_obsidian.Setting(this.containerEl).setName("Use angle brackets").setDesc("Use angle brackets in links").addToggle((toggle) => (0, import_UIComponent.bindUiComponent)(this.plugin, toggle, "useAngleBrackets"));
-    new import_obsidian.Setting(this.containerEl).setName("Automatically convert new links").setDesc("Automatically convert new links entered manually to the selected format").addToggle((toggle) => (0, import_UIComponent.bindUiComponent)(this.plugin, toggle, "automaticallyConvertNewLinks"));
+    new import_obsidian.Setting(this.containerEl).setName("Use leading dot").setDesc("Use a leading dot in relative links").addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "useLeadingDot"));
+    new import_obsidian.Setting(this.containerEl).setName("Use angle brackets").setDesc("Use angle brackets in links").addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "useAngleBrackets"));
+    new import_obsidian.Setting(this.containerEl).setName("Automatically convert new links").setDesc("Automatically convert new links entered manually to the selected format").addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "automaticallyConvertNewLinks"));
     new import_obsidian.Setting(this.containerEl).setName("Automatically update links on rename or move").setDesc(createFragment((f) => {
       f.appendText("Automatically update links when a file is renamed or moved to another directory.");
       f.createEl("br");
@@ -3898,7 +3974,7 @@ var BetterMarkdownLinksPluginSettingsTab = class extends import_PluginSettingsTa
         text: "Backlink Cache"
       });
       f.appendText(" plugin to improve performance.");
-    })).addToggle((toggle) => (0, import_UIComponent.bindUiComponent)(this.plugin, toggle, "automaticallyUpdateLinksOnRenameOrMove"));
+    })).addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "automaticallyUpdateLinksOnRenameOrMove"));
     new import_obsidian.Setting(this.containerEl).setName("Ignore incompatible Obsidian settings").setDesc(createFragment((f) => {
       f.appendText("Current plugin makes sense only if you have ");
       (0, import_DocumentFragment.appendCodeBlock)(f, "Use [[Wikilinks]]");
@@ -3909,15 +3985,15 @@ var BetterMarkdownLinksPluginSettingsTab = class extends import_PluginSettingsTa
       f.appendText(" in Obsidian settings.");
       f.createEl("br");
       f.appendText("If you enable current setting, it will override incompatible Obsidian settings and will work as expected.");
-    })).addToggle((toggle) => (0, import_UIComponent.bindUiComponent)(this.plugin, toggle, "ignoreIncompatibleObsidianSettings"));
-    new import_obsidian.Setting(this.containerEl).setName("Allow empty embed alias").setDesc("If disabled, empty alias will be replaced with the attachment name").addToggle((toggle) => (0, import_UIComponent.bindUiComponent)(this.plugin, toggle, "allowEmptyEmbedAlias"));
+    })).addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "ignoreIncompatibleObsidianSettings"));
+    new import_obsidian.Setting(this.containerEl).setName("Allow empty embed alias").setDesc("If disabled, empty alias will be replaced with the attachment name").addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "allowEmptyEmbedAlias"));
     new import_obsidian.Setting(this.containerEl).setName("Include attachment extension to embed alias").setDesc(createFragment((f) => {
       f.appendText("If enabled, the extension of the attachment will be included in the embed alias.");
       f.createEl("br");
       f.appendText("The setting is ignored if ");
       (0, import_DocumentFragment.appendCodeBlock)(f, "Allow empty embed alias");
       f.appendText(" is enabled.");
-    })).addToggle((toggle) => (0, import_UIComponent.bindUiComponent)(this.plugin, toggle, "includeAttachmentExtensionToEmbedAlias"));
+    })).addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "includeAttachmentExtensionToEmbedAlias"));
   }
 };
 
@@ -3927,22 +4003,22 @@ var import_Link = __toESM(require_Link(), 1);
 function getDefaultOptions(plugin) {
   const pluginSettings = plugin.settingsCopy;
   return {
-    isWikilink: pluginSettings.ignoreIncompatibleObsidianSettings ? false : void 0,
-    forceRelativePath: pluginSettings.ignoreIncompatibleObsidianSettings ? true : void 0,
-    useLeadingDot: pluginSettings.useLeadingDot,
-    useAngleBrackets: pluginSettings.useAngleBrackets,
     allowEmptyEmbedAlias: pluginSettings.allowEmptyEmbedAlias,
-    includeAttachmentExtensionToEmbedAlias: pluginSettings.includeAttachmentExtensionToEmbedAlias
+    forceRelativePath: pluginSettings.ignoreIncompatibleObsidianSettings ? true : void 0,
+    includeAttachmentExtensionToEmbedAlias: pluginSettings.includeAttachmentExtensionToEmbedAlias,
+    isWikilink: pluginSettings.ignoreIncompatibleObsidianSettings ? false : void 0,
+    useAngleBrackets: pluginSettings.useAngleBrackets,
+    useLeadingDot: pluginSettings.useLeadingDot
   };
 }
 function generateMarkdownLinkForPlugin(plugin, fileOrOptions, sourcePath, subpath, alias) {
   let options;
   if (fileOrOptions instanceof import_obsidian2.TFile) {
     options = {
+      alias,
       pathOrFile: fileOrOptions,
       sourcePathOrFile: sourcePath,
-      subpath,
-      alias
+      subpath
     };
   } else {
     options = fileOrOptions;
@@ -4026,10 +4102,10 @@ async function convertLinksInEntireVault(plugin, abortSignal) {
 async function applyLinkChangeUpdates(plugin, file, updates) {
   await (0, import_FileChange.applyFileChanges)(plugin.app, file, async () => {
     const changes = updates.map((update) => ({
-      startIndex: update.reference.position.start.offset,
       endIndex: update.reference.position.end.offset,
+      newContent: fixChange(plugin, update.change, file),
       oldContent: update.reference.original,
-      newContent: fixChange(plugin, update.change, file)
+      startIndex: update.reference.position.start.offset
     }));
     const content = await plugin.app.vault.read(file);
     const doUpdatesMatchContent = changes.every((change) => content.slice(change.startIndex, change.endIndex) === change.oldContent);
@@ -4050,13 +4126,13 @@ function fixChange(plugin, change, file) {
     return `${isEmbed ? "!" : ""}[${alias}](${escapedPath})`;
   }
   return (0, import_Link2.generateMarkdownLink)({
+    alias,
     app: plugin.app,
+    isEmbed,
+    isWikilink: false,
     pathOrFile: linkedFile,
     sourcePathOrFile: file,
-    subpath,
-    alias,
-    isEmbed,
-    isWikilink: false
+    subpath
   });
 }
 
@@ -4074,14 +4150,14 @@ var BetterMarkdownLinksPlugin = class extends import_PluginBase.PluginBase {
       generateMarkdownLink: () => getPatchedGenerateMarkdownLink(this)
     }));
     this.addCommand({
+      checkCallback: (checking) => convertLinksInCurrentFile(this, checking),
       id: "convert-links-in-current-file",
-      name: "Convert links in current file",
-      checkCallback: (checking) => convertLinksInCurrentFile(this, checking)
+      name: "Convert links in current file"
     });
     this.addCommand({
+      callback: () => convertLinksInEntireVault(this, this.abortSignal),
       id: "convert-links-in-entire-vault",
-      name: "Convert links in entire vault",
-      callback: () => convertLinksInEntireVault(this, this.abortSignal)
+      name: "Convert links in entire vault"
     });
     this.registerEvent(this.app.metadataCache.on("changed", (file) => {
       (0, import_ChainedPromise2.chain)(this.app, () => this.handleMetadataCacheChanged(file));
@@ -4106,13 +4182,6 @@ var BetterMarkdownLinksPlugin = class extends import_PluginBase.PluginBase {
       delete this.app.fileManager.linkUpdaters[import_FileSystem2.MARKDOWN_FILE_EXTENSION];
     });
   }
-  showCompatibilityWarning() {
-    const message = 'Your Obsidian settings are incompatible with the "Better Markdown Links" plugin. Please disable "Use [[Wikilinks]]" and set "New link format" to "Relative path to file" in Obsidian settings.\nAlternatively, you can enable the "Ignore incompatible Obsidian settings" option in the plugin settings.';
-    console.warn(message);
-    if (this.warningNotice.noticeEl.style.opacity === "0") {
-      this.warningNotice = new import_obsidian4.Notice(message, 1e4);
-    }
-  }
   async handleMetadataCacheChanged(file) {
     if (!this.settings.automaticallyConvertNewLinks) {
       return;
@@ -4132,6 +4201,13 @@ var BetterMarkdownLinksPlugin = class extends import_PluginBase.PluginBase {
       sourcePathOrFile: file
     }))) {
       await convertLinksInFile(this, file);
+    }
+  }
+  showCompatibilityWarning() {
+    const message = 'Your Obsidian settings are incompatible with the "Better Markdown Links" plugin. Please disable "Use [[Wikilinks]]" and set "New link format" to "Relative path to file" in Obsidian settings.\nAlternatively, you can enable the "Ignore incompatible Obsidian settings" option in the plugin settings.';
+    console.warn(message);
+    if (this.warningNotice.noticeEl.style.opacity === "0") {
+      this.warningNotice = new import_obsidian4.Notice(message, 1e4);
     }
   }
 };

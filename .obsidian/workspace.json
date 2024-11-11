@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "85f6ff27a037d542",
@@ -120,7 +121,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       },
       {
         "id": "48418e7cafcd6cd2",
@@ -133,10 +134,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "QuickLinks.md"
               },
               "icon": "lucide-list",
-              "title": "README 的大纲"
+              "title": "QuickLinks 的大纲"
             }
           },
           {
@@ -210,7 +211,11 @@
       "obsidian-kanban:创建新看板": false,
       "ledger-obsidian:Add to Ledger": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
-      "darlal-switcher-plus:Open in Headings Mode": false
+      "darlal-switcher-plus:Open in Headings Mode": false,
+      "templater-obsidian:Templater": false,
+      "vim-toggle:Toggle Vim Mode": false,
+      "obsidian42-brat:BRAT": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false
     }
   },
   "active": "2ee682c9667fb093",
