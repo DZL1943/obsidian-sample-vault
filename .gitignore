@@ -6,15 +6,15 @@
 !*.png
 !*.jpg
 
-!.obsidian*/*
+!.obsidian*/**
 
 .DS_Store
 *.sync-conflict-*
 未命名*
 [uU]ntitled*
-draft*.*
-temp*.*
-test*.*
+[dD]raft*.*
+[tT]emp*.*
+[tT]est*.*
 
 *[iI]nbox/*
 [lL]ocal/
@@ -36,5 +36,7 @@ test*.*
 workspace.json
 workspace-mobile.json
 bookmarks.json
-plugins/vare/data.json
-plugins/recent-files-obsidian/data.json
+**/plugins/vare/data.json
+**/plugins/recent-files-obsidian/data.json
+[hH]ome.canvas
+[cC]ontext.md
