@@ -1,14 +1,24 @@
 {
   "nodes": [
     {
-      "id": "4080ec5215d373e7",
+      "id": "277bfd3fd4406051",
       "type": "group",
       "styleAttributes": {},
-      "x": -1040,
-      "y": -300,
-      "width": 1020,
-      "height": 580,
-      "label": "Obsidian"
+      "x": -960,
+      "y": -1720,
+      "width": 860,
+      "height": 900,
+      "label": "workflow"
+    },
+    {
+      "id": "8848d54850234556",
+      "type": "group",
+      "styleAttributes": {},
+      "x": -960,
+      "y": -2700,
+      "width": 860,
+      "height": 900,
+      "label": "journal"
     },
     {
       "id": "93330d1dc3c36832",
@@ -31,24 +41,65 @@
       "height": 400
     },
     {
-      "id": "a6e04070a1a34110",
-      "type": "link",
-      "url": "https://obsidian.md/changelog/",
+      "id": "b33493c94c59e332",
+      "type": "file",
+      "file": "Context.md",
       "styleAttributes": {},
-      "x": -1020,
-      "y": -280,
-      "width": 580,
-      "height": 540
+      "x": -940,
+      "y": -1680,
+      "width": 400,
+      "height": 840
     },
     {
-      "id": "c3fa182914b8b345",
-      "type": "text",
-      "text": "### Obsidian 1.7.4 更新摘要(仅列举大众关心的变化)\n\n- 悬浮预览时可直接点击编辑\n- 增强了显示启动时间功能(在\"关于\"里面)\n- 增强脚注\n- 改进 Obsidian URI\n- 快速切换行号和栏宽\n\n>[!bug] makemd 暂时不可用\n",
+      "id": "32041060b5b5b02b",
+      "type": "file",
+      "file": "10_Inbox/Local/temp.md",
       "styleAttributes": {},
-      "x": -420,
-      "y": -280,
-      "width": 380,
-      "height": 540
+      "x": -520,
+      "y": -1240,
+      "width": 400,
+      "height": 400
+    },
+    {
+      "id": "547b6194c9f0b54f",
+      "type": "text",
+      "text": "> [!cite]+ \n> [sync | clean no-title no-h1](sync.md#sync)\n> \n> [Draft | clean no-title no-h1](draft.excalidraw.md#Draft)\n\n",
+      "styleAttributes": {},
+      "lockedHeight": true,
+      "x": -520,
+      "y": -1680,
+      "width": 400,
+      "height": 400
+    },
+    {
+      "id": "254a7689e80d4b0e",
+      "type": "file",
+      "file": "20_Private/journal-index.md",
+      "styleAttributes": {},
+      "x": -940,
+      "y": -2660,
+      "width": 400,
+      "height": 840
+    },
+    {
+      "id": "69892da001b8cdaa",
+      "type": "file",
+      "file": "20_Private/insights.md",
+      "styleAttributes": {},
+      "x": -520,
+      "y": -2220,
+      "width": 400,
+      "height": 400
+    },
+    {
+      "id": "22c82a06a6b1e236",
+      "type": "file",
+      "file": "20_Private/moments.md",
+      "styleAttributes": {},
+      "x": -520,
+      "y": -2660,
+      "width": 400,
+      "height": 400
     }
   ],
   "edges": [],

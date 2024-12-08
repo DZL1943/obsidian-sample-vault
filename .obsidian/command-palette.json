@@ -1,5 +1,6 @@
 {
   "pinned": [
+    "theme:switch",
     "templater-obsidian:insert-templater",
     "zk-prefixer",
     "nldates-obsidian:nlp-now",

@@ -20,22 +20,22 @@ dv.list(files.map(f => dv.fileLink(f.path)));
 ```dataview
 list
 rows.file.link
-where file.starred
-group by file.folder
+where file.starred and file.folder
+group by split(file.folder, "/")[0]
 ```
 
 ## Recents
 
 ```dataview
-TABLE rows.new_title as name
-WHERE date(today) - file.mtime <= dur(7 days)
-WHERE !econtains(["sortspec", "broken links output"], file.name) and !startswith(file.path, "Misc/")
+TABLE length(rows) as count, rows.new_title as name
+WHERE date(today) - file.mtime <= dur(30 days)
+WHERE !econtains(["temp", "sortspec", "broken links output"], file.name) and !startswith(file.path, "Misc/")
 SORT file.mtime DESC
-LIMIT 50
+LIMIT 100
 flatten choice(title and title!=file.name, file.link+" "+title, file.link) as new_title
 group by file.mday as date
 sort date desc
-limit 3
+limit 5
 ```
 
 ## All

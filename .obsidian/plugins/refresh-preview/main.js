@@ -238,15 +238,16 @@ var require_Error = __commonJS({
     var ASYNC_ERROR_EVENT = "asyncError";
     var asyncErrorEventEmitter = new import_eventemitter3.EventEmitter();
     asyncErrorEventEmitter.on(ASYNC_ERROR_EVENT, handleAsyncError);
-    function handleAsyncError(asyncError) {
-      printError(new Error("An unhandled error occurred executing async operation", { cause: asyncError }));
-    }
     function emitAsyncErrorEvent(asyncError) {
       asyncErrorEventEmitter.emit(ASYNC_ERROR_EVENT, asyncError);
     }
-    function registerAsyncErrorEventHandler(handler) {
-      asyncErrorEventEmitter.on(ASYNC_ERROR_EVENT, handler);
-      return () => asyncErrorEventEmitter.off(ASYNC_ERROR_EVENT, handler);
+    function errorToString(error) {
+      return parseErrorEntries(error).map((entry) => "  ".repeat(entry.level) + entry.message).join("\n");
+    }
+    function getStackTrace() {
+      const stack = new Error().stack ?? "";
+      const lines = stack.split("\n");
+      return lines.slice(2).join("\n");
     }
     function printError(error) {
       const entries = parseErrorEntries(error);
@@ -258,8 +259,15 @@ var require_Error = __commonJS({
         }
       }
     }
-    function errorToString(error) {
-      return parseErrorEntries(error).map((entry) => "  ".repeat(entry.level) + entry.message).join("\n");
+    function registerAsyncErrorEventHandler(handler) {
+      asyncErrorEventEmitter.on(ASYNC_ERROR_EVENT, handler);
+      return () => asyncErrorEventEmitter.off(ASYNC_ERROR_EVENT, handler);
+    }
+    function throwExpression(error) {
+      throw error;
+    }
+    function handleAsyncError(asyncError) {
+      printError(new Error("An unhandled error occurred executing async operation", { cause: asyncError }));
     }
     function parseErrorEntries(error, level = 0, entries = []) {
       if (error === void 0) {
@@ -280,7 +288,7 @@ var require_Error = __commonJS({
       const title = `${error.name}: ${error.message}`;
       entries.push({ level, message: title, shouldClearAnsiSequence: true });
       if (error.stack) {
-        const restStack = error.stack.startsWith(title) ? error.stack.substring(title.length + 1) : error.stack;
+        const restStack = error.stack.startsWith(title) ? error.stack.slice(title.length + 1) : error.stack;
         entries.push({ level, message: `Error stack:
 ${restStack}` });
       }
@@ -289,14 +297,6 @@ ${restStack}` });
         parseErrorEntries(error.cause, level + 1, entries);
       }
       return entries;
-    }
-    function throwExpression(error) {
-      throw error;
-    }
-    function getStackTrace() {
-      const stack = new Error().stack ?? "";
-      const lines = stack.split("\n");
-      return lines.slice(2).join("\n");
     }
   }
 });
@@ -337,6 +337,7 @@ var require_Async = __commonJS({
       convertAsyncToSync: () => convertAsyncToSync,
       convertSyncToAsync: () => convertSyncToAsync,
       invokeAsyncSafely: () => invokeAsyncSafely2,
+      marksAsTerminateRetry: () => marksAsTerminateRetry,
       retryWithTimeout: () => retryWithTimeout,
       runWithTimeout: () => runWithTimeout,
       sleep: () => sleep,
@@ -345,11 +346,43 @@ var require_Async = __commonJS({
     });
     module2.exports = __toCommonJS2(Async_exports);
     var import_Error = require_Error();
+    async function addErrorHandler(asyncFn) {
+      try {
+        await asyncFn();
+      } catch (asyncError) {
+        (0, import_Error.emitAsyncErrorEvent)(asyncError);
+      }
+    }
+    async function asyncFilter(arr, predicate) {
+      const predicateResults = await asyncMap(arr, predicate);
+      return arr.filter((_, index) => predicateResults[index]);
+    }
+    async function asyncFlatMap(arr, callback) {
+      return (await asyncMap(arr, callback)).flat();
+    }
+    async function asyncMap(arr, callback) {
+      return await Promise.all(arr.map(callback));
+    }
+    function convertAsyncToSync(asyncFunc) {
+      return (...args) => {
+        invokeAsyncSafely2(() => asyncFunc(...args));
+      };
+    }
+    function convertSyncToAsync(syncFn) {
+      return (...args) => Promise.resolve().then(() => syncFn(...args));
+    }
+    function invokeAsyncSafely2(asyncFn) {
+      void addErrorHandler(asyncFn);
+    }
+    function marksAsTerminateRetry(error) {
+      return Object.assign(error, { __terminateRetry: true });
+    }
     async function retryWithTimeout(fn, retryOptions = {}) {
       const stackTrace = (0, import_Error.getStackTrace)();
       const DEFAULT_RETRY_OPTIONS = {
-        timeoutInMilliseconds: 5e3,
-        retryDelayInMilliseconds: 100
+        retryDelayInMilliseconds: 100,
+        shouldRetryOnError: true,
+        timeoutInMilliseconds: 5e3
       };
       const overriddenOptions = { ...DEFAULT_RETRY_OPTIONS, ...retryOptions };
       await runWithTimeout(overriddenOptions.timeoutInMilliseconds, async () => {
@@ -360,6 +393,9 @@ var require_Async = __commonJS({
           try {
             isSuccess = await fn();
           } catch (error) {
+            if (!overriddenOptions.shouldRetryOnError || error.__terminateRetry) {
+              throw error;
+            }
             (0, import_Error.printError)(error);
             isSuccess = false;
           }
@@ -377,43 +413,30 @@ var require_Async = __commonJS({
         }
       });
     }
+    async function runWithTimeout(timeoutInMilliseconds, fn) {
+      let timedOut = false;
+      let result = null;
+      await Promise.race([run(), timeout2()]);
+      if (timedOut) {
+        console.error(`Timed out in ${timeoutInMilliseconds.toString()} milliseconds`, { fn });
+        throw new Error("Timed out");
+      }
+      return result;
+      async function run() {
+        result = await fn();
+        timedOut = false;
+      }
+      async function timeout2() {
+        await sleep(timeoutInMilliseconds);
+        timedOut = true;
+      }
+    }
     async function sleep(milliseconds) {
       await new Promise((resolve) => setTimeout(resolve, milliseconds));
-    }
-    async function runWithTimeout(timeoutInMilliseconds, fn) {
-      return await Promise.race([fn(), timeout(timeoutInMilliseconds)]);
     }
     async function timeout(timeoutInMilliseconds) {
       await sleep(timeoutInMilliseconds);
       throw new Error(`Timed out in ${timeoutInMilliseconds.toString()} milliseconds`);
-    }
-    function invokeAsyncSafely2(asyncFn) {
-      void addErrorHandler(asyncFn);
-    }
-    async function addErrorHandler(asyncFn) {
-      try {
-        await asyncFn();
-      } catch (asyncError) {
-        (0, import_Error.emitAsyncErrorEvent)(asyncError);
-      }
-    }
-    function convertAsyncToSync(asyncFunc) {
-      return (...args) => {
-        invokeAsyncSafely2(() => asyncFunc(...args));
-      };
-    }
-    function convertSyncToAsync(syncFn) {
-      return (...args) => Promise.resolve().then(() => syncFn(...args));
-    }
-    async function asyncMap(arr, callback) {
-      return await Promise.all(arr.map(callback));
-    }
-    async function asyncFilter(arr, predicate) {
-      const predicateResults = await asyncMap(arr, predicate);
-      return arr.filter((_, index) => predicateResults[index]);
-    }
-    async function asyncFlatMap(arr, callback) {
-      return (await asyncMap(arr, callback)).flat();
     }
     async function toArray(iter) {
       const arr = [];
@@ -487,7 +510,7 @@ var require_implementations = __commonJS({
         let values = this.get(key);
         if (!values) {
           values = [];
-          this.data.set(key, []);
+          this.data.set(key, values);
         }
         if (!values.includes(value)) {
           values.push(value);
@@ -1080,15 +1103,15 @@ var require_ValueProvider = __commonJS({
       resolveValue: () => resolveValue
     });
     module2.exports = __toCommonJS2(ValueProvider_exports);
-    function isFunction(value) {
-      return typeof value === "function";
-    }
     async function resolveValue(provider, ...args) {
       if (isFunction(provider)) {
         return await provider(...args);
       } else {
         return provider;
       }
+    }
+    function isFunction(value) {
+      return typeof value === "function";
     }
   }
 });
@@ -1125,6 +1148,7 @@ var require_String = __commonJS({
       ensureEndsWith: () => ensureEndsWith,
       ensureStartsWith: () => ensureStartsWith,
       escape: () => escape,
+      insertAt: () => insertAt,
       makeValidVariableName: () => makeValidVariableName,
       normalize: () => normalize,
       replace: () => replace,
@@ -1138,39 +1162,41 @@ var require_String = __commonJS({
     var import_RegExp = require_RegExp();
     var import_ValueProvider = require_ValueProvider();
     var ESCAPE_MAP = {
-      "\\": "\\\\",
-      '"': '\\"',
-      "'": "\\'",
       "\n": "\\n",
       "\r": "\\r",
       "	": "\\t",
       "\b": "\\b",
-      "\f": "\\f"
+      "\f": "\\f",
+      "'": "\\'",
+      '"': '\\"',
+      "\\": "\\\\"
     };
     var UNESCAPE_MAP = {};
     for (const [key, value] of Object.entries(ESCAPE_MAP)) {
       UNESCAPE_MAP[value] = key;
     }
-    function trimStart(str, prefix, validate) {
-      if (str.startsWith(prefix)) {
-        return str.slice(prefix.length);
-      }
-      if (validate) {
-        throw new Error(`String ${str} does not start with prefix ${prefix}`);
-      }
-      return str;
+    function ensureEndsWith(str, suffix) {
+      return str.endsWith(suffix) ? str : str + suffix;
     }
-    function trimEnd(str, suffix, validate) {
-      if (str.endsWith(suffix)) {
-        return str.slice(0, -suffix.length);
-      }
-      if (validate) {
-        throw new Error(`String ${str} does not end with suffix ${suffix}`);
-      }
-      return str;
+    function ensureStartsWith(str, prefix) {
+      return str.startsWith(prefix) ? str : prefix + str;
+    }
+    function escape(str) {
+      return replace(str, ESCAPE_MAP);
+    }
+    function insertAt(str, substring, startIndex, endIndex) {
+      endIndex ??= startIndex;
+      return str.slice(0, startIndex) + substring + str.slice(endIndex);
+    }
+    function makeValidVariableName(str) {
+      return str.replace(/[^a-zA-Z0-9_]/g, "_");
     }
     function normalize(str) {
       return str.replace(/\u00A0|\u202F/g, " ").normalize("NFC");
+    }
+    function replace(str, replacementsMap) {
+      const regExp = new RegExp(Object.keys(replacementsMap).map((source) => (0, import_RegExp.escapeRegExp)(source)).join("|"), "g");
+      return str.replaceAll(regExp, (source) => replacementsMap[source] ?? (0, import_Error.throwExpression)(new Error(`Unexpected replacement source: ${source}`)));
     }
     async function replaceAllAsync(str, searchValue, replacer) {
       const replacementPromises = [];
@@ -1181,24 +1207,26 @@ var require_String = __commonJS({
       const replacements = await Promise.all(replacementPromises);
       return str.replaceAll(searchValue, () => replacements.shift() ?? (0, import_Error.throwExpression)(new Error("Unexpected empty replacement")));
     }
-    function makeValidVariableName(str) {
-      return str.replace(/[^a-zA-Z0-9_]/g, "_");
+    function trimEnd(str, suffix, validate) {
+      if (str.endsWith(suffix)) {
+        return str.slice(0, -suffix.length);
+      }
+      if (validate) {
+        throw new Error(`String ${str} does not end with suffix ${suffix}`);
+      }
+      return str;
     }
-    function ensureStartsWith(str, prefix) {
-      return str.startsWith(prefix) ? str : prefix + str;
-    }
-    function ensureEndsWith(str, suffix) {
-      return str.endsWith(suffix) ? str : str + suffix;
-    }
-    function escape(str) {
-      return replace(str, ESCAPE_MAP);
+    function trimStart(str, prefix, validate) {
+      if (str.startsWith(prefix)) {
+        return str.slice(prefix.length);
+      }
+      if (validate) {
+        throw new Error(`String ${str} does not start with prefix ${prefix}`);
+      }
+      return str;
     }
     function unescape(str) {
       return replace(str, UNESCAPE_MAP);
-    }
-    function replace(str, replacementsMap) {
-      const regExp = new RegExp(Object.keys(replacementsMap).map((source) => (0, import_RegExp.escapeRegExp)(source)).join("|"), "g");
-      return str.replaceAll(regExp, (source) => replacementsMap[source] ?? (0, import_Error.throwExpression)(new Error(`Unexpected replacement source: ${source}`)));
     }
   }
 });
@@ -1280,23 +1308,14 @@ var require_Path = __commonJS({
     var normalize = posix.normalize;
     var parse = posix.parse;
     var relative = posix.relative;
-    function resolve(...pathSegments) {
-      let path2 = posix.resolve(...pathSegments);
-      path2 = toPosixPath(path2);
-      const match = WINDOWS_POSIX_LIKE_PATH_REG_EXP.exec(path2);
-      return match?.[0] ?? path2;
-    }
-    function toPosixPath(path2) {
-      return path2.replace(/\\/g, "/");
-    }
-    function toPosixBuffer(buffer) {
-      return Buffer.from(toPosixPath(buffer.toString()));
+    function getDirname(importMetaUrl) {
+      return dirname(getFilename(importMetaUrl));
     }
     function getFilename(importMetaUrl) {
       return resolve(new URL(importMetaUrl).pathname);
     }
-    function getDirname(importMetaUrl) {
-      return dirname(getFilename(importMetaUrl));
+    function makeFileName(fileName, extension) {
+      return extension ? `${fileName}.${extension}` : fileName;
     }
     function normalizeIfRelative(path2) {
       if (path2.startsWith("/") || path2.includes(":")) {
@@ -1304,8 +1323,17 @@ var require_Path = __commonJS({
       }
       return (0, import_String.ensureStartsWith)(path2, "./");
     }
-    function makeFileName(fileName, extension) {
-      return extension ? `${fileName}.${extension}` : fileName;
+    function resolve(...pathSegments) {
+      let path2 = posix.resolve(...pathSegments);
+      path2 = toPosixPath(path2);
+      const match = WINDOWS_POSIX_LIKE_PATH_REG_EXP.exec(path2);
+      return match?.[0] ?? path2;
+    }
+    function toPosixBuffer(buffer) {
+      return Buffer.from(toPosixPath(buffer.toString()));
+    }
+    function toPosixPath(path2) {
+      return path2.replace(/\\/g, "/");
     }
   }
 });
@@ -1367,6 +1395,12 @@ var require_FileSystem = __commonJS({
     var import_String = require_String();
     var MARKDOWN_FILE_EXTENSION = "md";
     var CANVAS_FILE_EXTENSION = "canvas";
+    function checkExtension(pathOrFile, extension) {
+      if (pathOrFile === null) {
+        return false;
+      }
+      return (0, import_Path.extname)(getPath(pathOrFile)).toLowerCase().slice(1) === extension.toLowerCase();
+    }
     function getAbstractFile(app, pathOrFile, insensitive) {
       const file = getAbstractFileOrNull(app, pathOrFile, insensitive);
       if (!file) {
@@ -1440,39 +1474,6 @@ var require_FileSystem = __commonJS({
       markdownFiles = markdownFiles.sort((a, b) => a.path.localeCompare(b.path));
       return markdownFiles;
     }
-    function isAbstractFile(file) {
-      return file instanceof import_obsidian3.TAbstractFile;
-    }
-    function isFile2(file) {
-      return file instanceof import_obsidian3.TFile;
-    }
-    function isFolder(file) {
-      return file instanceof import_obsidian3.TFolder;
-    }
-    function isNote(pathOrFile) {
-      return isMarkdownFile2(pathOrFile) || isCanvasFile(pathOrFile);
-    }
-    function isMarkdownFile2(pathOrFile) {
-      return checkExtension(pathOrFile, MARKDOWN_FILE_EXTENSION);
-    }
-    function isCanvasFile(pathOrFile) {
-      return checkExtension(pathOrFile, CANVAS_FILE_EXTENSION);
-    }
-    function checkExtension(pathOrFile, extension) {
-      if (pathOrFile === null) {
-        return false;
-      }
-      return (0, import_Path.extname)(getPath(pathOrFile)).toLowerCase().slice(1) === extension.toLowerCase();
-    }
-    function trimMarkdownExtension(file) {
-      if (!isMarkdownFile2(file)) {
-        return file.path;
-      }
-      return (0, import_String.trimEnd)(file.path, "." + MARKDOWN_FILE_EXTENSION);
-    }
-    function getPath(pathOrFile) {
-      return isAbstractFile(pathOrFile) ? pathOrFile.path : pathOrFile;
-    }
     async function getOrCreateFile(app, path) {
       const file = getFileOrNull(app, path);
       if (file) {
@@ -1488,6 +1489,33 @@ var require_FileSystem = __commonJS({
         return folder;
       }
       return await app.vault.createFolder(path);
+    }
+    function getPath(pathOrFile) {
+      return isAbstractFile(pathOrFile) ? pathOrFile.path : pathOrFile;
+    }
+    function isAbstractFile(file) {
+      return file instanceof import_obsidian3.TAbstractFile;
+    }
+    function isCanvasFile(pathOrFile) {
+      return checkExtension(pathOrFile, CANVAS_FILE_EXTENSION);
+    }
+    function isFile2(file) {
+      return file instanceof import_obsidian3.TFile;
+    }
+    function isFolder(file) {
+      return file instanceof import_obsidian3.TFolder;
+    }
+    function isMarkdownFile2(pathOrFile) {
+      return checkExtension(pathOrFile, MARKDOWN_FILE_EXTENSION);
+    }
+    function isNote(pathOrFile) {
+      return isMarkdownFile2(pathOrFile) || isCanvasFile(pathOrFile);
+    }
+    function trimMarkdownExtension(file) {
+      if (!isMarkdownFile2(file)) {
+        return file.path;
+      }
+      return (0, import_String.trimEnd)(file.path, "." + MARKDOWN_FILE_EXTENSION);
     }
   }
 });
@@ -1527,19 +1555,19 @@ var require_Function = __commonJS({
       omitReturnType: () => omitReturnType
     });
     module2.exports = __toCommonJS2(Function_exports);
-    function omitReturnType(fn) {
-      return (...args) => {
-        fn(...args);
-      };
+    function noop() {
+    }
+    async function noopAsync() {
     }
     function omitAsyncReturnType(fn) {
       return async (...args) => {
         await fn(...args);
       };
     }
-    function noop() {
-    }
-    async function noopAsync() {
+    function omitReturnType(fn) {
+      return (...args) => {
+        fn(...args);
+      };
     }
   }
 });
@@ -1577,6 +1605,9 @@ var require_PluginSettings = __commonJS({
       loadPluginSettings: () => loadPluginSettings
     });
     module2.exports = __toCommonJS2(PluginSettings_exports);
+    function clonePluginSettings(defaultPluginSettingsFactory, settings) {
+      return loadPluginSettings(defaultPluginSettingsFactory, settings);
+    }
     function loadPluginSettings(defaultPluginSettingsFactory, data) {
       const defaultPluginSettings = defaultPluginSettingsFactory();
       if (data && typeof data === "object") {
@@ -1588,9 +1619,6 @@ var require_PluginSettings = __commonJS({
         }
       }
       return defaultPluginSettings;
-    }
-    function clonePluginSettings(defaultPluginSettingsFactory, settings) {
-      return loadPluginSettings(defaultPluginSettingsFactory, settings);
     }
   }
 });
@@ -1637,17 +1665,6 @@ var require_PluginBase = __commonJS({
       "platform": "android"
     };
     var PluginBase2 = class extends import_obsidian3.Plugin {
-      _settings;
-      notice;
-      _abortSignal;
-      /**
-       * Gets the AbortSignal used for aborting long-running operations.
-       *
-       * @returns The abort signal.
-       */
-      get abortSignal() {
-        return this._abortSignal;
-      }
       /**
        * Gets a copy of the current plugin settings.
        *
@@ -1657,6 +1674,14 @@ var require_PluginBase = __commonJS({
         return (0, import_PluginSettings.clonePluginSettings)(this.createDefaultPluginSettings.bind(this), this.settings);
       }
       /**
+       * Gets the AbortSignal used for aborting long-running operations.
+       *
+       * @returns The abort signal.
+       */
+      get abortSignal() {
+        return this._abortSignal;
+      }
+      /**
        * Gets the plugin settings.
        *
        * @returns The plugin settings.
@@ -1664,6 +1689,9 @@ var require_PluginBase = __commonJS({
       get settings() {
         return this._settings;
       }
+      _abortSignal;
+      _settings;
+      notice;
       /**
        * Called when the plugin is loaded
        */
@@ -1685,13 +1713,14 @@ var require_PluginBase = __commonJS({
         this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));
       }
       /**
-       * Called when the plugin loading is complete. This method must be implemented by subclasses to perform
-       * any additional setup required after loading is complete.
+       * Saves the new plugin settings.
        *
-       * @returns A promise or void indicating the completion of the load process.
+       * @param newSettings - The new settings to save.
+       * @returns A promise that resolves when the settings are saved.
        */
-      onloadComplete() {
-        (0, import_Function.noop)();
+      async saveSettings(newSettings) {
+        this._settings = (0, import_PluginSettings.clonePluginSettings)(this.createDefaultPluginSettings.bind(this), newSettings);
+        await this.saveData(this.settings);
       }
       /**
        * Called when the layout is ready. This method can be overridden by subclasses to perform actions once
@@ -1703,13 +1732,13 @@ var require_PluginBase = __commonJS({
         (0, import_Function.noop)();
       }
       /**
-       * Loads the plugin settings from the saved data.
+       * Called when the plugin loading is complete. This method must be implemented by subclasses to perform
+       * any additional setup required after loading is complete.
        *
-       * @returns A promise that resolves when the settings are loaded.
+       * @returns A promise or void indicating the completion of the load process.
        */
-      async loadSettings() {
-        const data = await this.loadData();
-        this._settings = await this.parseSettings(data);
+      onloadComplete() {
+        (0, import_Function.noop)();
       }
       /**
        * Parses the provided settings data and returns the parsed `PluginSettings`.
@@ -1719,16 +1748,6 @@ var require_PluginBase = __commonJS({
        */
       parseSettings(data) {
         return (0, import_PluginSettings.loadPluginSettings)(this.createDefaultPluginSettings.bind(this), data);
-      }
-      /**
-       * Saves the new plugin settings.
-       *
-       * @param newSettings - The new settings to save.
-       * @returns A promise that resolves when the settings are saved.
-       */
-      async saveSettings(newSettings) {
-        this._settings = (0, import_PluginSettings.clonePluginSettings)(this.createDefaultPluginSettings.bind(this), newSettings);
-        await this.saveData(this.settings);
       }
       /**
        * Displays a notice message to the user.
@@ -1741,6 +1760,15 @@ var require_PluginBase = __commonJS({
         }
         this.notice = new import_obsidian3.Notice(`${this.manifest.name}
 ${message}`);
+      }
+      /**
+       * Loads the plugin settings from the saved data.
+       *
+       * @returns A promise that resolves when the settings are loaded.
+       */
+      async loadSettings() {
+        const data = await this.loadData();
+        this._settings = await this.parseSettings(data);
       }
     };
   }
@@ -1789,6 +1817,149 @@ var require_PluginSettingsTabBase = __commonJS({
   }
 });
 
+// node_modules/obsidian-dev-utils/dist/lib/Object.cjs
+var require_Object = __commonJS({
+  "node_modules/obsidian-dev-utils/dist/lib/Object.cjs"(exports2, module2) {
+    (function patchRequireEsmDefault() {
+      const __require = require;
+      require = Object.assign((id) => {
+        const module3 = __require(id);
+        return module3.__esModule && module3.default ? module3.default : module3;
+      }, __require);
+    })();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all) => {
+      for (var name in all)
+        __defProp2(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var Object_exports = {};
+    __export2(Object_exports, {
+      assignWithNonEnumerableProperties: () => assignWithNonEnumerableProperties,
+      cloneWithNonEnumerableProperties: () => cloneWithNonEnumerableProperties,
+      deepEqual: () => deepEqual,
+      getNestedPropertyValue: () => getNestedPropertyValue,
+      getPrototypeOf: () => getPrototypeOf,
+      nameof: () => nameof,
+      setNestedPropertyValue: () => setNestedPropertyValue,
+      toJson: () => toJson
+    });
+    module2.exports = __toCommonJS2(Object_exports);
+    var import_Error = require_Error();
+    var __process = globalThis["process"] ?? {
+      "cwd": () => "/",
+      "env": {},
+      "platform": "android"
+    };
+    function assignWithNonEnumerableProperties(target, ...sources) {
+      return _assignWithNonEnumerableProperties(target, ...sources);
+    }
+    function cloneWithNonEnumerableProperties(obj) {
+      return Object.create(getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+    }
+    function deepEqual(a, b) {
+      if (a === b) {
+        return true;
+      }
+      if (typeof a !== "object" || typeof b !== "object" || a === null || b === null) {
+        return false;
+      }
+      const keysA = Object.keys(a);
+      const keysB = Object.keys(b);
+      if (keysA.length !== keysB.length) {
+        return false;
+      }
+      const aRecord = a;
+      const bRecord = b;
+      for (const key of keysA) {
+        if (!keysB.includes(key) || !deepEqual(aRecord[key], bRecord[key])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    function getNestedPropertyValue(obj, path) {
+      let node = obj;
+      const keys = path.split(".");
+      for (const key of keys) {
+        if (node === void 0) {
+          return void 0;
+        }
+        node = node[key];
+      }
+      return node;
+    }
+    function getPrototypeOf(instance) {
+      if (instance === void 0 || instance === null) {
+        return instance;
+      }
+      return Object.getPrototypeOf(instance);
+    }
+    function nameof(name) {
+      return name;
+    }
+    function setNestedPropertyValue(obj, path, value) {
+      const error = new Error(`Property path ${path} not found`);
+      let node = obj;
+      const keys = path.split(".");
+      for (const key of keys.slice(0, -1)) {
+        if (node === void 0) {
+          throw error;
+        }
+        node = node[key];
+      }
+      const lastKey = keys.at(-1);
+      if (node === void 0 || lastKey === void 0) {
+        throw error;
+      }
+      node[lastKey] = value;
+    }
+    function toJson(value, options = {}) {
+      const {
+        shouldHandleFunctions = false,
+        space = 2
+      } = options;
+      if (!shouldHandleFunctions) {
+        return JSON.stringify(value, null, space);
+      }
+      const functionTexts = [];
+      const replacer = (_, value2) => {
+        if (typeof value2 === "function") {
+          const index = functionTexts.length;
+          functionTexts.push(value2.toString());
+          return `__FUNCTION_${index.toString()}`;
+        }
+        return value2;
+      };
+      let json = JSON.stringify(value, replacer, space);
+      json = json.replaceAll(/"__FUNCTION_(\d+)"/g, (_, indexStr) => functionTexts[parseInt(indexStr)] ?? (0, import_Error.throwExpression)(new Error(`Function with index ${indexStr} not found`)));
+      return json;
+    }
+    function _assignWithNonEnumerableProperties(target, ...sources) {
+      for (const source of sources) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      }
+      const sourcePrototypes = sources.map((source) => getPrototypeOf(source)).filter((proto) => !!proto);
+      if (sourcePrototypes.length > 0) {
+        const targetPrototype = _assignWithNonEnumerableProperties({}, getPrototypeOf(target), ...sourcePrototypes);
+        Object.setPrototypeOf(target, targetPrototype);
+      }
+      return target;
+    }
+  }
+});
+
 // node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/ValueComponent.cjs
 var require_ValueComponent = __commonJS({
   "node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/ValueComponent.cjs"(exports2, module2) {
@@ -1818,49 +1989,76 @@ var require_ValueComponent = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var ValueComponent_exports = {};
     __export2(ValueComponent_exports, {
-      bindValueComponent: () => bindValueComponent2
+      extend: () => extend2
     });
     module2.exports = __toCommonJS2(ValueComponent_exports);
     var import_obsidian3 = require("obsidian");
-    function bindValueComponent2(plugin, valueComponent, property, options) {
-      const DEFAULT_OPTIONS = {
-        autoSave: true,
-        pluginSettingsToComponentValueConverter: (value) => value,
-        componentToPluginSettingsValueConverter: (value) => value
-      };
-      const optionsExt = { ...DEFAULT_OPTIONS, ...options };
-      const pluginExt = plugin;
-      const uiComponentExt = valueComponent;
-      const pluginSettingsFn = () => optionsExt.pluginSettings ?? pluginExt.settingsCopy;
-      uiComponentExt.setValue(optionsExt.pluginSettingsToComponentValueConverter(pluginSettingsFn()[property])).onChange(async (uiValue) => {
-        if (!validateComponent(uiValue)) {
-          return;
-        }
-        const pluginSettings = pluginSettingsFn();
-        pluginSettings[property] = optionsExt.componentToPluginSettingsValueConverter(uiValue);
-        if (optionsExt.autoSave) {
-          await pluginExt.saveSettings(pluginSettings);
-        }
-      });
-      const validatorElement = getValidatorElement(valueComponent);
-      if (validatorElement) {
-        validatorElement.addEventListener("focus", () => validateComponent());
-        validatorElement.addEventListener("blur", () => validateComponent());
+    var import_Object = require_Object();
+    var ValueComponentEx = class {
+      constructor(valueComponent) {
+        this.valueComponent = valueComponent;
       }
-      return valueComponent;
-      function validateComponent(uiValue) {
-        if (!optionsExt.valueValidator) {
-          return true;
-        }
-        uiValue ??= uiComponentExt.getValue();
-        const errorMessage = optionsExt.valueValidator(uiValue);
-        const validatorElement2 = getValidatorElement(valueComponent);
-        if (validatorElement2) {
-          validatorElement2.setCustomValidity(errorMessage ?? "");
-          validatorElement2.reportValidity();
-        }
-        return !errorMessage;
+      /**
+       * Returns the ValueComponent with extended functionality.
+       */
+      asExtended() {
+        return (0, import_Object.assignWithNonEnumerableProperties)({}, this.valueComponent, this);
       }
+      /**
+       * Binds the ValueComponent to a property in the plugin settings.
+       *
+       * @typeParam Plugin - The type of the plugin that extends `PluginBase`.
+       * @typeParam Property - The key of the plugin setting that the component is bound to.
+       * @typeParam PluginSettings - The type of the plugin settings object.
+       * @param plugin - The plugin.
+       * @param property - The property key in `PluginSettings` to bind to the UI component.
+       * @param options - Configuration options.
+       * @returns The `ValueComponent` instance that was bound to the property.
+       */
+      bind(plugin, property, options) {
+        const DEFAULT_OPTIONS = {
+          autoSave: true,
+          componentToPluginSettingsValueConverter: (value) => value,
+          pluginSettingsToComponentValueConverter: (value) => value
+        };
+        const optionsExt = { ...DEFAULT_OPTIONS, ...options };
+        const pluginExt = plugin;
+        const pluginSettingsFn = () => optionsExt.pluginSettings ?? pluginExt.settingsCopy;
+        const validate = (uiValue) => {
+          if (!optionsExt.valueValidator) {
+            return true;
+          }
+          uiValue ??= this.valueComponent.getValue();
+          const errorMessage = optionsExt.valueValidator(uiValue);
+          const validatorElement2 = getValidatorElement(this.valueComponent);
+          if (validatorElement2) {
+            validatorElement2.setCustomValidity(errorMessage ?? "");
+            validatorElement2.reportValidity();
+          }
+          return !errorMessage;
+        };
+        this.valueComponent.setValue(optionsExt.pluginSettingsToComponentValueConverter(pluginSettingsFn()[property])).onChange(async (uiValue) => {
+          if (!validate(uiValue)) {
+            return;
+          }
+          const pluginSettings = pluginSettingsFn();
+          pluginSettings[property] = optionsExt.componentToPluginSettingsValueConverter(uiValue);
+          if (optionsExt.autoSave) {
+            await pluginExt.saveSettings(pluginSettings);
+          }
+          await optionsExt.onChanged?.();
+        });
+        validate();
+        const validatorElement = getValidatorElement(this.valueComponent);
+        if (validatorElement) {
+          validatorElement.addEventListener("focus", () => validate());
+          validatorElement.addEventListener("blur", () => validate());
+        }
+        return this.asExtended();
+      }
+    };
+    function extend2(valueComponent) {
+      return new ValueComponentEx(valueComponent).asExtended();
     }
     function getValidatorElement(valueComponent) {
       if (valueComponent instanceof import_obsidian3.DropdownComponent) {
@@ -1895,8 +2093,8 @@ var import_PluginBase = __toESM(require_PluginBase(), 1);
 
 // src/RefreshPreviewPluginSettings.ts
 var RefreshPreviewPluginSettings = class {
-  autoRefreshOnFileChange = false;
   autoRefreshIntervalInSeconds = 0;
+  autoRefreshOnFileChange = false;
 };
 
 // src/RefreshPreviewPluginSettingsTab.ts
@@ -1906,11 +2104,11 @@ var import_ValueComponent = __toESM(require_ValueComponent(), 1);
 var RefreshPreviewPluginSettingsTab = class extends import_PluginSettingsTabBase.PluginSettingsTabBase {
   display() {
     this.containerEl.empty();
-    new import_obsidian.Setting(this.containerEl).setName("Auto refresh on file change").addToggle((toggle) => (0, import_ValueComponent.bindValueComponent)(this.plugin, toggle, "autoRefreshOnFileChange"));
+    new import_obsidian.Setting(this.containerEl).setName("Auto refresh on file change").addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "autoRefreshOnFileChange"));
     new import_obsidian.Setting(this.containerEl).setName("Auto refresh interval (seconds)").setDesc("Set to 0 to disable auto refresh").addText((text) => {
-      (0, import_ValueComponent.bindValueComponent)(this.plugin, text, "autoRefreshIntervalInSeconds", {
-        pluginSettingsToComponentValueConverter: (pluginSettingsValue) => pluginSettingsValue.toString(),
+      (0, import_ValueComponent.extend)(text).bind(this.plugin, "autoRefreshIntervalInSeconds", {
         componentToPluginSettingsValueConverter: (uiValue) => parseInt(uiValue, 10),
+        pluginSettingsToComponentValueConverter: (pluginSettingsValue) => pluginSettingsValue.toString(),
         valueValidator() {
           if (isNaN(text.inputEl.valueAsNumber)) {
             return "Please enter a numeric value";
@@ -1930,17 +2128,25 @@ var RefreshPreviewPluginSettingsTab = class extends import_PluginSettingsTabBase
 // src/RefreshPreviewPlugin.ts
 var RefreshPreviewPlugin = class extends import_PluginBase.PluginBase {
   autoRefreshIntervalId = null;
+  async saveSettings(newSettings) {
+    await super.saveSettings(newSettings);
+    this.registerAutoRefreshTimer();
+  }
   createDefaultPluginSettings() {
     return new RefreshPreviewPluginSettings();
   }
   createPluginSettingsTab() {
     return new RefreshPreviewPluginSettingsTab(this);
   }
+  onLayoutReady() {
+    this.addRefreshPreviewButton();
+    this.registerAutoRefreshTimer();
+  }
   onloadComplete() {
     this.addCommand({
+      checkCallback: this.refreshPreview.bind(this),
       id: "refresh-preview",
-      name: "Refresh",
-      checkCallback: this.refreshPreview.bind(this)
+      name: "Refresh"
     });
     this.registerEvent(
       this.app.workspace.on("layout-change", () => {
@@ -1956,30 +2162,6 @@ var RefreshPreviewPlugin = class extends import_PluginBase.PluginBase {
       (0, import_Async.invokeAsyncSafely)(() => this.removeRefreshPreviewButton());
     });
     this.registerEvent(this.app.vault.on("modify", this.handleModify.bind(this)));
-  }
-  onLayoutReady() {
-    this.addRefreshPreviewButton();
-    this.registerAutoRefreshTimer();
-  }
-  async saveSettings(newSettings) {
-    await super.saveSettings(newSettings);
-    this.registerAutoRefreshTimer();
-  }
-  refreshPreview(checking = false, view) {
-    if (!view) {
-      const activeView = this.app.workspace.getActiveViewOfType(import_obsidian2.MarkdownView);
-      if (!activeView) {
-        return false;
-      }
-      view = activeView;
-    }
-    if (view.getMode() !== "preview") {
-      return false;
-    }
-    if (!checking) {
-      view.previewMode.rerender(true);
-    }
-    return true;
   }
   addRefreshPreviewButton() {
     const view = this.app.workspace.getActiveViewOfType(import_obsidian2.MarkdownView);
@@ -2005,27 +2187,11 @@ var RefreshPreviewPlugin = class extends import_PluginBase.PluginBase {
     (0, import_obsidian2.setTooltip)(refreshPreviewButton, "Refresh preview");
     actionsContainer.prepend(refreshPreviewButton);
   }
-  getRefreshPreviewButton(actionsContainer) {
-    return actionsContainer.querySelector(".refresh-preview-button");
-  }
-  async removeRefreshPreviewButton() {
-    for (const leaf of this.app.workspace.getLeavesOfType("markdown")) {
-      await leaf.loadIfDeferred();
-      this.removeRefreshPreviewButtonFromView(leaf.view);
-    }
-  }
   getActionsContainer(view) {
     return view.containerEl.querySelector(".view-header .view-actions");
   }
-  removeRefreshPreviewButtonFromView(view) {
-    const actionsContainer = this.getActionsContainer(view);
-    if (!actionsContainer) {
-      return;
-    }
-    const refreshPreviewButton = this.getRefreshPreviewButton(actionsContainer);
-    if (refreshPreviewButton) {
-      actionsContainer.removeChild(refreshPreviewButton);
-    }
+  getRefreshPreviewButton(actionsContainer) {
+    return actionsContainer.querySelector(".refresh-preview-button");
   }
   handleModify(file) {
     if (!this.settings.autoRefreshOnFileChange) {
@@ -2043,6 +2209,22 @@ var RefreshPreviewPlugin = class extends import_PluginBase.PluginBase {
       }
     }
   }
+  refreshPreview(checking = false, view) {
+    if (!view) {
+      const activeView = this.app.workspace.getActiveViewOfType(import_obsidian2.MarkdownView);
+      if (!activeView) {
+        return false;
+      }
+      view = activeView;
+    }
+    if (view.getMode() !== "preview") {
+      return false;
+    }
+    if (!checking) {
+      view.previewMode.rerender(true);
+    }
+    return true;
+  }
   registerAutoRefreshTimer() {
     if (this.autoRefreshIntervalId) {
       clearInterval(this.autoRefreshIntervalId);
@@ -2055,6 +2237,22 @@ var RefreshPreviewPlugin = class extends import_PluginBase.PluginBase {
       this.refreshPreview(false);
     }, this.settings.autoRefreshIntervalInSeconds * 1e3);
     this.registerInterval(this.autoRefreshIntervalId);
+  }
+  async removeRefreshPreviewButton() {
+    for (const leaf of this.app.workspace.getLeavesOfType("markdown")) {
+      await leaf.loadIfDeferred();
+      this.removeRefreshPreviewButtonFromView(leaf.view);
+    }
+  }
+  removeRefreshPreviewButtonFromView(view) {
+    const actionsContainer = this.getActionsContainer(view);
+    if (!actionsContainer) {
+      return;
+    }
+    const refreshPreviewButton = this.getRefreshPreviewButton(actionsContainer);
+    if (refreshPreviewButton) {
+      actionsContainer.removeChild(refreshPreviewButton);
+    }
   }
 };
 

@@ -283,7 +283,13 @@
     "Archives",
     "Ext"
   ],
-  "filesToIgnore": [],
+  "filesToIgnore": [
+    {
+      "label": "excalidraw",
+      "match": ".*\\.excalidraw\\.md$",
+      "flags": "i"
+    }
+  ],
   "linterLocale": "system-default",
   "logLevel": "ERROR",
   "lintCommands": [],

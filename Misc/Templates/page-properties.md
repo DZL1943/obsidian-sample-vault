@@ -1,15 +1,16 @@
 ---
 title: <% tp.file.title %>
-authors: []
+authors: 
 description: 
+image: 
 url: 
-image_url: 
 created: <% tp.file.creation_date() %>
 modified: <% tp.file.last_modified_date() %>
 status: 
 type: 
-categories: []
-tags: []
-aliases: []
+categories: 
+tags: 
+aliases: 
 links: 
+remark:
 ---

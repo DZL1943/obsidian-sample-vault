@@ -18,7 +18,12 @@
     "checklist",
     "statusbar",
     "ribbon",
-    "list"
+    "list",
+    "tab",
+    "img",
+    "bugfix",
+    "S - Checkboxes"
   ],
-  "showViewHeader": false
+  "showViewHeader": false,
+  "cssTheme": ""
 }

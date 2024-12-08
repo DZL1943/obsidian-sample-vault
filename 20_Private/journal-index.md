@@ -5,6 +5,8 @@ obsidianUIMode: preview
 obsidianEditingMode: source
 ---
 
+[tasks](tasks.md) [moments](moments.md) [insights](insights.md)
+
 # Timestamps
 
 ```dataviewjs

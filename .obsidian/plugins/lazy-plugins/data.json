@@ -138,7 +138,7 @@
         "startupType": "short"
       },
       "obsidian-markmind": {
-        "startupType": "long"
+        "startupType": "disabled"
       },
       "nldates-obsidian": {
         "startupType": "short"
@@ -313,6 +313,21 @@
       },
       "plugins-annotations": {
         "startupType": "short"
+      },
+      "supercharged-links-obsidian": {
+        "startupType": "short"
+      },
+      "obsidian-another-quick-switcher": {
+        "startupType": "instant"
+      },
+      "obsidian-importer": {
+        "startupType": "disabled"
+      },
+      "image-converter": {
+        "startupType": "disabled"
+      },
+      "obsidian-spaced-repetition": {
+        "startupType": "disabled"
       }
     }
   }

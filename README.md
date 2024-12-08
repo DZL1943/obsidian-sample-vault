@@ -11,7 +11,7 @@ editor-width: 88
 
 ![](Misc/Attachments/Obsidian-20240908154942.png)
 
-- Obsidian 版本 | 1.6.7-mac-arm64
+- Obsidian 版本 | 1.7.7-mac-arm64
 - 主题 | 默认
 - ribbon | 基本上不用
 - 标题栏 | 隐藏 | 用 editing-toolbar 和 quick-explorer 替代
@@ -36,7 +36,7 @@ editor-width: 88
   "livePreview": true,
   "readableLineLength": true,
   "strictLineBreaks": false,
-  "propertiesInDocument": "source",
+  "propertiesInDocument": "visible",
   "useTab": false,
   "trashOption": "local",
   "promptDelete": false,
@@ -49,7 +49,7 @@ editor-width: 88
   "showInlineTitle": false,
   "showRibbon": false,
   "vimMode": false,
-  "showLineNumber": true,
+  "showLineNumber": false,
   "pdfExportSettings": {
     "pageSize": "A4",
     "landscape": false,
@@ -80,6 +80,7 @@ editor-width: 88
     "editor:toggle-checklist-status",
     "editor:configure-toolbar"
   ]
+}
 ```
 
 ### Hotkeys
@@ -114,6 +115,8 @@ editor-width: 88
 | editor:table-row-up                                                   | Mod+Alt+ArrowUp     |
 | editor:toggle-source                                                  | Alt+Mod+E           |
 | float-search:search-obsidian-globally                                 | Mod+Shift+F         |
+| floating-toc:scroll-to-bottom                                         | Mod+Ctrl+ArrowDown  |
+| floating-toc:scroll-to-top                                            | Mod+Ctrl+ArrowUp    |
 | fuzzy-chinese-pinyin:execute-command                                  | Mod+P               |
 | fuzzy-chinese-pinyin:open-search                                      | Mod+O               |
 | homepage:open-homepage                                                | Ctrl+Alt+H          |
@@ -148,8 +151,10 @@ attachment-pro
 better-export-pdf
 better-fn
 better-markdown-links
+cm-chs-patch
 cmdr
 code-styler
+custom-sort
 cycle-in-sidebar
 darlal-switcher-plus
 dataview
@@ -165,6 +170,7 @@ floating-toc
 fuzzy-chinese-pinyin
 hotkey-helper
 image-captions
+image-converter
 janitor
 keyboard-analyzer
 lazy-plugins
@@ -187,6 +193,7 @@ obsidian-front-matter-title-plugin
 obsidian-git
 obsidian-heading-shifter
 obsidian-hover-editor
+obsidian-importer
 obsidian-kanban
 obsidian-latex-suite
 obsidian-linter
@@ -198,6 +205,7 @@ obsidian-outliner
 obsidian-plugin-proxy
 obsidian-projects
 obsidian-relative-line-numbers
+obsidian-spaced-repetition
 obsidian-style-settings
 obsidian-tagfolder
 obsidian-tasks-plugin
@@ -215,6 +223,7 @@ settings-search
 show-whitespace-cm6
 solve
 statusbar-organizer
+supercharged-links-obsidian
 surfing
 table-editor-obsidian
 templater-obsidian

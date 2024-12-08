@@ -437,5 +437,23 @@
       ],
       "key": "M"
     }
+  ],
+  "floating-toc:scroll-to-top": [
+    {
+      "modifiers": [
+        "Ctrl",
+        "Mod"
+      ],
+      "key": "ArrowUp"
+    }
+  ],
+  "floating-toc:scroll-to-bottom": [
+    {
+      "modifiers": [
+        "Ctrl",
+        "Mod"
+      ],
+      "key": "ArrowDown"
+    }
   ]
 }

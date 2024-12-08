@@ -1,5 +1,5 @@
 {
-  "show-checkboxes": true,
+  "show-checkboxes": false,
   "hide-tags-in-title": true,
   "hide-date-display": true,
   "hide-date-in-title": true,
@@ -11,5 +11,7 @@
   "archive-date-format": "YYYY-MM-DDTHH:mm",
   "archive-date-separator": "|",
   "move-tags": true,
-  "move-dates": true
+  "move-dates": true,
+  "new-card-insertion-method": "prepend-compact",
+  "tag-sort": []
 }

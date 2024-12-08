@@ -11,7 +11,8 @@
   "ChineseEnglishSpace": true,
   "ChineseNumberSpace": true,
   "EnglishNumberSpace": false,
-  "ChineseNoSpace": true,
+  "ChineseNoSpace": false,
+  "QuoteSpace": true,
   "PunctuationSpace": false,
   "AutoCapital": false,
   "AutoCapitalMode": "typing",
@@ -52,9 +53,12 @@
   "userSelRuleSettingsOpen": true,
   "userDelRuleSettingsOpen": true,
   "userCvtRuleSettingsOpen": true,
-  "EnterTwice": false,
+  "StrictModeEnter": false,
+  "StrictLineMode": "enter_twice",
+  "EnhanceModA": false,
   "TryFixChineseIM": false,
   "PuncRectify": false,
   "FixMacOSContextMenu": false,
-  "TryFixMSIME": false
+  "TryFixMSIME": false,
+  "EnterTwice": false
 }
