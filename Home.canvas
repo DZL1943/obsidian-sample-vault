@@ -21,46 +21,6 @@
       "label": "journal"
     },
     {
-      "id": "93330d1dc3c36832",
-      "type": "link",
-      "url": "http://localhost:8384",
-      "styleAttributes": {},
-      "x": -1020,
-      "y": -760,
-      "width": 480,
-      "height": 400
-    },
-    {
-      "id": "2cc41528face3499",
-      "type": "file",
-      "file": "QuickLinks.md",
-      "styleAttributes": {},
-      "x": -520,
-      "y": -760,
-      "width": 480,
-      "height": 400
-    },
-    {
-      "id": "b33493c94c59e332",
-      "type": "file",
-      "file": "Context.md",
-      "styleAttributes": {},
-      "x": -940,
-      "y": -1680,
-      "width": 400,
-      "height": 840
-    },
-    {
-      "id": "32041060b5b5b02b",
-      "type": "file",
-      "file": "10_Inbox/Local/temp.md",
-      "styleAttributes": {},
-      "x": -520,
-      "y": -1240,
-      "width": 400,
-      "height": 400
-    },
-    {
       "id": "547b6194c9f0b54f",
       "type": "text",
       "text": "> [!cite]+ \n> [sync | clean no-title no-h1](sync.md#sync)\n> \n> [Draft | clean no-title no-h1](draft.excalidraw.md#Draft)\n\n",
@@ -98,6 +58,46 @@
       "styleAttributes": {},
       "x": -520,
       "y": -2660,
+      "width": 400,
+      "height": 400
+    },
+    {
+      "id": "93330d1dc3c36832",
+      "type": "link",
+      "url": "http://localhost:8384",
+      "styleAttributes": {},
+      "x": -1020,
+      "y": -760,
+      "width": 480,
+      "height": 400
+    },
+    {
+      "id": "2cc41528face3499",
+      "type": "file",
+      "file": "QuickLinks.md",
+      "styleAttributes": {},
+      "x": -520,
+      "y": -760,
+      "width": 480,
+      "height": 400
+    },
+    {
+      "id": "b33493c94c59e332",
+      "type": "file",
+      "file": "Context.md",
+      "styleAttributes": {},
+      "x": -940,
+      "y": -1680,
+      "width": 400,
+      "height": 840
+    },
+    {
+      "id": "32041060b5b5b02b",
+      "type": "file",
+      "file": "10_Inbox/Local/temp.md",
+      "styleAttributes": {},
+      "x": -520,
+      "y": -1240,
       "width": 400,
       "height": 400
     }
