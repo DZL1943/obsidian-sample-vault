@@ -1,17 +1,19 @@
 {
   "attachPath": {
-    "attachmentRoot": "",
-    "saveAttE": "obsFolder",
-    "attachmentPath": "",
-    "attachFormat": "${notename}-${date}",
-    "type": "GLOBAL"
+    "attachmentRoot": "Misc/Attachments",
+    "saveAttE": "inFolderBelow",
+    "attachmentPath": "${notepath}",
+    "attachFormat": "${md5}",
+    "type": "GLOBAL",
+    "extensionOverride": []
   },
-  "dateFormat": "YYYYMMDDHHmmss",
-  "excludeExtensionPattern": "",
+  "dateFormat": "YYYYMMDDHHmmssSSS",
+  "excludeExtensionPattern": "pdf|docx?|xlsx?|pptx?",
   "autoRenameAttachment": true,
-  "excludedPaths": "20_Private;Ext;",
+  "excludedPaths": "20_Private;70_Resources;Ext;",
   "excludePathsArray": [
     "20_Private",
+    "70_Resources",
     "Ext",
     ""
   ],

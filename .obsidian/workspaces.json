@@ -12,6 +12,7 @@
               {
                 "id": "099a5ef38138632c",
                 "type": "leaf",
+                "pinned": true,
                 "state": {
                   "type": "markdown",
                   "state": {
@@ -19,11 +20,32 @@
                     "mode": "preview",
                     "source": true
                   },
+                  "pinned": true,
                   "icon": "lucide-file",
                   "title": "QuickLinks"
                 }
+              },
+              {
+                "id": "615f1aa7f89edc74",
+                "type": "leaf",
+                "pinned": true,
+                "state": {
+                  "type": "canvas",
+                  "state": {
+                    "file": "Home.canvas",
+                    "viewState": {
+                      "x": -530,
+                      "y": -870,
+                      "zoom": 0
+                    }
+                  },
+                  "pinned": true,
+                  "icon": "lucide-layout-dashboard",
+                  "title": "Home"
+                }
               }
-            ]
+            ],
+            "currentTab": 1
           }
         ],
         "direction": "vertical"
@@ -136,10 +158,10 @@
                 "state": {
                   "type": "outline",
                   "state": {
-                    "file": "QuickLinks.md"
+                    "file": "Home.canvas"
                   },
                   "icon": "lucide-list",
-                  "title": "QuickLinks 的大纲"
+                  "title": "Home 的大纲"
                 }
               },
               {
@@ -220,8 +242,8 @@
           "obsidian-excalidraw-plugin:新建绘图文件": false
         }
       },
-      "active": "099a5ef38138632c",
-      "mtime": "2024-10-23T08:46:07+08:00"
+      "active": "615f1aa7f89edc74",
+      "mtime": "2024-12-10T17:18:24+08:00"
     },
     "init": {
       "main": {

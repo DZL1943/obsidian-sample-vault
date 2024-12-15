@@ -14,9 +14,22 @@
       "icon": "pilcrow",
       "name": "Show Whitespace: Toggle Show Whitespace",
       "mode": "any"
+    },
+    {
+      "id": "obsidian-linter:lint-file",
+      "icon": "lint-file",
+      "name": "Linter: 格式化当前文件",
+      "mode": "any"
     }
   ],
-  "fileMenu": [],
+  "fileMenu": [
+    {
+      "id": "refresh-preview:refresh-preview",
+      "icon": "refresh-cw",
+      "name": "Refresh Preview: Refresh",
+      "mode": "any"
+    }
+  ],
   "leftRibbon": [],
   "rightRibbon": [],
   "titleBar": [],

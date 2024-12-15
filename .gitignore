@@ -24,6 +24,7 @@
 !*[pP]rivate/*-index.md
 
 /.stfolder/
+/.stversions/
 /.trash/
 /.zettel-notes/
 /.makemd/
@@ -40,3 +41,9 @@ bookmarks.json
 **/plugins/recent-files-obsidian/data.json
 [hH]ome.canvas
 [cC]ontext.md
+
+
+
+
+# Ignore Smart Environment folder
+.smart-env

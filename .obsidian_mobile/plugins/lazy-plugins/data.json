@@ -276,13 +276,13 @@
         "startupType": "short"
       },
       "attachment-flow-plugin": {
-        "startupType": "short"
-      },
-      "attachment-management": {
         "startupType": "disabled"
       },
+      "attachment-management": {
+        "startupType": "short"
+      },
       "attachment-pro": {
-        "startupType": "long"
+        "startupType": "disabled"
       },
       "obsidian-auto-hide": {
         "startupType": "instant"
@@ -514,6 +514,9 @@
       },
       "note-refactor-obsidian": {
         "startupType": "short"
+      },
+      "vconsole": {
+        "startupType": "disabled"
       }
     }
   }

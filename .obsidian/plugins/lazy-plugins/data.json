@@ -21,10 +21,10 @@
         "startupType": "short"
       },
       "attachment-management": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "attachment-pro": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "obsidian-auto-hide": {
         "startupType": "instant"
@@ -126,7 +126,7 @@
         "startupType": "short"
       },
       "keyboard-analyzer": {
-        "startupType": "short"
+        "startupType": "long"
       },
       "ledger-obsidian": {
         "startupType": "short"
@@ -147,7 +147,7 @@
         "startupType": "disabled"
       },
       "obsidian-columns": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "omnisearch": {
         "startupType": "short"
@@ -243,7 +243,7 @@
         "startupType": "disabled"
       },
       "image-captions": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "obsidian-list-callouts": {
         "startupType": "short"
@@ -327,6 +327,9 @@
         "startupType": "disabled"
       },
       "obsidian-spaced-repetition": {
+        "startupType": "disabled"
+      },
+      "smart-connections": {
         "startupType": "disabled"
       }
     }

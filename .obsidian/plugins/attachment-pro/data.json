@@ -22,8 +22,8 @@
         "path": "Misc/Attachments/Private"
       },
       "nameFormat": {
-        "type": "DATETIME",
-        "format": "yyyyMMddHHmmss"
+        "type": "CUSTOMIZE",
+        "format": "${now.toFormat('yyyyMMddHHmmssSSS')}"
       }
     },
     {
@@ -79,8 +79,8 @@
         "path": "Misc/Attachments"
       },
       "nameFormat": {
-        "type": "CUSTOMIZE",
-        "format": "${notename}-${now.toFormat('yyyyMMddHHmmss')}"
+        "type": "UUID",
+        "format": ""
       }
     }
   ],
