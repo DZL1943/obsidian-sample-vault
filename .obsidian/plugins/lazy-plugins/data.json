@@ -18,7 +18,7 @@
         "startupType": "short"
       },
       "attachment-flow-plugin": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "attachment-management": {
         "startupType": "short"
@@ -324,7 +324,7 @@
         "startupType": "disabled"
       },
       "image-converter": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "obsidian-spaced-repetition": {
         "startupType": "disabled"

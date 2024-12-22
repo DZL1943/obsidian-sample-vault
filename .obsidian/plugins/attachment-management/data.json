@@ -2,7 +2,7 @@
   "attachPath": {
     "attachmentRoot": "Misc/Attachments",
     "saveAttE": "inFolderBelow",
-    "attachmentPath": "${notepath}",
+    "attachmentPath": "",
     "attachFormat": "${md5}",
     "type": "GLOBAL",
     "extensionOverride": []

@@ -1,5 +1,5 @@
 {
-  "currentProxy": "ghproxy",
+  "currentProxy": "gh-proxy",
   "defaultProxy": "mirr",
   "proxyList": [
     {
@@ -27,22 +27,40 @@
       "page": "https://gitclone.com/github.com/"
     },
     {
+      "id": "gitmirror",
+      "download": "https://hub.gitmirror.com/https://github.com/",
+      "raw": "https://hub.gitmirror.com/https://raw.githubusercontent.com/",
+      "page": "https://hub.gitmirror.com/https://github.com/"
+    },
+    {
       "id": "ghproxy",
       "download": "https://mirror.ghproxy.com/https://github.com/",
       "raw": "https://mirror.ghproxy.com/https://raw.githubusercontent.com/",
       "page": "https://mirror.ghproxy.com/https://github.com/"
     },
     {
-      "id": "ghproxy-net",
-      "download": "https://ghproxy.net/https://github.com/",
-      "raw": "https://ghproxy.net/https://raw.githubusercontent.com/",
-      "page": "https://ghproxy.net/https://github.com/"
+      "id": "ghgo",
+      "download": "https://ghgo.xyz/https://github.com/",
+      "raw": "https://ghgo.xyz/https://raw.githubusercontent.com/",
+      "page": "https://ghgo.xyz/https://github.com/"
+    },
+    {
+      "id": "gh-proxy",
+      "download": "https://gh-proxy.com/https://github.com/",
+      "raw": "https://gh-proxy.com/https://raw.githubusercontent.com/",
+      "page": "https://gh-proxy.com/https://github.com/"
     },
     {
       "id": "ghproxy-cn",
       "download": "https://www.ghproxy.cn/https://github.com/",
       "raw": "https://www.ghproxy.cn/https://raw.githubusercontent.com/",
       "page": "https://www.ghproxy.cn/https://github.com/"
+    },
+    {
+      "id": "ghproxy-net",
+      "download": "https://ghproxy.net/https://github.com/",
+      "raw": "https://ghproxy.net/https://raw.githubusercontent.com/",
+      "page": "https://ghproxy.net/https://github.com/"
     },
     {
       "id": "idayer",

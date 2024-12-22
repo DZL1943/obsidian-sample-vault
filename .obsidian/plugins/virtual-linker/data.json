@@ -11,7 +11,8 @@
   ],
   "excludedDirectories": [
     "Ext",
-    "Misc"
+    "Misc",
+    "Archives"
   ],
   "excludedDirectoriesForLinking": [],
   "virtualLinkSuffix": "🔗",

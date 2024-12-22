@@ -50,6 +50,61 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
+// node_modules/obsidian-dev-utils/dist/lib/Function.cjs
+var require_Function = __commonJS({
+  "node_modules/obsidian-dev-utils/dist/lib/Function.cjs"(exports2, module2) {
+    function __extractDefault(module22) {
+      return module22 && module22.__esModule && module22.default ? module22.default : module22;
+    }
+    (function patchRequireEsmDefault() {
+      const __require = require;
+      require = Object.assign((id) => {
+        const module22 = __require(id) ?? {};
+        return __extractDefault(module22);
+      }, __require);
+    })();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all2) => {
+      for (var name in all2)
+        __defProp2(target, name, { get: all2[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var Function_exports = {};
+    __export2(Function_exports, {
+      noop: () => noop2,
+      noopAsync: () => noopAsync2,
+      omitAsyncReturnType: () => omitAsyncReturnType,
+      omitReturnType: () => omitReturnType
+    });
+    module2.exports = __toCommonJS2(Function_exports);
+    function noop2() {
+    }
+    async function noopAsync2() {
+    }
+    function omitAsyncReturnType(fn) {
+      return async (...args) => {
+        await fn(...args);
+      };
+    }
+    function omitReturnType(fn) {
+      return (...args) => {
+        fn(...args);
+      };
+    }
+  }
+});
+
 // node_modules/obsidian-typings/dist/implementations.cjs
 var require_implementations = __commonJS({
   "node_modules/obsidian-typings/dist/implementations.cjs"(exports2, module2) {
@@ -74,14 +129,39 @@ var require_implementations = __commonJS({
     var implementations_exports = {};
     __export2(implementations_exports, {
       CustomArrayDictImpl: () => CustomArrayDictImpl,
+      FileExtension: () => FileExtension,
       InternalPluginName: () => InternalPluginName,
-      constructApp: () => constructApp,
-      constructInternalPlugin: () => constructInternalPlugin,
-      constructInternalPlugins: () => constructInternalPlugins,
-      constructTFile: () => constructTFile,
-      constructTFolder: () => constructTFolder,
+      ViewType: () => ViewType,
       createTFileInstance: () => createTFileInstance,
       createTFolderInstance: () => createTFolderInstance,
+      getAllPropertiesViewConstructor: () => getAllPropertiesViewConstructor,
+      getAppConstructor: () => getAppConstructor,
+      getAudioViewConstructor: () => getAudioViewConstructor,
+      getBacklinkViewConstructor: () => getBacklinkViewConstructor,
+      getBookmarksViewConstructor: () => getBookmarksViewConstructor,
+      getBrowserHistoryViewConstructor: () => getBrowserHistoryViewConstructor,
+      getBrowserViewConstructor: () => getBrowserViewConstructor,
+      getCanvasViewConstructor: () => getCanvasViewConstructor,
+      getEmptyViewConstructor: () => getEmptyViewConstructor,
+      getFileExplorerViewConstructor: () => getFileExplorerViewConstructor,
+      getFilePropertiesViewConstructor: () => getFilePropertiesViewConstructor,
+      getGraphViewConstructor: () => getGraphViewConstructor,
+      getImageViewConstructor: () => getImageViewConstructor,
+      getInternalPluginConstructor: () => getInternalPluginConstructor,
+      getInternalPluginsConstructor: () => getInternalPluginsConstructor,
+      getLocalGraphViewConstructor: () => getLocalGraphViewConstructor,
+      getMarkdownViewConstructor: () => getMarkdownViewConstructor,
+      getOutgoingLinkViewConstructor: () => getOutgoingLinkViewConstructor,
+      getOutlineViewConstructor: () => getOutlineViewConstructor,
+      getPdfViewConstructor: () => getPdfViewConstructor,
+      getReleaseNotesViewConstructor: () => getReleaseNotesViewConstructor,
+      getSearchViewConstructor: () => getSearchViewConstructor,
+      getSyncViewConstructor: () => getSyncViewConstructor,
+      getTFileConstructor: () => getTFileConstructor,
+      getTFolderConstructor: () => getTFolderConstructor,
+      getTagViewConstructor: () => getTagViewConstructor,
+      getVideoViewConstructor: () => getVideoViewConstructor,
+      getViewConstructorByViewType: () => getViewConstructorByViewType,
       isEmbedCache: () => isEmbedCache,
       isFrontmatterLinkCache: () => isFrontmatterLinkCache,
       isLinkCache: () => isLinkCache,
@@ -89,22 +169,36 @@ var require_implementations = __commonJS({
       parentFolderPath: () => parentFolderPath
     });
     module2.exports = __toCommonJS2(implementations_exports);
+    var import_obsidian4 = require("obsidian");
+    function getTFolderConstructor() {
+      return import_obsidian4.TFolder;
+    }
     function parentFolderPath(path) {
       return path.replace(/\/?[^\/]*$/, "") || "/";
     }
-    var import_obsidian4 = require("obsidian");
-    function constructTFolder(vault, path) {
-      return new import_obsidian4.TFolder(vault, path);
-    }
-    function createTFolderInstance(vault, path) {
-      let folder = vault.getFolderByPath(path);
+    function createTFolderInstance(app, path) {
+      let folder = app.vault.getFolderByPath(path);
       if (folder) {
         return folder;
       }
-      folder = constructTFolder(vault, path);
-      folder.parent = createTFolderInstance(vault, parentFolderPath(path));
+      folder = new (getTFolderConstructor())(app.vault, path);
+      folder.parent = createTFolderInstance(app, parentFolderPath(path));
       folder.deleted = true;
       return folder;
+    }
+    var import_obsidian22 = require("obsidian");
+    function getTFileConstructor() {
+      return import_obsidian22.TFile;
+    }
+    function createTFileInstance(app, path) {
+      let file = app.vault.getFileByPath(path);
+      if (file) {
+        return file;
+      }
+      file = new (getTFileConstructor())(app.vault, path);
+      file.parent = createTFolderInstance(app, parentFolderPath(path));
+      file.deleted = true;
+      return file;
     }
     var CustomArrayDictImpl = class {
       data = /* @__PURE__ */ new Map();
@@ -151,64 +245,175 @@ var require_implementations = __commonJS({
         return ans;
       }
     };
+    var FileExtension = {
+      _3gp: "3gp",
+      avif: "avif",
+      bmp: "bmp",
+      canvas: "canvas",
+      flac: "flac",
+      gif: "gif",
+      jpeg: "jpeg",
+      jpg: "jpg",
+      m4a: "m4a",
+      md: "md",
+      mkv: "mkv",
+      mov: "mov",
+      mp3: "mp3",
+      mp4: "mp4",
+      oga: "oga",
+      ogg: "ogg",
+      ogv: "ogv",
+      opus: "opus",
+      pdf: "pdf",
+      png: "png",
+      svg: "svg",
+      wav: "wav",
+      webm: "webm",
+      webp: "webp"
+    };
     var InternalPluginName = {
+      /**
+       * Plugin name in UI: Audio recorder
+       */
       AudioRecorder: "audio-recorder",
+      /**
+       * Plugin name in UI: Backlinks
+       */
       Backlink: "backlink",
+      /**
+       * Plugin name in UI: Bookmarks
+       */
       Bookmarks: "bookmarks",
+      /**
+       * Plugin name in UI: Web viewer
+       * @remark Currently disabled
+       */
+      Browser: "browser",
+      /**
+       * Plugin name in UI: Canvas
+       */
       Canvas: "canvas",
+      /**
+       * Plugin name in UI: Command palette
+       */
       CommandPalette: "command-palette",
+      /**
+       * Plugin name in UI: Daily notes
+       */
       DailyNotes: "daily-notes",
+      /**
+       * Plugin name in UI: (hidden)
+       */
       EditorStatus: "editor-status",
+      /**
+       * Plugin name in UI: Files
+       */
       FileExplorer: "file-explorer",
+      /**
+       * Plugin name in UI: File recovery
+       */
       FileRecovery: "file-recovery",
+      /**
+       * Plugin name in UI: Search
+       */
       GlobalSearch: "global-search",
+      /**
+       * Plugin name in UI: Graph view
+       */
       Graph: "graph",
+      /**
+       * Plugin name in UI: Format converter
+       */
       MarkdownImporter: "markdown-importer",
+      /**
+       * Plugin name in UI: Note composer
+       */
       NoteComposer: "note-composer",
+      /**
+       * Plugin name in UI: Outgoing links
+       */
       OutgoingLink: "outgoing-link",
+      /**
+       * Plugin name in UI: Outline
+       */
       Outline: "outline",
+      /**
+       * Plugin name in UI: Page preview
+       */
       PagePreview: "page-preview",
+      /**
+       * Plugin name in UI: Properties view
+       */
       Properties: "properties",
+      /**
+       * Plugin name in UI: Publish
+       */
       Publish: "publish",
+      /**
+       * Plugin name in UI: Random note
+       */
       RandomNote: "random-note",
+      /**
+       * Plugin name in UI: Slash commands
+       */
       SlashCommand: "slash-command",
+      /**
+       * Plugin name in UI: Slides
+       */
       Slides: "slides",
+      /**
+       * Plugin name in UI: Quick Switcher
+       */
       Switcher: "switcher",
+      /**
+       * Plugin name in UI: Sync
+       */
       Sync: "sync",
+      /**
+       * Plugin name in UI: Tags view
+       */
       TagPane: "tag-pane",
+      /**
+       * Plugin name in UI: Templates
+       */
       Templates: "templates",
+      /**
+       * Plugin name in UI: Word count
+       */
       WordCount: "word-count",
+      /**
+       * Plugin name in UI: Workspaces
+       */
       Workspaces: "workspaces",
+      /**
+       * Plugin name in UI: Unique note creator
+       */
       ZkPrefixer: "zk-prefixer"
     };
-    var import_obsidian22 = require("obsidian");
-    function constructTFile(vault, path) {
-      return new import_obsidian22.TFile(vault, path);
-    }
-    function createTFileInstance(vault, path) {
-      let file = vault.getFileByPath(path);
-      if (file) {
-        return file;
-      }
-      file = constructTFile(vault, path);
-      file.parent = createTFolderInstance(vault, parentFolderPath(path));
-      file.deleted = true;
-      return file;
-    }
-    function constructInternalPlugins(app) {
-      return new app.internalPlugins.constructor(app);
-    }
-    function constructInternalPlugin(app, instance, internalPlugins) {
-      const anyPlugin = Object.values(app.internalPlugins.plugins)[0];
-      if (!anyPlugin) {
-        throw new Error("No internal plugin found");
-      }
-      return new anyPlugin.constructor(app, instance, internalPlugins);
-    }
-    var import_obsidian32 = require("obsidian");
-    function constructApp(adapter, appId) {
-      return new import_obsidian32.App(adapter, appId);
-    }
+    var ViewType = {
+      AllProperties: "all-properties",
+      Audio: "audio",
+      Backlink: InternalPluginName.Backlink,
+      Bookmarks: InternalPluginName.Bookmarks,
+      Browser: "browser",
+      BrowserHistory: "browser-history",
+      Canvas: InternalPluginName.Canvas,
+      Empty: "empty",
+      FileExplorer: InternalPluginName.FileExplorer,
+      FileProperties: "file-properties",
+      Graph: InternalPluginName.Graph,
+      Image: "image",
+      LocalGraph: "localgraph",
+      Markdown: "markdown",
+      OutgoingLink: InternalPluginName.OutgoingLink,
+      Outline: InternalPluginName.Outline,
+      Pdf: "pdf",
+      ReleaseNotes: "release-notes",
+      Search: "search",
+      Sync: "sync",
+      Tag: "tag",
+      Video: "video"
+    };
     function isReferenceCache(reference) {
       return !!reference.position;
     }
@@ -220,6 +425,99 @@ var require_implementations = __commonJS({
     }
     function isLinkCache(reference) {
       return isReferenceCache(reference) && reference.original[0] !== "!";
+    }
+    function getInternalPluginConstructor(app) {
+      const anyPlugin = Object.values(app.internalPlugins.plugins)[0];
+      if (!anyPlugin) {
+        throw new Error("No internal plugin found");
+      }
+      return anyPlugin.constructor;
+    }
+    function getInternalPluginsConstructor(app) {
+      return app.internalPlugins.constructor;
+    }
+    var import_obsidian32 = require("obsidian");
+    function getAppConstructor() {
+      return import_obsidian32.App;
+    }
+    function getViewConstructorByViewType(app, viewType) {
+      const leaf = app.workspace.createLeafInTabGroup();
+      try {
+        const viewCreator = app.viewRegistry.getViewCreatorByType(viewType);
+        if (!viewCreator) {
+          throw new Error("View creator not found");
+        }
+        const view = viewCreator(leaf);
+        return view.constructor;
+      } finally {
+        leaf.detach();
+      }
+    }
+    function getOutlineViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Outline);
+    }
+    function getBrowserViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Browser);
+    }
+    function getReleaseNotesViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.ReleaseNotes);
+    }
+    function getPdfViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Pdf);
+    }
+    function getSyncViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Sync);
+    }
+    function getOutgoingLinkViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.OutgoingLink);
+    }
+    function getCanvasViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Canvas);
+    }
+    function getTagViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Tag);
+    }
+    function getAudioViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Audio);
+    }
+    function getLocalGraphViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.LocalGraph);
+    }
+    function getBacklinkViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Backlink);
+    }
+    function getFileExplorerViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.FileExplorer);
+    }
+    function getSearchViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Search);
+    }
+    function getVideoViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Video);
+    }
+    function getImageViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Image);
+    }
+    function getBrowserHistoryViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.BrowserHistory);
+    }
+    function getEmptyViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Empty);
+    }
+    function getGraphViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Graph);
+    }
+    function getFilePropertiesViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.FileProperties);
+    }
+    function getBookmarksViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Bookmarks);
+    }
+    function getMarkdownViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.Markdown);
+    }
+    function getAllPropertiesViewConstructor(app) {
+      return getViewConstructorByViewType(app, ViewType.AllProperties);
     }
   }
 });
@@ -936,11 +1234,20 @@ var require_RegExp = __commonJS({
     var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
     var RegExp_exports = {};
     __export2(RegExp_exports, {
-      escapeRegExp: () => escapeRegExp
+      escapeRegExp: () => escapeRegExp2,
+      isValidRegExp: () => isValidRegExp2
     });
     module2.exports = __toCommonJS2(RegExp_exports);
-    function escapeRegExp(str) {
+    function escapeRegExp2(str) {
       return str.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+    function isValidRegExp2(str) {
+      try {
+        new RegExp(str);
+        return true;
+      } catch {
+        return false;
+      }
     }
   }
 });
@@ -1039,7 +1346,7 @@ var require_String = __commonJS({
     });
     module2.exports = __toCommonJS2(String_exports);
     var import_Error = require_Error();
-    var import_RegExp = require_RegExp();
+    var import_RegExp3 = require_RegExp();
     var import_ValueProvider = require_ValueProvider();
     var ESCAPE_MAP = {
       "\n": "\\n",
@@ -1075,7 +1382,7 @@ var require_String = __commonJS({
       return str.replace(/\u00A0|\u202F/g, " ").normalize("NFC");
     }
     function replace(str, replacementsMap) {
-      const regExp = new RegExp(Object.keys(replacementsMap).map((source) => (0, import_RegExp.escapeRegExp)(source)).join("|"), "g");
+      const regExp = new RegExp(Object.keys(replacementsMap).map((source) => (0, import_RegExp3.escapeRegExp)(source)).join("|"), "g");
       return str.replaceAll(regExp, (source) => replacementsMap[source] ?? (0, import_Error.throwExpression)(new Error(`Unexpected replacement source: ${source}`)));
     }
     async function replaceAllAsync(str, searchValue, replacer) {
@@ -1281,11 +1588,18 @@ var require_FileSystem = __commonJS({
     var import_String = require_String();
     var MARKDOWN_FILE_EXTENSION2 = "md";
     var CANVAS_FILE_EXTENSION = "canvas";
-    function checkExtension(pathOrFile, extension2) {
-      if (pathOrFile === null) {
-        return false;
+    function checkExtension(app, pathOrFile, extension2) {
+      if (isFile(pathOrFile)) {
+        return pathOrFile.extension === extension2;
       }
-      return (0, import_Path.extname)(getPath(pathOrFile)).toLowerCase().slice(1) === extension2.toLowerCase();
+      if (typeof pathOrFile === "string") {
+        const file = getFileOrNull(app, pathOrFile);
+        if (file) {
+          return file.extension === extension2;
+        }
+        return (0, import_Path.extname)(pathOrFile).slice(1) === extension2;
+      }
+      return false;
     }
     function getAbstractFile(app, pathOrFile, isCaseInsensitive) {
       const file = getAbstractFileOrNull(app, pathOrFile, isCaseInsensitive);
@@ -1301,17 +1615,21 @@ var require_FileSystem = __commonJS({
       if (isAbstractFile(pathOrFile)) {
         return pathOrFile;
       }
-      const path = getPath(pathOrFile);
-      if (isCaseInsensitive) {
-        return app.vault.getAbstractFileByPathInsensitive(path);
+      const file = getFileInternal(app, pathOrFile, isCaseInsensitive);
+      if (file) {
+        return file;
       }
-      return app.vault.getAbstractFileByPath(path);
+      const resolvedPath = getResolvedPath(pathOrFile);
+      if (resolvedPath === pathOrFile) {
+        return null;
+      }
+      return getFileInternal(app, resolvedPath, isCaseInsensitive);
     }
     function getFile(app, pathOrFile, shouldIncludeNonExisting, isCaseInsensitive) {
       let file = getFileOrNull(app, pathOrFile, isCaseInsensitive);
       if (!file) {
         if (shouldIncludeNonExisting) {
-          file = (0, import_implementations.createTFileInstance)(app.vault, pathOrFile);
+          file = (0, import_implementations.createTFileInstance)(app, pathOrFile);
         } else {
           throw new Error(`File not found: ${pathOrFile}`);
         }
@@ -1329,7 +1647,7 @@ var require_FileSystem = __commonJS({
       let folder = getFolderOrNull(app, pathOrFolder, isCaseInsensitive);
       if (!folder) {
         if (shouldIncludeNonExisting) {
-          folder = (0, import_implementations.createTFolderInstance)(app.vault, pathOrFolder);
+          folder = (0, import_implementations.createTFolderInstance)(app, pathOrFolder);
         } else {
           throw new Error(`Folder not found: ${pathOrFolder}`);
         }
@@ -1347,10 +1665,10 @@ var require_FileSystem = __commonJS({
       const folder = getFolder(app, pathOrFolder);
       let markdownFiles = [];
       if (!isRecursive) {
-        markdownFiles = folder.children.filter((file) => isMarkdownFile2(file));
+        markdownFiles = folder.children.filter((file) => isMarkdownFile2(app, file));
       } else {
         import_obsidian4.Vault.recurseChildren(folder, (abstractFile) => {
-          if (isMarkdownFile2(abstractFile)) {
+          if (isMarkdownFile2(app, abstractFile)) {
             markdownFiles.push(abstractFile);
           }
         });
@@ -1374,14 +1692,21 @@ var require_FileSystem = __commonJS({
       }
       return await app.vault.createFolder(path);
     }
-    function getPath(pathOrFile) {
-      return isAbstractFile(pathOrFile) ? pathOrFile.path : (0, import_obsidian4.normalizePath)((0, import_Path.resolve)("/", pathOrFile));
+    function getPath(app, pathOrFile) {
+      if (isAbstractFile(pathOrFile)) {
+        return pathOrFile.path;
+      }
+      const file = getAbstractFileOrNull(app, pathOrFile);
+      if (file) {
+        return file.path;
+      }
+      return getResolvedPath(pathOrFile);
     }
     function isAbstractFile(file) {
       return file instanceof import_obsidian4.TAbstractFile;
     }
-    function isCanvasFile(pathOrFile) {
-      return checkExtension(pathOrFile, CANVAS_FILE_EXTENSION);
+    function isCanvasFile(app, pathOrFile) {
+      return checkExtension(app, pathOrFile, CANVAS_FILE_EXTENSION);
     }
     function isFile(file) {
       return file instanceof import_obsidian4.TFile;
@@ -1389,17 +1714,26 @@ var require_FileSystem = __commonJS({
     function isFolder(file) {
       return file instanceof import_obsidian4.TFolder;
     }
-    function isMarkdownFile2(pathOrFile) {
-      return checkExtension(pathOrFile, MARKDOWN_FILE_EXTENSION2);
+    function isMarkdownFile2(app, pathOrFile) {
+      return checkExtension(app, pathOrFile, MARKDOWN_FILE_EXTENSION2);
     }
-    function isNote(pathOrFile) {
-      return isMarkdownFile2(pathOrFile) || isCanvasFile(pathOrFile);
+    function isNote(app, pathOrFile) {
+      return isMarkdownFile2(app, pathOrFile) || isCanvasFile(app, pathOrFile);
     }
-    function trimMarkdownExtension(file) {
-      if (!isMarkdownFile2(file)) {
+    function trimMarkdownExtension(app, file) {
+      if (!isMarkdownFile2(app, file)) {
         return file.path;
       }
       return (0, import_String.trimEnd)(file.path, "." + MARKDOWN_FILE_EXTENSION2);
+    }
+    function getFileInternal(app, path, isCaseInsensitive) {
+      if (isCaseInsensitive) {
+        return app.vault.getAbstractFileByPathInsensitive(path);
+      }
+      return app.vault.getAbstractFileByPath(path);
+    }
+    function getResolvedPath(path) {
+      return (0, import_obsidian4.normalizePath)((0, import_Path.resolve)("/", path));
     }
   }
 });
@@ -12935,61 +13269,6 @@ var require_Async = __commonJS({
   }
 });
 
-// node_modules/obsidian-dev-utils/dist/lib/Function.cjs
-var require_Function = __commonJS({
-  "node_modules/obsidian-dev-utils/dist/lib/Function.cjs"(exports2, module2) {
-    function __extractDefault(module22) {
-      return module22 && module22.__esModule && module22.default ? module22.default : module22;
-    }
-    (function patchRequireEsmDefault() {
-      const __require = require;
-      require = Object.assign((id) => {
-        const module22 = __require(id) ?? {};
-        return __extractDefault(module22);
-      }, __require);
-    })();
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all2) => {
-      for (var name in all2)
-        __defProp2(target, name, { get: all2[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var Function_exports = {};
-    __export2(Function_exports, {
-      noop: () => noop,
-      noopAsync: () => noopAsync,
-      omitAsyncReturnType: () => omitAsyncReturnType,
-      omitReturnType: () => omitReturnType
-    });
-    module2.exports = __toCommonJS2(Function_exports);
-    function noop() {
-    }
-    async function noopAsync() {
-    }
-    function omitAsyncReturnType(fn) {
-      return async (...args) => {
-        await fn(...args);
-      };
-    }
-    function omitReturnType(fn) {
-      return (...args) => {
-        fn(...args);
-      };
-    }
-  }
-});
-
 // node_modules/obsidian-dev-utils/dist/lib/obsidian/Reference.cjs
 var require_Reference = __commonJS({
   "node_modules/obsidian-dev-utils/dist/lib/obsidian/Reference.cjs"(exports2, module2) {
@@ -13103,7 +13382,7 @@ var require_MetadataCache = __commonJS({
     var import_obsidian4 = require("obsidian");
     var import_implementations = require_implementations();
     var import_Async = require_Async();
-    var import_Function = require_Function();
+    var import_Function2 = require_Function();
     var import_Object = require_Object();
     var import_FileSystem3 = require_FileSystem();
     var import_Frontmatter = require_Frontmatter();
@@ -13248,7 +13527,7 @@ var require_MetadataCache = __commonJS({
     }
     function registerFile(app, file) {
       if (!file.deleted) {
-        return import_Function.noop;
+        return import_Function2.noop;
       }
       const deletedPaths = [];
       let deletedFile = file;
@@ -13278,10 +13557,10 @@ var require_MetadataCache = __commonJS({
       }
     }
     async function saveNote(app, pathOrFile) {
-      if (!(0, import_FileSystem3.isMarkdownFile)(pathOrFile)) {
+      if (!(0, import_FileSystem3.isMarkdownFile)(app, pathOrFile)) {
         return;
       }
-      const path = (0, import_FileSystem3.getPath)(pathOrFile);
+      const path = (0, import_FileSystem3.getPath)(app, pathOrFile);
       for (const leaf of app.workspace.getLeavesOfType("markdown")) {
         if (leaf.view instanceof import_obsidian4.MarkdownView && leaf.view.file?.path === path) {
           await leaf.view.save();
@@ -13343,7 +13622,7 @@ var require_Vault = __commonJS({
     var import_implementations = require_implementations();
     var import_Async = require_Async();
     var import_Error = require_Error();
-    var import_Function = require_Function();
+    var import_Function2 = require_Function();
     var import_Path = require_Path();
     var import_ValueProvider = require_ValueProvider();
     var import_FileSystem3 = require_FileSystem();
@@ -13384,7 +13663,7 @@ var require_Vault = __commonJS({
     async function createTempFile(app, path) {
       let file = (0, import_FileSystem3.getFileOrNull)(app, path);
       if (file) {
-        return import_Function.noopAsync;
+        return import_Function2.noopAsync;
       }
       const folderCleanup = await createTempFolder(app, (0, import_implementations.parentFolderPath)(path));
       try {
@@ -13405,7 +13684,7 @@ var require_Vault = __commonJS({
     async function createTempFolder(app, path) {
       let folder = (0, import_FileSystem3.getFolderOrNull)(app, path);
       if (folder) {
-        return import_Function.noopAsync;
+        return import_Function2.noopAsync;
       }
       const dirPath = (0, import_implementations.parentFolderPath)(path);
       await createTempFolder(app, dirPath);
@@ -13474,10 +13753,10 @@ var require_Vault = __commonJS({
       return app.vault.getMarkdownFiles().sort((a, b) => a.path.localeCompare(b.path));
     }
     function getNoteFilesSorted(app) {
-      return app.vault.getAllLoadedFiles().filter((file) => (0, import_FileSystem3.isFile)(file) && (0, import_FileSystem3.isNote)(file)).sort((a, b) => a.path.localeCompare(b.path));
+      return app.vault.getAllLoadedFiles().filter((file) => (0, import_FileSystem3.isFile)(file) && (0, import_FileSystem3.isNote)(app, file)).sort((a, b) => a.path.localeCompare(b.path));
     }
     function getSafeRenamePath(app, oldPathOrFile, newPath) {
-      const oldPath = (0, import_FileSystem3.getPath)(oldPathOrFile);
+      const oldPath = (0, import_FileSystem3.getPath)(app, oldPathOrFile);
       if (app.vault.adapter.insensitive) {
         let folderPath = (0, import_Path.dirname)(newPath);
         let nonExistingPath = (0, import_Path.basename)(newPath);
@@ -13498,11 +13777,11 @@ var require_Vault = __commonJS({
       return getAvailablePath(app, newPath);
     }
     async function isEmptyFolder(app, pathOrFolder) {
-      const listedFiles = await listSafe(app, (0, import_FileSystem3.getPath)(pathOrFolder));
+      const listedFiles = await listSafe(app, (0, import_FileSystem3.getPath)(app, pathOrFolder));
       return listedFiles.files.length === 0 && listedFiles.folders.length === 0;
     }
     async function listSafe(app, pathOrFolder) {
-      const path = (0, import_FileSystem3.getPath)(pathOrFolder);
+      const path = (0, import_FileSystem3.getPath)(app, pathOrFolder);
       const EMPTY = { files: [], folders: [] };
       if ((await app.vault.adapter.stat(path))?.type !== "folder") {
         return EMPTY;
@@ -13620,7 +13899,7 @@ var require_FileChange = __commonJS({
       const overriddenOptions = { ...DEFAULT_RETRY_OPTIONS, ...retryOptions };
       await (0, import_Vault2.process)(app, pathOrFile, async (content3) => {
         let changes = await (0, import_ValueProvider.resolveValue)(changesProvider);
-        const frontmatter = (0, import_FileSystem3.isCanvasFile)(pathOrFile) ? JSON.parse(content3) : (0, import_Frontmatter.parseFrontmatter)(content3);
+        const frontmatter = (0, import_FileSystem3.isCanvasFile)(app, pathOrFile) ? JSON.parse(content3) : (0, import_Frontmatter.parseFrontmatter)(content3);
         for (const change of changes) {
           if (isContentChange(change)) {
             const actualContent = content3.slice(change.startIndex, change.endIndex);
@@ -13629,7 +13908,7 @@ var require_FileChange = __commonJS({
                 actualContent,
                 endIndex: change.endIndex,
                 expectedContent: change.oldContent,
-                path: (0, import_FileSystem3.getPath)(pathOrFile),
+                path: (0, import_FileSystem3.getPath)(app, pathOrFile),
                 startIndex: change.startIndex
               });
               return null;
@@ -13641,7 +13920,7 @@ var require_FileChange = __commonJS({
                 actualContent,
                 expectedContent: change.oldContent,
                 frontmatterKey: change.frontmatterKey,
-                path: (0, import_FileSystem3.getPath)(pathOrFile)
+                path: (0, import_FileSystem3.getPath)(app, pathOrFile)
               });
               return null;
             }
@@ -13695,7 +13974,7 @@ var require_FileChange = __commonJS({
             frontmatterChanged = true;
           }
         }
-        if ((0, import_FileSystem3.isCanvasFile)(pathOrFile)) {
+        if ((0, import_FileSystem3.isCanvasFile)(app, pathOrFile)) {
           newContent = JSON.stringify(frontmatter, null, "	");
         } else {
           newContent += content3.slice(lastIndex);
@@ -13886,7 +14165,7 @@ var require_Link = __commonJS({
     }
     function extractLinkFile(app, link2, sourcePathOrFile) {
       const { linkPath } = splitSubpath2(link2.link);
-      return app.metadataCache.getFirstLinkpathDest(linkPath, (0, import_FileSystem3.getPath)(sourcePathOrFile));
+      return app.metadataCache.getFirstLinkpathDest(linkPath, (0, import_FileSystem3.getPath)(app, sourcePathOrFile));
     }
     function generateMarkdownLink2(options) {
       const { app } = options;
@@ -13898,15 +14177,15 @@ var require_Link = __commonJS({
       options = { ...DEFAULT_OPTIONS, ...configurableDefaultOptions, ...options };
       const targetFile = (0, import_FileSystem3.getFile)(app, options.targetPathOrFile, options.isNonExistingFileAllowed);
       return (0, import_MetadataCache2.tempRegisterFileAndRun)(app, targetFile, () => {
-        const sourcePath = (0, import_FileSystem3.getPath)(options.sourcePathOrFile);
+        const sourcePath = (0, import_FileSystem3.getPath)(app, options.sourcePathOrFile);
         const subpath = options.subpath ?? "";
         let alias = options.alias ?? "";
-        const isEmbed = options.isEmbed ?? (options.originalLink ? testEmbed(options.originalLink) : void 0) ?? !(0, import_FileSystem3.isMarkdownFile)(targetFile);
+        const isEmbed = options.isEmbed ?? (options.originalLink ? testEmbed(options.originalLink) : void 0) ?? !(0, import_FileSystem3.isMarkdownFile)(app, targetFile);
         const isWikilink = options.isWikilink ?? (options.originalLink ? testWikilink(options.originalLink) : void 0) ?? (0, import_ObsidianSettings3.shouldUseWikilinks)(app);
         const shouldForceRelativePath = options.shouldForceRelativePath ?? (0, import_ObsidianSettings3.shouldUseRelativeLinks)(app);
         const shouldUseLeadingDot = options.shouldUseLeadingDot ?? (options.originalLink ? testLeadingDot(options.originalLink) : void 0) ?? false;
         const shouldUseAngleBrackets = options.shouldUseAngleBrackets ?? (options.originalLink ? testAngleBrackets(options.originalLink) : void 0) ?? false;
-        let linkText = targetFile.path === sourcePath && subpath ? subpath : shouldForceRelativePath ? (0, import_Path.relative)((0, import_Path.dirname)(sourcePath), isWikilink ? (0, import_FileSystem3.trimMarkdownExtension)(targetFile) : targetFile.path) + subpath : app.metadataCache.fileToLinktext(targetFile, sourcePath, isWikilink) + subpath;
+        let linkText = targetFile.path === sourcePath && subpath ? subpath : shouldForceRelativePath ? (0, import_Path.relative)((0, import_Path.dirname)(sourcePath), isWikilink ? (0, import_FileSystem3.trimMarkdownExtension)(app, targetFile) : targetFile.path) + subpath : app.metadataCache.fileToLinktext(targetFile, sourcePath, isWikilink) + subpath;
         if (shouldForceRelativePath && shouldUseLeadingDot && !linkText.startsWith(".") && !linkText.startsWith("#")) {
           linkText = "./" + linkText;
         }
@@ -13920,7 +14199,7 @@ var require_Link = __commonJS({
             });
           }
           if (!alias && (!isEmbed || !options.isEmptyEmbedAliasAllowed)) {
-            alias = !options.shouldIncludeAttachmentExtensionToEmbedAlias || (0, import_FileSystem3.isMarkdownFile)(targetFile) ? targetFile.basename : targetFile.name;
+            alias = !options.shouldIncludeAttachmentExtensionToEmbedAlias || (0, import_FileSystem3.isMarkdownFile)(app, targetFile) ? targetFile.basename : targetFile.name;
           }
           alias = alias.replace(SPECIAL_MARKDOWN_LINK_SYMBOLS_REGEX, "\\$&");
           return `${embedPrefix}[${alias}](${linkText})`;
@@ -14028,8 +14307,8 @@ var require_Link = __commonJS({
         return true;
       }
       const targetFile = (0, import_FileSystem3.getFile)(app, targetPathOrFile);
-      const newSourcePath = (0, import_FileSystem3.getPath)(newSourcePathOrFile);
-      const oldSourcePath = (0, import_FileSystem3.getPath)(oldSourcePathOrFile ?? newSourcePathOrFile);
+      const newSourcePath = (0, import_FileSystem3.getPath)(app, newSourcePathOrFile);
+      const oldSourcePath = (0, import_FileSystem3.getPath)(app, oldSourcePathOrFile ?? newSourcePathOrFile);
       const newSourceDir = (0, import_Path.dirname)(newSourcePath);
       const oldSourceDir = (0, import_Path.dirname)(oldSourcePath);
       const aliasesToReset = /* @__PURE__ */ new Set();
@@ -14037,7 +14316,7 @@ var require_Link = __commonJS({
         if (!pathOrFile) {
           continue;
         }
-        const path = (0, import_FileSystem3.getPath)(pathOrFile);
+        const path = (0, import_FileSystem3.getPath)(app, pathOrFile);
         aliasesToReset.add(path);
         aliasesToReset.add((0, import_Path.basename)(path));
         aliasesToReset.add((0, import_Path.relative)(newSourceDir, path));
@@ -14097,10 +14376,10 @@ var require_Link = __commonJS({
         return link2.original;
       }
       const targetFile = (0, import_FileSystem3.getFile)(app, newTargetPathOrFile);
-      const oldTargetPath = (0, import_FileSystem3.getPath)(oldTargetPathOrFile ?? newTargetPathOrFile);
+      const oldTargetPath = (0, import_FileSystem3.getPath)(app, oldTargetPathOrFile ?? newTargetPathOrFile);
       const isWikilink = testWikilink(link2.original) && shouldForceMarkdownLinks !== true;
       const { subpath } = splitSubpath2(link2.link);
-      if ((0, import_FileSystem3.isCanvasFile)(newSourcePathOrFile)) {
+      if ((0, import_FileSystem3.isCanvasFile)(app, newSourcePathOrFile)) {
         return targetFile.path + subpath;
       }
       let alias = shouldResetAlias({
@@ -14139,7 +14418,7 @@ var require_Link = __commonJS({
         shouldUpdateEmbedOnlyLinks,
         shouldUpdateFilenameAlias
       } = options;
-      if ((0, import_FileSystem3.isCanvasFile)(newSourcePathOrFile) && !app.internalPlugins.getEnabledPluginById("canvas")) {
+      if ((0, import_FileSystem3.isCanvasFile)(app, newSourcePathOrFile) && !app.internalPlugins.getEnabledPluginById("canvas")) {
         return;
       }
       await editLinks(app, newSourcePathOrFile, (link2) => {
@@ -14156,60 +14435,6 @@ var require_Link = __commonJS({
           shouldUpdateFilenameAlias
         });
       });
-    }
-  }
-});
-
-// node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/PluginSettings.cjs
-var require_PluginSettings = __commonJS({
-  "node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/PluginSettings.cjs"(exports2, module2) {
-    function __extractDefault(module22) {
-      return module22 && module22.__esModule && module22.default ? module22.default : module22;
-    }
-    (function patchRequireEsmDefault() {
-      const __require = require;
-      require = Object.assign((id) => {
-        const module22 = __require(id) ?? {};
-        return __extractDefault(module22);
-      }, __require);
-    })();
-    var __defProp2 = Object.defineProperty;
-    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
-    var __getOwnPropNames2 = Object.getOwnPropertyNames;
-    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
-    var __export2 = (target, all2) => {
-      for (var name in all2)
-        __defProp2(target, name, { get: all2[name], enumerable: true });
-    };
-    var __copyProps2 = (to, from, except, desc) => {
-      if (from && typeof from === "object" || typeof from === "function") {
-        for (let key of __getOwnPropNames2(from))
-          if (!__hasOwnProp2.call(to, key) && key !== except)
-            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
-      }
-      return to;
-    };
-    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
-    var PluginSettings_exports = {};
-    __export2(PluginSettings_exports, {
-      clonePluginSettings: () => clonePluginSettings,
-      loadPluginSettings: () => loadPluginSettings
-    });
-    module2.exports = __toCommonJS2(PluginSettings_exports);
-    function clonePluginSettings(defaultPluginSettingsFactory, settings) {
-      return loadPluginSettings(defaultPluginSettingsFactory, settings);
-    }
-    function loadPluginSettings(defaultPluginSettingsFactory, data) {
-      const defaultPluginSettings = defaultPluginSettingsFactory();
-      if (data && typeof data === "object") {
-        const record = data;
-        for (const [key, value] of Object.entries(record)) {
-          if (key in defaultPluginSettings) {
-            defaultPluginSettings[key] = value;
-          }
-        }
-      }
-      return defaultPluginSettings;
     }
   }
 });
@@ -14251,8 +14476,7 @@ var require_PluginBase = __commonJS({
     module2.exports = __toCommonJS2(PluginBase_exports);
     var import_obsidian4 = require("obsidian");
     var import_Error = require_Error();
-    var import_Function = require_Function();
-    var import_PluginSettings = require_PluginSettings();
+    var import_Function2 = require_Function();
     var __process10 = globalThis["process"] ?? {
       "cwd": () => "/",
       "env": {},
@@ -14273,7 +14497,7 @@ var require_PluginBase = __commonJS({
        * @returns A copy of the plugin settings.
        */
       get settingsCopy() {
-        return (0, import_PluginSettings.clonePluginSettings)(this.createDefaultPluginSettings.bind(this), this.settings);
+        return this.createPluginSettings(this.settings.toJSON());
       }
       /**
        * Gets the plugin settings.
@@ -14313,8 +14537,9 @@ var require_PluginBase = __commonJS({
        * @returns A promise that resolves when the settings are saved.
        */
       async saveSettings(newSettings) {
-        this._settings = (0, import_PluginSettings.clonePluginSettings)(this.createDefaultPluginSettings.bind(this), newSettings);
-        await this.saveData(this.settings);
+        const json = newSettings.toJSON();
+        this._settings = this.createPluginSettings(json);
+        await this.saveData(json);
       }
       /**
        * Called when the layout is ready. This method can be overridden by subclasses to perform actions once
@@ -14323,7 +14548,7 @@ var require_PluginBase = __commonJS({
        * @returns A promise or void indicating the completion of the layout setup.
        */
       onLayoutReady() {
-        (0, import_Function.noop)();
+        (0, import_Function2.noop)();
       }
       /**
        * Called when the plugin loading is complete. This method must be implemented by subclasses to perform
@@ -14332,16 +14557,7 @@ var require_PluginBase = __commonJS({
        * @returns A promise or void indicating the completion of the load process.
        */
       onloadComplete() {
-        (0, import_Function.noop)();
-      }
-      /**
-       * Parses the provided settings data and returns the parsed `PluginSettings`.
-       *
-       * @param data - The raw data to be parsed into `PluginSettings`.
-       * @returns A promise that resolves to `PluginSettings` or the settings directly.
-       */
-      parseSettings(data) {
-        return (0, import_PluginSettings.loadPluginSettings)(this.createDefaultPluginSettings.bind(this), data);
+        (0, import_Function2.noop)();
       }
       /**
        * Displays a notice message to the user.
@@ -14362,7 +14578,10 @@ ${message}`);
        */
       async loadSettings() {
         const data = await this.loadData();
-        this._settings = await this.parseSettings(data);
+        this._settings = this.createPluginSettings(data);
+        if (this._settings.shouldSaveAfterLoad()) {
+          await this.saveSettings(this._settings);
+        }
       }
     };
   }
@@ -14542,7 +14761,7 @@ var require_Queue = __commonJS({
     module2.exports = __toCommonJS2(Queue_exports);
     var import_Async = require_Async();
     var import_Error = require_Error();
-    var import_Function = require_Function();
+    var import_Function2 = require_Function();
     var import_App = require_App();
     var import_Logger = require_Logger();
     var __process10 = globalThis["process"] ?? {
@@ -14563,7 +14782,7 @@ var require_Queue = __commonJS({
       await queue.promise;
     }
     async function flushQueue(app) {
-      await addToQueueAndWait(app, import_Function.noop);
+      await addToQueueAndWait(app, import_Function2.noop);
     }
     function getQueue(app) {
       return (0, import_App.getObsidianDevUtilsState)(app, "queue", { items: [], promise: Promise.resolve() });
@@ -14694,8 +14913,8 @@ var require_AttachmentPath = __commonJS({
     var import_String = require_String();
     var import_FileSystem3 = require_FileSystem();
     async function getAttachmentFilePath(app, attachmentPathOrFile, notePathOrFile) {
-      const attachmentPath = (0, import_FileSystem3.getPath)(attachmentPathOrFile);
-      const notePath = (0, import_FileSystem3.getPath)(notePathOrFile);
+      const attachmentPath = (0, import_FileSystem3.getPath)(app, attachmentPathOrFile);
+      const notePath = (0, import_FileSystem3.getPath)(app, notePathOrFile);
       const note = (0, import_FileSystem3.getFile)(app, notePath, true);
       const ext = (0, import_Path.extname)(attachmentPath);
       const fileName = (0, import_Path.basename)(attachmentPath, ext);
@@ -14783,7 +15002,7 @@ var require_RenameDeleteHandler = __commonJS({
     module2.exports = __toCommonJS2(RenameDeleteHandler_exports);
     var import_monkey_around2 = require_dist2();
     var import_obsidian4 = require("obsidian");
-    var import_Function = require_Function();
+    var import_Function2 = require_Function();
     var import_Object = require_Object();
     var import_Path = require_Path();
     var import_App = require_App();
@@ -14834,7 +15053,7 @@ var require_RenameDeleteHandler = __commonJS({
     }
     async function fillRenameMap(app, oldPath, newPath, renameMap) {
       renameMap.set(oldPath, newPath);
-      if (!(0, import_FileSystem3.isNote)(oldPath)) {
+      if (!(0, import_FileSystem3.isNote)(app, oldPath)) {
         return;
       }
       const settings = getSettings(app);
@@ -14875,7 +15094,7 @@ var require_RenameDeleteHandler = __commonJS({
       const oldBasename = (0, import_Path.basename)(oldPath, (0, import_Path.extname)(oldPath));
       const newBasename = (0, import_Path.basename)(newPath, (0, import_Path.extname)(newPath));
       for (const oldAttachmentFile of oldAttachmentFiles) {
-        if ((0, import_FileSystem3.isNote)(oldAttachmentFile)) {
+        if ((0, import_FileSystem3.isNote)(app, oldAttachmentFile)) {
           continue;
         }
         const relativePath = (0, import_Path.relative)(oldAttachmentFolderPath, oldAttachmentFile.path);
@@ -14905,19 +15124,28 @@ var require_RenameDeleteHandler = __commonJS({
       const settings = {};
       for (const settingsBuilder of settingsBuilders) {
         const newSettings = settingsBuilder();
-        for (const [key, value] of Object.entries(newSettings)) {
-          settings[key] ||= value;
-        }
+        settings.shouldDeleteConflictingAttachments ||= newSettings.shouldDeleteConflictingAttachments ?? false;
+        settings.shouldDeleteEmptyFolders ||= newSettings.shouldDeleteEmptyFolders ?? false;
+        settings.shouldDeleteOrphanAttachments ||= newSettings.shouldDeleteOrphanAttachments ?? false;
+        settings.shouldRenameAttachmentFiles ||= newSettings.shouldRenameAttachmentFiles ?? false;
+        settings.shouldRenameAttachmentFolder ||= newSettings.shouldRenameAttachmentFolder ?? false;
+        settings.shouldUpdateFilenameAliases ||= newSettings.shouldUpdateFilenameAliases ?? false;
+        settings.shouldUpdateLinks ||= newSettings.shouldUpdateLinks ?? false;
+        const isPathIgnored = settings.isPathIgnored;
+        settings.isPathIgnored = (path) => isPathIgnored?.(path) ?? newSettings.isPathIgnored?.(path) ?? false;
       }
       return settings;
     }
     async function handleDelete(app, path) {
       console.debug(`Handle Delete ${path}`);
-      if (!(0, import_FileSystem3.isNote)(path)) {
+      if (!(0, import_FileSystem3.isNote)(app, path)) {
         return;
       }
       const settings = getSettings(app);
       if (!settings.shouldDeleteOrphanAttachments) {
+        return;
+      }
+      if (settings.isPathIgnored?.(path)) {
         return;
       }
       const cache = deletedMetadataCacheMap.get(path);
@@ -14929,7 +15157,7 @@ var require_RenameDeleteHandler = __commonJS({
           if (!attachmentFile) {
             continue;
           }
-          if ((0, import_FileSystem3.isNote)(attachmentFile)) {
+          if ((0, import_FileSystem3.isNote)(app, attachmentFile)) {
             continue;
           }
           await (0, import_Vault2.deleteSafe)(app, attachmentFile, path, settings.shouldDeleteEmptyFolders);
@@ -14947,10 +15175,13 @@ var require_RenameDeleteHandler = __commonJS({
     }
     function handleMetadataDeleted(app, file, prevCache) {
       const settings = getSettings(app);
+      if (settings.isPathIgnored?.(file.path)) {
+        return;
+      }
       if (!settings.shouldDeleteOrphanAttachments) {
         return;
       }
-      if ((0, import_FileSystem3.isMarkdownFile)(file) && prevCache) {
+      if ((0, import_FileSystem3.isMarkdownFile)(app, file) && prevCache) {
         deletedMetadataCacheMap.set(file.path, prevCache);
       }
     }
@@ -14959,6 +15190,10 @@ var require_RenameDeleteHandler = __commonJS({
       console.debug(`Handle Rename ${key}`);
       if (handledRenames.has(key)) {
         handledRenames.delete(key);
+        return;
+      }
+      const settings = getSettings(app);
+      if (settings.isPathIgnored?.(oldPath) || settings.isPathIgnored?.(newPath)) {
         return;
       }
       const backlinks = (0, import_MetadataCache2.getBacklinksForFileOrPath)(app, oldPath);
@@ -14973,7 +15208,7 @@ var require_RenameDeleteHandler = __commonJS({
         return;
       }
       const restoreUpdateAllLinks = (0, import_monkey_around2.around)(app.fileManager, {
-        updateAllLinks: () => import_Function.noopAsync
+        updateAllLinks: () => import_Function2.noopAsync
       });
       try {
         const renameMap = /* @__PURE__ */ new Map();
@@ -15022,7 +15257,7 @@ var require_RenameDeleteHandler = __commonJS({
             });
           });
         }
-        if ((0, import_FileSystem3.isNote)(newPath)) {
+        if ((0, import_FileSystem3.isNote)(app, newPath)) {
           await (0, import_Link4.updateLinksInFile)({
             app,
             newSourcePathOrFile: newPath,
@@ -15075,6 +15310,87 @@ var require_RenameDeleteHandler = __commonJS({
       }
       return true;
     }
+  }
+});
+
+// node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/PluginSettingsBase.cjs
+var require_PluginSettingsBase = __commonJS({
+  "node_modules/obsidian-dev-utils/dist/lib/obsidian/Plugin/PluginSettingsBase.cjs"(exports2, module2) {
+    function __extractDefault(module22) {
+      return module22 && module22.__esModule && module22.default ? module22.default : module22;
+    }
+    (function patchRequireEsmDefault() {
+      const __require = require;
+      require = Object.assign((id) => {
+        const module22 = __require(id) ?? {};
+        return __extractDefault(module22);
+      }, __require);
+    })();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all2) => {
+      for (var name in all2)
+        __defProp2(target, name, { get: all2[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var PluginSettingsBase_exports = {};
+    __export2(PluginSettingsBase_exports, {
+      PluginSettingsBase: () => PluginSettingsBase2
+    });
+    module2.exports = __toCommonJS2(PluginSettingsBase_exports);
+    var PluginSettingsBase2 = class {
+      /**
+       * Initializes the settings from JSON data.
+       *
+       * @param data - The data to initialize the settings from.
+       */
+      init(data) {
+        if (data === void 0 || data === null) {
+          return;
+        }
+        if (typeof data !== "object" || Array.isArray(data)) {
+          const type = Array.isArray(data) ? "Array" : typeof data;
+          console.error(`Invalid data type. Expected Object, got: ${type}`);
+          return;
+        }
+        this.initFromRecord(data);
+      }
+      /**
+       * Determines if the settings should be saved after loading.
+       *
+       * @returns A boolean indicating whether the settings should be saved after loading.
+       */
+      shouldSaveAfterLoad() {
+        return false;
+      }
+      /**
+       * Converts the settings to a JSON object.
+       *
+       * @returns The settings as a JSON object.
+       */
+      toJSON() {
+        return Object.fromEntries(Object.entries(this));
+      }
+      initFromRecord(record) {
+        for (const [key, value] of Object.entries(record)) {
+          if (key in this) {
+            this[key] = value;
+          } else {
+            console.error(`Unknown property: ${key}`);
+          }
+        }
+      }
+    };
   }
 });
 
@@ -15360,6 +15676,92 @@ var require_Loop = __commonJS({
   }
 });
 
+// node_modules/obsidian-dev-utils/dist/lib/obsidian/Modal/Confirm.cjs
+var require_Confirm = __commonJS({
+  "node_modules/obsidian-dev-utils/dist/lib/obsidian/Modal/Confirm.cjs"(exports2, module2) {
+    function __extractDefault(module22) {
+      return module22 && module22.__esModule && module22.default ? module22.default : module22;
+    }
+    (function patchRequireEsmDefault() {
+      const __require = require;
+      require = Object.assign((id) => {
+        const module22 = __require(id) ?? {};
+        return __extractDefault(module22);
+      }, __require);
+    })();
+    var __defProp2 = Object.defineProperty;
+    var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp2 = Object.prototype.hasOwnProperty;
+    var __export2 = (target, all2) => {
+      for (var name in all2)
+        __defProp2(target, name, { get: all2[name], enumerable: true });
+    };
+    var __copyProps2 = (to, from, except, desc) => {
+      if (from && typeof from === "object" || typeof from === "function") {
+        for (let key of __getOwnPropNames2(from))
+          if (!__hasOwnProp2.call(to, key) && key !== except)
+            __defProp2(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc2(from, key)) || desc.enumerable });
+      }
+      return to;
+    };
+    var __toCommonJS2 = (mod) => __copyProps2(__defProp2({}, "__esModule", { value: true }), mod);
+    var Confirm_exports = {};
+    __export2(Confirm_exports, {
+      confirm: () => confirm2
+    });
+    module2.exports = __toCommonJS2(Confirm_exports);
+    var import_obsidian4 = require("obsidian");
+    var ConfirmModal = class extends import_obsidian4.Modal {
+      constructor(options, resolve) {
+        super(options.app);
+        this.resolve = resolve;
+        const DEFAULT_OPTIONS = {
+          app: options.app,
+          cancelButtonStyles: {},
+          cancelButtonText: "Cancel",
+          message: "",
+          okButtonStyles: {
+            marginRight: "10px",
+            marginTop: "20px"
+          },
+          okButtonText: "OK",
+          title: ""
+        };
+        this.options = { ...DEFAULT_OPTIONS, ...options };
+      }
+      isConfirmed = false;
+      options;
+      onClose() {
+        this.resolve(this.isConfirmed);
+      }
+      onOpen() {
+        this.titleEl.setText(this.options.title);
+        const paragraph2 = this.contentEl.createEl("p");
+        paragraph2.setText(this.options.message);
+        const okButton = new import_obsidian4.ButtonComponent(this.contentEl);
+        okButton.setButtonText(this.options.okButtonText);
+        okButton.setCta();
+        okButton.onClick(() => {
+          this.isConfirmed = true;
+          this.close();
+        });
+        Object.assign(okButton.buttonEl.style, this.options.okButtonStyles);
+        const cancelButton = new import_obsidian4.ButtonComponent(this.contentEl);
+        cancelButton.setButtonText(this.options.cancelButtonText);
+        cancelButton.onClick(this.close.bind(this));
+        Object.assign(okButton.buttonEl.style, this.options.okButtonStyles);
+      }
+    };
+    async function confirm2(options) {
+      return new Promise((resolve) => {
+        const modal = new ConfirmModal(options, resolve);
+        modal.open();
+      });
+    }
+  }
+});
+
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
@@ -15405,6 +15807,7 @@ function around1(obj, method, createWrapper) {
 
 // src/BetterMarkdownLinksPlugin.ts
 var import_obsidian3 = require("obsidian");
+var import_Function = __toESM(require_Function(), 1);
 var import_FileSystem2 = __toESM(require_FileSystem(), 1);
 var import_Link3 = __toESM(require_Link(), 1);
 var import_MetadataCache = __toESM(require_MetadataCache(), 1);
@@ -15413,7 +15816,11 @@ var import_Queue2 = __toESM(require_Queue(), 1);
 var import_RenameDeleteHandler = __toESM(require_RenameDeleteHandler(), 1);
 
 // src/BetterMarkdownLinksPluginSettings.ts
-var BetterMarkdownLinksPluginSettings = class {
+var import_PluginSettingsBase = __toESM(require_PluginSettingsBase(), 1);
+var import_RegExp = __toESM(require_RegExp(), 1);
+var ALWAYS_MATCH_REG_EXP = /(?:)/;
+var NEVER_MATCH_REG_EXP = /$./;
+var BetterMarkdownLinksPluginSettings = class extends import_PluginSettingsBase.PluginSettingsBase {
   allowEmptyEmbedAlias = true;
   automaticallyConvertNewLinks = true;
   automaticallyUpdateLinksOnRenameOrMove = true;
@@ -15421,13 +15828,58 @@ var BetterMarkdownLinksPluginSettings = class {
   includeAttachmentExtensionToEmbedAlias = false;
   useAngleBrackets = true;
   useLeadingDot = true;
+  get excludePaths() {
+    return this.#excludePaths;
+  }
+  set excludePaths(value) {
+    this.#excludePaths = value;
+    this.#excludePathsRegExp = makeRegExp(this.#excludePaths, NEVER_MATCH_REG_EXP);
+  }
+  get includePaths() {
+    return this.#includePaths;
+  }
+  set includePaths(value) {
+    this.#includePaths = value;
+    this.#includePathsRegExp = makeRegExp(this.#includePaths, ALWAYS_MATCH_REG_EXP);
+  }
+  #excludePaths = [];
+  #excludePathsRegExp = NEVER_MATCH_REG_EXP;
+  #includePaths = [];
+  #includePathsRegExp = ALWAYS_MATCH_REG_EXP;
+  constructor(data) {
+    super();
+    this.init(data);
+  }
+  isPathIgnored(path) {
+    return !this.#includePathsRegExp.test(path) || this.#excludePathsRegExp.test(path);
+  }
+  toJSON() {
+    return {
+      ...super.toJSON(),
+      excludePaths: this.excludePaths,
+      includePaths: this.includePaths
+    };
+  }
 };
+function makeRegExp(paths, defaultRegExp) {
+  if (paths.length === 0) {
+    return defaultRegExp;
+  }
+  const regExpStrCombined = paths.map((path) => {
+    if (path.startsWith("/") && path.endsWith("/")) {
+      return path.slice(1, -1);
+    }
+    return `^${(0, import_RegExp.escapeRegExp)(path)}`;
+  }).map((regExpStr) => `(${regExpStr})`).join("|");
+  return new RegExp(regExpStrCombined);
+}
 
 // src/BetterMarkdownLinksPluginSettingsTab.ts
 var import_obsidian = require("obsidian");
 var import_DocumentFragment = __toESM(require_DocumentFragment(), 1);
 var import_PluginSettingsTabBase = __toESM(require_PluginSettingsTabBase(), 1);
 var import_ValueComponent = __toESM(require_ValueComponent(), 1);
+var import_RegExp2 = __toESM(require_RegExp(), 1);
 var BetterMarkdownLinksPluginSettingsTab = class extends import_PluginSettingsTabBase.PluginSettingsTabBase {
   display() {
     this.containerEl.empty();
@@ -15463,8 +15915,48 @@ var BetterMarkdownLinksPluginSettingsTab = class extends import_PluginSettingsTa
       (0, import_DocumentFragment.appendCodeBlock)(f, "Allow empty embed alias");
       f.appendText(" is enabled.");
     })).addToggle((toggle) => (0, import_ValueComponent.extend)(toggle).bind(this.plugin, "includeAttachmentExtensionToEmbedAlias"));
+    new import_obsidian.Setting(this.containerEl).setName("Include paths").setDesc(createFragment((f) => {
+      f.appendText("Include notes from the following paths");
+      f.createEl("br");
+      f.appendText("Insert each path on a new line");
+      f.createEl("br");
+      f.appendText("You can use path string or ");
+      (0, import_DocumentFragment.appendCodeBlock)(f, "/regular expression/");
+      f.createEl("br");
+      f.appendText("If the setting is empty, all notes are included");
+    })).addTextArea((textArea) => (0, import_ValueComponent.extend)(textArea).bind(this.plugin, "includePaths", {
+      componentToPluginSettingsValueConverter: (value) => value.split("\n"),
+      pluginSettingsToComponentValueConverter: (value) => value.join("\n"),
+      valueValidator: pathsValidator
+    }));
+    new import_obsidian.Setting(this.containerEl).setName("Exclude paths").setDesc(createFragment((f) => {
+      f.appendText("Exclude notes from the following paths");
+      f.createEl("br");
+      f.appendText("Insert each path on a new line");
+      f.createEl("br");
+      f.appendText("You can use path string or ");
+      (0, import_DocumentFragment.appendCodeBlock)(f, "/regular expression/");
+      f.createEl("br");
+      f.appendText("If the setting is empty, no notes are excluded");
+    })).addTextArea((textArea) => (0, import_ValueComponent.extend)(textArea).bind(this.plugin, "excludePaths", {
+      componentToPluginSettingsValueConverter: (value) => value.split("\n"),
+      pluginSettingsToComponentValueConverter: (value) => value.join("\n"),
+      valueValidator: pathsValidator
+    }));
   }
 };
+function pathsValidator(value) {
+  const paths = value.split("\n");
+  for (const path of paths) {
+    if (path.startsWith("/") && path.endsWith("/")) {
+      const regExp = path.slice(1, -1);
+      if (!(0, import_RegExp2.isValidRegExp)(regExp)) {
+        return `Invalid regular expression ${path}`;
+      }
+    }
+  }
+  return null;
+}
 
 // src/GenerateMarkdownLink.ts
 var import_obsidian2 = require("obsidian");
@@ -15507,6 +15999,7 @@ var import_FileChange = __toESM(require_FileChange(), 1);
 var import_FileSystem = __toESM(require_FileSystem(), 1);
 var import_Link2 = __toESM(require_Link(), 1);
 var import_Loop = __toESM(require_Loop(), 1);
+var import_Confirm = __toESM(require_Confirm(), 1);
 var import_Queue = __toESM(require_Queue(), 1);
 var import_Vault = __toESM(require_Vault(), 1);
 
@@ -15545,11 +16038,11 @@ async function applyLinkChangeUpdates(plugin, file, updates) {
 }
 function convertLinksInCurrentFile(plugin, checking) {
   const activeFile = plugin.app.workspace.getActiveFile();
-  if (!activeFile || !(0, import_FileSystem.isMarkdownFile)(activeFile)) {
+  if (!activeFile || !(0, import_FileSystem.isMarkdownFile)(plugin.app, activeFile)) {
     return false;
   }
   if (!checking) {
-    (0, import_Queue.addToQueue)(plugin.app, () => convertLinksInFile(plugin, activeFile));
+    (0, import_Queue.addToQueue)(plugin.app, () => convertLinksInFile(plugin, activeFile, true));
   }
   return true;
 }
@@ -15567,9 +16060,18 @@ async function convertLinksInEntireVault(plugin, abortSignal) {
     shouldContinueOnError: true
   });
 }
-async function convertLinksInFile(plugin, file) {
+async function convertLinksInFile(plugin, file, shouldPromptForExcludedFile) {
   if (!checkObsidianSettingsCompatibility(plugin)) {
     return;
+  }
+  if (plugin.settingsCopy.isPathIgnored(file.path)) {
+    if (!shouldPromptForExcludedFile) {
+      return;
+    }
+    const shouldConvert = await (0, import_Confirm.confirm)({ app: plugin.app, message: `Note '${file.path}' is excluded from the conversion in plugin settings. Do you want to convert it anyway?` });
+    if (!shouldConvert) {
+      return;
+    }
   }
   await (0, import_Link2.updateLinksInFile)({
     app: plugin.app,
@@ -15610,8 +16112,8 @@ var BetterMarkdownLinksPlugin = class extends import_PluginBase.PluginBase {
       this.warningNotice = new import_obsidian3.Notice(message, 1e4);
     }
   }
-  createDefaultPluginSettings() {
-    return new BetterMarkdownLinksPluginSettings();
+  createPluginSettings(data) {
+    return new BetterMarkdownLinksPluginSettings(data);
   }
   createPluginSettingsTab() {
     return new BetterMarkdownLinksPluginSettingsTab(this);
@@ -15635,6 +16137,9 @@ var BetterMarkdownLinksPlugin = class extends import_PluginBase.PluginBase {
     }));
     (0, import_RenameDeleteHandler.registerRenameDeleteHandlers)(this, () => {
       const settings = {
+        isPathIgnored: (path) => {
+          return this.settings.isPathIgnored(path);
+        },
         shouldUpdateFilenameAliases: true,
         shouldUpdateLinks: this.settings.automaticallyUpdateLinksOnRenameOrMove
       };
@@ -15644,10 +16149,8 @@ var BetterMarkdownLinksPlugin = class extends import_PluginBase.PluginBase {
     this.warningNotice.hide();
     this.app.fileManager.linkUpdaters[import_FileSystem2.MARKDOWN_FILE_EXTENSION] = {
       applyUpdates: (file, updates) => applyLinkChangeUpdates(this, file, updates),
-      iterateReferences: () => {
-      },
-      renameSubpath: async () => {
-      }
+      iterateReferences: import_Function.noop,
+      renameSubpath: import_Function.noopAsync
     };
     this.register(() => {
       delete this.app.fileManager.linkUpdaters[import_FileSystem2.MARKDOWN_FILE_EXTENSION];

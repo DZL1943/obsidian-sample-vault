@@ -32,6 +32,18 @@
       "icon": "lint-file",
       "name": "Linter: 格式化当前文件",
       "mode": "any"
+    },
+    {
+      "id": "obsidian-zoom:zoom-in",
+      "icon": "zoom-in",
+      "name": "Zoom: Zoom in",
+      "mode": "any"
+    },
+    {
+      "id": "markdown-table-editor:markdown-table-editor-open-vertical",
+      "icon": "lucide-table",
+      "name": "Markdown Table Editor: Open Editor (Next to the Active View)",
+      "mode": "any"
     }
   ],
   "fileMenu": [
@@ -155,7 +167,12 @@
       "创建新看板",
       "Add to Ledger",
       "BRAT",
-      "Open Chronology"
+      "Open Chronology",
+      "Omnisearch",
+      "Open Markdown Table Editor",
+      "打开/创建今天的日记",
+      "FuzzySearch",
+      "开始漫游笔记"
     ]
   },
   "spacing": 8,
