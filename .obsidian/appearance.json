@@ -22,7 +22,10 @@
     "tab",
     "img",
     "bugfix",
-    "S - Checkboxes"
+    "S - Checkboxes",
+    "settings-layout",
+    "mysnippets-layout",
+    "anyblock"
   ],
   "showViewHeader": false,
   "cssTheme": ""

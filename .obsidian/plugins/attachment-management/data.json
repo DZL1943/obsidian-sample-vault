@@ -10,8 +10,9 @@
   "dateFormat": "YYYYMMDDHHmmssSSS",
   "excludeExtensionPattern": "pdf|docx?|xlsx?|pptx?",
   "autoRenameAttachment": true,
-  "excludedPaths": "20_Private;70_Resources;Ext;",
+  "excludedPaths": "10_Inbox;20_Private;70_Resources;Ext;",
   "excludePathsArray": [
+    "10_Inbox",
     "20_Private",
     "70_Resources",
     "Ext",

@@ -1,7 +1,7 @@
 ---
 title: README
 created: "2024-07-30 13:30"
-modified: "2024-10-27 20:01"
+modified: "2024-12-31 16:24"
 editor-width: 88
 ---
 
@@ -9,7 +9,7 @@ editor-width: 88
 
 ## Overview
 
-![](Misc/Attachments/Obsidian-20240908154942.png)
+![](<Misc/Attachments/Obsidian-20240908154942.png>)
 
 - Obsidian 版本 | 1.7.7-mac-arm64
 - 主题 | 默认
@@ -130,7 +130,7 @@ editor-width: 88
 | obsidian-hover-editor:open-new-popover                                | Ctrl+Alt+H          |
 | obsidian-kanban:toggle-kanban-view                                    | Alt+K               |
 | obsidian-markmind:Toggle to markdown or mindmap                       | Alt+M               |
-| omnisearch:show-modal                                                 | Mod+Shift+F         |
+| omnisearch:show-modal                                                 | Mod+Shift+S         |
 | quickadd:choice:3c55de5c-97b0-429c-9e0c-3335df22fa10                  | Ctrl+C              |
 | quickadd:choice:d03adf12-a165-4b3e-b1e0-4d05983a64dd                  | Mod+R               |
 | quickadd:runQuickAdd                                                  | Alt+Q               |
@@ -254,3 +254,5 @@ group by file.folder
 - [2024-07-27] ~~取消顶层目录名中的前缀编号~~
 - [2024-07-28] 禁用 Surfing 插件(不影响 canvas 中的网页)
 - [2024-10-04] 拆分库, 重新启用本 repo
+- [2024-12-29] 更改日记存储目录
+- [2024-12-31] 修复 yearly-template 的问题

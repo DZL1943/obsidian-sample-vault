@@ -172,7 +172,8 @@
       "Open Markdown Table Editor",
       "打开/创建今天的日记",
       "FuzzySearch",
-      "开始漫游笔记"
+      "开始漫游笔记",
+      "Export Vault to HTML"
     ]
   },
   "spacing": 8,

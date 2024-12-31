@@ -371,7 +371,7 @@ var removeUsingRegexpStrings = (str, regExpStrings) => {
   var _a, _b;
   let removed = str;
   for (const regExpStr of (_a = regExpStrings.beginning) != null ? _a : []) {
-    const regExp = new RegExp(`^${regExpStr} (.*)`);
+    const regExp = new RegExp(`^${regExpStr}(.*)`);
     const result = replaceFunc(removed, regExp);
     if (result !== void 0) {
       removed = result;
@@ -392,8 +392,8 @@ var removeUsingRegexpStrings = (str, regExpStrings) => {
 // src/constant/regExp.ts
 var RegExpExample = {
   beginning: {
-    ol: String.raw`\d+\.`,
-    ul: String.raw`(?:\-|\*)`
+    ol: String.raw`\d+\. `,
+    ul: String.raw`(?:\-|\*) `
   },
   surrounding: {
     italic: String.raw`(?:(?<!\*)\*(?!\*)|(?<!_)_(?!_))`,
@@ -555,7 +555,7 @@ var InsertHeadingAtCurrentLevel = class {
       const lastHeadingLine = getPreviousHeading(editor, cursorLine);
       const headingLevel = lastHeadingLine != void 0 ? checkHeading(editor.getLine(lastHeadingLine)) : 0;
       editor.transaction({
-        changes: composeLineChanges(editor, [cursorLine], (chunk) => applyHeading(chunk, headingLevel))
+        changes: composeLineChanges(editor, [cursorLine], (chunk) => applyHeading(chunk, headingLevel, this.settings))
       });
       editor.setCursor(editor.getCursor().line);
       return true;

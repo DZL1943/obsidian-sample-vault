@@ -160,5 +160,7 @@
   "things-style@@no-kanban-styles": false,
   "things-style@@default-font-color": false,
   "things-style@@progress-color": true,
-  "things-style@@h2-underline": false
+  "things-style@@h2-underline": false,
+  "202412181338@@privacy-mode": true,
+  "202412181338@@privacy-mode-text": "disc"
 }

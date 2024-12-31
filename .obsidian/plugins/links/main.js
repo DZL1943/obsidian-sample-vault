@@ -634,7 +634,7 @@ function decodeHtmlEntities(text) {
     return entry != null ? entry : match;
   });
 }
-function findLinks(text, type, start2, end2) {
+function findLinks(text, type, start2, end2, allowStartEndInsideLink = false) {
   const linksRegex = new RegExp(
     `${RegExPatterns.Markdownlink.source}|${RegExPatterns.Wikilink.source}|${RegExPatterns.AutolinkUrl.source}|${RegExPatterns.AutolinkMail.source}|${RegExPatterns.Htmllink.source}|${RegExPatterns.PlainUrl.source}`,
     "gmi"
@@ -665,7 +665,11 @@ function findLinks(text, type, start2, end2) {
         continue;
       }
     } else {
-      if (!(match.index >= startOffset && match.index + rawMatch.length <= endOffset)) {
+      if (allowStartEndInsideLink) {
+        if (!(startOffset >= match.index && endOffset <= match.index + rawMatch.length)) {
+          continue;
+        }
+      } else if (!(match.index >= startOffset && match.index + rawMatch.length <= endOffset)) {
         continue;
       }
     }
@@ -3253,26 +3257,11 @@ var DeleteLinkCommand = class extends CommandBase {
     if (checking && !this.isEnabled()) {
       return false;
     }
-    const selection = editor.getSelection();
     const text = editor.getValue();
     const cursorOffsetStart = editor.posToOffset(editor.getCursor("from"));
     const cursorOffsetEnd = editor.posToOffset(editor.getCursor("to"));
-    const links = findLinks(text, 65535 /* All */, cursorOffsetStart, cursorOffsetEnd);
+    const links = findLinks(text, 65535 /* All */, cursorOffsetStart, cursorOffsetEnd, true);
     if (checking) {
-      console.log("'Delete link' command: Availability check.");
-      if (selection) {
-        console.log("'Delete link' command: Selected text is not supported.");
-        return false;
-      }
-      if ((links == null ? void 0 : links.length) == 0) {
-        console.log("'Delete link' command: No links found.");
-        return false;
-      }
-      if ((links == null ? void 0 : links.length) > 1) {
-        console.log("'Delete link' command: Multiple links are not supported.");
-        return false;
-      }
-      console.log("'Delete link' command: available.");
       return (links == null ? void 0 : links.length) == 1;
     }
     if ((links == null ? void 0 : links.length) == 1) {

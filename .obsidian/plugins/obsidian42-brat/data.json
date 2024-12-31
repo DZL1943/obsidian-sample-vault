@@ -1,9 +1,7 @@
 {
   "pluginList": [
-    "vran-dev/obsidian-attachment-pro",
     "wish5115/obsidian-floating-settings",
-    "Yaozhuwa/AttachFlow",
-    "aidan-gibson/obsidian-opener"
+    "Yaozhuwa/AttachFlow"
   ],
   "pluginSubListFrozenVersion": [],
   "themesList": [],

@@ -18,7 +18,7 @@
         "startupType": "short"
       },
       "attachment-flow-plugin": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "attachment-management": {
         "startupType": "short"
@@ -39,7 +39,7 @@
         "startupType": "short"
       },
       "better-markdown-links": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "obsidian42-brat": {
         "startupType": "long"
@@ -84,7 +84,7 @@
         "startupType": "short"
       },
       "float-search": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "floating-settings": {
         "startupType": "short"
@@ -138,7 +138,7 @@
         "startupType": "short"
       },
       "obsidian-markmind": {
-        "startupType": "disabled"
+        "startupType": "long"
       },
       "nldates-obsidian": {
         "startupType": "short"
@@ -324,13 +324,16 @@
         "startupType": "disabled"
       },
       "image-converter": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "obsidian-spaced-repetition": {
         "startupType": "disabled"
       },
       "smart-connections": {
         "startupType": "disabled"
+      },
+      "webpage-html-export": {
+        "startupType": "long"
       }
     }
   }

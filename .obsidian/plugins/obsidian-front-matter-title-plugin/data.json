@@ -1,5 +1,5 @@
 {
-  "version": "3.9.0",
+  "version": "3.13.1",
   "templates": {
     "common": {
       "main": "title",
@@ -20,7 +20,8 @@
   },
   "debug": false,
   "boot": {
-    "delay": 1000
+    "delay": 1000,
+    "background": true
   },
   "features": {
     "alias": {
@@ -111,7 +112,7 @@
       }
     },
     "noteLink": {
-      "enabled": false,
+      "enabled": true,
       "strategy": "onlyEmpty",
       "approval": true,
       "templates": {

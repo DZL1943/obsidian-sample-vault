@@ -353,15 +353,6 @@
       "key": "B"
     }
   ],
-  "omnisearch:show-modal": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "F"
-    }
-  ],
   "zk-prefixer": [
     {
       "modifiers": [
@@ -441,8 +432,8 @@
   "floating-toc:scroll-to-top": [
     {
       "modifiers": [
-        "Ctrl",
-        "Mod"
+        "Mod",
+        "Ctrl"
       ],
       "key": "ArrowUp"
     }
@@ -450,10 +441,19 @@
   "floating-toc:scroll-to-bottom": [
     {
       "modifiers": [
-        "Ctrl",
-        "Mod"
+        "Mod",
+        "Ctrl"
       ],
       "key": "ArrowDown"
+    }
+  ],
+  "omnisearch:show-modal": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "S"
     }
   ]
 }
