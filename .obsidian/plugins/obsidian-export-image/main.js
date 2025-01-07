@@ -31410,6 +31410,2372 @@ var init_index_es = __esm({
   }
 });
 
+// node_modules/jszip/dist/jszip.min.js
+var require_jszip_min = __commonJS({
+  "node_modules/jszip/dist/jszip.min.js"(exports, module2) {
+    !function(e4) {
+      if ("object" == typeof exports && "undefined" != typeof module2) module2.exports = e4();
+      else if ("function" == typeof define && define.amd) define([], e4);
+      else {
+        ("undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : this).JSZip = e4();
+      }
+    }(function() {
+      return function s3(a3, o4, h3) {
+        function u3(r6, e5) {
+          if (!o4[r6]) {
+            if (!a3[r6]) {
+              var t5 = "function" == typeof require && require;
+              if (!e5 && t5) return t5(r6, true);
+              if (l3) return l3(r6, true);
+              var n4 = new Error("Cannot find module '" + r6 + "'");
+              throw n4.code = "MODULE_NOT_FOUND", n4;
+            }
+            var i4 = o4[r6] = { exports: {} };
+            a3[r6][0].call(i4.exports, function(e6) {
+              var t6 = a3[r6][1][e6];
+              return u3(t6 || e6);
+            }, i4, i4.exports, s3, a3, o4, h3);
+          }
+          return o4[r6].exports;
+        }
+        for (var l3 = "function" == typeof require && require, e4 = 0; e4 < h3.length; e4++) u3(h3[e4]);
+        return u3;
+      }({ 1: [function(e4, t5, r6) {
+        "use strict";
+        var d2 = e4("./utils"), c5 = e4("./support"), p3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        r6.encode = function(e5) {
+          for (var t6, r7, n4, i4, s3, a3, o4, h3 = [], u3 = 0, l3 = e5.length, f3 = l3, c6 = "string" !== d2.getTypeOf(e5); u3 < e5.length; ) f3 = l3 - u3, n4 = c6 ? (t6 = e5[u3++], r7 = u3 < l3 ? e5[u3++] : 0, u3 < l3 ? e5[u3++] : 0) : (t6 = e5.charCodeAt(u3++), r7 = u3 < l3 ? e5.charCodeAt(u3++) : 0, u3 < l3 ? e5.charCodeAt(u3++) : 0), i4 = t6 >> 2, s3 = (3 & t6) << 4 | r7 >> 4, a3 = 1 < f3 ? (15 & r7) << 2 | n4 >> 6 : 64, o4 = 2 < f3 ? 63 & n4 : 64, h3.push(p3.charAt(i4) + p3.charAt(s3) + p3.charAt(a3) + p3.charAt(o4));
+          return h3.join("");
+        }, r6.decode = function(e5) {
+          var t6, r7, n4, i4, s3, a3, o4 = 0, h3 = 0, u3 = "data:";
+          if (e5.substr(0, u3.length) === u3) throw new Error("Invalid base64 input, it looks like a data url.");
+          var l3, f3 = 3 * (e5 = e5.replace(/[^A-Za-z0-9+/=]/g, "")).length / 4;
+          if (e5.charAt(e5.length - 1) === p3.charAt(64) && f3--, e5.charAt(e5.length - 2) === p3.charAt(64) && f3--, f3 % 1 != 0) throw new Error("Invalid base64 input, bad content length.");
+          for (l3 = c5.uint8array ? new Uint8Array(0 | f3) : new Array(0 | f3); o4 < e5.length; ) t6 = p3.indexOf(e5.charAt(o4++)) << 2 | (i4 = p3.indexOf(e5.charAt(o4++))) >> 4, r7 = (15 & i4) << 4 | (s3 = p3.indexOf(e5.charAt(o4++))) >> 2, n4 = (3 & s3) << 6 | (a3 = p3.indexOf(e5.charAt(o4++))), l3[h3++] = t6, 64 !== s3 && (l3[h3++] = r7), 64 !== a3 && (l3[h3++] = n4);
+          return l3;
+        };
+      }, { "./support": 30, "./utils": 32 }], 2: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./external"), i4 = e4("./stream/DataWorker"), s3 = e4("./stream/Crc32Probe"), a3 = e4("./stream/DataLengthProbe");
+        function o4(e5, t6, r7, n5, i5) {
+          this.compressedSize = e5, this.uncompressedSize = t6, this.crc32 = r7, this.compression = n5, this.compressedContent = i5;
+        }
+        o4.prototype = { getContentWorker: function() {
+          var e5 = new i4(n4.Promise.resolve(this.compressedContent)).pipe(this.compression.uncompressWorker()).pipe(new a3("data_length")), t6 = this;
+          return e5.on("end", function() {
+            if (this.streamInfo.data_length !== t6.uncompressedSize) throw new Error("Bug : uncompressed data size mismatch");
+          }), e5;
+        }, getCompressedWorker: function() {
+          return new i4(n4.Promise.resolve(this.compressedContent)).withStreamInfo("compressedSize", this.compressedSize).withStreamInfo("uncompressedSize", this.uncompressedSize).withStreamInfo("crc32", this.crc32).withStreamInfo("compression", this.compression);
+        } }, o4.createWorkerFrom = function(e5, t6, r7) {
+          return e5.pipe(new s3()).pipe(new a3("uncompressedSize")).pipe(t6.compressWorker(r7)).pipe(new a3("compressedSize")).withStreamInfo("compression", t6);
+        }, t5.exports = o4;
+      }, { "./external": 6, "./stream/Crc32Probe": 25, "./stream/DataLengthProbe": 26, "./stream/DataWorker": 27 }], 3: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./stream/GenericWorker");
+        r6.STORE = { magic: "\0\0", compressWorker: function() {
+          return new n4("STORE compression");
+        }, uncompressWorker: function() {
+          return new n4("STORE decompression");
+        } }, r6.DEFLATE = e4("./flate");
+      }, { "./flate": 7, "./stream/GenericWorker": 28 }], 4: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./utils");
+        var o4 = function() {
+          for (var e5, t6 = [], r7 = 0; r7 < 256; r7++) {
+            e5 = r7;
+            for (var n5 = 0; n5 < 8; n5++) e5 = 1 & e5 ? 3988292384 ^ e5 >>> 1 : e5 >>> 1;
+            t6[r7] = e5;
+          }
+          return t6;
+        }();
+        t5.exports = function(e5, t6) {
+          return void 0 !== e5 && e5.length ? "string" !== n4.getTypeOf(e5) ? function(e6, t7, r7, n5) {
+            var i4 = o4, s3 = n5 + r7;
+            e6 ^= -1;
+            for (var a3 = n5; a3 < s3; a3++) e6 = e6 >>> 8 ^ i4[255 & (e6 ^ t7[a3])];
+            return -1 ^ e6;
+          }(0 | t6, e5, e5.length, 0) : function(e6, t7, r7, n5) {
+            var i4 = o4, s3 = n5 + r7;
+            e6 ^= -1;
+            for (var a3 = n5; a3 < s3; a3++) e6 = e6 >>> 8 ^ i4[255 & (e6 ^ t7.charCodeAt(a3))];
+            return -1 ^ e6;
+          }(0 | t6, e5, e5.length, 0) : 0;
+        };
+      }, { "./utils": 32 }], 5: [function(e4, t5, r6) {
+        "use strict";
+        r6.base64 = false, r6.binary = false, r6.dir = false, r6.createFolders = true, r6.date = null, r6.compression = null, r6.compressionOptions = null, r6.comment = null, r6.unixPermissions = null, r6.dosPermissions = null;
+      }, {}], 6: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = null;
+        n4 = "undefined" != typeof Promise ? Promise : e4("lie"), t5.exports = { Promise: n4 };
+      }, { lie: 37 }], 7: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = "undefined" != typeof Uint8Array && "undefined" != typeof Uint16Array && "undefined" != typeof Uint32Array, i4 = e4("pako"), s3 = e4("./utils"), a3 = e4("./stream/GenericWorker"), o4 = n4 ? "uint8array" : "array";
+        function h3(e5, t6) {
+          a3.call(this, "FlateWorker/" + e5), this._pako = null, this._pakoAction = e5, this._pakoOptions = t6, this.meta = {};
+        }
+        r6.magic = "\b\0", s3.inherits(h3, a3), h3.prototype.processChunk = function(e5) {
+          this.meta = e5.meta, null === this._pako && this._createPako(), this._pako.push(s3.transformTo(o4, e5.data), false);
+        }, h3.prototype.flush = function() {
+          a3.prototype.flush.call(this), null === this._pako && this._createPako(), this._pako.push([], true);
+        }, h3.prototype.cleanUp = function() {
+          a3.prototype.cleanUp.call(this), this._pako = null;
+        }, h3.prototype._createPako = function() {
+          this._pako = new i4[this._pakoAction]({ raw: true, level: this._pakoOptions.level || -1 });
+          var t6 = this;
+          this._pako.onData = function(e5) {
+            t6.push({ data: e5, meta: t6.meta });
+          };
+        }, r6.compressWorker = function(e5) {
+          return new h3("Deflate", e5);
+        }, r6.uncompressWorker = function() {
+          return new h3("Inflate", {});
+        };
+      }, { "./stream/GenericWorker": 28, "./utils": 32, pako: 38 }], 8: [function(e4, t5, r6) {
+        "use strict";
+        function A2(e5, t6) {
+          var r7, n5 = "";
+          for (r7 = 0; r7 < t6; r7++) n5 += String.fromCharCode(255 & e5), e5 >>>= 8;
+          return n5;
+        }
+        function n4(e5, t6, r7, n5, i5, s4) {
+          var a3, o4, h3 = e5.file, u3 = e5.compression, l3 = s4 !== O3.utf8encode, f3 = I2.transformTo("string", s4(h3.name)), c5 = I2.transformTo("string", O3.utf8encode(h3.name)), d2 = h3.comment, p3 = I2.transformTo("string", s4(d2)), m5 = I2.transformTo("string", O3.utf8encode(d2)), _3 = c5.length !== h3.name.length, g2 = m5.length !== d2.length, b2 = "", v3 = "", y3 = "", w2 = h3.dir, k2 = h3.date, x2 = { crc32: 0, compressedSize: 0, uncompressedSize: 0 };
+          t6 && !r7 || (x2.crc32 = e5.crc32, x2.compressedSize = e5.compressedSize, x2.uncompressedSize = e5.uncompressedSize);
+          var S2 = 0;
+          t6 && (S2 |= 8), l3 || !_3 && !g2 || (S2 |= 2048);
+          var z2 = 0, C2 = 0;
+          w2 && (z2 |= 16), "UNIX" === i5 ? (C2 = 798, z2 |= function(e6, t7) {
+            var r8 = e6;
+            return e6 || (r8 = t7 ? 16893 : 33204), (65535 & r8) << 16;
+          }(h3.unixPermissions, w2)) : (C2 = 20, z2 |= function(e6) {
+            return 63 & (e6 || 0);
+          }(h3.dosPermissions)), a3 = k2.getUTCHours(), a3 <<= 6, a3 |= k2.getUTCMinutes(), a3 <<= 5, a3 |= k2.getUTCSeconds() / 2, o4 = k2.getUTCFullYear() - 1980, o4 <<= 4, o4 |= k2.getUTCMonth() + 1, o4 <<= 5, o4 |= k2.getUTCDate(), _3 && (v3 = A2(1, 1) + A2(B2(f3), 4) + c5, b2 += "up" + A2(v3.length, 2) + v3), g2 && (y3 = A2(1, 1) + A2(B2(p3), 4) + m5, b2 += "uc" + A2(y3.length, 2) + y3);
+          var E2 = "";
+          return E2 += "\n\0", E2 += A2(S2, 2), E2 += u3.magic, E2 += A2(a3, 2), E2 += A2(o4, 2), E2 += A2(x2.crc32, 4), E2 += A2(x2.compressedSize, 4), E2 += A2(x2.uncompressedSize, 4), E2 += A2(f3.length, 2), E2 += A2(b2.length, 2), { fileRecord: R2.LOCAL_FILE_HEADER + E2 + f3 + b2, dirRecord: R2.CENTRAL_FILE_HEADER + A2(C2, 2) + E2 + A2(p3.length, 2) + "\0\0\0\0" + A2(z2, 4) + A2(n5, 4) + f3 + b2 + p3 };
+        }
+        var I2 = e4("../utils"), i4 = e4("../stream/GenericWorker"), O3 = e4("../utf8"), B2 = e4("../crc32"), R2 = e4("../signature");
+        function s3(e5, t6, r7, n5) {
+          i4.call(this, "ZipFileWorker"), this.bytesWritten = 0, this.zipComment = t6, this.zipPlatform = r7, this.encodeFileName = n5, this.streamFiles = e5, this.accumulate = false, this.contentBuffer = [], this.dirRecords = [], this.currentSourceOffset = 0, this.entriesCount = 0, this.currentFile = null, this._sources = [];
+        }
+        I2.inherits(s3, i4), s3.prototype.push = function(e5) {
+          var t6 = e5.meta.percent || 0, r7 = this.entriesCount, n5 = this._sources.length;
+          this.accumulate ? this.contentBuffer.push(e5) : (this.bytesWritten += e5.data.length, i4.prototype.push.call(this, { data: e5.data, meta: { currentFile: this.currentFile, percent: r7 ? (t6 + 100 * (r7 - n5 - 1)) / r7 : 100 } }));
+        }, s3.prototype.openedSource = function(e5) {
+          this.currentSourceOffset = this.bytesWritten, this.currentFile = e5.file.name;
+          var t6 = this.streamFiles && !e5.file.dir;
+          if (t6) {
+            var r7 = n4(e5, t6, false, this.currentSourceOffset, this.zipPlatform, this.encodeFileName);
+            this.push({ data: r7.fileRecord, meta: { percent: 0 } });
+          } else this.accumulate = true;
+        }, s3.prototype.closedSource = function(e5) {
+          this.accumulate = false;
+          var t6 = this.streamFiles && !e5.file.dir, r7 = n4(e5, t6, true, this.currentSourceOffset, this.zipPlatform, this.encodeFileName);
+          if (this.dirRecords.push(r7.dirRecord), t6) this.push({ data: function(e6) {
+            return R2.DATA_DESCRIPTOR + A2(e6.crc32, 4) + A2(e6.compressedSize, 4) + A2(e6.uncompressedSize, 4);
+          }(e5), meta: { percent: 100 } });
+          else for (this.push({ data: r7.fileRecord, meta: { percent: 0 } }); this.contentBuffer.length; ) this.push(this.contentBuffer.shift());
+          this.currentFile = null;
+        }, s3.prototype.flush = function() {
+          for (var e5 = this.bytesWritten, t6 = 0; t6 < this.dirRecords.length; t6++) this.push({ data: this.dirRecords[t6], meta: { percent: 100 } });
+          var r7 = this.bytesWritten - e5, n5 = function(e6, t7, r8, n6, i5) {
+            var s4 = I2.transformTo("string", i5(n6));
+            return R2.CENTRAL_DIRECTORY_END + "\0\0\0\0" + A2(e6, 2) + A2(e6, 2) + A2(t7, 4) + A2(r8, 4) + A2(s4.length, 2) + s4;
+          }(this.dirRecords.length, r7, e5, this.zipComment, this.encodeFileName);
+          this.push({ data: n5, meta: { percent: 100 } });
+        }, s3.prototype.prepareNextSource = function() {
+          this.previous = this._sources.shift(), this.openedSource(this.previous.streamInfo), this.isPaused ? this.previous.pause() : this.previous.resume();
+        }, s3.prototype.registerPrevious = function(e5) {
+          this._sources.push(e5);
+          var t6 = this;
+          return e5.on("data", function(e6) {
+            t6.processChunk(e6);
+          }), e5.on("end", function() {
+            t6.closedSource(t6.previous.streamInfo), t6._sources.length ? t6.prepareNextSource() : t6.end();
+          }), e5.on("error", function(e6) {
+            t6.error(e6);
+          }), this;
+        }, s3.prototype.resume = function() {
+          return !!i4.prototype.resume.call(this) && (!this.previous && this._sources.length ? (this.prepareNextSource(), true) : this.previous || this._sources.length || this.generatedError ? void 0 : (this.end(), true));
+        }, s3.prototype.error = function(e5) {
+          var t6 = this._sources;
+          if (!i4.prototype.error.call(this, e5)) return false;
+          for (var r7 = 0; r7 < t6.length; r7++) try {
+            t6[r7].error(e5);
+          } catch (e6) {
+          }
+          return true;
+        }, s3.prototype.lock = function() {
+          i4.prototype.lock.call(this);
+          for (var e5 = this._sources, t6 = 0; t6 < e5.length; t6++) e5[t6].lock();
+        }, t5.exports = s3;
+      }, { "../crc32": 4, "../signature": 23, "../stream/GenericWorker": 28, "../utf8": 31, "../utils": 32 }], 9: [function(e4, t5, r6) {
+        "use strict";
+        var u3 = e4("../compressions"), n4 = e4("./ZipFileWorker");
+        r6.generateWorker = function(e5, a3, t6) {
+          var o4 = new n4(a3.streamFiles, t6, a3.platform, a3.encodeFileName), h3 = 0;
+          try {
+            e5.forEach(function(e6, t7) {
+              h3++;
+              var r7 = function(e7, t8) {
+                var r8 = e7 || t8, n6 = u3[r8];
+                if (!n6) throw new Error(r8 + " is not a valid compression method !");
+                return n6;
+              }(t7.options.compression, a3.compression), n5 = t7.options.compressionOptions || a3.compressionOptions || {}, i4 = t7.dir, s3 = t7.date;
+              t7._compressWorker(r7, n5).withStreamInfo("file", { name: e6, dir: i4, date: s3, comment: t7.comment || "", unixPermissions: t7.unixPermissions, dosPermissions: t7.dosPermissions }).pipe(o4);
+            }), o4.entriesCount = h3;
+          } catch (e6) {
+            o4.error(e6);
+          }
+          return o4;
+        };
+      }, { "../compressions": 3, "./ZipFileWorker": 8 }], 10: [function(e4, t5, r6) {
+        "use strict";
+        function n4() {
+          if (!(this instanceof n4)) return new n4();
+          if (arguments.length) throw new Error("The constructor with parameters has been removed in JSZip 3.0, please check the upgrade guide.");
+          this.files = /* @__PURE__ */ Object.create(null), this.comment = null, this.root = "", this.clone = function() {
+            var e5 = new n4();
+            for (var t6 in this) "function" != typeof this[t6] && (e5[t6] = this[t6]);
+            return e5;
+          };
+        }
+        (n4.prototype = e4("./object")).loadAsync = e4("./load"), n4.support = e4("./support"), n4.defaults = e4("./defaults"), n4.version = "3.10.1", n4.loadAsync = function(e5, t6) {
+          return new n4().loadAsync(e5, t6);
+        }, n4.external = e4("./external"), t5.exports = n4;
+      }, { "./defaults": 5, "./external": 6, "./load": 11, "./object": 15, "./support": 30 }], 11: [function(e4, t5, r6) {
+        "use strict";
+        var u3 = e4("./utils"), i4 = e4("./external"), n4 = e4("./utf8"), s3 = e4("./zipEntries"), a3 = e4("./stream/Crc32Probe"), l3 = e4("./nodejsUtils");
+        function f3(n5) {
+          return new i4.Promise(function(e5, t6) {
+            var r7 = n5.decompressed.getContentWorker().pipe(new a3());
+            r7.on("error", function(e6) {
+              t6(e6);
+            }).on("end", function() {
+              r7.streamInfo.crc32 !== n5.decompressed.crc32 ? t6(new Error("Corrupted zip : CRC32 mismatch")) : e5();
+            }).resume();
+          });
+        }
+        t5.exports = function(e5, o4) {
+          var h3 = this;
+          return o4 = u3.extend(o4 || {}, { base64: false, checkCRC32: false, optimizedBinaryString: false, createFolders: false, decodeFileName: n4.utf8decode }), l3.isNode && l3.isStream(e5) ? i4.Promise.reject(new Error("JSZip can't accept a stream when loading a zip file.")) : u3.prepareContent("the loaded zip file", e5, true, o4.optimizedBinaryString, o4.base64).then(function(e6) {
+            var t6 = new s3(o4);
+            return t6.load(e6), t6;
+          }).then(function(e6) {
+            var t6 = [i4.Promise.resolve(e6)], r7 = e6.files;
+            if (o4.checkCRC32) for (var n5 = 0; n5 < r7.length; n5++) t6.push(f3(r7[n5]));
+            return i4.Promise.all(t6);
+          }).then(function(e6) {
+            for (var t6 = e6.shift(), r7 = t6.files, n5 = 0; n5 < r7.length; n5++) {
+              var i5 = r7[n5], s4 = i5.fileNameStr, a4 = u3.resolve(i5.fileNameStr);
+              h3.file(a4, i5.decompressed, { binary: true, optimizedBinaryString: true, date: i5.date, dir: i5.dir, comment: i5.fileCommentStr.length ? i5.fileCommentStr : null, unixPermissions: i5.unixPermissions, dosPermissions: i5.dosPermissions, createFolders: o4.createFolders }), i5.dir || (h3.file(a4).unsafeOriginalName = s4);
+            }
+            return t6.zipComment.length && (h3.comment = t6.zipComment), h3;
+          });
+        };
+      }, { "./external": 6, "./nodejsUtils": 14, "./stream/Crc32Probe": 25, "./utf8": 31, "./utils": 32, "./zipEntries": 33 }], 12: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("../utils"), i4 = e4("../stream/GenericWorker");
+        function s3(e5, t6) {
+          i4.call(this, "Nodejs stream input adapter for " + e5), this._upstreamEnded = false, this._bindStream(t6);
+        }
+        n4.inherits(s3, i4), s3.prototype._bindStream = function(e5) {
+          var t6 = this;
+          (this._stream = e5).pause(), e5.on("data", function(e6) {
+            t6.push({ data: e6, meta: { percent: 0 } });
+          }).on("error", function(e6) {
+            t6.isPaused ? this.generatedError = e6 : t6.error(e6);
+          }).on("end", function() {
+            t6.isPaused ? t6._upstreamEnded = true : t6.end();
+          });
+        }, s3.prototype.pause = function() {
+          return !!i4.prototype.pause.call(this) && (this._stream.pause(), true);
+        }, s3.prototype.resume = function() {
+          return !!i4.prototype.resume.call(this) && (this._upstreamEnded ? this.end() : this._stream.resume(), true);
+        }, t5.exports = s3;
+      }, { "../stream/GenericWorker": 28, "../utils": 32 }], 13: [function(e4, t5, r6) {
+        "use strict";
+        var i4 = e4("readable-stream").Readable;
+        function n4(e5, t6, r7) {
+          i4.call(this, t6), this._helper = e5;
+          var n5 = this;
+          e5.on("data", function(e6, t7) {
+            n5.push(e6) || n5._helper.pause(), r7 && r7(t7);
+          }).on("error", function(e6) {
+            n5.emit("error", e6);
+          }).on("end", function() {
+            n5.push(null);
+          });
+        }
+        e4("../utils").inherits(n4, i4), n4.prototype._read = function() {
+          this._helper.resume();
+        }, t5.exports = n4;
+      }, { "../utils": 32, "readable-stream": 16 }], 14: [function(e4, t5, r6) {
+        "use strict";
+        t5.exports = { isNode: "undefined" != typeof Buffer, newBufferFrom: function(e5, t6) {
+          if (Buffer.from && Buffer.from !== Uint8Array.from) return Buffer.from(e5, t6);
+          if ("number" == typeof e5) throw new Error('The "data" argument must not be a number');
+          return new Buffer(e5, t6);
+        }, allocBuffer: function(e5) {
+          if (Buffer.alloc) return Buffer.alloc(e5);
+          var t6 = new Buffer(e5);
+          return t6.fill(0), t6;
+        }, isBuffer: function(e5) {
+          return Buffer.isBuffer(e5);
+        }, isStream: function(e5) {
+          return e5 && "function" == typeof e5.on && "function" == typeof e5.pause && "function" == typeof e5.resume;
+        } };
+      }, {}], 15: [function(e4, t5, r6) {
+        "use strict";
+        function s3(e5, t6, r7) {
+          var n5, i5 = u3.getTypeOf(t6), s4 = u3.extend(r7 || {}, f3);
+          s4.date = s4.date || /* @__PURE__ */ new Date(), null !== s4.compression && (s4.compression = s4.compression.toUpperCase()), "string" == typeof s4.unixPermissions && (s4.unixPermissions = parseInt(s4.unixPermissions, 8)), s4.unixPermissions && 16384 & s4.unixPermissions && (s4.dir = true), s4.dosPermissions && 16 & s4.dosPermissions && (s4.dir = true), s4.dir && (e5 = g2(e5)), s4.createFolders && (n5 = _3(e5)) && b2.call(this, n5, true);
+          var a4 = "string" === i5 && false === s4.binary && false === s4.base64;
+          r7 && void 0 !== r7.binary || (s4.binary = !a4), (t6 instanceof c5 && 0 === t6.uncompressedSize || s4.dir || !t6 || 0 === t6.length) && (s4.base64 = false, s4.binary = true, t6 = "", s4.compression = "STORE", i5 = "string");
+          var o5 = null;
+          o5 = t6 instanceof c5 || t6 instanceof l3 ? t6 : p3.isNode && p3.isStream(t6) ? new m5(e5, t6) : u3.prepareContent(e5, t6, s4.binary, s4.optimizedBinaryString, s4.base64);
+          var h4 = new d2(e5, o5, s4);
+          this.files[e5] = h4;
+        }
+        var i4 = e4("./utf8"), u3 = e4("./utils"), l3 = e4("./stream/GenericWorker"), a3 = e4("./stream/StreamHelper"), f3 = e4("./defaults"), c5 = e4("./compressedObject"), d2 = e4("./zipObject"), o4 = e4("./generate"), p3 = e4("./nodejsUtils"), m5 = e4("./nodejs/NodejsStreamInputAdapter"), _3 = function(e5) {
+          "/" === e5.slice(-1) && (e5 = e5.substring(0, e5.length - 1));
+          var t6 = e5.lastIndexOf("/");
+          return 0 < t6 ? e5.substring(0, t6) : "";
+        }, g2 = function(e5) {
+          return "/" !== e5.slice(-1) && (e5 += "/"), e5;
+        }, b2 = function(e5, t6) {
+          return t6 = void 0 !== t6 ? t6 : f3.createFolders, e5 = g2(e5), this.files[e5] || s3.call(this, e5, null, { dir: true, createFolders: t6 }), this.files[e5];
+        };
+        function h3(e5) {
+          return "[object RegExp]" === Object.prototype.toString.call(e5);
+        }
+        var n4 = { load: function() {
+          throw new Error("This method has been removed in JSZip 3.0, please check the upgrade guide.");
+        }, forEach: function(e5) {
+          var t6, r7, n5;
+          for (t6 in this.files) n5 = this.files[t6], (r7 = t6.slice(this.root.length, t6.length)) && t6.slice(0, this.root.length) === this.root && e5(r7, n5);
+        }, filter: function(r7) {
+          var n5 = [];
+          return this.forEach(function(e5, t6) {
+            r7(e5, t6) && n5.push(t6);
+          }), n5;
+        }, file: function(e5, t6, r7) {
+          if (1 !== arguments.length) return e5 = this.root + e5, s3.call(this, e5, t6, r7), this;
+          if (h3(e5)) {
+            var n5 = e5;
+            return this.filter(function(e6, t7) {
+              return !t7.dir && n5.test(e6);
+            });
+          }
+          var i5 = this.files[this.root + e5];
+          return i5 && !i5.dir ? i5 : null;
+        }, folder: function(r7) {
+          if (!r7) return this;
+          if (h3(r7)) return this.filter(function(e6, t7) {
+            return t7.dir && r7.test(e6);
+          });
+          var e5 = this.root + r7, t6 = b2.call(this, e5), n5 = this.clone();
+          return n5.root = t6.name, n5;
+        }, remove: function(r7) {
+          r7 = this.root + r7;
+          var e5 = this.files[r7];
+          if (e5 || ("/" !== r7.slice(-1) && (r7 += "/"), e5 = this.files[r7]), e5 && !e5.dir) delete this.files[r7];
+          else for (var t6 = this.filter(function(e6, t7) {
+            return t7.name.slice(0, r7.length) === r7;
+          }), n5 = 0; n5 < t6.length; n5++) delete this.files[t6[n5].name];
+          return this;
+        }, generate: function() {
+          throw new Error("This method has been removed in JSZip 3.0, please check the upgrade guide.");
+        }, generateInternalStream: function(e5) {
+          var t6, r7 = {};
+          try {
+            if ((r7 = u3.extend(e5 || {}, { streamFiles: false, compression: "STORE", compressionOptions: null, type: "", platform: "DOS", comment: null, mimeType: "application/zip", encodeFileName: i4.utf8encode })).type = r7.type.toLowerCase(), r7.compression = r7.compression.toUpperCase(), "binarystring" === r7.type && (r7.type = "string"), !r7.type) throw new Error("No output type specified.");
+            u3.checkSupport(r7.type), "darwin" !== r7.platform && "freebsd" !== r7.platform && "linux" !== r7.platform && "sunos" !== r7.platform || (r7.platform = "UNIX"), "win32" === r7.platform && (r7.platform = "DOS");
+            var n5 = r7.comment || this.comment || "";
+            t6 = o4.generateWorker(this, r7, n5);
+          } catch (e6) {
+            (t6 = new l3("error")).error(e6);
+          }
+          return new a3(t6, r7.type || "string", r7.mimeType);
+        }, generateAsync: function(e5, t6) {
+          return this.generateInternalStream(e5).accumulate(t6);
+        }, generateNodeStream: function(e5, t6) {
+          return (e5 = e5 || {}).type || (e5.type = "nodebuffer"), this.generateInternalStream(e5).toNodejsStream(t6);
+        } };
+        t5.exports = n4;
+      }, { "./compressedObject": 2, "./defaults": 5, "./generate": 9, "./nodejs/NodejsStreamInputAdapter": 12, "./nodejsUtils": 14, "./stream/GenericWorker": 28, "./stream/StreamHelper": 29, "./utf8": 31, "./utils": 32, "./zipObject": 35 }], 16: [function(e4, t5, r6) {
+        "use strict";
+        t5.exports = e4("stream");
+      }, { stream: void 0 }], 17: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./DataReader");
+        function i4(e5) {
+          n4.call(this, e5);
+          for (var t6 = 0; t6 < this.data.length; t6++) e5[t6] = 255 & e5[t6];
+        }
+        e4("../utils").inherits(i4, n4), i4.prototype.byteAt = function(e5) {
+          return this.data[this.zero + e5];
+        }, i4.prototype.lastIndexOfSignature = function(e5) {
+          for (var t6 = e5.charCodeAt(0), r7 = e5.charCodeAt(1), n5 = e5.charCodeAt(2), i5 = e5.charCodeAt(3), s3 = this.length - 4; 0 <= s3; --s3) if (this.data[s3] === t6 && this.data[s3 + 1] === r7 && this.data[s3 + 2] === n5 && this.data[s3 + 3] === i5) return s3 - this.zero;
+          return -1;
+        }, i4.prototype.readAndCheckSignature = function(e5) {
+          var t6 = e5.charCodeAt(0), r7 = e5.charCodeAt(1), n5 = e5.charCodeAt(2), i5 = e5.charCodeAt(3), s3 = this.readData(4);
+          return t6 === s3[0] && r7 === s3[1] && n5 === s3[2] && i5 === s3[3];
+        }, i4.prototype.readData = function(e5) {
+          if (this.checkOffset(e5), 0 === e5) return [];
+          var t6 = this.data.slice(this.zero + this.index, this.zero + this.index + e5);
+          return this.index += e5, t6;
+        }, t5.exports = i4;
+      }, { "../utils": 32, "./DataReader": 18 }], 18: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("../utils");
+        function i4(e5) {
+          this.data = e5, this.length = e5.length, this.index = 0, this.zero = 0;
+        }
+        i4.prototype = { checkOffset: function(e5) {
+          this.checkIndex(this.index + e5);
+        }, checkIndex: function(e5) {
+          if (this.length < this.zero + e5 || e5 < 0) throw new Error("End of data reached (data length = " + this.length + ", asked index = " + e5 + "). Corrupted zip ?");
+        }, setIndex: function(e5) {
+          this.checkIndex(e5), this.index = e5;
+        }, skip: function(e5) {
+          this.setIndex(this.index + e5);
+        }, byteAt: function() {
+        }, readInt: function(e5) {
+          var t6, r7 = 0;
+          for (this.checkOffset(e5), t6 = this.index + e5 - 1; t6 >= this.index; t6--) r7 = (r7 << 8) + this.byteAt(t6);
+          return this.index += e5, r7;
+        }, readString: function(e5) {
+          return n4.transformTo("string", this.readData(e5));
+        }, readData: function() {
+        }, lastIndexOfSignature: function() {
+        }, readAndCheckSignature: function() {
+        }, readDate: function() {
+          var e5 = this.readInt(4);
+          return new Date(Date.UTC(1980 + (e5 >> 25 & 127), (e5 >> 21 & 15) - 1, e5 >> 16 & 31, e5 >> 11 & 31, e5 >> 5 & 63, (31 & e5) << 1));
+        } }, t5.exports = i4;
+      }, { "../utils": 32 }], 19: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./Uint8ArrayReader");
+        function i4(e5) {
+          n4.call(this, e5);
+        }
+        e4("../utils").inherits(i4, n4), i4.prototype.readData = function(e5) {
+          this.checkOffset(e5);
+          var t6 = this.data.slice(this.zero + this.index, this.zero + this.index + e5);
+          return this.index += e5, t6;
+        }, t5.exports = i4;
+      }, { "../utils": 32, "./Uint8ArrayReader": 21 }], 20: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./DataReader");
+        function i4(e5) {
+          n4.call(this, e5);
+        }
+        e4("../utils").inherits(i4, n4), i4.prototype.byteAt = function(e5) {
+          return this.data.charCodeAt(this.zero + e5);
+        }, i4.prototype.lastIndexOfSignature = function(e5) {
+          return this.data.lastIndexOf(e5) - this.zero;
+        }, i4.prototype.readAndCheckSignature = function(e5) {
+          return e5 === this.readData(4);
+        }, i4.prototype.readData = function(e5) {
+          this.checkOffset(e5);
+          var t6 = this.data.slice(this.zero + this.index, this.zero + this.index + e5);
+          return this.index += e5, t6;
+        }, t5.exports = i4;
+      }, { "../utils": 32, "./DataReader": 18 }], 21: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./ArrayReader");
+        function i4(e5) {
+          n4.call(this, e5);
+        }
+        e4("../utils").inherits(i4, n4), i4.prototype.readData = function(e5) {
+          if (this.checkOffset(e5), 0 === e5) return new Uint8Array(0);
+          var t6 = this.data.subarray(this.zero + this.index, this.zero + this.index + e5);
+          return this.index += e5, t6;
+        }, t5.exports = i4;
+      }, { "../utils": 32, "./ArrayReader": 17 }], 22: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("../utils"), i4 = e4("../support"), s3 = e4("./ArrayReader"), a3 = e4("./StringReader"), o4 = e4("./NodeBufferReader"), h3 = e4("./Uint8ArrayReader");
+        t5.exports = function(e5) {
+          var t6 = n4.getTypeOf(e5);
+          return n4.checkSupport(t6), "string" !== t6 || i4.uint8array ? "nodebuffer" === t6 ? new o4(e5) : i4.uint8array ? new h3(n4.transformTo("uint8array", e5)) : new s3(n4.transformTo("array", e5)) : new a3(e5);
+        };
+      }, { "../support": 30, "../utils": 32, "./ArrayReader": 17, "./NodeBufferReader": 19, "./StringReader": 20, "./Uint8ArrayReader": 21 }], 23: [function(e4, t5, r6) {
+        "use strict";
+        r6.LOCAL_FILE_HEADER = "PK", r6.CENTRAL_FILE_HEADER = "PK", r6.CENTRAL_DIRECTORY_END = "PK", r6.ZIP64_CENTRAL_DIRECTORY_LOCATOR = "PK\x07", r6.ZIP64_CENTRAL_DIRECTORY_END = "PK", r6.DATA_DESCRIPTOR = "PK\x07\b";
+      }, {}], 24: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./GenericWorker"), i4 = e4("../utils");
+        function s3(e5) {
+          n4.call(this, "ConvertWorker to " + e5), this.destType = e5;
+        }
+        i4.inherits(s3, n4), s3.prototype.processChunk = function(e5) {
+          this.push({ data: i4.transformTo(this.destType, e5.data), meta: e5.meta });
+        }, t5.exports = s3;
+      }, { "../utils": 32, "./GenericWorker": 28 }], 25: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./GenericWorker"), i4 = e4("../crc32");
+        function s3() {
+          n4.call(this, "Crc32Probe"), this.withStreamInfo("crc32", 0);
+        }
+        e4("../utils").inherits(s3, n4), s3.prototype.processChunk = function(e5) {
+          this.streamInfo.crc32 = i4(e5.data, this.streamInfo.crc32 || 0), this.push(e5);
+        }, t5.exports = s3;
+      }, { "../crc32": 4, "../utils": 32, "./GenericWorker": 28 }], 26: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("../utils"), i4 = e4("./GenericWorker");
+        function s3(e5) {
+          i4.call(this, "DataLengthProbe for " + e5), this.propName = e5, this.withStreamInfo(e5, 0);
+        }
+        n4.inherits(s3, i4), s3.prototype.processChunk = function(e5) {
+          if (e5) {
+            var t6 = this.streamInfo[this.propName] || 0;
+            this.streamInfo[this.propName] = t6 + e5.data.length;
+          }
+          i4.prototype.processChunk.call(this, e5);
+        }, t5.exports = s3;
+      }, { "../utils": 32, "./GenericWorker": 28 }], 27: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("../utils"), i4 = e4("./GenericWorker");
+        function s3(e5) {
+          i4.call(this, "DataWorker");
+          var t6 = this;
+          this.dataIsReady = false, this.index = 0, this.max = 0, this.data = null, this.type = "", this._tickScheduled = false, e5.then(function(e6) {
+            t6.dataIsReady = true, t6.data = e6, t6.max = e6 && e6.length || 0, t6.type = n4.getTypeOf(e6), t6.isPaused || t6._tickAndRepeat();
+          }, function(e6) {
+            t6.error(e6);
+          });
+        }
+        n4.inherits(s3, i4), s3.prototype.cleanUp = function() {
+          i4.prototype.cleanUp.call(this), this.data = null;
+        }, s3.prototype.resume = function() {
+          return !!i4.prototype.resume.call(this) && (!this._tickScheduled && this.dataIsReady && (this._tickScheduled = true, n4.delay(this._tickAndRepeat, [], this)), true);
+        }, s3.prototype._tickAndRepeat = function() {
+          this._tickScheduled = false, this.isPaused || this.isFinished || (this._tick(), this.isFinished || (n4.delay(this._tickAndRepeat, [], this), this._tickScheduled = true));
+        }, s3.prototype._tick = function() {
+          if (this.isPaused || this.isFinished) return false;
+          var e5 = null, t6 = Math.min(this.max, this.index + 16384);
+          if (this.index >= this.max) return this.end();
+          switch (this.type) {
+            case "string":
+              e5 = this.data.substring(this.index, t6);
+              break;
+            case "uint8array":
+              e5 = this.data.subarray(this.index, t6);
+              break;
+            case "array":
+            case "nodebuffer":
+              e5 = this.data.slice(this.index, t6);
+          }
+          return this.index = t6, this.push({ data: e5, meta: { percent: this.max ? this.index / this.max * 100 : 0 } });
+        }, t5.exports = s3;
+      }, { "../utils": 32, "./GenericWorker": 28 }], 28: [function(e4, t5, r6) {
+        "use strict";
+        function n4(e5) {
+          this.name = e5 || "default", this.streamInfo = {}, this.generatedError = null, this.extraStreamInfo = {}, this.isPaused = true, this.isFinished = false, this.isLocked = false, this._listeners = { data: [], end: [], error: [] }, this.previous = null;
+        }
+        n4.prototype = { push: function(e5) {
+          this.emit("data", e5);
+        }, end: function() {
+          if (this.isFinished) return false;
+          this.flush();
+          try {
+            this.emit("end"), this.cleanUp(), this.isFinished = true;
+          } catch (e5) {
+            this.emit("error", e5);
+          }
+          return true;
+        }, error: function(e5) {
+          return !this.isFinished && (this.isPaused ? this.generatedError = e5 : (this.isFinished = true, this.emit("error", e5), this.previous && this.previous.error(e5), this.cleanUp()), true);
+        }, on: function(e5, t6) {
+          return this._listeners[e5].push(t6), this;
+        }, cleanUp: function() {
+          this.streamInfo = this.generatedError = this.extraStreamInfo = null, this._listeners = [];
+        }, emit: function(e5, t6) {
+          if (this._listeners[e5]) for (var r7 = 0; r7 < this._listeners[e5].length; r7++) this._listeners[e5][r7].call(this, t6);
+        }, pipe: function(e5) {
+          return e5.registerPrevious(this);
+        }, registerPrevious: function(e5) {
+          if (this.isLocked) throw new Error("The stream '" + this + "' has already been used.");
+          this.streamInfo = e5.streamInfo, this.mergeStreamInfo(), this.previous = e5;
+          var t6 = this;
+          return e5.on("data", function(e6) {
+            t6.processChunk(e6);
+          }), e5.on("end", function() {
+            t6.end();
+          }), e5.on("error", function(e6) {
+            t6.error(e6);
+          }), this;
+        }, pause: function() {
+          return !this.isPaused && !this.isFinished && (this.isPaused = true, this.previous && this.previous.pause(), true);
+        }, resume: function() {
+          if (!this.isPaused || this.isFinished) return false;
+          var e5 = this.isPaused = false;
+          return this.generatedError && (this.error(this.generatedError), e5 = true), this.previous && this.previous.resume(), !e5;
+        }, flush: function() {
+        }, processChunk: function(e5) {
+          this.push(e5);
+        }, withStreamInfo: function(e5, t6) {
+          return this.extraStreamInfo[e5] = t6, this.mergeStreamInfo(), this;
+        }, mergeStreamInfo: function() {
+          for (var e5 in this.extraStreamInfo) Object.prototype.hasOwnProperty.call(this.extraStreamInfo, e5) && (this.streamInfo[e5] = this.extraStreamInfo[e5]);
+        }, lock: function() {
+          if (this.isLocked) throw new Error("The stream '" + this + "' has already been used.");
+          this.isLocked = true, this.previous && this.previous.lock();
+        }, toString: function() {
+          var e5 = "Worker " + this.name;
+          return this.previous ? this.previous + " -> " + e5 : e5;
+        } }, t5.exports = n4;
+      }, {}], 29: [function(e4, t5, r6) {
+        "use strict";
+        var h3 = e4("../utils"), i4 = e4("./ConvertWorker"), s3 = e4("./GenericWorker"), u3 = e4("../base64"), n4 = e4("../support"), a3 = e4("../external"), o4 = null;
+        if (n4.nodestream) try {
+          o4 = e4("../nodejs/NodejsStreamOutputAdapter");
+        } catch (e5) {
+        }
+        function l3(e5, o5) {
+          return new a3.Promise(function(t6, r7) {
+            var n5 = [], i5 = e5._internalType, s4 = e5._outputType, a4 = e5._mimeType;
+            e5.on("data", function(e6, t7) {
+              n5.push(e6), o5 && o5(t7);
+            }).on("error", function(e6) {
+              n5 = [], r7(e6);
+            }).on("end", function() {
+              try {
+                var e6 = function(e7, t7, r8) {
+                  switch (e7) {
+                    case "blob":
+                      return h3.newBlob(h3.transformTo("arraybuffer", t7), r8);
+                    case "base64":
+                      return u3.encode(t7);
+                    default:
+                      return h3.transformTo(e7, t7);
+                  }
+                }(s4, function(e7, t7) {
+                  var r8, n6 = 0, i6 = null, s5 = 0;
+                  for (r8 = 0; r8 < t7.length; r8++) s5 += t7[r8].length;
+                  switch (e7) {
+                    case "string":
+                      return t7.join("");
+                    case "array":
+                      return Array.prototype.concat.apply([], t7);
+                    case "uint8array":
+                      for (i6 = new Uint8Array(s5), r8 = 0; r8 < t7.length; r8++) i6.set(t7[r8], n6), n6 += t7[r8].length;
+                      return i6;
+                    case "nodebuffer":
+                      return Buffer.concat(t7);
+                    default:
+                      throw new Error("concat : unsupported type '" + e7 + "'");
+                  }
+                }(i5, n5), a4);
+                t6(e6);
+              } catch (e7) {
+                r7(e7);
+              }
+              n5 = [];
+            }).resume();
+          });
+        }
+        function f3(e5, t6, r7) {
+          var n5 = t6;
+          switch (t6) {
+            case "blob":
+            case "arraybuffer":
+              n5 = "uint8array";
+              break;
+            case "base64":
+              n5 = "string";
+          }
+          try {
+            this._internalType = n5, this._outputType = t6, this._mimeType = r7, h3.checkSupport(n5), this._worker = e5.pipe(new i4(n5)), e5.lock();
+          } catch (e6) {
+            this._worker = new s3("error"), this._worker.error(e6);
+          }
+        }
+        f3.prototype = { accumulate: function(e5) {
+          return l3(this, e5);
+        }, on: function(e5, t6) {
+          var r7 = this;
+          return "data" === e5 ? this._worker.on(e5, function(e6) {
+            t6.call(r7, e6.data, e6.meta);
+          }) : this._worker.on(e5, function() {
+            h3.delay(t6, arguments, r7);
+          }), this;
+        }, resume: function() {
+          return h3.delay(this._worker.resume, [], this._worker), this;
+        }, pause: function() {
+          return this._worker.pause(), this;
+        }, toNodejsStream: function(e5) {
+          if (h3.checkSupport("nodestream"), "nodebuffer" !== this._outputType) throw new Error(this._outputType + " is not supported by this method");
+          return new o4(this, { objectMode: "nodebuffer" !== this._outputType }, e5);
+        } }, t5.exports = f3;
+      }, { "../base64": 1, "../external": 6, "../nodejs/NodejsStreamOutputAdapter": 13, "../support": 30, "../utils": 32, "./ConvertWorker": 24, "./GenericWorker": 28 }], 30: [function(e4, t5, r6) {
+        "use strict";
+        if (r6.base64 = true, r6.array = true, r6.string = true, r6.arraybuffer = "undefined" != typeof ArrayBuffer && "undefined" != typeof Uint8Array, r6.nodebuffer = "undefined" != typeof Buffer, r6.uint8array = "undefined" != typeof Uint8Array, "undefined" == typeof ArrayBuffer) r6.blob = false;
+        else {
+          var n4 = new ArrayBuffer(0);
+          try {
+            r6.blob = 0 === new Blob([n4], { type: "application/zip" }).size;
+          } catch (e5) {
+            try {
+              var i4 = new (self.BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder || self.MSBlobBuilder)();
+              i4.append(n4), r6.blob = 0 === i4.getBlob("application/zip").size;
+            } catch (e6) {
+              r6.blob = false;
+            }
+          }
+        }
+        try {
+          r6.nodestream = !!e4("readable-stream").Readable;
+        } catch (e5) {
+          r6.nodestream = false;
+        }
+      }, { "readable-stream": 16 }], 31: [function(e4, t5, s3) {
+        "use strict";
+        for (var o4 = e4("./utils"), h3 = e4("./support"), r6 = e4("./nodejsUtils"), n4 = e4("./stream/GenericWorker"), u3 = new Array(256), i4 = 0; i4 < 256; i4++) u3[i4] = 252 <= i4 ? 6 : 248 <= i4 ? 5 : 240 <= i4 ? 4 : 224 <= i4 ? 3 : 192 <= i4 ? 2 : 1;
+        u3[254] = u3[254] = 1;
+        function a3() {
+          n4.call(this, "utf-8 decode"), this.leftOver = null;
+        }
+        function l3() {
+          n4.call(this, "utf-8 encode");
+        }
+        s3.utf8encode = function(e5) {
+          return h3.nodebuffer ? r6.newBufferFrom(e5, "utf-8") : function(e6) {
+            var t6, r7, n5, i5, s4, a4 = e6.length, o5 = 0;
+            for (i5 = 0; i5 < a4; i5++) 55296 == (64512 & (r7 = e6.charCodeAt(i5))) && i5 + 1 < a4 && 56320 == (64512 & (n5 = e6.charCodeAt(i5 + 1))) && (r7 = 65536 + (r7 - 55296 << 10) + (n5 - 56320), i5++), o5 += r7 < 128 ? 1 : r7 < 2048 ? 2 : r7 < 65536 ? 3 : 4;
+            for (t6 = h3.uint8array ? new Uint8Array(o5) : new Array(o5), i5 = s4 = 0; s4 < o5; i5++) 55296 == (64512 & (r7 = e6.charCodeAt(i5))) && i5 + 1 < a4 && 56320 == (64512 & (n5 = e6.charCodeAt(i5 + 1))) && (r7 = 65536 + (r7 - 55296 << 10) + (n5 - 56320), i5++), r7 < 128 ? t6[s4++] = r7 : (r7 < 2048 ? t6[s4++] = 192 | r7 >>> 6 : (r7 < 65536 ? t6[s4++] = 224 | r7 >>> 12 : (t6[s4++] = 240 | r7 >>> 18, t6[s4++] = 128 | r7 >>> 12 & 63), t6[s4++] = 128 | r7 >>> 6 & 63), t6[s4++] = 128 | 63 & r7);
+            return t6;
+          }(e5);
+        }, s3.utf8decode = function(e5) {
+          return h3.nodebuffer ? o4.transformTo("nodebuffer", e5).toString("utf-8") : function(e6) {
+            var t6, r7, n5, i5, s4 = e6.length, a4 = new Array(2 * s4);
+            for (t6 = r7 = 0; t6 < s4; ) if ((n5 = e6[t6++]) < 128) a4[r7++] = n5;
+            else if (4 < (i5 = u3[n5])) a4[r7++] = 65533, t6 += i5 - 1;
+            else {
+              for (n5 &= 2 === i5 ? 31 : 3 === i5 ? 15 : 7; 1 < i5 && t6 < s4; ) n5 = n5 << 6 | 63 & e6[t6++], i5--;
+              1 < i5 ? a4[r7++] = 65533 : n5 < 65536 ? a4[r7++] = n5 : (n5 -= 65536, a4[r7++] = 55296 | n5 >> 10 & 1023, a4[r7++] = 56320 | 1023 & n5);
+            }
+            return a4.length !== r7 && (a4.subarray ? a4 = a4.subarray(0, r7) : a4.length = r7), o4.applyFromCharCode(a4);
+          }(e5 = o4.transformTo(h3.uint8array ? "uint8array" : "array", e5));
+        }, o4.inherits(a3, n4), a3.prototype.processChunk = function(e5) {
+          var t6 = o4.transformTo(h3.uint8array ? "uint8array" : "array", e5.data);
+          if (this.leftOver && this.leftOver.length) {
+            if (h3.uint8array) {
+              var r7 = t6;
+              (t6 = new Uint8Array(r7.length + this.leftOver.length)).set(this.leftOver, 0), t6.set(r7, this.leftOver.length);
+            } else t6 = this.leftOver.concat(t6);
+            this.leftOver = null;
+          }
+          var n5 = function(e6, t7) {
+            var r8;
+            for ((t7 = t7 || e6.length) > e6.length && (t7 = e6.length), r8 = t7 - 1; 0 <= r8 && 128 == (192 & e6[r8]); ) r8--;
+            return r8 < 0 ? t7 : 0 === r8 ? t7 : r8 + u3[e6[r8]] > t7 ? r8 : t7;
+          }(t6), i5 = t6;
+          n5 !== t6.length && (h3.uint8array ? (i5 = t6.subarray(0, n5), this.leftOver = t6.subarray(n5, t6.length)) : (i5 = t6.slice(0, n5), this.leftOver = t6.slice(n5, t6.length))), this.push({ data: s3.utf8decode(i5), meta: e5.meta });
+        }, a3.prototype.flush = function() {
+          this.leftOver && this.leftOver.length && (this.push({ data: s3.utf8decode(this.leftOver), meta: {} }), this.leftOver = null);
+        }, s3.Utf8DecodeWorker = a3, o4.inherits(l3, n4), l3.prototype.processChunk = function(e5) {
+          this.push({ data: s3.utf8encode(e5.data), meta: e5.meta });
+        }, s3.Utf8EncodeWorker = l3;
+      }, { "./nodejsUtils": 14, "./stream/GenericWorker": 28, "./support": 30, "./utils": 32 }], 32: [function(e4, t5, a3) {
+        "use strict";
+        var o4 = e4("./support"), h3 = e4("./base64"), r6 = e4("./nodejsUtils"), u3 = e4("./external");
+        function n4(e5) {
+          return e5;
+        }
+        function l3(e5, t6) {
+          for (var r7 = 0; r7 < e5.length; ++r7) t6[r7] = 255 & e5.charCodeAt(r7);
+          return t6;
+        }
+        e4("setimmediate"), a3.newBlob = function(t6, r7) {
+          a3.checkSupport("blob");
+          try {
+            return new Blob([t6], { type: r7 });
+          } catch (e5) {
+            try {
+              var n5 = new (self.BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder || self.MSBlobBuilder)();
+              return n5.append(t6), n5.getBlob(r7);
+            } catch (e6) {
+              throw new Error("Bug : can't construct the Blob.");
+            }
+          }
+        };
+        var i4 = { stringifyByChunk: function(e5, t6, r7) {
+          var n5 = [], i5 = 0, s4 = e5.length;
+          if (s4 <= r7) return String.fromCharCode.apply(null, e5);
+          for (; i5 < s4; ) "array" === t6 || "nodebuffer" === t6 ? n5.push(String.fromCharCode.apply(null, e5.slice(i5, Math.min(i5 + r7, s4)))) : n5.push(String.fromCharCode.apply(null, e5.subarray(i5, Math.min(i5 + r7, s4)))), i5 += r7;
+          return n5.join("");
+        }, stringifyByChar: function(e5) {
+          for (var t6 = "", r7 = 0; r7 < e5.length; r7++) t6 += String.fromCharCode(e5[r7]);
+          return t6;
+        }, applyCanBeUsed: { uint8array: function() {
+          try {
+            return o4.uint8array && 1 === String.fromCharCode.apply(null, new Uint8Array(1)).length;
+          } catch (e5) {
+            return false;
+          }
+        }(), nodebuffer: function() {
+          try {
+            return o4.nodebuffer && 1 === String.fromCharCode.apply(null, r6.allocBuffer(1)).length;
+          } catch (e5) {
+            return false;
+          }
+        }() } };
+        function s3(e5) {
+          var t6 = 65536, r7 = a3.getTypeOf(e5), n5 = true;
+          if ("uint8array" === r7 ? n5 = i4.applyCanBeUsed.uint8array : "nodebuffer" === r7 && (n5 = i4.applyCanBeUsed.nodebuffer), n5) for (; 1 < t6; ) try {
+            return i4.stringifyByChunk(e5, r7, t6);
+          } catch (e6) {
+            t6 = Math.floor(t6 / 2);
+          }
+          return i4.stringifyByChar(e5);
+        }
+        function f3(e5, t6) {
+          for (var r7 = 0; r7 < e5.length; r7++) t6[r7] = e5[r7];
+          return t6;
+        }
+        a3.applyFromCharCode = s3;
+        var c5 = {};
+        c5.string = { string: n4, array: function(e5) {
+          return l3(e5, new Array(e5.length));
+        }, arraybuffer: function(e5) {
+          return c5.string.uint8array(e5).buffer;
+        }, uint8array: function(e5) {
+          return l3(e5, new Uint8Array(e5.length));
+        }, nodebuffer: function(e5) {
+          return l3(e5, r6.allocBuffer(e5.length));
+        } }, c5.array = { string: s3, array: n4, arraybuffer: function(e5) {
+          return new Uint8Array(e5).buffer;
+        }, uint8array: function(e5) {
+          return new Uint8Array(e5);
+        }, nodebuffer: function(e5) {
+          return r6.newBufferFrom(e5);
+        } }, c5.arraybuffer = { string: function(e5) {
+          return s3(new Uint8Array(e5));
+        }, array: function(e5) {
+          return f3(new Uint8Array(e5), new Array(e5.byteLength));
+        }, arraybuffer: n4, uint8array: function(e5) {
+          return new Uint8Array(e5);
+        }, nodebuffer: function(e5) {
+          return r6.newBufferFrom(new Uint8Array(e5));
+        } }, c5.uint8array = { string: s3, array: function(e5) {
+          return f3(e5, new Array(e5.length));
+        }, arraybuffer: function(e5) {
+          return e5.buffer;
+        }, uint8array: n4, nodebuffer: function(e5) {
+          return r6.newBufferFrom(e5);
+        } }, c5.nodebuffer = { string: s3, array: function(e5) {
+          return f3(e5, new Array(e5.length));
+        }, arraybuffer: function(e5) {
+          return c5.nodebuffer.uint8array(e5).buffer;
+        }, uint8array: function(e5) {
+          return f3(e5, new Uint8Array(e5.length));
+        }, nodebuffer: n4 }, a3.transformTo = function(e5, t6) {
+          if (t6 = t6 || "", !e5) return t6;
+          a3.checkSupport(e5);
+          var r7 = a3.getTypeOf(t6);
+          return c5[r7][e5](t6);
+        }, a3.resolve = function(e5) {
+          for (var t6 = e5.split("/"), r7 = [], n5 = 0; n5 < t6.length; n5++) {
+            var i5 = t6[n5];
+            "." === i5 || "" === i5 && 0 !== n5 && n5 !== t6.length - 1 || (".." === i5 ? r7.pop() : r7.push(i5));
+          }
+          return r7.join("/");
+        }, a3.getTypeOf = function(e5) {
+          return "string" == typeof e5 ? "string" : "[object Array]" === Object.prototype.toString.call(e5) ? "array" : o4.nodebuffer && r6.isBuffer(e5) ? "nodebuffer" : o4.uint8array && e5 instanceof Uint8Array ? "uint8array" : o4.arraybuffer && e5 instanceof ArrayBuffer ? "arraybuffer" : void 0;
+        }, a3.checkSupport = function(e5) {
+          if (!o4[e5.toLowerCase()]) throw new Error(e5 + " is not supported by this platform");
+        }, a3.MAX_VALUE_16BITS = 65535, a3.MAX_VALUE_32BITS = -1, a3.pretty = function(e5) {
+          var t6, r7, n5 = "";
+          for (r7 = 0; r7 < (e5 || "").length; r7++) n5 += "\\x" + ((t6 = e5.charCodeAt(r7)) < 16 ? "0" : "") + t6.toString(16).toUpperCase();
+          return n5;
+        }, a3.delay = function(e5, t6, r7) {
+          setImmediate(function() {
+            e5.apply(r7 || null, t6 || []);
+          });
+        }, a3.inherits = function(e5, t6) {
+          function r7() {
+          }
+          r7.prototype = t6.prototype, e5.prototype = new r7();
+        }, a3.extend = function() {
+          var e5, t6, r7 = {};
+          for (e5 = 0; e5 < arguments.length; e5++) for (t6 in arguments[e5]) Object.prototype.hasOwnProperty.call(arguments[e5], t6) && void 0 === r7[t6] && (r7[t6] = arguments[e5][t6]);
+          return r7;
+        }, a3.prepareContent = function(r7, e5, n5, i5, s4) {
+          return u3.Promise.resolve(e5).then(function(n6) {
+            return o4.blob && (n6 instanceof Blob || -1 !== ["[object File]", "[object Blob]"].indexOf(Object.prototype.toString.call(n6))) && "undefined" != typeof FileReader ? new u3.Promise(function(t6, r8) {
+              var e6 = new FileReader();
+              e6.onload = function(e7) {
+                t6(e7.target.result);
+              }, e6.onerror = function(e7) {
+                r8(e7.target.error);
+              }, e6.readAsArrayBuffer(n6);
+            }) : n6;
+          }).then(function(e6) {
+            var t6 = a3.getTypeOf(e6);
+            return t6 ? ("arraybuffer" === t6 ? e6 = a3.transformTo("uint8array", e6) : "string" === t6 && (s4 ? e6 = h3.decode(e6) : n5 && true !== i5 && (e6 = function(e7) {
+              return l3(e7, o4.uint8array ? new Uint8Array(e7.length) : new Array(e7.length));
+            }(e6))), e6) : u3.Promise.reject(new Error("Can't read the data of '" + r7 + "'. Is it in a supported JavaScript type (String, Blob, ArrayBuffer, etc) ?"));
+          });
+        };
+      }, { "./base64": 1, "./external": 6, "./nodejsUtils": 14, "./support": 30, setimmediate: 54 }], 33: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./reader/readerFor"), i4 = e4("./utils"), s3 = e4("./signature"), a3 = e4("./zipEntry"), o4 = e4("./support");
+        function h3(e5) {
+          this.files = [], this.loadOptions = e5;
+        }
+        h3.prototype = { checkSignature: function(e5) {
+          if (!this.reader.readAndCheckSignature(e5)) {
+            this.reader.index -= 4;
+            var t6 = this.reader.readString(4);
+            throw new Error("Corrupted zip or bug: unexpected signature (" + i4.pretty(t6) + ", expected " + i4.pretty(e5) + ")");
+          }
+        }, isSignature: function(e5, t6) {
+          var r7 = this.reader.index;
+          this.reader.setIndex(e5);
+          var n5 = this.reader.readString(4) === t6;
+          return this.reader.setIndex(r7), n5;
+        }, readBlockEndOfCentral: function() {
+          this.diskNumber = this.reader.readInt(2), this.diskWithCentralDirStart = this.reader.readInt(2), this.centralDirRecordsOnThisDisk = this.reader.readInt(2), this.centralDirRecords = this.reader.readInt(2), this.centralDirSize = this.reader.readInt(4), this.centralDirOffset = this.reader.readInt(4), this.zipCommentLength = this.reader.readInt(2);
+          var e5 = this.reader.readData(this.zipCommentLength), t6 = o4.uint8array ? "uint8array" : "array", r7 = i4.transformTo(t6, e5);
+          this.zipComment = this.loadOptions.decodeFileName(r7);
+        }, readBlockZip64EndOfCentral: function() {
+          this.zip64EndOfCentralSize = this.reader.readInt(8), this.reader.skip(4), this.diskNumber = this.reader.readInt(4), this.diskWithCentralDirStart = this.reader.readInt(4), this.centralDirRecordsOnThisDisk = this.reader.readInt(8), this.centralDirRecords = this.reader.readInt(8), this.centralDirSize = this.reader.readInt(8), this.centralDirOffset = this.reader.readInt(8), this.zip64ExtensibleData = {};
+          for (var e5, t6, r7, n5 = this.zip64EndOfCentralSize - 44; 0 < n5; ) e5 = this.reader.readInt(2), t6 = this.reader.readInt(4), r7 = this.reader.readData(t6), this.zip64ExtensibleData[e5] = { id: e5, length: t6, value: r7 };
+        }, readBlockZip64EndOfCentralLocator: function() {
+          if (this.diskWithZip64CentralDirStart = this.reader.readInt(4), this.relativeOffsetEndOfZip64CentralDir = this.reader.readInt(8), this.disksCount = this.reader.readInt(4), 1 < this.disksCount) throw new Error("Multi-volumes zip are not supported");
+        }, readLocalFiles: function() {
+          var e5, t6;
+          for (e5 = 0; e5 < this.files.length; e5++) t6 = this.files[e5], this.reader.setIndex(t6.localHeaderOffset), this.checkSignature(s3.LOCAL_FILE_HEADER), t6.readLocalPart(this.reader), t6.handleUTF8(), t6.processAttributes();
+        }, readCentralDir: function() {
+          var e5;
+          for (this.reader.setIndex(this.centralDirOffset); this.reader.readAndCheckSignature(s3.CENTRAL_FILE_HEADER); ) (e5 = new a3({ zip64: this.zip64 }, this.loadOptions)).readCentralPart(this.reader), this.files.push(e5);
+          if (this.centralDirRecords !== this.files.length && 0 !== this.centralDirRecords && 0 === this.files.length) throw new Error("Corrupted zip or bug: expected " + this.centralDirRecords + " records in central dir, got " + this.files.length);
+        }, readEndOfCentral: function() {
+          var e5 = this.reader.lastIndexOfSignature(s3.CENTRAL_DIRECTORY_END);
+          if (e5 < 0) throw !this.isSignature(0, s3.LOCAL_FILE_HEADER) ? new Error("Can't find end of central directory : is this a zip file ? If it is, see https://stuk.github.io/jszip/documentation/howto/read_zip.html") : new Error("Corrupted zip: can't find end of central directory");
+          this.reader.setIndex(e5);
+          var t6 = e5;
+          if (this.checkSignature(s3.CENTRAL_DIRECTORY_END), this.readBlockEndOfCentral(), this.diskNumber === i4.MAX_VALUE_16BITS || this.diskWithCentralDirStart === i4.MAX_VALUE_16BITS || this.centralDirRecordsOnThisDisk === i4.MAX_VALUE_16BITS || this.centralDirRecords === i4.MAX_VALUE_16BITS || this.centralDirSize === i4.MAX_VALUE_32BITS || this.centralDirOffset === i4.MAX_VALUE_32BITS) {
+            if (this.zip64 = true, (e5 = this.reader.lastIndexOfSignature(s3.ZIP64_CENTRAL_DIRECTORY_LOCATOR)) < 0) throw new Error("Corrupted zip: can't find the ZIP64 end of central directory locator");
+            if (this.reader.setIndex(e5), this.checkSignature(s3.ZIP64_CENTRAL_DIRECTORY_LOCATOR), this.readBlockZip64EndOfCentralLocator(), !this.isSignature(this.relativeOffsetEndOfZip64CentralDir, s3.ZIP64_CENTRAL_DIRECTORY_END) && (this.relativeOffsetEndOfZip64CentralDir = this.reader.lastIndexOfSignature(s3.ZIP64_CENTRAL_DIRECTORY_END), this.relativeOffsetEndOfZip64CentralDir < 0)) throw new Error("Corrupted zip: can't find the ZIP64 end of central directory");
+            this.reader.setIndex(this.relativeOffsetEndOfZip64CentralDir), this.checkSignature(s3.ZIP64_CENTRAL_DIRECTORY_END), this.readBlockZip64EndOfCentral();
+          }
+          var r7 = this.centralDirOffset + this.centralDirSize;
+          this.zip64 && (r7 += 20, r7 += 12 + this.zip64EndOfCentralSize);
+          var n5 = t6 - r7;
+          if (0 < n5) this.isSignature(t6, s3.CENTRAL_FILE_HEADER) || (this.reader.zero = n5);
+          else if (n5 < 0) throw new Error("Corrupted zip: missing " + Math.abs(n5) + " bytes.");
+        }, prepareReader: function(e5) {
+          this.reader = n4(e5);
+        }, load: function(e5) {
+          this.prepareReader(e5), this.readEndOfCentral(), this.readCentralDir(), this.readLocalFiles();
+        } }, t5.exports = h3;
+      }, { "./reader/readerFor": 22, "./signature": 23, "./support": 30, "./utils": 32, "./zipEntry": 34 }], 34: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = e4("./reader/readerFor"), s3 = e4("./utils"), i4 = e4("./compressedObject"), a3 = e4("./crc32"), o4 = e4("./utf8"), h3 = e4("./compressions"), u3 = e4("./support");
+        function l3(e5, t6) {
+          this.options = e5, this.loadOptions = t6;
+        }
+        l3.prototype = { isEncrypted: function() {
+          return 1 == (1 & this.bitFlag);
+        }, useUTF8: function() {
+          return 2048 == (2048 & this.bitFlag);
+        }, readLocalPart: function(e5) {
+          var t6, r7;
+          if (e5.skip(22), this.fileNameLength = e5.readInt(2), r7 = e5.readInt(2), this.fileName = e5.readData(this.fileNameLength), e5.skip(r7), -1 === this.compressedSize || -1 === this.uncompressedSize) throw new Error("Bug or corrupted zip : didn't get enough information from the central directory (compressedSize === -1 || uncompressedSize === -1)");
+          if (null === (t6 = function(e6) {
+            for (var t7 in h3) if (Object.prototype.hasOwnProperty.call(h3, t7) && h3[t7].magic === e6) return h3[t7];
+            return null;
+          }(this.compressionMethod))) throw new Error("Corrupted zip : compression " + s3.pretty(this.compressionMethod) + " unknown (inner file : " + s3.transformTo("string", this.fileName) + ")");
+          this.decompressed = new i4(this.compressedSize, this.uncompressedSize, this.crc32, t6, e5.readData(this.compressedSize));
+        }, readCentralPart: function(e5) {
+          this.versionMadeBy = e5.readInt(2), e5.skip(2), this.bitFlag = e5.readInt(2), this.compressionMethod = e5.readString(2), this.date = e5.readDate(), this.crc32 = e5.readInt(4), this.compressedSize = e5.readInt(4), this.uncompressedSize = e5.readInt(4);
+          var t6 = e5.readInt(2);
+          if (this.extraFieldsLength = e5.readInt(2), this.fileCommentLength = e5.readInt(2), this.diskNumberStart = e5.readInt(2), this.internalFileAttributes = e5.readInt(2), this.externalFileAttributes = e5.readInt(4), this.localHeaderOffset = e5.readInt(4), this.isEncrypted()) throw new Error("Encrypted zip are not supported");
+          e5.skip(t6), this.readExtraFields(e5), this.parseZIP64ExtraField(e5), this.fileComment = e5.readData(this.fileCommentLength);
+        }, processAttributes: function() {
+          this.unixPermissions = null, this.dosPermissions = null;
+          var e5 = this.versionMadeBy >> 8;
+          this.dir = !!(16 & this.externalFileAttributes), 0 == e5 && (this.dosPermissions = 63 & this.externalFileAttributes), 3 == e5 && (this.unixPermissions = this.externalFileAttributes >> 16 & 65535), this.dir || "/" !== this.fileNameStr.slice(-1) || (this.dir = true);
+        }, parseZIP64ExtraField: function() {
+          if (this.extraFields[1]) {
+            var e5 = n4(this.extraFields[1].value);
+            this.uncompressedSize === s3.MAX_VALUE_32BITS && (this.uncompressedSize = e5.readInt(8)), this.compressedSize === s3.MAX_VALUE_32BITS && (this.compressedSize = e5.readInt(8)), this.localHeaderOffset === s3.MAX_VALUE_32BITS && (this.localHeaderOffset = e5.readInt(8)), this.diskNumberStart === s3.MAX_VALUE_32BITS && (this.diskNumberStart = e5.readInt(4));
+          }
+        }, readExtraFields: function(e5) {
+          var t6, r7, n5, i5 = e5.index + this.extraFieldsLength;
+          for (this.extraFields || (this.extraFields = {}); e5.index + 4 < i5; ) t6 = e5.readInt(2), r7 = e5.readInt(2), n5 = e5.readData(r7), this.extraFields[t6] = { id: t6, length: r7, value: n5 };
+          e5.setIndex(i5);
+        }, handleUTF8: function() {
+          var e5 = u3.uint8array ? "uint8array" : "array";
+          if (this.useUTF8()) this.fileNameStr = o4.utf8decode(this.fileName), this.fileCommentStr = o4.utf8decode(this.fileComment);
+          else {
+            var t6 = this.findExtraFieldUnicodePath();
+            if (null !== t6) this.fileNameStr = t6;
+            else {
+              var r7 = s3.transformTo(e5, this.fileName);
+              this.fileNameStr = this.loadOptions.decodeFileName(r7);
+            }
+            var n5 = this.findExtraFieldUnicodeComment();
+            if (null !== n5) this.fileCommentStr = n5;
+            else {
+              var i5 = s3.transformTo(e5, this.fileComment);
+              this.fileCommentStr = this.loadOptions.decodeFileName(i5);
+            }
+          }
+        }, findExtraFieldUnicodePath: function() {
+          var e5 = this.extraFields[28789];
+          if (e5) {
+            var t6 = n4(e5.value);
+            return 1 !== t6.readInt(1) ? null : a3(this.fileName) !== t6.readInt(4) ? null : o4.utf8decode(t6.readData(e5.length - 5));
+          }
+          return null;
+        }, findExtraFieldUnicodeComment: function() {
+          var e5 = this.extraFields[25461];
+          if (e5) {
+            var t6 = n4(e5.value);
+            return 1 !== t6.readInt(1) ? null : a3(this.fileComment) !== t6.readInt(4) ? null : o4.utf8decode(t6.readData(e5.length - 5));
+          }
+          return null;
+        } }, t5.exports = l3;
+      }, { "./compressedObject": 2, "./compressions": 3, "./crc32": 4, "./reader/readerFor": 22, "./support": 30, "./utf8": 31, "./utils": 32 }], 35: [function(e4, t5, r6) {
+        "use strict";
+        function n4(e5, t6, r7) {
+          this.name = e5, this.dir = r7.dir, this.date = r7.date, this.comment = r7.comment, this.unixPermissions = r7.unixPermissions, this.dosPermissions = r7.dosPermissions, this._data = t6, this._dataBinary = r7.binary, this.options = { compression: r7.compression, compressionOptions: r7.compressionOptions };
+        }
+        var s3 = e4("./stream/StreamHelper"), i4 = e4("./stream/DataWorker"), a3 = e4("./utf8"), o4 = e4("./compressedObject"), h3 = e4("./stream/GenericWorker");
+        n4.prototype = { internalStream: function(e5) {
+          var t6 = null, r7 = "string";
+          try {
+            if (!e5) throw new Error("No output type specified.");
+            var n5 = "string" === (r7 = e5.toLowerCase()) || "text" === r7;
+            "binarystring" !== r7 && "text" !== r7 || (r7 = "string"), t6 = this._decompressWorker();
+            var i5 = !this._dataBinary;
+            i5 && !n5 && (t6 = t6.pipe(new a3.Utf8EncodeWorker())), !i5 && n5 && (t6 = t6.pipe(new a3.Utf8DecodeWorker()));
+          } catch (e6) {
+            (t6 = new h3("error")).error(e6);
+          }
+          return new s3(t6, r7, "");
+        }, async: function(e5, t6) {
+          return this.internalStream(e5).accumulate(t6);
+        }, nodeStream: function(e5, t6) {
+          return this.internalStream(e5 || "nodebuffer").toNodejsStream(t6);
+        }, _compressWorker: function(e5, t6) {
+          if (this._data instanceof o4 && this._data.compression.magic === e5.magic) return this._data.getCompressedWorker();
+          var r7 = this._decompressWorker();
+          return this._dataBinary || (r7 = r7.pipe(new a3.Utf8EncodeWorker())), o4.createWorkerFrom(r7, e5, t6);
+        }, _decompressWorker: function() {
+          return this._data instanceof o4 ? this._data.getContentWorker() : this._data instanceof h3 ? this._data : new i4(this._data);
+        } };
+        for (var u3 = ["asText", "asBinary", "asNodeBuffer", "asUint8Array", "asArrayBuffer"], l3 = function() {
+          throw new Error("This method has been removed in JSZip 3.0, please check the upgrade guide.");
+        }, f3 = 0; f3 < u3.length; f3++) n4.prototype[u3[f3]] = l3;
+        t5.exports = n4;
+      }, { "./compressedObject": 2, "./stream/DataWorker": 27, "./stream/GenericWorker": 28, "./stream/StreamHelper": 29, "./utf8": 31 }], 36: [function(e4, l3, t5) {
+        (function(t6) {
+          "use strict";
+          var r6, n4, e5 = t6.MutationObserver || t6.WebKitMutationObserver;
+          if (e5) {
+            var i4 = 0, s3 = new e5(u3), a3 = t6.document.createTextNode("");
+            s3.observe(a3, { characterData: true }), r6 = function() {
+              a3.data = i4 = ++i4 % 2;
+            };
+          } else if (t6.setImmediate || void 0 === t6.MessageChannel) r6 = "document" in t6 && "onreadystatechange" in t6.document.createElement("script") ? function() {
+            var e6 = t6.document.createElement("script");
+            e6.onreadystatechange = function() {
+              u3(), e6.onreadystatechange = null, e6.parentNode.removeChild(e6), e6 = null;
+            }, t6.document.documentElement.appendChild(e6);
+          } : function() {
+            setTimeout(u3, 0);
+          };
+          else {
+            var o4 = new t6.MessageChannel();
+            o4.port1.onmessage = u3, r6 = function() {
+              o4.port2.postMessage(0);
+            };
+          }
+          var h3 = [];
+          function u3() {
+            var e6, t7;
+            n4 = true;
+            for (var r7 = h3.length; r7; ) {
+              for (t7 = h3, h3 = [], e6 = -1; ++e6 < r7; ) t7[e6]();
+              r7 = h3.length;
+            }
+            n4 = false;
+          }
+          l3.exports = function(e6) {
+            1 !== h3.push(e6) || n4 || r6();
+          };
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
+      }, {}], 37: [function(e4, t5, r6) {
+        "use strict";
+        var i4 = e4("immediate");
+        function u3() {
+        }
+        var l3 = {}, s3 = ["REJECTED"], a3 = ["FULFILLED"], n4 = ["PENDING"];
+        function o4(e5) {
+          if ("function" != typeof e5) throw new TypeError("resolver must be a function");
+          this.state = n4, this.queue = [], this.outcome = void 0, e5 !== u3 && d2(this, e5);
+        }
+        function h3(e5, t6, r7) {
+          this.promise = e5, "function" == typeof t6 && (this.onFulfilled = t6, this.callFulfilled = this.otherCallFulfilled), "function" == typeof r7 && (this.onRejected = r7, this.callRejected = this.otherCallRejected);
+        }
+        function f3(t6, r7, n5) {
+          i4(function() {
+            var e5;
+            try {
+              e5 = r7(n5);
+            } catch (e6) {
+              return l3.reject(t6, e6);
+            }
+            e5 === t6 ? l3.reject(t6, new TypeError("Cannot resolve promise with itself")) : l3.resolve(t6, e5);
+          });
+        }
+        function c5(e5) {
+          var t6 = e5 && e5.then;
+          if (e5 && ("object" == typeof e5 || "function" == typeof e5) && "function" == typeof t6) return function() {
+            t6.apply(e5, arguments);
+          };
+        }
+        function d2(t6, e5) {
+          var r7 = false;
+          function n5(e6) {
+            r7 || (r7 = true, l3.reject(t6, e6));
+          }
+          function i5(e6) {
+            r7 || (r7 = true, l3.resolve(t6, e6));
+          }
+          var s4 = p3(function() {
+            e5(i5, n5);
+          });
+          "error" === s4.status && n5(s4.value);
+        }
+        function p3(e5, t6) {
+          var r7 = {};
+          try {
+            r7.value = e5(t6), r7.status = "success";
+          } catch (e6) {
+            r7.status = "error", r7.value = e6;
+          }
+          return r7;
+        }
+        (t5.exports = o4).prototype.finally = function(t6) {
+          if ("function" != typeof t6) return this;
+          var r7 = this.constructor;
+          return this.then(function(e5) {
+            return r7.resolve(t6()).then(function() {
+              return e5;
+            });
+          }, function(e5) {
+            return r7.resolve(t6()).then(function() {
+              throw e5;
+            });
+          });
+        }, o4.prototype.catch = function(e5) {
+          return this.then(null, e5);
+        }, o4.prototype.then = function(e5, t6) {
+          if ("function" != typeof e5 && this.state === a3 || "function" != typeof t6 && this.state === s3) return this;
+          var r7 = new this.constructor(u3);
+          this.state !== n4 ? f3(r7, this.state === a3 ? e5 : t6, this.outcome) : this.queue.push(new h3(r7, e5, t6));
+          return r7;
+        }, h3.prototype.callFulfilled = function(e5) {
+          l3.resolve(this.promise, e5);
+        }, h3.prototype.otherCallFulfilled = function(e5) {
+          f3(this.promise, this.onFulfilled, e5);
+        }, h3.prototype.callRejected = function(e5) {
+          l3.reject(this.promise, e5);
+        }, h3.prototype.otherCallRejected = function(e5) {
+          f3(this.promise, this.onRejected, e5);
+        }, l3.resolve = function(e5, t6) {
+          var r7 = p3(c5, t6);
+          if ("error" === r7.status) return l3.reject(e5, r7.value);
+          var n5 = r7.value;
+          if (n5) d2(e5, n5);
+          else {
+            e5.state = a3, e5.outcome = t6;
+            for (var i5 = -1, s4 = e5.queue.length; ++i5 < s4; ) e5.queue[i5].callFulfilled(t6);
+          }
+          return e5;
+        }, l3.reject = function(e5, t6) {
+          e5.state = s3, e5.outcome = t6;
+          for (var r7 = -1, n5 = e5.queue.length; ++r7 < n5; ) e5.queue[r7].callRejected(t6);
+          return e5;
+        }, o4.resolve = function(e5) {
+          if (e5 instanceof this) return e5;
+          return l3.resolve(new this(u3), e5);
+        }, o4.reject = function(e5) {
+          var t6 = new this(u3);
+          return l3.reject(t6, e5);
+        }, o4.all = function(e5) {
+          var r7 = this;
+          if ("[object Array]" !== Object.prototype.toString.call(e5)) return this.reject(new TypeError("must be an array"));
+          var n5 = e5.length, i5 = false;
+          if (!n5) return this.resolve([]);
+          var s4 = new Array(n5), a4 = 0, t6 = -1, o5 = new this(u3);
+          for (; ++t6 < n5; ) h4(e5[t6], t6);
+          return o5;
+          function h4(e6, t7) {
+            r7.resolve(e6).then(function(e7) {
+              s4[t7] = e7, ++a4 !== n5 || i5 || (i5 = true, l3.resolve(o5, s4));
+            }, function(e7) {
+              i5 || (i5 = true, l3.reject(o5, e7));
+            });
+          }
+        }, o4.race = function(e5) {
+          var t6 = this;
+          if ("[object Array]" !== Object.prototype.toString.call(e5)) return this.reject(new TypeError("must be an array"));
+          var r7 = e5.length, n5 = false;
+          if (!r7) return this.resolve([]);
+          var i5 = -1, s4 = new this(u3);
+          for (; ++i5 < r7; ) a4 = e5[i5], t6.resolve(a4).then(function(e6) {
+            n5 || (n5 = true, l3.resolve(s4, e6));
+          }, function(e6) {
+            n5 || (n5 = true, l3.reject(s4, e6));
+          });
+          var a4;
+          return s4;
+        };
+      }, { immediate: 36 }], 38: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = {};
+        (0, e4("./lib/utils/common").assign)(n4, e4("./lib/deflate"), e4("./lib/inflate"), e4("./lib/zlib/constants")), t5.exports = n4;
+      }, { "./lib/deflate": 39, "./lib/inflate": 40, "./lib/utils/common": 41, "./lib/zlib/constants": 44 }], 39: [function(e4, t5, r6) {
+        "use strict";
+        var a3 = e4("./zlib/deflate"), o4 = e4("./utils/common"), h3 = e4("./utils/strings"), i4 = e4("./zlib/messages"), s3 = e4("./zlib/zstream"), u3 = Object.prototype.toString, l3 = 0, f3 = -1, c5 = 0, d2 = 8;
+        function p3(e5) {
+          if (!(this instanceof p3)) return new p3(e5);
+          this.options = o4.assign({ level: f3, method: d2, chunkSize: 16384, windowBits: 15, memLevel: 8, strategy: c5, to: "" }, e5 || {});
+          var t6 = this.options;
+          t6.raw && 0 < t6.windowBits ? t6.windowBits = -t6.windowBits : t6.gzip && 0 < t6.windowBits && t6.windowBits < 16 && (t6.windowBits += 16), this.err = 0, this.msg = "", this.ended = false, this.chunks = [], this.strm = new s3(), this.strm.avail_out = 0;
+          var r7 = a3.deflateInit2(this.strm, t6.level, t6.method, t6.windowBits, t6.memLevel, t6.strategy);
+          if (r7 !== l3) throw new Error(i4[r7]);
+          if (t6.header && a3.deflateSetHeader(this.strm, t6.header), t6.dictionary) {
+            var n5;
+            if (n5 = "string" == typeof t6.dictionary ? h3.string2buf(t6.dictionary) : "[object ArrayBuffer]" === u3.call(t6.dictionary) ? new Uint8Array(t6.dictionary) : t6.dictionary, (r7 = a3.deflateSetDictionary(this.strm, n5)) !== l3) throw new Error(i4[r7]);
+            this._dict_set = true;
+          }
+        }
+        function n4(e5, t6) {
+          var r7 = new p3(t6);
+          if (r7.push(e5, true), r7.err) throw r7.msg || i4[r7.err];
+          return r7.result;
+        }
+        p3.prototype.push = function(e5, t6) {
+          var r7, n5, i5 = this.strm, s4 = this.options.chunkSize;
+          if (this.ended) return false;
+          n5 = t6 === ~~t6 ? t6 : true === t6 ? 4 : 0, "string" == typeof e5 ? i5.input = h3.string2buf(e5) : "[object ArrayBuffer]" === u3.call(e5) ? i5.input = new Uint8Array(e5) : i5.input = e5, i5.next_in = 0, i5.avail_in = i5.input.length;
+          do {
+            if (0 === i5.avail_out && (i5.output = new o4.Buf8(s4), i5.next_out = 0, i5.avail_out = s4), 1 !== (r7 = a3.deflate(i5, n5)) && r7 !== l3) return this.onEnd(r7), !(this.ended = true);
+            0 !== i5.avail_out && (0 !== i5.avail_in || 4 !== n5 && 2 !== n5) || ("string" === this.options.to ? this.onData(h3.buf2binstring(o4.shrinkBuf(i5.output, i5.next_out))) : this.onData(o4.shrinkBuf(i5.output, i5.next_out)));
+          } while ((0 < i5.avail_in || 0 === i5.avail_out) && 1 !== r7);
+          return 4 === n5 ? (r7 = a3.deflateEnd(this.strm), this.onEnd(r7), this.ended = true, r7 === l3) : 2 !== n5 || (this.onEnd(l3), !(i5.avail_out = 0));
+        }, p3.prototype.onData = function(e5) {
+          this.chunks.push(e5);
+        }, p3.prototype.onEnd = function(e5) {
+          e5 === l3 && ("string" === this.options.to ? this.result = this.chunks.join("") : this.result = o4.flattenChunks(this.chunks)), this.chunks = [], this.err = e5, this.msg = this.strm.msg;
+        }, r6.Deflate = p3, r6.deflate = n4, r6.deflateRaw = function(e5, t6) {
+          return (t6 = t6 || {}).raw = true, n4(e5, t6);
+        }, r6.gzip = function(e5, t6) {
+          return (t6 = t6 || {}).gzip = true, n4(e5, t6);
+        };
+      }, { "./utils/common": 41, "./utils/strings": 42, "./zlib/deflate": 46, "./zlib/messages": 51, "./zlib/zstream": 53 }], 40: [function(e4, t5, r6) {
+        "use strict";
+        var c5 = e4("./zlib/inflate"), d2 = e4("./utils/common"), p3 = e4("./utils/strings"), m5 = e4("./zlib/constants"), n4 = e4("./zlib/messages"), i4 = e4("./zlib/zstream"), s3 = e4("./zlib/gzheader"), _3 = Object.prototype.toString;
+        function a3(e5) {
+          if (!(this instanceof a3)) return new a3(e5);
+          this.options = d2.assign({ chunkSize: 16384, windowBits: 0, to: "" }, e5 || {});
+          var t6 = this.options;
+          t6.raw && 0 <= t6.windowBits && t6.windowBits < 16 && (t6.windowBits = -t6.windowBits, 0 === t6.windowBits && (t6.windowBits = -15)), !(0 <= t6.windowBits && t6.windowBits < 16) || e5 && e5.windowBits || (t6.windowBits += 32), 15 < t6.windowBits && t6.windowBits < 48 && 0 == (15 & t6.windowBits) && (t6.windowBits |= 15), this.err = 0, this.msg = "", this.ended = false, this.chunks = [], this.strm = new i4(), this.strm.avail_out = 0;
+          var r7 = c5.inflateInit2(this.strm, t6.windowBits);
+          if (r7 !== m5.Z_OK) throw new Error(n4[r7]);
+          this.header = new s3(), c5.inflateGetHeader(this.strm, this.header);
+        }
+        function o4(e5, t6) {
+          var r7 = new a3(t6);
+          if (r7.push(e5, true), r7.err) throw r7.msg || n4[r7.err];
+          return r7.result;
+        }
+        a3.prototype.push = function(e5, t6) {
+          var r7, n5, i5, s4, a4, o5, h3 = this.strm, u3 = this.options.chunkSize, l3 = this.options.dictionary, f3 = false;
+          if (this.ended) return false;
+          n5 = t6 === ~~t6 ? t6 : true === t6 ? m5.Z_FINISH : m5.Z_NO_FLUSH, "string" == typeof e5 ? h3.input = p3.binstring2buf(e5) : "[object ArrayBuffer]" === _3.call(e5) ? h3.input = new Uint8Array(e5) : h3.input = e5, h3.next_in = 0, h3.avail_in = h3.input.length;
+          do {
+            if (0 === h3.avail_out && (h3.output = new d2.Buf8(u3), h3.next_out = 0, h3.avail_out = u3), (r7 = c5.inflate(h3, m5.Z_NO_FLUSH)) === m5.Z_NEED_DICT && l3 && (o5 = "string" == typeof l3 ? p3.string2buf(l3) : "[object ArrayBuffer]" === _3.call(l3) ? new Uint8Array(l3) : l3, r7 = c5.inflateSetDictionary(this.strm, o5)), r7 === m5.Z_BUF_ERROR && true === f3 && (r7 = m5.Z_OK, f3 = false), r7 !== m5.Z_STREAM_END && r7 !== m5.Z_OK) return this.onEnd(r7), !(this.ended = true);
+            h3.next_out && (0 !== h3.avail_out && r7 !== m5.Z_STREAM_END && (0 !== h3.avail_in || n5 !== m5.Z_FINISH && n5 !== m5.Z_SYNC_FLUSH) || ("string" === this.options.to ? (i5 = p3.utf8border(h3.output, h3.next_out), s4 = h3.next_out - i5, a4 = p3.buf2string(h3.output, i5), h3.next_out = s4, h3.avail_out = u3 - s4, s4 && d2.arraySet(h3.output, h3.output, i5, s4, 0), this.onData(a4)) : this.onData(d2.shrinkBuf(h3.output, h3.next_out)))), 0 === h3.avail_in && 0 === h3.avail_out && (f3 = true);
+          } while ((0 < h3.avail_in || 0 === h3.avail_out) && r7 !== m5.Z_STREAM_END);
+          return r7 === m5.Z_STREAM_END && (n5 = m5.Z_FINISH), n5 === m5.Z_FINISH ? (r7 = c5.inflateEnd(this.strm), this.onEnd(r7), this.ended = true, r7 === m5.Z_OK) : n5 !== m5.Z_SYNC_FLUSH || (this.onEnd(m5.Z_OK), !(h3.avail_out = 0));
+        }, a3.prototype.onData = function(e5) {
+          this.chunks.push(e5);
+        }, a3.prototype.onEnd = function(e5) {
+          e5 === m5.Z_OK && ("string" === this.options.to ? this.result = this.chunks.join("") : this.result = d2.flattenChunks(this.chunks)), this.chunks = [], this.err = e5, this.msg = this.strm.msg;
+        }, r6.Inflate = a3, r6.inflate = o4, r6.inflateRaw = function(e5, t6) {
+          return (t6 = t6 || {}).raw = true, o4(e5, t6);
+        }, r6.ungzip = o4;
+      }, { "./utils/common": 41, "./utils/strings": 42, "./zlib/constants": 44, "./zlib/gzheader": 47, "./zlib/inflate": 49, "./zlib/messages": 51, "./zlib/zstream": 53 }], 41: [function(e4, t5, r6) {
+        "use strict";
+        var n4 = "undefined" != typeof Uint8Array && "undefined" != typeof Uint16Array && "undefined" != typeof Int32Array;
+        r6.assign = function(e5) {
+          for (var t6 = Array.prototype.slice.call(arguments, 1); t6.length; ) {
+            var r7 = t6.shift();
+            if (r7) {
+              if ("object" != typeof r7) throw new TypeError(r7 + "must be non-object");
+              for (var n5 in r7) r7.hasOwnProperty(n5) && (e5[n5] = r7[n5]);
+            }
+          }
+          return e5;
+        }, r6.shrinkBuf = function(e5, t6) {
+          return e5.length === t6 ? e5 : e5.subarray ? e5.subarray(0, t6) : (e5.length = t6, e5);
+        };
+        var i4 = { arraySet: function(e5, t6, r7, n5, i5) {
+          if (t6.subarray && e5.subarray) e5.set(t6.subarray(r7, r7 + n5), i5);
+          else for (var s4 = 0; s4 < n5; s4++) e5[i5 + s4] = t6[r7 + s4];
+        }, flattenChunks: function(e5) {
+          var t6, r7, n5, i5, s4, a3;
+          for (t6 = n5 = 0, r7 = e5.length; t6 < r7; t6++) n5 += e5[t6].length;
+          for (a3 = new Uint8Array(n5), t6 = i5 = 0, r7 = e5.length; t6 < r7; t6++) s4 = e5[t6], a3.set(s4, i5), i5 += s4.length;
+          return a3;
+        } }, s3 = { arraySet: function(e5, t6, r7, n5, i5) {
+          for (var s4 = 0; s4 < n5; s4++) e5[i5 + s4] = t6[r7 + s4];
+        }, flattenChunks: function(e5) {
+          return [].concat.apply([], e5);
+        } };
+        r6.setTyped = function(e5) {
+          e5 ? (r6.Buf8 = Uint8Array, r6.Buf16 = Uint16Array, r6.Buf32 = Int32Array, r6.assign(r6, i4)) : (r6.Buf8 = Array, r6.Buf16 = Array, r6.Buf32 = Array, r6.assign(r6, s3));
+        }, r6.setTyped(n4);
+      }, {}], 42: [function(e4, t5, r6) {
+        "use strict";
+        var h3 = e4("./common"), i4 = true, s3 = true;
+        try {
+          String.fromCharCode.apply(null, [0]);
+        } catch (e5) {
+          i4 = false;
+        }
+        try {
+          String.fromCharCode.apply(null, new Uint8Array(1));
+        } catch (e5) {
+          s3 = false;
+        }
+        for (var u3 = new h3.Buf8(256), n4 = 0; n4 < 256; n4++) u3[n4] = 252 <= n4 ? 6 : 248 <= n4 ? 5 : 240 <= n4 ? 4 : 224 <= n4 ? 3 : 192 <= n4 ? 2 : 1;
+        function l3(e5, t6) {
+          if (t6 < 65537 && (e5.subarray && s3 || !e5.subarray && i4)) return String.fromCharCode.apply(null, h3.shrinkBuf(e5, t6));
+          for (var r7 = "", n5 = 0; n5 < t6; n5++) r7 += String.fromCharCode(e5[n5]);
+          return r7;
+        }
+        u3[254] = u3[254] = 1, r6.string2buf = function(e5) {
+          var t6, r7, n5, i5, s4, a3 = e5.length, o4 = 0;
+          for (i5 = 0; i5 < a3; i5++) 55296 == (64512 & (r7 = e5.charCodeAt(i5))) && i5 + 1 < a3 && 56320 == (64512 & (n5 = e5.charCodeAt(i5 + 1))) && (r7 = 65536 + (r7 - 55296 << 10) + (n5 - 56320), i5++), o4 += r7 < 128 ? 1 : r7 < 2048 ? 2 : r7 < 65536 ? 3 : 4;
+          for (t6 = new h3.Buf8(o4), i5 = s4 = 0; s4 < o4; i5++) 55296 == (64512 & (r7 = e5.charCodeAt(i5))) && i5 + 1 < a3 && 56320 == (64512 & (n5 = e5.charCodeAt(i5 + 1))) && (r7 = 65536 + (r7 - 55296 << 10) + (n5 - 56320), i5++), r7 < 128 ? t6[s4++] = r7 : (r7 < 2048 ? t6[s4++] = 192 | r7 >>> 6 : (r7 < 65536 ? t6[s4++] = 224 | r7 >>> 12 : (t6[s4++] = 240 | r7 >>> 18, t6[s4++] = 128 | r7 >>> 12 & 63), t6[s4++] = 128 | r7 >>> 6 & 63), t6[s4++] = 128 | 63 & r7);
+          return t6;
+        }, r6.buf2binstring = function(e5) {
+          return l3(e5, e5.length);
+        }, r6.binstring2buf = function(e5) {
+          for (var t6 = new h3.Buf8(e5.length), r7 = 0, n5 = t6.length; r7 < n5; r7++) t6[r7] = e5.charCodeAt(r7);
+          return t6;
+        }, r6.buf2string = function(e5, t6) {
+          var r7, n5, i5, s4, a3 = t6 || e5.length, o4 = new Array(2 * a3);
+          for (r7 = n5 = 0; r7 < a3; ) if ((i5 = e5[r7++]) < 128) o4[n5++] = i5;
+          else if (4 < (s4 = u3[i5])) o4[n5++] = 65533, r7 += s4 - 1;
+          else {
+            for (i5 &= 2 === s4 ? 31 : 3 === s4 ? 15 : 7; 1 < s4 && r7 < a3; ) i5 = i5 << 6 | 63 & e5[r7++], s4--;
+            1 < s4 ? o4[n5++] = 65533 : i5 < 65536 ? o4[n5++] = i5 : (i5 -= 65536, o4[n5++] = 55296 | i5 >> 10 & 1023, o4[n5++] = 56320 | 1023 & i5);
+          }
+          return l3(o4, n5);
+        }, r6.utf8border = function(e5, t6) {
+          var r7;
+          for ((t6 = t6 || e5.length) > e5.length && (t6 = e5.length), r7 = t6 - 1; 0 <= r7 && 128 == (192 & e5[r7]); ) r7--;
+          return r7 < 0 ? t6 : 0 === r7 ? t6 : r7 + u3[e5[r7]] > t6 ? r7 : t6;
+        };
+      }, { "./common": 41 }], 43: [function(e4, t5, r6) {
+        "use strict";
+        t5.exports = function(e5, t6, r7, n4) {
+          for (var i4 = 65535 & e5 | 0, s3 = e5 >>> 16 & 65535 | 0, a3 = 0; 0 !== r7; ) {
+            for (r7 -= a3 = 2e3 < r7 ? 2e3 : r7; s3 = s3 + (i4 = i4 + t6[n4++] | 0) | 0, --a3; ) ;
+            i4 %= 65521, s3 %= 65521;
+          }
+          return i4 | s3 << 16 | 0;
+        };
+      }, {}], 44: [function(e4, t5, r6) {
+        "use strict";
+        t5.exports = { Z_NO_FLUSH: 0, Z_PARTIAL_FLUSH: 1, Z_SYNC_FLUSH: 2, Z_FULL_FLUSH: 3, Z_FINISH: 4, Z_BLOCK: 5, Z_TREES: 6, Z_OK: 0, Z_STREAM_END: 1, Z_NEED_DICT: 2, Z_ERRNO: -1, Z_STREAM_ERROR: -2, Z_DATA_ERROR: -3, Z_BUF_ERROR: -5, Z_NO_COMPRESSION: 0, Z_BEST_SPEED: 1, Z_BEST_COMPRESSION: 9, Z_DEFAULT_COMPRESSION: -1, Z_FILTERED: 1, Z_HUFFMAN_ONLY: 2, Z_RLE: 3, Z_FIXED: 4, Z_DEFAULT_STRATEGY: 0, Z_BINARY: 0, Z_TEXT: 1, Z_UNKNOWN: 2, Z_DEFLATED: 8 };
+      }, {}], 45: [function(e4, t5, r6) {
+        "use strict";
+        var o4 = function() {
+          for (var e5, t6 = [], r7 = 0; r7 < 256; r7++) {
+            e5 = r7;
+            for (var n4 = 0; n4 < 8; n4++) e5 = 1 & e5 ? 3988292384 ^ e5 >>> 1 : e5 >>> 1;
+            t6[r7] = e5;
+          }
+          return t6;
+        }();
+        t5.exports = function(e5, t6, r7, n4) {
+          var i4 = o4, s3 = n4 + r7;
+          e5 ^= -1;
+          for (var a3 = n4; a3 < s3; a3++) e5 = e5 >>> 8 ^ i4[255 & (e5 ^ t6[a3])];
+          return -1 ^ e5;
+        };
+      }, {}], 46: [function(e4, t5, r6) {
+        "use strict";
+        var h3, c5 = e4("../utils/common"), u3 = e4("./trees"), d2 = e4("./adler32"), p3 = e4("./crc32"), n4 = e4("./messages"), l3 = 0, f3 = 4, m5 = 0, _3 = -2, g2 = -1, b2 = 4, i4 = 2, v3 = 8, y3 = 9, s3 = 286, a3 = 30, o4 = 19, w2 = 2 * s3 + 1, k2 = 15, x2 = 3, S2 = 258, z2 = S2 + x2 + 1, C2 = 42, E2 = 113, A2 = 1, I2 = 2, O3 = 3, B2 = 4;
+        function R2(e5, t6) {
+          return e5.msg = n4[t6], t6;
+        }
+        function T3(e5) {
+          return (e5 << 1) - (4 < e5 ? 9 : 0);
+        }
+        function D2(e5) {
+          for (var t6 = e5.length; 0 <= --t6; ) e5[t6] = 0;
+        }
+        function F2(e5) {
+          var t6 = e5.state, r7 = t6.pending;
+          r7 > e5.avail_out && (r7 = e5.avail_out), 0 !== r7 && (c5.arraySet(e5.output, t6.pending_buf, t6.pending_out, r7, e5.next_out), e5.next_out += r7, t6.pending_out += r7, e5.total_out += r7, e5.avail_out -= r7, t6.pending -= r7, 0 === t6.pending && (t6.pending_out = 0));
+        }
+        function N3(e5, t6) {
+          u3._tr_flush_block(e5, 0 <= e5.block_start ? e5.block_start : -1, e5.strstart - e5.block_start, t6), e5.block_start = e5.strstart, F2(e5.strm);
+        }
+        function U2(e5, t6) {
+          e5.pending_buf[e5.pending++] = t6;
+        }
+        function P2(e5, t6) {
+          e5.pending_buf[e5.pending++] = t6 >>> 8 & 255, e5.pending_buf[e5.pending++] = 255 & t6;
+        }
+        function L3(e5, t6) {
+          var r7, n5, i5 = e5.max_chain_length, s4 = e5.strstart, a4 = e5.prev_length, o5 = e5.nice_match, h4 = e5.strstart > e5.w_size - z2 ? e5.strstart - (e5.w_size - z2) : 0, u4 = e5.window, l4 = e5.w_mask, f4 = e5.prev, c6 = e5.strstart + S2, d3 = u4[s4 + a4 - 1], p4 = u4[s4 + a4];
+          e5.prev_length >= e5.good_match && (i5 >>= 2), o5 > e5.lookahead && (o5 = e5.lookahead);
+          do {
+            if (u4[(r7 = t6) + a4] === p4 && u4[r7 + a4 - 1] === d3 && u4[r7] === u4[s4] && u4[++r7] === u4[s4 + 1]) {
+              s4 += 2, r7++;
+              do {
+              } while (u4[++s4] === u4[++r7] && u4[++s4] === u4[++r7] && u4[++s4] === u4[++r7] && u4[++s4] === u4[++r7] && u4[++s4] === u4[++r7] && u4[++s4] === u4[++r7] && u4[++s4] === u4[++r7] && u4[++s4] === u4[++r7] && s4 < c6);
+              if (n5 = S2 - (c6 - s4), s4 = c6 - S2, a4 < n5) {
+                if (e5.match_start = t6, o5 <= (a4 = n5)) break;
+                d3 = u4[s4 + a4 - 1], p4 = u4[s4 + a4];
+              }
+            }
+          } while ((t6 = f4[t6 & l4]) > h4 && 0 != --i5);
+          return a4 <= e5.lookahead ? a4 : e5.lookahead;
+        }
+        function j2(e5) {
+          var t6, r7, n5, i5, s4, a4, o5, h4, u4, l4, f4 = e5.w_size;
+          do {
+            if (i5 = e5.window_size - e5.lookahead - e5.strstart, e5.strstart >= f4 + (f4 - z2)) {
+              for (c5.arraySet(e5.window, e5.window, f4, f4, 0), e5.match_start -= f4, e5.strstart -= f4, e5.block_start -= f4, t6 = r7 = e5.hash_size; n5 = e5.head[--t6], e5.head[t6] = f4 <= n5 ? n5 - f4 : 0, --r7; ) ;
+              for (t6 = r7 = f4; n5 = e5.prev[--t6], e5.prev[t6] = f4 <= n5 ? n5 - f4 : 0, --r7; ) ;
+              i5 += f4;
+            }
+            if (0 === e5.strm.avail_in) break;
+            if (a4 = e5.strm, o5 = e5.window, h4 = e5.strstart + e5.lookahead, u4 = i5, l4 = void 0, l4 = a4.avail_in, u4 < l4 && (l4 = u4), r7 = 0 === l4 ? 0 : (a4.avail_in -= l4, c5.arraySet(o5, a4.input, a4.next_in, l4, h4), 1 === a4.state.wrap ? a4.adler = d2(a4.adler, o5, l4, h4) : 2 === a4.state.wrap && (a4.adler = p3(a4.adler, o5, l4, h4)), a4.next_in += l4, a4.total_in += l4, l4), e5.lookahead += r7, e5.lookahead + e5.insert >= x2) for (s4 = e5.strstart - e5.insert, e5.ins_h = e5.window[s4], e5.ins_h = (e5.ins_h << e5.hash_shift ^ e5.window[s4 + 1]) & e5.hash_mask; e5.insert && (e5.ins_h = (e5.ins_h << e5.hash_shift ^ e5.window[s4 + x2 - 1]) & e5.hash_mask, e5.prev[s4 & e5.w_mask] = e5.head[e5.ins_h], e5.head[e5.ins_h] = s4, s4++, e5.insert--, !(e5.lookahead + e5.insert < x2)); ) ;
+          } while (e5.lookahead < z2 && 0 !== e5.strm.avail_in);
+        }
+        function Z2(e5, t6) {
+          for (var r7, n5; ; ) {
+            if (e5.lookahead < z2) {
+              if (j2(e5), e5.lookahead < z2 && t6 === l3) return A2;
+              if (0 === e5.lookahead) break;
+            }
+            if (r7 = 0, e5.lookahead >= x2 && (e5.ins_h = (e5.ins_h << e5.hash_shift ^ e5.window[e5.strstart + x2 - 1]) & e5.hash_mask, r7 = e5.prev[e5.strstart & e5.w_mask] = e5.head[e5.ins_h], e5.head[e5.ins_h] = e5.strstart), 0 !== r7 && e5.strstart - r7 <= e5.w_size - z2 && (e5.match_length = L3(e5, r7)), e5.match_length >= x2) if (n5 = u3._tr_tally(e5, e5.strstart - e5.match_start, e5.match_length - x2), e5.lookahead -= e5.match_length, e5.match_length <= e5.max_lazy_match && e5.lookahead >= x2) {
+              for (e5.match_length--; e5.strstart++, e5.ins_h = (e5.ins_h << e5.hash_shift ^ e5.window[e5.strstart + x2 - 1]) & e5.hash_mask, r7 = e5.prev[e5.strstart & e5.w_mask] = e5.head[e5.ins_h], e5.head[e5.ins_h] = e5.strstart, 0 != --e5.match_length; ) ;
+              e5.strstart++;
+            } else e5.strstart += e5.match_length, e5.match_length = 0, e5.ins_h = e5.window[e5.strstart], e5.ins_h = (e5.ins_h << e5.hash_shift ^ e5.window[e5.strstart + 1]) & e5.hash_mask;
+            else n5 = u3._tr_tally(e5, 0, e5.window[e5.strstart]), e5.lookahead--, e5.strstart++;
+            if (n5 && (N3(e5, false), 0 === e5.strm.avail_out)) return A2;
+          }
+          return e5.insert = e5.strstart < x2 - 1 ? e5.strstart : x2 - 1, t6 === f3 ? (N3(e5, true), 0 === e5.strm.avail_out ? O3 : B2) : e5.last_lit && (N3(e5, false), 0 === e5.strm.avail_out) ? A2 : I2;
+        }
+        function W2(e5, t6) {
+          for (var r7, n5, i5; ; ) {
+            if (e5.lookahead < z2) {
+              if (j2(e5), e5.lookahead < z2 && t6 === l3) return A2;
+              if (0 === e5.lookahead) break;
+            }
+            if (r7 = 0, e5.lookahead >= x2 && (e5.ins_h = (e5.ins_h << e5.hash_shift ^ e5.window[e5.strstart + x2 - 1]) & e5.hash_mask, r7 = e5.prev[e5.strstart & e5.w_mask] = e5.head[e5.ins_h], e5.head[e5.ins_h] = e5.strstart), e5.prev_length = e5.match_length, e5.prev_match = e5.match_start, e5.match_length = x2 - 1, 0 !== r7 && e5.prev_length < e5.max_lazy_match && e5.strstart - r7 <= e5.w_size - z2 && (e5.match_length = L3(e5, r7), e5.match_length <= 5 && (1 === e5.strategy || e5.match_length === x2 && 4096 < e5.strstart - e5.match_start) && (e5.match_length = x2 - 1)), e5.prev_length >= x2 && e5.match_length <= e5.prev_length) {
+              for (i5 = e5.strstart + e5.lookahead - x2, n5 = u3._tr_tally(e5, e5.strstart - 1 - e5.prev_match, e5.prev_length - x2), e5.lookahead -= e5.prev_length - 1, e5.prev_length -= 2; ++e5.strstart <= i5 && (e5.ins_h = (e5.ins_h << e5.hash_shift ^ e5.window[e5.strstart + x2 - 1]) & e5.hash_mask, r7 = e5.prev[e5.strstart & e5.w_mask] = e5.head[e5.ins_h], e5.head[e5.ins_h] = e5.strstart), 0 != --e5.prev_length; ) ;
+              if (e5.match_available = 0, e5.match_length = x2 - 1, e5.strstart++, n5 && (N3(e5, false), 0 === e5.strm.avail_out)) return A2;
+            } else if (e5.match_available) {
+              if ((n5 = u3._tr_tally(e5, 0, e5.window[e5.strstart - 1])) && N3(e5, false), e5.strstart++, e5.lookahead--, 0 === e5.strm.avail_out) return A2;
+            } else e5.match_available = 1, e5.strstart++, e5.lookahead--;
+          }
+          return e5.match_available && (n5 = u3._tr_tally(e5, 0, e5.window[e5.strstart - 1]), e5.match_available = 0), e5.insert = e5.strstart < x2 - 1 ? e5.strstart : x2 - 1, t6 === f3 ? (N3(e5, true), 0 === e5.strm.avail_out ? O3 : B2) : e5.last_lit && (N3(e5, false), 0 === e5.strm.avail_out) ? A2 : I2;
+        }
+        function M2(e5, t6, r7, n5, i5) {
+          this.good_length = e5, this.max_lazy = t6, this.nice_length = r7, this.max_chain = n5, this.func = i5;
+        }
+        function H2() {
+          this.strm = null, this.status = 0, this.pending_buf = null, this.pending_buf_size = 0, this.pending_out = 0, this.pending = 0, this.wrap = 0, this.gzhead = null, this.gzindex = 0, this.method = v3, this.last_flush = -1, this.w_size = 0, this.w_bits = 0, this.w_mask = 0, this.window = null, this.window_size = 0, this.prev = null, this.head = null, this.ins_h = 0, this.hash_size = 0, this.hash_bits = 0, this.hash_mask = 0, this.hash_shift = 0, this.block_start = 0, this.match_length = 0, this.prev_match = 0, this.match_available = 0, this.strstart = 0, this.match_start = 0, this.lookahead = 0, this.prev_length = 0, this.max_chain_length = 0, this.max_lazy_match = 0, this.level = 0, this.strategy = 0, this.good_match = 0, this.nice_match = 0, this.dyn_ltree = new c5.Buf16(2 * w2), this.dyn_dtree = new c5.Buf16(2 * (2 * a3 + 1)), this.bl_tree = new c5.Buf16(2 * (2 * o4 + 1)), D2(this.dyn_ltree), D2(this.dyn_dtree), D2(this.bl_tree), this.l_desc = null, this.d_desc = null, this.bl_desc = null, this.bl_count = new c5.Buf16(k2 + 1), this.heap = new c5.Buf16(2 * s3 + 1), D2(this.heap), this.heap_len = 0, this.heap_max = 0, this.depth = new c5.Buf16(2 * s3 + 1), D2(this.depth), this.l_buf = 0, this.lit_bufsize = 0, this.last_lit = 0, this.d_buf = 0, this.opt_len = 0, this.static_len = 0, this.matches = 0, this.insert = 0, this.bi_buf = 0, this.bi_valid = 0;
+        }
+        function G2(e5) {
+          var t6;
+          return e5 && e5.state ? (e5.total_in = e5.total_out = 0, e5.data_type = i4, (t6 = e5.state).pending = 0, t6.pending_out = 0, t6.wrap < 0 && (t6.wrap = -t6.wrap), t6.status = t6.wrap ? C2 : E2, e5.adler = 2 === t6.wrap ? 0 : 1, t6.last_flush = l3, u3._tr_init(t6), m5) : R2(e5, _3);
+        }
+        function K2(e5) {
+          var t6 = G2(e5);
+          return t6 === m5 && function(e6) {
+            e6.window_size = 2 * e6.w_size, D2(e6.head), e6.max_lazy_match = h3[e6.level].max_lazy, e6.good_match = h3[e6.level].good_length, e6.nice_match = h3[e6.level].nice_length, e6.max_chain_length = h3[e6.level].max_chain, e6.strstart = 0, e6.block_start = 0, e6.lookahead = 0, e6.insert = 0, e6.match_length = e6.prev_length = x2 - 1, e6.match_available = 0, e6.ins_h = 0;
+          }(e5.state), t6;
+        }
+        function Y2(e5, t6, r7, n5, i5, s4) {
+          if (!e5) return _3;
+          var a4 = 1;
+          if (t6 === g2 && (t6 = 6), n5 < 0 ? (a4 = 0, n5 = -n5) : 15 < n5 && (a4 = 2, n5 -= 16), i5 < 1 || y3 < i5 || r7 !== v3 || n5 < 8 || 15 < n5 || t6 < 0 || 9 < t6 || s4 < 0 || b2 < s4) return R2(e5, _3);
+          8 === n5 && (n5 = 9);
+          var o5 = new H2();
+          return (e5.state = o5).strm = e5, o5.wrap = a4, o5.gzhead = null, o5.w_bits = n5, o5.w_size = 1 << o5.w_bits, o5.w_mask = o5.w_size - 1, o5.hash_bits = i5 + 7, o5.hash_size = 1 << o5.hash_bits, o5.hash_mask = o5.hash_size - 1, o5.hash_shift = ~~((o5.hash_bits + x2 - 1) / x2), o5.window = new c5.Buf8(2 * o5.w_size), o5.head = new c5.Buf16(o5.hash_size), o5.prev = new c5.Buf16(o5.w_size), o5.lit_bufsize = 1 << i5 + 6, o5.pending_buf_size = 4 * o5.lit_bufsize, o5.pending_buf = new c5.Buf8(o5.pending_buf_size), o5.d_buf = 1 * o5.lit_bufsize, o5.l_buf = 3 * o5.lit_bufsize, o5.level = t6, o5.strategy = s4, o5.method = r7, K2(e5);
+        }
+        h3 = [new M2(0, 0, 0, 0, function(e5, t6) {
+          var r7 = 65535;
+          for (r7 > e5.pending_buf_size - 5 && (r7 = e5.pending_buf_size - 5); ; ) {
+            if (e5.lookahead <= 1) {
+              if (j2(e5), 0 === e5.lookahead && t6 === l3) return A2;
+              if (0 === e5.lookahead) break;
+            }
+            e5.strstart += e5.lookahead, e5.lookahead = 0;
+            var n5 = e5.block_start + r7;
+            if ((0 === e5.strstart || e5.strstart >= n5) && (e5.lookahead = e5.strstart - n5, e5.strstart = n5, N3(e5, false), 0 === e5.strm.avail_out)) return A2;
+            if (e5.strstart - e5.block_start >= e5.w_size - z2 && (N3(e5, false), 0 === e5.strm.avail_out)) return A2;
+          }
+          return e5.insert = 0, t6 === f3 ? (N3(e5, true), 0 === e5.strm.avail_out ? O3 : B2) : (e5.strstart > e5.block_start && (N3(e5, false), e5.strm.avail_out), A2);
+        }), new M2(4, 4, 8, 4, Z2), new M2(4, 5, 16, 8, Z2), new M2(4, 6, 32, 32, Z2), new M2(4, 4, 16, 16, W2), new M2(8, 16, 32, 32, W2), new M2(8, 16, 128, 128, W2), new M2(8, 32, 128, 256, W2), new M2(32, 128, 258, 1024, W2), new M2(32, 258, 258, 4096, W2)], r6.deflateInit = function(e5, t6) {
+          return Y2(e5, t6, v3, 15, 8, 0);
+        }, r6.deflateInit2 = Y2, r6.deflateReset = K2, r6.deflateResetKeep = G2, r6.deflateSetHeader = function(e5, t6) {
+          return e5 && e5.state ? 2 !== e5.state.wrap ? _3 : (e5.state.gzhead = t6, m5) : _3;
+        }, r6.deflate = function(e5, t6) {
+          var r7, n5, i5, s4;
+          if (!e5 || !e5.state || 5 < t6 || t6 < 0) return e5 ? R2(e5, _3) : _3;
+          if (n5 = e5.state, !e5.output || !e5.input && 0 !== e5.avail_in || 666 === n5.status && t6 !== f3) return R2(e5, 0 === e5.avail_out ? -5 : _3);
+          if (n5.strm = e5, r7 = n5.last_flush, n5.last_flush = t6, n5.status === C2) if (2 === n5.wrap) e5.adler = 0, U2(n5, 31), U2(n5, 139), U2(n5, 8), n5.gzhead ? (U2(n5, (n5.gzhead.text ? 1 : 0) + (n5.gzhead.hcrc ? 2 : 0) + (n5.gzhead.extra ? 4 : 0) + (n5.gzhead.name ? 8 : 0) + (n5.gzhead.comment ? 16 : 0)), U2(n5, 255 & n5.gzhead.time), U2(n5, n5.gzhead.time >> 8 & 255), U2(n5, n5.gzhead.time >> 16 & 255), U2(n5, n5.gzhead.time >> 24 & 255), U2(n5, 9 === n5.level ? 2 : 2 <= n5.strategy || n5.level < 2 ? 4 : 0), U2(n5, 255 & n5.gzhead.os), n5.gzhead.extra && n5.gzhead.extra.length && (U2(n5, 255 & n5.gzhead.extra.length), U2(n5, n5.gzhead.extra.length >> 8 & 255)), n5.gzhead.hcrc && (e5.adler = p3(e5.adler, n5.pending_buf, n5.pending, 0)), n5.gzindex = 0, n5.status = 69) : (U2(n5, 0), U2(n5, 0), U2(n5, 0), U2(n5, 0), U2(n5, 0), U2(n5, 9 === n5.level ? 2 : 2 <= n5.strategy || n5.level < 2 ? 4 : 0), U2(n5, 3), n5.status = E2);
+          else {
+            var a4 = v3 + (n5.w_bits - 8 << 4) << 8;
+            a4 |= (2 <= n5.strategy || n5.level < 2 ? 0 : n5.level < 6 ? 1 : 6 === n5.level ? 2 : 3) << 6, 0 !== n5.strstart && (a4 |= 32), a4 += 31 - a4 % 31, n5.status = E2, P2(n5, a4), 0 !== n5.strstart && (P2(n5, e5.adler >>> 16), P2(n5, 65535 & e5.adler)), e5.adler = 1;
+          }
+          if (69 === n5.status) if (n5.gzhead.extra) {
+            for (i5 = n5.pending; n5.gzindex < (65535 & n5.gzhead.extra.length) && (n5.pending !== n5.pending_buf_size || (n5.gzhead.hcrc && n5.pending > i5 && (e5.adler = p3(e5.adler, n5.pending_buf, n5.pending - i5, i5)), F2(e5), i5 = n5.pending, n5.pending !== n5.pending_buf_size)); ) U2(n5, 255 & n5.gzhead.extra[n5.gzindex]), n5.gzindex++;
+            n5.gzhead.hcrc && n5.pending > i5 && (e5.adler = p3(e5.adler, n5.pending_buf, n5.pending - i5, i5)), n5.gzindex === n5.gzhead.extra.length && (n5.gzindex = 0, n5.status = 73);
+          } else n5.status = 73;
+          if (73 === n5.status) if (n5.gzhead.name) {
+            i5 = n5.pending;
+            do {
+              if (n5.pending === n5.pending_buf_size && (n5.gzhead.hcrc && n5.pending > i5 && (e5.adler = p3(e5.adler, n5.pending_buf, n5.pending - i5, i5)), F2(e5), i5 = n5.pending, n5.pending === n5.pending_buf_size)) {
+                s4 = 1;
+                break;
+              }
+              s4 = n5.gzindex < n5.gzhead.name.length ? 255 & n5.gzhead.name.charCodeAt(n5.gzindex++) : 0, U2(n5, s4);
+            } while (0 !== s4);
+            n5.gzhead.hcrc && n5.pending > i5 && (e5.adler = p3(e5.adler, n5.pending_buf, n5.pending - i5, i5)), 0 === s4 && (n5.gzindex = 0, n5.status = 91);
+          } else n5.status = 91;
+          if (91 === n5.status) if (n5.gzhead.comment) {
+            i5 = n5.pending;
+            do {
+              if (n5.pending === n5.pending_buf_size && (n5.gzhead.hcrc && n5.pending > i5 && (e5.adler = p3(e5.adler, n5.pending_buf, n5.pending - i5, i5)), F2(e5), i5 = n5.pending, n5.pending === n5.pending_buf_size)) {
+                s4 = 1;
+                break;
+              }
+              s4 = n5.gzindex < n5.gzhead.comment.length ? 255 & n5.gzhead.comment.charCodeAt(n5.gzindex++) : 0, U2(n5, s4);
+            } while (0 !== s4);
+            n5.gzhead.hcrc && n5.pending > i5 && (e5.adler = p3(e5.adler, n5.pending_buf, n5.pending - i5, i5)), 0 === s4 && (n5.status = 103);
+          } else n5.status = 103;
+          if (103 === n5.status && (n5.gzhead.hcrc ? (n5.pending + 2 > n5.pending_buf_size && F2(e5), n5.pending + 2 <= n5.pending_buf_size && (U2(n5, 255 & e5.adler), U2(n5, e5.adler >> 8 & 255), e5.adler = 0, n5.status = E2)) : n5.status = E2), 0 !== n5.pending) {
+            if (F2(e5), 0 === e5.avail_out) return n5.last_flush = -1, m5;
+          } else if (0 === e5.avail_in && T3(t6) <= T3(r7) && t6 !== f3) return R2(e5, -5);
+          if (666 === n5.status && 0 !== e5.avail_in) return R2(e5, -5);
+          if (0 !== e5.avail_in || 0 !== n5.lookahead || t6 !== l3 && 666 !== n5.status) {
+            var o5 = 2 === n5.strategy ? function(e6, t7) {
+              for (var r8; ; ) {
+                if (0 === e6.lookahead && (j2(e6), 0 === e6.lookahead)) {
+                  if (t7 === l3) return A2;
+                  break;
+                }
+                if (e6.match_length = 0, r8 = u3._tr_tally(e6, 0, e6.window[e6.strstart]), e6.lookahead--, e6.strstart++, r8 && (N3(e6, false), 0 === e6.strm.avail_out)) return A2;
+              }
+              return e6.insert = 0, t7 === f3 ? (N3(e6, true), 0 === e6.strm.avail_out ? O3 : B2) : e6.last_lit && (N3(e6, false), 0 === e6.strm.avail_out) ? A2 : I2;
+            }(n5, t6) : 3 === n5.strategy ? function(e6, t7) {
+              for (var r8, n6, i6, s5, a5 = e6.window; ; ) {
+                if (e6.lookahead <= S2) {
+                  if (j2(e6), e6.lookahead <= S2 && t7 === l3) return A2;
+                  if (0 === e6.lookahead) break;
+                }
+                if (e6.match_length = 0, e6.lookahead >= x2 && 0 < e6.strstart && (n6 = a5[i6 = e6.strstart - 1]) === a5[++i6] && n6 === a5[++i6] && n6 === a5[++i6]) {
+                  s5 = e6.strstart + S2;
+                  do {
+                  } while (n6 === a5[++i6] && n6 === a5[++i6] && n6 === a5[++i6] && n6 === a5[++i6] && n6 === a5[++i6] && n6 === a5[++i6] && n6 === a5[++i6] && n6 === a5[++i6] && i6 < s5);
+                  e6.match_length = S2 - (s5 - i6), e6.match_length > e6.lookahead && (e6.match_length = e6.lookahead);
+                }
+                if (e6.match_length >= x2 ? (r8 = u3._tr_tally(e6, 1, e6.match_length - x2), e6.lookahead -= e6.match_length, e6.strstart += e6.match_length, e6.match_length = 0) : (r8 = u3._tr_tally(e6, 0, e6.window[e6.strstart]), e6.lookahead--, e6.strstart++), r8 && (N3(e6, false), 0 === e6.strm.avail_out)) return A2;
+              }
+              return e6.insert = 0, t7 === f3 ? (N3(e6, true), 0 === e6.strm.avail_out ? O3 : B2) : e6.last_lit && (N3(e6, false), 0 === e6.strm.avail_out) ? A2 : I2;
+            }(n5, t6) : h3[n5.level].func(n5, t6);
+            if (o5 !== O3 && o5 !== B2 || (n5.status = 666), o5 === A2 || o5 === O3) return 0 === e5.avail_out && (n5.last_flush = -1), m5;
+            if (o5 === I2 && (1 === t6 ? u3._tr_align(n5) : 5 !== t6 && (u3._tr_stored_block(n5, 0, 0, false), 3 === t6 && (D2(n5.head), 0 === n5.lookahead && (n5.strstart = 0, n5.block_start = 0, n5.insert = 0))), F2(e5), 0 === e5.avail_out)) return n5.last_flush = -1, m5;
+          }
+          return t6 !== f3 ? m5 : n5.wrap <= 0 ? 1 : (2 === n5.wrap ? (U2(n5, 255 & e5.adler), U2(n5, e5.adler >> 8 & 255), U2(n5, e5.adler >> 16 & 255), U2(n5, e5.adler >> 24 & 255), U2(n5, 255 & e5.total_in), U2(n5, e5.total_in >> 8 & 255), U2(n5, e5.total_in >> 16 & 255), U2(n5, e5.total_in >> 24 & 255)) : (P2(n5, e5.adler >>> 16), P2(n5, 65535 & e5.adler)), F2(e5), 0 < n5.wrap && (n5.wrap = -n5.wrap), 0 !== n5.pending ? m5 : 1);
+        }, r6.deflateEnd = function(e5) {
+          var t6;
+          return e5 && e5.state ? (t6 = e5.state.status) !== C2 && 69 !== t6 && 73 !== t6 && 91 !== t6 && 103 !== t6 && t6 !== E2 && 666 !== t6 ? R2(e5, _3) : (e5.state = null, t6 === E2 ? R2(e5, -3) : m5) : _3;
+        }, r6.deflateSetDictionary = function(e5, t6) {
+          var r7, n5, i5, s4, a4, o5, h4, u4, l4 = t6.length;
+          if (!e5 || !e5.state) return _3;
+          if (2 === (s4 = (r7 = e5.state).wrap) || 1 === s4 && r7.status !== C2 || r7.lookahead) return _3;
+          for (1 === s4 && (e5.adler = d2(e5.adler, t6, l4, 0)), r7.wrap = 0, l4 >= r7.w_size && (0 === s4 && (D2(r7.head), r7.strstart = 0, r7.block_start = 0, r7.insert = 0), u4 = new c5.Buf8(r7.w_size), c5.arraySet(u4, t6, l4 - r7.w_size, r7.w_size, 0), t6 = u4, l4 = r7.w_size), a4 = e5.avail_in, o5 = e5.next_in, h4 = e5.input, e5.avail_in = l4, e5.next_in = 0, e5.input = t6, j2(r7); r7.lookahead >= x2; ) {
+            for (n5 = r7.strstart, i5 = r7.lookahead - (x2 - 1); r7.ins_h = (r7.ins_h << r7.hash_shift ^ r7.window[n5 + x2 - 1]) & r7.hash_mask, r7.prev[n5 & r7.w_mask] = r7.head[r7.ins_h], r7.head[r7.ins_h] = n5, n5++, --i5; ) ;
+            r7.strstart = n5, r7.lookahead = x2 - 1, j2(r7);
+          }
+          return r7.strstart += r7.lookahead, r7.block_start = r7.strstart, r7.insert = r7.lookahead, r7.lookahead = 0, r7.match_length = r7.prev_length = x2 - 1, r7.match_available = 0, e5.next_in = o5, e5.input = h4, e5.avail_in = a4, r7.wrap = s4, m5;
+        }, r6.deflateInfo = "pako deflate (from Nodeca project)";
+      }, { "../utils/common": 41, "./adler32": 43, "./crc32": 45, "./messages": 51, "./trees": 52 }], 47: [function(e4, t5, r6) {
+        "use strict";
+        t5.exports = function() {
+          this.text = 0, this.time = 0, this.xflags = 0, this.os = 0, this.extra = null, this.extra_len = 0, this.name = "", this.comment = "", this.hcrc = 0, this.done = false;
+        };
+      }, {}], 48: [function(e4, t5, r6) {
+        "use strict";
+        t5.exports = function(e5, t6) {
+          var r7, n4, i4, s3, a3, o4, h3, u3, l3, f3, c5, d2, p3, m5, _3, g2, b2, v3, y3, w2, k2, x2, S2, z2, C2;
+          r7 = e5.state, n4 = e5.next_in, z2 = e5.input, i4 = n4 + (e5.avail_in - 5), s3 = e5.next_out, C2 = e5.output, a3 = s3 - (t6 - e5.avail_out), o4 = s3 + (e5.avail_out - 257), h3 = r7.dmax, u3 = r7.wsize, l3 = r7.whave, f3 = r7.wnext, c5 = r7.window, d2 = r7.hold, p3 = r7.bits, m5 = r7.lencode, _3 = r7.distcode, g2 = (1 << r7.lenbits) - 1, b2 = (1 << r7.distbits) - 1;
+          e: do {
+            p3 < 15 && (d2 += z2[n4++] << p3, p3 += 8, d2 += z2[n4++] << p3, p3 += 8), v3 = m5[d2 & g2];
+            t: for (; ; ) {
+              if (d2 >>>= y3 = v3 >>> 24, p3 -= y3, 0 === (y3 = v3 >>> 16 & 255)) C2[s3++] = 65535 & v3;
+              else {
+                if (!(16 & y3)) {
+                  if (0 == (64 & y3)) {
+                    v3 = m5[(65535 & v3) + (d2 & (1 << y3) - 1)];
+                    continue t;
+                  }
+                  if (32 & y3) {
+                    r7.mode = 12;
+                    break e;
+                  }
+                  e5.msg = "invalid literal/length code", r7.mode = 30;
+                  break e;
+                }
+                w2 = 65535 & v3, (y3 &= 15) && (p3 < y3 && (d2 += z2[n4++] << p3, p3 += 8), w2 += d2 & (1 << y3) - 1, d2 >>>= y3, p3 -= y3), p3 < 15 && (d2 += z2[n4++] << p3, p3 += 8, d2 += z2[n4++] << p3, p3 += 8), v3 = _3[d2 & b2];
+                r: for (; ; ) {
+                  if (d2 >>>= y3 = v3 >>> 24, p3 -= y3, !(16 & (y3 = v3 >>> 16 & 255))) {
+                    if (0 == (64 & y3)) {
+                      v3 = _3[(65535 & v3) + (d2 & (1 << y3) - 1)];
+                      continue r;
+                    }
+                    e5.msg = "invalid distance code", r7.mode = 30;
+                    break e;
+                  }
+                  if (k2 = 65535 & v3, p3 < (y3 &= 15) && (d2 += z2[n4++] << p3, (p3 += 8) < y3 && (d2 += z2[n4++] << p3, p3 += 8)), h3 < (k2 += d2 & (1 << y3) - 1)) {
+                    e5.msg = "invalid distance too far back", r7.mode = 30;
+                    break e;
+                  }
+                  if (d2 >>>= y3, p3 -= y3, (y3 = s3 - a3) < k2) {
+                    if (l3 < (y3 = k2 - y3) && r7.sane) {
+                      e5.msg = "invalid distance too far back", r7.mode = 30;
+                      break e;
+                    }
+                    if (S2 = c5, (x2 = 0) === f3) {
+                      if (x2 += u3 - y3, y3 < w2) {
+                        for (w2 -= y3; C2[s3++] = c5[x2++], --y3; ) ;
+                        x2 = s3 - k2, S2 = C2;
+                      }
+                    } else if (f3 < y3) {
+                      if (x2 += u3 + f3 - y3, (y3 -= f3) < w2) {
+                        for (w2 -= y3; C2[s3++] = c5[x2++], --y3; ) ;
+                        if (x2 = 0, f3 < w2) {
+                          for (w2 -= y3 = f3; C2[s3++] = c5[x2++], --y3; ) ;
+                          x2 = s3 - k2, S2 = C2;
+                        }
+                      }
+                    } else if (x2 += f3 - y3, y3 < w2) {
+                      for (w2 -= y3; C2[s3++] = c5[x2++], --y3; ) ;
+                      x2 = s3 - k2, S2 = C2;
+                    }
+                    for (; 2 < w2; ) C2[s3++] = S2[x2++], C2[s3++] = S2[x2++], C2[s3++] = S2[x2++], w2 -= 3;
+                    w2 && (C2[s3++] = S2[x2++], 1 < w2 && (C2[s3++] = S2[x2++]));
+                  } else {
+                    for (x2 = s3 - k2; C2[s3++] = C2[x2++], C2[s3++] = C2[x2++], C2[s3++] = C2[x2++], 2 < (w2 -= 3); ) ;
+                    w2 && (C2[s3++] = C2[x2++], 1 < w2 && (C2[s3++] = C2[x2++]));
+                  }
+                  break;
+                }
+              }
+              break;
+            }
+          } while (n4 < i4 && s3 < o4);
+          n4 -= w2 = p3 >> 3, d2 &= (1 << (p3 -= w2 << 3)) - 1, e5.next_in = n4, e5.next_out = s3, e5.avail_in = n4 < i4 ? i4 - n4 + 5 : 5 - (n4 - i4), e5.avail_out = s3 < o4 ? o4 - s3 + 257 : 257 - (s3 - o4), r7.hold = d2, r7.bits = p3;
+        };
+      }, {}], 49: [function(e4, t5, r6) {
+        "use strict";
+        var I2 = e4("../utils/common"), O3 = e4("./adler32"), B2 = e4("./crc32"), R2 = e4("./inffast"), T3 = e4("./inftrees"), D2 = 1, F2 = 2, N3 = 0, U2 = -2, P2 = 1, n4 = 852, i4 = 592;
+        function L3(e5) {
+          return (e5 >>> 24 & 255) + (e5 >>> 8 & 65280) + ((65280 & e5) << 8) + ((255 & e5) << 24);
+        }
+        function s3() {
+          this.mode = 0, this.last = false, this.wrap = 0, this.havedict = false, this.flags = 0, this.dmax = 0, this.check = 0, this.total = 0, this.head = null, this.wbits = 0, this.wsize = 0, this.whave = 0, this.wnext = 0, this.window = null, this.hold = 0, this.bits = 0, this.length = 0, this.offset = 0, this.extra = 0, this.lencode = null, this.distcode = null, this.lenbits = 0, this.distbits = 0, this.ncode = 0, this.nlen = 0, this.ndist = 0, this.have = 0, this.next = null, this.lens = new I2.Buf16(320), this.work = new I2.Buf16(288), this.lendyn = null, this.distdyn = null, this.sane = 0, this.back = 0, this.was = 0;
+        }
+        function a3(e5) {
+          var t6;
+          return e5 && e5.state ? (t6 = e5.state, e5.total_in = e5.total_out = t6.total = 0, e5.msg = "", t6.wrap && (e5.adler = 1 & t6.wrap), t6.mode = P2, t6.last = 0, t6.havedict = 0, t6.dmax = 32768, t6.head = null, t6.hold = 0, t6.bits = 0, t6.lencode = t6.lendyn = new I2.Buf32(n4), t6.distcode = t6.distdyn = new I2.Buf32(i4), t6.sane = 1, t6.back = -1, N3) : U2;
+        }
+        function o4(e5) {
+          var t6;
+          return e5 && e5.state ? ((t6 = e5.state).wsize = 0, t6.whave = 0, t6.wnext = 0, a3(e5)) : U2;
+        }
+        function h3(e5, t6) {
+          var r7, n5;
+          return e5 && e5.state ? (n5 = e5.state, t6 < 0 ? (r7 = 0, t6 = -t6) : (r7 = 1 + (t6 >> 4), t6 < 48 && (t6 &= 15)), t6 && (t6 < 8 || 15 < t6) ? U2 : (null !== n5.window && n5.wbits !== t6 && (n5.window = null), n5.wrap = r7, n5.wbits = t6, o4(e5))) : U2;
+        }
+        function u3(e5, t6) {
+          var r7, n5;
+          return e5 ? (n5 = new s3(), (e5.state = n5).window = null, (r7 = h3(e5, t6)) !== N3 && (e5.state = null), r7) : U2;
+        }
+        var l3, f3, c5 = true;
+        function j2(e5) {
+          if (c5) {
+            var t6;
+            for (l3 = new I2.Buf32(512), f3 = new I2.Buf32(32), t6 = 0; t6 < 144; ) e5.lens[t6++] = 8;
+            for (; t6 < 256; ) e5.lens[t6++] = 9;
+            for (; t6 < 280; ) e5.lens[t6++] = 7;
+            for (; t6 < 288; ) e5.lens[t6++] = 8;
+            for (T3(D2, e5.lens, 0, 288, l3, 0, e5.work, { bits: 9 }), t6 = 0; t6 < 32; ) e5.lens[t6++] = 5;
+            T3(F2, e5.lens, 0, 32, f3, 0, e5.work, { bits: 5 }), c5 = false;
+          }
+          e5.lencode = l3, e5.lenbits = 9, e5.distcode = f3, e5.distbits = 5;
+        }
+        function Z2(e5, t6, r7, n5) {
+          var i5, s4 = e5.state;
+          return null === s4.window && (s4.wsize = 1 << s4.wbits, s4.wnext = 0, s4.whave = 0, s4.window = new I2.Buf8(s4.wsize)), n5 >= s4.wsize ? (I2.arraySet(s4.window, t6, r7 - s4.wsize, s4.wsize, 0), s4.wnext = 0, s4.whave = s4.wsize) : (n5 < (i5 = s4.wsize - s4.wnext) && (i5 = n5), I2.arraySet(s4.window, t6, r7 - n5, i5, s4.wnext), (n5 -= i5) ? (I2.arraySet(s4.window, t6, r7 - n5, n5, 0), s4.wnext = n5, s4.whave = s4.wsize) : (s4.wnext += i5, s4.wnext === s4.wsize && (s4.wnext = 0), s4.whave < s4.wsize && (s4.whave += i5))), 0;
+        }
+        r6.inflateReset = o4, r6.inflateReset2 = h3, r6.inflateResetKeep = a3, r6.inflateInit = function(e5) {
+          return u3(e5, 15);
+        }, r6.inflateInit2 = u3, r6.inflate = function(e5, t6) {
+          var r7, n5, i5, s4, a4, o5, h4, u4, l4, f4, c6, d2, p3, m5, _3, g2, b2, v3, y3, w2, k2, x2, S2, z2, C2 = 0, E2 = new I2.Buf8(4), A2 = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
+          if (!e5 || !e5.state || !e5.output || !e5.input && 0 !== e5.avail_in) return U2;
+          12 === (r7 = e5.state).mode && (r7.mode = 13), a4 = e5.next_out, i5 = e5.output, h4 = e5.avail_out, s4 = e5.next_in, n5 = e5.input, o5 = e5.avail_in, u4 = r7.hold, l4 = r7.bits, f4 = o5, c6 = h4, x2 = N3;
+          e: for (; ; ) switch (r7.mode) {
+            case P2:
+              if (0 === r7.wrap) {
+                r7.mode = 13;
+                break;
+              }
+              for (; l4 < 16; ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              if (2 & r7.wrap && 35615 === u4) {
+                E2[r7.check = 0] = 255 & u4, E2[1] = u4 >>> 8 & 255, r7.check = B2(r7.check, E2, 2, 0), l4 = u4 = 0, r7.mode = 2;
+                break;
+              }
+              if (r7.flags = 0, r7.head && (r7.head.done = false), !(1 & r7.wrap) || (((255 & u4) << 8) + (u4 >> 8)) % 31) {
+                e5.msg = "incorrect header check", r7.mode = 30;
+                break;
+              }
+              if (8 != (15 & u4)) {
+                e5.msg = "unknown compression method", r7.mode = 30;
+                break;
+              }
+              if (l4 -= 4, k2 = 8 + (15 & (u4 >>>= 4)), 0 === r7.wbits) r7.wbits = k2;
+              else if (k2 > r7.wbits) {
+                e5.msg = "invalid window size", r7.mode = 30;
+                break;
+              }
+              r7.dmax = 1 << k2, e5.adler = r7.check = 1, r7.mode = 512 & u4 ? 10 : 12, l4 = u4 = 0;
+              break;
+            case 2:
+              for (; l4 < 16; ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              if (r7.flags = u4, 8 != (255 & r7.flags)) {
+                e5.msg = "unknown compression method", r7.mode = 30;
+                break;
+              }
+              if (57344 & r7.flags) {
+                e5.msg = "unknown header flags set", r7.mode = 30;
+                break;
+              }
+              r7.head && (r7.head.text = u4 >> 8 & 1), 512 & r7.flags && (E2[0] = 255 & u4, E2[1] = u4 >>> 8 & 255, r7.check = B2(r7.check, E2, 2, 0)), l4 = u4 = 0, r7.mode = 3;
+            case 3:
+              for (; l4 < 32; ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              r7.head && (r7.head.time = u4), 512 & r7.flags && (E2[0] = 255 & u4, E2[1] = u4 >>> 8 & 255, E2[2] = u4 >>> 16 & 255, E2[3] = u4 >>> 24 & 255, r7.check = B2(r7.check, E2, 4, 0)), l4 = u4 = 0, r7.mode = 4;
+            case 4:
+              for (; l4 < 16; ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              r7.head && (r7.head.xflags = 255 & u4, r7.head.os = u4 >> 8), 512 & r7.flags && (E2[0] = 255 & u4, E2[1] = u4 >>> 8 & 255, r7.check = B2(r7.check, E2, 2, 0)), l4 = u4 = 0, r7.mode = 5;
+            case 5:
+              if (1024 & r7.flags) {
+                for (; l4 < 16; ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                r7.length = u4, r7.head && (r7.head.extra_len = u4), 512 & r7.flags && (E2[0] = 255 & u4, E2[1] = u4 >>> 8 & 255, r7.check = B2(r7.check, E2, 2, 0)), l4 = u4 = 0;
+              } else r7.head && (r7.head.extra = null);
+              r7.mode = 6;
+            case 6:
+              if (1024 & r7.flags && (o5 < (d2 = r7.length) && (d2 = o5), d2 && (r7.head && (k2 = r7.head.extra_len - r7.length, r7.head.extra || (r7.head.extra = new Array(r7.head.extra_len)), I2.arraySet(r7.head.extra, n5, s4, d2, k2)), 512 & r7.flags && (r7.check = B2(r7.check, n5, d2, s4)), o5 -= d2, s4 += d2, r7.length -= d2), r7.length)) break e;
+              r7.length = 0, r7.mode = 7;
+            case 7:
+              if (2048 & r7.flags) {
+                if (0 === o5) break e;
+                for (d2 = 0; k2 = n5[s4 + d2++], r7.head && k2 && r7.length < 65536 && (r7.head.name += String.fromCharCode(k2)), k2 && d2 < o5; ) ;
+                if (512 & r7.flags && (r7.check = B2(r7.check, n5, d2, s4)), o5 -= d2, s4 += d2, k2) break e;
+              } else r7.head && (r7.head.name = null);
+              r7.length = 0, r7.mode = 8;
+            case 8:
+              if (4096 & r7.flags) {
+                if (0 === o5) break e;
+                for (d2 = 0; k2 = n5[s4 + d2++], r7.head && k2 && r7.length < 65536 && (r7.head.comment += String.fromCharCode(k2)), k2 && d2 < o5; ) ;
+                if (512 & r7.flags && (r7.check = B2(r7.check, n5, d2, s4)), o5 -= d2, s4 += d2, k2) break e;
+              } else r7.head && (r7.head.comment = null);
+              r7.mode = 9;
+            case 9:
+              if (512 & r7.flags) {
+                for (; l4 < 16; ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                if (u4 !== (65535 & r7.check)) {
+                  e5.msg = "header crc mismatch", r7.mode = 30;
+                  break;
+                }
+                l4 = u4 = 0;
+              }
+              r7.head && (r7.head.hcrc = r7.flags >> 9 & 1, r7.head.done = true), e5.adler = r7.check = 0, r7.mode = 12;
+              break;
+            case 10:
+              for (; l4 < 32; ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              e5.adler = r7.check = L3(u4), l4 = u4 = 0, r7.mode = 11;
+            case 11:
+              if (0 === r7.havedict) return e5.next_out = a4, e5.avail_out = h4, e5.next_in = s4, e5.avail_in = o5, r7.hold = u4, r7.bits = l4, 2;
+              e5.adler = r7.check = 1, r7.mode = 12;
+            case 12:
+              if (5 === t6 || 6 === t6) break e;
+            case 13:
+              if (r7.last) {
+                u4 >>>= 7 & l4, l4 -= 7 & l4, r7.mode = 27;
+                break;
+              }
+              for (; l4 < 3; ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              switch (r7.last = 1 & u4, l4 -= 1, 3 & (u4 >>>= 1)) {
+                case 0:
+                  r7.mode = 14;
+                  break;
+                case 1:
+                  if (j2(r7), r7.mode = 20, 6 !== t6) break;
+                  u4 >>>= 2, l4 -= 2;
+                  break e;
+                case 2:
+                  r7.mode = 17;
+                  break;
+                case 3:
+                  e5.msg = "invalid block type", r7.mode = 30;
+              }
+              u4 >>>= 2, l4 -= 2;
+              break;
+            case 14:
+              for (u4 >>>= 7 & l4, l4 -= 7 & l4; l4 < 32; ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              if ((65535 & u4) != (u4 >>> 16 ^ 65535)) {
+                e5.msg = "invalid stored block lengths", r7.mode = 30;
+                break;
+              }
+              if (r7.length = 65535 & u4, l4 = u4 = 0, r7.mode = 15, 6 === t6) break e;
+            case 15:
+              r7.mode = 16;
+            case 16:
+              if (d2 = r7.length) {
+                if (o5 < d2 && (d2 = o5), h4 < d2 && (d2 = h4), 0 === d2) break e;
+                I2.arraySet(i5, n5, s4, d2, a4), o5 -= d2, s4 += d2, h4 -= d2, a4 += d2, r7.length -= d2;
+                break;
+              }
+              r7.mode = 12;
+              break;
+            case 17:
+              for (; l4 < 14; ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              if (r7.nlen = 257 + (31 & u4), u4 >>>= 5, l4 -= 5, r7.ndist = 1 + (31 & u4), u4 >>>= 5, l4 -= 5, r7.ncode = 4 + (15 & u4), u4 >>>= 4, l4 -= 4, 286 < r7.nlen || 30 < r7.ndist) {
+                e5.msg = "too many length or distance symbols", r7.mode = 30;
+                break;
+              }
+              r7.have = 0, r7.mode = 18;
+            case 18:
+              for (; r7.have < r7.ncode; ) {
+                for (; l4 < 3; ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                r7.lens[A2[r7.have++]] = 7 & u4, u4 >>>= 3, l4 -= 3;
+              }
+              for (; r7.have < 19; ) r7.lens[A2[r7.have++]] = 0;
+              if (r7.lencode = r7.lendyn, r7.lenbits = 7, S2 = { bits: r7.lenbits }, x2 = T3(0, r7.lens, 0, 19, r7.lencode, 0, r7.work, S2), r7.lenbits = S2.bits, x2) {
+                e5.msg = "invalid code lengths set", r7.mode = 30;
+                break;
+              }
+              r7.have = 0, r7.mode = 19;
+            case 19:
+              for (; r7.have < r7.nlen + r7.ndist; ) {
+                for (; g2 = (C2 = r7.lencode[u4 & (1 << r7.lenbits) - 1]) >>> 16 & 255, b2 = 65535 & C2, !((_3 = C2 >>> 24) <= l4); ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                if (b2 < 16) u4 >>>= _3, l4 -= _3, r7.lens[r7.have++] = b2;
+                else {
+                  if (16 === b2) {
+                    for (z2 = _3 + 2; l4 < z2; ) {
+                      if (0 === o5) break e;
+                      o5--, u4 += n5[s4++] << l4, l4 += 8;
+                    }
+                    if (u4 >>>= _3, l4 -= _3, 0 === r7.have) {
+                      e5.msg = "invalid bit length repeat", r7.mode = 30;
+                      break;
+                    }
+                    k2 = r7.lens[r7.have - 1], d2 = 3 + (3 & u4), u4 >>>= 2, l4 -= 2;
+                  } else if (17 === b2) {
+                    for (z2 = _3 + 3; l4 < z2; ) {
+                      if (0 === o5) break e;
+                      o5--, u4 += n5[s4++] << l4, l4 += 8;
+                    }
+                    l4 -= _3, k2 = 0, d2 = 3 + (7 & (u4 >>>= _3)), u4 >>>= 3, l4 -= 3;
+                  } else {
+                    for (z2 = _3 + 7; l4 < z2; ) {
+                      if (0 === o5) break e;
+                      o5--, u4 += n5[s4++] << l4, l4 += 8;
+                    }
+                    l4 -= _3, k2 = 0, d2 = 11 + (127 & (u4 >>>= _3)), u4 >>>= 7, l4 -= 7;
+                  }
+                  if (r7.have + d2 > r7.nlen + r7.ndist) {
+                    e5.msg = "invalid bit length repeat", r7.mode = 30;
+                    break;
+                  }
+                  for (; d2--; ) r7.lens[r7.have++] = k2;
+                }
+              }
+              if (30 === r7.mode) break;
+              if (0 === r7.lens[256]) {
+                e5.msg = "invalid code -- missing end-of-block", r7.mode = 30;
+                break;
+              }
+              if (r7.lenbits = 9, S2 = { bits: r7.lenbits }, x2 = T3(D2, r7.lens, 0, r7.nlen, r7.lencode, 0, r7.work, S2), r7.lenbits = S2.bits, x2) {
+                e5.msg = "invalid literal/lengths set", r7.mode = 30;
+                break;
+              }
+              if (r7.distbits = 6, r7.distcode = r7.distdyn, S2 = { bits: r7.distbits }, x2 = T3(F2, r7.lens, r7.nlen, r7.ndist, r7.distcode, 0, r7.work, S2), r7.distbits = S2.bits, x2) {
+                e5.msg = "invalid distances set", r7.mode = 30;
+                break;
+              }
+              if (r7.mode = 20, 6 === t6) break e;
+            case 20:
+              r7.mode = 21;
+            case 21:
+              if (6 <= o5 && 258 <= h4) {
+                e5.next_out = a4, e5.avail_out = h4, e5.next_in = s4, e5.avail_in = o5, r7.hold = u4, r7.bits = l4, R2(e5, c6), a4 = e5.next_out, i5 = e5.output, h4 = e5.avail_out, s4 = e5.next_in, n5 = e5.input, o5 = e5.avail_in, u4 = r7.hold, l4 = r7.bits, 12 === r7.mode && (r7.back = -1);
+                break;
+              }
+              for (r7.back = 0; g2 = (C2 = r7.lencode[u4 & (1 << r7.lenbits) - 1]) >>> 16 & 255, b2 = 65535 & C2, !((_3 = C2 >>> 24) <= l4); ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              if (g2 && 0 == (240 & g2)) {
+                for (v3 = _3, y3 = g2, w2 = b2; g2 = (C2 = r7.lencode[w2 + ((u4 & (1 << v3 + y3) - 1) >> v3)]) >>> 16 & 255, b2 = 65535 & C2, !(v3 + (_3 = C2 >>> 24) <= l4); ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                u4 >>>= v3, l4 -= v3, r7.back += v3;
+              }
+              if (u4 >>>= _3, l4 -= _3, r7.back += _3, r7.length = b2, 0 === g2) {
+                r7.mode = 26;
+                break;
+              }
+              if (32 & g2) {
+                r7.back = -1, r7.mode = 12;
+                break;
+              }
+              if (64 & g2) {
+                e5.msg = "invalid literal/length code", r7.mode = 30;
+                break;
+              }
+              r7.extra = 15 & g2, r7.mode = 22;
+            case 22:
+              if (r7.extra) {
+                for (z2 = r7.extra; l4 < z2; ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                r7.length += u4 & (1 << r7.extra) - 1, u4 >>>= r7.extra, l4 -= r7.extra, r7.back += r7.extra;
+              }
+              r7.was = r7.length, r7.mode = 23;
+            case 23:
+              for (; g2 = (C2 = r7.distcode[u4 & (1 << r7.distbits) - 1]) >>> 16 & 255, b2 = 65535 & C2, !((_3 = C2 >>> 24) <= l4); ) {
+                if (0 === o5) break e;
+                o5--, u4 += n5[s4++] << l4, l4 += 8;
+              }
+              if (0 == (240 & g2)) {
+                for (v3 = _3, y3 = g2, w2 = b2; g2 = (C2 = r7.distcode[w2 + ((u4 & (1 << v3 + y3) - 1) >> v3)]) >>> 16 & 255, b2 = 65535 & C2, !(v3 + (_3 = C2 >>> 24) <= l4); ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                u4 >>>= v3, l4 -= v3, r7.back += v3;
+              }
+              if (u4 >>>= _3, l4 -= _3, r7.back += _3, 64 & g2) {
+                e5.msg = "invalid distance code", r7.mode = 30;
+                break;
+              }
+              r7.offset = b2, r7.extra = 15 & g2, r7.mode = 24;
+            case 24:
+              if (r7.extra) {
+                for (z2 = r7.extra; l4 < z2; ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                r7.offset += u4 & (1 << r7.extra) - 1, u4 >>>= r7.extra, l4 -= r7.extra, r7.back += r7.extra;
+              }
+              if (r7.offset > r7.dmax) {
+                e5.msg = "invalid distance too far back", r7.mode = 30;
+                break;
+              }
+              r7.mode = 25;
+            case 25:
+              if (0 === h4) break e;
+              if (d2 = c6 - h4, r7.offset > d2) {
+                if ((d2 = r7.offset - d2) > r7.whave && r7.sane) {
+                  e5.msg = "invalid distance too far back", r7.mode = 30;
+                  break;
+                }
+                p3 = d2 > r7.wnext ? (d2 -= r7.wnext, r7.wsize - d2) : r7.wnext - d2, d2 > r7.length && (d2 = r7.length), m5 = r7.window;
+              } else m5 = i5, p3 = a4 - r7.offset, d2 = r7.length;
+              for (h4 < d2 && (d2 = h4), h4 -= d2, r7.length -= d2; i5[a4++] = m5[p3++], --d2; ) ;
+              0 === r7.length && (r7.mode = 21);
+              break;
+            case 26:
+              if (0 === h4) break e;
+              i5[a4++] = r7.length, h4--, r7.mode = 21;
+              break;
+            case 27:
+              if (r7.wrap) {
+                for (; l4 < 32; ) {
+                  if (0 === o5) break e;
+                  o5--, u4 |= n5[s4++] << l4, l4 += 8;
+                }
+                if (c6 -= h4, e5.total_out += c6, r7.total += c6, c6 && (e5.adler = r7.check = r7.flags ? B2(r7.check, i5, c6, a4 - c6) : O3(r7.check, i5, c6, a4 - c6)), c6 = h4, (r7.flags ? u4 : L3(u4)) !== r7.check) {
+                  e5.msg = "incorrect data check", r7.mode = 30;
+                  break;
+                }
+                l4 = u4 = 0;
+              }
+              r7.mode = 28;
+            case 28:
+              if (r7.wrap && r7.flags) {
+                for (; l4 < 32; ) {
+                  if (0 === o5) break e;
+                  o5--, u4 += n5[s4++] << l4, l4 += 8;
+                }
+                if (u4 !== (4294967295 & r7.total)) {
+                  e5.msg = "incorrect length check", r7.mode = 30;
+                  break;
+                }
+                l4 = u4 = 0;
+              }
+              r7.mode = 29;
+            case 29:
+              x2 = 1;
+              break e;
+            case 30:
+              x2 = -3;
+              break e;
+            case 31:
+              return -4;
+            case 32:
+            default:
+              return U2;
+          }
+          return e5.next_out = a4, e5.avail_out = h4, e5.next_in = s4, e5.avail_in = o5, r7.hold = u4, r7.bits = l4, (r7.wsize || c6 !== e5.avail_out && r7.mode < 30 && (r7.mode < 27 || 4 !== t6)) && Z2(e5, e5.output, e5.next_out, c6 - e5.avail_out) ? (r7.mode = 31, -4) : (f4 -= e5.avail_in, c6 -= e5.avail_out, e5.total_in += f4, e5.total_out += c6, r7.total += c6, r7.wrap && c6 && (e5.adler = r7.check = r7.flags ? B2(r7.check, i5, c6, e5.next_out - c6) : O3(r7.check, i5, c6, e5.next_out - c6)), e5.data_type = r7.bits + (r7.last ? 64 : 0) + (12 === r7.mode ? 128 : 0) + (20 === r7.mode || 15 === r7.mode ? 256 : 0), (0 == f4 && 0 === c6 || 4 === t6) && x2 === N3 && (x2 = -5), x2);
+        }, r6.inflateEnd = function(e5) {
+          if (!e5 || !e5.state) return U2;
+          var t6 = e5.state;
+          return t6.window && (t6.window = null), e5.state = null, N3;
+        }, r6.inflateGetHeader = function(e5, t6) {
+          var r7;
+          return e5 && e5.state ? 0 == (2 & (r7 = e5.state).wrap) ? U2 : ((r7.head = t6).done = false, N3) : U2;
+        }, r6.inflateSetDictionary = function(e5, t6) {
+          var r7, n5 = t6.length;
+          return e5 && e5.state ? 0 !== (r7 = e5.state).wrap && 11 !== r7.mode ? U2 : 11 === r7.mode && O3(1, t6, n5, 0) !== r7.check ? -3 : Z2(e5, t6, n5, n5) ? (r7.mode = 31, -4) : (r7.havedict = 1, N3) : U2;
+        }, r6.inflateInfo = "pako inflate (from Nodeca project)";
+      }, { "../utils/common": 41, "./adler32": 43, "./crc32": 45, "./inffast": 48, "./inftrees": 50 }], 50: [function(e4, t5, r6) {
+        "use strict";
+        var D2 = e4("../utils/common"), F2 = [3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0], N3 = [16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 72, 78], U2 = [1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577, 0, 0], P2 = [16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 64, 64];
+        t5.exports = function(e5, t6, r7, n4, i4, s3, a3, o4) {
+          var h3, u3, l3, f3, c5, d2, p3, m5, _3, g2 = o4.bits, b2 = 0, v3 = 0, y3 = 0, w2 = 0, k2 = 0, x2 = 0, S2 = 0, z2 = 0, C2 = 0, E2 = 0, A2 = null, I2 = 0, O3 = new D2.Buf16(16), B2 = new D2.Buf16(16), R2 = null, T3 = 0;
+          for (b2 = 0; b2 <= 15; b2++) O3[b2] = 0;
+          for (v3 = 0; v3 < n4; v3++) O3[t6[r7 + v3]]++;
+          for (k2 = g2, w2 = 15; 1 <= w2 && 0 === O3[w2]; w2--) ;
+          if (w2 < k2 && (k2 = w2), 0 === w2) return i4[s3++] = 20971520, i4[s3++] = 20971520, o4.bits = 1, 0;
+          for (y3 = 1; y3 < w2 && 0 === O3[y3]; y3++) ;
+          for (k2 < y3 && (k2 = y3), b2 = z2 = 1; b2 <= 15; b2++) if (z2 <<= 1, (z2 -= O3[b2]) < 0) return -1;
+          if (0 < z2 && (0 === e5 || 1 !== w2)) return -1;
+          for (B2[1] = 0, b2 = 1; b2 < 15; b2++) B2[b2 + 1] = B2[b2] + O3[b2];
+          for (v3 = 0; v3 < n4; v3++) 0 !== t6[r7 + v3] && (a3[B2[t6[r7 + v3]]++] = v3);
+          if (d2 = 0 === e5 ? (A2 = R2 = a3, 19) : 1 === e5 ? (A2 = F2, I2 -= 257, R2 = N3, T3 -= 257, 256) : (A2 = U2, R2 = P2, -1), b2 = y3, c5 = s3, S2 = v3 = E2 = 0, l3 = -1, f3 = (C2 = 1 << (x2 = k2)) - 1, 1 === e5 && 852 < C2 || 2 === e5 && 592 < C2) return 1;
+          for (; ; ) {
+            for (p3 = b2 - S2, _3 = a3[v3] < d2 ? (m5 = 0, a3[v3]) : a3[v3] > d2 ? (m5 = R2[T3 + a3[v3]], A2[I2 + a3[v3]]) : (m5 = 96, 0), h3 = 1 << b2 - S2, y3 = u3 = 1 << x2; i4[c5 + (E2 >> S2) + (u3 -= h3)] = p3 << 24 | m5 << 16 | _3 | 0, 0 !== u3; ) ;
+            for (h3 = 1 << b2 - 1; E2 & h3; ) h3 >>= 1;
+            if (0 !== h3 ? (E2 &= h3 - 1, E2 += h3) : E2 = 0, v3++, 0 == --O3[b2]) {
+              if (b2 === w2) break;
+              b2 = t6[r7 + a3[v3]];
+            }
+            if (k2 < b2 && (E2 & f3) !== l3) {
+              for (0 === S2 && (S2 = k2), c5 += y3, z2 = 1 << (x2 = b2 - S2); x2 + S2 < w2 && !((z2 -= O3[x2 + S2]) <= 0); ) x2++, z2 <<= 1;
+              if (C2 += 1 << x2, 1 === e5 && 852 < C2 || 2 === e5 && 592 < C2) return 1;
+              i4[l3 = E2 & f3] = k2 << 24 | x2 << 16 | c5 - s3 | 0;
+            }
+          }
+          return 0 !== E2 && (i4[c5 + E2] = b2 - S2 << 24 | 64 << 16 | 0), o4.bits = k2, 0;
+        };
+      }, { "../utils/common": 41 }], 51: [function(e4, t5, r6) {
+        "use strict";
+        t5.exports = { 2: "need dictionary", 1: "stream end", 0: "", "-1": "file error", "-2": "stream error", "-3": "data error", "-4": "insufficient memory", "-5": "buffer error", "-6": "incompatible version" };
+      }, {}], 52: [function(e4, t5, r6) {
+        "use strict";
+        var i4 = e4("../utils/common"), o4 = 0, h3 = 1;
+        function n4(e5) {
+          for (var t6 = e5.length; 0 <= --t6; ) e5[t6] = 0;
+        }
+        var s3 = 0, a3 = 29, u3 = 256, l3 = u3 + 1 + a3, f3 = 30, c5 = 19, _3 = 2 * l3 + 1, g2 = 15, d2 = 16, p3 = 7, m5 = 256, b2 = 16, v3 = 17, y3 = 18, w2 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0], k2 = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13], x2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7], S2 = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15], z2 = new Array(2 * (l3 + 2));
+        n4(z2);
+        var C2 = new Array(2 * f3);
+        n4(C2);
+        var E2 = new Array(512);
+        n4(E2);
+        var A2 = new Array(256);
+        n4(A2);
+        var I2 = new Array(a3);
+        n4(I2);
+        var O3, B2, R2, T3 = new Array(f3);
+        function D2(e5, t6, r7, n5, i5) {
+          this.static_tree = e5, this.extra_bits = t6, this.extra_base = r7, this.elems = n5, this.max_length = i5, this.has_stree = e5 && e5.length;
+        }
+        function F2(e5, t6) {
+          this.dyn_tree = e5, this.max_code = 0, this.stat_desc = t6;
+        }
+        function N3(e5) {
+          return e5 < 256 ? E2[e5] : E2[256 + (e5 >>> 7)];
+        }
+        function U2(e5, t6) {
+          e5.pending_buf[e5.pending++] = 255 & t6, e5.pending_buf[e5.pending++] = t6 >>> 8 & 255;
+        }
+        function P2(e5, t6, r7) {
+          e5.bi_valid > d2 - r7 ? (e5.bi_buf |= t6 << e5.bi_valid & 65535, U2(e5, e5.bi_buf), e5.bi_buf = t6 >> d2 - e5.bi_valid, e5.bi_valid += r7 - d2) : (e5.bi_buf |= t6 << e5.bi_valid & 65535, e5.bi_valid += r7);
+        }
+        function L3(e5, t6, r7) {
+          P2(e5, r7[2 * t6], r7[2 * t6 + 1]);
+        }
+        function j2(e5, t6) {
+          for (var r7 = 0; r7 |= 1 & e5, e5 >>>= 1, r7 <<= 1, 0 < --t6; ) ;
+          return r7 >>> 1;
+        }
+        function Z2(e5, t6, r7) {
+          var n5, i5, s4 = new Array(g2 + 1), a4 = 0;
+          for (n5 = 1; n5 <= g2; n5++) s4[n5] = a4 = a4 + r7[n5 - 1] << 1;
+          for (i5 = 0; i5 <= t6; i5++) {
+            var o5 = e5[2 * i5 + 1];
+            0 !== o5 && (e5[2 * i5] = j2(s4[o5]++, o5));
+          }
+        }
+        function W2(e5) {
+          var t6;
+          for (t6 = 0; t6 < l3; t6++) e5.dyn_ltree[2 * t6] = 0;
+          for (t6 = 0; t6 < f3; t6++) e5.dyn_dtree[2 * t6] = 0;
+          for (t6 = 0; t6 < c5; t6++) e5.bl_tree[2 * t6] = 0;
+          e5.dyn_ltree[2 * m5] = 1, e5.opt_len = e5.static_len = 0, e5.last_lit = e5.matches = 0;
+        }
+        function M2(e5) {
+          8 < e5.bi_valid ? U2(e5, e5.bi_buf) : 0 < e5.bi_valid && (e5.pending_buf[e5.pending++] = e5.bi_buf), e5.bi_buf = 0, e5.bi_valid = 0;
+        }
+        function H2(e5, t6, r7, n5) {
+          var i5 = 2 * t6, s4 = 2 * r7;
+          return e5[i5] < e5[s4] || e5[i5] === e5[s4] && n5[t6] <= n5[r7];
+        }
+        function G2(e5, t6, r7) {
+          for (var n5 = e5.heap[r7], i5 = r7 << 1; i5 <= e5.heap_len && (i5 < e5.heap_len && H2(t6, e5.heap[i5 + 1], e5.heap[i5], e5.depth) && i5++, !H2(t6, n5, e5.heap[i5], e5.depth)); ) e5.heap[r7] = e5.heap[i5], r7 = i5, i5 <<= 1;
+          e5.heap[r7] = n5;
+        }
+        function K2(e5, t6, r7) {
+          var n5, i5, s4, a4, o5 = 0;
+          if (0 !== e5.last_lit) for (; n5 = e5.pending_buf[e5.d_buf + 2 * o5] << 8 | e5.pending_buf[e5.d_buf + 2 * o5 + 1], i5 = e5.pending_buf[e5.l_buf + o5], o5++, 0 === n5 ? L3(e5, i5, t6) : (L3(e5, (s4 = A2[i5]) + u3 + 1, t6), 0 !== (a4 = w2[s4]) && P2(e5, i5 -= I2[s4], a4), L3(e5, s4 = N3(--n5), r7), 0 !== (a4 = k2[s4]) && P2(e5, n5 -= T3[s4], a4)), o5 < e5.last_lit; ) ;
+          L3(e5, m5, t6);
+        }
+        function Y2(e5, t6) {
+          var r7, n5, i5, s4 = t6.dyn_tree, a4 = t6.stat_desc.static_tree, o5 = t6.stat_desc.has_stree, h4 = t6.stat_desc.elems, u4 = -1;
+          for (e5.heap_len = 0, e5.heap_max = _3, r7 = 0; r7 < h4; r7++) 0 !== s4[2 * r7] ? (e5.heap[++e5.heap_len] = u4 = r7, e5.depth[r7] = 0) : s4[2 * r7 + 1] = 0;
+          for (; e5.heap_len < 2; ) s4[2 * (i5 = e5.heap[++e5.heap_len] = u4 < 2 ? ++u4 : 0)] = 1, e5.depth[i5] = 0, e5.opt_len--, o5 && (e5.static_len -= a4[2 * i5 + 1]);
+          for (t6.max_code = u4, r7 = e5.heap_len >> 1; 1 <= r7; r7--) G2(e5, s4, r7);
+          for (i5 = h4; r7 = e5.heap[1], e5.heap[1] = e5.heap[e5.heap_len--], G2(e5, s4, 1), n5 = e5.heap[1], e5.heap[--e5.heap_max] = r7, e5.heap[--e5.heap_max] = n5, s4[2 * i5] = s4[2 * r7] + s4[2 * n5], e5.depth[i5] = (e5.depth[r7] >= e5.depth[n5] ? e5.depth[r7] : e5.depth[n5]) + 1, s4[2 * r7 + 1] = s4[2 * n5 + 1] = i5, e5.heap[1] = i5++, G2(e5, s4, 1), 2 <= e5.heap_len; ) ;
+          e5.heap[--e5.heap_max] = e5.heap[1], function(e6, t7) {
+            var r8, n6, i6, s5, a5, o6, h5 = t7.dyn_tree, u5 = t7.max_code, l4 = t7.stat_desc.static_tree, f4 = t7.stat_desc.has_stree, c6 = t7.stat_desc.extra_bits, d3 = t7.stat_desc.extra_base, p4 = t7.stat_desc.max_length, m6 = 0;
+            for (s5 = 0; s5 <= g2; s5++) e6.bl_count[s5] = 0;
+            for (h5[2 * e6.heap[e6.heap_max] + 1] = 0, r8 = e6.heap_max + 1; r8 < _3; r8++) p4 < (s5 = h5[2 * h5[2 * (n6 = e6.heap[r8]) + 1] + 1] + 1) && (s5 = p4, m6++), h5[2 * n6 + 1] = s5, u5 < n6 || (e6.bl_count[s5]++, a5 = 0, d3 <= n6 && (a5 = c6[n6 - d3]), o6 = h5[2 * n6], e6.opt_len += o6 * (s5 + a5), f4 && (e6.static_len += o6 * (l4[2 * n6 + 1] + a5)));
+            if (0 !== m6) {
+              do {
+                for (s5 = p4 - 1; 0 === e6.bl_count[s5]; ) s5--;
+                e6.bl_count[s5]--, e6.bl_count[s5 + 1] += 2, e6.bl_count[p4]--, m6 -= 2;
+              } while (0 < m6);
+              for (s5 = p4; 0 !== s5; s5--) for (n6 = e6.bl_count[s5]; 0 !== n6; ) u5 < (i6 = e6.heap[--r8]) || (h5[2 * i6 + 1] !== s5 && (e6.opt_len += (s5 - h5[2 * i6 + 1]) * h5[2 * i6], h5[2 * i6 + 1] = s5), n6--);
+            }
+          }(e5, t6), Z2(s4, u4, e5.bl_count);
+        }
+        function X2(e5, t6, r7) {
+          var n5, i5, s4 = -1, a4 = t6[1], o5 = 0, h4 = 7, u4 = 4;
+          for (0 === a4 && (h4 = 138, u4 = 3), t6[2 * (r7 + 1) + 1] = 65535, n5 = 0; n5 <= r7; n5++) i5 = a4, a4 = t6[2 * (n5 + 1) + 1], ++o5 < h4 && i5 === a4 || (o5 < u4 ? e5.bl_tree[2 * i5] += o5 : 0 !== i5 ? (i5 !== s4 && e5.bl_tree[2 * i5]++, e5.bl_tree[2 * b2]++) : o5 <= 10 ? e5.bl_tree[2 * v3]++ : e5.bl_tree[2 * y3]++, s4 = i5, u4 = (o5 = 0) === a4 ? (h4 = 138, 3) : i5 === a4 ? (h4 = 6, 3) : (h4 = 7, 4));
+        }
+        function V2(e5, t6, r7) {
+          var n5, i5, s4 = -1, a4 = t6[1], o5 = 0, h4 = 7, u4 = 4;
+          for (0 === a4 && (h4 = 138, u4 = 3), n5 = 0; n5 <= r7; n5++) if (i5 = a4, a4 = t6[2 * (n5 + 1) + 1], !(++o5 < h4 && i5 === a4)) {
+            if (o5 < u4) for (; L3(e5, i5, e5.bl_tree), 0 != --o5; ) ;
+            else 0 !== i5 ? (i5 !== s4 && (L3(e5, i5, e5.bl_tree), o5--), L3(e5, b2, e5.bl_tree), P2(e5, o5 - 3, 2)) : o5 <= 10 ? (L3(e5, v3, e5.bl_tree), P2(e5, o5 - 3, 3)) : (L3(e5, y3, e5.bl_tree), P2(e5, o5 - 11, 7));
+            s4 = i5, u4 = (o5 = 0) === a4 ? (h4 = 138, 3) : i5 === a4 ? (h4 = 6, 3) : (h4 = 7, 4);
+          }
+        }
+        n4(T3);
+        var q2 = false;
+        function J2(e5, t6, r7, n5) {
+          P2(e5, (s3 << 1) + (n5 ? 1 : 0), 3), function(e6, t7, r8, n6) {
+            M2(e6), n6 && (U2(e6, r8), U2(e6, ~r8)), i4.arraySet(e6.pending_buf, e6.window, t7, r8, e6.pending), e6.pending += r8;
+          }(e5, t6, r7, true);
+        }
+        r6._tr_init = function(e5) {
+          q2 || (function() {
+            var e6, t6, r7, n5, i5, s4 = new Array(g2 + 1);
+            for (n5 = r7 = 0; n5 < a3 - 1; n5++) for (I2[n5] = r7, e6 = 0; e6 < 1 << w2[n5]; e6++) A2[r7++] = n5;
+            for (A2[r7 - 1] = n5, n5 = i5 = 0; n5 < 16; n5++) for (T3[n5] = i5, e6 = 0; e6 < 1 << k2[n5]; e6++) E2[i5++] = n5;
+            for (i5 >>= 7; n5 < f3; n5++) for (T3[n5] = i5 << 7, e6 = 0; e6 < 1 << k2[n5] - 7; e6++) E2[256 + i5++] = n5;
+            for (t6 = 0; t6 <= g2; t6++) s4[t6] = 0;
+            for (e6 = 0; e6 <= 143; ) z2[2 * e6 + 1] = 8, e6++, s4[8]++;
+            for (; e6 <= 255; ) z2[2 * e6 + 1] = 9, e6++, s4[9]++;
+            for (; e6 <= 279; ) z2[2 * e6 + 1] = 7, e6++, s4[7]++;
+            for (; e6 <= 287; ) z2[2 * e6 + 1] = 8, e6++, s4[8]++;
+            for (Z2(z2, l3 + 1, s4), e6 = 0; e6 < f3; e6++) C2[2 * e6 + 1] = 5, C2[2 * e6] = j2(e6, 5);
+            O3 = new D2(z2, w2, u3 + 1, l3, g2), B2 = new D2(C2, k2, 0, f3, g2), R2 = new D2(new Array(0), x2, 0, c5, p3);
+          }(), q2 = true), e5.l_desc = new F2(e5.dyn_ltree, O3), e5.d_desc = new F2(e5.dyn_dtree, B2), e5.bl_desc = new F2(e5.bl_tree, R2), e5.bi_buf = 0, e5.bi_valid = 0, W2(e5);
+        }, r6._tr_stored_block = J2, r6._tr_flush_block = function(e5, t6, r7, n5) {
+          var i5, s4, a4 = 0;
+          0 < e5.level ? (2 === e5.strm.data_type && (e5.strm.data_type = function(e6) {
+            var t7, r8 = 4093624447;
+            for (t7 = 0; t7 <= 31; t7++, r8 >>>= 1) if (1 & r8 && 0 !== e6.dyn_ltree[2 * t7]) return o4;
+            if (0 !== e6.dyn_ltree[18] || 0 !== e6.dyn_ltree[20] || 0 !== e6.dyn_ltree[26]) return h3;
+            for (t7 = 32; t7 < u3; t7++) if (0 !== e6.dyn_ltree[2 * t7]) return h3;
+            return o4;
+          }(e5)), Y2(e5, e5.l_desc), Y2(e5, e5.d_desc), a4 = function(e6) {
+            var t7;
+            for (X2(e6, e6.dyn_ltree, e6.l_desc.max_code), X2(e6, e6.dyn_dtree, e6.d_desc.max_code), Y2(e6, e6.bl_desc), t7 = c5 - 1; 3 <= t7 && 0 === e6.bl_tree[2 * S2[t7] + 1]; t7--) ;
+            return e6.opt_len += 3 * (t7 + 1) + 5 + 5 + 4, t7;
+          }(e5), i5 = e5.opt_len + 3 + 7 >>> 3, (s4 = e5.static_len + 3 + 7 >>> 3) <= i5 && (i5 = s4)) : i5 = s4 = r7 + 5, r7 + 4 <= i5 && -1 !== t6 ? J2(e5, t6, r7, n5) : 4 === e5.strategy || s4 === i5 ? (P2(e5, 2 + (n5 ? 1 : 0), 3), K2(e5, z2, C2)) : (P2(e5, 4 + (n5 ? 1 : 0), 3), function(e6, t7, r8, n6) {
+            var i6;
+            for (P2(e6, t7 - 257, 5), P2(e6, r8 - 1, 5), P2(e6, n6 - 4, 4), i6 = 0; i6 < n6; i6++) P2(e6, e6.bl_tree[2 * S2[i6] + 1], 3);
+            V2(e6, e6.dyn_ltree, t7 - 1), V2(e6, e6.dyn_dtree, r8 - 1);
+          }(e5, e5.l_desc.max_code + 1, e5.d_desc.max_code + 1, a4 + 1), K2(e5, e5.dyn_ltree, e5.dyn_dtree)), W2(e5), n5 && M2(e5);
+        }, r6._tr_tally = function(e5, t6, r7) {
+          return e5.pending_buf[e5.d_buf + 2 * e5.last_lit] = t6 >>> 8 & 255, e5.pending_buf[e5.d_buf + 2 * e5.last_lit + 1] = 255 & t6, e5.pending_buf[e5.l_buf + e5.last_lit] = 255 & r7, e5.last_lit++, 0 === t6 ? e5.dyn_ltree[2 * r7]++ : (e5.matches++, t6--, e5.dyn_ltree[2 * (A2[r7] + u3 + 1)]++, e5.dyn_dtree[2 * N3(t6)]++), e5.last_lit === e5.lit_bufsize - 1;
+        }, r6._tr_align = function(e5) {
+          P2(e5, 2, 3), L3(e5, m5, z2), function(e6) {
+            16 === e6.bi_valid ? (U2(e6, e6.bi_buf), e6.bi_buf = 0, e6.bi_valid = 0) : 8 <= e6.bi_valid && (e6.pending_buf[e6.pending++] = 255 & e6.bi_buf, e6.bi_buf >>= 8, e6.bi_valid -= 8);
+          }(e5);
+        };
+      }, { "../utils/common": 41 }], 53: [function(e4, t5, r6) {
+        "use strict";
+        t5.exports = function() {
+          this.input = null, this.next_in = 0, this.avail_in = 0, this.total_in = 0, this.output = null, this.next_out = 0, this.avail_out = 0, this.total_out = 0, this.msg = "", this.state = null, this.data_type = 2, this.adler = 0;
+        };
+      }, {}], 54: [function(e4, t5, r6) {
+        (function(e5) {
+          !function(r7, n4) {
+            "use strict";
+            if (!r7.setImmediate) {
+              var i4, s3, t6, a3, o4 = 1, h3 = {}, u3 = false, l3 = r7.document, e6 = Object.getPrototypeOf && Object.getPrototypeOf(r7);
+              e6 = e6 && e6.setTimeout ? e6 : r7, i4 = "[object process]" === {}.toString.call(r7.process) ? function(e7) {
+                process.nextTick(function() {
+                  c5(e7);
+                });
+              } : function() {
+                if (r7.postMessage && !r7.importScripts) {
+                  var e7 = true, t7 = r7.onmessage;
+                  return r7.onmessage = function() {
+                    e7 = false;
+                  }, r7.postMessage("", "*"), r7.onmessage = t7, e7;
+                }
+              }() ? (a3 = "setImmediate$" + Math.random() + "$", r7.addEventListener ? r7.addEventListener("message", d2, false) : r7.attachEvent("onmessage", d2), function(e7) {
+                r7.postMessage(a3 + e7, "*");
+              }) : r7.MessageChannel ? ((t6 = new MessageChannel()).port1.onmessage = function(e7) {
+                c5(e7.data);
+              }, function(e7) {
+                t6.port2.postMessage(e7);
+              }) : l3 && "onreadystatechange" in l3.createElement("script") ? (s3 = l3.documentElement, function(e7) {
+                var t7 = l3.createElement("script");
+                t7.onreadystatechange = function() {
+                  c5(e7), t7.onreadystatechange = null, s3.removeChild(t7), t7 = null;
+                }, s3.appendChild(t7);
+              }) : function(e7) {
+                setTimeout(c5, 0, e7);
+              }, e6.setImmediate = function(e7) {
+                "function" != typeof e7 && (e7 = new Function("" + e7));
+                for (var t7 = new Array(arguments.length - 1), r8 = 0; r8 < t7.length; r8++) t7[r8] = arguments[r8 + 1];
+                var n5 = { callback: e7, args: t7 };
+                return h3[o4] = n5, i4(o4), o4++;
+              }, e6.clearImmediate = f3;
+            }
+            function f3(e7) {
+              delete h3[e7];
+            }
+            function c5(e7) {
+              if (u3) setTimeout(c5, 0, e7);
+              else {
+                var t7 = h3[e7];
+                if (t7) {
+                  u3 = true;
+                  try {
+                    !function(e8) {
+                      var t8 = e8.callback, r8 = e8.args;
+                      switch (r8.length) {
+                        case 0:
+                          t8();
+                          break;
+                        case 1:
+                          t8(r8[0]);
+                          break;
+                        case 2:
+                          t8(r8[0], r8[1]);
+                          break;
+                        case 3:
+                          t8(r8[0], r8[1], r8[2]);
+                          break;
+                        default:
+                          t8.apply(n4, r8);
+                      }
+                    }(t7);
+                  } finally {
+                    f3(e7), u3 = false;
+                  }
+                }
+              }
+            }
+            function d2(e7) {
+              e7.source === r7 && "string" == typeof e7.data && 0 === e7.data.indexOf(a3) && c5(+e7.data.slice(a3.length));
+            }
+          }("undefined" == typeof self ? void 0 === e5 ? this : e5 : self);
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {});
+      }, {}] }, {}, [10])(10);
+    });
+  }
+});
+
 // src/dom-to-image-more.js
 var require_dom_to_image_more = __commonJS({
   "src/dom-to-image-more.js"(exports, module2) {
@@ -39060,11 +41426,6 @@ module.exports = __toCommonJS(main_exports);
 // src/ExportImagePlugin.ts
 var import_obsidian12 = require("obsidian");
 
-// src/components/file/exportImage.tsx
-var import_react10 = __toESM(require_react());
-var import_obsidian7 = require("obsidian");
-var import_client3 = __toESM(require_client());
-
 // node_modules/typesafe-i18n/runtime/esm/parser/src/basic.mjs
 var removeEmptyValues = (object) => Object.fromEntries(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39344,6 +41705,21 @@ var cs = {
       label: "V\xFDchoz\xED \u0161\xED\u0159ka exportovan\xE9ho obr\xE1zku",
       description: "Nastavte \u0161\xED\u0159ku exportovan\xE9ho obr\xE1zku v pixelech. V\xFDchoz\xED je 640px."
     },
+    split: {
+      title: "Rozd\u011Blit obr\xE1zek",
+      enable: {
+        label: "Povolit rozd\u011Blen\xED",
+        description: "Povol\xED rozd\u011Blen\xED dlouh\xFDch obr\xE1zk\u016F na v\xEDce str\xE1nek pro lep\u0161\xED zobrazen\xED a sd\xEDlen\xED."
+      },
+      height: {
+        label: "V\xFD\u0161ka str\xE1nky",
+        description: "Nastav\xED v\xFD\u0161ku ka\u017Ed\xE9 rozd\u011Blen\xE9 str\xE1nky v pixelech. V\xFDchoz\xED je 1000px."
+      },
+      overlap: {
+        label: "P\u0159ekryt\xED",
+        description: "Nastav\xED p\u0159ekryt\xED mezi str\xE1nkami, aby se zabr\xE1nilo n\xE1hl\xE9mu p\u0159eru\u0161en\xED obsahu. V\xFDchoz\xED je 40px."
+      }
+    },
     filename: {
       label: "Zahrnout n\xE1zev souboru jako titulek",
       description: "Nastavte, zda zahrnout n\xE1zev souboru jako titulek. Kdy\u017E Obsidian zobrazuje dokument, zobraz\xED n\xE1zev souboru jako nadpis h1. N\u011Bkdy to nen\xED \u017E\xE1douc\xED a m\u016F\u017Ee doj\xEDt ke zdvojen\xED titulk\u016F."
@@ -39423,7 +41799,8 @@ var cs = {
   },
   confirm: "Potvrdit",
   cancel: "Zru\u0161it",
-  imageUrl: "Zadejte URL"
+  imageUrl: "Zadejte URL",
+  splitInfo: "Celkov\xE1 v\xFD\u0161ka obr\xE1zku je {rootHeight}px, a v\xFD\u0161ka d\u011Blen\xED je {splitHeight}px, tak\u017Ee se vygeneruje {pages} obr\xE1zk\u016F"
 };
 var cs_default = cs;
 
@@ -39459,6 +41836,21 @@ var da = {
     imageWidth: {
       label: "Standard eksportbilledbredde",
       description: "Indstil bredden af det eksporterede billede i pixels. Standarden er 640px."
+    },
+    split: {
+      title: "Del billede",
+      enable: {
+        label: "Aktiv\xE9r deling",
+        description: "Aktiverer deling af lange billeder i flere sider for bedre visning og deling."
+      },
+      height: {
+        label: "Sideh\xF8jde",
+        description: "Indstiller h\xF8jden af hver delt side i pixels. Standard er 1000px."
+      },
+      overlap: {
+        label: "Overlap",
+        description: "Indstiller overlappet mellem sider for at undg\xE5 brat afbrydelse af indhold. Standard er 40px."
+      }
     },
     filename: {
       label: "Inkluder filnavn som titel",
@@ -39539,7 +41931,8 @@ var da = {
   },
   confirm: "Bekr\xE6ft",
   cancel: "Annuller",
-  imageUrl: "Indtast URL"
+  imageUrl: "Indtast URL",
+  splitInfo: "Den totale h\xF8jde af billedet er {rootHeight}px, og delingsh\xF8jden er {splitHeight}px, s\xE5 der vil blive genereret {pages} billeder"
 };
 var da_default = da;
 
@@ -39575,6 +41968,21 @@ var de = {
     imageWidth: {
       label: "Standardm\xE4\xDFige exportierte Bildbreite",
       description: "Setzen Sie die Breite des exportierten Bildes in Pixel. Standardm\xE4\xDFig ist 640px."
+    },
+    split: {
+      title: "Bild aufteilen",
+      enable: {
+        label: "Bildaufteilung aktivieren",
+        description: "Aktiviert die Aufteilung langer Bilder in mehrere Seiten f\xFCr bessere Ansicht und einfacheres Teilen."
+      },
+      height: {
+        label: "Seitenh\xF6he",
+        description: "Legt die H\xF6he jeder geteilten Seite in Pixeln fest. Standard ist 1000px."
+      },
+      overlap: {
+        label: "\xDCberlappungsabstand",
+        description: "Legt den \xDCberlappungsabstand zwischen den Seiten fest, um abrupte Inhaltsabschnitte zu vermeiden. Standard ist 40px."
+      }
     },
     filename: {
       label: "Dateinamen als Titel einbeziehen",
@@ -39655,7 +42063,8 @@ var de = {
   },
   confirm: "Best\xE4tigen",
   cancel: "Abbrechen",
-  imageUrl: "URL eingeben"
+  imageUrl: "URL eingeben",
+  splitInfo: "Die Gesamth\xF6he des Bildes betr\xE4gt {rootHeight}px, und die H\xF6he der Aufteilung betr\xE4gt {splitHeight}px, sodass {pages} Bilder generiert werden."
 };
 var de_default = de;
 
@@ -39692,9 +42101,24 @@ var en = {
       label: "Default exported image width",
       description: "Set the width of the exported image in pixel. The default is 640px."
     },
+    split: {
+      title: "Split Image",
+      enable: {
+        label: "Enable split",
+        description: "Enable split image to multiple pages for better viewing and sharing."
+      },
+      height: {
+        label: "Split image height",
+        description: "Set the height of each split image in pixels. The default is 1000px."
+      },
+      overlap: {
+        label: "Split image overlap",
+        description: "Set the overlap between adjacent split images to prevent content from being cut off. The default is 40px."
+      }
+    },
     filename: {
       label: "Include file name as title",
-      desscription: "Set whether to include the file name as the title. When Obsidian displays the document, it will display the file name as an h1 title. Sometimes this is not what you want, and you will get duplicate titles."
+      description: "Set whether to include the file name as the title. When Obsidian displays the document, it will display the file name as an h1 title. Sometimes this is not what you want, and you will get duplicate titles."
     },
     "2x": {
       label: "Enable 2x resolution image",
@@ -39771,7 +42195,8 @@ var en = {
   },
   confirm: "Confirm",
   cancel: "Cancel",
-  imageUrl: "Enter URL"
+  imageUrl: "Enter URL",
+  splitInfo: "The total height of the image is {rootHeight}px, and the split height is {splitHeight}px, so {pages} images will be generated"
 };
 var en_default = en;
 
@@ -39806,6 +42231,21 @@ var es = {
     imageWidth: {
       label: "Ancho de imagen exportada por defecto",
       description: "Establece el ancho de la imagen exportada en p\xEDxeles. El predeterminado es 640px."
+    },
+    split: {
+      title: "Dividir imagen",
+      enable: {
+        label: "Activar divisi\xF3n",
+        description: "Activa la divisi\xF3n de im\xE1genes largas en m\xFAltiples p\xE1ginas para una mejor visualizaci\xF3n y f\xE1cil compartici\xF3n."
+      },
+      height: {
+        label: "Altura de la p\xE1gina",
+        description: "Establece la altura de cada p\xE1gina dividida en p\xEDxeles. El predeterminado es 1000px."
+      },
+      overlap: {
+        label: "Sobreposici\xF3n",
+        description: "Establece la sobreposici\xF3n entre p\xE1ginas para evitar interrupciones abruptas en el contenido. El predeterminado es 40px."
+      }
     },
     filename: {
       label: "Incluir nombre de archivo como t\xEDtulo",
@@ -39886,7 +42326,8 @@ var es = {
   },
   confirm: "Confirmar",
   cancel: "Cancelar",
-  imageUrl: "URL de la imagen"
+  imageUrl: "URL de la imagen",
+  splitInfo: "La altura total de la imagen es de {rootHeight}px, y la altura de divisi\xF3n es de {splitHeight}px, por lo que se generar\xE1n {pages} im\xE1genes"
 };
 var es_default = es;
 
@@ -39922,6 +42363,21 @@ var fr = {
     imageWidth: {
       label: "Largeur d'image export\xE9e par d\xE9faut",
       description: "D\xE9finissez la largeur de l'image export\xE9e en pixels. La valeur par d\xE9faut est 640px."
+    },
+    split: {
+      title: "Fractionner l'image",
+      enable: {
+        label: "Activer le fractionnement",
+        description: "Active le fractionnement des images longues en plusieurs pages pour une meilleure visualisation et un partage plus facile."
+      },
+      height: {
+        label: "Hauteur de page",
+        description: "D\xE9finit la hauteur de chaque page fractionn\xE9e en pixels. La valeur par d\xE9faut est 1000px."
+      },
+      overlap: {
+        label: "Chevauchement",
+        description: "D\xE9finit le chevauchement entre les pages pour \xE9viter les coupures brusques de contenu. La valeur par d\xE9faut est 40px."
+      }
     },
     filename: {
       label: "Inclure le nom du fichier comme titre",
@@ -40002,7 +42458,8 @@ var fr = {
   },
   confirm: "Confirmer",
   cancel: "Annuler",
-  imageUrl: "URL de l'image"
+  imageUrl: "URL de l'image",
+  splitInfo: "La hauteur totale de l'image est de {rootHeight}px, et la hauteur de division est de {splitHeight}px, donc {pages} images seront g\xE9n\xE9r\xE9es."
 };
 var fr_default = fr;
 
@@ -40037,6 +42494,21 @@ var hu = {
     imageWidth: {
       label: "Alap\xE9rtelmezett export\xE1lt k\xE9pszeless\xE9g",
       description: "\xC1ll\xEDtsd be az export\xE1lt k\xE9p sz\xE9less\xE9g\xE9t pixelben. Az alap\xE9rtelmezett \xE9rt\xE9k 640px."
+    },
+    split: {
+      title: "K\xE9p feloszt\xE1s",
+      enable: {
+        label: "K\xE9p feloszt\xE1s enged\xE9lyez\xE9se",
+        description: "Hossz\xFA k\xE9pek feloszt\xE1s\xE1nak enged\xE9lyez\xE9se t\xF6bb oldalra a jobb megtekint\xE9s \xE9s megoszt\xE1s \xE9rdek\xE9ben."
+      },
+      height: {
+        label: "Felosztott k\xE9p magass\xE1ga",
+        description: "\xC1ll\xEDtsd be az egyes felosztott k\xE9pek magass\xE1g\xE1t pixelben. Az alap\xE9rtelmezett \xE9rt\xE9k 1000px."
+      },
+      overlap: {
+        label: "Felosztott k\xE9pek \xE1tfed\xE9se",
+        description: "\xC1ll\xEDtsd be a szomsz\xE9dos felosztott k\xE9pek \xE1tfed\xE9s\xE9t pixelben, hogy elker\xFCld a tartalom lev\xE1g\xE1s\xE1t. Az alap\xE9rtelmezett \xE9rt\xE9k 40px."
+      }
     },
     filename: {
       label: "F\xE1jln\xE9v hozz\xE1ad\xE1sa c\xEDmk\xE9nt",
@@ -40117,7 +42589,8 @@ var hu = {
   },
   confirm: "Megfelel\u0151",
   cancel: "M\xE9gse",
-  imageUrl: "K\xE9p URL"
+  imageUrl: "K\xE9p URL",
+  splitInfo: "A k\xE9p teljes magass\xE1ga {rootHeight}px, \xE9s a feloszt\xE1s magass\xE1ga {splitHeight}px, \xEDgy {pages} k\xE9p lesz gener\xE1lva."
 };
 var hu_default = hu;
 
@@ -40153,6 +42626,21 @@ var id = {
     imageWidth: {
       label: "Lebar gambar ekspor default",
       description: "Atur lebar gambar yang diekspor dalam piksel. Default adalah 640px."
+    },
+    split: {
+      title: "Ekspor Gambar",
+      enable: {
+        label: "Aktifkan deling",
+        description: "Aktifkan deling gambar panjang ke beberapa halaman untuk paparan dan penggunaan yang lebih baik."
+      },
+      height: {
+        label: "Tinggi halaman",
+        description: "Setel tinggi setiap halaman yang dibahagikan dalam piksel. Default adalah 1000px."
+      },
+      overlap: {
+        label: "Overlapping",
+        description: "Setel overlapping antara halaman untuk menghindari konten yang terputus secara tiba-tiba. Default adalah 40px."
+      }
     },
     filename: {
       label: "Termasuk nama file sebagai judul",
@@ -40233,7 +42721,8 @@ var id = {
   },
   confirm: "Konfirmasi",
   cancel: "Batal",
-  imageUrl: "Masukkan URL gambar"
+  imageUrl: "Masukkan URL gambar",
+  splitInfo: "Tinggi gambar keseluruhan adalah {rootHeight}px, dan tinggi pemotongan adalah {splitHeight}px, jadi akan dihasilkan {pages} gambar"
 };
 var id_default = id;
 
@@ -40268,6 +42757,21 @@ var ja = {
     imageWidth: {
       label: "\u30A8\u30AF\u30B9\u30DD\u30FC\u30C8\u3055\u308C\u308B\u753B\u50CF\u306E\u30C7\u30D5\u30A9\u30EB\u30C8\u5E45",
       description: "\u30D4\u30AF\u30BB\u30EB\u5358\u4F4D\u3067\u30A8\u30AF\u30B9\u30DD\u30FC\u30C8\u3055\u308C\u308B\u753B\u50CF\u306E\u5E45\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002\u30C7\u30D5\u30A9\u30EB\u30C8\u306F640px\u3067\u3059\u3002"
+    },
+    split: {
+      title: "\u753B\u50CF\u5206\u5272",
+      enable: {
+        label: "\u753B\u50CF\u5206\u5272\u3092\u6709\u52B9\u306B\u3059\u308B",
+        description: "\u9577\u3044\u753B\u50CF\u3092\u8907\u6570\u306E\u30DA\u30FC\u30B8\u306B\u5206\u5272\u3057\u3066\u3001\u3088\u308A\u898B\u3084\u3059\u304F\u5171\u6709\u3057\u3084\u3059\u304F\u3057\u307E\u3059\u3002"
+      },
+      height: {
+        label: "\u30DA\u30FC\u30B8\u306E\u9AD8\u3055",
+        description: "\u5404\u5206\u5272\u30DA\u30FC\u30B8\u306E\u9AD8\u3055\u3092\u30D4\u30AF\u30BB\u30EB\u5358\u4F4D\u3067\u8A2D\u5B9A\u3057\u307E\u3059\u3002\u30C7\u30D5\u30A9\u30EB\u30C8\u306F1000px\u3067\u3059\u3002"
+      },
+      overlap: {
+        label: "\u91CD\u8907\u30D1\u30C7\u30A3\u30F3\u30B0",
+        description: "\u30B3\u30F3\u30C6\u30F3\u30C4\u304C\u6025\u306B\u5207\u308C\u306A\u3044\u3088\u3046\u306B\u3001\u30DA\u30FC\u30B8\u9593\u306E\u91CD\u8907\u30D1\u30C7\u30A3\u30F3\u30B0\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002\u30C7\u30D5\u30A9\u30EB\u30C8\u306F40px\u3067\u3059\u3002"
+      }
     },
     filename: {
       label: "\u30D5\u30A1\u30A4\u30EB\u540D\u3092\u30BF\u30A4\u30C8\u30EB\u3068\u3057\u3066\u542B\u3080",
@@ -40348,7 +42852,8 @@ var ja = {
   },
   confirm: "\u78BA\u8A8D",
   cancel: "\u30AD\u30E3\u30F3\u30BB\u30EB",
-  imageUrl: "\u753B\u50CFURL"
+  imageUrl: "\u753B\u50CFURL",
+  splitInfo: "\u753B\u50CF\u306E\u7DCF\u9AD8\u3055\u306F{rootHeight}px\u3067\u3001\u5206\u5272\u9AD8\u3055\u306F{splitHeight}px\u3067\u3059\u3002\u305D\u306E\u305F\u3081\u3001{pages}\u679A\u306E\u753B\u50CF\u304C\u751F\u6210\u3055\u308C\u307E\u3059\u3002"
 };
 var ja_default = ja;
 
@@ -40384,6 +42889,21 @@ var ko = {
     imageWidth: {
       label: "\uB0B4\uBCF4\uB0BC \uC774\uBBF8\uC9C0\uC758 \uAE30\uBCF8 \uB108\uBE44",
       description: "\uD53D\uC140 \uB2E8\uC704\uB85C \uB0B4\uBCF4\uB0BC \uC774\uBBF8\uC9C0\uC758 \uB108\uBE44\uB97C \uC124\uC815\uD558\uC2ED\uC2DC\uC624. \uAE30\uBCF8\uAC12\uC740 640px\uC785\uB2C8\uB2E4."
+    },
+    split: {
+      title: "\uC774\uBBF8\uC9C0 \uBD84\uD560",
+      enable: {
+        label: "\uBD84\uD560 \uD65C\uC131\uD654",
+        description: "\uAE34 \uC774\uBBF8\uC9C0\uB97C \uC5EC\uB7EC \uD398\uC774\uC9C0\uB85C \uBD84\uD560\uD558\uC5EC \uB354 \uB098\uC740 \uBCF4\uAE30\uC640 \uACF5\uC720\uB97C \uAC00\uB2A5\uD558\uAC8C \uD569\uB2C8\uB2E4."
+      },
+      height: {
+        label: "\uD398\uC774\uC9C0 \uB192\uC774",
+        description: "\uAC01 \uBD84\uD560\uB41C \uD398\uC774\uC9C0\uC758 \uB192\uC774\uB97C \uD53D\uC140 \uB2E8\uC704\uB85C \uC124\uC815\uD569\uB2C8\uB2E4. \uAE30\uBCF8\uAC12\uC740 1000px\uC785\uB2C8\uB2E4."
+      },
+      overlap: {
+        label: "\uC911\uCCA9 \uC5EC\uBC31",
+        description: "\uD398\uC774\uC9C0 \uAC04\uC758 \uC911\uCCA9 \uC5EC\uBC31\uC744 \uC124\uC815\uD558\uC5EC \uB0B4\uC6A9\uC774 \uAC11\uC790\uAE30 \uB04A\uAE30\uB294 \uAC83\uC744 \uBC29\uC9C0\uD569\uB2C8\uB2E4. \uAE30\uBCF8\uAC12\uC740 40px\uC785\uB2C8\uB2E4."
+      }
     },
     filename: {
       label: "\uD30C\uC77C \uC774\uB984\uC744 \uC81C\uBAA9\uC73C\uB85C \uD3EC\uD568",
@@ -40464,7 +42984,8 @@ var ko = {
   },
   confirm: "\uD655\uC778",
   cancel: "\uCDE8\uC18C",
-  imageUrl: "\uC774\uBBF8\uC9C0 URL"
+  imageUrl: "\uC774\uBBF8\uC9C0 URL",
+  splitInfo: "\uC774\uBBF8\uC9C0 \uCD1D \uB192\uC774\uB294 {rootHeight}px\uC774\uACE0, \uBD84\uD560 \uB192\uC774\uB294 {splitHeight}px\uC774\uBBC0\uB85C, {pages}\uAC1C\uC758 \uC774\uBBF8\uC9C0\uAC00 \uC0DD\uC131\uB429\uB2C8\uB2E4."
 };
 var ko_default = ko;
 
@@ -40499,6 +43020,21 @@ var ms = {
     imageWidth: {
       label: "Lebar Imej Eksport Lalai",
       description: "Tetapkan lebar imej yang dieksport dalam piksel. Lalai adalah 640px."
+    },
+    split: {
+      title: "Eksport Imej",
+      enable: {
+        label: "Aktifkan deling",
+        description: "Aktifkan deling imej panjang ke beberapa halaman untuk paparan dan penggunaan yang lebih baik."
+      },
+      height: {
+        label: "Tinggi Halaman",
+        description: "Tetapkan tinggi setiap halaman yang dibahagikan dalam piksel. Lalai adalah 1000px."
+      },
+      overlap: {
+        label: "Overlapping",
+        description: "Sett overlapp mellom sider for \xE5 unng\xE5 brutt innhold. Standard er 40px."
+      }
     },
     filename: {
       label: "Termasuk Nama Fail Sebagai Tajuk",
@@ -40579,7 +43115,8 @@ var ms = {
   },
   confirm: "Konfirmasi",
   cancel: "Batal",
-  imageUrl: "URL gambar"
+  imageUrl: "URL gambar",
+  splitInfo: "Tinggi gambar keseluruhan adalah {rootHeight}px, dan tinggi pemotongan adalah {splitHeight}px, jadi akan dihasilkan {pages} gambar"
 };
 var ms_default = ms;
 
@@ -40615,6 +43152,21 @@ var nl = {
     imageWidth: {
       label: "Standaard ge\xEBxporteerde afbeeldingsbreedte",
       description: "Stel de breedte van de ge\xEBxporteerde afbeelding in pixels in. De standaard is 640px."
+    },
+    split: {
+      title: "Afbeelding delen",
+      enable: {
+        label: "Aktiveren",
+        description: "Activeert de deling van lange afbeeldingen in meerdere pagina's voor betere weergave en deling."
+      },
+      height: {
+        label: "Hoogte van de pagina",
+        description: "Stel de hoogte van elke pagina in pixels in. De standaard is 1000px."
+      },
+      overlap: {
+        label: "Overlapping",
+        description: "Sett overlapp mellom sider for \xE5 unng\xE5 brutt innhold. Standard er 40px."
+      }
     },
     filename: {
       label: "Bestandsnaam als titel opnemen",
@@ -40695,7 +43247,8 @@ var nl = {
   },
   confirm: "Bevestigen",
   cancel: "Annuleren",
-  imageUrl: "URL van de afbeelding"
+  imageUrl: "URL van de afbeelding",
+  splitInfo: "De totale hoogte van de afbeelding is {rootHeight}px, en de hoogte van de splitsing is {splitHeight}px, dus er zullen {pages} afbeeldingen worden gemaakt"
 };
 var nl_default = nl;
 
@@ -40730,6 +43283,21 @@ var no = {
     imageWidth: {
       label: "Standard eksportbredde for bilde",
       description: "Angi bredden p\xE5 det eksporterte bildet i piksler. Standarden er 640px."
+    },
+    split: {
+      title: "Bilde deling",
+      enable: {
+        label: "Aktiver deling",
+        description: "Aktiver deling av lange bilder i flere sider for bedre visning og deling."
+      },
+      height: {
+        label: "H\xF8yde p\xE5 side",
+        description: "Sett h\xF8yden p\xE5 hver side delt i piksler. Standard er 1000px."
+      },
+      overlap: {
+        label: "Overlapping",
+        description: "Sett overlapp mellom sider for \xE5 unng\xE5 brutt innhold. Standard er 40px."
+      }
     },
     filename: {
       label: "Inkluder filnavn som tittel",
@@ -40810,7 +43378,8 @@ var no = {
   },
   confirm: "Bekreft",
   cancel: "Avbryt",
-  imageUrl: "Bilde-URL"
+  imageUrl: "Bilde-URL",
+  splitInfo: "Total bildeh\xF8yde er {rootHeight}px, og delingsh\xF8yde er {splitHeight}px, s\xE5 det vil bli generert {pages} bilder"
 };
 var no_default = no;
 
@@ -40845,6 +43414,21 @@ var pl = {
     imageWidth: {
       label: "Domy\u015Blna szeroko\u015B\u0107 eksportowanego obrazu",
       description: "Ustaw szeroko\u015B\u0107 eksportowanego obrazu w pikselach. Domy\u015Blnie jest 640px."
+    },
+    split: {
+      title: "Podzia\u0142 obrazu",
+      enable: {
+        label: "W\u0142\u0105cz podzia\u0142",
+        description: "W\u0142\u0105cza podzia\u0142 d\u0142ugich obraz\xF3w na wiele stron dla lepszego przegl\u0105du i wymiany."
+      },
+      height: {
+        label: "Wysoko\u015B\u0107 strony",
+        description: "Ustawia wysoko\u015B\u0107 ka\u017Cdej strony podzielonej w pikselach. Domy\u015Blnie jest 1000px."
+      },
+      overlap: {
+        label: "Przekrywanie",
+        description: "Ustawia przekrywanie mi\u0119dzy stronami, aby unikn\u0105\u0107 nag\u0142ego przerwania tre\u015Bci. Domy\u015Blnie jest 40px."
+      }
     },
     filename: {
       label: "Do\u0142\u0105cz nazw\u0119 pliku jako tytu\u0142",
@@ -40925,7 +43509,8 @@ var pl = {
   },
   confirm: "Potwierd\u017A",
   cancel: "Anuluj",
-  imageUrl: "URL obrazu"
+  imageUrl: "URL obrazu",
+  splitInfo: "Wysoko\u015B\u0107 ca\u0142ego obrazu to {rootHeight}px, a wysoko\u015B\u0107 podzia\u0142u to {splitHeight}px, wi\u0119c zostanie wygenerowanych {pages} obraz\xF3w"
 };
 var pl_default = pl;
 
@@ -40961,6 +43546,21 @@ var pt = {
     imageWidth: {
       label: "Largura padr\xE3o da imagem exportada",
       description: "Defina a largura da imagem exportada em pixels. O padr\xE3o \xE9 640px."
+    },
+    split: {
+      title: "Dividir imagem",
+      enable: {
+        label: "Ativar divis\xE3o",
+        description: "Ativa a divis\xE3o de imagens longas em v\xE1rias p\xE1ginas para melhor visualiza\xE7\xE3o e compartilhamento."
+      },
+      height: {
+        label: "Altura da p\xE1gina",
+        description: "Define a altura de cada p\xE1gina dividida em pixels. O padr\xE3o \xE9 1000px."
+      },
+      overlap: {
+        label: "Sobreposi\xE7\xE3o",
+        description: "Define a sobreposi\xE7\xE3o entre p\xE1ginas para evitar cortes abruptos de conte\xFAdo. O padr\xE3o \xE9 40px."
+      }
     },
     filename: {
       label: "Incluir nome do arquivo como t\xEDtulo",
@@ -41041,7 +43641,8 @@ var pt = {
   },
   confirm: "Confirmar",
   cancel: "Cancelar",
-  imageUrl: "URL da imagem"
+  imageUrl: "URL da imagem",
+  splitInfo: "A altura total da imagem \xE9 {rootHeight}px, e a altura de divis\xE3o \xE9 {splitHeight}px, portanto, ser\xE3o geradas {pages} imagens"
 };
 var pt_default = pt;
 
@@ -41077,6 +43678,21 @@ var ro = {
     imageWidth: {
       label: "L\u0103\u021Bimea implicit\u0103 a imaginii exportate",
       description: "Seteaz\u0103 l\u0103\u021Bimea imaginii exportate \xEEn pixeli. Implicit este 640px."
+    },
+    split: {
+      title: "Divizare imagine",
+      enable: {
+        label: "Activeaz\u0103 divizarea",
+        description: "Activeaz\u0103 divizarea imaginilor lungi \xEEn mai multe pagini pentru o vizualizare \u0219i schimbare mai u\u0219oar\u0103."
+      },
+      height: {
+        label: "\xCEn\u0103l\u021Bimea paginii",
+        description: "Seteaz\u0103 \xEEn\u0103l\u021Bimea fiec\u0103rei pagini divizate \xEEn pixeli. Implicit este 1000px."
+      },
+      overlap: {
+        label: "Suprapunere",
+        description: "Seteaz\u0103 suprapunerea dintre pagini pentru a evita un rupt brusc de con\u021Binut. Implicit este 40px."
+      }
     },
     filename: {
       label: "Include numele de fi\u0219ier ca titlu",
@@ -41157,7 +43773,8 @@ var ro = {
   },
   confirm: "Confirma\u021Bi",
   cancel: "Anuleaz\u0103",
-  imageUrl: "URL imagine"
+  imageUrl: "URL imagine",
+  splitInfo: "\xCEn\u0103l\u021Bimea total\u0103 a imaginii este {rootHeight}px, iar \xEEn\u0103l\u021Bimea de divizare este {splitHeight}px, deci vor fi create {pages} imagini"
 };
 var ro_default = ro;
 
@@ -41192,6 +43809,21 @@ var ru = {
     imageWidth: {
       label: "\u0421\u0442\u0430\u043D\u0434\u0430\u0440\u0442\u043D\u0430\u044F \u0448\u0438\u0440\u0438\u043D\u0430 \u044D\u043A\u0441\u043F\u043E\u0440\u0442\u0438\u0440\u0443\u0435\u043C\u043E\u0433\u043E \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F",
       description: "\u0423\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u0435 \u0448\u0438\u0440\u0438\u043D\u0443 \u044D\u043A\u0441\u043F\u043E\u0440\u0442\u0438\u0440\u0443\u0435\u043C\u043E\u0433\u043E \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F \u0432 \u043F\u0438\u043A\u0441\u0435\u043B\u044F\u0445. \u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E 640px."
+    },
+    split: {
+      title: "\u0420\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u0435 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F",
+      enable: {
+        label: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0440\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u0435",
+        description: "\u0412\u043A\u043B\u044E\u0447\u0430\u0435\u0442 \u0440\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u0435 \u0434\u043B\u0438\u043D\u043D\u044B\u0445 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u043D\u0430 \u043D\u0435\u0441\u043A\u043E\u043B\u044C\u043A\u043E \u0441\u0442\u0440\u0430\u043D\u0438\u0446 \u0434\u043B\u044F \u0443\u0434\u043E\u0431\u043D\u043E\u0433\u043E \u043F\u0440\u043E\u0441\u043C\u043E\u0442\u0440\u0430 \u0438 \u043E\u0431\u043C\u0435\u043D\u0430."
+      },
+      height: {
+        label: "\u0412\u044B\u0441\u043E\u0442\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B",
+        description: "\u0423\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0435\u0442 \u0432\u044B\u0441\u043E\u0442\u0443 \u043A\u0430\u0436\u0434\u043E\u0439 \u0440\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u043D\u043E\u0439 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u0432 \u043F\u0438\u043A\u0441\u0435\u043B\u044F\u0445. \u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E 1000px."
+      },
+      overlap: {
+        label: "\u041F\u0435\u0440\u0435\u043A\u0440\u044B\u0442\u0438\u0435",
+        description: "\u0423\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0435\u0442 \u043F\u0435\u0440\u0435\u043A\u0440\u044B\u0442\u0438\u0435 \u043C\u0435\u0436\u0434\u0443 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430\u043C\u0438, \u0447\u0442\u043E\u0431\u044B \u0438\u0437\u0431\u0435\u0436\u0430\u0442\u044C \u0440\u0435\u0437\u043A\u043E\u0433\u043E \u043E\u0431\u0440\u044B\u0432\u0430 \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u043C\u043E\u0433\u043E. \u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E 40px."
+      }
     },
     filename: {
       label: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0438\u043C\u044F \u0444\u0430\u0439\u043B\u0430 \u0432 \u043A\u0430\u0447\u0435\u0441\u0442\u0432\u0435 \u0437\u0430\u0433\u043E\u043B\u043E\u0432\u043A\u0430",
@@ -41272,7 +43904,8 @@ var ru = {
   },
   confirm: "\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044C",
   cancel: "\u041E\u0442\u043C\u0435\u043D\u0430",
-  imageUrl: "URL \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F"
+  imageUrl: "URL \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F",
+  splitInfo: "\u041E\u0431\u0449\u0430\u044F \u0432\u044B\u0441\u043E\u0442\u0430 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u0435\u0442 {rootHeight}px, \u0430 \u0432\u044B\u0441\u043E\u0442\u0430 \u0440\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u044F \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u044F\u0435\u0442 {splitHeight}px, \u043F\u043E\u044D\u0442\u043E\u043C\u0443 \u0431\u0443\u0434\u0435\u0442 \u0441\u043E\u0437\u0434\u0430\u043D\u043E {pages} \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0439"
 };
 var ru_default = ru;
 
@@ -41308,9 +43941,24 @@ var zh = {
       label: "\u5BFC\u51FA\u56FE\u7247\u7684\u9ED8\u8BA4\u5BBD\u5EA6",
       description: "\u8BBE\u7F6E\u5BFC\u51FA\u56FE\u7247\u7684\u5BBD\u5EA6\uFF0C\u9ED8\u8BA4\u503C\u4E3A 640px\u3002"
     },
+    split: {
+      title: "\u56FE\u7247\u62C6\u5206",
+      enable: {
+        label: "\u542F\u7528\u56FE\u7247\u62C6\u5206",
+        description: "\u542F\u7528\u957F\u56FE\u7247\u62C6\u5206\u4E3A\u591A\u9875\u4EE5\u4FBF\u66F4\u597D\u5730\u67E5\u770B\u548C\u5206\u4EAB\u3002"
+      },
+      height: {
+        label: "\u62C6\u5206\u56FE\u7247\u9AD8\u5EA6",
+        description: "\u8BBE\u7F6E\u6BCF\u4E2A\u62C6\u5206\u56FE\u7247\u7684\u9AD8\u5EA6\uFF08\u50CF\u7D20\uFF09\u3002\u9ED8\u8BA4\u4E3A 1000px\u3002"
+      },
+      overlap: {
+        label: "\u62C6\u5206\u56FE\u7247\u91CD\u53E0",
+        description: "\u8BBE\u7F6E\u76F8\u90BB\u4E24\u4E2A\u62C6\u5206\u56FE\u7247\u7684\u91CD\u53E0\uFF08\u50CF\u7D20\uFF09\uFF0C\u9632\u6B62\u5185\u5BB9\u88AB\u622A\u65AD\u3002\u9ED8\u8BA4\u4E3A 40px\u3002"
+      }
+    },
     filename: {
       label: "\u662F\u5426\u5305\u542B\u6587\u4EF6\u540D\u4F5C\u4E3A\u6807\u9898",
-      desscription: "\u8BBE\u7F6E\u662F\u5426\u5305\u542B\u6587\u4EF6\u540D\u4F5C\u4E3A\u6807\u9898\u3002Obsidian \u5C55\u793A\u6587\u6863\u65F6\uFF0C\u4F1A\u628A\u6587\u4EF6\u540D\u4F5C\u4E3A h1 \u6807\u9898\uFF0C\u6709\u65F6\u5019\u5E76\u4E0D\u7B26\u5408\u9884\u671F\uFF0C\u4EA7\u751F\u6807\u9898\u91CD\u590D\u7684\u60C5\u51B5\u3002"
+      description: "\u8BBE\u7F6E\u662F\u5426\u5305\u542B\u6587\u4EF6\u540D\u4F5C\u4E3A\u6807\u9898\u3002Obsidian \u5C55\u793A\u6587\u6863\u65F6\uFF0C\u4F1A\u628A\u6587\u4EF6\u540D\u4F5C\u4E3A h1 \u6807\u9898\uFF0C\u6709\u65F6\u5019\u5E76\u4E0D\u7B26\u5408\u9884\u671F\uFF0C\u4EA7\u751F\u6807\u9898\u91CD\u590D\u7684\u60C5\u51B5\u3002"
     },
     "2x": {
       label: "\u542F\u7528 2x \u5206\u8FA8\u7387\u56FE\u7247",
@@ -41387,7 +44035,8 @@ var zh = {
   },
   confirm: "\u786E\u8BA4",
   cancel: "\u53D6\u6D88",
-  imageUrl: "\u8F93\u5165 URL"
+  imageUrl: "\u8F93\u5165 URL",
+  splitInfo: "\u56FE\u7247\u603B\u9AD8\u5EA6\u4E3A {rootHeight}px\uFF0C\u5206\u5272\u9AD8\u5EA6\u4E3A {splitHeight}px\uFF0C\u56E0\u6B64\u5C06\u751F\u6210 {pages} \u5F20\u56FE\u7247"
 };
 var zh_default = zh;
 
@@ -41435,1674 +44084,6 @@ try {
 }
 var L = i18n2()[locale];
 var L_default = L;
-
-// src/components/file/ModalContent.tsx
-var import_obsidian6 = require("obsidian");
-var import_react9 = __toESM(require_react());
-
-// node_modules/react-zoom-pan-pinch/dist/index.esm.js
-var import_react = __toESM(require_react());
-var roundNumber = function(num, decimal) {
-  return Number(num.toFixed(decimal));
-};
-var checkIsNumber = function(num, defaultValue) {
-  return typeof num === "number" ? num : defaultValue;
-};
-var handleCallback = function(context, event, callback) {
-  if (callback && typeof callback === "function") {
-    callback(context, event);
-  }
-};
-var easeOut = function(t5) {
-  return -Math.cos(t5 * Math.PI) / 2 + 0.5;
-};
-var linear = function(t5) {
-  return t5;
-};
-var easeInQuad = function(t5) {
-  return t5 * t5;
-};
-var easeOutQuad = function(t5) {
-  return t5 * (2 - t5);
-};
-var easeInOutQuad = function(t5) {
-  return t5 < 0.5 ? 2 * t5 * t5 : -1 + (4 - 2 * t5) * t5;
-};
-var easeInCubic = function(t5) {
-  return t5 * t5 * t5;
-};
-var easeOutCubic = function(t5) {
-  return --t5 * t5 * t5 + 1;
-};
-var easeInOutCubic = function(t5) {
-  return t5 < 0.5 ? 4 * t5 * t5 * t5 : (t5 - 1) * (2 * t5 - 2) * (2 * t5 - 2) + 1;
-};
-var easeInQuart = function(t5) {
-  return t5 * t5 * t5 * t5;
-};
-var easeOutQuart = function(t5) {
-  return 1 - --t5 * t5 * t5 * t5;
-};
-var easeInOutQuart = function(t5) {
-  return t5 < 0.5 ? 8 * t5 * t5 * t5 * t5 : 1 - 8 * --t5 * t5 * t5 * t5;
-};
-var easeInQuint = function(t5) {
-  return t5 * t5 * t5 * t5 * t5;
-};
-var easeOutQuint = function(t5) {
-  return 1 + --t5 * t5 * t5 * t5 * t5;
-};
-var easeInOutQuint = function(t5) {
-  return t5 < 0.5 ? 16 * t5 * t5 * t5 * t5 * t5 : 1 + 16 * --t5 * t5 * t5 * t5 * t5;
-};
-var animations = {
-  easeOut,
-  linear,
-  easeInQuad,
-  easeOutQuad,
-  easeInOutQuad,
-  easeInCubic,
-  easeOutCubic,
-  easeInOutCubic,
-  easeInQuart,
-  easeOutQuart,
-  easeInOutQuart,
-  easeInQuint,
-  easeOutQuint,
-  easeInOutQuint
-};
-var handleCancelAnimationFrame = function(animation) {
-  if (typeof animation === "number") {
-    cancelAnimationFrame(animation);
-  }
-};
-var handleCancelAnimation = function(contextInstance) {
-  if (!contextInstance.mounted)
-    return;
-  handleCancelAnimationFrame(contextInstance.animation);
-  contextInstance.animate = false;
-  contextInstance.animation = null;
-  contextInstance.velocity = null;
-};
-function handleSetupAnimation(contextInstance, animationName, animationTime, callback) {
-  if (!contextInstance.mounted)
-    return;
-  var startTime = (/* @__PURE__ */ new Date()).getTime();
-  var lastStep = 1;
-  handleCancelAnimation(contextInstance);
-  contextInstance.animation = function() {
-    if (!contextInstance.mounted) {
-      return handleCancelAnimationFrame(contextInstance.animation);
-    }
-    var frameTime = (/* @__PURE__ */ new Date()).getTime() - startTime;
-    var animationProgress = frameTime / animationTime;
-    var animationType = animations[animationName];
-    var step = animationType(animationProgress);
-    if (frameTime >= animationTime) {
-      callback(lastStep);
-      contextInstance.animation = null;
-    } else if (contextInstance.animation) {
-      callback(step);
-      requestAnimationFrame(contextInstance.animation);
-    }
-  };
-  requestAnimationFrame(contextInstance.animation);
-}
-function isValidTargetState(targetState) {
-  var scale = targetState.scale, positionX = targetState.positionX, positionY = targetState.positionY;
-  if (Number.isNaN(scale) || Number.isNaN(positionX) || Number.isNaN(positionY)) {
-    return false;
-  }
-  return true;
-}
-function animate(contextInstance, targetState, animationTime, animationName) {
-  var isValid = isValidTargetState(targetState);
-  if (!contextInstance.mounted || !isValid)
-    return;
-  var setTransformState = contextInstance.setTransformState;
-  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
-  var scaleDiff = targetState.scale - scale;
-  var positionXDiff = targetState.positionX - positionX;
-  var positionYDiff = targetState.positionY - positionY;
-  if (animationTime === 0) {
-    setTransformState(targetState.scale, targetState.positionX, targetState.positionY);
-  } else {
-    handleSetupAnimation(contextInstance, animationName, animationTime, function(step) {
-      var newScale = scale + scaleDiff * step;
-      var newPositionX = positionX + positionXDiff * step;
-      var newPositionY = positionY + positionYDiff * step;
-      setTransformState(newScale, newPositionX, newPositionY);
-    });
-  }
-}
-function getComponentsSizes(wrapperComponent, contentComponent, newScale) {
-  var wrapperWidth = wrapperComponent.offsetWidth;
-  var wrapperHeight = wrapperComponent.offsetHeight;
-  var contentWidth = contentComponent.offsetWidth;
-  var contentHeight = contentComponent.offsetHeight;
-  var newContentWidth = contentWidth * newScale;
-  var newContentHeight = contentHeight * newScale;
-  var newDiffWidth = wrapperWidth - newContentWidth;
-  var newDiffHeight = wrapperHeight - newContentHeight;
-  return {
-    wrapperWidth,
-    wrapperHeight,
-    newContentWidth,
-    newDiffWidth,
-    newContentHeight,
-    newDiffHeight
-  };
-}
-var getBounds = function(wrapperWidth, newContentWidth, diffWidth, wrapperHeight, newContentHeight, diffHeight, centerZoomedOut) {
-  var scaleWidthFactor = wrapperWidth > newContentWidth ? diffWidth * (centerZoomedOut ? 1 : 0.5) : 0;
-  var scaleHeightFactor = wrapperHeight > newContentHeight ? diffHeight * (centerZoomedOut ? 1 : 0.5) : 0;
-  var minPositionX = wrapperWidth - newContentWidth - scaleWidthFactor;
-  var maxPositionX = scaleWidthFactor;
-  var minPositionY = wrapperHeight - newContentHeight - scaleHeightFactor;
-  var maxPositionY = scaleHeightFactor;
-  return { minPositionX, maxPositionX, minPositionY, maxPositionY };
-};
-var calculateBounds = function(contextInstance, newScale) {
-  var wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent;
-  var centerZoomedOut = contextInstance.setup.centerZoomedOut;
-  if (!wrapperComponent || !contentComponent) {
-    throw new Error("Components are not mounted");
-  }
-  var _a2 = getComponentsSizes(wrapperComponent, contentComponent, newScale), wrapperWidth = _a2.wrapperWidth, wrapperHeight = _a2.wrapperHeight, newContentWidth = _a2.newContentWidth, newDiffWidth = _a2.newDiffWidth, newContentHeight = _a2.newContentHeight, newDiffHeight = _a2.newDiffHeight;
-  var bounds = getBounds(wrapperWidth, newContentWidth, newDiffWidth, wrapperHeight, newContentHeight, newDiffHeight, Boolean(centerZoomedOut));
-  return bounds;
-};
-var boundLimiter = function(value, minBound, maxBound, isActive) {
-  if (!isActive)
-    return roundNumber(value, 2);
-  if (value < minBound)
-    return roundNumber(minBound, 2);
-  if (value > maxBound)
-    return roundNumber(maxBound, 2);
-  return roundNumber(value, 2);
-};
-var handleCalculateBounds = function(contextInstance, newScale) {
-  var bounds = calculateBounds(contextInstance, newScale);
-  contextInstance.bounds = bounds;
-  return bounds;
-};
-function getMouseBoundedPosition(positionX, positionY, bounds, limitToBounds, paddingValueX, paddingValueY, wrapperComponent) {
-  var minPositionX = bounds.minPositionX, minPositionY = bounds.minPositionY, maxPositionX = bounds.maxPositionX, maxPositionY = bounds.maxPositionY;
-  var paddingX = 0;
-  var paddingY = 0;
-  if (wrapperComponent) {
-    paddingX = paddingValueX;
-    paddingY = paddingValueY;
-  }
-  var x2 = boundLimiter(positionX, minPositionX - paddingX, maxPositionX + paddingX, limitToBounds);
-  var y3 = boundLimiter(positionY, minPositionY - paddingY, maxPositionY + paddingY, limitToBounds);
-  return { x: x2, y: y3 };
-}
-function handleCalculateZoomPositions(contextInstance, mouseX, mouseY, newScale, bounds, limitToBounds) {
-  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
-  var scaleDifference = newScale - scale;
-  if (typeof mouseX !== "number" || typeof mouseY !== "number") {
-    console.error("Mouse X and Y position were not provided!");
-    return { x: positionX, y: positionY };
-  }
-  var calculatedPositionX = positionX - mouseX * scaleDifference;
-  var calculatedPositionY = positionY - mouseY * scaleDifference;
-  var newPositions = getMouseBoundedPosition(calculatedPositionX, calculatedPositionY, bounds, limitToBounds, 0, 0, null);
-  return newPositions;
-}
-function checkZoomBounds(zoom, minScale, maxScale, zoomPadding, enablePadding) {
-  var scalePadding = enablePadding ? zoomPadding : 0;
-  var minScaleWithPadding = minScale - scalePadding;
-  if (!Number.isNaN(maxScale) && zoom >= maxScale)
-    return maxScale;
-  if (!Number.isNaN(minScale) && zoom <= minScaleWithPadding)
-    return minScaleWithPadding;
-  return zoom;
-}
-var isPanningStartAllowed = function(contextInstance, event) {
-  var excluded = contextInstance.setup.panning.excluded;
-  var isInitialized = contextInstance.isInitialized, wrapperComponent = contextInstance.wrapperComponent;
-  var target = event.target;
-  var targetIsShadowDom = "shadowRoot" in target && "composedPath" in event;
-  var isWrapperChild = targetIsShadowDom ? event.composedPath().some(function(el) {
-    if (!(el instanceof Element)) {
-      return false;
-    }
-    return wrapperComponent === null || wrapperComponent === void 0 ? void 0 : wrapperComponent.contains(el);
-  }) : wrapperComponent === null || wrapperComponent === void 0 ? void 0 : wrapperComponent.contains(target);
-  var isAllowed = isInitialized && target && isWrapperChild;
-  if (!isAllowed)
-    return false;
-  var isExcluded = isExcludedNode(target, excluded);
-  if (isExcluded)
-    return false;
-  return true;
-};
-var isPanningAllowed = function(contextInstance) {
-  var isInitialized = contextInstance.isInitialized, isPanning = contextInstance.isPanning, setup = contextInstance.setup;
-  var disabled = setup.panning.disabled;
-  var isAllowed = isInitialized && isPanning && !disabled;
-  if (!isAllowed)
-    return false;
-  return true;
-};
-var handlePanningSetup = function(contextInstance, event) {
-  var _a2 = contextInstance.transformState, positionX = _a2.positionX, positionY = _a2.positionY;
-  contextInstance.isPanning = true;
-  var x2 = event.clientX;
-  var y3 = event.clientY;
-  contextInstance.startCoords = { x: x2 - positionX, y: y3 - positionY };
-};
-var handleTouchPanningSetup = function(contextInstance, event) {
-  var touches = event.touches;
-  var _a2 = contextInstance.transformState, positionX = _a2.positionX, positionY = _a2.positionY;
-  contextInstance.isPanning = true;
-  var oneFingerTouch = touches.length === 1;
-  if (oneFingerTouch) {
-    var x2 = touches[0].clientX;
-    var y3 = touches[0].clientY;
-    contextInstance.startCoords = { x: x2 - positionX, y: y3 - positionY };
-  }
-};
-function handlePanToBounds(contextInstance) {
-  var _a2 = contextInstance.transformState, positionX = _a2.positionX, positionY = _a2.positionY, scale = _a2.scale;
-  var _b2 = contextInstance.setup, disabled = _b2.disabled, limitToBounds = _b2.limitToBounds, centerZoomedOut = _b2.centerZoomedOut;
-  var wrapperComponent = contextInstance.wrapperComponent;
-  if (disabled || !wrapperComponent || !contextInstance.bounds)
-    return;
-  var _c = contextInstance.bounds, maxPositionX = _c.maxPositionX, minPositionX = _c.minPositionX, maxPositionY = _c.maxPositionY, minPositionY = _c.minPositionY;
-  var xChanged = positionX > maxPositionX || positionX < minPositionX;
-  var yChanged = positionY > maxPositionY || positionY < minPositionY;
-  var mousePosX = positionX > maxPositionX ? wrapperComponent.offsetWidth : contextInstance.setup.minPositionX || 0;
-  var mousePosY = positionY > maxPositionY ? wrapperComponent.offsetHeight : contextInstance.setup.minPositionY || 0;
-  var _d = handleCalculateZoomPositions(contextInstance, mousePosX, mousePosY, scale, contextInstance.bounds, limitToBounds || centerZoomedOut), x2 = _d.x, y3 = _d.y;
-  return {
-    scale,
-    positionX: xChanged ? x2 : positionX,
-    positionY: yChanged ? y3 : positionY
-  };
-}
-function handleNewPosition(contextInstance, newPositionX, newPositionY, paddingValueX, paddingValueY) {
-  var limitToBounds = contextInstance.setup.limitToBounds;
-  var wrapperComponent = contextInstance.wrapperComponent, bounds = contextInstance.bounds;
-  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
-  if (wrapperComponent === null || bounds === null || newPositionX === positionX && newPositionY === positionY) {
-    return;
-  }
-  var _b2 = getMouseBoundedPosition(newPositionX, newPositionY, bounds, limitToBounds, paddingValueX, paddingValueY, wrapperComponent), x2 = _b2.x, y3 = _b2.y;
-  contextInstance.setTransformState(scale, x2, y3);
-}
-var getPanningClientPosition = function(contextInstance, clientX, clientY) {
-  var startCoords = contextInstance.startCoords, transformState = contextInstance.transformState;
-  var panning = contextInstance.setup.panning;
-  var lockAxisX = panning.lockAxisX, lockAxisY = panning.lockAxisY;
-  var positionX = transformState.positionX, positionY = transformState.positionY;
-  if (!startCoords) {
-    return { x: positionX, y: positionY };
-  }
-  var mouseX = clientX - startCoords.x;
-  var mouseY = clientY - startCoords.y;
-  var newPositionX = lockAxisX ? positionX : mouseX;
-  var newPositionY = lockAxisY ? positionY : mouseY;
-  return { x: newPositionX, y: newPositionY };
-};
-var getPaddingValue = function(contextInstance, size) {
-  var setup = contextInstance.setup, transformState = contextInstance.transformState;
-  var scale = transformState.scale;
-  var minScale = setup.minScale, disablePadding = setup.disablePadding;
-  if (size > 0 && scale >= minScale && !disablePadding) {
-    return size;
-  }
-  return 0;
-};
-var isVelocityCalculationAllowed = function(contextInstance) {
-  var mounted = contextInstance.mounted;
-  var _a2 = contextInstance.setup, disabled = _a2.disabled, velocityAnimation = _a2.velocityAnimation;
-  var scale = contextInstance.transformState.scale;
-  var disabledVelocity = velocityAnimation.disabled;
-  var isAllowed = !disabledVelocity || scale > 1 || !disabled || mounted;
-  if (!isAllowed)
-    return false;
-  return true;
-};
-var isVelocityAllowed = function(contextInstance) {
-  var mounted = contextInstance.mounted, velocity = contextInstance.velocity, bounds = contextInstance.bounds;
-  var _a2 = contextInstance.setup, disabled = _a2.disabled, velocityAnimation = _a2.velocityAnimation;
-  var scale = contextInstance.transformState.scale;
-  var disabledVelocity = velocityAnimation.disabled;
-  var isAllowed = !disabledVelocity || scale > 1 || !disabled || mounted;
-  if (!isAllowed)
-    return false;
-  if (!velocity || !bounds)
-    return false;
-  return true;
-};
-function getVelocityMoveTime(contextInstance, velocity) {
-  var velocityAnimation = contextInstance.setup.velocityAnimation;
-  var equalToMove = velocityAnimation.equalToMove, animationTime = velocityAnimation.animationTime, sensitivity = velocityAnimation.sensitivity;
-  if (equalToMove) {
-    return animationTime * velocity * sensitivity;
-  }
-  return animationTime;
-}
-function getVelocityPosition(newPosition, startPosition, currentPosition, isLocked, limitToBounds, minPosition, maxPosition, minTarget, maxTarget, step) {
-  if (limitToBounds) {
-    if (startPosition > maxPosition && currentPosition > maxPosition) {
-      var calculatedPosition = maxPosition + (newPosition - maxPosition) * step;
-      if (calculatedPosition > maxTarget)
-        return maxTarget;
-      if (calculatedPosition < maxPosition)
-        return maxPosition;
-      return calculatedPosition;
-    }
-    if (startPosition < minPosition && currentPosition < minPosition) {
-      var calculatedPosition = minPosition + (newPosition - minPosition) * step;
-      if (calculatedPosition < minTarget)
-        return minTarget;
-      if (calculatedPosition > minPosition)
-        return minPosition;
-      return calculatedPosition;
-    }
-  }
-  if (isLocked)
-    return startPosition;
-  return boundLimiter(newPosition, minPosition, maxPosition, limitToBounds);
-}
-function getSizeMultiplier(wrapperComponent, equalToMove) {
-  var defaultMultiplier = 1;
-  if (equalToMove) {
-    return Math.min(defaultMultiplier, wrapperComponent.offsetWidth / window.innerWidth);
-  }
-  return defaultMultiplier;
-}
-function handleCalculateVelocity(contextInstance, position) {
-  var isAllowed = isVelocityCalculationAllowed(contextInstance);
-  if (!isAllowed) {
-    return;
-  }
-  var lastMousePosition = contextInstance.lastMousePosition, velocityTime = contextInstance.velocityTime, setup = contextInstance.setup;
-  var wrapperComponent = contextInstance.wrapperComponent;
-  var equalToMove = setup.velocityAnimation.equalToMove;
-  var now = Date.now();
-  if (lastMousePosition && velocityTime && wrapperComponent) {
-    var sizeMultiplier = getSizeMultiplier(wrapperComponent, equalToMove);
-    var distanceX = position.x - lastMousePosition.x;
-    var distanceY = position.y - lastMousePosition.y;
-    var velocityX = distanceX / sizeMultiplier;
-    var velocityY = distanceY / sizeMultiplier;
-    var interval = now - velocityTime;
-    var speed = distanceX * distanceX + distanceY * distanceY;
-    var velocity = Math.sqrt(speed) / interval;
-    contextInstance.velocity = { velocityX, velocityY, total: velocity };
-  }
-  contextInstance.lastMousePosition = position;
-  contextInstance.velocityTime = now;
-}
-function handleVelocityPanning(contextInstance) {
-  var velocity = contextInstance.velocity, bounds = contextInstance.bounds, setup = contextInstance.setup, wrapperComponent = contextInstance.wrapperComponent;
-  var isAllowed = isVelocityAllowed(contextInstance);
-  if (!isAllowed || !velocity || !bounds || !wrapperComponent) {
-    return;
-  }
-  var velocityX = velocity.velocityX, velocityY = velocity.velocityY, total = velocity.total;
-  var maxPositionX = bounds.maxPositionX, minPositionX = bounds.minPositionX, maxPositionY = bounds.maxPositionY, minPositionY = bounds.minPositionY;
-  var limitToBounds = setup.limitToBounds, alignmentAnimation = setup.alignmentAnimation;
-  var zoomAnimation = setup.zoomAnimation, panning = setup.panning;
-  var lockAxisY = panning.lockAxisY, lockAxisX = panning.lockAxisX;
-  var animationType = zoomAnimation.animationType;
-  var sizeX = alignmentAnimation.sizeX, sizeY = alignmentAnimation.sizeY, velocityAlignmentTime = alignmentAnimation.velocityAlignmentTime;
-  var alignAnimationTime = velocityAlignmentTime;
-  var moveAnimationTime = getVelocityMoveTime(contextInstance, total);
-  var finalAnimationTime = Math.max(moveAnimationTime, alignAnimationTime);
-  var paddingValueX = getPaddingValue(contextInstance, sizeX);
-  var paddingValueY = getPaddingValue(contextInstance, sizeY);
-  var paddingX = paddingValueX * wrapperComponent.offsetWidth / 100;
-  var paddingY = paddingValueY * wrapperComponent.offsetHeight / 100;
-  var maxTargetX = maxPositionX + paddingX;
-  var minTargetX = minPositionX - paddingX;
-  var maxTargetY = maxPositionY + paddingY;
-  var minTargetY = minPositionY - paddingY;
-  var startState = contextInstance.transformState;
-  var startTime = (/* @__PURE__ */ new Date()).getTime();
-  handleSetupAnimation(contextInstance, animationType, finalAnimationTime, function(step) {
-    var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
-    var frameTime = (/* @__PURE__ */ new Date()).getTime() - startTime;
-    var animationProgress = frameTime / alignAnimationTime;
-    var alignAnimation = animations[alignmentAnimation.animationType];
-    var alignStep = 1 - alignAnimation(Math.min(1, animationProgress));
-    var customStep = 1 - step;
-    var newPositionX = positionX + velocityX * customStep;
-    var newPositionY = positionY + velocityY * customStep;
-    var currentPositionX = getVelocityPosition(newPositionX, startState.positionX, positionX, lockAxisX, limitToBounds, minPositionX, maxPositionX, minTargetX, maxTargetX, alignStep);
-    var currentPositionY = getVelocityPosition(newPositionY, startState.positionY, positionY, lockAxisY, limitToBounds, minPositionY, maxPositionY, minTargetY, maxTargetY, alignStep);
-    if (positionX !== newPositionX || positionY !== newPositionY) {
-      contextInstance.setTransformState(scale, currentPositionX, currentPositionY);
-    }
-  });
-}
-function handlePanningStart(contextInstance, event) {
-  var scale = contextInstance.transformState.scale;
-  handleCancelAnimation(contextInstance);
-  handleCalculateBounds(contextInstance, scale);
-  if (window.TouchEvent !== void 0 && event instanceof TouchEvent) {
-    handleTouchPanningSetup(contextInstance, event);
-  } else {
-    handlePanningSetup(contextInstance, event);
-  }
-}
-function handleAlignToBounds(contextInstance) {
-  var scale = contextInstance.transformState.scale;
-  var _a2 = contextInstance.setup, minScale = _a2.minScale, alignmentAnimation = _a2.alignmentAnimation;
-  var disabled = alignmentAnimation.disabled, sizeX = alignmentAnimation.sizeX, sizeY = alignmentAnimation.sizeY, animationTime = alignmentAnimation.animationTime, animationType = alignmentAnimation.animationType;
-  var isDisabled = disabled || scale < minScale || !sizeX && !sizeY;
-  if (isDisabled)
-    return;
-  var targetState = handlePanToBounds(contextInstance);
-  if (targetState) {
-    animate(contextInstance, targetState, animationTime, animationType);
-  }
-}
-function handlePanning(contextInstance, clientX, clientY) {
-  var startCoords = contextInstance.startCoords, setup = contextInstance.setup;
-  var _a2 = setup.alignmentAnimation, sizeX = _a2.sizeX, sizeY = _a2.sizeY;
-  if (!startCoords)
-    return;
-  var _b2 = getPanningClientPosition(contextInstance, clientX, clientY), x2 = _b2.x, y3 = _b2.y;
-  var paddingValueX = getPaddingValue(contextInstance, sizeX);
-  var paddingValueY = getPaddingValue(contextInstance, sizeY);
-  handleCalculateVelocity(contextInstance, { x: x2, y: y3 });
-  handleNewPosition(contextInstance, x2, y3, paddingValueX, paddingValueY);
-}
-function handlePanningEnd(contextInstance) {
-  if (contextInstance.isPanning) {
-    var velocityDisabled = contextInstance.setup.panning.velocityDisabled;
-    var velocity = contextInstance.velocity, wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent;
-    contextInstance.isPanning = false;
-    contextInstance.animate = false;
-    contextInstance.animation = null;
-    var wrapperRect = wrapperComponent === null || wrapperComponent === void 0 ? void 0 : wrapperComponent.getBoundingClientRect();
-    var contentRect = contentComponent === null || contentComponent === void 0 ? void 0 : contentComponent.getBoundingClientRect();
-    var wrapperWidth = (wrapperRect === null || wrapperRect === void 0 ? void 0 : wrapperRect.width) || 0;
-    var wrapperHeight = (wrapperRect === null || wrapperRect === void 0 ? void 0 : wrapperRect.height) || 0;
-    var contentWidth = (contentRect === null || contentRect === void 0 ? void 0 : contentRect.width) || 0;
-    var contentHeight = (contentRect === null || contentRect === void 0 ? void 0 : contentRect.height) || 0;
-    var isZoomed = wrapperWidth < contentWidth || wrapperHeight < contentHeight;
-    var shouldAnimate = !velocityDisabled && velocity && (velocity === null || velocity === void 0 ? void 0 : velocity.total) > 0.1 && isZoomed;
-    if (shouldAnimate) {
-      handleVelocityPanning(contextInstance);
-    } else {
-      handleAlignToBounds(contextInstance);
-    }
-  }
-}
-function handleZoomToPoint(contextInstance, scale, mouseX, mouseY) {
-  var _a2 = contextInstance.setup, minScale = _a2.minScale, maxScale = _a2.maxScale, limitToBounds = _a2.limitToBounds;
-  var newScale = checkZoomBounds(roundNumber(scale, 2), minScale, maxScale, 0, false);
-  var bounds = handleCalculateBounds(contextInstance, newScale);
-  var _b2 = handleCalculateZoomPositions(contextInstance, mouseX, mouseY, newScale, bounds, limitToBounds), x2 = _b2.x, y3 = _b2.y;
-  return { scale: newScale, positionX: x2, positionY: y3 };
-}
-function handleAlignToScaleBounds(contextInstance, mousePositionX, mousePositionY) {
-  var scale = contextInstance.transformState.scale;
-  var wrapperComponent = contextInstance.wrapperComponent;
-  var _a2 = contextInstance.setup, minScale = _a2.minScale, limitToBounds = _a2.limitToBounds, zoomAnimation = _a2.zoomAnimation;
-  var disabled = zoomAnimation.disabled, animationTime = zoomAnimation.animationTime, animationType = zoomAnimation.animationType;
-  var isDisabled = disabled || scale >= minScale;
-  if (scale >= 1 || limitToBounds) {
-    handleAlignToBounds(contextInstance);
-  }
-  if (isDisabled || !wrapperComponent || !contextInstance.mounted)
-    return;
-  var mouseX = mousePositionX || wrapperComponent.offsetWidth / 2;
-  var mouseY = mousePositionY || wrapperComponent.offsetHeight / 2;
-  var targetState = handleZoomToPoint(contextInstance, minScale, mouseX, mouseY);
-  if (targetState) {
-    animate(contextInstance, targetState, animationTime, animationType);
-  }
-}
-var __assign = function() {
-  __assign = Object.assign || function __assign2(t5) {
-    for (var s3, i4 = 1, n4 = arguments.length; i4 < n4; i4++) {
-      s3 = arguments[i4];
-      for (var p3 in s3) if (Object.prototype.hasOwnProperty.call(s3, p3)) t5[p3] = s3[p3];
-    }
-    return t5;
-  };
-  return __assign.apply(this, arguments);
-};
-function __spreadArray(to, from, pack) {
-  if (pack || arguments.length === 2) for (var i4 = 0, l3 = from.length, ar2; i4 < l3; i4++) {
-    if (ar2 || !(i4 in from)) {
-      if (!ar2) ar2 = Array.prototype.slice.call(from, 0, i4);
-      ar2[i4] = from[i4];
-    }
-  }
-  return to.concat(ar2 || Array.prototype.slice.call(from));
-}
-var initialState = {
-  previousScale: 1,
-  scale: 1,
-  positionX: 0,
-  positionY: 0
-};
-var initialSetup = {
-  disabled: false,
-  minPositionX: null,
-  maxPositionX: null,
-  minPositionY: null,
-  maxPositionY: null,
-  minScale: 1,
-  maxScale: 8,
-  limitToBounds: true,
-  centerZoomedOut: false,
-  centerOnInit: false,
-  disablePadding: false,
-  smooth: true,
-  wheel: {
-    step: 0.2,
-    disabled: false,
-    smoothStep: 1e-3,
-    wheelDisabled: false,
-    touchPadDisabled: false,
-    activationKeys: [],
-    excluded: []
-  },
-  panning: {
-    disabled: false,
-    velocityDisabled: false,
-    lockAxisX: false,
-    lockAxisY: false,
-    allowLeftClickPan: true,
-    allowMiddleClickPan: true,
-    allowRightClickPan: true,
-    wheelPanning: false,
-    activationKeys: [],
-    excluded: []
-  },
-  pinch: {
-    step: 5,
-    disabled: false,
-    excluded: []
-  },
-  doubleClick: {
-    disabled: false,
-    step: 0.7,
-    mode: "zoomIn",
-    animationType: "easeOut",
-    animationTime: 200,
-    excluded: []
-  },
-  zoomAnimation: {
-    disabled: false,
-    size: 0.4,
-    animationTime: 200,
-    animationType: "easeOut"
-  },
-  alignmentAnimation: {
-    disabled: false,
-    sizeX: 100,
-    sizeY: 100,
-    animationTime: 200,
-    velocityAlignmentTime: 400,
-    animationType: "easeOut"
-  },
-  velocityAnimation: {
-    disabled: false,
-    sensitivity: 1,
-    animationTime: 400,
-    animationType: "easeOut",
-    equalToMove: true
-  }
-};
-var baseClasses = {
-  wrapperClass: "react-transform-wrapper",
-  contentClass: "react-transform-component"
-};
-var createState = function(props) {
-  var _a2, _b2, _c, _d;
-  return {
-    previousScale: (_a2 = props.initialScale) !== null && _a2 !== void 0 ? _a2 : initialState.scale,
-    scale: (_b2 = props.initialScale) !== null && _b2 !== void 0 ? _b2 : initialState.scale,
-    positionX: (_c = props.initialPositionX) !== null && _c !== void 0 ? _c : initialState.positionX,
-    positionY: (_d = props.initialPositionY) !== null && _d !== void 0 ? _d : initialState.positionY
-  };
-};
-var createSetup = function(props) {
-  var newSetup = __assign({}, initialSetup);
-  Object.keys(props).forEach(function(key) {
-    var validValue = typeof props[key] !== "undefined";
-    var validParameter = typeof initialSetup[key] !== "undefined";
-    if (validParameter && validValue) {
-      var dataType = Object.prototype.toString.call(initialSetup[key]);
-      var isObject = dataType === "[object Object]";
-      var isArray = dataType === "[object Array]";
-      if (isObject) {
-        newSetup[key] = __assign(__assign({}, initialSetup[key]), props[key]);
-      } else if (isArray) {
-        newSetup[key] = __spreadArray(__spreadArray([], initialSetup[key], true), props[key], true);
-      } else {
-        newSetup[key] = props[key];
-      }
-    }
-  });
-  return newSetup;
-};
-var handleCalculateButtonZoom = function(contextInstance, delta, step) {
-  var scale = contextInstance.transformState.scale;
-  var wrapperComponent = contextInstance.wrapperComponent, setup = contextInstance.setup;
-  var maxScale = setup.maxScale, minScale = setup.minScale, zoomAnimation = setup.zoomAnimation, smooth = setup.smooth;
-  var size = zoomAnimation.size;
-  if (!wrapperComponent) {
-    throw new Error("Wrapper is not mounted");
-  }
-  var targetScale = smooth ? scale * Math.exp(delta * step) : scale + delta * step;
-  var newScale = checkZoomBounds(roundNumber(targetScale, 3), minScale, maxScale, size, false);
-  return newScale;
-};
-function handleZoomToViewCenter(contextInstance, delta, step, animationTime, animationType) {
-  var wrapperComponent = contextInstance.wrapperComponent;
-  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
-  if (!wrapperComponent)
-    return console.error("No WrapperComponent found");
-  var wrapperWidth = wrapperComponent.offsetWidth;
-  var wrapperHeight = wrapperComponent.offsetHeight;
-  var mouseX = (wrapperWidth / 2 - positionX) / scale;
-  var mouseY = (wrapperHeight / 2 - positionY) / scale;
-  var newScale = handleCalculateButtonZoom(contextInstance, delta, step);
-  var targetState = handleZoomToPoint(contextInstance, newScale, mouseX, mouseY);
-  if (!targetState) {
-    return console.error("Error during zoom event. New transformation state was not calculated.");
-  }
-  animate(contextInstance, targetState, animationTime, animationType);
-}
-function resetTransformations(contextInstance, animationTime, animationType, onResetTransformation) {
-  var setup = contextInstance.setup, wrapperComponent = contextInstance.wrapperComponent;
-  var limitToBounds = setup.limitToBounds;
-  var initialTransformation = createState(contextInstance.props);
-  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
-  if (!wrapperComponent)
-    return;
-  var newBounds = calculateBounds(contextInstance, initialTransformation.scale);
-  var boundedPositions = getMouseBoundedPosition(initialTransformation.positionX, initialTransformation.positionY, newBounds, limitToBounds, 0, 0, wrapperComponent);
-  var newState = {
-    scale: initialTransformation.scale,
-    positionX: boundedPositions.x,
-    positionY: boundedPositions.y
-  };
-  if (scale === initialTransformation.scale && positionX === initialTransformation.positionX && positionY === initialTransformation.positionY) {
-    return;
-  }
-  onResetTransformation === null || onResetTransformation === void 0 ? void 0 : onResetTransformation();
-  animate(contextInstance, newState, animationTime, animationType);
-}
-function getOffset(element, wrapper, content, state) {
-  var offset = element.getBoundingClientRect();
-  var wrapperOffset = wrapper.getBoundingClientRect();
-  var contentOffset = content.getBoundingClientRect();
-  var xOff = wrapperOffset.x * state.scale;
-  var yOff = wrapperOffset.y * state.scale;
-  return {
-    x: (offset.x - contentOffset.x + xOff) / state.scale,
-    y: (offset.y - contentOffset.y + yOff) / state.scale
-  };
-}
-function calculateZoomToNode(contextInstance, node2, customZoom) {
-  var wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent, transformState = contextInstance.transformState;
-  var _a2 = contextInstance.setup, limitToBounds = _a2.limitToBounds, minScale = _a2.minScale, maxScale = _a2.maxScale;
-  if (!wrapperComponent || !contentComponent)
-    return transformState;
-  var wrapperRect = wrapperComponent.getBoundingClientRect();
-  var nodeRect = node2.getBoundingClientRect();
-  var nodeOffset = getOffset(node2, wrapperComponent, contentComponent, transformState);
-  var nodeLeft = nodeOffset.x;
-  var nodeTop = nodeOffset.y;
-  var nodeWidth = nodeRect.width / transformState.scale;
-  var nodeHeight = nodeRect.height / transformState.scale;
-  var scaleX = wrapperComponent.offsetWidth / nodeWidth;
-  var scaleY = wrapperComponent.offsetHeight / nodeHeight;
-  var newScale = checkZoomBounds(customZoom || Math.min(scaleX, scaleY), minScale, maxScale, 0, false);
-  var offsetX = (wrapperRect.width - nodeWidth * newScale) / 2;
-  var offsetY = (wrapperRect.height - nodeHeight * newScale) / 2;
-  var newPositionX = (wrapperRect.left - nodeLeft) * newScale + offsetX;
-  var newPositionY = (wrapperRect.top - nodeTop) * newScale + offsetY;
-  var bounds = calculateBounds(contextInstance, newScale);
-  var _b2 = getMouseBoundedPosition(newPositionX, newPositionY, bounds, limitToBounds, 0, 0, wrapperComponent), x2 = _b2.x, y3 = _b2.y;
-  return { positionX: x2, positionY: y3, scale: newScale };
-}
-var zoomIn = function(contextInstance) {
-  return function(step, animationTime, animationType) {
-    if (step === void 0) {
-      step = 0.5;
-    }
-    if (animationTime === void 0) {
-      animationTime = 300;
-    }
-    if (animationType === void 0) {
-      animationType = "easeOut";
-    }
-    handleZoomToViewCenter(contextInstance, 1, step, animationTime, animationType);
-  };
-};
-var zoomOut = function(contextInstance) {
-  return function(step, animationTime, animationType) {
-    if (step === void 0) {
-      step = 0.5;
-    }
-    if (animationTime === void 0) {
-      animationTime = 300;
-    }
-    if (animationType === void 0) {
-      animationType = "easeOut";
-    }
-    handleZoomToViewCenter(contextInstance, -1, step, animationTime, animationType);
-  };
-};
-var setTransform = function(contextInstance) {
-  return function(newPositionX, newPositionY, newScale, animationTime, animationType) {
-    if (animationTime === void 0) {
-      animationTime = 300;
-    }
-    if (animationType === void 0) {
-      animationType = "easeOut";
-    }
-    var _a2 = contextInstance.transformState, positionX = _a2.positionX, positionY = _a2.positionY, scale = _a2.scale;
-    var wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent;
-    var disabled = contextInstance.setup.disabled;
-    if (disabled || !wrapperComponent || !contentComponent)
-      return;
-    var targetState = {
-      positionX: Number.isNaN(newPositionX) ? positionX : newPositionX,
-      positionY: Number.isNaN(newPositionY) ? positionY : newPositionY,
-      scale: Number.isNaN(newScale) ? scale : newScale
-    };
-    animate(contextInstance, targetState, animationTime, animationType);
-  };
-};
-var resetTransform = function(contextInstance) {
-  return function(animationTime, animationType) {
-    if (animationTime === void 0) {
-      animationTime = 200;
-    }
-    if (animationType === void 0) {
-      animationType = "easeOut";
-    }
-    resetTransformations(contextInstance, animationTime, animationType);
-  };
-};
-var centerView = function(contextInstance) {
-  return function(scale, animationTime, animationType) {
-    if (animationTime === void 0) {
-      animationTime = 200;
-    }
-    if (animationType === void 0) {
-      animationType = "easeOut";
-    }
-    var transformState = contextInstance.transformState, wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent;
-    if (wrapperComponent && contentComponent) {
-      var targetState = getCenterPosition(scale || transformState.scale, wrapperComponent, contentComponent);
-      animate(contextInstance, targetState, animationTime, animationType);
-    }
-  };
-};
-var zoomToElement = function(contextInstance) {
-  return function(node2, scale, animationTime, animationType) {
-    if (animationTime === void 0) {
-      animationTime = 600;
-    }
-    if (animationType === void 0) {
-      animationType = "easeOut";
-    }
-    handleCancelAnimation(contextInstance);
-    var wrapperComponent = contextInstance.wrapperComponent;
-    var target = typeof node2 === "string" ? document.getElementById(node2) : node2;
-    if (wrapperComponent && target && wrapperComponent.contains(target)) {
-      var targetState = calculateZoomToNode(contextInstance, target, scale);
-      animate(contextInstance, targetState, animationTime, animationType);
-    }
-  };
-};
-var getControls = function(contextInstance) {
-  return {
-    instance: contextInstance,
-    zoomIn: zoomIn(contextInstance),
-    zoomOut: zoomOut(contextInstance),
-    setTransform: setTransform(contextInstance),
-    resetTransform: resetTransform(contextInstance),
-    centerView: centerView(contextInstance),
-    zoomToElement: zoomToElement(contextInstance)
-  };
-};
-var getState = function(contextInstance) {
-  return {
-    instance: contextInstance,
-    state: contextInstance.transformState
-  };
-};
-var getContext = function(contextInstance) {
-  var ref = {};
-  Object.assign(ref, getState(contextInstance));
-  Object.assign(ref, getControls(contextInstance));
-  return ref;
-};
-var passiveSupported = false;
-function makePassiveEventOption() {
-  try {
-    var options = {
-      get passive() {
-        passiveSupported = true;
-        return false;
-      }
-    };
-    return options;
-  } catch (err2) {
-    passiveSupported = false;
-    return passiveSupported;
-  }
-}
-var matchPrefix = ".".concat(baseClasses.wrapperClass);
-var isExcludedNode = function(node2, excluded) {
-  return excluded.some(function(exclude) {
-    return node2.matches("".concat(matchPrefix, " ").concat(exclude, ", ").concat(matchPrefix, " .").concat(exclude, ", ").concat(matchPrefix, " ").concat(exclude, " *, ").concat(matchPrefix, " .").concat(exclude, " *"));
-  });
-};
-var cancelTimeout = function(timeout) {
-  if (timeout) {
-    clearTimeout(timeout);
-  }
-};
-var getTransformStyles = function(x2, y3, scale) {
-  return "translate(".concat(x2, "px, ").concat(y3, "px) scale(").concat(scale, ")");
-};
-var getCenterPosition = function(scale, wrapperComponent, contentComponent) {
-  var contentWidth = contentComponent.offsetWidth * scale;
-  var contentHeight = contentComponent.offsetHeight * scale;
-  var centerPositionX = (wrapperComponent.offsetWidth - contentWidth) / 2;
-  var centerPositionY = (wrapperComponent.offsetHeight - contentHeight) / 2;
-  return {
-    scale,
-    positionX: centerPositionX,
-    positionY: centerPositionY
-  };
-};
-function mergeRefs(refs) {
-  return function(value) {
-    refs.forEach(function(ref) {
-      if (typeof ref === "function") {
-        ref(value);
-      } else if (ref != null) {
-        ref.current = value;
-      }
-    });
-  };
-}
-var isWheelAllowed = function(contextInstance, event) {
-  var _a2 = contextInstance.setup.wheel, disabled = _a2.disabled, wheelDisabled = _a2.wheelDisabled, touchPadDisabled = _a2.touchPadDisabled, excluded = _a2.excluded;
-  var isInitialized = contextInstance.isInitialized, isPanning = contextInstance.isPanning;
-  var target = event.target;
-  var isAllowed = isInitialized && !isPanning && !disabled && target;
-  if (!isAllowed)
-    return false;
-  if (wheelDisabled && !event.ctrlKey)
-    return false;
-  if (touchPadDisabled && event.ctrlKey)
-    return false;
-  var isExcluded = isExcludedNode(target, excluded);
-  if (isExcluded)
-    return false;
-  return true;
-};
-var getDeltaY = function(event) {
-  if (event) {
-    return event.deltaY < 0 ? 1 : -1;
-  }
-  return 0;
-};
-function getDelta(event, customDelta) {
-  var deltaY = getDeltaY(event);
-  var delta = checkIsNumber(customDelta, deltaY);
-  return delta;
-}
-function getMousePosition(event, contentComponent, scale) {
-  var contentRect = contentComponent.getBoundingClientRect();
-  var mouseX = 0;
-  var mouseY = 0;
-  if ("clientX" in event) {
-    mouseX = (event.clientX - contentRect.left) / scale;
-    mouseY = (event.clientY - contentRect.top) / scale;
-  } else {
-    var touch = event.touches[0];
-    mouseX = (touch.clientX - contentRect.left) / scale;
-    mouseY = (touch.clientY - contentRect.top) / scale;
-  }
-  if (Number.isNaN(mouseX) || Number.isNaN(mouseY))
-    console.error("No mouse or touch offset found");
-  return {
-    x: mouseX,
-    y: mouseY
-  };
-}
-var handleCalculateWheelZoom = function(contextInstance, delta, step, disable, getTarget) {
-  var scale = contextInstance.transformState.scale;
-  var wrapperComponent = contextInstance.wrapperComponent, setup = contextInstance.setup;
-  var maxScale = setup.maxScale, minScale = setup.minScale, zoomAnimation = setup.zoomAnimation, disablePadding = setup.disablePadding;
-  var size = zoomAnimation.size, disabled = zoomAnimation.disabled;
-  if (!wrapperComponent) {
-    throw new Error("Wrapper is not mounted");
-  }
-  var targetScale = scale + delta * step;
-  if (getTarget)
-    return targetScale;
-  var paddingEnabled = disable ? false : !disabled;
-  var newScale = checkZoomBounds(roundNumber(targetScale, 3), minScale, maxScale, size, paddingEnabled && !disablePadding);
-  return newScale;
-};
-var handleWheelZoomStop = function(contextInstance, event) {
-  var previousWheelEvent = contextInstance.previousWheelEvent;
-  var scale = contextInstance.transformState.scale;
-  var _a2 = contextInstance.setup, maxScale = _a2.maxScale, minScale = _a2.minScale;
-  if (!previousWheelEvent)
-    return false;
-  if (scale < maxScale || scale > minScale)
-    return true;
-  if (Math.sign(previousWheelEvent.deltaY) !== Math.sign(event.deltaY))
-    return true;
-  if (previousWheelEvent.deltaY > 0 && previousWheelEvent.deltaY < event.deltaY)
-    return true;
-  if (previousWheelEvent.deltaY < 0 && previousWheelEvent.deltaY > event.deltaY)
-    return true;
-  if (Math.sign(previousWheelEvent.deltaY) !== Math.sign(event.deltaY))
-    return true;
-  return false;
-};
-var isPinchStartAllowed = function(contextInstance, event) {
-  var _a2 = contextInstance.setup.pinch, disabled = _a2.disabled, excluded = _a2.excluded;
-  var isInitialized = contextInstance.isInitialized;
-  var target = event.target;
-  var isAllowed = isInitialized && !disabled && target;
-  if (!isAllowed)
-    return false;
-  var isExcluded = isExcludedNode(target, excluded);
-  if (isExcluded)
-    return false;
-  return true;
-};
-var isPinchAllowed = function(contextInstance) {
-  var disabled = contextInstance.setup.pinch.disabled;
-  var isInitialized = contextInstance.isInitialized, pinchStartDistance = contextInstance.pinchStartDistance;
-  var isAllowed = isInitialized && !disabled && pinchStartDistance;
-  if (!isAllowed)
-    return false;
-  return true;
-};
-var calculateTouchMidPoint = function(event, scale, contentComponent) {
-  var contentRect = contentComponent.getBoundingClientRect();
-  var touches = event.touches;
-  var firstPointX = roundNumber(touches[0].clientX - contentRect.left, 5);
-  var firstPointY = roundNumber(touches[0].clientY - contentRect.top, 5);
-  var secondPointX = roundNumber(touches[1].clientX - contentRect.left, 5);
-  var secondPointY = roundNumber(touches[1].clientY - contentRect.top, 5);
-  return {
-    x: (firstPointX + secondPointX) / 2 / scale,
-    y: (firstPointY + secondPointY) / 2 / scale
-  };
-};
-var getTouchDistance = function(event) {
-  return Math.sqrt(Math.pow(event.touches[0].pageX - event.touches[1].pageX, 2) + Math.pow(event.touches[0].pageY - event.touches[1].pageY, 2));
-};
-var calculatePinchZoom = function(contextInstance, currentDistance) {
-  var pinchStartScale = contextInstance.pinchStartScale, pinchStartDistance = contextInstance.pinchStartDistance, setup = contextInstance.setup;
-  var maxScale = setup.maxScale, minScale = setup.minScale, zoomAnimation = setup.zoomAnimation, disablePadding = setup.disablePadding;
-  var size = zoomAnimation.size, disabled = zoomAnimation.disabled;
-  if (!pinchStartScale || pinchStartDistance === null || !currentDistance) {
-    throw new Error("Pinch touches distance was not provided");
-  }
-  if (currentDistance < 0) {
-    return contextInstance.transformState.scale;
-  }
-  var touchProportion = currentDistance / pinchStartDistance;
-  var scaleDifference = touchProportion * pinchStartScale;
-  return checkZoomBounds(roundNumber(scaleDifference, 2), minScale, maxScale, size, !disabled && !disablePadding);
-};
-var wheelStopEventTime = 160;
-var wheelAnimationTime = 100;
-var handleWheelStart = function(contextInstance, event) {
-  var _a2 = contextInstance.props, onWheelStart = _a2.onWheelStart, onZoomStart = _a2.onZoomStart;
-  if (!contextInstance.wheelStopEventTimer) {
-    handleCancelAnimation(contextInstance);
-    handleCallback(getContext(contextInstance), event, onWheelStart);
-    handleCallback(getContext(contextInstance), event, onZoomStart);
-  }
-};
-var handleWheelZoom = function(contextInstance, event) {
-  var _a2 = contextInstance.props, onWheel = _a2.onWheel, onZoom = _a2.onZoom;
-  var contentComponent = contextInstance.contentComponent, setup = contextInstance.setup, transformState = contextInstance.transformState;
-  var scale = transformState.scale;
-  var limitToBounds = setup.limitToBounds, centerZoomedOut = setup.centerZoomedOut, zoomAnimation = setup.zoomAnimation, wheel = setup.wheel, disablePadding = setup.disablePadding, smooth = setup.smooth;
-  var size = zoomAnimation.size, disabled = zoomAnimation.disabled;
-  var step = wheel.step, smoothStep = wheel.smoothStep;
-  if (!contentComponent) {
-    throw new Error("Component not mounted");
-  }
-  event.preventDefault();
-  event.stopPropagation();
-  var delta = getDelta(event, null);
-  var zoomStep = smooth ? smoothStep * Math.abs(event.deltaY) : step;
-  var newScale = handleCalculateWheelZoom(contextInstance, delta, zoomStep, !event.ctrlKey);
-  if (scale === newScale)
-    return;
-  var bounds = handleCalculateBounds(contextInstance, newScale);
-  var mousePosition = getMousePosition(event, contentComponent, scale);
-  var isPaddingDisabled = disabled || size === 0 || centerZoomedOut || disablePadding;
-  var isLimitedToBounds = limitToBounds && isPaddingDisabled;
-  var _b2 = handleCalculateZoomPositions(contextInstance, mousePosition.x, mousePosition.y, newScale, bounds, isLimitedToBounds), x2 = _b2.x, y3 = _b2.y;
-  contextInstance.previousWheelEvent = event;
-  contextInstance.setTransformState(newScale, x2, y3);
-  handleCallback(getContext(contextInstance), event, onWheel);
-  handleCallback(getContext(contextInstance), event, onZoom);
-};
-var handleWheelStop = function(contextInstance, event) {
-  var _a2 = contextInstance.props, onWheelStop = _a2.onWheelStop, onZoomStop = _a2.onZoomStop;
-  cancelTimeout(contextInstance.wheelAnimationTimer);
-  contextInstance.wheelAnimationTimer = setTimeout(function() {
-    if (!contextInstance.mounted)
-      return;
-    handleAlignToScaleBounds(contextInstance, event.x, event.y);
-    contextInstance.wheelAnimationTimer = null;
-  }, wheelAnimationTime);
-  var hasStoppedZooming = handleWheelZoomStop(contextInstance, event);
-  if (hasStoppedZooming) {
-    cancelTimeout(contextInstance.wheelStopEventTimer);
-    contextInstance.wheelStopEventTimer = setTimeout(function() {
-      if (!contextInstance.mounted)
-        return;
-      contextInstance.wheelStopEventTimer = null;
-      handleCallback(getContext(contextInstance), event, onWheelStop);
-      handleCallback(getContext(contextInstance), event, onZoomStop);
-    }, wheelStopEventTime);
-  }
-};
-var getTouchCenter = function(event) {
-  var totalX = 0;
-  var totalY = 0;
-  for (var i4 = 0; i4 < 2; i4 += 1) {
-    totalX += event.touches[i4].clientX;
-    totalY += event.touches[i4].clientY;
-  }
-  var x2 = totalX / 2;
-  var y3 = totalY / 2;
-  return { x: x2, y: y3 };
-};
-var handlePinchStart = function(contextInstance, event) {
-  var distance = getTouchDistance(event);
-  contextInstance.pinchStartDistance = distance;
-  contextInstance.lastDistance = distance;
-  contextInstance.pinchStartScale = contextInstance.transformState.scale;
-  contextInstance.isPanning = false;
-  var center = getTouchCenter(event);
-  contextInstance.pinchLastCenterX = center.x;
-  contextInstance.pinchLastCenterY = center.y;
-  handleCancelAnimation(contextInstance);
-};
-var handlePinchZoom = function(contextInstance, event) {
-  var contentComponent = contextInstance.contentComponent, pinchStartDistance = contextInstance.pinchStartDistance, wrapperComponent = contextInstance.wrapperComponent;
-  var scale = contextInstance.transformState.scale;
-  var _a2 = contextInstance.setup, limitToBounds = _a2.limitToBounds, centerZoomedOut = _a2.centerZoomedOut, zoomAnimation = _a2.zoomAnimation, alignmentAnimation = _a2.alignmentAnimation;
-  var disabled = zoomAnimation.disabled, size = zoomAnimation.size;
-  if (pinchStartDistance === null || !contentComponent)
-    return;
-  var midPoint = calculateTouchMidPoint(event, scale, contentComponent);
-  if (!Number.isFinite(midPoint.x) || !Number.isFinite(midPoint.y))
-    return;
-  var currentDistance = getTouchDistance(event);
-  var newScale = calculatePinchZoom(contextInstance, currentDistance);
-  var center = getTouchCenter(event);
-  var panX = center.x - (contextInstance.pinchLastCenterX || 0);
-  var panY = center.y - (contextInstance.pinchLastCenterY || 0);
-  if (newScale === scale && panX === 0 && panY === 0)
-    return;
-  contextInstance.pinchLastCenterX = center.x;
-  contextInstance.pinchLastCenterY = center.y;
-  var bounds = handleCalculateBounds(contextInstance, newScale);
-  var isPaddingDisabled = disabled || size === 0 || centerZoomedOut;
-  var isLimitedToBounds = limitToBounds && isPaddingDisabled;
-  var _b2 = handleCalculateZoomPositions(contextInstance, midPoint.x, midPoint.y, newScale, bounds, isLimitedToBounds), x2 = _b2.x, y3 = _b2.y;
-  contextInstance.pinchMidpoint = midPoint;
-  contextInstance.lastDistance = currentDistance;
-  var sizeX = alignmentAnimation.sizeX, sizeY = alignmentAnimation.sizeY;
-  var paddingValueX = getPaddingValue(contextInstance, sizeX);
-  var paddingValueY = getPaddingValue(contextInstance, sizeY);
-  var newPositionX = x2 + panX;
-  var newPositionY = y3 + panY;
-  var _c = getMouseBoundedPosition(newPositionX, newPositionY, bounds, limitToBounds, paddingValueX, paddingValueY, wrapperComponent), finalX = _c.x, finalY = _c.y;
-  contextInstance.setTransformState(newScale, finalX, finalY);
-};
-var handlePinchStop = function(contextInstance) {
-  var pinchMidpoint = contextInstance.pinchMidpoint;
-  contextInstance.velocity = null;
-  contextInstance.lastDistance = null;
-  contextInstance.pinchMidpoint = null;
-  contextInstance.pinchStartScale = null;
-  contextInstance.pinchStartDistance = null;
-  handleAlignToScaleBounds(contextInstance, pinchMidpoint === null || pinchMidpoint === void 0 ? void 0 : pinchMidpoint.x, pinchMidpoint === null || pinchMidpoint === void 0 ? void 0 : pinchMidpoint.y);
-};
-var handleDoubleClickStop = function(contextInstance, event) {
-  var onZoomStop = contextInstance.props.onZoomStop;
-  var animationTime = contextInstance.setup.doubleClick.animationTime;
-  cancelTimeout(contextInstance.doubleClickStopEventTimer);
-  contextInstance.doubleClickStopEventTimer = setTimeout(function() {
-    contextInstance.doubleClickStopEventTimer = null;
-    handleCallback(getContext(contextInstance), event, onZoomStop);
-  }, animationTime);
-};
-var handleDoubleClickResetMode = function(contextInstance, event) {
-  var _a2 = contextInstance.props, onZoomStart = _a2.onZoomStart, onZoom = _a2.onZoom;
-  var _b2 = contextInstance.setup.doubleClick, animationTime = _b2.animationTime, animationType = _b2.animationType;
-  handleCallback(getContext(contextInstance), event, onZoomStart);
-  resetTransformations(contextInstance, animationTime, animationType, function() {
-    return handleCallback(getContext(contextInstance), event, onZoom);
-  });
-  handleDoubleClickStop(contextInstance, event);
-};
-function getDoubleClickScale(mode, scale) {
-  if (mode === "toggle") {
-    return scale === 1 ? 1 : -1;
-  }
-  return mode === "zoomOut" ? -1 : 1;
-}
-function handleDoubleClick(contextInstance, event) {
-  var setup = contextInstance.setup, doubleClickStopEventTimer = contextInstance.doubleClickStopEventTimer, transformState = contextInstance.transformState, contentComponent = contextInstance.contentComponent;
-  var scale = transformState.scale;
-  var _a2 = contextInstance.props, onZoomStart = _a2.onZoomStart, onZoom = _a2.onZoom;
-  var _b2 = setup.doubleClick, disabled = _b2.disabled, mode = _b2.mode, step = _b2.step, animationTime = _b2.animationTime, animationType = _b2.animationType;
-  if (disabled)
-    return;
-  if (doubleClickStopEventTimer)
-    return;
-  if (mode === "reset") {
-    return handleDoubleClickResetMode(contextInstance, event);
-  }
-  if (!contentComponent)
-    return console.error("No ContentComponent found");
-  var delta = getDoubleClickScale(mode, contextInstance.transformState.scale);
-  var newScale = handleCalculateButtonZoom(contextInstance, delta, step);
-  if (scale === newScale)
-    return;
-  handleCallback(getContext(contextInstance), event, onZoomStart);
-  var mousePosition = getMousePosition(event, contentComponent, scale);
-  var targetState = handleZoomToPoint(contextInstance, newScale, mousePosition.x, mousePosition.y);
-  if (!targetState) {
-    return console.error("Error during zoom event. New transformation state was not calculated.");
-  }
-  handleCallback(getContext(contextInstance), event, onZoom);
-  animate(contextInstance, targetState, animationTime, animationType);
-  handleDoubleClickStop(contextInstance, event);
-}
-var isDoubleClickAllowed = function(contextInstance, event) {
-  var isInitialized = contextInstance.isInitialized, setup = contextInstance.setup, wrapperComponent = contextInstance.wrapperComponent;
-  var _a2 = setup.doubleClick, disabled = _a2.disabled, excluded = _a2.excluded;
-  var target = event.target;
-  var isWrapperChild = wrapperComponent === null || wrapperComponent === void 0 ? void 0 : wrapperComponent.contains(target);
-  var isAllowed = isInitialized && target && isWrapperChild && !disabled;
-  if (!isAllowed)
-    return false;
-  var isExcluded = isExcludedNode(target, excluded);
-  if (isExcluded)
-    return false;
-  return true;
-};
-var ZoomPanPinch = (
-  /** @class */
-  /* @__PURE__ */ function() {
-    function ZoomPanPinch2(props) {
-      var _this = this;
-      this.mounted = true;
-      this.pinchLastCenterX = null;
-      this.pinchLastCenterY = null;
-      this.onChangeCallbacks = /* @__PURE__ */ new Set();
-      this.onInitCallbacks = /* @__PURE__ */ new Set();
-      this.wrapperComponent = null;
-      this.contentComponent = null;
-      this.isInitialized = false;
-      this.bounds = null;
-      this.previousWheelEvent = null;
-      this.wheelStopEventTimer = null;
-      this.wheelAnimationTimer = null;
-      this.isPanning = false;
-      this.isWheelPanning = false;
-      this.startCoords = null;
-      this.lastTouch = null;
-      this.distance = null;
-      this.lastDistance = null;
-      this.pinchStartDistance = null;
-      this.pinchStartScale = null;
-      this.pinchMidpoint = null;
-      this.doubleClickStopEventTimer = null;
-      this.velocity = null;
-      this.velocityTime = null;
-      this.lastMousePosition = null;
-      this.animate = false;
-      this.animation = null;
-      this.maxBounds = null;
-      this.pressedKeys = {};
-      this.mount = function() {
-        _this.initializeWindowEvents();
-      };
-      this.unmount = function() {
-        _this.cleanupWindowEvents();
-      };
-      this.update = function(newProps) {
-        _this.props = newProps;
-        handleCalculateBounds(_this, _this.transformState.scale);
-        _this.setup = createSetup(newProps);
-      };
-      this.initializeWindowEvents = function() {
-        var _a2, _b2;
-        var passive = makePassiveEventOption();
-        var currentDocument = (_a2 = _this.wrapperComponent) === null || _a2 === void 0 ? void 0 : _a2.ownerDocument;
-        var currentWindow = currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.defaultView;
-        (_b2 = _this.wrapperComponent) === null || _b2 === void 0 ? void 0 : _b2.addEventListener("wheel", _this.onWheelPanning, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("mousedown", _this.onPanningStart, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("mousemove", _this.onPanning, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("mouseup", _this.onPanningStop, passive);
-        currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.addEventListener("mouseleave", _this.clearPanning, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("keyup", _this.setKeyUnPressed, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("keydown", _this.setKeyPressed, passive);
-      };
-      this.cleanupWindowEvents = function() {
-        var _a2, _b2;
-        var passive = makePassiveEventOption();
-        var currentDocument = (_a2 = _this.wrapperComponent) === null || _a2 === void 0 ? void 0 : _a2.ownerDocument;
-        var currentWindow = currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.defaultView;
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("mousedown", _this.onPanningStart, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("mousemove", _this.onPanning, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("mouseup", _this.onPanningStop, passive);
-        currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.removeEventListener("mouseleave", _this.clearPanning, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("keyup", _this.setKeyUnPressed, passive);
-        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("keydown", _this.setKeyPressed, passive);
-        document.removeEventListener("mouseleave", _this.clearPanning, passive);
-        handleCancelAnimation(_this);
-        (_b2 = _this.observer) === null || _b2 === void 0 ? void 0 : _b2.disconnect();
-      };
-      this.handleInitializeWrapperEvents = function(wrapper) {
-        var passive = makePassiveEventOption();
-        wrapper.addEventListener("wheel", _this.onWheelZoom, passive);
-        wrapper.addEventListener("dblclick", _this.onDoubleClick, passive);
-        wrapper.addEventListener("touchstart", _this.onTouchPanningStart, passive);
-        wrapper.addEventListener("touchmove", _this.onTouchPanning, passive);
-        wrapper.addEventListener("touchend", _this.onTouchPanningStop, passive);
-      };
-      this.handleInitialize = function(contentComponent) {
-        var centerOnInit = _this.setup.centerOnInit;
-        _this.applyTransformation();
-        _this.onInitCallbacks.forEach(function(callback) {
-          return callback(getContext(_this));
-        });
-        if (centerOnInit) {
-          _this.setCenter();
-          _this.observer = new ResizeObserver(function() {
-            var _a2;
-            var currentWidth = contentComponent.offsetWidth;
-            var currentHeight = contentComponent.offsetHeight;
-            if (currentWidth > 0 || currentHeight > 0) {
-              _this.onInitCallbacks.forEach(function(callback) {
-                return callback(getContext(_this));
-              });
-              _this.setCenter();
-              (_a2 = _this.observer) === null || _a2 === void 0 ? void 0 : _a2.disconnect();
-            }
-          });
-          setTimeout(function() {
-            var _a2;
-            (_a2 = _this.observer) === null || _a2 === void 0 ? void 0 : _a2.disconnect();
-          }, 5e3);
-          _this.observer.observe(contentComponent);
-        }
-      };
-      this.onWheelZoom = function(event) {
-        var disabled = _this.setup.disabled;
-        if (disabled)
-          return;
-        var isAllowed = isWheelAllowed(_this, event);
-        if (!isAllowed)
-          return;
-        var keysPressed = _this.isPressingKeys(_this.setup.wheel.activationKeys);
-        if (!keysPressed)
-          return;
-        handleWheelStart(_this, event);
-        handleWheelZoom(_this, event);
-        handleWheelStop(_this, event);
-      };
-      this.onWheelPanning = function(event) {
-        var _a2 = _this.setup, disabled = _a2.disabled, wheel = _a2.wheel, panning = _a2.panning;
-        if (!_this.wrapperComponent || !_this.contentComponent || disabled || !wheel.wheelDisabled || panning.disabled || !panning.wheelPanning || event.ctrlKey) {
-          return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-        var _b2 = _this.transformState, positionX = _b2.positionX, positionY = _b2.positionY;
-        var mouseX = positionX - event.deltaX;
-        var mouseY = positionY - event.deltaY;
-        var newPositionX = panning.lockAxisX ? positionX : mouseX;
-        var newPositionY = panning.lockAxisY ? positionY : mouseY;
-        var _c = _this.setup.alignmentAnimation, sizeX = _c.sizeX, sizeY = _c.sizeY;
-        var paddingValueX = getPaddingValue(_this, sizeX);
-        var paddingValueY = getPaddingValue(_this, sizeY);
-        if (newPositionX === positionX && newPositionY === positionY)
-          return;
-        handleNewPosition(_this, newPositionX, newPositionY, paddingValueX, paddingValueY);
-      };
-      this.onPanningStart = function(event) {
-        var disabled = _this.setup.disabled;
-        var onPanningStart = _this.props.onPanningStart;
-        if (disabled)
-          return;
-        var isAllowed = isPanningStartAllowed(_this, event);
-        if (!isAllowed)
-          return;
-        var keysPressed = _this.isPressingKeys(_this.setup.panning.activationKeys);
-        if (!keysPressed)
-          return;
-        if (event.button === 0 && !_this.setup.panning.allowLeftClickPan)
-          return;
-        if (event.button === 1 && !_this.setup.panning.allowMiddleClickPan)
-          return;
-        if (event.button === 2 && !_this.setup.panning.allowRightClickPan)
-          return;
-        event.preventDefault();
-        event.stopPropagation();
-        handleCancelAnimation(_this);
-        handlePanningStart(_this, event);
-        handleCallback(getContext(_this), event, onPanningStart);
-      };
-      this.onPanning = function(event) {
-        var disabled = _this.setup.disabled;
-        var onPanning = _this.props.onPanning;
-        if (disabled)
-          return;
-        var isAllowed = isPanningAllowed(_this);
-        if (!isAllowed)
-          return;
-        var keysPressed = _this.isPressingKeys(_this.setup.panning.activationKeys);
-        if (!keysPressed)
-          return;
-        event.preventDefault();
-        event.stopPropagation();
-        handlePanning(_this, event.clientX, event.clientY);
-        handleCallback(getContext(_this), event, onPanning);
-      };
-      this.onPanningStop = function(event) {
-        var onPanningStop = _this.props.onPanningStop;
-        if (_this.isPanning) {
-          handlePanningEnd(_this);
-          handleCallback(getContext(_this), event, onPanningStop);
-        }
-      };
-      this.onPinchStart = function(event) {
-        var disabled = _this.setup.disabled;
-        var _a2 = _this.props, onPinchingStart = _a2.onPinchingStart, onZoomStart = _a2.onZoomStart;
-        if (disabled)
-          return;
-        var isAllowed = isPinchStartAllowed(_this, event);
-        if (!isAllowed)
-          return;
-        handlePinchStart(_this, event);
-        handleCancelAnimation(_this);
-        handleCallback(getContext(_this), event, onPinchingStart);
-        handleCallback(getContext(_this), event, onZoomStart);
-      };
-      this.onPinch = function(event) {
-        var disabled = _this.setup.disabled;
-        var _a2 = _this.props, onPinching = _a2.onPinching, onZoom = _a2.onZoom;
-        if (disabled)
-          return;
-        var isAllowed = isPinchAllowed(_this);
-        if (!isAllowed)
-          return;
-        event.preventDefault();
-        event.stopPropagation();
-        handlePinchZoom(_this, event);
-        handleCallback(getContext(_this), event, onPinching);
-        handleCallback(getContext(_this), event, onZoom);
-      };
-      this.onPinchStop = function(event) {
-        var _a2 = _this.props, onPinchingStop = _a2.onPinchingStop, onZoomStop = _a2.onZoomStop;
-        if (_this.pinchStartScale) {
-          handlePinchStop(_this);
-          handleCallback(getContext(_this), event, onPinchingStop);
-          handleCallback(getContext(_this), event, onZoomStop);
-        }
-      };
-      this.onTouchPanningStart = function(event) {
-        var disabled = _this.setup.disabled;
-        var onPanningStart = _this.props.onPanningStart;
-        if (disabled)
-          return;
-        var isAllowed = isPanningStartAllowed(_this, event);
-        if (!isAllowed)
-          return;
-        var isDoubleTap = _this.lastTouch && +/* @__PURE__ */ new Date() - _this.lastTouch < 200;
-        if (!isDoubleTap) {
-          _this.lastTouch = +/* @__PURE__ */ new Date();
-          handleCancelAnimation(_this);
-          var touches = event.touches;
-          var isPanningAction = touches.length === 1;
-          var isPinchAction = touches.length === 2;
-          if (isPanningAction) {
-            handleCancelAnimation(_this);
-            handlePanningStart(_this, event);
-            handleCallback(getContext(_this), event, onPanningStart);
-          }
-          if (isPinchAction) {
-            _this.onPinchStart(event);
-          }
-        }
-      };
-      this.onTouchPanning = function(event) {
-        var disabled = _this.setup.disabled;
-        var onPanning = _this.props.onPanning;
-        if (_this.isPanning && event.touches.length === 1) {
-          if (disabled)
-            return;
-          var isAllowed = isPanningAllowed(_this);
-          if (!isAllowed)
-            return;
-          event.preventDefault();
-          event.stopPropagation();
-          var touch = event.touches[0];
-          handlePanning(_this, touch.clientX, touch.clientY);
-          handleCallback(getContext(_this), event, onPanning);
-        } else if (event.touches.length > 1) {
-          _this.onPinch(event);
-        }
-      };
-      this.onTouchPanningStop = function(event) {
-        _this.onPanningStop(event);
-        _this.onPinchStop(event);
-      };
-      this.onDoubleClick = function(event) {
-        var disabled = _this.setup.disabled;
-        if (disabled)
-          return;
-        var isAllowed = isDoubleClickAllowed(_this, event);
-        if (!isAllowed)
-          return;
-        handleDoubleClick(_this, event);
-      };
-      this.clearPanning = function(event) {
-        if (_this.isPanning) {
-          _this.onPanningStop(event);
-        }
-      };
-      this.setKeyPressed = function(e4) {
-        _this.pressedKeys[e4.key] = true;
-      };
-      this.setKeyUnPressed = function(e4) {
-        _this.pressedKeys[e4.key] = false;
-      };
-      this.isPressingKeys = function(keys) {
-        if (!keys.length) {
-          return true;
-        }
-        return Boolean(keys.find(function(key) {
-          return _this.pressedKeys[key];
-        }));
-      };
-      this.setTransformState = function(scale, positionX, positionY) {
-        var onTransformed = _this.props.onTransformed;
-        if (!Number.isNaN(scale) && !Number.isNaN(positionX) && !Number.isNaN(positionY)) {
-          if (scale !== _this.transformState.scale) {
-            _this.transformState.previousScale = _this.transformState.scale;
-            _this.transformState.scale = scale;
-          }
-          _this.transformState.positionX = positionX;
-          _this.transformState.positionY = positionY;
-          _this.applyTransformation();
-          var ctx_1 = getContext(_this);
-          _this.onChangeCallbacks.forEach(function(callback) {
-            return callback(ctx_1);
-          });
-          handleCallback(ctx_1, { scale, positionX, positionY }, onTransformed);
-        } else {
-          console.error("Detected NaN set state values");
-        }
-      };
-      this.setCenter = function() {
-        if (_this.wrapperComponent && _this.contentComponent) {
-          var targetState = getCenterPosition(_this.transformState.scale, _this.wrapperComponent, _this.contentComponent);
-          _this.setTransformState(targetState.scale, targetState.positionX, targetState.positionY);
-        }
-      };
-      this.handleTransformStyles = function(x2, y3, scale) {
-        if (_this.props.customTransform) {
-          return _this.props.customTransform(x2, y3, scale);
-        }
-        return getTransformStyles(x2, y3, scale);
-      };
-      this.applyTransformation = function() {
-        if (!_this.mounted || !_this.contentComponent)
-          return;
-        var _a2 = _this.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
-        var transform = _this.handleTransformStyles(positionX, positionY, scale);
-        _this.contentComponent.style.transform = transform;
-      };
-      this.getContext = function() {
-        return getContext(_this);
-      };
-      this.onChange = function(callback) {
-        if (!_this.onChangeCallbacks.has(callback)) {
-          _this.onChangeCallbacks.add(callback);
-        }
-        return function() {
-          _this.onChangeCallbacks.delete(callback);
-        };
-      };
-      this.onInit = function(callback) {
-        if (!_this.onInitCallbacks.has(callback)) {
-          _this.onInitCallbacks.add(callback);
-        }
-        return function() {
-          _this.onInitCallbacks.delete(callback);
-        };
-      };
-      this.init = function(wrapperComponent, contentComponent) {
-        _this.cleanupWindowEvents();
-        _this.wrapperComponent = wrapperComponent;
-        _this.contentComponent = contentComponent;
-        handleCalculateBounds(_this, _this.transformState.scale);
-        _this.handleInitializeWrapperEvents(wrapperComponent);
-        _this.handleInitialize(contentComponent);
-        _this.initializeWindowEvents();
-        _this.isInitialized = true;
-        var ctx = getContext(_this);
-        handleCallback(ctx, void 0, _this.props.onInit);
-      };
-      this.props = props;
-      this.setup = createSetup(this.props);
-      this.transformState = createState(this.props);
-    }
-    return ZoomPanPinch2;
-  }()
-);
-var Context = import_react.default.createContext(null);
-var getContent = function(children, ctx) {
-  if (typeof children === "function") {
-    return children(ctx);
-  }
-  return children;
-};
-var TransformWrapper = import_react.default.forwardRef(function(props, ref) {
-  var instance = (0, import_react.useRef)(new ZoomPanPinch(props)).current;
-  var content = getContent(props.children, getControls(instance));
-  (0, import_react.useImperativeHandle)(ref, function() {
-    return getControls(instance);
-  }, [instance]);
-  (0, import_react.useEffect)(function() {
-    instance.update(props);
-  }, [instance, props]);
-  return import_react.default.createElement(Context.Provider, { value: instance }, content);
-});
-var KeepScale = import_react.default.forwardRef(function(props, ref) {
-  var localRef = (0, import_react.useRef)(null);
-  var instance = (0, import_react.useContext)(Context);
-  (0, import_react.useEffect)(function() {
-    return instance.onChange(function(ctx) {
-      if (localRef.current) {
-        var positionX = 0;
-        var positionY = 0;
-        localRef.current.style.transform = instance.handleTransformStyles(positionX, positionY, 1 / ctx.instance.transformState.scale);
-      }
-    });
-  }, [instance]);
-  return import_react.default.createElement("div", __assign({}, props, { ref: mergeRefs([localRef, ref]) }));
-});
-function styleInject(css, ref) {
-  if (ref === void 0) ref = {};
-  var insertAt = ref.insertAt;
-  if (!css || typeof document === "undefined") {
-    return;
-  }
-  var head = document.head || document.getElementsByTagName("head")[0];
-  var style = document.createElement("style");
-  style.type = "text/css";
-  if (insertAt === "top") {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}
-var css_248z = ".transform-component-module_wrapper__SPB86 {\n  position: relative;\n  width: -moz-fit-content;\n  width: fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  overflow: hidden;\n  -webkit-touch-callout: none; /* iOS Safari */\n  -webkit-user-select: none; /* Safari */\n  -khtml-user-select: none; /* Konqueror HTML */\n  -moz-user-select: none; /* Firefox */\n  -ms-user-select: none; /* Internet Explorer/Edge */\n  user-select: none;\n  margin: 0;\n  padding: 0;\n}\n.transform-component-module_content__FBWxo {\n  display: flex;\n  flex-wrap: wrap;\n  width: -moz-fit-content;\n  width: fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  margin: 0;\n  padding: 0;\n  transform-origin: 0% 0%;\n}\n.transform-component-module_content__FBWxo img {\n  pointer-events: none;\n}\n";
-var styles = { "wrapper": "transform-component-module_wrapper__SPB86", "content": "transform-component-module_content__FBWxo" };
-styleInject(css_248z);
-var TransformComponent = function(_a2) {
-  var children = _a2.children, _b2 = _a2.wrapperClass, wrapperClass = _b2 === void 0 ? "" : _b2, _c = _a2.contentClass, contentClass = _c === void 0 ? "" : _c, wrapperStyle = _a2.wrapperStyle, contentStyle = _a2.contentStyle, _d = _a2.wrapperProps, wrapperProps = _d === void 0 ? {} : _d, _e = _a2.contentProps, contentProps = _e === void 0 ? {} : _e;
-  var _f = (0, import_react.useContext)(Context), init = _f.init, cleanupWindowEvents = _f.cleanupWindowEvents;
-  var wrapperRef = (0, import_react.useRef)(null);
-  var contentRef = (0, import_react.useRef)(null);
-  (0, import_react.useEffect)(function() {
-    var wrapper = wrapperRef.current;
-    var content = contentRef.current;
-    if (wrapper !== null && content !== null && init) {
-      init === null || init === void 0 ? void 0 : init(wrapper, content);
-    }
-    return function() {
-      cleanupWindowEvents === null || cleanupWindowEvents === void 0 ? void 0 : cleanupWindowEvents();
-    };
-  }, []);
-  return import_react.default.createElement(
-    "div",
-    __assign({}, wrapperProps, { ref: wrapperRef, className: "".concat(baseClasses.wrapperClass, " ").concat(styles.wrapper, " ").concat(wrapperClass), style: wrapperStyle }),
-    import_react.default.createElement("div", __assign({}, contentProps, { ref: contentRef, className: "".concat(baseClasses.contentClass, " ").concat(styles.content, " ").concat(contentClass), style: contentStyle }), children)
-  );
-};
 
 // src/utils/index.ts
 var import_obsidian = require("obsidian");
@@ -43221,6 +44202,64 @@ async function isCreatable(type) {
     }
   });
 }
+
+// src/settings.ts
+var DEFAULT_SETTINGS = {
+  width: 640,
+  showFilename: true,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  "2x": true,
+  format: "png0",
+  showMetadata: false,
+  recursive: false,
+  quickExportSelection: false,
+  authorInfo: {
+    show: false,
+    align: "right",
+    position: "bottom"
+  },
+  watermark: {
+    enable: false,
+    type: "text",
+    text: {
+      content: "",
+      fontSize: 28,
+      color: "#cccccc"
+    },
+    image: {
+      src: ""
+    },
+    opacity: 0.2,
+    rotate: 30,
+    height: 64,
+    width: 120,
+    x: 100,
+    y: 100
+  },
+  split: {
+    enable: false,
+    height: 1e3,
+    overlap: 80
+  }
+};
+var formatList = ["png0", "png1", "jpg", "webp", "pdf"];
+var formatAvailable = [];
+(async () => {
+  for (const type of formatList) {
+    if (await isCreatable(type)) {
+      formatAvailable.push(type);
+    }
+  }
+})();
+
+// src/components/folder/exportFolder.tsx
+var import_react9 = __toESM(require_react());
+var import_obsidian7 = require("obsidian");
+var import_client3 = __toESM(require_client());
+
+// src/components/folder/ModalContent.tsx
+var import_react8 = __toESM(require_react());
+var import_obsidian6 = require("obsidian");
 
 // src/utils/capture.ts
 var import_obsidian3 = require("obsidian");
@@ -51420,18 +52459,19 @@ E.API.PDFObject = function() {
 var jspdf_es_min_default = E;
 
 // src/utils/capture.ts
+var import_jszip = __toESM(require_jszip_min());
 var import_dom_to_image_more = __toESM(require_dom_to_image_more());
 
 // src/utils/makeHTML.tsx
 var import_obsidian2 = require("obsidian");
-var import_react5 = __toESM(require_react());
+var import_react4 = __toESM(require_react());
 var import_client = __toESM(require_client());
 
 // src/components/common/Target.tsx
-var import_react4 = __toESM(require_react());
+var import_react3 = __toESM(require_react());
 
 // node_modules/@pansy/react-watermark/dist/esm/index.js
-var import_react2 = __toESM(require_react());
+var import_react = __toESM(require_react());
 
 // node_modules/@pansy/watermark/dist/esm/index.js
 var __defProp2 = Object.defineProperty;
@@ -51549,7 +52589,7 @@ var getContainer = (container, watermarkId, containerStyle = {}, pack) => {
   dom.setAttribute("style", getStyleStr(style));
   return dom;
 };
-var getContent2 = (watermarkId) => {
+var getContent = (watermarkId) => {
   const dom = document.createElement("div");
   dom.setAttribute("style", getStyleStr({
     pointerEvents: "none"
@@ -51769,7 +52809,7 @@ var Watermark = class {
       this._destroyMutationObserver();
       this.container = getContainer(this.options.container, this.watermarkTag, this.options.containerStyle, this.options.pack);
       if (!this.watermarkContent) {
-        this.watermarkContent = getContent2(this.watermarkTag);
+        this.watermarkContent = getContent(this.watermarkTag);
         this.container.append(this.watermarkContent);
       }
       const height = this._getWatermarkHeight();
@@ -51853,9 +52893,9 @@ var Watermark2 = (_a2) => {
     "visible",
     "children"
   ]);
-  const container = (0, import_react2.useRef)(null);
-  const watermark = (0, import_react2.useRef)();
-  (0, import_react2.useEffect)(() => {
+  const container = (0, import_react.useRef)(null);
+  const watermark = (0, import_react.useRef)();
+  (0, import_react.useEffect)(() => {
     if (!watermark.current) {
       watermark.current = new Watermark(__spreadProps(__spreadValues2({}, rest), {
         containerStyle: style,
@@ -51870,7 +52910,7 @@ var Watermark2 = (_a2) => {
       }));
     }
   }, [JSON.stringify(rest)]);
-  (0, import_react2.useEffect)(() => {
+  (0, import_react.useEffect)(() => {
     var _a22, _b22;
     if (visible) {
       (_a22 = watermark.current) == null ? void 0 : _a22.show();
@@ -51878,7 +52918,7 @@ var Watermark2 = (_a2) => {
       (_b22 = watermark.current) == null ? void 0 : _b22.hide();
     }
   }, [visible]);
-  (0, import_react2.useEffect)(() => {
+  (0, import_react.useEffect)(() => {
     return () => {
       var _a22;
       (_a22 = watermark.current) == null ? void 0 : _a22.destroy();
@@ -51886,7 +52926,7 @@ var Watermark2 = (_a2) => {
   }, []);
   if (isBody)
     return null;
-  return /* @__PURE__ */ import_react2.default.createElement("div", {
+  return /* @__PURE__ */ import_react.default.createElement("div", {
     ref: container,
     className,
     style
@@ -51894,9 +52934,9 @@ var Watermark2 = (_a2) => {
 };
 
 // src/components/common/Metadata.tsx
-var import_react3 = __toESM(require_react());
+var import_react2 = __toESM(require_react());
 var iconMap = {
-  text: /* @__PURE__ */ import_react3.default.createElement(
+  text: /* @__PURE__ */ import_react2.default.createElement(
     "svg",
     {
       xmlns: "http://www.w3.org/2000/svg",
@@ -51910,11 +52950,11 @@ var iconMap = {
       "stroke-linejoin": "round",
       className: "svg-icon"
     },
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M17 6.1H3" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M21 12.1H3" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M15.1 18H3" })
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M17 6.1H3" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M21 12.1H3" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M15.1 18H3" })
   ),
-  number: /* @__PURE__ */ import_react3.default.createElement(
+  number: /* @__PURE__ */ import_react2.default.createElement(
     "svg",
     {
       className: "svg-icon",
@@ -51928,14 +52968,14 @@ var iconMap = {
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
     },
-    /* @__PURE__ */ import_react3.default.createElement("rect", { x: "14", y: "14", width: "4", height: "6", rx: "2" }),
-    /* @__PURE__ */ import_react3.default.createElement("rect", { x: "6", y: "4", width: "4", height: "6", rx: "2" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M6 20h4" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M14 10h4" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M6 14h2v6" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M14 4h2v6" })
+    /* @__PURE__ */ import_react2.default.createElement("rect", { x: "14", y: "14", width: "4", height: "6", rx: "2" }),
+    /* @__PURE__ */ import_react2.default.createElement("rect", { x: "6", y: "4", width: "4", height: "6", rx: "2" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M6 20h4" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M14 10h4" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M6 14h2v6" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M14 4h2v6" })
   ),
-  multitext: /* @__PURE__ */ import_react3.default.createElement(
+  multitext: /* @__PURE__ */ import_react2.default.createElement(
     "svg",
     {
       className: "svg-icon",
@@ -51949,14 +52989,14 @@ var iconMap = {
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
     },
-    /* @__PURE__ */ import_react3.default.createElement("line", { x1: "8", x2: "21", y1: "6", y2: "6" }),
-    /* @__PURE__ */ import_react3.default.createElement("line", { x1: "8", x2: "21", y1: "12", y2: "12" }),
-    /* @__PURE__ */ import_react3.default.createElement("line", { x1: "8", x2: "21", y1: "18", y2: "18" }),
-    /* @__PURE__ */ import_react3.default.createElement("line", { x1: "3", x2: "3.01", y1: "6", y2: "6" }),
-    /* @__PURE__ */ import_react3.default.createElement("line", { x1: "3", x2: "3.01", y1: "12", y2: "12" }),
-    /* @__PURE__ */ import_react3.default.createElement("line", { x1: "3", x2: "3.01", y1: "18", y2: "18" })
+    /* @__PURE__ */ import_react2.default.createElement("line", { x1: "8", x2: "21", y1: "6", y2: "6" }),
+    /* @__PURE__ */ import_react2.default.createElement("line", { x1: "8", x2: "21", y1: "12", y2: "12" }),
+    /* @__PURE__ */ import_react2.default.createElement("line", { x1: "8", x2: "21", y1: "18", y2: "18" }),
+    /* @__PURE__ */ import_react2.default.createElement("line", { x1: "3", x2: "3.01", y1: "6", y2: "6" }),
+    /* @__PURE__ */ import_react2.default.createElement("line", { x1: "3", x2: "3.01", y1: "12", y2: "12" }),
+    /* @__PURE__ */ import_react2.default.createElement("line", { x1: "3", x2: "3.01", y1: "18", y2: "18" })
   ),
-  tags: /* @__PURE__ */ import_react3.default.createElement(
+  tags: /* @__PURE__ */ import_react2.default.createElement(
     "svg",
     {
       className: "svg-icon",
@@ -51970,11 +53010,11 @@ var iconMap = {
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
     },
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M9.586 5.586A2 2 0 0 0 8.172 5H3a1 1 0 0 0-1 1v5.172a2 2 0 0 0 .586 1.414L8.29 18.29a2.426 2.426 0 0 0 3.42 0l3.58-3.58a2.426 2.426 0 0 0 0-3.42z" }),
-    /* @__PURE__ */ import_react3.default.createElement("circle", { cx: "6.5", cy: "9.5", r: ".5", fill: "currentColor" })
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M9.586 5.586A2 2 0 0 0 8.172 5H3a1 1 0 0 0-1 1v5.172a2 2 0 0 0 .586 1.414L8.29 18.29a2.426 2.426 0 0 0 3.42 0l3.58-3.58a2.426 2.426 0 0 0 0-3.42z" }),
+    /* @__PURE__ */ import_react2.default.createElement("circle", { cx: "6.5", cy: "9.5", r: ".5", fill: "currentColor" })
   ),
-  date: /* @__PURE__ */ import_react3.default.createElement(
+  date: /* @__PURE__ */ import_react2.default.createElement(
     "svg",
     {
       className: "svg-icon",
@@ -51988,12 +53028,12 @@ var iconMap = {
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
     },
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M8 2v4" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M16 2v4" }),
-    /* @__PURE__ */ import_react3.default.createElement("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M3 10h18" })
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M8 2v4" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M16 2v4" }),
+    /* @__PURE__ */ import_react2.default.createElement("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M3 10h18" })
   ),
-  datetime: /* @__PURE__ */ import_react3.default.createElement(
+  datetime: /* @__PURE__ */ import_react2.default.createElement(
     "svg",
     {
       className: "svg-icon",
@@ -52007,14 +53047,14 @@ var iconMap = {
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
     },
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M16 2v4" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M8 2v4" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M3 10h5" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M17.5 17.5 16 16.3V14" }),
-    /* @__PURE__ */ import_react3.default.createElement("circle", { cx: "16", cy: "16", r: "6" })
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M16 2v4" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M8 2v4" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M3 10h5" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M17.5 17.5 16 16.3V14" }),
+    /* @__PURE__ */ import_react2.default.createElement("circle", { cx: "16", cy: "16", r: "6" })
   ),
-  checkbox: /* @__PURE__ */ import_react3.default.createElement(
+  checkbox: /* @__PURE__ */ import_react2.default.createElement(
     "svg",
     {
       className: "svg-icon",
@@ -52028,10 +53068,10 @@ var iconMap = {
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
     },
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "m9 11 3 3L22 4" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" })
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "m9 11 3 3L22 4" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" })
   ),
-  aliases: /* @__PURE__ */ import_react3.default.createElement(
+  aliases: /* @__PURE__ */ import_react2.default.createElement(
     "svg",
     {
       className: "svg-icon",
@@ -52045,8 +53085,8 @@ var iconMap = {
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
     },
-    /* @__PURE__ */ import_react3.default.createElement("polyline", { points: "15 17 20 12 15 7" }),
-    /* @__PURE__ */ import_react3.default.createElement("path", { d: "M4 18v-2a4 4 0 0 1 4-4h12" })
+    /* @__PURE__ */ import_react2.default.createElement("polyline", { points: "15 17 20 12 15 7" }),
+    /* @__PURE__ */ import_react2.default.createElement("path", { d: "M4 18v-2a4 4 0 0 1 4-4h12" })
   )
 };
 var Metadata = ({ type, name, value }) => {
@@ -52072,11 +53112,11 @@ var Metadata = ({ type, name, value }) => {
       } else {
         content = JSON.stringify(value);
       }
-      valueElement = /* @__PURE__ */ import_react3.default.createElement("div", { className: "metadata-input-longtext mod-truncate" }, content);
+      valueElement = /* @__PURE__ */ import_react2.default.createElement("div", { className: "metadata-input-longtext mod-truncate" }, content);
       break;
     }
     case "number": {
-      valueElement = /* @__PURE__ */ import_react3.default.createElement(
+      valueElement = /* @__PURE__ */ import_react2.default.createElement(
         "input",
         {
           className: "metadata-input metadata-input-number",
@@ -52087,7 +53127,7 @@ var Metadata = ({ type, name, value }) => {
       break;
     }
     case "checkbox": {
-      valueElement = /* @__PURE__ */ import_react3.default.createElement(
+      valueElement = /* @__PURE__ */ import_react2.default.createElement(
         "input",
         {
           className: "metadata-input-checkbox",
@@ -52098,25 +53138,25 @@ var Metadata = ({ type, name, value }) => {
       break;
     }
     case "date": {
-      valueElement = /* @__PURE__ */ import_react3.default.createElement("div", { className: "metadata-input-longtext mod-truncate" }, value);
+      valueElement = /* @__PURE__ */ import_react2.default.createElement("div", { className: "metadata-input-longtext mod-truncate" }, value);
       break;
     }
     case "datetime": {
-      valueElement = /* @__PURE__ */ import_react3.default.createElement("div", { className: "metadata-input-longtext mod-truncate" }, value);
+      valueElement = /* @__PURE__ */ import_react2.default.createElement("div", { className: "metadata-input-longtext mod-truncate" }, value);
       break;
     }
     case "multitext":
     case "tags":
     case "aliases": {
       const valueArray = Array.isArray(value) ? value : [value];
-      valueElement = /* @__PURE__ */ import_react3.default.createElement("div", { className: "multi-select-container" }, valueArray.map((str) => /* @__PURE__ */ import_react3.default.createElement("div", { className: "multi-select-pill", style: { border: "none" } }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "multi-select-pill-content" }, /* @__PURE__ */ import_react3.default.createElement("span", null, str)))));
+      valueElement = /* @__PURE__ */ import_react2.default.createElement("div", { className: "multi-select-container" }, valueArray.map((str) => /* @__PURE__ */ import_react2.default.createElement("div", { className: "multi-select-pill", style: { border: "none" } }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "multi-select-pill-content" }, /* @__PURE__ */ import_react2.default.createElement("span", null, str)))));
       break;
     }
     default: {
       return null;
     }
   }
-  return /* @__PURE__ */ import_react3.default.createElement(
+  return /* @__PURE__ */ import_react2.default.createElement(
     "div",
     {
       className: "metadata-property",
@@ -52124,8 +53164,8 @@ var Metadata = ({ type, name, value }) => {
       "data-property-key": name,
       style: { border: 0 }
     },
-    /* @__PURE__ */ import_react3.default.createElement("div", { className: "metadata-property-key" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "metadata-property-icon" }, iconSvg), /* @__PURE__ */ import_react3.default.createElement("span", { className: "metadata-property-name" }, name)),
-    /* @__PURE__ */ import_react3.default.createElement("div", { className: "metadata-property-value" }, valueElement)
+    /* @__PURE__ */ import_react2.default.createElement("div", { className: "metadata-property-key" }, /* @__PURE__ */ import_react2.default.createElement("span", { className: "metadata-property-icon" }, iconSvg), /* @__PURE__ */ import_react2.default.createElement("span", { className: "metadata-property-name" }, name)),
+    /* @__PURE__ */ import_react2.default.createElement("div", { className: "metadata-property-value" }, valueElement)
   );
 };
 var Metadata_default = Metadata;
@@ -52155,13 +53195,64 @@ var alignMap = {
   center: "center",
   right: "flex-end"
 };
-var Target = (0, import_react4.forwardRef)(({ frontmatter, setting, title, metadataMap, markdownEl }, ref) => {
-  const [watermarkProps, setWatermarkProps] = (0, import_react4.useState)({});
-  const contentRef = (0, import_react4.useRef)(null);
-  (0, import_react4.useEffect)(() => {
-    contentRef.current?.append(markdownEl);
+var Target = (0, import_react3.forwardRef)(({ frontmatter, setting, title, metadataMap, markdownEl, scale = 1 }, ref) => {
+  const [watermarkProps, setWatermarkProps] = (0, import_react3.useState)({});
+  const contentRef = (0, import_react3.useRef)(null);
+  const rootRef = (0, import_react3.useRef)(null);
+  const clipRef = (0, import_react3.useRef)(null);
+  const [rootHeight, setRootHeight] = (0, import_react3.useState)(0);
+  (0, import_react3.useEffect)(() => {
+    if (!rootRef.current) return;
+    const observer = new ResizeObserver(() => {
+      if (rootRef.current) {
+        setRootHeight(rootRef.current.clientHeight);
+      }
+    });
+    observer.observe(rootRef.current);
+    return () => observer.disconnect();
   }, []);
-  (0, import_react4.useEffect)(() => {
+  const splitLines = (0, import_react3.useMemo)(() => {
+    if (!setting.split.enable || !rootHeight) return [];
+    const lines = [];
+    const firstPageHeight = setting.split.height;
+    let currentY = firstPageHeight;
+    while (currentY < rootHeight) {
+      lines.push(currentY);
+      currentY += setting.split.height - setting.split.overlap;
+    }
+    return lines;
+  }, [setting.split.enable, setting.split.height, setting.split.overlap, rootHeight]);
+  const splitLineStyle = (0, import_react3.useMemo)(() => ({
+    position: "absolute",
+    left: 0,
+    right: 0,
+    height: `${2 / scale}px`,
+    borderTop: `${2 / scale}px dashed var(--interactive-accent)`,
+    opacity: 0.6,
+    pointerEvents: "none"
+  }), [scale]);
+  (0, import_react3.useEffect)(() => {
+    if (!contentRef.current) return;
+    contentRef.current.innerHTML = "";
+    contentRef.current.append(markdownEl.cloneNode(true));
+  }, [markdownEl]);
+  (0, import_react3.useImperativeHandle)(ref, () => ({
+    element: clipRef.current,
+    contentElement: rootRef.current,
+    setClip: (startY, height) => {
+      if (!clipRef.current || !rootRef.current) return;
+      clipRef.current.style.height = `${height}px`;
+      clipRef.current.style.overflow = "hidden";
+      rootRef.current.style.transform = `translateY(-${startY}px)`;
+    },
+    resetClip: () => {
+      if (!clipRef.current || !rootRef.current) return;
+      clipRef.current.style.height = "";
+      clipRef.current.style.overflow = "";
+      rootRef.current.style.transform = "";
+    }
+  }), [clipRef.current, rootRef.current]);
+  (0, import_react3.useEffect)(() => {
     (async () => {
       const props = {
         monitor: false,
@@ -52185,18 +53276,29 @@ var Target = (0, import_react4.forwardRef)(({ frontmatter, setting, title, metad
       setWatermarkProps(props);
     })();
   }, [setting]);
-  return /* @__PURE__ */ import_react4.default.createElement(
+  return /* @__PURE__ */ import_react3.default.createElement("div", { ref: clipRef }, /* @__PURE__ */ import_react3.default.createElement(
     "div",
     {
       className: clsx_default("export-image-root markdown-reading-view", frontmatter?.cssclasses || frontmatter?.cssclass),
-      ref,
+      ref: rootRef,
       style: {
         display: "flex",
         flexDirection: setting.authorInfo.position === "bottom" ? "column" : "column-reverse",
-        backgroundColor: setting.format === "png1" ? "unset" : "var(--background-primary)"
+        backgroundColor: setting.format === "png1" ? "unset" : "var(--background-primary)",
+        position: "relative"
       }
     },
-    /* @__PURE__ */ import_react4.default.createElement(Watermark2, { ...watermarkProps }, /* @__PURE__ */ import_react4.default.createElement(
+    splitLines.map((y3, index2) => /* @__PURE__ */ import_react3.default.createElement(
+      "div",
+      {
+        key: index2,
+        style: {
+          ...splitLineStyle,
+          top: y3
+        }
+      }
+    )),
+    /* @__PURE__ */ import_react3.default.createElement(Watermark2, { ...watermarkProps }, /* @__PURE__ */ import_react3.default.createElement(
       "div",
       {
         className: "markdown-preview-view markdown-rendered export-image-preview-container",
@@ -52205,8 +53307,8 @@ var Target = (0, import_react4.forwardRef)(({ frontmatter, setting, title, metad
           transition: "width 0.25s"
         }
       },
-      setting.showFilename && /* @__PURE__ */ import_react4.default.createElement("div", { className: "inline-title", autoCapitalize: "on" }, title),
-      setting.showMetadata && frontmatter && Object.keys(frontmatter).length > 0 && /* @__PURE__ */ import_react4.default.createElement("div", { className: "metadata-container", style: { display: "block" } }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "metadata-content" }, Object.keys(frontmatter).map((name) => /* @__PURE__ */ import_react4.default.createElement(
+      setting.showFilename && /* @__PURE__ */ import_react3.default.createElement("div", { className: "inline-title", autoCapitalize: "on" }, title),
+      setting.showMetadata && frontmatter && Object.keys(frontmatter).length > 0 && /* @__PURE__ */ import_react3.default.createElement("div", { className: "metadata-container", style: { display: "block" } }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "metadata-content" }, Object.keys(frontmatter).map((name) => /* @__PURE__ */ import_react3.default.createElement(
         Metadata_default,
         {
           name,
@@ -52215,9 +53317,9 @@ var Target = (0, import_react4.forwardRef)(({ frontmatter, setting, title, metad
           type: metadataMap[(0, import_lodash.lowerCase)(name)]?.type || "text"
         }
       )))),
-      /* @__PURE__ */ import_react4.default.createElement("div", { ref: contentRef })
+      /* @__PURE__ */ import_react3.default.createElement("div", { ref: contentRef })
     )),
-    setting.authorInfo.show && (setting.authorInfo.avatar || setting.authorInfo.name) && /* @__PURE__ */ import_react4.default.createElement(
+    setting.authorInfo.show && (setting.authorInfo.avatar || setting.authorInfo.name) && /* @__PURE__ */ import_react3.default.createElement(
       "div",
       {
         className: "user-info-container",
@@ -52227,7 +53329,7 @@ var Target = (0, import_react4.forwardRef)(({ frontmatter, setting, title, metad
           background: setting.format === "png1" ? "unset" : "var(--background-primary)"
         }
       },
-      setting.authorInfo.avatar && /* @__PURE__ */ import_react4.default.createElement(
+      setting.authorInfo.avatar && /* @__PURE__ */ import_react3.default.createElement(
         "div",
         {
           className: "user-info-avatar",
@@ -52236,9 +53338,9 @@ var Target = (0, import_react4.forwardRef)(({ frontmatter, setting, title, metad
           }
         }
       ),
-      setting.authorInfo.name && /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("div", { className: "user-info-name" }, setting.authorInfo.name), setting.authorInfo.remark && /* @__PURE__ */ import_react4.default.createElement("div", { className: "user-info-remark" }, setting.authorInfo.remark))
+      setting.authorInfo.name && /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "user-info-name" }, setting.authorInfo.name), setting.authorInfo.remark && /* @__PURE__ */ import_react3.default.createElement("div", { className: "user-info-remark" }, setting.authorInfo.remark))
     )
-  );
+  ));
 });
 var Target_default = Target;
 
@@ -52263,7 +53365,7 @@ async function makeHTML(file, settings, app, container) {
   const frontmatter = getMetadata(file, app);
   root = (0, import_client.createRoot)(container);
   root.render(
-    /* @__PURE__ */ import_react5.default.createElement(
+    /* @__PURE__ */ import_react4.default.createElement(
       Target_default,
       {
         frontmatter,
@@ -52307,6 +53409,11 @@ async function makePdf(blob, el) {
     el.clientHeight / 96
   );
   return pdf;
+}
+async function saveToVault(app, blob, filename) {
+  const filePath = await app.fileManager.getAvailablePathForAttachment(filename);
+  await app.vault.createBinary(filePath, await blob.arrayBuffer());
+  return filePath;
 }
 async function save(app, el, title, higtResolution, format, isMobile) {
   const blob = await getBlob(
@@ -52399,27 +53506,39 @@ async function saveMultipleFiles(files, settings, onProgress, app, folderName, c
       return;
     }
     const fileName = `${folderName.replaceAll(/\s+/g, "_")}.pdf`;
-    if (app.isMobile) {
-      const filePath = await app.fileManager.getAvailablePathForAttachment(
-        fileName
-      );
-      await app.vault.createBinary(filePath, pdf.output("arraybuffer"));
+    if (import_obsidian3.Platform.isMobile) {
+      const filePath = await saveToVault(app, new Blob([pdf.output("arraybuffer")]), fileName);
+      new import_obsidian3.Notice(L_default.saveSuccess({ filePath }));
     } else {
       pdf?.save(fileName);
     }
   } else {
+    const ext = format.replace(/\d$/, "");
+    const zip = new import_jszip.default();
+    const blobs = [];
     for (const file of files) {
       const el = await makeHTML(file, settings, app, containner);
-      await save(
-        app,
+      const blob = await getBlob(
         el,
-        file.basename,
         higtResolution,
-        format,
-        true
+        getMime(format)
       );
+      const filename = `${file.basename.replaceAll(/\s+/g, "_")}.${ext}`;
+      blobs.push({ blob, filename });
       finished++;
       onProgress(finished);
+    }
+    if (import_obsidian3.Platform.isMobile) {
+      for (const { blob, filename } of blobs) {
+        const filePath = await saveToVault(app, blob, filename);
+        new import_obsidian3.Notice(L_default.saveSuccess({ filePath }));
+      }
+    } else {
+      for (const { blob, filename } of blobs) {
+        zip.file(filename, blob);
+      }
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      (0, import_file_saver.default)(zipBlob, `${folderName.replaceAll(/\s+/g, "_")}.zip`);
     }
   }
 }
@@ -52440,13 +53559,92 @@ async function getRemoteImageUrl(url) {
     return url;
   }
 }
+async function saveAll(target, format, higtResolution, splitHeight, splitOverlap, app, title, hiddenRef) {
+  try {
+    const totalHeight = target.contentElement.clientHeight;
+    const firstPageHeight = splitHeight;
+    const remainingHeight = totalHeight - firstPageHeight;
+    const additionalPages = Math.max(0, Math.ceil(remainingHeight / (splitHeight - splitOverlap)));
+    const totalPages = 1 + additionalPages;
+    if (format === "pdf") {
+      let pdf;
+      for (let i4 = 0; i4 < totalPages; i4++) {
+        const startY = i4 === 0 ? 0 : firstPageHeight + (i4 - 1) * (splitHeight - splitOverlap);
+        let currentHeight;
+        if (i4 === totalPages - 1) {
+          currentHeight = totalHeight - startY;
+        } else {
+          currentHeight = i4 === 0 ? firstPageHeight : splitHeight;
+        }
+        target.setClip(startY, currentHeight);
+        await delay(50);
+        const blob = await getBlob(
+          target.element,
+          higtResolution,
+          "image/jpeg"
+        );
+        const dataUrl = await fileToBase64(blob);
+        if (!pdf) {
+          pdf = new jspdf_es_min_default({
+            unit: "in",
+            format: [target.element.clientWidth / 96, currentHeight / 96],
+            orientation: target.element.clientWidth > currentHeight ? "l" : "p",
+            compress: true
+          });
+        } else {
+          pdf.addPage([target.element.clientWidth / 96, currentHeight / 96], target.element.clientWidth > currentHeight ? "l" : "p");
+        }
+        pdf.addImage(dataUrl, "JPEG", 0, 0, target.element.clientWidth / 96, currentHeight / 96);
+      }
+      const filename = `${title.replaceAll(/\s+/g, "_")}.pdf`;
+      if (import_obsidian3.Platform.isMobile) {
+        const filePath = await saveToVault(app, new Blob([pdf.output("arraybuffer")]), filename);
+        new import_obsidian3.Notice(L_default.saveSuccess({ filePath }));
+      } else {
+        pdf?.save(filename);
+      }
+    } else {
+      const ext = format.replace(/\d$/, "");
+      const zip = new import_jszip.default();
+      const blobs = [];
+      for (let i4 = 0; i4 < totalPages; i4++) {
+        const startY = i4 === 0 ? 0 : firstPageHeight + (i4 - 1) * (splitHeight - splitOverlap);
+        let currentHeight;
+        if (i4 === totalPages - 1) {
+          currentHeight = totalHeight - startY;
+        } else {
+          currentHeight = i4 === 0 ? firstPageHeight : splitHeight;
+        }
+        target.setClip(startY, currentHeight);
+        await delay(50);
+        const blob = await getBlob(target.element, higtResolution, getMime(format));
+        const filename = `${title.replaceAll(/\s+/g, "_")}_${i4 + 1}.${ext}`;
+        blobs.push({ blob, filename });
+      }
+      if (import_obsidian3.Platform.isMobile) {
+        for (const { blob, filename } of blobs) {
+          const filePath = await saveToVault(app, blob, filename);
+          new import_obsidian3.Notice(L_default.saveSuccess({ filePath }));
+        }
+      } else {
+        for (const { blob, filename } of blobs) {
+          zip.file(filename, blob);
+        }
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        (0, import_file_saver.default)(zipBlob, `${title.replaceAll(/\s+/g, "_")}.zip`);
+      }
+    }
+  } finally {
+    target.resetClip();
+  }
+}
 
 // src/components/common/form/FormItems.tsx
 var import_get2 = __toESM(require_get());
-var import_react8 = __toESM(require_react());
+var import_react7 = __toESM(require_react());
 
 // src/components/common/form/Control.tsx
-var import_react7 = __toESM(require_react());
+var import_react6 = __toESM(require_react());
 var import_get = __toESM(require_get());
 var import_set = __toESM(require_set());
 var import_debounce = __toESM(require_debounce());
@@ -52454,16 +53652,16 @@ var import_obsidian5 = require("obsidian");
 
 // src/components/common/imageSelectModal.tsx
 var import_obsidian4 = require("obsidian");
-var import_react6 = __toESM(require_react());
+var import_react5 = __toESM(require_react());
 var import_client2 = __toESM(require_client());
 var ImageSelect = ({ imageList, app, onSelect, onClose }) => {
-  const [list, setList] = (0, import_react6.useState)(imageList);
-  const [keyword, setKeyword] = (0, import_react6.useState)("");
-  const [selected, setSelected] = (0, import_react6.useState)(
+  const [list, setList] = (0, import_react5.useState)(imageList);
+  const [keyword, setKeyword] = (0, import_react5.useState)("");
+  const [selected, setSelected] = (0, import_react5.useState)(
     imageList?.[0] || null
   );
-  const previewRef = (0, import_react6.useRef)(null);
-  (0, import_react6.useEffect)(() => {
+  const previewRef = (0, import_react5.useRef)(null);
+  (0, import_react5.useEffect)(() => {
     if (keyword) {
       const regExp = new RegExp(keyword.split("").join(".*"), "i");
       setList(imageList.filter((file) => regExp.test(file.path)));
@@ -52471,14 +53669,14 @@ var ImageSelect = ({ imageList, app, onSelect, onClose }) => {
       setList(imageList);
     }
   }, [keyword, imageList]);
-  (0, import_react6.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (list.length === 0) {
       setSelected(void 0);
     } else if (!selected || !list.find((file) => file.path === selected.path)) {
       setSelected(list?.[0] || null);
     }
   }, [selected, list]);
-  (0, import_react6.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     previewRef.current?.empty();
     if (selected) {
       createHtml(selected.path, app).then(
@@ -52490,7 +53688,7 @@ var ImageSelect = ({ imageList, app, onSelect, onClose }) => {
       });
     }
   }, [selected]);
-  const submit = (0, import_react6.useCallback)(async () => {
+  const submit = (0, import_react5.useCallback)(async () => {
     if (selected) {
       const file = await selected.vault.adapter.readBinary(selected.path);
       const blob = new Blob([file], { type: "image/" + selected.extension });
@@ -52498,7 +53696,7 @@ var ImageSelect = ({ imageList, app, onSelect, onClose }) => {
       onSelect(url);
     }
   }, [onSelect, selected]);
-  return /* @__PURE__ */ import_react6.default.createElement("div", { className: "export-image-select-photo" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "search-input-container" }, /* @__PURE__ */ import_react6.default.createElement(
+  return /* @__PURE__ */ import_react5.default.createElement("div", { className: "export-image-select-photo" }, /* @__PURE__ */ import_react5.default.createElement("div", { className: "search-input-container" }, /* @__PURE__ */ import_react5.default.createElement(
     "input",
     {
       enterKeyHint: "search",
@@ -52510,7 +53708,7 @@ var ImageSelect = ({ imageList, app, onSelect, onClose }) => {
         setKeyword(e4.target.value);
       }
     }
-  ), /* @__PURE__ */ import_react6.default.createElement("div", { className: "search-input-clear-button" })), /* @__PURE__ */ import_react6.default.createElement("div", { className: "export-image-select-photo-main" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "export-image-select-photo-left" }, list.length > 0 ? list.map((file) => /* @__PURE__ */ import_react6.default.createElement(
+  ), /* @__PURE__ */ import_react5.default.createElement("div", { className: "search-input-clear-button" })), /* @__PURE__ */ import_react5.default.createElement("div", { className: "export-image-select-photo-main" }, /* @__PURE__ */ import_react5.default.createElement("div", { className: "export-image-select-photo-left" }, list.length > 0 ? list.map((file) => /* @__PURE__ */ import_react5.default.createElement(
     "div",
     {
       key: file.path,
@@ -52523,7 +53721,7 @@ var ImageSelect = ({ imageList, app, onSelect, onClose }) => {
       }
     },
     file.path
-  )) : /* @__PURE__ */ import_react6.default.createElement("div", { className: "export-image-select-empty" }, L_default.imageSelect.empty())), /* @__PURE__ */ import_react6.default.createElement("div", { className: "export-image-select-preview", ref: previewRef })), /* @__PURE__ */ import_react6.default.createElement("div", { className: "export-image-select-selected" }, selected?.path || " "), /* @__PURE__ */ import_react6.default.createElement("div", { className: "export-image-select-actions" }, /* @__PURE__ */ import_react6.default.createElement(
+  )) : /* @__PURE__ */ import_react5.default.createElement("div", { className: "export-image-select-empty" }, L_default.imageSelect.empty())), /* @__PURE__ */ import_react5.default.createElement("div", { className: "export-image-select-preview", ref: previewRef })), /* @__PURE__ */ import_react5.default.createElement("div", { className: "export-image-select-selected" }, selected?.path || " "), /* @__PURE__ */ import_react5.default.createElement("div", { className: "export-image-select-actions" }, /* @__PURE__ */ import_react5.default.createElement(
     "button",
     {
       className: "mod-cta",
@@ -52532,7 +53730,7 @@ var ImageSelect = ({ imageList, app, onSelect, onClose }) => {
       style: { marginRight: 40 }
     },
     L_default.imageSelect.select()
-  ), /* @__PURE__ */ import_react6.default.createElement("button", { onClick: onClose }, L_default.imageSelect.cancel())));
+  ), /* @__PURE__ */ import_react5.default.createElement("button", { onClick: onClose }, L_default.imageSelect.cancel())));
 };
 var ImageSelectModal = class extends import_obsidian4.Modal {
   select;
@@ -52546,7 +53744,7 @@ var ImageSelectModal = class extends import_obsidian4.Modal {
     const imageList = this.app.vault.getFiles().filter((file) => /^jpe?g|png$/i.test(file.extension || ""));
     this.root = (0, import_client2.createRoot)(contentEl);
     this.root.render(
-      /* @__PURE__ */ import_react6.default.createElement(
+      /* @__PURE__ */ import_react5.default.createElement(
         ImageSelect,
         {
           imageList,
@@ -52569,26 +53767,26 @@ var ImageSelectModal = class extends import_obsidian4.Modal {
 // src/components/common/form/Control.tsx
 var Control = ({ fieldSchema, setting, update, app }) => {
   const value = (0, import_get.default)(setting, fieldSchema.path);
-  const [processedImageUrl, setProcessedImageUrl] = (0, import_react7.useState)(void 0);
-  const inputReference = (0, import_react7.useRef)(null);
-  const iconRef = (0, import_react7.useRef)(null);
+  const [processedImageUrl, setProcessedImageUrl] = (0, import_react6.useState)(void 0);
+  const inputReference = (0, import_react6.useRef)(null);
+  const iconRef = (0, import_react6.useRef)(null);
   const onChange = (value2) => {
     const newSetting = { ...setting };
     (0, import_set.default)(newSetting, fieldSchema.path, value2);
     update(newSetting);
   };
-  const debouncedOnChange = (0, import_react7.useCallback)(
+  const debouncedOnChange = (0, import_react6.useCallback)(
     (0, import_debounce.default)((value2) => {
       onChange(value2);
     }, 500),
     [onChange]
   );
-  (0, import_react7.useEffect)(() => {
+  (0, import_react6.useEffect)(() => {
     if (iconRef.current) {
       (0, import_obsidian5.setIcon)(iconRef.current, "x");
     }
   }, [iconRef.current]);
-  (0, import_react7.useEffect)(() => {
+  (0, import_react6.useEffect)(() => {
     const processImage = async () => {
       if (fieldSchema.type === "file" && typeof value === "string") {
         const url = await getRemoteImageUrl(value);
@@ -52615,7 +53813,7 @@ var Control = ({ fieldSchema, setting, update, app }) => {
   };
   switch (fieldSchema.type) {
     case "number": {
-      return /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react6.default.createElement(
         "input",
         {
           type: "number",
@@ -52627,7 +53825,7 @@ var Control = ({ fieldSchema, setting, update, app }) => {
       );
     }
     case "string": {
-      return /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react6.default.createElement(
         "input",
         {
           type: "text",
@@ -52639,7 +53837,7 @@ var Control = ({ fieldSchema, setting, update, app }) => {
       );
     }
     case "boolean": {
-      return /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react6.default.createElement(
         "div",
         {
           className: `checkbox-container${value ? " is-enabled" : ""}`,
@@ -52647,11 +53845,11 @@ var Control = ({ fieldSchema, setting, update, app }) => {
             onChange(!(0, import_get.default)(setting, fieldSchema.path));
           }
         },
-        /* @__PURE__ */ import_react7.default.createElement("input", { type: "checkbox", checked: value })
+        /* @__PURE__ */ import_react6.default.createElement("input", { type: "checkbox", checked: value })
       );
     }
     case "select": {
-      return /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react6.default.createElement(
         "select",
         {
           value,
@@ -52660,11 +53858,11 @@ var Control = ({ fieldSchema, setting, update, app }) => {
           },
           className: "dropdown"
         },
-        fieldSchema.options?.map((option) => /* @__PURE__ */ import_react7.default.createElement("option", { key: option.value, value: option.value }, option.text))
+        fieldSchema.options?.map((option) => /* @__PURE__ */ import_react6.default.createElement("option", { key: option.value, value: option.value }, option.text))
       );
     }
     case "file": {
-      return /* @__PURE__ */ import_react7.default.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "8px" } }, /* @__PURE__ */ import_react7.default.createElement("div", { style: { display: "flex", gap: "8px" } }, /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react6.default.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "8px" } }, /* @__PURE__ */ import_react6.default.createElement("div", { style: { display: "flex", gap: "8px" } }, /* @__PURE__ */ import_react6.default.createElement(
         "div",
         {
           className: "user-info-avatar",
@@ -52673,7 +53871,7 @@ var Control = ({ fieldSchema, setting, update, app }) => {
             display: value ? "block" : "none"
           }
         },
-        processedImageUrl && /* @__PURE__ */ import_react7.default.createElement(
+        processedImageUrl && /* @__PURE__ */ import_react6.default.createElement(
           "img",
           {
             src: processedImageUrl,
@@ -52685,7 +53883,7 @@ var Control = ({ fieldSchema, setting, update, app }) => {
             }
           }
         ),
-        /* @__PURE__ */ import_react7.default.createElement(
+        /* @__PURE__ */ import_react6.default.createElement(
           "div",
           {
             ref: iconRef,
@@ -52707,7 +53905,7 @@ var Control = ({ fieldSchema, setting, update, app }) => {
             }
           }
         )
-      ), /* @__PURE__ */ import_react7.default.createElement("button", { onClick: () => inputReference.current?.click() }, L_default.setting.watermark.image.src.upload(), /* @__PURE__ */ import_react7.default.createElement(
+      ), /* @__PURE__ */ import_react6.default.createElement("button", { onClick: () => inputReference.current?.click() }, L_default.setting.watermark.image.src.upload(), /* @__PURE__ */ import_react6.default.createElement(
         "input",
         {
           style: { display: "none" },
@@ -52715,7 +53913,7 @@ var Control = ({ fieldSchema, setting, update, app }) => {
           ref: inputReference,
           onChange: upload
         }
-      )), /* @__PURE__ */ import_react7.default.createElement("button", { onClick: select }, L_default.setting.watermark.image.src.select()), /* @__PURE__ */ import_react7.default.createElement("button", { onClick: () => {
+      )), /* @__PURE__ */ import_react6.default.createElement("button", { onClick: select }, L_default.setting.watermark.image.src.select()), /* @__PURE__ */ import_react6.default.createElement("button", { onClick: () => {
         const currentValue = value || "";
         const modal = new import_obsidian5.Modal(app);
         modal.titleEl.setText(L_default.imageUrl());
@@ -52774,16 +53972,16 @@ function isShow(field, settings) {
   }
   return (0, import_get2.default)(settings, field.when.path) === field.when.flag;
 }
-var FormItems = ({ formSchema: formSchema2, settings, update, app }) => /* @__PURE__ */ import_react8.default.createElement(import_react8.default.Fragment, null, formSchema2.map(
-  (fieldSchema) => isShow(fieldSchema, settings) && /* @__PURE__ */ import_react8.default.createElement(
+var FormItems = ({ formSchema: formSchema2, settings, update, app }) => /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, formSchema2.map(
+  (fieldSchema) => isShow(fieldSchema, settings) && /* @__PURE__ */ import_react7.default.createElement(
     "div",
     {
       className: "setting-item",
       key: fieldSchema.path,
       style: { padding: "10px 0" }
     },
-    /* @__PURE__ */ import_react8.default.createElement("div", { className: "setting-item-info" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "setting-item-name" }, fieldSchema.label), fieldSchema.desc && /* @__PURE__ */ import_react8.default.createElement("div", { className: "setting-item-description" }, fieldSchema.desc)),
-    /* @__PURE__ */ import_react8.default.createElement("div", { className: "setting-item-control" }, /* @__PURE__ */ import_react8.default.createElement(
+    /* @__PURE__ */ import_react7.default.createElement("div", { className: "setting-item-info" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "setting-item-name" }, fieldSchema.label), fieldSchema.desc && /* @__PURE__ */ import_react7.default.createElement("div", { className: "setting-item-description" }, fieldSchema.desc)),
+    /* @__PURE__ */ import_react7.default.createElement("div", { className: "setting-item-control" }, /* @__PURE__ */ import_react7.default.createElement(
       Control_default,
       {
         fieldSchema,
@@ -52796,374 +53994,18 @@ var FormItems = ({ formSchema: formSchema2, settings, update, app }) => /* @__PU
 ));
 var FormItems_default = FormItems;
 
-// src/components/file/ModalContent.tsx
-var formSchema = [
-  {
-    label: L_default.includingFilename(),
-    path: "showFilename",
-    type: "boolean"
-  },
-  {
-    label: L_default.imageWidth(),
-    path: "width",
-    type: "number"
-  },
-  {
-    label: L_default.setting.userInfo.show(),
-    path: "authorInfo.show",
-    type: "boolean"
-  },
-  {
-    label: L_default.setting.userInfo.name(),
-    path: "authorInfo.name",
-    type: "string",
-    when: { flag: true, path: "authorInfo.show" }
-  },
-  {
-    label: L_default.setting.userInfo.remark(),
-    path: "authorInfo.remark",
-    type: "string",
-    when: { flag: true, path: "authorInfo.show" }
-  },
-  {
-    label: L_default.setting.userInfo.avatar.title(),
-    desc: L_default.setting.userInfo.avatar.description(),
-    path: "authorInfo.avatar",
-    type: "file",
-    when: { flag: true, path: "authorInfo.show" }
-  },
-  {
-    label: L_default.setting.userInfo.align(),
-    path: "authorInfo.align",
-    type: "select",
-    options: [
-      { text: "Left", value: "left" },
-      { text: "Center", value: "center" },
-      { text: "Right", value: "right" }
-    ],
-    when: { flag: true, path: "authorInfo.show" }
-  },
-  {
-    label: L_default.setting.userInfo.position(),
-    path: "authorInfo.position",
-    type: "select",
-    options: [
-      { text: "Top", value: "top" },
-      { text: "Bottom", value: "bottom" }
-    ],
-    when: { flag: true, path: "authorInfo.show" }
-  },
-  {
-    label: L_default.setting.watermark.enable.label(),
-    path: "watermark.enable",
-    type: "boolean"
-  },
-  {
-    label: L_default.setting.watermark.type.label(),
-    path: "watermark.type",
-    type: "select",
-    options: [
-      { text: L_default.setting.watermark.type.text(), value: "text" },
-      { text: L_default.setting.watermark.type.image(), value: "image" }
-    ],
-    when: { flag: true, path: "watermark.enable" }
-  },
-  {
-    label: L_default.setting.watermark.text.content(),
-    path: "watermark.text.content",
-    type: "string",
-    when: (settings) => settings.watermark.enable && settings.watermark.type === "text"
-  },
-  {
-    label: L_default.setting.watermark.image.src.label(),
-    path: "watermark.image.src",
-    type: "file",
-    when: (settings) => settings.watermark.enable && settings.watermark.type === "image"
-  },
-  {
-    label: L_default.setting.watermark.opacity(),
-    path: "watermark.opacity",
-    type: "number",
-    when: { flag: true, path: "watermark.enable" }
-  },
-  {
-    label: L_default.setting.watermark.rotate(),
-    path: "watermark.rotate",
-    type: "number",
-    when: { flag: true, path: "watermark.enable" }
-  },
-  {
-    label: L_default.setting.watermark.width(),
-    path: "watermark.width",
-    type: "number",
-    when: { flag: true, path: "watermark.enable" }
-  },
-  {
-    label: L_default.setting.watermark.height(),
-    path: "watermark.height",
-    type: "number",
-    when: { flag: true, path: "watermark.enable" }
-  }
-];
-var ModalContent = ({ markdownEl, settings, app, frontmatter, title, metadataMap }) => {
-  const [formData, setFormData] = (0, import_react9.useState)(settings);
-  const [isGrabbing, setIsGrabbing] = (0, import_react9.useState)(false);
-  const previewOutRef = (0, import_react9.useRef)(null);
-  const mainHeight = Math.min(764, window.innerHeight * 0.85 - 225);
-  const root2 = (0, import_react9.useRef)(null);
-  (0, import_react9.useEffect)(() => {
-    setFormData(settings);
-  }, [settings]);
-  const [processing, setProcessing] = (0, import_react9.useState)(false);
-  const [allowCopy, setAllowCopy] = (0, import_react9.useState)(true);
-  (0, import_react9.useEffect)(() => {
-    isCopiable(formData.format).then((result) => {
-      setAllowCopy(Boolean(result));
-    });
-  }, [formData.format]);
-  const handleSave = (0, import_react9.useCallback)(async () => {
-    if ((formData.width || 640) <= 20) {
-      new import_obsidian6.Notice(L_default.invalidWidth());
-      return;
-    }
-    setProcessing(true);
-    try {
-      await save(
-        app,
-        root2.current,
-        title,
-        formData["2x"],
-        formData.format,
-        // @ts-ignore
-        app.isMobile
-      );
-    } catch {
-      new import_obsidian6.Notice(L_default.saveFail());
-    }
-    setProcessing(false);
-  }, [root2, formData["2x"], formData.format, title, formData.width]);
-  const handleCopy = (0, import_react9.useCallback)(async () => {
-    if ((formData.width || 640) <= 20) {
-      new import_obsidian6.Notice(L_default.invalidWidth());
-      return;
-    }
-    setProcessing(true);
-    try {
-      await copy(root2.current, formData["2x"], formData.format);
-    } catch {
-      new import_obsidian6.Notice(L_default.copyFail());
-    }
-    setProcessing(false);
-  }, [root2, formData["2x"], formData.format, title, formData.width]);
-  return /* @__PURE__ */ import_react9.default.createElement("div", { className: "export-image-preview-root" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "export-image-preview-main" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "export-image-preview-left" }, /* @__PURE__ */ import_react9.default.createElement(
-    FormItems_default,
-    {
-      formSchema,
-      update: setFormData,
-      settings: formData,
-      app
-    }
-  ), /* @__PURE__ */ import_react9.default.createElement("div", { className: "info-text" }, L_default.moreSetting())), /* @__PURE__ */ import_react9.default.createElement("div", { className: "export-image-preview-right" }, /* @__PURE__ */ import_react9.default.createElement(
-    "div",
-    {
-      className: "export-image-preview-out",
-      ref: previewOutRef,
-      style: {
-        height: mainHeight,
-        cursor: isGrabbing ? "grabbing" : "grab"
-      }
-    },
-    /* @__PURE__ */ import_react9.default.createElement(
-      TransformWrapper,
-      {
-        minScale: Math.min(
-          1,
-          mainHeight / (root2.current?.clientHeight || 100),
-          (previewOutRef.current?.clientWidth || 400) / ((root2.current?.clientWidth || 0) + 2)
-        ) / 2,
-        maxScale: 4,
-        pinch: { step: 20 },
-        doubleClick: { mode: "reset" },
-        centerZoomedOut: false,
-        onPanning: () => {
-          setIsGrabbing(true);
-        },
-        onPanningStop: () => {
-          setIsGrabbing(false);
-        }
-      },
-      /* @__PURE__ */ import_react9.default.createElement(
-        TransformComponent,
-        {
-          wrapperStyle: {
-            width: "100%",
-            height: mainHeight
-          },
-          contentStyle: {
-            border: "1px var(--divider-color) solid",
-            borderRadius: "8px",
-            overflow: "hidden",
-            boxShadow: "0 0 10px 10px rgba(0,0,0,0.15)"
-          }
-        },
-        /* @__PURE__ */ import_react9.default.createElement(
-          Target_default,
-          {
-            ref: root2,
-            frontmatter,
-            markdownEl,
-            setting: formData,
-            metadataMap,
-            app,
-            title
-          }
-        )
-      )
-    )
-  ), /* @__PURE__ */ import_react9.default.createElement("div", { className: "info-text" }, L_default.guide()))), /* @__PURE__ */ import_react9.default.createElement("div", { className: "export-image-preview-actions" }, /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("button", { onClick: handleCopy, disabled: processing || !allowCopy }, L_default.copy()), allowCopy || /* @__PURE__ */ import_react9.default.createElement("p", null, L_default.notAllowCopy({ format: formData.format.replace(/\d$/, "").toUpperCase() }))), /* @__PURE__ */ import_react9.default.createElement("button", { onClick: handleSave, disabled: processing }, app.isMobile ? L_default.saveVault() : L_default.save())));
-};
-var ModalContent_default = ModalContent;
-
-// src/utils/preprocessMarkdown.ts
-function preprocessMarkdown(markdown, frontmatter) {
-  if (frontmatter?.["excalidraw-plugin"]) {
-    return markdown.replace(/[ ]*excalidraw-plugin:.+[\n\r]*/, "");
-  }
-  return markdown;
-}
-
-// src/components/file/exportImage.tsx
-async function exportImage_default(app, settings, markdown, file, frontmatter, type) {
-  const el = document.createElement("div");
-  await import_obsidian7.MarkdownRenderer.render(
-    app,
-    preprocessMarkdown(markdown, frontmatter),
-    el.createDiv(),
-    file.path,
-    app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView) || app.workspace.activeLeaf?.view || new import_obsidian7.MarkdownRenderChild(el)
-  );
-  const skipConfig = type === "selection" && settings.quickExportSelection;
-  if (skipConfig) {
-    const div = createDiv();
-    div.style.width = (settings.width || 400) + "px";
-    div.style.position = "fixed";
-    div.style.top = "9999px";
-    div.style.left = "9999px";
-    document.body.appendChild(div);
-    const root2 = (0, import_client3.createRoot)(div);
-    root2.render(
-      /* @__PURE__ */ import_react10.default.createElement(
-        Target_default,
-        {
-          markdownEl: el,
-          setting: { ...settings, showMetadata: false, showFilename: false },
-          frontmatter: {},
-          title: file.basename,
-          metadataMap: {},
-          app
-        }
-      )
-    );
-    await delay(20);
-    try {
-      await copy(div.querySelector(".export-image-root"), settings["2x"], settings.format);
-    } catch (e4) {
-      console.error(e4);
-      new Notice(L_default.copyFail());
-    } finally {
-      root2.unmount();
-      div.remove();
-    }
-  } else {
-    const modal = new import_obsidian7.Modal(app);
-    modal.setTitle(L_default.imageExportPreview());
-    modal.modalEl.style.width = "85vw";
-    modal.modalEl.style.maxWidth = "1500px";
-    modal.open();
-    const root2 = (0, import_client3.createRoot)(modal.contentEl);
-    const metadataMap = app.metadataCache.getAllPropertyInfos();
-    root2.render(
-      /* @__PURE__ */ import_react10.default.createElement(
-        ModalContent_default,
-        {
-          markdownEl: el,
-          settings,
-          frontmatter,
-          title: file.basename,
-          metadataMap,
-          app
-        }
-      )
-    );
-    modal.onClose = () => {
-      root2?.unmount();
-    };
-  }
-}
-
-// src/settings.ts
-var DEFAULT_SETTINGS = {
-  width: 640,
-  showFilename: true,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  "2x": true,
-  format: "png0",
-  showMetadata: false,
-  recursive: false,
-  quickExportSelection: false,
-  authorInfo: {
-    show: false,
-    align: "right",
-    position: "bottom"
-  },
-  watermark: {
-    enable: false,
-    type: "text",
-    text: {
-      content: "",
-      fontSize: 28,
-      color: "#cccccc"
-    },
-    image: {
-      src: ""
-    },
-    opacity: 0.2,
-    rotate: 30,
-    height: 64,
-    width: 120,
-    x: 100,
-    y: 100
-  }
-};
-var formatList = ["png0", "png1", "jpg", "webp", "pdf"];
-var formatAvailable = [];
-(async () => {
-  for (const type of formatList) {
-    if (await isCreatable(type)) {
-      formatAvailable.push(type);
-    }
-  }
-})();
-
-// src/components/folder/exportFolder.tsx
-var import_react12 = __toESM(require_react());
-var import_obsidian9 = require("obsidian");
-var import_client4 = __toESM(require_client());
-
 // src/components/folder/ModalContent.tsx
-var import_react11 = __toESM(require_react());
-var import_obsidian8 = require("obsidian");
-var ModalContent2 = ({ settings, app, folder, close }) => {
-  const [formData, setFormData] = (0, import_react11.useState)(settings);
-  const [fileList, setFileList] = (0, import_react11.useState)([]);
-  const [selectFiles, setSelectFiles] = (0, import_react11.useState)([]);
-  const [finished, setFinished] = (0, import_react11.useState)(0);
-  const [running, setRunning] = (0, import_react11.useState)(false);
-  const hiddenRef = (0, import_react11.useRef)(null);
-  (0, import_react11.useEffect)(() => {
+var ModalContent = ({ settings, app, folder, close }) => {
+  const [formData, setFormData] = (0, import_react8.useState)(settings);
+  const [fileList, setFileList] = (0, import_react8.useState)([]);
+  const [selectFiles, setSelectFiles] = (0, import_react8.useState)([]);
+  const [finished, setFinished] = (0, import_react8.useState)(0);
+  const [running, setRunning] = (0, import_react8.useState)(false);
+  const hiddenRef = (0, import_react8.useRef)(null);
+  (0, import_react8.useEffect)(() => {
     setFormData(settings);
   }, [settings]);
-  const exportAll = (0, import_react11.useCallback)(async () => {
+  const exportAll = (0, import_react8.useCallback)(async () => {
     if (running) {
       return;
     }
@@ -53227,14 +54069,14 @@ var ModalContent2 = ({ settings, app, folder, close }) => {
       ].filter(({ value }) => formatAvailable.contains(value))
     }
   ];
-  (0, import_react11.useEffect)(() => {
+  (0, import_react8.useEffect)(() => {
     const fileList2 = [];
     if (formData.recursive) {
       const recursiveFileList = (folder2) => {
         folder2.children.forEach((child) => {
-          if (child instanceof import_obsidian8.TFolder) {
+          if (child instanceof import_obsidian6.TFolder) {
             recursiveFileList(child);
-          } else if (child instanceof import_obsidian8.TFile && isMarkdownFile(child)) {
+          } else if (child instanceof import_obsidian6.TFile && isMarkdownFile(child)) {
             fileList2.push(child);
           }
         });
@@ -53242,21 +54084,21 @@ var ModalContent2 = ({ settings, app, folder, close }) => {
       recursiveFileList(folder);
     } else {
       for (const child of folder.children) {
-        if (child instanceof import_obsidian8.TFile && isMarkdownFile(child)) {
+        if (child instanceof import_obsidian6.TFile && isMarkdownFile(child)) {
           fileList2.push(child);
         }
       }
     }
     setFileList(fileList2);
   }, [formData.recursive, folder]);
-  const selectAll = (0, import_react11.useCallback)(() => {
+  const selectAll = (0, import_react8.useCallback)(() => {
     if (fileList.length === selectFiles.length) {
       setSelectFiles([]);
     } else {
       setSelectFiles(fileList);
     }
   }, [fileList, selectFiles]);
-  (0, import_react11.useEffect)(() => {
+  (0, import_react8.useEffect)(() => {
     const newSelectFiles = selectFiles.filter(
       (file) => fileList.includes(file)
     );
@@ -53264,7 +54106,7 @@ var ModalContent2 = ({ settings, app, folder, close }) => {
       setSelectFiles(newSelectFiles);
     }
   }, [fileList, selectFiles]);
-  return /* @__PURE__ */ import_react11.default.createElement(import_react11.default.Fragment, null, /* @__PURE__ */ import_react11.default.createElement("div", { className: "export-image-hidden", ref: hiddenRef }), /* @__PURE__ */ import_react11.default.createElement(
+  return /* @__PURE__ */ import_react8.default.createElement(import_react8.default.Fragment, null, /* @__PURE__ */ import_react8.default.createElement("div", { className: "export-image-hidden", ref: hiddenRef }), /* @__PURE__ */ import_react8.default.createElement(
     "div",
     {
       className: "export-image-preview-root",
@@ -53273,7 +54115,7 @@ var ModalContent2 = ({ settings, app, folder, close }) => {
         cursor: "not-allowed"
       }
     },
-    /* @__PURE__ */ import_react11.default.createElement("div", { className: "export-image-preview-main" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "export-image-preview-left" }, /* @__PURE__ */ import_react11.default.createElement(
+    /* @__PURE__ */ import_react8.default.createElement("div", { className: "export-image-preview-main" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "export-image-preview-left" }, /* @__PURE__ */ import_react8.default.createElement(
       FormItems_default,
       {
         formSchema: formSchema2,
@@ -53281,26 +54123,26 @@ var ModalContent2 = ({ settings, app, folder, close }) => {
         settings: formData,
         app
       }
-    )), /* @__PURE__ */ import_react11.default.createElement(
+    )), /* @__PURE__ */ import_react8.default.createElement(
       "div",
       {
         className: "export-image-preview-right",
         style: { maxHeight: 320, overflowY: "auto" }
       },
-      fileList.length > 0 ? /* @__PURE__ */ import_react11.default.createElement("div", null, /* @__PURE__ */ import_react11.default.createElement("div", { className: "export-image-preview-file-item export-image-select-all" }, /* @__PURE__ */ import_react11.default.createElement(
+      fileList.length > 0 ? /* @__PURE__ */ import_react8.default.createElement("div", null, /* @__PURE__ */ import_react8.default.createElement("div", { className: "export-image-preview-file-item export-image-select-all" }, /* @__PURE__ */ import_react8.default.createElement(
         "input",
         {
           type: "checkbox",
           checked: selectFiles.length === fileList.length,
           onChange: selectAll
         }
-      ), /* @__PURE__ */ import_react11.default.createElement("span", { className: "export-image-filename" }, L_default.selectAll()), /* @__PURE__ */ import_react11.default.createElement("span", { className: "export-image-select-number" }, selectFiles.length, "/", fileList.length)), fileList.map((file) => /* @__PURE__ */ import_react11.default.createElement(
+      ), /* @__PURE__ */ import_react8.default.createElement("span", { className: "export-image-filename" }, L_default.selectAll()), /* @__PURE__ */ import_react8.default.createElement("span", { className: "export-image-select-number" }, selectFiles.length, "/", fileList.length)), fileList.map((file) => /* @__PURE__ */ import_react8.default.createElement(
         "div",
         {
           className: "export-image-preview-file-item",
           key: file.path
         },
-        /* @__PURE__ */ import_react11.default.createElement(
+        /* @__PURE__ */ import_react8.default.createElement(
           "input",
           {
             type: "checkbox",
@@ -53314,16 +54156,16 @@ var ModalContent2 = ({ settings, app, folder, close }) => {
             }
           }
         ),
-        /* @__PURE__ */ import_react11.default.createElement("span", { className: "export-image-filename", title: file.path }, file.path)
-      ))) : /* @__PURE__ */ import_react11.default.createElement("div", null, L_default.noMarkdownFile())
+        /* @__PURE__ */ import_react8.default.createElement("span", { className: "export-image-filename", title: file.path }, file.path)
+      ))) : /* @__PURE__ */ import_react8.default.createElement("div", null, L_default.noMarkdownFile())
     )),
-    /* @__PURE__ */ import_react11.default.createElement(
+    /* @__PURE__ */ import_react8.default.createElement(
       "div",
       {
         className: "export-image-preview-actions",
         style: { justifyContent: "space-around" }
       },
-      /* @__PURE__ */ import_react11.default.createElement("div", { className: "export-image-progress-bar", style: { width: "40%" } }, /* @__PURE__ */ import_react11.default.createElement(
+      /* @__PURE__ */ import_react8.default.createElement("div", { className: "export-image-progress-bar", style: { width: "40%" } }, /* @__PURE__ */ import_react8.default.createElement(
         "div",
         {
           className: "export-image-progress-bar-inner",
@@ -53332,22 +54174,22 @@ var ModalContent2 = ({ settings, app, folder, close }) => {
           }
         }
       )),
-      /* @__PURE__ */ import_react11.default.createElement("button", { disabled: selectFiles.length === 0, onClick: exportAll }, L_default.exportAll())
+      /* @__PURE__ */ import_react8.default.createElement("button", { disabled: selectFiles.length === 0, onClick: exportAll }, L_default.exportAll())
     )
   ));
 };
-var ModalContent_default2 = ModalContent2;
+var ModalContent_default = ModalContent;
 
 // src/components/folder/exportFolder.tsx
 async function exportFolder_default(app, settings, folder) {
-  const modal = new import_obsidian9.Modal(app);
+  const modal = new import_obsidian7.Modal(app);
   modal.setTitle(L_default.exportFolder());
   modal.modalEl.style.width = "800px";
   modal.open();
-  const root2 = (0, import_client4.createRoot)(modal.contentEl);
+  const root2 = (0, import_client3.createRoot)(modal.contentEl);
   root2.render(
-    /* @__PURE__ */ import_react12.default.createElement(
-      ModalContent_default2,
+    /* @__PURE__ */ import_react9.default.createElement(
+      ModalContent_default,
       {
         settings,
         app,
@@ -53375,9 +54217,31 @@ var createSettingConfig = async (app) => {
       placeholder: "640"
     },
     {
+      id: "split.enable",
+      label: L_default.setting.split.enable.label(),
+      description: L_default.setting.split.enable.description(),
+      type: "toggle"
+    },
+    {
+      id: "split.height",
+      label: L_default.setting.split.height.label(),
+      description: L_default.setting.split.height.description(),
+      type: "number",
+      placeholder: "1000",
+      show: (settings) => settings.split.enable
+    },
+    {
+      id: "split.overlap",
+      label: L_default.setting.split.overlap.label(),
+      description: L_default.setting.split.overlap.description(),
+      type: "number",
+      placeholder: "40",
+      show: (settings) => settings.split.enable
+    },
+    {
       id: "showFilename",
       label: L_default.setting.filename.label(),
-      description: L_default.setting.filename.desscription(),
+      description: L_default.setting.filename.description(),
       type: "toggle"
     },
     {
@@ -53544,12 +54408,12 @@ var createSettingConfig = async (app) => {
 };
 
 // src/SettingRenderer.ts
-var import_obsidian11 = require("obsidian");
+var import_obsidian9 = require("obsidian");
 
 // src/settingPreview.tsx
-var import_react13 = __toESM(require_react());
-var import_obsidian10 = require("obsidian");
-var import_client5 = __toESM(require_client());
+var import_react10 = __toESM(require_react());
+var import_obsidian8 = require("obsidian");
+var import_client4 = __toESM(require_client());
 var defaultConfig = {
   monitor: false,
   mode: "interval"
@@ -53558,12 +54422,12 @@ var Preview = ({
   setting,
   el
 }) => {
-  const container = (0, import_react13.useRef)(null);
-  const [properties, setProperties] = (0, import_react13.useState)(defaultConfig);
-  (0, import_react13.useEffect)(() => {
+  const container = (0, import_react10.useRef)(null);
+  const [properties, setProperties] = (0, import_react10.useState)(defaultConfig);
+  (0, import_react10.useEffect)(() => {
     container.current?.append(el);
   });
-  (0, import_react13.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     (async () => {
       const properties2 = {
         ...defaultConfig,
@@ -53586,7 +54450,7 @@ var Preview = ({
       setProperties(properties2);
     })();
   }, [setting.watermark]);
-  return /* @__PURE__ */ import_react13.default.createElement(Watermark2, { ...properties }, /* @__PURE__ */ import_react13.default.createElement(
+  return /* @__PURE__ */ import_react10.default.createElement(Watermark2, { ...properties }, /* @__PURE__ */ import_react10.default.createElement(
     "div",
     {
       className: "markdown-preview-view markdown-rendered export-image-setting-preview-mock",
@@ -53596,7 +54460,7 @@ var Preview = ({
 };
 var renderPreview = async (root2, app) => {
   const element = createDiv();
-  await import_obsidian10.MarkdownRenderer.render(
+  await import_obsidian8.MarkdownRenderer.render(
     app,
     [
       "# test markdown",
@@ -53607,11 +54471,11 @@ var renderPreview = async (root2, app) => {
     ].join("\n"),
     element,
     "/",
-    new import_obsidian10.MarkdownRenderChild(element)
+    new import_obsidian8.MarkdownRenderChild(element)
   );
-  const r6 = (0, import_client5.createRoot)(root2);
+  const r6 = (0, import_client4.createRoot)(root2);
   return (setting) => {
-    r6.render(/* @__PURE__ */ import_react13.default.createElement(Preview, { setting, el: element }));
+    r6.render(/* @__PURE__ */ import_react10.default.createElement(Preview, { setting, el: element }));
   };
 };
 
@@ -53661,7 +54525,7 @@ var SettingRenderer = class {
       if (item.show && !item.show(this.plugin.settings)) {
         return;
       }
-      const setting = new import_obsidian11.Setting(this.containerEl).setName(item.label);
+      const setting = new import_obsidian9.Setting(this.containerEl).setName(item.label);
       if (item.description) {
         setting.setDesc(item.description);
       }
@@ -53752,7 +54616,7 @@ var SettingRenderer = class {
               `
             }
           });
-          (0, import_obsidian11.setIcon)(deleteButton, "x");
+          (0, import_obsidian9.setIcon)(deleteButton, "x");
           deleteButton.onclick = async () => {
             await this.updateSetting(item.id, void 0);
           };
@@ -53789,7 +54653,7 @@ var SettingRenderer = class {
           });
           urlButton.onclick = async () => {
             const currentValue = this.getSettingValue(item.id) || "";
-            const modal = new import_obsidian11.Modal(this.app);
+            const modal = new import_obsidian9.Modal(this.app);
             modal.titleEl.setText(L_default.imageUrl());
             const inputContainer = modal.contentEl.createDiv({
               attr: {
@@ -53841,6 +54705,2065 @@ var SettingRenderer = class {
     render(this.plugin.settings);
   }
 };
+
+// src/components/file/exportImage.tsx
+var import_react13 = __toESM(require_react());
+var import_obsidian11 = require("obsidian");
+var import_client5 = __toESM(require_client());
+
+// src/components/file/ModalContent.tsx
+var import_obsidian10 = require("obsidian");
+var import_react12 = __toESM(require_react());
+
+// node_modules/react-zoom-pan-pinch/dist/index.esm.js
+var import_react11 = __toESM(require_react());
+var roundNumber = function(num, decimal) {
+  return Number(num.toFixed(decimal));
+};
+var checkIsNumber = function(num, defaultValue) {
+  return typeof num === "number" ? num : defaultValue;
+};
+var handleCallback = function(context, event, callback) {
+  if (callback && typeof callback === "function") {
+    callback(context, event);
+  }
+};
+var easeOut = function(t5) {
+  return -Math.cos(t5 * Math.PI) / 2 + 0.5;
+};
+var linear = function(t5) {
+  return t5;
+};
+var easeInQuad = function(t5) {
+  return t5 * t5;
+};
+var easeOutQuad = function(t5) {
+  return t5 * (2 - t5);
+};
+var easeInOutQuad = function(t5) {
+  return t5 < 0.5 ? 2 * t5 * t5 : -1 + (4 - 2 * t5) * t5;
+};
+var easeInCubic = function(t5) {
+  return t5 * t5 * t5;
+};
+var easeOutCubic = function(t5) {
+  return --t5 * t5 * t5 + 1;
+};
+var easeInOutCubic = function(t5) {
+  return t5 < 0.5 ? 4 * t5 * t5 * t5 : (t5 - 1) * (2 * t5 - 2) * (2 * t5 - 2) + 1;
+};
+var easeInQuart = function(t5) {
+  return t5 * t5 * t5 * t5;
+};
+var easeOutQuart = function(t5) {
+  return 1 - --t5 * t5 * t5 * t5;
+};
+var easeInOutQuart = function(t5) {
+  return t5 < 0.5 ? 8 * t5 * t5 * t5 * t5 : 1 - 8 * --t5 * t5 * t5 * t5;
+};
+var easeInQuint = function(t5) {
+  return t5 * t5 * t5 * t5 * t5;
+};
+var easeOutQuint = function(t5) {
+  return 1 + --t5 * t5 * t5 * t5 * t5;
+};
+var easeInOutQuint = function(t5) {
+  return t5 < 0.5 ? 16 * t5 * t5 * t5 * t5 * t5 : 1 + 16 * --t5 * t5 * t5 * t5 * t5;
+};
+var animations = {
+  easeOut,
+  linear,
+  easeInQuad,
+  easeOutQuad,
+  easeInOutQuad,
+  easeInCubic,
+  easeOutCubic,
+  easeInOutCubic,
+  easeInQuart,
+  easeOutQuart,
+  easeInOutQuart,
+  easeInQuint,
+  easeOutQuint,
+  easeInOutQuint
+};
+var handleCancelAnimationFrame = function(animation) {
+  if (typeof animation === "number") {
+    cancelAnimationFrame(animation);
+  }
+};
+var handleCancelAnimation = function(contextInstance) {
+  if (!contextInstance.mounted)
+    return;
+  handleCancelAnimationFrame(contextInstance.animation);
+  contextInstance.animate = false;
+  contextInstance.animation = null;
+  contextInstance.velocity = null;
+};
+function handleSetupAnimation(contextInstance, animationName, animationTime, callback) {
+  if (!contextInstance.mounted)
+    return;
+  var startTime = (/* @__PURE__ */ new Date()).getTime();
+  var lastStep = 1;
+  handleCancelAnimation(contextInstance);
+  contextInstance.animation = function() {
+    if (!contextInstance.mounted) {
+      return handleCancelAnimationFrame(contextInstance.animation);
+    }
+    var frameTime = (/* @__PURE__ */ new Date()).getTime() - startTime;
+    var animationProgress = frameTime / animationTime;
+    var animationType = animations[animationName];
+    var step = animationType(animationProgress);
+    if (frameTime >= animationTime) {
+      callback(lastStep);
+      contextInstance.animation = null;
+    } else if (contextInstance.animation) {
+      callback(step);
+      requestAnimationFrame(contextInstance.animation);
+    }
+  };
+  requestAnimationFrame(contextInstance.animation);
+}
+function isValidTargetState(targetState) {
+  var scale = targetState.scale, positionX = targetState.positionX, positionY = targetState.positionY;
+  if (Number.isNaN(scale) || Number.isNaN(positionX) || Number.isNaN(positionY)) {
+    return false;
+  }
+  return true;
+}
+function animate(contextInstance, targetState, animationTime, animationName) {
+  var isValid = isValidTargetState(targetState);
+  if (!contextInstance.mounted || !isValid)
+    return;
+  var setTransformState = contextInstance.setTransformState;
+  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
+  var scaleDiff = targetState.scale - scale;
+  var positionXDiff = targetState.positionX - positionX;
+  var positionYDiff = targetState.positionY - positionY;
+  if (animationTime === 0) {
+    setTransformState(targetState.scale, targetState.positionX, targetState.positionY);
+  } else {
+    handleSetupAnimation(contextInstance, animationName, animationTime, function(step) {
+      var newScale = scale + scaleDiff * step;
+      var newPositionX = positionX + positionXDiff * step;
+      var newPositionY = positionY + positionYDiff * step;
+      setTransformState(newScale, newPositionX, newPositionY);
+    });
+  }
+}
+function getComponentsSizes(wrapperComponent, contentComponent, newScale) {
+  var wrapperWidth = wrapperComponent.offsetWidth;
+  var wrapperHeight = wrapperComponent.offsetHeight;
+  var contentWidth = contentComponent.offsetWidth;
+  var contentHeight = contentComponent.offsetHeight;
+  var newContentWidth = contentWidth * newScale;
+  var newContentHeight = contentHeight * newScale;
+  var newDiffWidth = wrapperWidth - newContentWidth;
+  var newDiffHeight = wrapperHeight - newContentHeight;
+  return {
+    wrapperWidth,
+    wrapperHeight,
+    newContentWidth,
+    newDiffWidth,
+    newContentHeight,
+    newDiffHeight
+  };
+}
+var getBounds = function(wrapperWidth, newContentWidth, diffWidth, wrapperHeight, newContentHeight, diffHeight, centerZoomedOut) {
+  var scaleWidthFactor = wrapperWidth > newContentWidth ? diffWidth * (centerZoomedOut ? 1 : 0.5) : 0;
+  var scaleHeightFactor = wrapperHeight > newContentHeight ? diffHeight * (centerZoomedOut ? 1 : 0.5) : 0;
+  var minPositionX = wrapperWidth - newContentWidth - scaleWidthFactor;
+  var maxPositionX = scaleWidthFactor;
+  var minPositionY = wrapperHeight - newContentHeight - scaleHeightFactor;
+  var maxPositionY = scaleHeightFactor;
+  return { minPositionX, maxPositionX, minPositionY, maxPositionY };
+};
+var calculateBounds = function(contextInstance, newScale) {
+  var wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent;
+  var centerZoomedOut = contextInstance.setup.centerZoomedOut;
+  if (!wrapperComponent || !contentComponent) {
+    throw new Error("Components are not mounted");
+  }
+  var _a2 = getComponentsSizes(wrapperComponent, contentComponent, newScale), wrapperWidth = _a2.wrapperWidth, wrapperHeight = _a2.wrapperHeight, newContentWidth = _a2.newContentWidth, newDiffWidth = _a2.newDiffWidth, newContentHeight = _a2.newContentHeight, newDiffHeight = _a2.newDiffHeight;
+  var bounds = getBounds(wrapperWidth, newContentWidth, newDiffWidth, wrapperHeight, newContentHeight, newDiffHeight, Boolean(centerZoomedOut));
+  return bounds;
+};
+var boundLimiter = function(value, minBound, maxBound, isActive) {
+  if (!isActive)
+    return roundNumber(value, 2);
+  if (value < minBound)
+    return roundNumber(minBound, 2);
+  if (value > maxBound)
+    return roundNumber(maxBound, 2);
+  return roundNumber(value, 2);
+};
+var handleCalculateBounds = function(contextInstance, newScale) {
+  var bounds = calculateBounds(contextInstance, newScale);
+  contextInstance.bounds = bounds;
+  return bounds;
+};
+function getMouseBoundedPosition(positionX, positionY, bounds, limitToBounds, paddingValueX, paddingValueY, wrapperComponent) {
+  var minPositionX = bounds.minPositionX, minPositionY = bounds.minPositionY, maxPositionX = bounds.maxPositionX, maxPositionY = bounds.maxPositionY;
+  var paddingX = 0;
+  var paddingY = 0;
+  if (wrapperComponent) {
+    paddingX = paddingValueX;
+    paddingY = paddingValueY;
+  }
+  var x2 = boundLimiter(positionX, minPositionX - paddingX, maxPositionX + paddingX, limitToBounds);
+  var y3 = boundLimiter(positionY, minPositionY - paddingY, maxPositionY + paddingY, limitToBounds);
+  return { x: x2, y: y3 };
+}
+function handleCalculateZoomPositions(contextInstance, mouseX, mouseY, newScale, bounds, limitToBounds) {
+  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
+  var scaleDifference = newScale - scale;
+  if (typeof mouseX !== "number" || typeof mouseY !== "number") {
+    console.error("Mouse X and Y position were not provided!");
+    return { x: positionX, y: positionY };
+  }
+  var calculatedPositionX = positionX - mouseX * scaleDifference;
+  var calculatedPositionY = positionY - mouseY * scaleDifference;
+  var newPositions = getMouseBoundedPosition(calculatedPositionX, calculatedPositionY, bounds, limitToBounds, 0, 0, null);
+  return newPositions;
+}
+function checkZoomBounds(zoom, minScale, maxScale, zoomPadding, enablePadding) {
+  var scalePadding = enablePadding ? zoomPadding : 0;
+  var minScaleWithPadding = minScale - scalePadding;
+  if (!Number.isNaN(maxScale) && zoom >= maxScale)
+    return maxScale;
+  if (!Number.isNaN(minScale) && zoom <= minScaleWithPadding)
+    return minScaleWithPadding;
+  return zoom;
+}
+var isPanningStartAllowed = function(contextInstance, event) {
+  var excluded = contextInstance.setup.panning.excluded;
+  var isInitialized = contextInstance.isInitialized, wrapperComponent = contextInstance.wrapperComponent;
+  var target = event.target;
+  var targetIsShadowDom = "shadowRoot" in target && "composedPath" in event;
+  var isWrapperChild = targetIsShadowDom ? event.composedPath().some(function(el) {
+    if (!(el instanceof Element)) {
+      return false;
+    }
+    return wrapperComponent === null || wrapperComponent === void 0 ? void 0 : wrapperComponent.contains(el);
+  }) : wrapperComponent === null || wrapperComponent === void 0 ? void 0 : wrapperComponent.contains(target);
+  var isAllowed = isInitialized && target && isWrapperChild;
+  if (!isAllowed)
+    return false;
+  var isExcluded = isExcludedNode(target, excluded);
+  if (isExcluded)
+    return false;
+  return true;
+};
+var isPanningAllowed = function(contextInstance) {
+  var isInitialized = contextInstance.isInitialized, isPanning = contextInstance.isPanning, setup = contextInstance.setup;
+  var disabled = setup.panning.disabled;
+  var isAllowed = isInitialized && isPanning && !disabled;
+  if (!isAllowed)
+    return false;
+  return true;
+};
+var handlePanningSetup = function(contextInstance, event) {
+  var _a2 = contextInstance.transformState, positionX = _a2.positionX, positionY = _a2.positionY;
+  contextInstance.isPanning = true;
+  var x2 = event.clientX;
+  var y3 = event.clientY;
+  contextInstance.startCoords = { x: x2 - positionX, y: y3 - positionY };
+};
+var handleTouchPanningSetup = function(contextInstance, event) {
+  var touches = event.touches;
+  var _a2 = contextInstance.transformState, positionX = _a2.positionX, positionY = _a2.positionY;
+  contextInstance.isPanning = true;
+  var oneFingerTouch = touches.length === 1;
+  if (oneFingerTouch) {
+    var x2 = touches[0].clientX;
+    var y3 = touches[0].clientY;
+    contextInstance.startCoords = { x: x2 - positionX, y: y3 - positionY };
+  }
+};
+function handlePanToBounds(contextInstance) {
+  var _a2 = contextInstance.transformState, positionX = _a2.positionX, positionY = _a2.positionY, scale = _a2.scale;
+  var _b2 = contextInstance.setup, disabled = _b2.disabled, limitToBounds = _b2.limitToBounds, centerZoomedOut = _b2.centerZoomedOut;
+  var wrapperComponent = contextInstance.wrapperComponent;
+  if (disabled || !wrapperComponent || !contextInstance.bounds)
+    return;
+  var _c = contextInstance.bounds, maxPositionX = _c.maxPositionX, minPositionX = _c.minPositionX, maxPositionY = _c.maxPositionY, minPositionY = _c.minPositionY;
+  var xChanged = positionX > maxPositionX || positionX < minPositionX;
+  var yChanged = positionY > maxPositionY || positionY < minPositionY;
+  var mousePosX = positionX > maxPositionX ? wrapperComponent.offsetWidth : contextInstance.setup.minPositionX || 0;
+  var mousePosY = positionY > maxPositionY ? wrapperComponent.offsetHeight : contextInstance.setup.minPositionY || 0;
+  var _d = handleCalculateZoomPositions(contextInstance, mousePosX, mousePosY, scale, contextInstance.bounds, limitToBounds || centerZoomedOut), x2 = _d.x, y3 = _d.y;
+  return {
+    scale,
+    positionX: xChanged ? x2 : positionX,
+    positionY: yChanged ? y3 : positionY
+  };
+}
+function handleNewPosition(contextInstance, newPositionX, newPositionY, paddingValueX, paddingValueY) {
+  var limitToBounds = contextInstance.setup.limitToBounds;
+  var wrapperComponent = contextInstance.wrapperComponent, bounds = contextInstance.bounds;
+  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
+  if (wrapperComponent === null || bounds === null || newPositionX === positionX && newPositionY === positionY) {
+    return;
+  }
+  var _b2 = getMouseBoundedPosition(newPositionX, newPositionY, bounds, limitToBounds, paddingValueX, paddingValueY, wrapperComponent), x2 = _b2.x, y3 = _b2.y;
+  contextInstance.setTransformState(scale, x2, y3);
+}
+var getPanningClientPosition = function(contextInstance, clientX, clientY) {
+  var startCoords = contextInstance.startCoords, transformState = contextInstance.transformState;
+  var panning = contextInstance.setup.panning;
+  var lockAxisX = panning.lockAxisX, lockAxisY = panning.lockAxisY;
+  var positionX = transformState.positionX, positionY = transformState.positionY;
+  if (!startCoords) {
+    return { x: positionX, y: positionY };
+  }
+  var mouseX = clientX - startCoords.x;
+  var mouseY = clientY - startCoords.y;
+  var newPositionX = lockAxisX ? positionX : mouseX;
+  var newPositionY = lockAxisY ? positionY : mouseY;
+  return { x: newPositionX, y: newPositionY };
+};
+var getPaddingValue = function(contextInstance, size) {
+  var setup = contextInstance.setup, transformState = contextInstance.transformState;
+  var scale = transformState.scale;
+  var minScale = setup.minScale, disablePadding = setup.disablePadding;
+  if (size > 0 && scale >= minScale && !disablePadding) {
+    return size;
+  }
+  return 0;
+};
+var isVelocityCalculationAllowed = function(contextInstance) {
+  var mounted = contextInstance.mounted;
+  var _a2 = contextInstance.setup, disabled = _a2.disabled, velocityAnimation = _a2.velocityAnimation;
+  var scale = contextInstance.transformState.scale;
+  var disabledVelocity = velocityAnimation.disabled;
+  var isAllowed = !disabledVelocity || scale > 1 || !disabled || mounted;
+  if (!isAllowed)
+    return false;
+  return true;
+};
+var isVelocityAllowed = function(contextInstance) {
+  var mounted = contextInstance.mounted, velocity = contextInstance.velocity, bounds = contextInstance.bounds;
+  var _a2 = contextInstance.setup, disabled = _a2.disabled, velocityAnimation = _a2.velocityAnimation;
+  var scale = contextInstance.transformState.scale;
+  var disabledVelocity = velocityAnimation.disabled;
+  var isAllowed = !disabledVelocity || scale > 1 || !disabled || mounted;
+  if (!isAllowed)
+    return false;
+  if (!velocity || !bounds)
+    return false;
+  return true;
+};
+function getVelocityMoveTime(contextInstance, velocity) {
+  var velocityAnimation = contextInstance.setup.velocityAnimation;
+  var equalToMove = velocityAnimation.equalToMove, animationTime = velocityAnimation.animationTime, sensitivity = velocityAnimation.sensitivity;
+  if (equalToMove) {
+    return animationTime * velocity * sensitivity;
+  }
+  return animationTime;
+}
+function getVelocityPosition(newPosition, startPosition, currentPosition, isLocked, limitToBounds, minPosition, maxPosition, minTarget, maxTarget, step) {
+  if (limitToBounds) {
+    if (startPosition > maxPosition && currentPosition > maxPosition) {
+      var calculatedPosition = maxPosition + (newPosition - maxPosition) * step;
+      if (calculatedPosition > maxTarget)
+        return maxTarget;
+      if (calculatedPosition < maxPosition)
+        return maxPosition;
+      return calculatedPosition;
+    }
+    if (startPosition < minPosition && currentPosition < minPosition) {
+      var calculatedPosition = minPosition + (newPosition - minPosition) * step;
+      if (calculatedPosition < minTarget)
+        return minTarget;
+      if (calculatedPosition > minPosition)
+        return minPosition;
+      return calculatedPosition;
+    }
+  }
+  if (isLocked)
+    return startPosition;
+  return boundLimiter(newPosition, minPosition, maxPosition, limitToBounds);
+}
+function getSizeMultiplier(wrapperComponent, equalToMove) {
+  var defaultMultiplier = 1;
+  if (equalToMove) {
+    return Math.min(defaultMultiplier, wrapperComponent.offsetWidth / window.innerWidth);
+  }
+  return defaultMultiplier;
+}
+function handleCalculateVelocity(contextInstance, position) {
+  var isAllowed = isVelocityCalculationAllowed(contextInstance);
+  if (!isAllowed) {
+    return;
+  }
+  var lastMousePosition = contextInstance.lastMousePosition, velocityTime = contextInstance.velocityTime, setup = contextInstance.setup;
+  var wrapperComponent = contextInstance.wrapperComponent;
+  var equalToMove = setup.velocityAnimation.equalToMove;
+  var now = Date.now();
+  if (lastMousePosition && velocityTime && wrapperComponent) {
+    var sizeMultiplier = getSizeMultiplier(wrapperComponent, equalToMove);
+    var distanceX = position.x - lastMousePosition.x;
+    var distanceY = position.y - lastMousePosition.y;
+    var velocityX = distanceX / sizeMultiplier;
+    var velocityY = distanceY / sizeMultiplier;
+    var interval = now - velocityTime;
+    var speed = distanceX * distanceX + distanceY * distanceY;
+    var velocity = Math.sqrt(speed) / interval;
+    contextInstance.velocity = { velocityX, velocityY, total: velocity };
+  }
+  contextInstance.lastMousePosition = position;
+  contextInstance.velocityTime = now;
+}
+function handleVelocityPanning(contextInstance) {
+  var velocity = contextInstance.velocity, bounds = contextInstance.bounds, setup = contextInstance.setup, wrapperComponent = contextInstance.wrapperComponent;
+  var isAllowed = isVelocityAllowed(contextInstance);
+  if (!isAllowed || !velocity || !bounds || !wrapperComponent) {
+    return;
+  }
+  var velocityX = velocity.velocityX, velocityY = velocity.velocityY, total = velocity.total;
+  var maxPositionX = bounds.maxPositionX, minPositionX = bounds.minPositionX, maxPositionY = bounds.maxPositionY, minPositionY = bounds.minPositionY;
+  var limitToBounds = setup.limitToBounds, alignmentAnimation = setup.alignmentAnimation;
+  var zoomAnimation = setup.zoomAnimation, panning = setup.panning;
+  var lockAxisY = panning.lockAxisY, lockAxisX = panning.lockAxisX;
+  var animationType = zoomAnimation.animationType;
+  var sizeX = alignmentAnimation.sizeX, sizeY = alignmentAnimation.sizeY, velocityAlignmentTime = alignmentAnimation.velocityAlignmentTime;
+  var alignAnimationTime = velocityAlignmentTime;
+  var moveAnimationTime = getVelocityMoveTime(contextInstance, total);
+  var finalAnimationTime = Math.max(moveAnimationTime, alignAnimationTime);
+  var paddingValueX = getPaddingValue(contextInstance, sizeX);
+  var paddingValueY = getPaddingValue(contextInstance, sizeY);
+  var paddingX = paddingValueX * wrapperComponent.offsetWidth / 100;
+  var paddingY = paddingValueY * wrapperComponent.offsetHeight / 100;
+  var maxTargetX = maxPositionX + paddingX;
+  var minTargetX = minPositionX - paddingX;
+  var maxTargetY = maxPositionY + paddingY;
+  var minTargetY = minPositionY - paddingY;
+  var startState = contextInstance.transformState;
+  var startTime = (/* @__PURE__ */ new Date()).getTime();
+  handleSetupAnimation(contextInstance, animationType, finalAnimationTime, function(step) {
+    var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
+    var frameTime = (/* @__PURE__ */ new Date()).getTime() - startTime;
+    var animationProgress = frameTime / alignAnimationTime;
+    var alignAnimation = animations[alignmentAnimation.animationType];
+    var alignStep = 1 - alignAnimation(Math.min(1, animationProgress));
+    var customStep = 1 - step;
+    var newPositionX = positionX + velocityX * customStep;
+    var newPositionY = positionY + velocityY * customStep;
+    var currentPositionX = getVelocityPosition(newPositionX, startState.positionX, positionX, lockAxisX, limitToBounds, minPositionX, maxPositionX, minTargetX, maxTargetX, alignStep);
+    var currentPositionY = getVelocityPosition(newPositionY, startState.positionY, positionY, lockAxisY, limitToBounds, minPositionY, maxPositionY, minTargetY, maxTargetY, alignStep);
+    if (positionX !== newPositionX || positionY !== newPositionY) {
+      contextInstance.setTransformState(scale, currentPositionX, currentPositionY);
+    }
+  });
+}
+function handlePanningStart(contextInstance, event) {
+  var scale = contextInstance.transformState.scale;
+  handleCancelAnimation(contextInstance);
+  handleCalculateBounds(contextInstance, scale);
+  if (window.TouchEvent !== void 0 && event instanceof TouchEvent) {
+    handleTouchPanningSetup(contextInstance, event);
+  } else {
+    handlePanningSetup(contextInstance, event);
+  }
+}
+function handleAlignToBounds(contextInstance) {
+  var scale = contextInstance.transformState.scale;
+  var _a2 = contextInstance.setup, minScale = _a2.minScale, alignmentAnimation = _a2.alignmentAnimation;
+  var disabled = alignmentAnimation.disabled, sizeX = alignmentAnimation.sizeX, sizeY = alignmentAnimation.sizeY, animationTime = alignmentAnimation.animationTime, animationType = alignmentAnimation.animationType;
+  var isDisabled = disabled || scale < minScale || !sizeX && !sizeY;
+  if (isDisabled)
+    return;
+  var targetState = handlePanToBounds(contextInstance);
+  if (targetState) {
+    animate(contextInstance, targetState, animationTime, animationType);
+  }
+}
+function handlePanning(contextInstance, clientX, clientY) {
+  var startCoords = contextInstance.startCoords, setup = contextInstance.setup;
+  var _a2 = setup.alignmentAnimation, sizeX = _a2.sizeX, sizeY = _a2.sizeY;
+  if (!startCoords)
+    return;
+  var _b2 = getPanningClientPosition(contextInstance, clientX, clientY), x2 = _b2.x, y3 = _b2.y;
+  var paddingValueX = getPaddingValue(contextInstance, sizeX);
+  var paddingValueY = getPaddingValue(contextInstance, sizeY);
+  handleCalculateVelocity(contextInstance, { x: x2, y: y3 });
+  handleNewPosition(contextInstance, x2, y3, paddingValueX, paddingValueY);
+}
+function handlePanningEnd(contextInstance) {
+  if (contextInstance.isPanning) {
+    var velocityDisabled = contextInstance.setup.panning.velocityDisabled;
+    var velocity = contextInstance.velocity, wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent;
+    contextInstance.isPanning = false;
+    contextInstance.animate = false;
+    contextInstance.animation = null;
+    var wrapperRect = wrapperComponent === null || wrapperComponent === void 0 ? void 0 : wrapperComponent.getBoundingClientRect();
+    var contentRect = contentComponent === null || contentComponent === void 0 ? void 0 : contentComponent.getBoundingClientRect();
+    var wrapperWidth = (wrapperRect === null || wrapperRect === void 0 ? void 0 : wrapperRect.width) || 0;
+    var wrapperHeight = (wrapperRect === null || wrapperRect === void 0 ? void 0 : wrapperRect.height) || 0;
+    var contentWidth = (contentRect === null || contentRect === void 0 ? void 0 : contentRect.width) || 0;
+    var contentHeight = (contentRect === null || contentRect === void 0 ? void 0 : contentRect.height) || 0;
+    var isZoomed = wrapperWidth < contentWidth || wrapperHeight < contentHeight;
+    var shouldAnimate = !velocityDisabled && velocity && (velocity === null || velocity === void 0 ? void 0 : velocity.total) > 0.1 && isZoomed;
+    if (shouldAnimate) {
+      handleVelocityPanning(contextInstance);
+    } else {
+      handleAlignToBounds(contextInstance);
+    }
+  }
+}
+function handleZoomToPoint(contextInstance, scale, mouseX, mouseY) {
+  var _a2 = contextInstance.setup, minScale = _a2.minScale, maxScale = _a2.maxScale, limitToBounds = _a2.limitToBounds;
+  var newScale = checkZoomBounds(roundNumber(scale, 2), minScale, maxScale, 0, false);
+  var bounds = handleCalculateBounds(contextInstance, newScale);
+  var _b2 = handleCalculateZoomPositions(contextInstance, mouseX, mouseY, newScale, bounds, limitToBounds), x2 = _b2.x, y3 = _b2.y;
+  return { scale: newScale, positionX: x2, positionY: y3 };
+}
+function handleAlignToScaleBounds(contextInstance, mousePositionX, mousePositionY) {
+  var scale = contextInstance.transformState.scale;
+  var wrapperComponent = contextInstance.wrapperComponent;
+  var _a2 = contextInstance.setup, minScale = _a2.minScale, limitToBounds = _a2.limitToBounds, zoomAnimation = _a2.zoomAnimation;
+  var disabled = zoomAnimation.disabled, animationTime = zoomAnimation.animationTime, animationType = zoomAnimation.animationType;
+  var isDisabled = disabled || scale >= minScale;
+  if (scale >= 1 || limitToBounds) {
+    handleAlignToBounds(contextInstance);
+  }
+  if (isDisabled || !wrapperComponent || !contextInstance.mounted)
+    return;
+  var mouseX = mousePositionX || wrapperComponent.offsetWidth / 2;
+  var mouseY = mousePositionY || wrapperComponent.offsetHeight / 2;
+  var targetState = handleZoomToPoint(contextInstance, minScale, mouseX, mouseY);
+  if (targetState) {
+    animate(contextInstance, targetState, animationTime, animationType);
+  }
+}
+var __assign = function() {
+  __assign = Object.assign || function __assign2(t5) {
+    for (var s3, i4 = 1, n4 = arguments.length; i4 < n4; i4++) {
+      s3 = arguments[i4];
+      for (var p3 in s3) if (Object.prototype.hasOwnProperty.call(s3, p3)) t5[p3] = s3[p3];
+    }
+    return t5;
+  };
+  return __assign.apply(this, arguments);
+};
+function __spreadArray(to, from, pack) {
+  if (pack || arguments.length === 2) for (var i4 = 0, l3 = from.length, ar2; i4 < l3; i4++) {
+    if (ar2 || !(i4 in from)) {
+      if (!ar2) ar2 = Array.prototype.slice.call(from, 0, i4);
+      ar2[i4] = from[i4];
+    }
+  }
+  return to.concat(ar2 || Array.prototype.slice.call(from));
+}
+var initialState = {
+  previousScale: 1,
+  scale: 1,
+  positionX: 0,
+  positionY: 0
+};
+var initialSetup = {
+  disabled: false,
+  minPositionX: null,
+  maxPositionX: null,
+  minPositionY: null,
+  maxPositionY: null,
+  minScale: 1,
+  maxScale: 8,
+  limitToBounds: true,
+  centerZoomedOut: false,
+  centerOnInit: false,
+  disablePadding: false,
+  smooth: true,
+  wheel: {
+    step: 0.2,
+    disabled: false,
+    smoothStep: 1e-3,
+    wheelDisabled: false,
+    touchPadDisabled: false,
+    activationKeys: [],
+    excluded: []
+  },
+  panning: {
+    disabled: false,
+    velocityDisabled: false,
+    lockAxisX: false,
+    lockAxisY: false,
+    allowLeftClickPan: true,
+    allowMiddleClickPan: true,
+    allowRightClickPan: true,
+    wheelPanning: false,
+    activationKeys: [],
+    excluded: []
+  },
+  pinch: {
+    step: 5,
+    disabled: false,
+    excluded: []
+  },
+  doubleClick: {
+    disabled: false,
+    step: 0.7,
+    mode: "zoomIn",
+    animationType: "easeOut",
+    animationTime: 200,
+    excluded: []
+  },
+  zoomAnimation: {
+    disabled: false,
+    size: 0.4,
+    animationTime: 200,
+    animationType: "easeOut"
+  },
+  alignmentAnimation: {
+    disabled: false,
+    sizeX: 100,
+    sizeY: 100,
+    animationTime: 200,
+    velocityAlignmentTime: 400,
+    animationType: "easeOut"
+  },
+  velocityAnimation: {
+    disabled: false,
+    sensitivity: 1,
+    animationTime: 400,
+    animationType: "easeOut",
+    equalToMove: true
+  }
+};
+var baseClasses = {
+  wrapperClass: "react-transform-wrapper",
+  contentClass: "react-transform-component"
+};
+var createState = function(props) {
+  var _a2, _b2, _c, _d;
+  return {
+    previousScale: (_a2 = props.initialScale) !== null && _a2 !== void 0 ? _a2 : initialState.scale,
+    scale: (_b2 = props.initialScale) !== null && _b2 !== void 0 ? _b2 : initialState.scale,
+    positionX: (_c = props.initialPositionX) !== null && _c !== void 0 ? _c : initialState.positionX,
+    positionY: (_d = props.initialPositionY) !== null && _d !== void 0 ? _d : initialState.positionY
+  };
+};
+var createSetup = function(props) {
+  var newSetup = __assign({}, initialSetup);
+  Object.keys(props).forEach(function(key) {
+    var validValue = typeof props[key] !== "undefined";
+    var validParameter = typeof initialSetup[key] !== "undefined";
+    if (validParameter && validValue) {
+      var dataType = Object.prototype.toString.call(initialSetup[key]);
+      var isObject = dataType === "[object Object]";
+      var isArray = dataType === "[object Array]";
+      if (isObject) {
+        newSetup[key] = __assign(__assign({}, initialSetup[key]), props[key]);
+      } else if (isArray) {
+        newSetup[key] = __spreadArray(__spreadArray([], initialSetup[key], true), props[key], true);
+      } else {
+        newSetup[key] = props[key];
+      }
+    }
+  });
+  return newSetup;
+};
+var handleCalculateButtonZoom = function(contextInstance, delta, step) {
+  var scale = contextInstance.transformState.scale;
+  var wrapperComponent = contextInstance.wrapperComponent, setup = contextInstance.setup;
+  var maxScale = setup.maxScale, minScale = setup.minScale, zoomAnimation = setup.zoomAnimation, smooth = setup.smooth;
+  var size = zoomAnimation.size;
+  if (!wrapperComponent) {
+    throw new Error("Wrapper is not mounted");
+  }
+  var targetScale = smooth ? scale * Math.exp(delta * step) : scale + delta * step;
+  var newScale = checkZoomBounds(roundNumber(targetScale, 3), minScale, maxScale, size, false);
+  return newScale;
+};
+function handleZoomToViewCenter(contextInstance, delta, step, animationTime, animationType) {
+  var wrapperComponent = contextInstance.wrapperComponent;
+  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
+  if (!wrapperComponent)
+    return console.error("No WrapperComponent found");
+  var wrapperWidth = wrapperComponent.offsetWidth;
+  var wrapperHeight = wrapperComponent.offsetHeight;
+  var mouseX = (wrapperWidth / 2 - positionX) / scale;
+  var mouseY = (wrapperHeight / 2 - positionY) / scale;
+  var newScale = handleCalculateButtonZoom(contextInstance, delta, step);
+  var targetState = handleZoomToPoint(contextInstance, newScale, mouseX, mouseY);
+  if (!targetState) {
+    return console.error("Error during zoom event. New transformation state was not calculated.");
+  }
+  animate(contextInstance, targetState, animationTime, animationType);
+}
+function resetTransformations(contextInstance, animationTime, animationType, onResetTransformation) {
+  var setup = contextInstance.setup, wrapperComponent = contextInstance.wrapperComponent;
+  var limitToBounds = setup.limitToBounds;
+  var initialTransformation = createState(contextInstance.props);
+  var _a2 = contextInstance.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
+  if (!wrapperComponent)
+    return;
+  var newBounds = calculateBounds(contextInstance, initialTransformation.scale);
+  var boundedPositions = getMouseBoundedPosition(initialTransformation.positionX, initialTransformation.positionY, newBounds, limitToBounds, 0, 0, wrapperComponent);
+  var newState = {
+    scale: initialTransformation.scale,
+    positionX: boundedPositions.x,
+    positionY: boundedPositions.y
+  };
+  if (scale === initialTransformation.scale && positionX === initialTransformation.positionX && positionY === initialTransformation.positionY) {
+    return;
+  }
+  onResetTransformation === null || onResetTransformation === void 0 ? void 0 : onResetTransformation();
+  animate(contextInstance, newState, animationTime, animationType);
+}
+function getOffset(element, wrapper, content, state) {
+  var offset = element.getBoundingClientRect();
+  var wrapperOffset = wrapper.getBoundingClientRect();
+  var contentOffset = content.getBoundingClientRect();
+  var xOff = wrapperOffset.x * state.scale;
+  var yOff = wrapperOffset.y * state.scale;
+  return {
+    x: (offset.x - contentOffset.x + xOff) / state.scale,
+    y: (offset.y - contentOffset.y + yOff) / state.scale
+  };
+}
+function calculateZoomToNode(contextInstance, node2, customZoom) {
+  var wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent, transformState = contextInstance.transformState;
+  var _a2 = contextInstance.setup, limitToBounds = _a2.limitToBounds, minScale = _a2.minScale, maxScale = _a2.maxScale;
+  if (!wrapperComponent || !contentComponent)
+    return transformState;
+  var wrapperRect = wrapperComponent.getBoundingClientRect();
+  var nodeRect = node2.getBoundingClientRect();
+  var nodeOffset = getOffset(node2, wrapperComponent, contentComponent, transformState);
+  var nodeLeft = nodeOffset.x;
+  var nodeTop = nodeOffset.y;
+  var nodeWidth = nodeRect.width / transformState.scale;
+  var nodeHeight = nodeRect.height / transformState.scale;
+  var scaleX = wrapperComponent.offsetWidth / nodeWidth;
+  var scaleY = wrapperComponent.offsetHeight / nodeHeight;
+  var newScale = checkZoomBounds(customZoom || Math.min(scaleX, scaleY), minScale, maxScale, 0, false);
+  var offsetX = (wrapperRect.width - nodeWidth * newScale) / 2;
+  var offsetY = (wrapperRect.height - nodeHeight * newScale) / 2;
+  var newPositionX = (wrapperRect.left - nodeLeft) * newScale + offsetX;
+  var newPositionY = (wrapperRect.top - nodeTop) * newScale + offsetY;
+  var bounds = calculateBounds(contextInstance, newScale);
+  var _b2 = getMouseBoundedPosition(newPositionX, newPositionY, bounds, limitToBounds, 0, 0, wrapperComponent), x2 = _b2.x, y3 = _b2.y;
+  return { positionX: x2, positionY: y3, scale: newScale };
+}
+var zoomIn = function(contextInstance) {
+  return function(step, animationTime, animationType) {
+    if (step === void 0) {
+      step = 0.5;
+    }
+    if (animationTime === void 0) {
+      animationTime = 300;
+    }
+    if (animationType === void 0) {
+      animationType = "easeOut";
+    }
+    handleZoomToViewCenter(contextInstance, 1, step, animationTime, animationType);
+  };
+};
+var zoomOut = function(contextInstance) {
+  return function(step, animationTime, animationType) {
+    if (step === void 0) {
+      step = 0.5;
+    }
+    if (animationTime === void 0) {
+      animationTime = 300;
+    }
+    if (animationType === void 0) {
+      animationType = "easeOut";
+    }
+    handleZoomToViewCenter(contextInstance, -1, step, animationTime, animationType);
+  };
+};
+var setTransform = function(contextInstance) {
+  return function(newPositionX, newPositionY, newScale, animationTime, animationType) {
+    if (animationTime === void 0) {
+      animationTime = 300;
+    }
+    if (animationType === void 0) {
+      animationType = "easeOut";
+    }
+    var _a2 = contextInstance.transformState, positionX = _a2.positionX, positionY = _a2.positionY, scale = _a2.scale;
+    var wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent;
+    var disabled = contextInstance.setup.disabled;
+    if (disabled || !wrapperComponent || !contentComponent)
+      return;
+    var targetState = {
+      positionX: Number.isNaN(newPositionX) ? positionX : newPositionX,
+      positionY: Number.isNaN(newPositionY) ? positionY : newPositionY,
+      scale: Number.isNaN(newScale) ? scale : newScale
+    };
+    animate(contextInstance, targetState, animationTime, animationType);
+  };
+};
+var resetTransform = function(contextInstance) {
+  return function(animationTime, animationType) {
+    if (animationTime === void 0) {
+      animationTime = 200;
+    }
+    if (animationType === void 0) {
+      animationType = "easeOut";
+    }
+    resetTransformations(contextInstance, animationTime, animationType);
+  };
+};
+var centerView = function(contextInstance) {
+  return function(scale, animationTime, animationType) {
+    if (animationTime === void 0) {
+      animationTime = 200;
+    }
+    if (animationType === void 0) {
+      animationType = "easeOut";
+    }
+    var transformState = contextInstance.transformState, wrapperComponent = contextInstance.wrapperComponent, contentComponent = contextInstance.contentComponent;
+    if (wrapperComponent && contentComponent) {
+      var targetState = getCenterPosition(scale || transformState.scale, wrapperComponent, contentComponent);
+      animate(contextInstance, targetState, animationTime, animationType);
+    }
+  };
+};
+var zoomToElement = function(contextInstance) {
+  return function(node2, scale, animationTime, animationType) {
+    if (animationTime === void 0) {
+      animationTime = 600;
+    }
+    if (animationType === void 0) {
+      animationType = "easeOut";
+    }
+    handleCancelAnimation(contextInstance);
+    var wrapperComponent = contextInstance.wrapperComponent;
+    var target = typeof node2 === "string" ? document.getElementById(node2) : node2;
+    if (wrapperComponent && target && wrapperComponent.contains(target)) {
+      var targetState = calculateZoomToNode(contextInstance, target, scale);
+      animate(contextInstance, targetState, animationTime, animationType);
+    }
+  };
+};
+var getControls = function(contextInstance) {
+  return {
+    instance: contextInstance,
+    zoomIn: zoomIn(contextInstance),
+    zoomOut: zoomOut(contextInstance),
+    setTransform: setTransform(contextInstance),
+    resetTransform: resetTransform(contextInstance),
+    centerView: centerView(contextInstance),
+    zoomToElement: zoomToElement(contextInstance)
+  };
+};
+var getState = function(contextInstance) {
+  return {
+    instance: contextInstance,
+    state: contextInstance.transformState
+  };
+};
+var getContext = function(contextInstance) {
+  var ref = {};
+  Object.assign(ref, getState(contextInstance));
+  Object.assign(ref, getControls(contextInstance));
+  return ref;
+};
+var passiveSupported = false;
+function makePassiveEventOption() {
+  try {
+    var options = {
+      get passive() {
+        passiveSupported = true;
+        return false;
+      }
+    };
+    return options;
+  } catch (err2) {
+    passiveSupported = false;
+    return passiveSupported;
+  }
+}
+var matchPrefix = ".".concat(baseClasses.wrapperClass);
+var isExcludedNode = function(node2, excluded) {
+  return excluded.some(function(exclude) {
+    return node2.matches("".concat(matchPrefix, " ").concat(exclude, ", ").concat(matchPrefix, " .").concat(exclude, ", ").concat(matchPrefix, " ").concat(exclude, " *, ").concat(matchPrefix, " .").concat(exclude, " *"));
+  });
+};
+var cancelTimeout = function(timeout) {
+  if (timeout) {
+    clearTimeout(timeout);
+  }
+};
+var getTransformStyles = function(x2, y3, scale) {
+  return "translate(".concat(x2, "px, ").concat(y3, "px) scale(").concat(scale, ")");
+};
+var getCenterPosition = function(scale, wrapperComponent, contentComponent) {
+  var contentWidth = contentComponent.offsetWidth * scale;
+  var contentHeight = contentComponent.offsetHeight * scale;
+  var centerPositionX = (wrapperComponent.offsetWidth - contentWidth) / 2;
+  var centerPositionY = (wrapperComponent.offsetHeight - contentHeight) / 2;
+  return {
+    scale,
+    positionX: centerPositionX,
+    positionY: centerPositionY
+  };
+};
+function mergeRefs(refs) {
+  return function(value) {
+    refs.forEach(function(ref) {
+      if (typeof ref === "function") {
+        ref(value);
+      } else if (ref != null) {
+        ref.current = value;
+      }
+    });
+  };
+}
+var isWheelAllowed = function(contextInstance, event) {
+  var _a2 = contextInstance.setup.wheel, disabled = _a2.disabled, wheelDisabled = _a2.wheelDisabled, touchPadDisabled = _a2.touchPadDisabled, excluded = _a2.excluded;
+  var isInitialized = contextInstance.isInitialized, isPanning = contextInstance.isPanning;
+  var target = event.target;
+  var isAllowed = isInitialized && !isPanning && !disabled && target;
+  if (!isAllowed)
+    return false;
+  if (wheelDisabled && !event.ctrlKey)
+    return false;
+  if (touchPadDisabled && event.ctrlKey)
+    return false;
+  var isExcluded = isExcludedNode(target, excluded);
+  if (isExcluded)
+    return false;
+  return true;
+};
+var getDeltaY = function(event) {
+  if (event) {
+    return event.deltaY < 0 ? 1 : -1;
+  }
+  return 0;
+};
+function getDelta(event, customDelta) {
+  var deltaY = getDeltaY(event);
+  var delta = checkIsNumber(customDelta, deltaY);
+  return delta;
+}
+function getMousePosition(event, contentComponent, scale) {
+  var contentRect = contentComponent.getBoundingClientRect();
+  var mouseX = 0;
+  var mouseY = 0;
+  if ("clientX" in event) {
+    mouseX = (event.clientX - contentRect.left) / scale;
+    mouseY = (event.clientY - contentRect.top) / scale;
+  } else {
+    var touch = event.touches[0];
+    mouseX = (touch.clientX - contentRect.left) / scale;
+    mouseY = (touch.clientY - contentRect.top) / scale;
+  }
+  if (Number.isNaN(mouseX) || Number.isNaN(mouseY))
+    console.error("No mouse or touch offset found");
+  return {
+    x: mouseX,
+    y: mouseY
+  };
+}
+var handleCalculateWheelZoom = function(contextInstance, delta, step, disable, getTarget) {
+  var scale = contextInstance.transformState.scale;
+  var wrapperComponent = contextInstance.wrapperComponent, setup = contextInstance.setup;
+  var maxScale = setup.maxScale, minScale = setup.minScale, zoomAnimation = setup.zoomAnimation, disablePadding = setup.disablePadding;
+  var size = zoomAnimation.size, disabled = zoomAnimation.disabled;
+  if (!wrapperComponent) {
+    throw new Error("Wrapper is not mounted");
+  }
+  var targetScale = scale + delta * step;
+  if (getTarget)
+    return targetScale;
+  var paddingEnabled = disable ? false : !disabled;
+  var newScale = checkZoomBounds(roundNumber(targetScale, 3), minScale, maxScale, size, paddingEnabled && !disablePadding);
+  return newScale;
+};
+var handleWheelZoomStop = function(contextInstance, event) {
+  var previousWheelEvent = contextInstance.previousWheelEvent;
+  var scale = contextInstance.transformState.scale;
+  var _a2 = contextInstance.setup, maxScale = _a2.maxScale, minScale = _a2.minScale;
+  if (!previousWheelEvent)
+    return false;
+  if (scale < maxScale || scale > minScale)
+    return true;
+  if (Math.sign(previousWheelEvent.deltaY) !== Math.sign(event.deltaY))
+    return true;
+  if (previousWheelEvent.deltaY > 0 && previousWheelEvent.deltaY < event.deltaY)
+    return true;
+  if (previousWheelEvent.deltaY < 0 && previousWheelEvent.deltaY > event.deltaY)
+    return true;
+  if (Math.sign(previousWheelEvent.deltaY) !== Math.sign(event.deltaY))
+    return true;
+  return false;
+};
+var isPinchStartAllowed = function(contextInstance, event) {
+  var _a2 = contextInstance.setup.pinch, disabled = _a2.disabled, excluded = _a2.excluded;
+  var isInitialized = contextInstance.isInitialized;
+  var target = event.target;
+  var isAllowed = isInitialized && !disabled && target;
+  if (!isAllowed)
+    return false;
+  var isExcluded = isExcludedNode(target, excluded);
+  if (isExcluded)
+    return false;
+  return true;
+};
+var isPinchAllowed = function(contextInstance) {
+  var disabled = contextInstance.setup.pinch.disabled;
+  var isInitialized = contextInstance.isInitialized, pinchStartDistance = contextInstance.pinchStartDistance;
+  var isAllowed = isInitialized && !disabled && pinchStartDistance;
+  if (!isAllowed)
+    return false;
+  return true;
+};
+var calculateTouchMidPoint = function(event, scale, contentComponent) {
+  var contentRect = contentComponent.getBoundingClientRect();
+  var touches = event.touches;
+  var firstPointX = roundNumber(touches[0].clientX - contentRect.left, 5);
+  var firstPointY = roundNumber(touches[0].clientY - contentRect.top, 5);
+  var secondPointX = roundNumber(touches[1].clientX - contentRect.left, 5);
+  var secondPointY = roundNumber(touches[1].clientY - contentRect.top, 5);
+  return {
+    x: (firstPointX + secondPointX) / 2 / scale,
+    y: (firstPointY + secondPointY) / 2 / scale
+  };
+};
+var getTouchDistance = function(event) {
+  return Math.sqrt(Math.pow(event.touches[0].pageX - event.touches[1].pageX, 2) + Math.pow(event.touches[0].pageY - event.touches[1].pageY, 2));
+};
+var calculatePinchZoom = function(contextInstance, currentDistance) {
+  var pinchStartScale = contextInstance.pinchStartScale, pinchStartDistance = contextInstance.pinchStartDistance, setup = contextInstance.setup;
+  var maxScale = setup.maxScale, minScale = setup.minScale, zoomAnimation = setup.zoomAnimation, disablePadding = setup.disablePadding;
+  var size = zoomAnimation.size, disabled = zoomAnimation.disabled;
+  if (!pinchStartScale || pinchStartDistance === null || !currentDistance) {
+    throw new Error("Pinch touches distance was not provided");
+  }
+  if (currentDistance < 0) {
+    return contextInstance.transformState.scale;
+  }
+  var touchProportion = currentDistance / pinchStartDistance;
+  var scaleDifference = touchProportion * pinchStartScale;
+  return checkZoomBounds(roundNumber(scaleDifference, 2), minScale, maxScale, size, !disabled && !disablePadding);
+};
+var wheelStopEventTime = 160;
+var wheelAnimationTime = 100;
+var handleWheelStart = function(contextInstance, event) {
+  var _a2 = contextInstance.props, onWheelStart = _a2.onWheelStart, onZoomStart = _a2.onZoomStart;
+  if (!contextInstance.wheelStopEventTimer) {
+    handleCancelAnimation(contextInstance);
+    handleCallback(getContext(contextInstance), event, onWheelStart);
+    handleCallback(getContext(contextInstance), event, onZoomStart);
+  }
+};
+var handleWheelZoom = function(contextInstance, event) {
+  var _a2 = contextInstance.props, onWheel = _a2.onWheel, onZoom = _a2.onZoom;
+  var contentComponent = contextInstance.contentComponent, setup = contextInstance.setup, transformState = contextInstance.transformState;
+  var scale = transformState.scale;
+  var limitToBounds = setup.limitToBounds, centerZoomedOut = setup.centerZoomedOut, zoomAnimation = setup.zoomAnimation, wheel = setup.wheel, disablePadding = setup.disablePadding, smooth = setup.smooth;
+  var size = zoomAnimation.size, disabled = zoomAnimation.disabled;
+  var step = wheel.step, smoothStep = wheel.smoothStep;
+  if (!contentComponent) {
+    throw new Error("Component not mounted");
+  }
+  event.preventDefault();
+  event.stopPropagation();
+  var delta = getDelta(event, null);
+  var zoomStep = smooth ? smoothStep * Math.abs(event.deltaY) : step;
+  var newScale = handleCalculateWheelZoom(contextInstance, delta, zoomStep, !event.ctrlKey);
+  if (scale === newScale)
+    return;
+  var bounds = handleCalculateBounds(contextInstance, newScale);
+  var mousePosition = getMousePosition(event, contentComponent, scale);
+  var isPaddingDisabled = disabled || size === 0 || centerZoomedOut || disablePadding;
+  var isLimitedToBounds = limitToBounds && isPaddingDisabled;
+  var _b2 = handleCalculateZoomPositions(contextInstance, mousePosition.x, mousePosition.y, newScale, bounds, isLimitedToBounds), x2 = _b2.x, y3 = _b2.y;
+  contextInstance.previousWheelEvent = event;
+  contextInstance.setTransformState(newScale, x2, y3);
+  handleCallback(getContext(contextInstance), event, onWheel);
+  handleCallback(getContext(contextInstance), event, onZoom);
+};
+var handleWheelStop = function(contextInstance, event) {
+  var _a2 = contextInstance.props, onWheelStop = _a2.onWheelStop, onZoomStop = _a2.onZoomStop;
+  cancelTimeout(contextInstance.wheelAnimationTimer);
+  contextInstance.wheelAnimationTimer = setTimeout(function() {
+    if (!contextInstance.mounted)
+      return;
+    handleAlignToScaleBounds(contextInstance, event.x, event.y);
+    contextInstance.wheelAnimationTimer = null;
+  }, wheelAnimationTime);
+  var hasStoppedZooming = handleWheelZoomStop(contextInstance, event);
+  if (hasStoppedZooming) {
+    cancelTimeout(contextInstance.wheelStopEventTimer);
+    contextInstance.wheelStopEventTimer = setTimeout(function() {
+      if (!contextInstance.mounted)
+        return;
+      contextInstance.wheelStopEventTimer = null;
+      handleCallback(getContext(contextInstance), event, onWheelStop);
+      handleCallback(getContext(contextInstance), event, onZoomStop);
+    }, wheelStopEventTime);
+  }
+};
+var getTouchCenter = function(event) {
+  var totalX = 0;
+  var totalY = 0;
+  for (var i4 = 0; i4 < 2; i4 += 1) {
+    totalX += event.touches[i4].clientX;
+    totalY += event.touches[i4].clientY;
+  }
+  var x2 = totalX / 2;
+  var y3 = totalY / 2;
+  return { x: x2, y: y3 };
+};
+var handlePinchStart = function(contextInstance, event) {
+  var distance = getTouchDistance(event);
+  contextInstance.pinchStartDistance = distance;
+  contextInstance.lastDistance = distance;
+  contextInstance.pinchStartScale = contextInstance.transformState.scale;
+  contextInstance.isPanning = false;
+  var center = getTouchCenter(event);
+  contextInstance.pinchLastCenterX = center.x;
+  contextInstance.pinchLastCenterY = center.y;
+  handleCancelAnimation(contextInstance);
+};
+var handlePinchZoom = function(contextInstance, event) {
+  var contentComponent = contextInstance.contentComponent, pinchStartDistance = contextInstance.pinchStartDistance, wrapperComponent = contextInstance.wrapperComponent;
+  var scale = contextInstance.transformState.scale;
+  var _a2 = contextInstance.setup, limitToBounds = _a2.limitToBounds, centerZoomedOut = _a2.centerZoomedOut, zoomAnimation = _a2.zoomAnimation, alignmentAnimation = _a2.alignmentAnimation;
+  var disabled = zoomAnimation.disabled, size = zoomAnimation.size;
+  if (pinchStartDistance === null || !contentComponent)
+    return;
+  var midPoint = calculateTouchMidPoint(event, scale, contentComponent);
+  if (!Number.isFinite(midPoint.x) || !Number.isFinite(midPoint.y))
+    return;
+  var currentDistance = getTouchDistance(event);
+  var newScale = calculatePinchZoom(contextInstance, currentDistance);
+  var center = getTouchCenter(event);
+  var panX = center.x - (contextInstance.pinchLastCenterX || 0);
+  var panY = center.y - (contextInstance.pinchLastCenterY || 0);
+  if (newScale === scale && panX === 0 && panY === 0)
+    return;
+  contextInstance.pinchLastCenterX = center.x;
+  contextInstance.pinchLastCenterY = center.y;
+  var bounds = handleCalculateBounds(contextInstance, newScale);
+  var isPaddingDisabled = disabled || size === 0 || centerZoomedOut;
+  var isLimitedToBounds = limitToBounds && isPaddingDisabled;
+  var _b2 = handleCalculateZoomPositions(contextInstance, midPoint.x, midPoint.y, newScale, bounds, isLimitedToBounds), x2 = _b2.x, y3 = _b2.y;
+  contextInstance.pinchMidpoint = midPoint;
+  contextInstance.lastDistance = currentDistance;
+  var sizeX = alignmentAnimation.sizeX, sizeY = alignmentAnimation.sizeY;
+  var paddingValueX = getPaddingValue(contextInstance, sizeX);
+  var paddingValueY = getPaddingValue(contextInstance, sizeY);
+  var newPositionX = x2 + panX;
+  var newPositionY = y3 + panY;
+  var _c = getMouseBoundedPosition(newPositionX, newPositionY, bounds, limitToBounds, paddingValueX, paddingValueY, wrapperComponent), finalX = _c.x, finalY = _c.y;
+  contextInstance.setTransformState(newScale, finalX, finalY);
+};
+var handlePinchStop = function(contextInstance) {
+  var pinchMidpoint = contextInstance.pinchMidpoint;
+  contextInstance.velocity = null;
+  contextInstance.lastDistance = null;
+  contextInstance.pinchMidpoint = null;
+  contextInstance.pinchStartScale = null;
+  contextInstance.pinchStartDistance = null;
+  handleAlignToScaleBounds(contextInstance, pinchMidpoint === null || pinchMidpoint === void 0 ? void 0 : pinchMidpoint.x, pinchMidpoint === null || pinchMidpoint === void 0 ? void 0 : pinchMidpoint.y);
+};
+var handleDoubleClickStop = function(contextInstance, event) {
+  var onZoomStop = contextInstance.props.onZoomStop;
+  var animationTime = contextInstance.setup.doubleClick.animationTime;
+  cancelTimeout(contextInstance.doubleClickStopEventTimer);
+  contextInstance.doubleClickStopEventTimer = setTimeout(function() {
+    contextInstance.doubleClickStopEventTimer = null;
+    handleCallback(getContext(contextInstance), event, onZoomStop);
+  }, animationTime);
+};
+var handleDoubleClickResetMode = function(contextInstance, event) {
+  var _a2 = contextInstance.props, onZoomStart = _a2.onZoomStart, onZoom = _a2.onZoom;
+  var _b2 = contextInstance.setup.doubleClick, animationTime = _b2.animationTime, animationType = _b2.animationType;
+  handleCallback(getContext(contextInstance), event, onZoomStart);
+  resetTransformations(contextInstance, animationTime, animationType, function() {
+    return handleCallback(getContext(contextInstance), event, onZoom);
+  });
+  handleDoubleClickStop(contextInstance, event);
+};
+function getDoubleClickScale(mode, scale) {
+  if (mode === "toggle") {
+    return scale === 1 ? 1 : -1;
+  }
+  return mode === "zoomOut" ? -1 : 1;
+}
+function handleDoubleClick(contextInstance, event) {
+  var setup = contextInstance.setup, doubleClickStopEventTimer = contextInstance.doubleClickStopEventTimer, transformState = contextInstance.transformState, contentComponent = contextInstance.contentComponent;
+  var scale = transformState.scale;
+  var _a2 = contextInstance.props, onZoomStart = _a2.onZoomStart, onZoom = _a2.onZoom;
+  var _b2 = setup.doubleClick, disabled = _b2.disabled, mode = _b2.mode, step = _b2.step, animationTime = _b2.animationTime, animationType = _b2.animationType;
+  if (disabled)
+    return;
+  if (doubleClickStopEventTimer)
+    return;
+  if (mode === "reset") {
+    return handleDoubleClickResetMode(contextInstance, event);
+  }
+  if (!contentComponent)
+    return console.error("No ContentComponent found");
+  var delta = getDoubleClickScale(mode, contextInstance.transformState.scale);
+  var newScale = handleCalculateButtonZoom(contextInstance, delta, step);
+  if (scale === newScale)
+    return;
+  handleCallback(getContext(contextInstance), event, onZoomStart);
+  var mousePosition = getMousePosition(event, contentComponent, scale);
+  var targetState = handleZoomToPoint(contextInstance, newScale, mousePosition.x, mousePosition.y);
+  if (!targetState) {
+    return console.error("Error during zoom event. New transformation state was not calculated.");
+  }
+  handleCallback(getContext(contextInstance), event, onZoom);
+  animate(contextInstance, targetState, animationTime, animationType);
+  handleDoubleClickStop(contextInstance, event);
+}
+var isDoubleClickAllowed = function(contextInstance, event) {
+  var isInitialized = contextInstance.isInitialized, setup = contextInstance.setup, wrapperComponent = contextInstance.wrapperComponent;
+  var _a2 = setup.doubleClick, disabled = _a2.disabled, excluded = _a2.excluded;
+  var target = event.target;
+  var isWrapperChild = wrapperComponent === null || wrapperComponent === void 0 ? void 0 : wrapperComponent.contains(target);
+  var isAllowed = isInitialized && target && isWrapperChild && !disabled;
+  if (!isAllowed)
+    return false;
+  var isExcluded = isExcludedNode(target, excluded);
+  if (isExcluded)
+    return false;
+  return true;
+};
+var ZoomPanPinch = (
+  /** @class */
+  /* @__PURE__ */ function() {
+    function ZoomPanPinch2(props) {
+      var _this = this;
+      this.mounted = true;
+      this.pinchLastCenterX = null;
+      this.pinchLastCenterY = null;
+      this.onChangeCallbacks = /* @__PURE__ */ new Set();
+      this.onInitCallbacks = /* @__PURE__ */ new Set();
+      this.wrapperComponent = null;
+      this.contentComponent = null;
+      this.isInitialized = false;
+      this.bounds = null;
+      this.previousWheelEvent = null;
+      this.wheelStopEventTimer = null;
+      this.wheelAnimationTimer = null;
+      this.isPanning = false;
+      this.isWheelPanning = false;
+      this.startCoords = null;
+      this.lastTouch = null;
+      this.distance = null;
+      this.lastDistance = null;
+      this.pinchStartDistance = null;
+      this.pinchStartScale = null;
+      this.pinchMidpoint = null;
+      this.doubleClickStopEventTimer = null;
+      this.velocity = null;
+      this.velocityTime = null;
+      this.lastMousePosition = null;
+      this.animate = false;
+      this.animation = null;
+      this.maxBounds = null;
+      this.pressedKeys = {};
+      this.mount = function() {
+        _this.initializeWindowEvents();
+      };
+      this.unmount = function() {
+        _this.cleanupWindowEvents();
+      };
+      this.update = function(newProps) {
+        _this.props = newProps;
+        handleCalculateBounds(_this, _this.transformState.scale);
+        _this.setup = createSetup(newProps);
+      };
+      this.initializeWindowEvents = function() {
+        var _a2, _b2;
+        var passive = makePassiveEventOption();
+        var currentDocument = (_a2 = _this.wrapperComponent) === null || _a2 === void 0 ? void 0 : _a2.ownerDocument;
+        var currentWindow = currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.defaultView;
+        (_b2 = _this.wrapperComponent) === null || _b2 === void 0 ? void 0 : _b2.addEventListener("wheel", _this.onWheelPanning, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("mousedown", _this.onPanningStart, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("mousemove", _this.onPanning, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("mouseup", _this.onPanningStop, passive);
+        currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.addEventListener("mouseleave", _this.clearPanning, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("keyup", _this.setKeyUnPressed, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.addEventListener("keydown", _this.setKeyPressed, passive);
+      };
+      this.cleanupWindowEvents = function() {
+        var _a2, _b2;
+        var passive = makePassiveEventOption();
+        var currentDocument = (_a2 = _this.wrapperComponent) === null || _a2 === void 0 ? void 0 : _a2.ownerDocument;
+        var currentWindow = currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.defaultView;
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("mousedown", _this.onPanningStart, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("mousemove", _this.onPanning, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("mouseup", _this.onPanningStop, passive);
+        currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.removeEventListener("mouseleave", _this.clearPanning, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("keyup", _this.setKeyUnPressed, passive);
+        currentWindow === null || currentWindow === void 0 ? void 0 : currentWindow.removeEventListener("keydown", _this.setKeyPressed, passive);
+        document.removeEventListener("mouseleave", _this.clearPanning, passive);
+        handleCancelAnimation(_this);
+        (_b2 = _this.observer) === null || _b2 === void 0 ? void 0 : _b2.disconnect();
+      };
+      this.handleInitializeWrapperEvents = function(wrapper) {
+        var passive = makePassiveEventOption();
+        wrapper.addEventListener("wheel", _this.onWheelZoom, passive);
+        wrapper.addEventListener("dblclick", _this.onDoubleClick, passive);
+        wrapper.addEventListener("touchstart", _this.onTouchPanningStart, passive);
+        wrapper.addEventListener("touchmove", _this.onTouchPanning, passive);
+        wrapper.addEventListener("touchend", _this.onTouchPanningStop, passive);
+      };
+      this.handleInitialize = function(contentComponent) {
+        var centerOnInit = _this.setup.centerOnInit;
+        _this.applyTransformation();
+        _this.onInitCallbacks.forEach(function(callback) {
+          return callback(getContext(_this));
+        });
+        if (centerOnInit) {
+          _this.setCenter();
+          _this.observer = new ResizeObserver(function() {
+            var _a2;
+            var currentWidth = contentComponent.offsetWidth;
+            var currentHeight = contentComponent.offsetHeight;
+            if (currentWidth > 0 || currentHeight > 0) {
+              _this.onInitCallbacks.forEach(function(callback) {
+                return callback(getContext(_this));
+              });
+              _this.setCenter();
+              (_a2 = _this.observer) === null || _a2 === void 0 ? void 0 : _a2.disconnect();
+            }
+          });
+          setTimeout(function() {
+            var _a2;
+            (_a2 = _this.observer) === null || _a2 === void 0 ? void 0 : _a2.disconnect();
+          }, 5e3);
+          _this.observer.observe(contentComponent);
+        }
+      };
+      this.onWheelZoom = function(event) {
+        var disabled = _this.setup.disabled;
+        if (disabled)
+          return;
+        var isAllowed = isWheelAllowed(_this, event);
+        if (!isAllowed)
+          return;
+        var keysPressed = _this.isPressingKeys(_this.setup.wheel.activationKeys);
+        if (!keysPressed)
+          return;
+        handleWheelStart(_this, event);
+        handleWheelZoom(_this, event);
+        handleWheelStop(_this, event);
+      };
+      this.onWheelPanning = function(event) {
+        var _a2 = _this.setup, disabled = _a2.disabled, wheel = _a2.wheel, panning = _a2.panning;
+        if (!_this.wrapperComponent || !_this.contentComponent || disabled || !wheel.wheelDisabled || panning.disabled || !panning.wheelPanning || event.ctrlKey) {
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        var _b2 = _this.transformState, positionX = _b2.positionX, positionY = _b2.positionY;
+        var mouseX = positionX - event.deltaX;
+        var mouseY = positionY - event.deltaY;
+        var newPositionX = panning.lockAxisX ? positionX : mouseX;
+        var newPositionY = panning.lockAxisY ? positionY : mouseY;
+        var _c = _this.setup.alignmentAnimation, sizeX = _c.sizeX, sizeY = _c.sizeY;
+        var paddingValueX = getPaddingValue(_this, sizeX);
+        var paddingValueY = getPaddingValue(_this, sizeY);
+        if (newPositionX === positionX && newPositionY === positionY)
+          return;
+        handleNewPosition(_this, newPositionX, newPositionY, paddingValueX, paddingValueY);
+      };
+      this.onPanningStart = function(event) {
+        var disabled = _this.setup.disabled;
+        var onPanningStart = _this.props.onPanningStart;
+        if (disabled)
+          return;
+        var isAllowed = isPanningStartAllowed(_this, event);
+        if (!isAllowed)
+          return;
+        var keysPressed = _this.isPressingKeys(_this.setup.panning.activationKeys);
+        if (!keysPressed)
+          return;
+        if (event.button === 0 && !_this.setup.panning.allowLeftClickPan)
+          return;
+        if (event.button === 1 && !_this.setup.panning.allowMiddleClickPan)
+          return;
+        if (event.button === 2 && !_this.setup.panning.allowRightClickPan)
+          return;
+        event.preventDefault();
+        event.stopPropagation();
+        handleCancelAnimation(_this);
+        handlePanningStart(_this, event);
+        handleCallback(getContext(_this), event, onPanningStart);
+      };
+      this.onPanning = function(event) {
+        var disabled = _this.setup.disabled;
+        var onPanning = _this.props.onPanning;
+        if (disabled)
+          return;
+        var isAllowed = isPanningAllowed(_this);
+        if (!isAllowed)
+          return;
+        var keysPressed = _this.isPressingKeys(_this.setup.panning.activationKeys);
+        if (!keysPressed)
+          return;
+        event.preventDefault();
+        event.stopPropagation();
+        handlePanning(_this, event.clientX, event.clientY);
+        handleCallback(getContext(_this), event, onPanning);
+      };
+      this.onPanningStop = function(event) {
+        var onPanningStop = _this.props.onPanningStop;
+        if (_this.isPanning) {
+          handlePanningEnd(_this);
+          handleCallback(getContext(_this), event, onPanningStop);
+        }
+      };
+      this.onPinchStart = function(event) {
+        var disabled = _this.setup.disabled;
+        var _a2 = _this.props, onPinchingStart = _a2.onPinchingStart, onZoomStart = _a2.onZoomStart;
+        if (disabled)
+          return;
+        var isAllowed = isPinchStartAllowed(_this, event);
+        if (!isAllowed)
+          return;
+        handlePinchStart(_this, event);
+        handleCancelAnimation(_this);
+        handleCallback(getContext(_this), event, onPinchingStart);
+        handleCallback(getContext(_this), event, onZoomStart);
+      };
+      this.onPinch = function(event) {
+        var disabled = _this.setup.disabled;
+        var _a2 = _this.props, onPinching = _a2.onPinching, onZoom = _a2.onZoom;
+        if (disabled)
+          return;
+        var isAllowed = isPinchAllowed(_this);
+        if (!isAllowed)
+          return;
+        event.preventDefault();
+        event.stopPropagation();
+        handlePinchZoom(_this, event);
+        handleCallback(getContext(_this), event, onPinching);
+        handleCallback(getContext(_this), event, onZoom);
+      };
+      this.onPinchStop = function(event) {
+        var _a2 = _this.props, onPinchingStop = _a2.onPinchingStop, onZoomStop = _a2.onZoomStop;
+        if (_this.pinchStartScale) {
+          handlePinchStop(_this);
+          handleCallback(getContext(_this), event, onPinchingStop);
+          handleCallback(getContext(_this), event, onZoomStop);
+        }
+      };
+      this.onTouchPanningStart = function(event) {
+        var disabled = _this.setup.disabled;
+        var onPanningStart = _this.props.onPanningStart;
+        if (disabled)
+          return;
+        var isAllowed = isPanningStartAllowed(_this, event);
+        if (!isAllowed)
+          return;
+        var isDoubleTap = _this.lastTouch && +/* @__PURE__ */ new Date() - _this.lastTouch < 200;
+        if (!isDoubleTap) {
+          _this.lastTouch = +/* @__PURE__ */ new Date();
+          handleCancelAnimation(_this);
+          var touches = event.touches;
+          var isPanningAction = touches.length === 1;
+          var isPinchAction = touches.length === 2;
+          if (isPanningAction) {
+            handleCancelAnimation(_this);
+            handlePanningStart(_this, event);
+            handleCallback(getContext(_this), event, onPanningStart);
+          }
+          if (isPinchAction) {
+            _this.onPinchStart(event);
+          }
+        }
+      };
+      this.onTouchPanning = function(event) {
+        var disabled = _this.setup.disabled;
+        var onPanning = _this.props.onPanning;
+        if (_this.isPanning && event.touches.length === 1) {
+          if (disabled)
+            return;
+          var isAllowed = isPanningAllowed(_this);
+          if (!isAllowed)
+            return;
+          event.preventDefault();
+          event.stopPropagation();
+          var touch = event.touches[0];
+          handlePanning(_this, touch.clientX, touch.clientY);
+          handleCallback(getContext(_this), event, onPanning);
+        } else if (event.touches.length > 1) {
+          _this.onPinch(event);
+        }
+      };
+      this.onTouchPanningStop = function(event) {
+        _this.onPanningStop(event);
+        _this.onPinchStop(event);
+      };
+      this.onDoubleClick = function(event) {
+        var disabled = _this.setup.disabled;
+        if (disabled)
+          return;
+        var isAllowed = isDoubleClickAllowed(_this, event);
+        if (!isAllowed)
+          return;
+        handleDoubleClick(_this, event);
+      };
+      this.clearPanning = function(event) {
+        if (_this.isPanning) {
+          _this.onPanningStop(event);
+        }
+      };
+      this.setKeyPressed = function(e4) {
+        _this.pressedKeys[e4.key] = true;
+      };
+      this.setKeyUnPressed = function(e4) {
+        _this.pressedKeys[e4.key] = false;
+      };
+      this.isPressingKeys = function(keys) {
+        if (!keys.length) {
+          return true;
+        }
+        return Boolean(keys.find(function(key) {
+          return _this.pressedKeys[key];
+        }));
+      };
+      this.setTransformState = function(scale, positionX, positionY) {
+        var onTransformed = _this.props.onTransformed;
+        if (!Number.isNaN(scale) && !Number.isNaN(positionX) && !Number.isNaN(positionY)) {
+          if (scale !== _this.transformState.scale) {
+            _this.transformState.previousScale = _this.transformState.scale;
+            _this.transformState.scale = scale;
+          }
+          _this.transformState.positionX = positionX;
+          _this.transformState.positionY = positionY;
+          _this.applyTransformation();
+          var ctx_1 = getContext(_this);
+          _this.onChangeCallbacks.forEach(function(callback) {
+            return callback(ctx_1);
+          });
+          handleCallback(ctx_1, { scale, positionX, positionY }, onTransformed);
+        } else {
+          console.error("Detected NaN set state values");
+        }
+      };
+      this.setCenter = function() {
+        if (_this.wrapperComponent && _this.contentComponent) {
+          var targetState = getCenterPosition(_this.transformState.scale, _this.wrapperComponent, _this.contentComponent);
+          _this.setTransformState(targetState.scale, targetState.positionX, targetState.positionY);
+        }
+      };
+      this.handleTransformStyles = function(x2, y3, scale) {
+        if (_this.props.customTransform) {
+          return _this.props.customTransform(x2, y3, scale);
+        }
+        return getTransformStyles(x2, y3, scale);
+      };
+      this.applyTransformation = function() {
+        if (!_this.mounted || !_this.contentComponent)
+          return;
+        var _a2 = _this.transformState, scale = _a2.scale, positionX = _a2.positionX, positionY = _a2.positionY;
+        var transform = _this.handleTransformStyles(positionX, positionY, scale);
+        _this.contentComponent.style.transform = transform;
+      };
+      this.getContext = function() {
+        return getContext(_this);
+      };
+      this.onChange = function(callback) {
+        if (!_this.onChangeCallbacks.has(callback)) {
+          _this.onChangeCallbacks.add(callback);
+        }
+        return function() {
+          _this.onChangeCallbacks.delete(callback);
+        };
+      };
+      this.onInit = function(callback) {
+        if (!_this.onInitCallbacks.has(callback)) {
+          _this.onInitCallbacks.add(callback);
+        }
+        return function() {
+          _this.onInitCallbacks.delete(callback);
+        };
+      };
+      this.init = function(wrapperComponent, contentComponent) {
+        _this.cleanupWindowEvents();
+        _this.wrapperComponent = wrapperComponent;
+        _this.contentComponent = contentComponent;
+        handleCalculateBounds(_this, _this.transformState.scale);
+        _this.handleInitializeWrapperEvents(wrapperComponent);
+        _this.handleInitialize(contentComponent);
+        _this.initializeWindowEvents();
+        _this.isInitialized = true;
+        var ctx = getContext(_this);
+        handleCallback(ctx, void 0, _this.props.onInit);
+      };
+      this.props = props;
+      this.setup = createSetup(this.props);
+      this.transformState = createState(this.props);
+    }
+    return ZoomPanPinch2;
+  }()
+);
+var Context = import_react11.default.createContext(null);
+var getContent2 = function(children, ctx) {
+  if (typeof children === "function") {
+    return children(ctx);
+  }
+  return children;
+};
+var TransformWrapper = import_react11.default.forwardRef(function(props, ref) {
+  var instance = (0, import_react11.useRef)(new ZoomPanPinch(props)).current;
+  var content = getContent2(props.children, getControls(instance));
+  (0, import_react11.useImperativeHandle)(ref, function() {
+    return getControls(instance);
+  }, [instance]);
+  (0, import_react11.useEffect)(function() {
+    instance.update(props);
+  }, [instance, props]);
+  return import_react11.default.createElement(Context.Provider, { value: instance }, content);
+});
+var KeepScale = import_react11.default.forwardRef(function(props, ref) {
+  var localRef = (0, import_react11.useRef)(null);
+  var instance = (0, import_react11.useContext)(Context);
+  (0, import_react11.useEffect)(function() {
+    return instance.onChange(function(ctx) {
+      if (localRef.current) {
+        var positionX = 0;
+        var positionY = 0;
+        localRef.current.style.transform = instance.handleTransformStyles(positionX, positionY, 1 / ctx.instance.transformState.scale);
+      }
+    });
+  }, [instance]);
+  return import_react11.default.createElement("div", __assign({}, props, { ref: mergeRefs([localRef, ref]) }));
+});
+function styleInject(css, ref) {
+  if (ref === void 0) ref = {};
+  var insertAt = ref.insertAt;
+  if (!css || typeof document === "undefined") {
+    return;
+  }
+  var head = document.head || document.getElementsByTagName("head")[0];
+  var style = document.createElement("style");
+  style.type = "text/css";
+  if (insertAt === "top") {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+var css_248z = ".transform-component-module_wrapper__SPB86 {\n  position: relative;\n  width: -moz-fit-content;\n  width: fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  overflow: hidden;\n  -webkit-touch-callout: none; /* iOS Safari */\n  -webkit-user-select: none; /* Safari */\n  -khtml-user-select: none; /* Konqueror HTML */\n  -moz-user-select: none; /* Firefox */\n  -ms-user-select: none; /* Internet Explorer/Edge */\n  user-select: none;\n  margin: 0;\n  padding: 0;\n}\n.transform-component-module_content__FBWxo {\n  display: flex;\n  flex-wrap: wrap;\n  width: -moz-fit-content;\n  width: fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  margin: 0;\n  padding: 0;\n  transform-origin: 0% 0%;\n}\n.transform-component-module_content__FBWxo img {\n  pointer-events: none;\n}\n";
+var styles = { "wrapper": "transform-component-module_wrapper__SPB86", "content": "transform-component-module_content__FBWxo" };
+styleInject(css_248z);
+var TransformComponent = function(_a2) {
+  var children = _a2.children, _b2 = _a2.wrapperClass, wrapperClass = _b2 === void 0 ? "" : _b2, _c = _a2.contentClass, contentClass = _c === void 0 ? "" : _c, wrapperStyle = _a2.wrapperStyle, contentStyle = _a2.contentStyle, _d = _a2.wrapperProps, wrapperProps = _d === void 0 ? {} : _d, _e = _a2.contentProps, contentProps = _e === void 0 ? {} : _e;
+  var _f = (0, import_react11.useContext)(Context), init = _f.init, cleanupWindowEvents = _f.cleanupWindowEvents;
+  var wrapperRef = (0, import_react11.useRef)(null);
+  var contentRef = (0, import_react11.useRef)(null);
+  (0, import_react11.useEffect)(function() {
+    var wrapper = wrapperRef.current;
+    var content = contentRef.current;
+    if (wrapper !== null && content !== null && init) {
+      init === null || init === void 0 ? void 0 : init(wrapper, content);
+    }
+    return function() {
+      cleanupWindowEvents === null || cleanupWindowEvents === void 0 ? void 0 : cleanupWindowEvents();
+    };
+  }, []);
+  return import_react11.default.createElement(
+    "div",
+    __assign({}, wrapperProps, { ref: wrapperRef, className: "".concat(baseClasses.wrapperClass, " ").concat(styles.wrapper, " ").concat(wrapperClass), style: wrapperStyle }),
+    import_react11.default.createElement("div", __assign({}, contentProps, { ref: contentRef, className: "".concat(baseClasses.contentClass, " ").concat(styles.content, " ").concat(contentClass), style: contentStyle }), children)
+  );
+};
+
+// src/components/file/ModalContent.tsx
+var formSchema = [
+  {
+    label: L_default.includingFilename(),
+    path: "showFilename",
+    type: "boolean"
+  },
+  {
+    label: L_default.imageWidth(),
+    path: "width",
+    type: "number"
+  },
+  {
+    path: "split.enable",
+    label: L_default.setting.split.enable.label(),
+    type: "boolean"
+  },
+  {
+    path: "split.height",
+    label: L_default.setting.split.height.label(),
+    type: "number",
+    when: { flag: true, path: "split.enable" }
+  },
+  {
+    path: "split.overlap",
+    label: L_default.setting.split.overlap.label(),
+    type: "number",
+    when: { flag: true, path: "split.enable" }
+  },
+  {
+    label: L_default.setting.userInfo.show(),
+    path: "authorInfo.show",
+    type: "boolean"
+  },
+  {
+    label: L_default.setting.userInfo.name(),
+    path: "authorInfo.name",
+    type: "string",
+    when: { flag: true, path: "authorInfo.show" }
+  },
+  {
+    label: L_default.setting.userInfo.remark(),
+    path: "authorInfo.remark",
+    type: "string",
+    when: { flag: true, path: "authorInfo.show" }
+  },
+  {
+    label: L_default.setting.userInfo.avatar.title(),
+    desc: L_default.setting.userInfo.avatar.description(),
+    path: "authorInfo.avatar",
+    type: "file",
+    when: { flag: true, path: "authorInfo.show" }
+  },
+  {
+    label: L_default.setting.userInfo.align(),
+    path: "authorInfo.align",
+    type: "select",
+    options: [
+      { text: "Left", value: "left" },
+      { text: "Center", value: "center" },
+      { text: "Right", value: "right" }
+    ],
+    when: { flag: true, path: "authorInfo.show" }
+  },
+  {
+    label: L_default.setting.userInfo.position(),
+    path: "authorInfo.position",
+    type: "select",
+    options: [
+      { text: "Top", value: "top" },
+      { text: "Bottom", value: "bottom" }
+    ],
+    when: { flag: true, path: "authorInfo.show" }
+  },
+  {
+    label: L_default.setting.watermark.enable.label(),
+    path: "watermark.enable",
+    type: "boolean"
+  },
+  {
+    label: L_default.setting.watermark.type.label(),
+    path: "watermark.type",
+    type: "select",
+    options: [
+      { text: L_default.setting.watermark.type.text(), value: "text" },
+      { text: L_default.setting.watermark.type.image(), value: "image" }
+    ],
+    when: { flag: true, path: "watermark.enable" }
+  },
+  {
+    label: L_default.setting.watermark.text.content(),
+    path: "watermark.text.content",
+    type: "string",
+    when: (settings) => settings.watermark.enable && settings.watermark.type === "text"
+  },
+  {
+    label: L_default.setting.watermark.image.src.label(),
+    path: "watermark.image.src",
+    type: "file",
+    when: (settings) => settings.watermark.enable && settings.watermark.type === "image"
+  },
+  {
+    label: L_default.setting.watermark.opacity(),
+    path: "watermark.opacity",
+    type: "number",
+    when: { flag: true, path: "watermark.enable" }
+  },
+  {
+    label: L_default.setting.watermark.rotate(),
+    path: "watermark.rotate",
+    type: "number",
+    when: { flag: true, path: "watermark.enable" }
+  },
+  {
+    label: L_default.setting.watermark.width(),
+    path: "watermark.width",
+    type: "number",
+    when: { flag: true, path: "watermark.enable" }
+  },
+  {
+    label: L_default.setting.watermark.height(),
+    path: "watermark.height",
+    type: "number",
+    when: { flag: true, path: "watermark.enable" }
+  }
+];
+var ModalContent2 = ({ markdownEl, settings, app, frontmatter, title, metadataMap }) => {
+  const [formData, setFormData] = (0, import_react12.useState)(settings);
+  const [isGrabbing, setIsGrabbing] = (0, import_react12.useState)(false);
+  const previewOutRef = (0, import_react12.useRef)(null);
+  const mainHeight = Math.min(764, window.innerHeight * 0.85 - 225);
+  const root2 = (0, import_react12.useRef)(null);
+  (0, import_react12.useEffect)(() => {
+    setFormData(settings);
+  }, [settings]);
+  const [processing, setProcessing] = (0, import_react12.useState)(false);
+  const [allowCopy, setAllowCopy] = (0, import_react12.useState)(true);
+  const [rootHeight, setRootHeight] = (0, import_react12.useState)(0);
+  const [pages, setPages] = (0, import_react12.useState)(1);
+  const [scale, setScale] = (0, import_react12.useState)(1);
+  const calculateScale = (0, import_react12.useCallback)(() => {
+    if (!root2.current?.element || !previewOutRef.current) return 1;
+    const contentHeight = root2.current.element.clientHeight;
+    const contentWidth = root2.current.element.clientWidth;
+    const previewWidth = previewOutRef.current.clientWidth;
+    return Math.min(
+      1,
+      mainHeight / (contentHeight || 100),
+      previewWidth / ((contentWidth || 0) + 2)
+    ) / 2;
+  }, [mainHeight]);
+  (0, import_react12.useEffect)(() => {
+    if (!root2.current?.element || !previewOutRef.current) return;
+    setScale(calculateScale());
+  }, [calculateScale, root2.current?.element, previewOutRef.current, rootHeight]);
+  (0, import_react12.useEffect)(() => {
+    if (!root2.current?.element) return;
+    const observer = new ResizeObserver(() => {
+      if (root2.current?.element) {
+        setRootHeight(root2.current.element.clientHeight);
+      }
+    });
+    observer.observe(root2.current.element);
+    return () => {
+      observer.disconnect();
+    };
+  }, [root2.current?.element]);
+  (0, import_react12.useEffect)(() => {
+    if (formData.split.enable) {
+      const firstPage = formData.split.height;
+      const remainingHeight = rootHeight - firstPage;
+      const additionalPages = Math.max(0, Math.ceil(remainingHeight / (formData.split.height - formData.split.overlap)));
+      setPages(1 + additionalPages);
+    } else {
+      setPages(1);
+    }
+  }, [rootHeight, formData.split.enable, formData.split.height, formData.split.overlap]);
+  (0, import_react12.useEffect)(() => {
+    isCopiable(formData.format).then((result) => {
+      setAllowCopy(Boolean(result));
+    });
+  }, [formData.format]);
+  const handleSave = (0, import_react12.useCallback)(async () => {
+    if ((formData.width || 640) <= 20) {
+      new import_obsidian10.Notice(L_default.invalidWidth());
+      return;
+    }
+    if (!root2.current) return;
+    setProcessing(true);
+    try {
+      await save(
+        app,
+        root2.current.element,
+        title,
+        formData["2x"],
+        formData.format,
+        import_obsidian10.Platform.isMobile
+      );
+    } catch {
+      new import_obsidian10.Notice(L_default.saveFail());
+    }
+    setProcessing(false);
+  }, [root2, formData["2x"], formData.format, title, formData.width]);
+  const handleCopy = (0, import_react12.useCallback)(async () => {
+    if ((formData.width || 640) <= 20) {
+      new import_obsidian10.Notice(L_default.invalidWidth());
+      return;
+    }
+    if (!root2.current) return;
+    setProcessing(true);
+    try {
+      await copy(root2.current.element, formData["2x"], formData.format);
+    } catch {
+      new import_obsidian10.Notice(L_default.copyFail());
+    }
+    setProcessing(false);
+  }, [root2, formData["2x"], formData.format, title, formData.width]);
+  const handleSaveAll = (0, import_react12.useCallback)(async () => {
+    if ((formData.width || 640) <= 20) {
+      new import_obsidian10.Notice(L_default.invalidWidth());
+      return;
+    }
+    if (!root2.current) return;
+    setProcessing(true);
+    try {
+      await saveAll(
+        root2.current,
+        formData.format,
+        formData["2x"],
+        formData.split.height,
+        formData.split.overlap,
+        app,
+        title,
+        previewOutRef.current
+      );
+    } catch {
+      new import_obsidian10.Notice(L_default.copyFail());
+    }
+    setProcessing(false);
+  }, [root2, formData.format, formData["2x"], formData.split, app, title, previewOutRef]);
+  return /* @__PURE__ */ import_react12.default.createElement("div", { className: "export-image-preview-root" }, /* @__PURE__ */ import_react12.default.createElement("div", { className: "export-image-preview-main" }, /* @__PURE__ */ import_react12.default.createElement("div", { className: "export-image-preview-left" }, /* @__PURE__ */ import_react12.default.createElement(
+    FormItems_default,
+    {
+      formSchema,
+      update: setFormData,
+      settings: formData,
+      app
+    }
+  ), formData.split.enable && /* @__PURE__ */ import_react12.default.createElement("div", { className: "info-text" }, L_default.splitInfo({ rootHeight, splitHeight: formData.split.height, pages })), /* @__PURE__ */ import_react12.default.createElement("div", { className: "info-text" }, L_default.moreSetting())), /* @__PURE__ */ import_react12.default.createElement("div", { className: "export-image-preview-right" }, /* @__PURE__ */ import_react12.default.createElement(
+    "div",
+    {
+      className: "export-image-preview-out",
+      ref: previewOutRef,
+      style: {
+        height: mainHeight,
+        cursor: isGrabbing ? "grabbing" : "grab"
+      }
+    },
+    /* @__PURE__ */ import_react12.default.createElement(
+      TransformWrapper,
+      {
+        minScale: calculateScale(),
+        maxScale: 4,
+        pinch: { step: 20 },
+        doubleClick: { mode: "reset" },
+        centerZoomedOut: false,
+        onPanning: () => {
+          setIsGrabbing(true);
+        },
+        onPanningStop: () => {
+          setIsGrabbing(false);
+        },
+        onTransformed: (e4) => {
+          setScale(e4.state.scale);
+        }
+      },
+      /* @__PURE__ */ import_react12.default.createElement(
+        TransformComponent,
+        {
+          wrapperStyle: {
+            width: "100%",
+            height: mainHeight
+          },
+          contentStyle: {
+            border: "1px var(--divider-color) solid",
+            borderRadius: "8px",
+            overflow: "hidden",
+            boxShadow: "0 0 10px 10px rgba(0,0,0,0.15)"
+          }
+        },
+        /* @__PURE__ */ import_react12.default.createElement(
+          Target_default,
+          {
+            ref: root2,
+            frontmatter,
+            markdownEl,
+            setting: formData,
+            metadataMap,
+            app,
+            title,
+            scale
+          }
+        )
+      )
+    )
+  ), /* @__PURE__ */ import_react12.default.createElement("div", { className: "info-text" }, L_default.guide()))), /* @__PURE__ */ import_react12.default.createElement("div", { className: "export-image-preview-actions" }, pages === 1 && /* @__PURE__ */ import_react12.default.createElement("div", null, /* @__PURE__ */ import_react12.default.createElement("button", { onClick: handleCopy, disabled: processing || !allowCopy }, L_default.copy()), allowCopy || /* @__PURE__ */ import_react12.default.createElement("p", null, L_default.notAllowCopy({ format: formData.format.replace(/\d$/, "").toUpperCase() }))), /* @__PURE__ */ import_react12.default.createElement("button", { onClick: () => pages === 1 ? handleSave() : handleSaveAll(), disabled: processing }, import_obsidian10.Platform.isMobile ? L_default.saveVault() : L_default.save())));
+};
+var ModalContent_default2 = ModalContent2;
+
+// src/utils/preprocessMarkdown.ts
+function preprocessMarkdown(markdown, frontmatter) {
+  if (frontmatter?.["excalidraw-plugin"]) {
+    return markdown.replace(/[ ]*excalidraw-plugin:.+[\n\r]*/, "");
+  }
+  return markdown;
+}
+
+// src/components/file/exportImage.tsx
+async function exportImage_default(app, settings, markdown, file, frontmatter, type) {
+  const el = document.createElement("div");
+  await import_obsidian11.MarkdownRenderer.render(
+    app,
+    preprocessMarkdown(markdown, frontmatter),
+    el.createDiv(),
+    file.path,
+    app.workspace.getActiveViewOfType(import_obsidian11.MarkdownView) || app.workspace.activeLeaf?.view || new import_obsidian11.MarkdownRenderChild(el)
+  );
+  const skipConfig = type === "selection" && settings.quickExportSelection;
+  if (skipConfig) {
+    const div = createDiv();
+    div.style.width = (settings.width || 400) + "px";
+    div.style.position = "fixed";
+    div.style.top = "9999px";
+    div.style.left = "9999px";
+    document.body.appendChild(div);
+    const root2 = (0, import_client5.createRoot)(div);
+    root2.render(
+      /* @__PURE__ */ import_react13.default.createElement(
+        Target_default,
+        {
+          markdownEl: el,
+          setting: { ...settings, showMetadata: false, showFilename: false, split: { enable: false, overlap: 0, height: 0 } },
+          frontmatter: {},
+          title: file.basename,
+          metadataMap: {},
+          app
+        }
+      )
+    );
+    await delay(20);
+    try {
+      await copy(div.querySelector(".export-image-root"), settings["2x"], settings.format);
+    } catch (e4) {
+      console.error(e4);
+      new import_obsidian11.Notice(L_default.copyFail());
+    } finally {
+      root2.unmount();
+      div.remove();
+    }
+  } else {
+    const modal = new import_obsidian11.Modal(app);
+    modal.setTitle(L_default.imageExportPreview());
+    modal.modalEl.style.width = "85vw";
+    modal.modalEl.style.maxWidth = "1500px";
+    modal.open();
+    const root2 = (0, import_client5.createRoot)(modal.contentEl);
+    const metadataMap = app.metadataCache.getAllPropertyInfos();
+    root2.render(
+      /* @__PURE__ */ import_react13.default.createElement(
+        ModalContent_default2,
+        {
+          markdownEl: el,
+          settings,
+          frontmatter,
+          title: file.basename,
+          metadataMap,
+          app
+        }
+      )
+    );
+    modal.onClose = () => {
+      root2?.unmount();
+    };
+  }
+}
 
 // src/ExportImagePlugin.ts
 var ExportImagePlugin = class extends import_obsidian12.Plugin {

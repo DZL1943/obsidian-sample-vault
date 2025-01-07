@@ -4824,23 +4824,30 @@ var CopyLinkToObjectToClipboardCommand = class extends CommandBase {
     }
     const currentNoteFile = currentView == null ? void 0 : currentView.file;
     if (headingMatch && headingMatch[1] && currentNoteFile) {
-      this.copyLinkToHeadingUnderCursorToClipboard(headingMatch[1], currentNoteFile);
+      this.copyLinkToHeadingUnderCursorToClipboard(editor, headingMatch[1], currentNoteFile);
     } else if (block && (currentView == null ? void 0 : currentView.file)) {
       this.copyLinkToBlockUnderCursorToClipboard(currentView == null ? void 0 : currentView.file, editor, block);
     }
   }
-  copyLinkToHeadingUnderCursorToClipboard(heading, noteFile) {
-    const rawLink = this.obsidianProxy.createLink("", noteFile.path, heading, heading);
+  copyLinkToHeadingUnderCursorToClipboard(editor, heading, noteFile) {
+    const selection = editor.getSelection();
+    const linkText = selection ? selection : heading;
+    const rawLink = this.obsidianProxy.createLink("", noteFile.path, heading, linkText);
     this.obsidianProxy.clipboardWriteText(rawLink);
     this.obsidianProxy.createNotice("Link copied to your clipboard");
   }
   copyLinkToBlockUnderCursorToClipboard(file, editor, block) {
     var _a;
     let linkText = void 0;
-    const blockFirstLine = editor.getLine(block.position.start.line);
-    const links = findLinks(blockFirstLine, 2 /* Wiki */ | 1 /* Markdown */);
-    if (links && links.length && links[0].destinationType == DestinationType.Image) {
-      linkText = (_a = links[0].text) == null ? void 0 : _a.content;
+    const selection = editor.getSelection();
+    if (selection) {
+      linkText = selection;
+    } else {
+      const blockFirstLine = editor.getLine(block.position.start.line);
+      const links = findLinks(blockFirstLine, 2 /* Wiki */ | 1 /* Markdown */);
+      if (links && links.length && links[0].destinationType == DestinationType.Image) {
+        linkText = (_a = links[0].text) == null ? void 0 : _a.content;
+      }
     }
     if (block.id) {
       this.obsidianProxy.clipboardWriteText(

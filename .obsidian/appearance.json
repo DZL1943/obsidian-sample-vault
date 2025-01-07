@@ -25,7 +25,8 @@
     "S - Checkboxes",
     "settings-layout",
     "mysnippets-layout",
-    "anyblock"
+    "anyblock",
+    "table"
   ],
   "showViewHeader": false,
   "cssTheme": ""

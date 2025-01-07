@@ -324,7 +324,7 @@
         "startupType": "disabled"
       },
       "image-converter": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "obsidian-spaced-repetition": {
         "startupType": "disabled"
