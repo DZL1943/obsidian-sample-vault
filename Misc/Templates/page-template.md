@@ -4,8 +4,6 @@
 
 # <% tp.file.title %>
 
-# Footnotes
-
 # References
 
 ```dataview
@@ -16,3 +14,5 @@ where file.path != this.file.path
 # Appendixes
 
 # Afterwords
+
+# Footnotes
