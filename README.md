@@ -18,15 +18,13 @@ editor-width: 88
 
 ## Top folders
 
-- 10_Inbox
-- 20_Private
-- 30_Jottings
-- 40_Pages
-- 42_Thoughts
-- Archives
-- Misc
-    - Attachments
-    - Templates
+```dataview
+LIST
+FROM "" AND -"Ext"
+FLATTEN regexreplace(file.folder, "^([^\/]+\/[^\/]+).*$", "$1") as folder
+WHERE folder != "" AND (length(split(folder, "/")) = 1 OR startswith(folder, "Misc/"))
+GROUP BY folder
+```
 
 ## Settings
 
@@ -86,17 +84,7 @@ editor-width: 88
 ### Hotkeys
 
 ```dataviewjs
-var data = app.hotkeyManager.customKeys
-var result = {}
-for (let k in data) {
-    if (!data[k] || !data[k][0]) {continue;}
-    result[k] = "`"+data[k][0]["modifiers"].join("+")+"+"+data[k][0]["key"]+"`"
-}
-var result2 = []
-for (let k of Object.keys(result).sort()) {
-    result2.push([k, result[k]].join(" "))
-}
-dv.list(result2)
+dv.list(Object.entries(app.hotkeyManager.customKeys).filter(([k, v]) => v && v[0]).map(([k, v]) => `${k} \`${v[0].modifiers.join('+')}+${v[0].key}\``).sort())
 ```
 
 ## Plugins

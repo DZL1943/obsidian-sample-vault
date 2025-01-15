@@ -1,5 +1,5 @@
 {
-  "currentProxy": "ghproxy.cn",
+  "currentProxy": "ghfast.top",
   "defaultProxy": "mirr",
   "proxyList": [
     {
@@ -39,10 +39,10 @@
       "page": "https://mirror.ghproxy.com/https://github.com/"
     },
     {
-      "id": "ghgo",
-      "download": "https://ghgo.xyz/https://github.com/",
-      "raw": "https://ghgo.xyz/https://raw.githubusercontent.com/",
-      "page": "https://ghgo.xyz/https://github.com/"
+      "id": "ghfast.top",
+      "download": "https://ghfast.top/https://github.com/",
+      "raw": "https://ghfast.top/https://raw.githubusercontent.com/",
+      "page": "https://ghfast.top/https://github.com/"
     },
     {
       "id": "ghproxy.cc",

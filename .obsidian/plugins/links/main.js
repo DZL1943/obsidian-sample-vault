@@ -804,6 +804,19 @@ function createWikiLink(sourcePath, destination, destinationSubPath, text, dimen
 function createMarkdownLink(sourcePath, destination, destinationSubPath, text, dimensions, destinationType = "none" /* None */) {
   return `[${text != null ? text : ""}${dimensions ? "|" + dimensions : ""}](${destination}${destinationSubPath ? "#" + destinationSubPath : ""})`;
 }
+function getIntersection(interval1, interval2) {
+  console.log(interval1);
+  console.log(interval2);
+  const [start1, end1] = interval1;
+  const [start2, end2] = interval2;
+  if (start1 <= end2 && start2 <= end1) {
+    const intersectionStart = Math.max(start1, start2);
+    const intersectionEnd = Math.min(end1, end2);
+    return [intersectionStart, intersectionEnd];
+  } else {
+    return null;
+  }
+}
 
 // suggesters/LinkTextSuggest.ts
 var import_obsidian = require("obsidian");
@@ -3151,24 +3164,14 @@ var ObsidianLinksSettingTab = class extends import_obsidian6.PluginSettingTab {
         );
         ffSkipFrontmatterSettingDesc.appendText(".");
       }
-      new import_obsidian6.Setting(containerEl).setName("Copy link to element").setDesc("Copy link to a heading or a block to the clipboard. ").setClass("setting-item-copy-link-to-object").addToggle((toggle) => {
+      const settingCopyLinkToElement = new import_obsidian6.Setting(containerEl).setName("Copy link to element").setDesc("Copy link to a heading or a block to the clipboard. ").setClass("setting-item-copy-link-to-object").addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.ffCopyLinkToObject).onChange(async (value) => {
           this.plugin.settings.ffCopyLinkToObject = value;
           toggleCopyLinkToObjectContextMenuSetting(value);
           await this.plugin.saveSettings();
         });
       });
-      const feature1SettingDesc = containerEl.querySelector(".setting-item-copy-link-to-object .setting-item-description");
-      if (feature1SettingDesc) {
-        feature1SettingDesc.appendText(" see ");
-        feature1SettingDesc.appendChild(
-          createEl("a", {
-            href: "https://github.com/mii-key/obsidian-links/blob/master/docs/insider/copy-link-to-element.md",
-            text: "docs"
-          })
-        );
-        feature1SettingDesc.appendText(".");
-      }
+      this.setSettingHelpLink(settingCopyLinkToElement, this.getFullInsiderDocUrl("copy-link-to-element.md"));
     }
   }
 };
@@ -4840,13 +4843,23 @@ var CopyLinkToObjectToClipboardCommand = class extends CommandBase {
     var _a;
     let linkText = void 0;
     const selection = editor.getSelection();
+    const blockFirstLine = editor.getLine(block.position.start.line);
+    const links = findLinks(blockFirstLine, 2 /* Wiki */ | 1 /* Markdown */);
+    const firstLink = links.length ? links[0] : void 0;
     if (selection) {
-      linkText = selection;
-    } else {
-      const blockFirstLine = editor.getLine(block.position.start.line);
-      const links = findLinks(blockFirstLine, 2 /* Wiki */ | 1 /* Markdown */);
-      if (links && links.length && links[0].destinationType == DestinationType.Image) {
-        linkText = (_a = links[0].text) == null ? void 0 : _a.content;
+      console.log(selection);
+      const cursorStart = editor.posToOffset(editor.getCursor("from"));
+      const cursorEnd = editor.posToOffset(editor.getCursor("to"));
+      console.log(firstLink);
+      if (!firstLink || !getIntersection(
+        [cursorStart, cursorEnd],
+        [firstLink.position.start + block.position.start.offset, firstLink.position.end + block.position.start.offset]
+      )) {
+        linkText = selection;
+      } else {
+        if (links && links.length && links[0].destinationType == DestinationType.Image) {
+          linkText = (_a = links[0].text) == null ? void 0 : _a.content;
+        }
       }
     }
     if (block.id) {
