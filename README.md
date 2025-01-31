@@ -1,7 +1,7 @@
 ---
 title: README
 created: "2024-07-30 13:30"
-modified: "2025-01-10 19:24"
+modified: "2025-01-31 20:32"
 editor-width: 88
 ---
 
@@ -11,7 +11,7 @@ editor-width: 88
 
 ![](<Misc/Attachments/Obsidian-20240908154942.png>)
 
-- Obsidian 版本 | 1.7.7-mac-arm64
+- Obsidian 版本 | 1.8.3-mac-arm64
 - 主题 | 默认
 - ribbon | 基本上不用
 - 标题栏 | 隐藏 | 用 editing-toolbar 和 quick-explorer 替代
@@ -113,3 +113,4 @@ group by file.folder
 - [2024-10-04] 拆分库, 重新启用本 repo
 - [2024-12-29] 更改日记存储目录
 - [2024-12-31] 修复 yearly-template 的问题
+- [2025-01-21] 对 pages 内容进行分类

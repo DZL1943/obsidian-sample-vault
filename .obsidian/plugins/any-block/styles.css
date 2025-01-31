@@ -191,6 +191,7 @@ html[data-theme="dark"] #app {
   color: var(--ab-tab-root-tx-color);
   border-bottom: none;
   border-radius: 10px 10px 0 0;
+  padding-right: 60px;
 }
 
 .ab-note .ab-tab-root .ab-tab-nav .ab-tab-nav-item {

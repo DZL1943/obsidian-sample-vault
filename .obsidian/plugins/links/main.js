@@ -2888,7 +2888,8 @@ var ObsidianLinksSettingTab = class extends import_obsidian6.PluginSettingTab {
       this.plugin.settings.titleSeparator = value;
       await this.plugin.saveSettings();
     }));
-    containerEl.createEl("h4", { text: "Remove links from headings" });
+    const removeLinksFromHeadingEl = containerEl.createEl("h4", { text: "Remove links from headings" });
+    this.setElementHelpLink(removeLinksFromHeadingEl, this.getFullDocUrl("remove-links-from-headings"));
     new import_obsidian6.Setting(containerEl).setName("Internal wikilink without text").addDropdown((dropDown) => dropDown.addOptions({
       Delete: "Remove",
       ReplaceWithDestination: "Replace with destination",
@@ -2897,7 +2898,8 @@ var ObsidianLinksSettingTab = class extends import_obsidian6.PluginSettingTab {
       this.plugin.settings.removeLinksFromHeadingsInternalWikilinkWithoutTextAction = value;
       await this.plugin.saveSettings();
     }));
-    containerEl.createEl("h4", { text: "Delete link" });
+    const deleteLinkEl = containerEl.createEl("h4", { text: "Delete link" });
+    this.setElementHelpLink(deleteLinkEl, this.getFullDocUrl("delete-link"));
     new import_obsidian6.Setting(containerEl).setName("Delete unreferenced link target").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.deleteUnreferencedLinkTarget).onChange(async (value) => {
         this.plugin.settings.deleteUnreferencedLinkTarget = value;

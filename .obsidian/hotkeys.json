@@ -455,5 +455,13 @@
       ],
       "key": "S"
     }
+  ],
+  "editor:insert-footnote": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "0"
+    }
   ]
 }

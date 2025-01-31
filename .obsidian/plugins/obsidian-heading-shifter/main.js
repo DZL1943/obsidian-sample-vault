@@ -504,7 +504,10 @@ var IncreaseHeading = class {
         editorCallback: this.editorCallback
       };
     });
-    __publicField(this, "check", () => {
+    __publicField(this, "check", (editor) => {
+      const { maxHeading } = getHeadingLines(editor, editor.getCursor("from").line, editor.getCursor("to").line);
+      if (maxHeading === void 0)
+        return false;
       return this.settings.overrideTab;
     });
     this.settings = settings;
@@ -538,7 +541,10 @@ var DecreaseHeading = class {
         editorCallback: this.editorCallback
       };
     });
-    __publicField(this, "check", () => {
+    __publicField(this, "check", (editor) => {
+      const { maxHeading } = getHeadingLines(editor, editor.getCursor("from").line, editor.getCursor("to").line);
+      if (maxHeading === void 0)
+        return false;
       return this.settings.overrideTab;
     });
     this.settings = settings;

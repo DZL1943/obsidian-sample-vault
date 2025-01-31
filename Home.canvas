@@ -1,107 +1,119 @@
 {
+  "edges": [
+  ],
+  "metadata": {
+  },
   "nodes": [
     {
+      "height": 900,
       "id": "277bfd3fd4406051",
+      "label": "workflow",
+      "styleAttributes": {
+      },
       "type": "group",
-      "styleAttributes": {},
-      "x": -960,
-      "y": -1720,
       "width": 860,
-      "height": 900,
-      "label": "workflow"
+      "x": -960,
+      "y": -1720
     },
     {
+      "height": 900,
       "id": "8848d54850234556",
+      "label": "journal",
+      "styleAttributes": {
+      },
       "type": "group",
-      "styleAttributes": {},
-      "x": -960,
-      "y": -2700,
       "width": 860,
-      "height": 900,
-      "label": "journal"
+      "x": -960,
+      "y": -2700
     },
     {
+      "height": 400,
       "id": "547b6194c9f0b54f",
-      "type": "text",
-      "text": "> [!cite]+ \n> [sync | clean no-title no-h1](sync.md#sync)\n> \n> [Draft | clean no-title no-h1](draft.excalidraw.md#Draft)\n\n",
-      "styleAttributes": {},
       "lockedHeight": true,
-      "x": -520,
-      "y": -1680,
+      "styleAttributes": {
+      },
+      "text": "> [!cite]+ \n> [sync | clean no-title no-h1](sync.md#sync)\n> \n> [Draft | clean no-title no-h1](draft.excalidraw.md#Draft)\n\n",
+      "type": "text",
       "width": 400,
-      "height": 400
+      "x": -520,
+      "y": -1680
     },
     {
-      "id": "254a7689e80d4b0e",
-      "type": "file",
       "file": "20_Private/journal-index.md",
-      "styleAttributes": {},
+      "height": 840,
+      "id": "254a7689e80d4b0e",
+      "styleAttributes": {
+      },
+      "type": "file",
+      "width": 400,
       "x": -940,
-      "y": -2660,
-      "width": 400,
-      "height": 840
+      "y": -2660
     },
     {
-      "id": "69892da001b8cdaa",
-      "type": "file",
       "file": "20_Private/insights.md",
-      "styleAttributes": {},
-      "x": -520,
-      "y": -2220,
-      "width": 400,
-      "height": 400
-    },
-    {
-      "id": "22c82a06a6b1e236",
+      "height": 400,
+      "id": "69892da001b8cdaa",
+      "styleAttributes": {
+      },
       "type": "file",
-      "file": "20_Private/moments.md",
-      "styleAttributes": {},
-      "x": -520,
-      "y": -2660,
       "width": 400,
-      "height": 400
+      "x": -520,
+      "y": -2220
     },
     {
+      "file": "20_Private/moments.md",
+      "height": 400,
+      "id": "22c82a06a6b1e236",
+      "styleAttributes": {
+      },
+      "type": "file",
+      "width": 400,
+      "x": -520,
+      "y": -2660
+    },
+    {
+      "height": 400,
       "id": "93330d1dc3c36832",
+      "styleAttributes": {
+      },
       "type": "link",
       "url": "http://localhost:8384",
-      "styleAttributes": {},
+      "width": 480,
       "x": -1020,
-      "y": -760,
-      "width": 480,
-      "height": 400
+      "y": -760
     },
     {
-      "id": "2cc41528face3499",
-      "type": "file",
       "file": "QuickLinks.md",
-      "styleAttributes": {},
-      "x": -520,
-      "y": -760,
+      "height": 400,
+      "id": "2cc41528face3499",
+      "styleAttributes": {
+      },
+      "type": "file",
       "width": 480,
-      "height": 400
-    },
-    {
-      "id": "b33493c94c59e332",
-      "type": "file",
-      "file": "Context.md",
-      "styleAttributes": {},
-      "x": -940,
-      "y": -1680,
-      "width": 400,
-      "height": 840
-    },
-    {
-      "id": "32041060b5b5b02b",
-      "type": "file",
-      "file": "10_Inbox/Local/temp.md",
-      "styleAttributes": {},
       "x": -520,
-      "y": -1240,
+      "y": -760
+    },
+    {
+      "file": "Context.md",
+      "height": 840,
+      "id": "b33493c94c59e332",
+      "styleAttributes": {
+      },
+      "type": "file",
       "width": 400,
-      "height": 400
+      "x": -940,
+      "y": -1680
+    },
+    {
+      "file": "10_Inbox/Local/temp.md",
+      "height": 400,
+      "id": "32041060b5b5b02b",
+      "styleAttributes": {
+      },
+      "type": "file",
+      "width": 400,
+      "x": -520,
+      "y": -1240
     }
-  ],
-  "edges": [],
-  "metadata": {}
+  ]
 }
