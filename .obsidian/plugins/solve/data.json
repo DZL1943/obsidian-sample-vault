@@ -9,6 +9,14 @@
     "animationClass": "animate__pulse",
     "animationDuration": "200ms"
   },
+  "inlineSolve": {
+    "includeExpressionOnCommit": false,
+    "includeBackticksOnCommit": true,
+    "includeEqualsOnCommit": true
+  },
+  "variable": {
+    "renderResult": true
+  },
   "arithmeticProvider": {
     "enabled": true,
     "renderEqualsBeforeResult": true
@@ -32,12 +40,19 @@
   "diceProvider": {
     "enabled": true
   },
+  "bigIntegerArithmeticProvider": {
+    "enabled": true
+  },
+  "numberResult": {
+    "decimalSeparatorLocale": "en-US"
+  },
   "integerResult": {},
   "floatResult": {
     "decimalPlaces": 2
   },
   "percentageResult": {
-    "decimalPlaces": 2
+    "decimalPlaces": 2,
+    "enableSeperator": false
   },
   "datetimeResult": {
     "format": "YYYY-MM-DDTHH:mm:ssZ"

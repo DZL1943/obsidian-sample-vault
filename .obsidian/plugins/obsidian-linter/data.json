@@ -81,7 +81,7 @@
       "enabled": true
     },
     "remove-trailing-punctuation-in-heading": {
-      "enabled": true,
+      "enabled": false,
       "punctuation-to-remove": ".,;:!。，；：！"
     },
     "footnote-after-punctuation": {
@@ -112,7 +112,7 @@
     },
     "no-bare-urls": {
       "enabled": false,
-      "no-bare-uris": false
+      "no-bare-uris": true
     },
     "ordered-list-style": {
       "enabled": true,
@@ -139,7 +139,7 @@
       "enabled": true
     },
     "remove-multiple-spaces": {
-      "enabled": true
+      "enabled": false
     },
     "strong-style": {
       "enabled": true,
