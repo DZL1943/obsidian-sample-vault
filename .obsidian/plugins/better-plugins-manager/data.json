@@ -1,7 +1,7 @@
 {
   "LANGUAGE": "zh-cn",
-  "CENTER": false,
-  "ITEM_STYLE": "alwaysExpand",
+  "CENTER": true,
+  "ITEM_STYLE": "hoverExpand",
   "GROUP_STYLE": "a",
   "TAG_STYLE": "a",
   "DELAY": true,
@@ -32,6 +32,11 @@
     {
       "id": "4",
       "name": "待定",
+      "color": "#000000"
+    },
+    {
+      "id": "10",
+      "name": "废弃",
       "color": "#000000"
     }
   ],
@@ -64,6 +69,16 @@
     {
       "id": "5",
       "name": "备用待定",
+      "color": "#000000"
+    },
+    {
+      "id": "10",
+      "name": "bug",
+      "color": "#000000"
+    },
+    {
+      "id": "20",
+      "name": "new",
       "color": "#000000"
     }
   ],
@@ -155,9 +170,10 @@
       "desc": "Adds support for angle bracket links and manages relative links properly",
       "group": "3",
       "tags": [
-        "4"
+        "4",
+        "10"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "5"
     },
     {
@@ -307,11 +323,12 @@
       "id": "floating-toc",
       "name": "floating toc",
       "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
-      "group": "2",
+      "group": "10",
       "tags": [
-        "1"
+        "1",
+        "10"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "5"
     },
     {
@@ -958,6 +975,18 @@
       ],
       "enabled": true,
       "delay": "5"
+    },
+    {
+      "id": "vertical-tabs",
+      "name": "Vertical Tabs",
+      "desc": "Offer an alternative view that displays open tabs vertically, allowing users to group and organize tabs for a better navigation experience.",
+      "group": "2",
+      "tags": [
+        "1",
+        "20"
+      ],
+      "enabled": false,
+      "delay": ""
     }
   ]
 }

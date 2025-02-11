@@ -6,14 +6,14 @@
   "symbolsInLineOrder": true,
   "editorListCommand": "edt ",
   "symbolListCommand": "@",
-  "symbolListActiveEditorCommand": "$ ",
+  "symbolListActiveEditorCommand": "$",
   "workspaceListCommand": "+",
   "headingsListCommand": "#",
   "bookmarksListCommand": "'",
   "commandListCommand": ">",
   "vaultListCommand": "vlt ",
   "relatedItemsListCommand": "~",
-  "relatedItemsListActiveEditorCommand": "^ ",
+  "relatedItemsListActiveEditorCommand": "^",
   "shouldSearchHeadings": true,
   "strictHeadingsOnly": false,
   "searchAllHeadings": true,
@@ -61,6 +61,7 @@
   ],
   "showOptionalIndicatorIcons": true,
   "overrideStandardModeBehaviors": true,
+  "overrideStandardModeRendering": true,
   "enabledRibbonCommands": [
     "HeadingsList"
   ],
@@ -398,5 +399,26 @@
       "8",
       "9"
     ]
+  },
+  "openDefaultApp": {
+    "isEnabled": true,
+    "openInDefaultAppKeys": {
+      "modifiers": [
+        "Shift",
+        "Ctrl"
+      ],
+      "key": "o"
+    },
+    "excludeFileExtensions": []
+  },
+  "fulltextSearch": {
+    "isEnabled": true,
+    "searchKeys": {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "f"
+    }
   }
 }
