@@ -22,7 +22,7 @@ editor-width: 88
 LIST
 FROM "" AND -"Ext"
 WHERE file.folder != "" AND length(split(file.folder, "/")) <=2
-GROUP BY file.folder
+GROUP BY "`" + file.folder + "`"
 ```
 
 ## Queries
