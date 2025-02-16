@@ -146,7 +146,7 @@ sort file.name desc
 group by file.folder
 ```
 
-## Changelog
+## Changelogs
 
 - [2024-07-13] 重命名 90_Misc 为 Misc
 - [2024-07-18] 重命名 20_Journals 为 20_Private; 增加 Changelog
