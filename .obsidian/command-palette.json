@@ -5,6 +5,7 @@
     "zk-prefixer",
     "nldates-obsidian:nlp-now",
     "omnisearch:show-modal",
-    "ledger-obsidian:ledger-add-transaction"
+    "ledger-obsidian:ledger-add-transaction",
+    "better-plugins-manager:manager-view"
   ]
 }

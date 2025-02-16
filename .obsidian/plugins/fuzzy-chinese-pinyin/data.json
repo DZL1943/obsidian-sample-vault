@@ -44,20 +44,22 @@
     ],
     "usePathToSearch": false,
     "useFileEditorSuggest": true,
-    "showPath": true,
     "showTags": false,
     "searchWithTag": true,
     "keyEnter": "打开",
     "keyCtrlEnter": "打开到新标签页",
     "keyAltEnter": "打开到其他面板",
-    "keyCtrlAltEnter": "打开到新面板"
+    "keyCtrlAltEnter": "打开到新面板",
+    "showPath": true
   },
   "heading": {
     "showFirstLevelHeading": true,
     "headingIndent": true
   },
   "command": {
-    "pinnedCommands": []
+    "pinnedCommands": [
+      "Better Plugins Manager: 开启插件管理器"
+    ]
   },
   "other": {
     "useTagEditorSuggest": true,
