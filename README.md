@@ -1,8 +1,9 @@
 ---
 title: README
 created: "2024-07-30 13:30"
-modified: "2025-02-16 10:30"
+modified: "2025-02-16 11:05"
 editor-width: 88
+obsidianEditingMode: source
 ---
 
 # README
