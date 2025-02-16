@@ -11,7 +11,7 @@ editor-width: 88
 
 ![](<Misc/Attachments/Obsidian-20240908154942.png>)
 
-- Obsidian 版本 | 1.8.3-mac-arm64
+- Obsidian 版本 | 1.8.4-mac-arm64
 - 主题 | 默认
 - ribbon | 基本上不用
 - 标题栏 | 隐藏 | 用 editing-toolbar 和 quick-explorer 替代
