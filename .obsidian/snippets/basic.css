@@ -25,4 +25,5 @@ body {
     --italic-color: #FABE57;
     --bold-color: #FF8A78;
     --hl2: #816F35;
+    --file-line-width: 85vw;
 }

@@ -2929,12 +2929,13 @@ var ObsidianLinksSettingTab = class extends import_obsidian6.PluginSettingTab {
       });
     });
     this.setSettingHelpLink(settingSetLinkText, this.getFullDocUrl("set-link-text"));
-    new import_obsidian6.Setting(containerEl).setName("Set link text from clipboard").setDesc("").addToggle((toggle) => {
+    const settingSetLinkTextFromClipboard = new import_obsidian6.Setting(containerEl).setName("Set link text from clipboard").setDesc("").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.contexMenu.setLinkTextFromClipboard).onChange(async (value) => {
         this.plugin.settings.contexMenu.setLinkTextFromClipboard = value;
         await this.plugin.saveSettings();
       });
     });
+    this.setSettingHelpLink(settingSetLinkTextFromClipboard, this.getFullDocUrl("set-link-text-from-clipboard"));
     new import_obsidian6.Setting(containerEl).setName("Edit link destination").setDesc("").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.contexMenu.editLinkDestination).onChange(async (value) => {
         this.plugin.settings.contexMenu.editLinkDestination = value;

@@ -26,7 +26,8 @@
     "settings-layout",
     "mysnippets-layout",
     "anyblock",
-    "table"
+    "table",
+    "explorer"
   ],
   "showViewHeader": false,
   "cssTheme": "",

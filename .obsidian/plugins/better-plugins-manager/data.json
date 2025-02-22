@@ -74,6 +74,16 @@
       "id": "5",
       "name": "废弃",
       "color": "#000000"
+    },
+    {
+      "id": "beta",
+      "name": "beta",
+      "color": "#000000"
+    },
+    {
+      "id": "bug",
+      "name": "bug",
+      "color": "#000000"
     }
   ],
   "DELAYS": [
@@ -147,7 +157,7 @@
       "id": "better-markdown-links",
       "name": "Better Markdown Links",
       "desc": "Adds support for angle bracket links and manages relative links properly",
-      "group": "5",
+      "group": "4",
       "tags": [
         "4"
       ],
@@ -183,6 +193,17 @@
       "group": "2",
       "tags": [
         "1"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "css-editor",
+      "name": "CSS Editor",
+      "desc": "Edit CSS files within Obsidian.",
+      "group": "1",
+      "tags": [
+        "4"
       ],
       "enabled": true,
       "delay": "5"
@@ -243,15 +264,15 @@
       "delay": "10"
     },
     {
-      "id": "editor-width-slider",
-      "name": "Editor Width Slider",
-      "desc": "Customize Obsidian's editor width with a slider for a tailored editing experience.",
+      "id": "external-rename-handler",
+      "name": "External Rename Handler",
+      "desc": "Handles renames made outside of the app",
       "group": "1",
       "tags": [
-        "2"
+        "4"
       ],
       "enabled": true,
-      "delay": "default"
+      "delay": "5"
     },
     {
       "id": "file-tree-alternative",
@@ -285,28 +306,6 @@
       ],
       "enabled": true,
       "delay": "5"
-    },
-    {
-      "id": "floating-settings",
-      "name": "Floating Settings",
-      "desc": "Open the Floating Settings panel or replace the default settings modal with a floating panel. Depends on the Hover Editor.",
-      "group": "1",
-      "tags": [
-        "3"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
-      "id": "floating-toc",
-      "name": "floating toc",
-      "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
-      "group": "1",
-      "tags": [
-        "5"
-      ],
-      "enabled": false,
-      "delay": "10"
     },
     {
       "id": "fuzzy-chinese-pinyin",
@@ -347,7 +346,8 @@
       "desc": "Performs cleanup tasks on the Obsidian vault",
       "group": "4",
       "tags": [
-        "2"
+        "2",
+        "5"
       ],
       "enabled": true,
       "delay": "10"
@@ -402,10 +402,11 @@
       "desc": "An Obsidian plugin to provide an editor for Markdown tables. It can open CSV, Microsoft Excel/Google Sheets data as Markdown tables from Obsidian Markdown editor.",
       "group": "2",
       "tags": [
-        "3"
+        "3",
+        "5"
       ],
       "enabled": true,
-      "delay": "10"
+      "delay": "5"
     },
     {
       "id": "mysnippets-plugin",
@@ -419,12 +420,13 @@
       "delay": "5"
     },
     {
-      "id": "nldates-obsidian",
-      "name": "Natural Language Dates",
-      "desc": "Create date-links based on natural language",
-      "group": "2",
+      "id": "nldates-redux",
+      "name": "Natural Language Dates Redux",
+      "desc": "Work with dates in natural language. Now with Notion-like behavior!",
+      "group": "4",
       "tags": [
-        "3"
+        "3",
+        "beta"
       ],
       "enabled": true,
       "delay": "5"
@@ -449,7 +451,7 @@
         "3"
       ],
       "enabled": true,
-      "delay": "default"
+      "delay": "5"
     },
     {
       "id": "obsidian-auto-hide",
@@ -479,7 +481,7 @@
       "desc": "This plugin provides advanced auto-completion functionality for LaTeX, Frontmatter and standard writing.",
       "group": "2",
       "tags": [
-        "1"
+        "2"
       ],
       "enabled": true,
       "delay": "5"
@@ -504,7 +506,7 @@
         "3"
       ],
       "enabled": true,
-      "delay": "10"
+      "delay": "15"
     },
     {
       "id": "obsidian-front-matter-title-plugin",
@@ -600,10 +602,10 @@
       "desc": "This is a mindmap , outline tool for obsidian.",
       "group": "2",
       "tags": [
-        "3"
+        "2"
       ],
       "enabled": true,
-      "delay": "10"
+      "delay": "15"
     },
     {
       "id": "obsidian-meta-bind-plugin",
@@ -628,17 +630,6 @@
       "delay": "default"
     },
     {
-      "id": "plugin-proxy",
-      "name": "Plugin Proxy",
-      "desc": "For visiting plugin market quickly.",
-      "group": "4",
-      "tags": [
-        "3"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
       "id": "obsidian-projects",
       "name": "Projects",
       "desc": "Plain text project planning.",
@@ -657,7 +648,7 @@
       "tags": [
         "3"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "default"
     },
     {
@@ -680,7 +671,7 @@
         "3"
       ],
       "enabled": false,
-      "delay": ""
+      "delay": "5"
     },
     {
       "id": "obsidian-tasks-plugin",
@@ -743,9 +734,20 @@
       "desc": "Opens the sidebar by hovering over it.",
       "group": "1",
       "tags": [
-        "3"
+        "4"
       ],
       "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "plugin-proxy",
+      "name": "Plugin Proxy",
+      "desc": "For visiting plugin market quickly.",
+      "group": "4",
+      "tags": [
+        "3"
+      ],
+      "enabled": true,
       "delay": "5"
     },
     {
@@ -801,7 +803,7 @@
         "3"
       ],
       "enabled": false,
-      "delay": ""
+      "delay": "15"
     },
     {
       "id": "settings-search",
@@ -842,7 +844,8 @@
       "desc": "Lets you rearrange and hide specific status bar elements.",
       "group": "1",
       "tags": [
-        "3"
+        "3",
+        "bug"
       ],
       "enabled": true,
       "delay": "5"
@@ -853,7 +856,7 @@
       "desc": "Add properties and menu options to links and style them!",
       "group": "1",
       "tags": [
-        "3"
+        "4"
       ],
       "enabled": true,
       "delay": "10"
@@ -911,7 +914,7 @@
         "4"
       ],
       "enabled": true,
-      "delay": "10"
+      "delay": "15"
     },
     {
       "id": "various-complements",
@@ -919,10 +922,21 @@
       "desc": "This plugin enables you to complete words like the auto-completion of IDE",
       "group": "2",
       "tags": [
-        "3"
+        "2"
       ],
       "enabled": false,
       "delay": "10"
+    },
+    {
+      "id": "vertical-tabs",
+      "name": "Vertical Tabs",
+      "desc": "Offer an alternative view that displays open tabs vertically, allowing users to group and organize tabs for a better navigation experience.",
+      "group": "1",
+      "tags": [
+        "2"
+      ],
+      "enabled": false,
+      "delay": "5"
     },
     {
       "id": "vim-toggle",
@@ -939,28 +953,6 @@
       "id": "virtual-linker",
       "name": "Virtual Linker / Glossary",
       "desc": "Automatically creates virtual links for text within your notes that match the titles or aliases of other notes in your vault. Create a glossary-like functionality, show unlinked mentions and transform them to real links.",
-      "group": "1",
-      "tags": [
-        "1"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
-      "id": "external-rename-handler",
-      "name": "External Rename Handler",
-      "desc": "Handles renames made outside of the app",
-      "group": "1",
-      "tags": [
-        "3"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
-      "id": "vertical-tabs",
-      "name": "Vertical Tabs",
-      "desc": "Offer an alternative view that displays open tabs vertically, allowing users to group and organize tabs for a better navigation experience.",
       "group": "1",
       "tags": [
         "1"

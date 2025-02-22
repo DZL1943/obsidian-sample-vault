@@ -5,7 +5,6 @@
   "cm-chs-patch",
   "find-unlinked-files",
   "hotkey-helper",
-  "nldates-obsidian",
   "obsidian-advanced-uri",
   "obsidian-excalidraw-plugin",
   "obsidian-front-matter-title-plugin",
@@ -29,10 +28,8 @@
   "dust-calendar",
   "easy-typing-obsidian",
   "editing-toolbar",
-  "editor-width-slider",
   "file-tree-alternative",
   "float-search",
-  "floating-settings",
   "fuzzy-chinese-pinyin",
   "janitor",
   "keyboard-analyzer",
@@ -65,5 +62,6 @@
   "virtual-linker",
   "darlal-switcher-plus",
   "image-converter",
-  "omnisearch"
+  "omnisearch",
+  "css-editor"
 ]
