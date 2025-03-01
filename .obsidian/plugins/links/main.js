@@ -3168,6 +3168,12 @@ var ObsidianLinksSettingTab = class extends import_obsidian6.PluginSettingTab {
       });
     });
     this.setSettingHelpLink(settingCopyLinkToElement, this.getFullInsiderDocUrl("copy-link-to-element.md"));
+    new import_obsidian6.Setting(containerEl).setName("Set link destination from clipboard").setDesc("Sets destination of a link from clipboard").addToggle((toggle) => {
+      toggle.setValue(this.plugin.settings.ffSetLinkDestinationFromClipbard).onChange(async (value) => {
+        this.plugin.settings.ffSetLinkDestinationFromClipbard = value;
+        await this.plugin.saveSettings();
+      });
+    });
   }
 };
 

@@ -75,7 +75,7 @@
   "includeCurrentVaultOnlyFilesUnderCurrentDirectory": false,
   "excludeCurrentVaultWordPatterns": [],
   "enableCustomDictionaryComplement": true,
-  "customDictionaryPaths": "Misc/Configs/callout.md",
+  "customDictionaryPaths": "Misc/Data/callout.md",
   "columnDelimiter": "Tab",
   "customDictionaryWordRegexPattern": "",
   "delimiterToHideSuggestion": "",

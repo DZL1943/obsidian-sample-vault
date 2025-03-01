@@ -52,7 +52,7 @@
           "name": "reload",
           "type": "UserScript",
           "id": "d7d2ae18-caad-47d6-bdee-c7f71910bddf",
-          "path": "Misc/Code/reload.js",
+          "path": "Misc/Data/reload.js",
           "settings": {}
         }
       ],
@@ -63,7 +63,7 @@
   "devMode": false,
   "templateFolderPath": "",
   "announceUpdates": false,
-  "version": "1.11.5",
+  "version": "1.12.0",
   "disableOnlineFeatures": true,
   "enableRibbonIcon": false,
   "ai": {
