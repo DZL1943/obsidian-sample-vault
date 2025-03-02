@@ -313,6 +313,17 @@
       "delay": "5"
     },
     {
+      "id": "folder-notes",
+      "name": "Folder notes",
+      "desc": "Create notes within folders that can be accessed without collapsing the folder, similar to the functionality offered in Notion.",
+      "group": "1",
+      "tags": [
+        "unused"
+      ],
+      "enabled": false,
+      "delay": ""
+    },
+    {
       "id": "fuzzy-chinese-pinyin",
       "name": "Fuzzy Chinese Pinyin",
       "desc": "Provide the function of fuzzy search using Chinese Pinyin.",
@@ -457,6 +468,17 @@
       ],
       "enabled": false,
       "delay": ""
+    },
+    {
+      "id": "obsidian-admonition",
+      "name": "Admonition",
+      "desc": "Enhanced callouts for Obsidian.md",
+      "group": "2",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "5"
     },
     {
       "id": "obsidian-advanced-uri",
@@ -1007,28 +1029,6 @@
       ],
       "enabled": true,
       "delay": "5"
-    },
-    {
-      "id": "obsidian-admonition",
-      "name": "Admonition",
-      "desc": "Enhanced callouts for Obsidian.md",
-      "group": "2",
-      "tags": [
-        "required"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
-      "id": "folder-notes",
-      "name": "Folder notes",
-      "desc": "Create notes within folders that can be accessed without collapsing the folder, similar to the functionality offered in Notion.",
-      "group": "1",
-      "tags": [
-        "unused"
-      ],
-      "enabled": false,
-      "delay": ""
     }
   ]
 }
