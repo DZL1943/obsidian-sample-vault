@@ -13,7 +13,7 @@ obsidianEditingMode: source
 ![](<Misc/Attachments/Obsidian-20240908154942.png>)
 
 - Obsidian 版本 | 1.8.9-mac-arm64
-- 主题 | 默认
+- 主题 | 默认 `#00A86B`
 - ribbon | 基本不用
 - 标题栏 | 隐藏, 用 editing-toolbar 和 quick-explorer 替代
 - 状态栏 | 悬浮时显示, 用 statusbar-organizer 自定义

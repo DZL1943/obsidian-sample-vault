@@ -1029,6 +1029,17 @@
       ],
       "enabled": true,
       "delay": "5"
+    },
+    {
+      "id": "obsidian42-strange-new-worlds",
+      "name": "Strange New Worlds",
+      "desc": "Help see how your vault is interconnected with visual indicators.",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "10"
     }
   ]
 }
