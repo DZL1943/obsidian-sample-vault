@@ -34,7 +34,7 @@ __export(main_exports, {
 module.exports = __toCommonJS(main_exports);
 
 // src/main.ts
-var import_obsidian11 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 
 // src/settings/data.ts
 var DEFAULT_SETTINGS = {
@@ -77,7 +77,7 @@ var DEFAULT_SETTINGS = {
 };
 
 // src/settings/index.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 
 // src/settings/base-setting.ts
 var BaseSetting = class {
@@ -954,6 +954,12 @@ var ManagerModal = class extends import_obsidian7.Modal {
               }
             })
           );
+          menu.addItem(
+            (item) => item.setTitle("\u5355\u6B21\u542F\u52A8").setIcon("repeat-1").setDisabled(isEnabled).onClick(async () => {
+              new import_obsidian7.Notice("\u5F00\u542F\u4E2D\uFF0C\u8BF7\u7A0D\u7B49");
+              await this.appPlugins.enablePlugin(plugin.id);
+            })
+          );
           menu.showAtPosition({ x: event.clientX, y: event.clientY });
         });
         if (this.settings.FADE_OUT_DISABLED_PLUGINS && !isEnabled)
@@ -1617,7 +1623,7 @@ var ManagerDelay = class extends BaseSetting {
     this.manager.settings.DELAYS.forEach((delay, index) => {
       const item = new import_obsidian9.Setting(this.containerEl);
       item.settingEl.addClass("manager-setting-group__item");
-      item.setName(`${index + 1}. ${delay.id}`);
+      item.setName(`[${delay.id}]`);
       item.addSlider(
         (cb) => cb.setLimits(0, 100, 1).setValue(delay.time).setDynamicTooltip().onChange((value) => {
           delay.time = value;
@@ -1647,8 +1653,156 @@ var ManagerDelay = class extends BaseSetting {
   }
 };
 
+// src/settings/ui/manager-tag.ts
+var import_obsidian10 = require("obsidian");
+var ManagerTag = class extends BaseSetting {
+  main() {
+    let id = "";
+    let name = "";
+    let color = "";
+    new import_obsidian10.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).addColorPicker(
+      (cb) => cb.setValue(color).onChange((value) => {
+        color = value;
+      })
+    ).addText(
+      (cb) => cb.setPlaceholder("ID").onChange((value) => {
+        id = value;
+        this.manager.saveSettings();
+      })
+    ).addText(
+      (cb) => cb.setPlaceholder(this.manager.translator.t("\u901A\u7528_\u540D\u79F0_\u6587\u672C")).onChange((value) => {
+        name = value;
+      })
+    ).addExtraButton(
+      (cb) => cb.setIcon("plus").onClick(() => {
+        const containsId = this.manager.settings.TAGS.some((tag) => tag.id === id);
+        if (!containsId && id !== "") {
+          if (color === "")
+            color = "#000000";
+          this.manager.settings.TAGS.push({ id, name, color });
+          this.manager.saveSettings();
+          this.settingTab.tagDisplay();
+          new import_obsidian10.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+        } else {
+          new import_obsidian10.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+        }
+      })
+    );
+    this.manager.settings.TAGS.forEach((tag, index) => {
+      const item = new import_obsidian10.Setting(this.containerEl);
+      item.setClass("manager-setting-tag__item");
+      item.addColorPicker(
+        (cb) => cb.setValue(tag.color).onChange((value) => {
+          tag.color = value;
+          this.manager.saveSettings();
+          this.settingTab.tagDisplay();
+        })
+      );
+      item.addText(
+        (cb) => cb.setValue(tag.name).onChange((value) => {
+          tag.name = value;
+          this.manager.saveSettings();
+        }).inputEl.addEventListener("blur", () => {
+          this.settingTab.tagDisplay();
+        })
+      );
+      item.addExtraButton(
+        (cb) => cb.setIcon("trash-2").onClick(() => {
+          const hasTestTag = this.settings.Plugins.some((plugin) => plugin.tags && plugin.tags.includes(tag.id));
+          if (!hasTestTag) {
+            this.manager.settings.TAGS = this.manager.settings.TAGS.filter((t) => t.id !== tag.id);
+            this.manager.saveSettings();
+            this.settingTab.tagDisplay();
+            new import_obsidian10.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+          } else {
+            new import_obsidian10.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+          }
+        })
+      );
+      const tagEl = this.manager.createTag(tag.name, tag.color, this.settings.TAG_STYLE);
+      item.nameEl.appendChild(tagEl);
+      item.nameEl.appendText(` [${tag.id}]`);
+    });
+  }
+};
+
+// src/settings/ui/manager-group.ts
+var import_obsidian11 = require("obsidian");
+var ManagerGroup = class extends BaseSetting {
+  main() {
+    let id = "";
+    let name = "";
+    let color = "";
+    new import_obsidian11.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).addColorPicker(
+      (cb) => cb.setValue(color).onChange((value) => {
+        color = value;
+      })
+    ).addText(
+      (cb) => cb.setPlaceholder("ID").onChange((value) => {
+        id = value;
+        this.manager.saveSettings();
+      })
+    ).addText(
+      (cb) => cb.setPlaceholder(this.manager.translator.t("\u901A\u7528_\u540D\u79F0_\u6587\u672C")).onChange((value) => {
+        name = value;
+      })
+    ).addExtraButton(
+      (cb) => cb.setIcon("plus").onClick(() => {
+        const containsId = this.manager.settings.GROUPS.some((tag) => tag.id === id);
+        if (!containsId && id !== "") {
+          if (color === "")
+            color = "#000000";
+          this.manager.settings.GROUPS.push({ id, name, color });
+          this.manager.saveSettings();
+          this.settingTab.groupDisplay();
+          command_default(this.app, this.manager);
+          new import_obsidian11.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+        } else {
+          new import_obsidian11.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+        }
+      })
+    );
+    this.manager.settings.GROUPS.forEach((group, index) => {
+      const item = new import_obsidian11.Setting(this.containerEl);
+      item.settingEl.addClass("manager-setting-group__item");
+      item.addColorPicker(
+        (cb) => cb.setValue(group.color).onChange((value) => {
+          group.color = value;
+          this.manager.saveSettings();
+          this.settingTab.groupDisplay();
+        })
+      );
+      item.addText(
+        (cb) => cb.setValue(group.name).onChange((value) => {
+          group.name = value;
+          this.manager.saveSettings();
+        }).inputEl.addEventListener("blur", () => {
+          this.settingTab.groupDisplay();
+        })
+      );
+      item.addExtraButton(
+        (cb) => cb.setIcon("trash-2").onClick(() => {
+          const hasTestGroup = this.settings.Plugins.some((plugin) => plugin.group === group.id);
+          if (!hasTestGroup) {
+            this.manager.settings.GROUPS = this.manager.settings.GROUPS.filter((t) => t.id !== group.id);
+            this.manager.saveSettings();
+            this.settingTab.groupDisplay();
+            command_default(this.app, this.manager);
+            new import_obsidian11.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+          } else {
+            new import_obsidian11.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+          }
+        })
+      );
+      const tagEl = this.manager.createTag(group.name, group.color, this.settings.GROUP_STYLE);
+      item.nameEl.appendChild(tagEl);
+      item.nameEl.appendText(` [${group.id}]`);
+    });
+  }
+};
+
 // src/settings/index.ts
-var ManagerSettingTab = class extends import_obsidian10.PluginSettingTab {
+var ManagerSettingTab = class extends import_obsidian12.PluginSettingTab {
   constructor(app, manager) {
     super(app, manager);
     this.manager = manager;
@@ -1664,6 +1818,8 @@ var ManagerSettingTab = class extends import_obsidian10.PluginSettingTab {
     this.contentEl.addClass("manager-setting__content");
     const tabItems = [
       { text: this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u524D\u7F00"), content: () => this.basisDisplay() },
+      { text: this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u524D\u7F00"), content: () => this.groupDisplay() },
+      { text: this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u524D\u7F00"), content: () => this.tagDisplay() },
       { text: this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u524D\u7F00"), content: () => this.delayDisplay() }
     ];
     const tabItemsEls = [];
@@ -1692,6 +1848,14 @@ var ManagerSettingTab = class extends import_obsidian10.PluginSettingTab {
   delayDisplay() {
     this.contentEl.empty();
     new ManagerDelay(this).display();
+  }
+  groupDisplay() {
+    this.contentEl.empty();
+    new ManagerGroup(this).display();
+  }
+  tagDisplay() {
+    this.contentEl.empty();
+    new ManagerTag(this).display();
   }
 };
 
@@ -2284,7 +2448,7 @@ var Translator = class {
 };
 
 // src/main.ts
-var Manager = class extends import_obsidian11.Plugin {
+var Manager = class extends import_obsidian13.Plugin {
   async onload() {
     this.appPlugins = this.app.plugins;
     this.appWorkspace = this.app.workspace;

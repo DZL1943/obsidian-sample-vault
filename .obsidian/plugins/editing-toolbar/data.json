@@ -1,5 +1,5 @@
 {
-  "lastVersion": "3.0.8",
+  "lastVersion": "3.1.1",
   "aestheticStyle": "default",
   "positionStyle": "top",
   "menuCommands": [
@@ -299,12 +299,17 @@
       ]
     }
   ],
+  "followingCommands": [],
+  "topCommands": [],
+  "fixedCommands": [],
+  "mobileCommands": [],
+  "enableMultipleConfig": false,
   "appendMethod": "workspace",
   "shouldShowMenuOnSelect": false,
   "cMenuVisibility": false,
   "cMenuBottomValue": 4.25,
   "cMenuNumRows": 12,
-  "cMenuWidth": 610,
+  "cMenuWidth": 662,
   "cMenuFontColor": "#2DC26B",
   "cMenuBackgroundColor": "#d3f8b6",
   "autohide": false,

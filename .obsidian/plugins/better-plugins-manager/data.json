@@ -1040,6 +1040,17 @@
       ],
       "enabled": true,
       "delay": "10"
+    },
+    {
+      "id": "floating-settings",
+      "name": "Floating Settings",
+      "desc": "Open the Floating Settings panel or replace the default settings modal with a floating panel. Depends on the Hover Editor.",
+      "group": "1",
+      "tags": [
+        "bug"
+      ],
+      "enabled": false,
+      "delay": "10"
     }
   ]
 }

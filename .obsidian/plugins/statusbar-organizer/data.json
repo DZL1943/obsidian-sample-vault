@@ -55,6 +55,10 @@
       "plugin-mysnippets-plugin-MiniSettings-statusbar-button;1": {
         "position": 11,
         "visible": true
+      },
+      "plugin-editing-toolbar-editingToolbar-statusbar-button;1": {
+        "position": 14,
+        "visible": true
       }
     }
   },
