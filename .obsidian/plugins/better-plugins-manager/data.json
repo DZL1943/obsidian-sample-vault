@@ -203,17 +203,6 @@
       "delay": "10"
     },
     {
-      "id": "creases",
-      "name": "Creases",
-      "desc": "Tools for efficiently folding markdown sections in Obsidian",
-      "group": "4",
-      "tags": [
-        "pending"
-      ],
-      "enabled": false,
-      "delay": ""
-    },
-    {
       "id": "darlal-switcher-plus",
       "name": "Quick Switcher++",
       "desc": "Enhanced Quick Switcher, search open panels, and symbols.",
@@ -276,7 +265,7 @@
       "tags": [
         "pending"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "5"
     },
     {
@@ -1051,6 +1040,18 @@
       ],
       "enabled": false,
       "delay": "10"
+    },
+    {
+      "id": "floating-toc",
+      "name": "floating toc",
+      "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "10",
+      "note": ""
     }
   ]
 }

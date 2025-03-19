@@ -1379,7 +1379,7 @@ var Commands = (app, manager) => {
         if (mp) {
           manager.addCommand({
             id: `manager-${mp.id}`,
-            name: `${mp.enabled ? "\u5173\u95ED" : "\u5F00\u542F"} ${mp.name} `,
+            name: `${mp.enabled ? manager.translator.t("\u901A\u7528_\u5173\u95ED_\u6587\u672C") : manager.translator.t("\u901A\u7528_\u5F00\u542F_\u6587\u672C")} ${mp.name} `,
             callback: async () => {
               if (mp.enabled) {
                 mp.enabled = false;
@@ -1401,7 +1401,7 @@ var Commands = (app, manager) => {
       manager.settings.GROUPS.forEach((group) => {
         manager.addCommand({
           id: `manager-${group.id}-enabled`,
-          name: `\u4E00\u952E\u5F00\u542F${group.name}\u5206\u7EC4`,
+          name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u542F\u7528_\u6587\u672C")} ${group.name}`,
           callback: async () => {
             const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
             filteredPlugins.forEach(async (plugin) => {
@@ -1416,7 +1416,7 @@ var Commands = (app, manager) => {
         });
         manager.addCommand({
           id: `manager-${group.id}-disable`,
-          name: `\u4E00\u952E\u7981\u7528${group.name}\u5206\u7EC4`,
+          name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u7981\u7528_\u6587\u672C")} ${group.name}`,
           callback: async () => {
             const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
             filteredPlugins.forEach(async (plugin) => {
@@ -1874,6 +1874,8 @@ var zh_cn_default = {
   \u901A\u7528_\u603B\u8BA1_\u6587\u672C: "\u603B\u8BA1",
   \u901A\u7528_\u542F\u7528_\u6587\u672C: "\u542F\u7528",
   \u901A\u7528_\u7981\u7528_\u6587\u672C: "\u7981\u7528",
+  \u901A\u7528_\u5173\u95ED_\u6587\u672C: "\u5173\u95ED",
+  \u901A\u7528_\u5F00\u542F_\u6587\u672C: "\u5F00\u542F",
   \u547D\u4EE4\u884C_\u542F\u7528_\u6587\u672C: "\u542F\u7528",
   \u547D\u4EE4\u884C_\u7981\u7528_\u6587\u672C: "\u7981\u7528",
   \u547D\u4EE4\u884C_\u5206\u7EC4_\u6587\u672C: "\u5206\u7EC4",
@@ -1975,6 +1977,8 @@ var en_default = {
   \u901A\u7528_\u603B\u8BA1_\u6587\u672C: "Total",
   \u901A\u7528_\u542F\u7528_\u6587\u672C: "Enable",
   \u901A\u7528_\u7981\u7528_\u6587\u672C: "Disable",
+  \u901A\u7528_\u5173\u95ED_\u6587\u672C: "Disable",
+  \u901A\u7528_\u5F00\u542F_\u6587\u672C: "Enable",
   \u547D\u4EE4\u884C_\u542F\u7528_\u6587\u672C: "Enable",
   \u547D\u4EE4\u884C_\u7981\u7528_\u6587\u672C: "Disable",
   \u547D\u4EE4\u884C_\u5206\u7EC4_\u6587\u672C: "Group",
@@ -2547,7 +2551,8 @@ var Manager = class extends import_obsidian13.Plugin {
           "group": "",
           "tags": [],
           "enabled": isEnabled,
-          "delay": ""
+          "delay": "",
+          "note": ""
         });
       }
     });
