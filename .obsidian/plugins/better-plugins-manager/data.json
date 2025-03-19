@@ -1047,9 +1047,10 @@
       "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
       "group": "1",
       "tags": [
-        "optional"
+        "optional",
+        "bug"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "10",
       "note": ""
     }
