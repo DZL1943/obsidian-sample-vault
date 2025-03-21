@@ -137,7 +137,7 @@ dv.list(Object.entries(app.hotkeyManager.customKeys).filter(([k, v]) => v && v[0
 ## Plugins
 
 ```dataviewjs
-dv.list(Object.keys(app.plugins.plugins).sort());
+dv.table(["id", "name", "version", "enabled"], Object.values(app.plugins.manifests).sort((a,b)=>a.id.localeCompare(b.id)).map(p=>[p.id, p.name, p.version, app.plugins.enabledPlugins.has(p.id)]))
 ```
 
 ## Templates

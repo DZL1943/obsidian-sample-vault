@@ -164,7 +164,7 @@
       "desc": "Adds support for angle bracket links and manages relative links properly",
       "group": "4",
       "tags": [
-        "pending"
+        "unused"
       ],
       "enabled": false,
       "delay": "5"
@@ -302,6 +302,31 @@
       "delay": "5"
     },
     {
+      "id": "floating-settings",
+      "name": "Floating Settings",
+      "desc": "Open the Floating Settings panel or replace the default settings modal with a floating panel. Depends on the Hover Editor.",
+      "group": "1",
+      "tags": [
+        "bug",
+        "deprecated"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "floating-toc",
+      "name": "floating toc",
+      "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
+      "group": "1",
+      "tags": [
+        "optional",
+        "bug"
+      ],
+      "enabled": false,
+      "delay": "10",
+      "note": ""
+    },
+    {
       "id": "folder-notes",
       "name": "Folder notes",
       "desc": "Create notes within folders that can be accessed without collapsing the folder, similar to the functionality offered in Notion.",
@@ -385,7 +410,7 @@
       "desc": "Manipulate links",
       "group": "4",
       "tags": [
-        "pending"
+        "unused"
       ],
       "enabled": false,
       "delay": "5"
@@ -756,6 +781,17 @@
       "delay": "10"
     },
     {
+      "id": "obsidian42-strange-new-worlds",
+      "name": "Strange New Worlds",
+      "desc": "Help see how your vault is interconnected with visual indicators.",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
       "id": "omnisearch",
       "name": "Omnisearch",
       "desc": "A search engine that just works",
@@ -882,7 +918,7 @@
       "desc": "Customize the slash command list, assign each command an icon.",
       "group": "1",
       "tags": [
-        "pending"
+        "unused"
       ],
       "enabled": false,
       "delay": ""
@@ -1018,41 +1054,6 @@
       ],
       "enabled": true,
       "delay": "5"
-    },
-    {
-      "id": "obsidian42-strange-new-worlds",
-      "name": "Strange New Worlds",
-      "desc": "Help see how your vault is interconnected with visual indicators.",
-      "group": "1",
-      "tags": [
-        "optional"
-      ],
-      "enabled": true,
-      "delay": "10"
-    },
-    {
-      "id": "floating-settings",
-      "name": "Floating Settings",
-      "desc": "Open the Floating Settings panel or replace the default settings modal with a floating panel. Depends on the Hover Editor.",
-      "group": "1",
-      "tags": [
-        "bug"
-      ],
-      "enabled": false,
-      "delay": "10"
-    },
-    {
-      "id": "floating-toc",
-      "name": "floating toc",
-      "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
-      "group": "1",
-      "tags": [
-        "optional",
-        "bug"
-      ],
-      "enabled": false,
-      "delay": "10",
-      "note": ""
     }
   ]
 }
