@@ -1,7 +1,6 @@
 [
   "better-plugins-manager",
   "external-rename-handler",
-  "vertical-tabs",
   "cm-chs-patch",
   "find-unlinked-files",
   "hotkey-helper",
@@ -34,7 +33,6 @@
   "janitor",
   "keyboard-analyzer",
   "ledger-obsidian",
-  "links",
   "markdown-table-editor",
   "mysnippets-plugin",
   "note-refactor-obsidian",
