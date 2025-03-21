@@ -1019,6 +1019,30 @@
       ],
       "enabled": true,
       "delay": "5"
+    },
+    {
+      "id": "floating-toc",
+      "name": "floating toc",
+      "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "nldates-redux",
+      "name": "Natural Language Dates Redux",
+      "desc": "Work with dates in natural language. Now with Notion-like behavior!",
+      "group": "4",
+      "tags": [
+        "beta"
+      ],
+      "enabled": false,
+      "delay": "",
+      "note": ""
     }
   ]
 }
