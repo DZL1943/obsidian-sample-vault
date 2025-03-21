@@ -1,6 +1,5 @@
 [
   "better-plugins-manager",
-  "external-rename-handler",
   "cm-chs-patch",
   "find-unlinked-files",
   "hotkey-helper",
@@ -62,5 +61,7 @@
   "omnisearch",
   "obsidian42-strange-new-worlds",
   "obsidian-admonition",
-  "obsidian-quiet-outline"
+  "floating-toc",
+  "obsidian-latex-suite",
+  "nldates-redux"
 ]

@@ -1,5 +1,5 @@
 {
-  "lastVersion": "3.1.4",
+  "lastVersion": "3.1.5",
   "aestheticStyle": "default",
   "positionStyle": "top",
   "menuCommands": [
@@ -328,5 +328,8 @@
   "verticalPosition": 0,
   "formatBrushes": {},
   "customCommands": [],
-  "viewTypeSettings": {}
+  "viewTypeSettings": {},
+  "toolbarBackgroundColor": "rgba(var(--background-secondary-rgb), 0.7)",
+  "toolbarIconColor": "var(--text-normal)",
+  "toolbarIconSize": 18
 }
