@@ -66,7 +66,7 @@
       "color": "#000000"
     },
     {
-      "id": "unused",
+      "id": "reserved",
       "name": "备用",
       "color": "#000000"
     },
@@ -153,7 +153,7 @@
       "desc": "Export your notes to PDF, support export preview, add bookmarks outline and header/footer.",
       "group": "4",
       "tags": [
-        "optional"
+        "recommended"
       ],
       "enabled": true,
       "delay": "10"
@@ -164,7 +164,7 @@
       "desc": "Adds support for angle bracket links and manages relative links properly",
       "group": "4",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": "5"
@@ -201,6 +201,18 @@
       ],
       "enabled": true,
       "delay": "10"
+    },
+    {
+      "id": "css-editor",
+      "name": "CSS Editor",
+      "desc": "Edit CSS files within Obsidian.",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "",
+      "note": ""
     },
     {
       "id": "darlal-switcher-plus",
@@ -274,7 +286,7 @@
       "desc": "This plugin allows you to have an alternative file tree view.",
       "group": "1",
       "tags": [
-        "recommended"
+        "required"
       ],
       "enabled": true,
       "delay": "5"
@@ -302,37 +314,12 @@
       "delay": "5"
     },
     {
-      "id": "floating-settings",
-      "name": "Floating Settings",
-      "desc": "Open the Floating Settings panel or replace the default settings modal with a floating panel. Depends on the Hover Editor.",
-      "group": "1",
-      "tags": [
-        "bug",
-        "deprecated"
-      ],
-      "enabled": false,
-      "delay": "10"
-    },
-    {
-      "id": "floating-toc",
-      "name": "floating toc",
-      "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
-      "group": "1",
-      "tags": [
-        "optional",
-        "bug"
-      ],
-      "enabled": false,
-      "delay": "10",
-      "note": ""
-    },
-    {
       "id": "folder-notes",
       "name": "Folder notes",
       "desc": "Create notes within folders that can be accessed without collapsing the folder, similar to the functionality offered in Notion.",
       "group": "1",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": ""
@@ -405,12 +392,24 @@
       "delay": "10"
     },
     {
+      "id": "legacy-vault-switcher",
+      "name": "Legacy vault switcher",
+      "desc": "For switching back to the legacy vault switcher.",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
       "id": "links",
       "name": "Links",
       "desc": "Manipulate links",
       "group": "4",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": "5"
@@ -421,7 +420,7 @@
       "desc": "Make.md gives you everything you need to organize and personalize your notes.",
       "group": "1",
       "tags": [
-        "optional"
+        "reserved"
       ],
       "enabled": false,
       "delay": "10"
@@ -450,38 +449,15 @@
       "delay": "5"
     },
     {
-      "id": "nldates-redux",
-      "name": "Natural Language Dates Redux",
-      "desc": "Work with dates in natural language. Now with Notion-like behavior!",
-      "group": "4",
-      "tags": [
-        "optional",
-        "beta"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
       "id": "note-refactor-obsidian",
       "name": "Note Refactor",
       "desc": "Extract note content into new notes and split notes",
       "group": "2",
       "tags": [
-        "optional"
+        "reserved"
       ],
       "enabled": false,
       "delay": "5"
-    },
-    {
-      "id": "note-toolbar",
-      "name": "Note Toolbar",
-      "desc": "Add customizable toolbars to your notes.",
-      "group": "1",
-      "tags": [
-        "pending"
-      ],
-      "enabled": false,
-      "delay": ""
     },
     {
       "id": "obsidian-admonition",
@@ -533,7 +509,7 @@
       "desc": "This plugin provides advanced auto-completion functionality for LaTeX, Frontmatter and standard writing.",
       "group": "2",
       "tags": [
-        "recommended"
+        "reserved"
       ],
       "enabled": true,
       "delay": "5"
@@ -599,7 +575,7 @@
       "desc": "Import data from Notion, Evernote, Apple Notes, Microsoft OneNote, Google Keep, Bear, Roam, and HTML files.",
       "group": "3",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": "10"
@@ -665,7 +641,7 @@
       "desc": "Make your notes interactive with inline input fields, metadata displays, and buttons.",
       "group": "3",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": "10"
@@ -687,7 +663,7 @@
       "desc": "Plain text project planning.",
       "group": "3",
       "tags": [
-        "optional"
+        "reserved"
       ],
       "enabled": false,
       "delay": "10"
@@ -698,7 +674,7 @@
       "desc": "Make outline quiet and more powerful, including no-auto-expand, rendering heading as markdown, and search support.",
       "group": "1",
       "tags": [
-        "recommended"
+        "optional"
       ],
       "enabled": true,
       "delay": "5"
@@ -709,7 +685,7 @@
       "desc": "Enables relative line numbers in editor mode",
       "group": "1",
       "tags": [
-        "optional"
+        "reserved"
       ],
       "enabled": false,
       "delay": "default"
@@ -731,7 +707,7 @@
       "desc": "Show tags as folder",
       "group": "1",
       "tags": [
-        "optional"
+        "reserved"
       ],
       "enabled": false,
       "delay": "5"
@@ -775,7 +751,7 @@
       "desc": "Easily install a beta version of a plugin for testing.",
       "group": "3",
       "tags": [
-        "optional"
+        "recommended"
       ],
       "enabled": true,
       "delay": "10"
@@ -819,7 +795,7 @@
       "desc": "The most Obsidian-native PDF annotation tool ever.",
       "group": "3",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": ""
@@ -885,7 +861,7 @@
       "desc": "Yet another unofficial plugin allowing users to synchronize notes between local device and the cloud service.",
       "group": "3",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": "15"
@@ -918,7 +894,7 @@
       "desc": "Customize the slash command list, assign each command an icon.",
       "group": "1",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": ""
@@ -940,21 +916,10 @@
       "desc": "Lets you rearrange and hide specific status bar elements.",
       "group": "1",
       "tags": [
-        "optional"
+        "recommended"
       ],
       "enabled": true,
       "delay": "5"
-    },
-    {
-      "id": "supercharged-links-obsidian",
-      "name": "Supercharged Links",
-      "desc": "Add properties and menu options to links and style them!",
-      "group": "1",
-      "tags": [
-        "pending"
-      ],
-      "enabled": false,
-      "delay": "10"
     },
     {
       "id": "table-editor-obsidian",
@@ -984,7 +949,7 @@
       "desc": "Typewriter scroll, highlight current line, dim unfocused paragraphs and sentences, writing focus, restore cursor position and more.",
       "group": "2",
       "tags": [
-        "optional"
+        "reserved"
       ],
       "enabled": false,
       "delay": "5"
@@ -995,7 +960,7 @@
       "desc": "Paste URL \"into\" selected text.",
       "group": "2",
       "tags": [
-        "recommended"
+        "optional"
       ],
       "enabled": true,
       "delay": "default"
@@ -1039,7 +1004,7 @@
       "desc": "A plugin for Obsidian that enables the toggling vim mode to on and off inside of the editor.",
       "group": "2",
       "tags": [
-        "unused"
+        "reserved"
       ],
       "enabled": false,
       "delay": "5"

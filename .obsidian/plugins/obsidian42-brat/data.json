@@ -1,5 +1,6 @@
 {
   "pluginList": [
+    "Quorafind/Obsidian-Legacy-Vault-Switcher",
     "tbergeron/obsidian-nldates-redux",
     "wish5115/obsidian-floating-settings"
   ],

@@ -14,7 +14,11 @@
     "Misc",
     "Archives"
   ],
-  "excludedDirectoriesForLinking": [],
+  "excludedDirectoriesForLinking": [
+    "Ext",
+    "Misc",
+    "Archives"
+  ],
   "virtualLinkSuffix": "🔗",
   "virtualLinkAliasSuffix": "🔗",
   "useMarkdownLinks": true,
