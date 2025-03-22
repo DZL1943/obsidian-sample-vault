@@ -27,7 +27,8 @@
     "mysnippets-layout",
     "anyblock",
     "table",
-    "explorer"
+    "explorer",
+    "embed"
   ],
   "showViewHeader": false,
   "cssTheme": "",
