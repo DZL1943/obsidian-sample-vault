@@ -1,6 +1,6 @@
 {
   "enableOnStartupDesktop": true,
-  "enableOnStartupMobile": true,
+  "enableOnStartupMobile": false,
   "minimumRefCountThreshold": 1,
   "maxFileCountToDisplay": 100,
   "displayIncomingFilesheader": true,

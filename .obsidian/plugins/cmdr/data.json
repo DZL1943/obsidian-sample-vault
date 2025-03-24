@@ -88,6 +88,12 @@
       "icon": "lucide-arrow-left",
       "name": "返回",
       "mode": "any"
+    },
+    {
+      "id": "app:toggle-ribbon",
+      "icon": "lucide-panel-left",
+      "name": "显示/隐藏功能区",
+      "mode": "any"
     }
   ],
   "leftRibbon": [
@@ -155,7 +161,8 @@
       "editing-toolbar",
       "vim-im-control",
       "solve",
-      "janitor"
+      "janitor",
+      "obsidian-day-planner"
     ],
     "leftRibbon": [
       "插入模板",
@@ -173,7 +180,9 @@
       "打开/创建今天的日记",
       "FuzzySearch",
       "开始漫游笔记",
-      "Export Vault to HTML"
+      "Export Vault to HTML",
+      "Open Timeline",
+      "Open Multi-Day View"
     ]
   },
   "spacing": 8,

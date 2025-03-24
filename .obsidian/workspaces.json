@@ -19,7 +19,7 @@
                     "file": "Home.canvas",
                     "viewState": {
                       "x": -530,
-                      "y": -2336.6099999999988,
+                      "y": -1313.6099999999976,
                       "zoom": 0
                     }
                   },
@@ -36,7 +36,7 @@
                   "type": "markdown",
                   "state": {
                     "file": "README.md",
-                    "mode": "preview",
+                    "mode": "source",
                     "source": true
                   },
                   "pinned": true,
@@ -52,12 +52,26 @@
                   "type": "markdown",
                   "state": {
                     "file": "10_Inbox/Local/draft.excalidraw.md",
-                    "mode": "preview",
+                    "mode": "source",
                     "source": true
                   },
                   "pinned": true,
                   "icon": "lucide-file",
                   "title": "draft.excalidraw"
+                }
+              },
+              {
+                "id": "9f8816739014689b",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "42_Thoughts/202411212147.md",
+                    "mode": "preview",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "202411212147"
                 }
               },
               {
@@ -89,21 +103,21 @@
                 }
               },
               {
-                "id": "e8fd8713f4595e01",
+                "id": "c50106923a36d7e9",
                 "type": "leaf",
                 "state": {
-                  "type": "webviewer",
+                  "type": "markdown",
                   "state": {
-                    "url": "https://saduck.top/%E7%94%B3%E8%AE%BA/%E6%96%87%E7%AB%A0%E5%86%99%E4%BD%9C.html",
-                    "title": "文章写作 | SaDuck",
-                    "mode": "webview"
+                    "file": "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian插件.md",
+                    "mode": "preview",
+                    "source": true
                   },
-                  "icon": "globe-2",
-                  "title": "文章写作 | SaDuck"
+                  "icon": "lucide-file",
+                  "title": "Obsidian插件"
                 }
               }
             ],
-            "currentTab": 4
+            "currentTab": 6
           }
         ],
         "direction": "vertical"
@@ -147,17 +161,7 @@
                 }
               },
               {
-                "id": "39e9d747a082f782",
-                "type": "leaf",
-                "state": {
-                  "type": "vertical-tabs",
-                  "state": {},
-                  "icon": "vertical-tabs",
-                  "title": "Vertical tabs"
-                }
-              },
-              {
-                "id": "0216578431a5e158",
+                "id": "c66f1f8e0bf926c5",
                 "type": "leaf",
                 "state": {
                   "type": "file-tree-view",
@@ -167,7 +171,7 @@
                 }
               }
             ],
-            "currentTab": 3
+            "currentTab": 2
           }
         ],
         "direction": "horizontal",
@@ -184,7 +188,7 @@
             "dimension": 49.375,
             "children": [
               {
-                "id": "6b906e228daca1f4",
+                "id": "8f3851278f6d6263",
                 "type": "leaf",
                 "state": {
                   "type": "calendar-view",
@@ -231,13 +235,18 @@
             "dimension": 50.625,
             "children": [
               {
-                "id": "8a04cf1db9307852",
+                "id": "0f285a183c3813a5",
                 "type": "leaf",
                 "state": {
-                  "type": "quiet-outline",
-                  "state": {},
-                  "icon": "lines-of-text",
-                  "title": "Quiet Outline"
+                  "type": "outline",
+                  "state": {
+                    "file": "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian插件.md",
+                    "followCursor": false,
+                    "showSearch": false,
+                    "searchQuery": ""
+                  },
+                  "icon": "lucide-list",
+                  "title": "Obsidian插件 的大纲"
                 }
               },
               {
@@ -321,8 +330,8 @@
           "cmdr:更换主题": false
         }
       },
-      "active": "63589cf63a9f1ae5",
-      "mtime": "2025-03-16T07:16:05+08:00"
+      "active": "c50106923a36d7e9",
+      "mtime": "2025-03-22T15:06:47+08:00"
     },
     "init": {
       "main": {

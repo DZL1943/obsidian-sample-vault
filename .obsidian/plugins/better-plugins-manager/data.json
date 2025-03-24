@@ -321,7 +321,7 @@
       "tags": [
         "reserved"
       ],
-      "enabled": false,
+      "enabled": true,
       "delay": "10",
       "note": ""
     },
@@ -489,7 +489,7 @@
       "desc": "Enhanced callouts for Obsidian.md",
       "group": "2",
       "tags": [
-        "required"
+        "recommended"
       ],
       "enabled": true,
       "delay": "5"
@@ -920,7 +920,7 @@
       "tags": [
         "reserved"
       ],
-      "enabled": false,
+      "enabled": true,
       "delay": ""
     },
     {
@@ -1043,6 +1043,18 @@
       ],
       "enabled": true,
       "delay": "5"
+    },
+    {
+      "id": "obsidian-day-planner",
+      "name": "Day Planner",
+      "desc": "A day planner with clean UI and readable syntax",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "10",
+      "note": ""
     }
   ]
 }
