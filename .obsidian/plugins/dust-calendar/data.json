@@ -11,7 +11,7 @@
   "templatePlugin": 2,
   "dailyNoteOption": true,
   "dailyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-MM-dd",
-  "dailyTemplateFilename": "",
+  "dailyTemplateFilename": "Journal/daily-template",
   "weeklyNoteOption": true,
   "weeklyNotePattern": "'20_Private'/'Journals'/kkkk/kkkk-'W'WW",
   "weeklyTemplateFilename": "Journal/weekly-template",
