@@ -39,8 +39,6 @@
   "file-tree-alternative-plugin@@oz-fta-all-panes-active-text-color": "#EE5AFA",
   "file-tree-alternative-plugin@@oz-fta-file-font-size": 14,
   "file-tree-alternative-plugin@@oz-fta-folder-font-size": 14,
-  "floating-toc-styles@@enable-bar-heading-text": false,
-  "floating-toc-styles@@enable-heading-nowrap": true,
   "floating-toc-styles@@floating-toc-font-size": 0.9,
   "minimal-style@@checkbox-shape": "checkbox-circle",
   "minimal-style@@embed-hide-title": true,

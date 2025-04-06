@@ -12,13 +12,10 @@
   "excludedDirectories": [
     "Ext",
     "Misc",
-    "Archives"
+    "Archives",
+    "10_Inbox"
   ],
-  "excludedDirectoriesForLinking": [
-    "Ext",
-    "Misc",
-    "Archives"
-  ],
+  "excludedDirectoriesForLinking": [],
   "virtualLinkSuffix": "🔗",
   "virtualLinkAliasSuffix": "🔗",
   "useMarkdownLinks": true,

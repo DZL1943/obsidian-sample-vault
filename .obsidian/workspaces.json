@@ -36,7 +36,7 @@
                   "type": "markdown",
                   "state": {
                     "file": "README.md",
-                    "mode": "source",
+                    "mode": "preview",
                     "source": true
                   },
                   "pinned": true,
@@ -52,7 +52,7 @@
                   "type": "markdown",
                   "state": {
                     "file": "10_Inbox/Local/draft.excalidraw.md",
-                    "mode": "source",
+                    "mode": "preview",
                     "source": true
                   },
                   "pinned": true,
@@ -61,7 +61,7 @@
                 }
               },
               {
-                "id": "9f8816739014689b",
+                "id": "e671e054c4e6adb0",
                 "type": "leaf",
                 "state": {
                   "type": "markdown",
@@ -75,49 +75,21 @@
                 }
               },
               {
-                "id": "86805b6d5cb3a507",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "40_Pages/10_常识通识/考公考编.md",
-                    "mode": "preview",
-                    "source": false
-                  },
-                  "icon": "lucide-file",
-                  "title": "考公考编"
-                }
-              },
-              {
-                "id": "63589cf63a9f1ae5",
+                "id": "5ffb200edd5fd1d3",
                 "type": "leaf",
                 "state": {
                   "type": "markdown",
                   "state": {
                     "file": "40_Pages/10_常识通识/行政职业能力测验.md",
                     "mode": "preview",
-                    "source": true
+                    "source": false
                   },
                   "icon": "lucide-file",
                   "title": "行政职业能力测验"
                 }
-              },
-              {
-                "id": "c50106923a36d7e9",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian插件.md",
-                    "mode": "preview",
-                    "source": true
-                  },
-                  "icon": "lucide-file",
-                  "title": "Obsidian插件"
-                }
               }
             ],
-            "currentTab": 6
+            "currentTab": 3
           }
         ],
         "direction": "vertical"
@@ -193,8 +165,8 @@
                 "state": {
                   "type": "calendar-view",
                   "state": {},
-                  "icon": "lucide-calendar-check",
-                  "title": "日历"
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
                 }
               },
               {
@@ -218,13 +190,23 @@
                 }
               },
               {
-                "id": "d26f9bbb024f6b82",
+                "id": "1b1d40e56b24f9d6",
+                "type": "leaf",
+                "state": {
+                  "type": "planner-timeline",
+                  "state": {},
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
+                }
+              },
+              {
+                "id": "22068a6ed8549a6f",
                 "type": "leaf",
                 "state": {
                   "type": "Strange New Worlds",
                   "state": {},
-                  "icon": "file-digit",
-                  "title": "Strange New Worlds"
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
                 }
               }
             ]
@@ -240,13 +222,13 @@
                 "state": {
                   "type": "outline",
                   "state": {
-                    "file": "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian插件.md",
+                    "file": "40_Pages/10_常识通识/行政职业能力测验.md",
                     "followCursor": false,
                     "showSearch": false,
                     "searchQuery": ""
                   },
                   "icon": "lucide-list",
-                  "title": "Obsidian插件 的大纲"
+                  "title": "temp 的大纲"
                 }
               },
               {
@@ -304,6 +286,15 @@
       },
       "left-ribbon": {
         "hiddenItems": {
+          "better-plugins-manager:插件管理器": false,
+          "obsidian-excalidraw-plugin:新建绘图文件": false,
+          "obsidian42-brat:BRAT": false,
+          "cmdr:打开设置": false,
+          "cmdr:打开其他仓库": false,
+          "cmdr:更换主题": false,
+          "float-search:Search obsidian in modal view": false,
+          "obsidian-day-planner:Open Timeline": false,
+          "obsidian-day-planner:Open Multi-Day View": false,
           "workspaces:管理工作区布局": false,
           "graph:查看关系图谱": true,
           "random-note:开始漫游笔记": true,
@@ -314,24 +305,17 @@
           "fuzzy-chinese-pinyin:FuzzySearch": true,
           "daily-notes:打开/创建今天的日记": true,
           "templates:插入模板": true,
-          "better-plugins-manager:插件管理器": false,
-          "float-search:Search obsidian in modal view": false,
           "ledger-obsidian:Add to Ledger": false,
           "markdown-table-editor:Open Markdown Table Editor": false,
           "obsidian-kanban:创建新看板": false,
           "templater-obsidian:Templater": false,
           "vim-toggle:Toggle Vim Mode": false,
           "darlal-switcher-plus:Open in Headings Mode": false,
-          "omnisearch:Omnisearch": false,
-          "obsidian-excalidraw-plugin:新建绘图文件": false,
-          "obsidian42-brat:BRAT": false,
-          "cmdr:打开设置": false,
-          "cmdr:打开其他仓库": false,
-          "cmdr:更换主题": false
+          "omnisearch:Omnisearch": false
         }
       },
-      "active": "c50106923a36d7e9",
-      "mtime": "2025-03-22T15:06:47+08:00"
+      "active": "e671e054c4e6adb0",
+      "mtime": "2025-04-03T21:34:55+08:00"
     },
     "init": {
       "main": {
@@ -343,20 +327,52 @@
             "type": "tabs",
             "children": [
               {
-                "id": "099a5ef38138632c",
+                "id": "8cd1e04500adebbb",
+                "type": "leaf",
+                "state": {
+                  "type": "canvas",
+                  "state": {
+                    "file": "Home.canvas",
+                    "viewState": {
+                      "x": -530,
+                      "y": -1313.6099999999976,
+                      "zoom": 0
+                    }
+                  },
+                  "icon": "lucide-layout-dashboard",
+                  "title": "Home"
+                }
+              },
+              {
+                "id": "0caaab658f336069",
                 "type": "leaf",
                 "state": {
                   "type": "markdown",
                   "state": {
-                    "file": "QuickLinks.md",
+                    "file": "README.md",
                     "mode": "preview",
                     "source": true
                   },
                   "icon": "lucide-file",
-                  "title": "QuickLinks"
+                  "title": "README"
+                }
+              },
+              {
+                "id": "d86dcf06cbef1bd4",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "10_Inbox/Local/draft.excalidraw.md",
+                    "mode": "preview",
+                    "source": true
+                  },
+                  "icon": "lucide-file",
+                  "title": "draft.excalidraw"
                 }
               }
-            ]
+            ],
+            "currentTab": 1
           }
         ],
         "direction": "vertical"
@@ -375,7 +391,8 @@
                 "state": {
                   "type": "file-explorer",
                   "state": {
-                    "sortOrder": "alphabetical"
+                    "sortOrder": "alphabetical",
+                    "autoReveal": false
                   },
                   "icon": "lucide-folder-closed",
                   "title": "文件列表"
@@ -399,7 +416,7 @@
                 }
               },
               {
-                "id": "d5dc09a73be6f5e7",
+                "id": "c66f1f8e0bf926c5",
                 "type": "leaf",
                 "state": {
                   "type": "file-tree-view",
@@ -423,8 +440,28 @@
           {
             "id": "297ef271baed4074",
             "type": "tabs",
-            "dimension": 52.141057934508815,
+            "dimension": 49.375,
             "children": [
+              {
+                "id": "8f3851278f6d6263",
+                "type": "leaf",
+                "state": {
+                  "type": "calendar-view",
+                  "state": {},
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
+                }
+              },
+              {
+                "id": "f9a0b28bf085d20a",
+                "type": "leaf",
+                "state": {
+                  "type": "recent-files",
+                  "state": {},
+                  "icon": "clock",
+                  "title": "Recent Files"
+                }
+              },
               {
                 "id": "a6fae1cf0ae0a586",
                 "type": "leaf",
@@ -436,43 +473,45 @@
                 }
               },
               {
-                "id": "66853f78792e70e7",
+                "id": "1b1d40e56b24f9d6",
                 "type": "leaf",
                 "state": {
-                  "type": "recent-files",
+                  "type": "planner-timeline",
                   "state": {},
-                  "icon": "clock",
-                  "title": "Recent Files"
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
                 }
               },
               {
-                "id": "fbe5e13bb3906a3c",
+                "id": "22068a6ed8549a6f",
                 "type": "leaf",
                 "state": {
-                  "type": "calendar-view",
+                  "type": "Strange New Worlds",
                   "state": {},
-                  "icon": "lucide-calendar-check",
-                  "title": "日历"
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
                 }
               }
-            ],
-            "currentTab": 2
+            ]
           },
           {
             "id": "48418e7cafcd6cd2",
             "type": "tabs",
-            "dimension": 47.858942065491185,
+            "dimension": 50.625,
             "children": [
               {
-                "id": "1e6203add889c4c9",
+                "id": "0f285a183c3813a5",
                 "type": "leaf",
                 "state": {
                   "type": "outline",
                   "state": {
-                    "file": "QuickLinks.md"
+                    "file": "40_Pages/10_常识通识/行政职业能力测验.md",
+                    "followCursor": false,
+                    "showSearch": false,
+                    "searchQuery": ""
                   },
                   "icon": "lucide-list",
-                  "title": "QuickLinks 的大纲"
+                  "title": "temp 的大纲"
                 }
               },
               {
@@ -513,12 +552,12 @@
                 "state": {
                   "type": "outgoing-link",
                   "state": {
-                    "file": "20_Private/2024/202410101746.md",
+                    "file": "40_Pages/20_自然科学/函数.md",
                     "linksCollapsed": false,
                     "unlinkedCollapsed": false
                   },
                   "icon": "links-going-out",
-                  "title": "202410101746 的出链列表"
+                  "title": "函数 的出链列表"
                 }
               }
             ]
@@ -530,6 +569,15 @@
       },
       "left-ribbon": {
         "hiddenItems": {
+          "better-plugins-manager:插件管理器": false,
+          "obsidian-excalidraw-plugin:新建绘图文件": false,
+          "obsidian42-brat:BRAT": false,
+          "cmdr:打开设置": false,
+          "cmdr:打开其他仓库": false,
+          "cmdr:更换主题": false,
+          "float-search:Search obsidian in modal view": false,
+          "obsidian-day-planner:Open Timeline": false,
+          "obsidian-day-planner:Open Multi-Day View": false,
           "workspaces:管理工作区布局": false,
           "graph:查看关系图谱": true,
           "random-note:开始漫游笔记": true,
@@ -540,21 +588,300 @@
           "fuzzy-chinese-pinyin:FuzzySearch": true,
           "daily-notes:打开/创建今天的日记": true,
           "templates:插入模板": true,
+          "ledger-obsidian:Add to Ledger": false,
+          "markdown-table-editor:Open Markdown Table Editor": false,
+          "obsidian-kanban:创建新看板": false,
+          "templater-obsidian:Templater": false,
+          "vim-toggle:Toggle Vim Mode": false,
+          "darlal-switcher-plus:Open in Headings Mode": false,
+          "omnisearch:Omnisearch": false
+        }
+      },
+      "active": "0caaab658f336069",
+      "mtime": "2025-04-03T21:35:40+08:00"
+    },
+    "temp": {
+      "main": {
+        "id": "d9c96d0f51091dde",
+        "type": "split",
+        "children": [
+          {
+            "id": "04d1c25a96d885f9",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "8cd1e04500adebbb",
+                "type": "leaf",
+                "state": {
+                  "type": "canvas",
+                  "state": {
+                    "file": "Home.canvas",
+                    "viewState": {
+                      "x": -530,
+                      "y": -1313.6099999999976,
+                      "zoom": 0
+                    }
+                  },
+                  "icon": "lucide-layout-dashboard",
+                  "title": "Home"
+                }
+              },
+              {
+                "id": "0caaab658f336069",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "README.md",
+                    "mode": "preview",
+                    "source": true
+                  },
+                  "icon": "lucide-file",
+                  "title": "README"
+                }
+              },
+              {
+                "id": "d86dcf06cbef1bd4",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "10_Inbox/Local/draft.excalidraw.md",
+                    "mode": "preview",
+                    "source": true
+                  },
+                  "icon": "lucide-file",
+                  "title": "draft.excalidraw"
+                }
+              }
+            ],
+            "currentTab": 1
+          }
+        ],
+        "direction": "vertical"
+      },
+      "left": {
+        "id": "c8bb9cda0343617f",
+        "type": "split",
+        "children": [
+          {
+            "id": "e93de0b3966fa913",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "8d8893d561ab788b",
+                "type": "leaf",
+                "state": {
+                  "type": "file-explorer",
+                  "state": {
+                    "sortOrder": "alphabetical",
+                    "autoReveal": false
+                  },
+                  "icon": "lucide-folder-closed",
+                  "title": "文件列表"
+                }
+              },
+              {
+                "id": "c977d589b7118ed8",
+                "type": "leaf",
+                "state": {
+                  "type": "search",
+                  "state": {
+                    "query": "",
+                    "matchingCase": false,
+                    "explainSearch": false,
+                    "collapseAll": false,
+                    "extraContext": false,
+                    "sortOrder": "alphabetical"
+                  },
+                  "icon": "lucide-search",
+                  "title": "搜索"
+                }
+              },
+              {
+                "id": "c66f1f8e0bf926c5",
+                "type": "leaf",
+                "state": {
+                  "type": "file-tree-view",
+                  "state": {},
+                  "icon": "sheets-in-box",
+                  "title": "File Tree"
+                }
+              }
+            ],
+            "currentTab": 2
+          }
+        ],
+        "direction": "horizontal",
+        "width": 200,
+        "collapsed": true
+      },
+      "right": {
+        "id": "85f6ff27a037d542",
+        "type": "split",
+        "children": [
+          {
+            "id": "297ef271baed4074",
+            "type": "tabs",
+            "dimension": 49.375,
+            "children": [
+              {
+                "id": "8f3851278f6d6263",
+                "type": "leaf",
+                "state": {
+                  "type": "calendar-view",
+                  "state": {},
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
+                }
+              },
+              {
+                "id": "f9a0b28bf085d20a",
+                "type": "leaf",
+                "state": {
+                  "type": "recent-files",
+                  "state": {},
+                  "icon": "clock",
+                  "title": "Recent Files"
+                }
+              },
+              {
+                "id": "a6fae1cf0ae0a586",
+                "type": "leaf",
+                "state": {
+                  "type": "bookmarks",
+                  "state": {},
+                  "icon": "lucide-bookmark",
+                  "title": "书签"
+                }
+              },
+              {
+                "id": "1b1d40e56b24f9d6",
+                "type": "leaf",
+                "state": {
+                  "type": "planner-timeline",
+                  "state": {},
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
+                }
+              },
+              {
+                "id": "22068a6ed8549a6f",
+                "type": "leaf",
+                "state": {
+                  "type": "Strange New Worlds",
+                  "state": {},
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
+                }
+              }
+            ]
+          },
+          {
+            "id": "48418e7cafcd6cd2",
+            "type": "tabs",
+            "dimension": 50.625,
+            "children": [
+              {
+                "id": "0f285a183c3813a5",
+                "type": "leaf",
+                "state": {
+                  "type": "outline",
+                  "state": {
+                    "file": "40_Pages/10_常识通识/行政职业能力测验.md",
+                    "followCursor": false,
+                    "showSearch": false,
+                    "searchQuery": ""
+                  },
+                  "icon": "lucide-list",
+                  "title": "temp 的大纲"
+                }
+              },
+              {
+                "id": "66f76de4c7008a40",
+                "type": "leaf",
+                "state": {
+                  "type": "tag",
+                  "state": {
+                    "sortOrder": "frequency",
+                    "useHierarchy": true
+                  },
+                  "icon": "lucide-tags",
+                  "title": "标签"
+                }
+              },
+              {
+                "id": "8a5ae44ab2ac0a36",
+                "type": "leaf",
+                "state": {
+                  "type": "backlink",
+                  "state": {
+                    "file": "20_Private/2024/202410101746.md",
+                    "collapseAll": false,
+                    "extraContext": false,
+                    "sortOrder": "alphabetical",
+                    "showSearch": false,
+                    "searchQuery": "",
+                    "backlinkCollapsed": false,
+                    "unlinkedCollapsed": true
+                  },
+                  "icon": "links-coming-in",
+                  "title": "202410101746 的反向链接列表"
+                }
+              },
+              {
+                "id": "d7369a4970a4d6f8",
+                "type": "leaf",
+                "state": {
+                  "type": "outgoing-link",
+                  "state": {
+                    "file": "40_Pages/20_自然科学/函数.md",
+                    "linksCollapsed": false,
+                    "unlinkedCollapsed": false
+                  },
+                  "icon": "links-going-out",
+                  "title": "函数 的出链列表"
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "horizontal",
+        "width": 246.5,
+        "collapsed": true
+      },
+      "left-ribbon": {
+        "hiddenItems": {
+          "better-plugins-manager:插件管理器": false,
+          "obsidian-excalidraw-plugin:新建绘图文件": false,
+          "obsidian42-brat:BRAT": false,
           "cmdr:打开设置": false,
           "cmdr:打开其他仓库": false,
           "cmdr:更换主题": false,
-          "obsidian-kanban:创建新看板": false,
+          "float-search:Search obsidian in modal view": false,
+          "obsidian-day-planner:Open Timeline": false,
+          "obsidian-day-planner:Open Multi-Day View": false,
+          "workspaces:管理工作区布局": false,
+          "graph:查看关系图谱": true,
+          "random-note:开始漫游笔记": true,
+          "canvas:新建白板": false,
+          "command-palette:打开命令面板": true,
+          "switcher:打开快速切换": true,
+          "zk-prefixer:创建时间戳笔记": false,
+          "fuzzy-chinese-pinyin:FuzzySearch": true,
+          "daily-notes:打开/创建今天的日记": true,
+          "templates:插入模板": true,
           "ledger-obsidian:Add to Ledger": false,
           "markdown-table-editor:Open Markdown Table Editor": false,
-          "darlal-switcher-plus:Open in Headings Mode": false,
+          "obsidian-kanban:创建新看板": false,
           "templater-obsidian:Templater": false,
           "vim-toggle:Toggle Vim Mode": false,
-          "obsidian42-brat:BRAT": false,
-          "obsidian-excalidraw-plugin:新建绘图文件": false
+          "darlal-switcher-plus:Open in Headings Mode": false,
+          "omnisearch:Omnisearch": false
         }
       },
-      "active": "099a5ef38138632c",
-      "mtime": "2024-10-23T08:46:05+08:00"
+      "active": "0caaab658f336069",
+      "mtime": "2025-04-03T21:35:43+08:00"
     }
   },
   "active": "bak"

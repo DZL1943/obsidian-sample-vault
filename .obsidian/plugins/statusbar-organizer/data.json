@@ -59,6 +59,10 @@
       "plugin-editing-toolbar-editingToolbar-statusbar-button;1": {
         "position": 14,
         "visible": true
+      },
+      "plugin-obsidian-day-planner;1": {
+        "position": 15,
+        "visible": true
       }
     }
   },

@@ -1,0 +1,248 @@
+/*
+ * Original Source: community plugin privacy glasses
+ * Modified by markusmo3
+ * Last updated: 2024-10-29
+ */
+:root {
+  --blur-level: 0.5rem;
+}
+
+.data-link-text[data-link-tags*="#private"] {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.dataview tr:has(a[data-link-tags*="#private"]) {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.suggestion-item:has([data-link-tags*="#private"]) {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.tree-item:has([data-link-tags*="#private"]) .search-result-file-match {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .inline-title {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-line {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(.metadata-property) {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(img, video, svg, canvas) {
+  filter: blur(calc(var(--blur-level) * 4));
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .markdown-preview-view :is(li, p, h1, h2, h3, h4, h5) {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-embed-block {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .internal-embed {
+  filter: blur(calc(var(--blur-level) * 1));
+}
+
+.data-link-text[data-link-tags*="#private"].inline-title:focus-within {
+  filter: unset !important;
+}
+
+.data-link-text[data-link-tags*="#private"].cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .data-link-text[data-link-tags*="#private"]:hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .data-link-text[data-link-tags*="#private"] {
+  filter: unset !important;
+}
+
+.dataview tr:has(a[data-link-tags*="#private"]).inline-title:focus-within {
+  filter: unset !important;
+}
+
+.dataview tr:has(a[data-link-tags*="#private"]).cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .dataview tr:has(a[data-link-tags*="#private"]):hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .dataview tr:has(a[data-link-tags*="#private"]) {
+  filter: unset !important;
+}
+
+.suggestion-item:has([data-link-tags*="#private"]).inline-title:focus-within {
+  filter: unset !important;
+}
+
+.suggestion-item:has([data-link-tags*="#private"]).cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .suggestion-item:has([data-link-tags*="#private"]):hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .suggestion-item:has([data-link-tags*="#private"]) {
+  filter: unset !important;
+}
+
+.tree-item:has([data-link-tags*="#private"]) .search-result-file-match.inline-title:focus-within {
+  filter: unset !important;
+}
+
+.tree-item:has([data-link-tags*="#private"]) .search-result-file-match.cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .tree-item:has([data-link-tags*="#private"]) .search-result-file-match:hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .tree-item:has([data-link-tags*="#private"]) .search-result-file-match {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .inline-title.inline-title:focus-within {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .inline-title.cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .inline-title:hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .inline-title {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-line.inline-title:focus-within {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-line.cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-line:hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-line {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(.metadata-property).inline-title:focus-within {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(.metadata-property).cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(.metadata-property):hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(.metadata-property) {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(img, video, svg, canvas).inline-title:focus-within {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(img, video, svg, canvas).cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(img, video, svg, canvas):hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .view-content :is(img, video, svg, canvas) {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .markdown-preview-view :is(li, p, h1, h2, h3, h4, h5).inline-title:focus-within {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .markdown-preview-view :is(li, p, h1, h2, h3, h4, h5).cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .markdown-preview-view :is(li, p, h1, h2, h3, h4, h5):hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .markdown-preview-view :is(li, p, h1, h2, h3, h4, h5) {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-embed-block.inline-title:focus-within {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-embed-block.cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-embed-block:hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .cm-embed-block {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .internal-embed.inline-title:focus-within {
+  filter: unset !important;
+}
+
+.workspace-tabs:has(.is-active [data-link-tags*="#private"]) .internal-embed.cm-active {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-on-hover .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .internal-embed:hover {
+  filter: unset !important;
+}
+
+body.private-mode-reveal-all .workspace-tabs:has(.is-active [data-link-tags*="#private"]) .internal-embed {
+  filter: unset !important;
+}
+
+/* add a private callout */
+.callout[data-callout=private] {
+  --callout-color: 158, 158, 158;
+  --callout-icon: lucide-lock;
+}
+
+body:not(.private-mode-reveal-all) .callout[data-callout=private]:not(.is-collapsed) > .callout-content {
+  filter: blur(0.5rem);
+}
+
+body:not(.private-mode-reveal-all) .callout[data-callout=private]:not(.is-collapsed) > .callout-content:hover {
+  filter: none;
+}
+
+body.private-mode-unprotected-screenshare .status-bar-item.plugin-private-mode {
+  color: var(--text-error);
+}
+
+/*# sourceMappingURL=styles.css.map */
