@@ -11,9 +11,14 @@
     {
       "type": "CURRENT",
       "name": "Same folder as current note"
+    },
+    {
+      "name": "attachments",
+      "type": "CUSTOM",
+      "customTemplate": "Misc/Attachments"
     }
   ],
-  "selectedFolderPreset": "Default (Obsidian setting)",
+  "selectedFolderPreset": "attachments",
   "filenamePresets": [
     {
       "name": "Keep original name",
@@ -26,12 +31,22 @@
       "customTemplate": "{notename}-{timestamp}",
       "skipRenamePatterns": "",
       "conflictResolution": "increment"
+    },
+    {
+      "name": "sha",
+      "customTemplate": "{sha256:image:16}",
+      "skipRenamePatterns": "",
+      "conflictResolution": "increment"
     }
   ],
-  "selectedFilenamePreset": "Keep original name",
+  "selectedFilenamePreset": "sha",
   "outputFormat": "NONE",
   "quality": 1,
   "colorDepth": 1,
+  "pngquantQuality": "65-80",
+  "ffmpegExecutablePath": "",
+  "ffmpegCrf": 23,
+  "ffmpegPreset": "medium",
   "resizeMode": "None",
   "desiredWidth": 800,
   "desiredHeight": 600,
@@ -176,8 +191,9 @@
     ],
     "selectedResizePreset": "Default (No Resize)"
   },
-  "cursorLocation": "back",
-  "neverProcessFilenames": "",
+  "resizeCursorLocation": "none",
+  "dropPasteCursorLocation": "back",
+  "neverProcessFilenames": "Ext/",
   "modalBehavior": "never",
   "ProcessCurrentNoteconvertTo": "webp",
   "ProcessCurrentNotequality": 0.75,
@@ -274,6 +290,22 @@
   "enableContextMenu": true,
   "showSpaceSavedNotification": true,
   "revertToOriginalIfLarger": false,
+  "enableImageCaptions": true,
+  "skipCaptionExtensions": "icns",
+  "captionFontSize": "var(--font-smaller)",
+  "captionColor": "var(--text-gray)",
+  "captionFontStyle": "italic",
+  "captionBackgroundColor": "transparent",
+  "captionPadding": "2px 4px",
+  "captionBorderRadius": "0",
+  "captionOpacity": "1",
+  "captionFontWeight": "normal",
+  "captionTextTransform": "none",
+  "captionLetterSpacing": "normal",
+  "captionBorder": "none",
+  "captionMarginTop": "4px",
+  "captionAlignment": "center",
+  "cursorLocation": "back",
   "autoRename": true,
   "showRenameNotice": true,
   "useCustomRenaming": false,

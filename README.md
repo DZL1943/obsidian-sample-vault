@@ -10,7 +10,7 @@ obsidianEditingMode: source
 
 ## Overview
 
-![](<Misc/Attachments/Obsidian-20240908154942.png>)
+![](<Misc/Attachments/Images/Obsidian-20240908154942.png>)
 
 - Obsidian 版本 | 1.8.9-mac-arm64
 - 主题 | 默认 `#00A86B`
