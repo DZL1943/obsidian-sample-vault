@@ -2355,8 +2355,8 @@ var abc_X = ABConvert.factory({
 var abc_slice = ABConvert.factory({
   id: "slice",
   name: "\u5207\u7247",
-  match: /^slice\((\s*\d+\s*?)(,\s*-?\d+\s*)?\)$/,
-  detail: "\u548Cjs\u7684slice\u65B9\u6CD5\u662F\u4E00\u6837\u7684",
+  match: /^slice\((\s*\d+\s*)(,\s*-?\d+\s*)?\)$/,
+  detail: "\u548Cjs\u7684slice\u65B9\u6CD5\u662F\u4E00\u6837\u7684\u3002\u4F8B\u5982 `[slice(1, -1)]`",
   process_param: "string" /* text */,
   process_return: "string" /* text */,
   process: (el, header, content) => {
@@ -2366,12 +2366,13 @@ var abc_slice = ABConvert.factory({
     const arg1 = Number(list_match[1].trim());
     if (isNaN(arg1))
       return content;
-    const arg2 = Number(list_match[2].replace(",", "").trim());
-    if (isNaN(arg2)) {
+    if (!list_match[2])
       return content.split("\n").slice(arg1).join("\n");
-    } else {
+    const arg2 = Number(list_match[2].replace(",", "").trim());
+    if (isNaN(arg2))
+      return content.split("\n").slice(arg1).join("\n");
+    else
       return content.split("\n").slice(arg1, arg2).join("\n");
-    }
   }
 });
 var abc_add = ABConvert.factory({
@@ -4634,6 +4635,190 @@ var abc_midt_chat = ABConvert.factory({
   }
 });
 
+// src/ABConverter/converter/abc_mermaid.min.ts
+var abc_title2mindmap = ABConvert.factory({
+  id: "title2mindmap",
+  name: "\u6807\u9898\u5230\u8111\u56FE",
+  process_param: "string" /* text */,
+  process_return: "HTMLElement" /* el */,
+  process: async (el, header, content) => {
+    const data = ListProcess.title2data(content);
+    const el2 = await data2mindmap(data, el);
+    return el2;
+  }
+});
+var abc_list2mindmap = ABConvert.factory({
+  id: "list2mindmap",
+  name: "\u5217\u8868\u8F6Cmermaid\u601D\u7EF4\u5BFC\u56FE",
+  process_param: "string" /* text */,
+  process_return: "HTMLElement" /* el */,
+  process: async (el, header, content) => {
+    const data = ListProcess.list2data(content);
+    const el2 = await data2mindmap(data, el);
+    return el2;
+  }
+});
+var abc_list2mermaid = ABConvert.factory({
+  id: "list2mermaid",
+  name: "\u5217\u8868\u8F6Cmermaid\u6D41\u7A0B\u56FE",
+  match: /^list2mermaid(\((.*)\))?$/,
+  process_param: "string" /* text */,
+  process_return: "HTMLElement" /* el */,
+  process: (el, header, content) => {
+    let matchs = header.match(/^list2mermaid(\((.*)\))?$/);
+    if (!matchs) {
+      console.error("no match", matchs);
+      return el;
+    }
+    let mermaid_head = "graph LR";
+    if (matchs[2])
+      mermaid_head = matchs[2];
+    const list_itemInfo = ListProcess.list2data(content);
+    const mermaidText = mermaid_head + "\n" + data2mermaidText(list_itemInfo);
+    render_mermaidText(mermaidText, el);
+    return el;
+  }
+});
+var abc_list2mermaidText = ABConvert.factory({
+  id: "list2mermaidText",
+  name: "\u5217\u8868\u8F6Cmermaid\u6587\u672C",
+  match: /^list2mermaidText(\((.*)\))?$/,
+  detail: "\u5217\u8868\u8F6Cmermaid\u6587\u672C",
+  process_param: "string" /* text */,
+  process_return: "string" /* text */,
+  process: (el, header, content) => {
+    let matchs = header.match(/^list2mermaidText(\((.*)\))?$/);
+    if (!matchs) {
+      console.error("no match", matchs);
+      return "error, no match";
+    }
+    let mermaid_head = "graph LR";
+    if (matchs[2])
+      mermaid_head = matchs[2];
+    const list_itemInfo = ListProcess.list2data(content);
+    const mermaidText = mermaid_head + "\n" + data2mermaidText(list_itemInfo);
+    return mermaidText;
+  }
+});
+var abc_list2mehrmaid = ABConvert.factory({
+  id: "list2mehrmaidText",
+  name: "\u5217\u8868\u8F6Cmehrmaid\u6587\u672C",
+  match: /^list2mehrmaidText(\((.*)\))?$/,
+  detail: "\u9700\u8981\u914D\u5408mehrmaid\u63D2\u4EF6\u548Ccode(mehrmaid)\u4F7F\u7528\uFF0C\u6216\u4F7F\u7528\u522B\u540D\u7B80\u5316",
+  process_param: "string" /* text */,
+  process_return: "string" /* text */,
+  process: (el, header, content) => {
+    let matchs = header.match(/^list2mehrmaidText(\((.*)\))?$/);
+    if (!matchs) {
+      console.error("no match", matchs);
+      return "error, no match";
+    }
+    let mermaid_head = "flowchart LR";
+    if (matchs[2])
+      mermaid_head = matchs[2];
+    const list_itemInfo = ListProcess.list2data(content);
+    const mermaidText = mermaid_head + "\n" + data2mehrmaidText(list_itemInfo);
+    return mermaidText;
+  }
+});
+var abc_mermaid = ABConvert.factory({
+  id: "mermaid-with",
+  name: "\u65B0mermaid",
+  match: /^mermaid(\((.*)\))?$/,
+  default: "mermaid(graph TB)",
+  detail: "\u7531\u4E8E\u9700\u8981\u517C\u5BB9\u8111\u56FE\uFF0C\u8FD9\u91CC\u4F1A\u4F7F\u7528\u63D2\u4EF6\u5185\u7F6E\u7684\u6700\u65B0\u7248mermaid",
+  process_param: "string" /* text */,
+  process_return: "HTMLElement" /* el */,
+  process: async (el, header, content) => {
+    let matchs = header.match(/^mermaid(\((.*)\))?$/);
+    if (!matchs)
+      return el;
+    if (matchs[2])
+      content = matchs[2] + "\n" + content;
+    const el2 = render_mermaidText(content, el);
+    return el2;
+  }
+});
+function data2mermaidText(list_itemInfo) {
+  const html_mode = false;
+  let list_line_content = [];
+  let prev_line_content = "";
+  let prev_level = 999;
+  for (let i = 0; i < list_itemInfo.length; i++) {
+    if (list_itemInfo[i].level > prev_level) {
+      prev_line_content = prev_line_content + " --> " + list_itemInfo[i].content;
+    } else {
+      list_line_content.push(prev_line_content);
+      prev_line_content = "";
+      for (let j = i; j >= 0; j--) {
+        if (list_itemInfo[j].level < list_itemInfo[i].level) {
+          prev_line_content = list_itemInfo[j].content;
+          break;
+        }
+      }
+      if (prev_line_content)
+        prev_line_content = prev_line_content + " --> ";
+      prev_line_content = prev_line_content + list_itemInfo[i].content;
+    }
+    prev_level = list_itemInfo[i].level;
+  }
+  list_line_content.push(prev_line_content);
+  let text = list_line_content.join("\n");
+  return text;
+}
+function data2mehrmaidText(list_itemInfo) {
+  const mehrmaidMap = [];
+  for (let i = 0; i < list_itemInfo.length; i++) {
+    mehrmaidMap[i] = list_itemInfo[i].content;
+    list_itemInfo[i].content = i.toString();
+  }
+  const html_mode = false;
+  let list_line_content = [];
+  let prev_line_content = "";
+  let prev_level = 999;
+  for (let i = 0; i < list_itemInfo.length; i++) {
+    if (list_itemInfo[i].level > prev_level) {
+      prev_line_content = prev_line_content + " --> " + list_itemInfo[i].content;
+    } else {
+      list_line_content.push(prev_line_content);
+      prev_line_content = "";
+      for (let j = i; j >= 0; j--) {
+        if (list_itemInfo[j].level < list_itemInfo[i].level) {
+          prev_line_content = list_itemInfo[j].content;
+          break;
+        }
+      }
+      if (prev_line_content)
+        prev_line_content = prev_line_content + " --> ";
+      prev_line_content = prev_line_content + list_itemInfo[i].content;
+    }
+    prev_level = list_itemInfo[i].level;
+  }
+  list_line_content.push(prev_line_content);
+  let text = list_line_content.join("\n");
+  text += "\n\n";
+  for (let i = 0; i < mehrmaidMap.length; i++) {
+    text += `${i}(("${mehrmaidMap[i]}"))
+`;
+  }
+  return text;
+}
+async function data2mindmap(list_itemInfo, div) {
+  let list_newcontent = [];
+  for (let item of list_itemInfo) {
+    let str_indent = "";
+    for (let i = 0; i < item.level; i++)
+      str_indent += " ";
+    list_newcontent.push(str_indent + item.content.replace("\n", "<br/>"));
+  }
+  const mermaidText = "mindmap\n" + list_newcontent.join("\n");
+  return render_mermaidText(mermaidText, div);
+}
+async function render_mermaidText(mermaidText, div) {
+  ABConvertManager.getInstance().m_renderMarkdownFn("```mermaid\n" + mermaidText + "\n```", div);
+  return div;
+}
+
 // src/Obsidian/ab_manager/abm_code/ABReplacer_CodeBlock.ts
 var import_obsidian = require("obsidian");
 
@@ -5879,7 +6064,7 @@ var ABSelector_PostHtml = class {
           return;
         }
         const el2 = view == null ? void 0 : view.containerEl;
-        if (!el2 || el2.getAttribute("data-mode") != "preview") {
+        if (!el2 || el2.getAttribute("data-mode") != "preview" || el2.getAttribute("data-type") != "excalidraw") {
           if (this.settings.is_debug)
             console.log(` !! Cache check: [${path}] use ![[${ctx.sourcePath}]] in source Mode`);
           cache_item = {

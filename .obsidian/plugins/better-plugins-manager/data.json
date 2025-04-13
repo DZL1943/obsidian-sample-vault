@@ -137,17 +137,6 @@
       "delay": "15"
     },
     {
-      "id": "attachment-management",
-      "name": "Attachment Management",
-      "desc": "Customize your attachment path of notes independently with variables and auto rename it on change.",
-      "group": "4",
-      "tags": [
-        "recommended"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
       "id": "better-export-pdf",
       "name": "Better Export PDF",
       "desc": "Export your notes to PDF, support export preview, add bookmarks outline and header/footer.",
@@ -1060,6 +1049,46 @@
       "id": "extended-graph",
       "name": "Extended Graph",
       "desc": "Extends the features of the core Graph view, display images, manage states, remove links, change node shapes, and more.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "any-block-min",
+      "name": "AnyBlock Min",
+      "desc": "AnyBlock min version. Remove some features and dependencies to reduce size and improve performance",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "private-mode",
+      "name": "Private Mode",
+      "desc": "Simple #private mode",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "modal-opener",
+      "name": "Modal Opener",
+      "desc": "Open files and links in modal windows, or create and edit compatible files in modal windows.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "obsidian-tikzjax",
+      "name": "TikZJax",
+      "desc": "Render LaTeX and TikZ diagrams in your notes",
       "group": "",
       "tags": [],
       "enabled": false,

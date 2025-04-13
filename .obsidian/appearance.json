@@ -22,13 +22,13 @@
     "tab",
     "img",
     "bugfix",
-    "S - Checkboxes",
     "settings-layout",
     "mysnippets-layout",
     "anyblock",
     "table",
     "explorer",
-    "embed"
+    "embed",
+    "S - Checkboxes"
   ],
   "showViewHeader": false,
   "cssTheme": "",
