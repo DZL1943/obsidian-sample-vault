@@ -8,7 +8,7 @@
   "startHour": 6,
   "timelineDateFormat": "YYYY-MM-DD",
   "centerNeedle": true,
-  "plannerHeading": "Todo",
+  "plannerHeading": "Agenda",
   "plannerHeadingLevel": 1,
   "timelineColored": true,
   "timelineStartColor": "#006466",
