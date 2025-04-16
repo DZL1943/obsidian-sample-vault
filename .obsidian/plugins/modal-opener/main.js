@@ -608,8 +608,6 @@ var _ModalWindow = class extends import_obsidian2.Modal {
     if (this.modalLeafRef) {
       await this.modalLeafRef.openFile(file, { state: { mode } });
       fileContainer.appendChild(this.modalLeafRef.view.containerEl);
-      if (this.viewType && previewTypes.includes(this.viewType))
-        await this.app.commands.executeCommandById("markdown:toggle-preview");
       if (fragment) {
         const filePath = `${file.path}#${fragment}`;
         this.app.workspace.openLinkText(filePath, file.path, false);
@@ -632,6 +630,10 @@ var _ModalWindow = class extends import_obsidian2.Modal {
     }
     this.contentEl.tabIndex = -1;
     this.contentEl.focus();
+    setTimeout(() => {
+      if (this.viewType && previewTypes.includes(this.viewType))
+        this.app.commands.executeCommandById("markdown:toggle-preview");
+    }, 100);
   }
   async displayLinkContent(link) {
     if (!this.contentEl) {
@@ -2064,12 +2066,15 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       if (this.isPreviewModeLink(target)) {
         this.handlePreviewModeLink(evt, isAltClick);
       } else if (activeView instanceof import_obsidian4.MarkdownView && activeView.getMode() === "source") {
-        if (target.closest(".markdown-source-view") || target.classList.contains("cm-link")) {
-          this.handleSourceModeLink(activeView.editor, evt, isAltClick);
-        }
-        if (this.isInFencedCodeBlock(activeView.editor, activeView.editor.getCursor())) {
-          if (!singleClick || singleClick && isAltClick) {
-            this.app.commands.executeCommandById("vscode-editor:edit-fence");
+        if (target.closest(".markdown-source-view")) {
+          if (this.isInFencedCodeBlock(activeView.editor, activeView.editor.getCursor())) {
+            if (!singleClick || singleClick && isAltClick) {
+              this.app.commands.executeCommandById("vscode-editor:edit-fence");
+              return;
+            }
+          }
+          if (target.classList.contains("cm-underline") || target.classList.contains("cm-hmd-internal-link") || target.classList.contains("cm-link") || target.classList.contains("cm-url")) {
+            this.handleSourceModeLink(activeView.editor, evt, isAltClick);
           }
         }
       }
@@ -2256,7 +2261,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
     const linkRegex = /!?\[\[([^\]]+?)(?:\|[^\]]+?)?\]\]|\[([^\]]+)\]\(([^)]+)\)|(https?:\/\/[^\s]+)|(www\.[^\s]+)|(\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d+)?\b)/g;
     let match;
     while ((match = linkRegex.exec(line)) !== null) {
-      if (match.index <= position && position <= match.index + match[0].length) {
+      if (match.index < position && position < match.index + match[0].length) {
         if (match[1] && match[1].includes("|")) {
           return match[1].split("|")[0];
         }
@@ -2431,15 +2436,15 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
         group2Count++;
         subMenu.addItem(
           (subItem) => subItem.setTitle("Excalidraw").setIcon("swords").onClick(async () => {
-            const defaultFileName = this.getDrawingFilename(excalidrawPlugin.settings);
-            const result = await this.getNewFileName(void 0, defaultFileName);
+            const defaultNameWithExt = this.getDrawingFilename(excalidrawPlugin.settings);
+            const useExcalidrawExtension = excalidrawPlugin.settings.useExcalidrawExtension;
+            const result = await this.getNewFileName("", defaultNameWithExt);
             if (!result)
               return;
             const { fileName, isEmbed } = result;
             if (excalidrawPlugin && excalidrawPlugin.settings) {
-              const useExcalidrawExtension = excalidrawPlugin.settings.useExcalidrawExtension;
-              const hasCustomName = fileName !== defaultFileName;
-              const excalidrawFileName = hasCustomName ? fileName + (useExcalidrawExtension ? ".excalidraw.md" : ".md") : fileName;
+              const hasCustomName = fileName != defaultNameWithExt;
+              const excalidrawFileName = hasCustomName ? fileName + (useExcalidrawExtension ? ".excalidraw.md" : ".md") : defaultNameWithExt;
               try {
                 const file = await excalidrawPlugin.createDrawing(excalidrawFileName);
                 await this.insertLinkToPreviousView(file.path);
@@ -2468,12 +2473,12 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
           (subItem) => subItem.setTitle("Tldraw").setIcon("shapes").onClick(async () => {
             var _a;
             const defaultName = tldrawPlugin.createDefaultFilename();
-            const result = await this.getNewFileName(void 0, defaultName);
+            const result = await this.getNewFileName("", defaultName + ".md");
             if (!result)
               return;
-            const { fileName: rawFileName, isEmbed } = result;
-            const isDefault = rawFileName === defaultName;
-            const useFileName = isDefault ? defaultName : rawFileName;
+            const { fileName, isEmbed } = result;
+            const hasCustomName = fileName + ".md" != defaultName;
+            const tldrawFileName = hasCustomName ? fileName : defaultName;
             if (tldrawPlugin && tldrawPlugin.settings) {
               const fileDestinations = tldrawPlugin.settings.fileDestinations;
               const destinationMethod = fileDestinations.destinationMethod;
@@ -2484,7 +2489,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
                   break;
                 }
                 case "colocate": {
-                  folderName = "./" + tldrawPlugin.settings.fileDestinations.colocationSubfolder;
+                  folderName = tldrawPlugin.settings.fileDestinations.colocationSubfolder;
                   break;
                 }
                 case "default-folder": {
@@ -2497,7 +2502,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
                 }
               }
               try {
-                const file = await tldrawPlugin.createTldrFile(useFileName, {
+                const file = await tldrawPlugin.createTldrFile(tldrawFileName, {
                   foldername: folderName,
                   inMarkdown: true,
                   tlStore: void 0
@@ -2519,13 +2524,13 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       if (excelPlugin && this.settings.enabledCommands.excel) {
         subMenu.addItem(
           (subItem) => subItem.setTitle("Excel").setIcon("table").onClick(async () => {
-            const defaultFileName = this.getExcelFilename(excelPlugin.settings);
-            const result = await this.getNewFileName(void 0, defaultFileName);
+            const defaultName = this.getExcelFilename(excelPlugin.settings);
+            const result = await this.getNewFileName("", defaultName);
             if (!result)
               return;
             const { fileName, isEmbed } = result;
             if (excelPlugin && excelPlugin.settings) {
-              const hasCustomName = fileName !== defaultFileName;
+              const hasCustomName = fileName !== defaultName;
               const excelFileName = hasCustomName ? fileName + ".sheet.md" : fileName;
               try {
                 const file = await excelPlugin.createExcel(excelFileName);
@@ -2543,13 +2548,13 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       if (sheetPlugin && this.settings.enabledCommands.sheetPlus) {
         subMenu.addItem(
           (subItem) => subItem.setTitle("Sheet Plus").setIcon("grid").onClick(async () => {
-            const defaultFileName = this.getExcelProFilename(sheetPlugin.settings);
-            const result = await this.getNewFileName(void 0, defaultFileName);
+            const defaultName = this.getExcelProFilename(sheetPlugin.settings);
+            const result = await this.getNewFileName("", defaultName);
             if (!result)
               return;
             const { fileName, isEmbed } = result;
             if (sheetPlugin && sheetPlugin.settings) {
-              const hasCustomName = fileName !== defaultFileName;
+              const hasCustomName = fileName !== defaultName;
               const excelFileName = hasCustomName ? fileName + ".univer.md" : fileName;
               try {
                 const file = await sheetPlugin.createExcel(excelFileName);
@@ -2608,21 +2613,28 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       if (markmindPlugin && this.settings.enabledCommands.markmind) {
         subMenu.addItem(
           (subItem) => subItem.setTitle("MarkMind").setIcon("brain-circuit").onClick(async () => {
-            var _a;
+            var _a, _b;
             try {
               const activeFile = this.app.workspace.getActiveFile();
               const filePath = (activeFile == null ? void 0 : activeFile.path) || "";
               const parentFolder = this.app.fileManager.getNewFileParent(filePath);
-              const result = await this.getNewFileName(void 0, "Untitled mindmap");
+              const lang = (0, import_obsidian4.getLanguage)();
+              const baseName = lang.startsWith("zh") ? "\u672A\u547D\u540D\u601D\u7EF4\u5BFC\u56FE" : "untitled mindmap";
+              const sourcePath = ((_a = this.app.workspace.getActiveFile()) == null ? void 0 : _a.path) || "";
+              const folder = this.app.fileManager.getNewFileParent(sourcePath, `${baseName}.md`);
+              const availableFileName = await this.getAvailableFileName(baseName, "md", folder.path);
+              const result = await this.getNewFileName("", availableFileName);
               if (!result)
                 return;
               const { fileName, isEmbed } = result;
               if (parentFolder) {
                 const targetFolder = parentFolder || this.app.fileManager.getNewFileParent(
-                  ((_a = this.app.workspace.getActiveFile()) == null ? void 0 : _a.path) || ""
+                  ((_b = this.app.workspace.getActiveFile()) == null ? void 0 : _b.path) || ""
                 );
                 const folderPath = targetFolder.path;
-                const fullPath = `${folderPath}/${fileName}.md`;
+                const hasCustomName = fileName !== availableFileName;
+                const markmindFileName = hasCustomName ? fileName + ".md" : fileName;
+                const fullPath = `${folderPath}/${markmindFileName}`;
                 const file = await this.app.vault.create(fullPath, "");
                 await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
                   if (markmindPlugin.settings.mindmapmode === "basic") {
@@ -2742,10 +2754,27 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       previousEditor.setCursor(newCursor);
     }
   }
+  async getAvailableFileName(baseName, ext, folderPath) {
+    let index = 0;
+    let finalName = `${baseName}.${ext}`;
+    let fullPath = folderPath === "/" ? finalName : `${folderPath}/${finalName}`;
+    while (await this.app.vault.adapter.exists(fullPath)) {
+      index += 1;
+      finalName = `${baseName} ${index}.${ext}`;
+      fullPath = folderPath === "/" ? finalName : `${folderPath}/${finalName}`;
+    }
+    return finalName;
+  }
   async getNewFileName(fileType, placeholder = "") {
-    var _a;
+    var _a, _b;
     const activeView = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
     const selectedText = ((_a = activeView == null ? void 0 : activeView.editor) == null ? void 0 : _a.getSelection()) || "";
+    const lang = (0, import_obsidian4.getLanguage)();
+    const baseName = lang.startsWith("zh") ? "\u672A\u547D\u540D" : "untitled";
+    const sourcePath = ((_b = this.app.workspace.getActiveFile()) == null ? void 0 : _b.path) || "";
+    const folder = this.app.fileManager.getNewFileParent(sourcePath, `${baseName}.${fileType}`);
+    const availableFileName = await this.getAvailableFileName(baseName, fileType, folder.path);
+    const finalPlaceholder = (placeholder == null ? void 0 : placeholder.trim()) || availableFileName;
     return new Promise((resolve) => {
       const modal = new import_obsidian4.Modal(this.app);
       modal.titleEl.setText(t("Enter new file name"));
@@ -2754,7 +2783,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       const input = inputContainer.createEl("input", {
         type: "text",
         value: selectedText,
-        placeholder,
+        placeholder: finalPlaceholder,
         cls: "new-file-input"
       });
       input.focus();
@@ -2807,7 +2836,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       const input = inputContainer.createEl("input", {
         type: "text",
         value: "",
-        placeholder: "Untitled",
+        placeholder: "untitled code file",
         cls: "new-file-input"
       });
       input.focus();
@@ -2883,9 +2912,8 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
     const { fileName, isEmbed } = result;
     const activeFile = this.app.workspace.getActiveFile();
     const sourcePath = activeFile ? activeFile.path : "";
-    const newFileName = `${fileName}.${fileType}`;
-    const folder = this.app.fileManager.getNewFileParent(sourcePath, newFileName);
-    const newFilePath = folder.path === "/" ? newFileName : `${folder.path}/${newFileName}`;
+    const folder = this.app.fileManager.getNewFileParent(sourcePath, fileName);
+    const newFilePath = folder.path === "/" ? fileName : `${folder.path}/${fileName}`;
     try {
       const newFile = await this.app.vault.create(newFilePath, "");
       const displayName = newFile.basename;
@@ -2896,7 +2924,6 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
         newFile,
         ""
       ).open();
-      this.isProcessing = true;
     } catch (error) {
       new import_obsidian4.Notice(t("Failed to create file: ") + error.message);
     }
