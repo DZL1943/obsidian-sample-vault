@@ -34,19 +34,19 @@
 /Vaults/
 /Vault.md
 /broken links output.md
+[hH]ome.canvas
+[cC]ontext.md
 
 workspace.json
 workspace-mobile.json
 bookmarks.json
 **/plugins/vare/data.json
 **/plugins/recent-files-obsidian/data.json
-[hH]ome.canvas
-[cC]ontext.md
+.obsidian/plugins/float-search/data.json
+.obsidian/plugins/obsidian-auto-hide/data.json
 
 
 
 
 # Ignore Smart Environment folder
 .smart-env
-.obsidian/plugins/float-search/data.json
-.obsidian/plugins/obsidian-auto-hide/data.json

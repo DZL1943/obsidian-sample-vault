@@ -12,7 +12,7 @@
         "startupType": "short"
       },
       "obsidian-advanced-uri": {
-        "startupType": "instant"
+        "startupType": "short"
       },
       "any-block": {
         "startupType": "short"
@@ -21,10 +21,10 @@
         "startupType": "short"
       },
       "attachment-management": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "attachment-pro": {
-        "startupType": "long"
+        "startupType": "disabled"
       },
       "obsidian-auto-hide": {
         "startupType": "instant"
@@ -39,7 +39,7 @@
         "startupType": "short"
       },
       "better-markdown-links": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "obsidian42-brat": {
         "startupType": "long"
@@ -84,7 +84,7 @@
         "startupType": "short"
       },
       "float-search": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "floating-settings": {
         "startupType": "short"
@@ -126,7 +126,7 @@
         "startupType": "short"
       },
       "keyboard-analyzer": {
-        "startupType": "short"
+        "startupType": "long"
       },
       "ledger-obsidian": {
         "startupType": "short"
@@ -138,7 +138,7 @@
         "startupType": "short"
       },
       "obsidian-markmind": {
-        "startupType": "short"
+        "startupType": "long"
       },
       "nldates-obsidian": {
         "startupType": "short"
@@ -147,7 +147,7 @@
         "startupType": "disabled"
       },
       "obsidian-columns": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "omnisearch": {
         "startupType": "short"
@@ -168,7 +168,7 @@
         "startupType": "instant"
       },
       "darlal-switcher-plus": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "quickadd": {
         "startupType": "short"
@@ -189,10 +189,10 @@
         "startupType": "short"
       },
       "obsidian-style-settings": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "tabs": {
-        "startupType": "disabled"
+        "startupType": "short"
       },
       "obsidian-tagfolder": {
         "startupType": "disabled"
@@ -219,7 +219,7 @@
         "startupType": "short"
       },
       "vim-toggle": {
-        "startupType": "instant"
+        "startupType": "short"
       },
       "virtual-linker": {
         "startupType": "short"
@@ -243,7 +243,7 @@
         "startupType": "disabled"
       },
       "image-captions": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "obsidian-list-callouts": {
         "startupType": "short"
@@ -256,6 +256,87 @@
       },
       "note-refactor-obsidian": {
         "startupType": "short"
+      },
+      "surfing": {
+        "startupType": "disabled"
+      },
+      "enhanced-annotations": {
+        "startupType": "disabled"
+      },
+      "open-sidebar-on-hover": {
+        "startupType": "disabled"
+      },
+      "pinned-notes": {
+        "startupType": "disabled"
+      },
+      "obsidian-plugin-update-tracker": {
+        "startupType": "long"
+      },
+      "obsidian-excel-to-markdown-table": {
+        "startupType": "disabled"
+      },
+      "markdown-table-editor": {
+        "startupType": "short"
+      },
+      "obsidian-projects": {
+        "startupType": "disabled"
+      },
+      "obsidian-memos": {
+        "startupType": "disabled"
+      },
+      "make-md": {
+        "startupType": "disabled"
+      },
+      "statusbar-organizer": {
+        "startupType": "short"
+      },
+      "recent-files-obsidian": {
+        "startupType": "instant"
+      },
+      "mysnippets-plugin": {
+        "startupType": "short"
+      },
+      "custom-sort": {
+        "startupType": "disabled"
+      },
+      "obsidian-latex-suite": {
+        "startupType": "disabled"
+      },
+      "markwhen": {
+        "startupType": "disabled"
+      },
+      "remotely-save": {
+        "startupType": "disabled"
+      },
+      "advanced-canvas": {
+        "startupType": "long"
+      },
+      "plugins-annotations": {
+        "startupType": "short"
+      },
+      "supercharged-links-obsidian": {
+        "startupType": "short"
+      },
+      "obsidian-another-quick-switcher": {
+        "startupType": "instant"
+      },
+      "obsidian-importer": {
+        "startupType": "disabled"
+      },
+      "image-converter": {
+        "startupType": "short"
+      },
+      "obsidian-spaced-repetition": {
+        "startupType": "disabled"
+      },
+      "smart-connections": {
+        "startupType": "disabled"
+      },
+      "webpage-html-export": {
+        "startupType": "long"
+      },
+      "better-plugins-manager": {
+        "startupType": "instant"
       }
     }
   },
@@ -517,6 +598,9 @@
       },
       "vconsole": {
         "startupType": "disabled"
+      },
+      "any-block-min": {
+        "startupType": "short"
       }
     }
   }

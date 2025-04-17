@@ -8532,13 +8532,69 @@ __export(main_exports, {
 module.exports = __toCommonJS(main_exports);
 var import_obsidian = require("obsidian");
 var import_vconsole = __toESM(require_vconsole_min());
+var DEFAULT_SETTINGS = {
+  showSwitchButton: true
+};
+var VConsoleWrapper = class extends import_vconsole.default {
+  constructor(options) {
+    super(options);
+  }
+  toggle() {
+    if (this.compInstance.show) {
+      this.hide();
+    } else {
+      this.show();
+    }
+  }
+};
 var VConsolePlugin = class extends import_obsidian.Plugin {
   async onload() {
-    this.vConsole = new import_vconsole.default();
+    await this.loadSettings();
+    this.vConsole = new VConsoleWrapper();
+    if (this.settings.showSwitchButton) {
+      this.vConsole.showSwitch();
+    } else {
+      this.vConsole.hideSwitch();
+    }
+    this.addCommand({
+      id: "toggle-vconsole-panel",
+      name: "Toggle VConsole Panel",
+      callback: () => {
+        var _a;
+        (_a = this.vConsole) == null ? void 0 : _a.toggle();
+      }
+    });
+    this.addSettingTab(new VConsoleSettingTab(this.app, this));
+  }
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+  }
+  async saveSettings() {
+    await this.saveData(this.settings);
   }
   onunload() {
     var _a;
     (_a = this.vConsole) == null ? void 0 : _a.destroy();
+  }
+};
+var VConsoleSettingTab = class extends import_obsidian.PluginSettingTab {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+  display() {
+    const { containerEl } = this;
+    containerEl.empty();
+    new import_obsidian.Setting(containerEl).setName("Show Switch Button").setDesc("Show/Hide the VConsole floating switch button").addToggle((toggle) => toggle.setValue(this.plugin.settings.showSwitchButton).onChange(async (value) => {
+      var _a, _b;
+      this.plugin.settings.showSwitchButton = value;
+      if (value) {
+        (_a = this.plugin.vConsole) == null ? void 0 : _a.showSwitch();
+      } else {
+        (_b = this.plugin.vConsole) == null ? void 0 : _b.hideSwitch();
+      }
+      await this.plugin.saveSettings();
+    }));
   }
 };
 /*! Bundled license information:

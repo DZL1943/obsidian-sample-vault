@@ -10,5 +10,7 @@
   "enabledCssSnippets": [
     "basic"
   ],
-  "showViewHeader": false
+  "showViewHeader": false,
+  "cssTheme": "",
+  "showRibbon": false
 }

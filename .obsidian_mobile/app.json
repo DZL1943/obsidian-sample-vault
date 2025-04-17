@@ -14,7 +14,6 @@
   "showUnsupportedFiles": true,
   "attachmentFolderPath": "./",
   "showInlineTitle": false,
-  "showRibbon": false,
   "vimMode": false,
   "showLineNumber": true,
   "pdfExportSettings": {
@@ -40,12 +39,17 @@
     "editor:toggle-checklist-status",
     "editor:toggle-numbered-list",
     "editor:toggle-bullet-list",
+    "editor:insert-horizontal-rule",
     "editor:insert-tag",
     "editor:toggle-bold",
     "editor:toggle-italics",
     "editor:toggle-strikethrough",
     "editor:toggle-highlight",
+    "editor:toggle-comments",
     "editor:toggle-code",
+    "editor:insert-mathblock",
+    "insert-current-date",
+    "insert-current-time",
     "editor:configure-toolbar"
   ]
 }

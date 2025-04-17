@@ -1,6 +1,7 @@
 {
   "useCache": true,
   "hideExcluded": true,
+  "recencyBoost": "0",
   "downrankedFoldersFilters": [],
   "ignoreDiacritics": true,
   "ignoreArabicDiacritics": false,
@@ -14,7 +15,7 @@
   "splitCamelCase": false,
   "openInNewPane": false,
   "vimLikeNavigationShortcut": false,
-  "ribbonIcon": false,
+  "ribbonIcon": true,
   "showExcerpt": true,
   "maxEmbeds": 5,
   "renderLineReturnInExcerpts": true,
