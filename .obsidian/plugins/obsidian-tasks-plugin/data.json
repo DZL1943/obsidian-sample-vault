@@ -1,4 +1,5 @@
 {
+  "includes": {},
   "globalQuery": "",
   "globalFilter": "#task",
   "removeGlobalFilter": true,
@@ -10,10 +11,11 @@
   "autoSuggestMinMatch": 1,
   "autoSuggestMaxItems": 6,
   "provideAccessKeys": true,
-  "useFilenameAsScheduledDate": false,
+  "useFilenameAsScheduledDate": true,
   "filenameAsScheduledDateFormat": "",
   "filenameAsDateFolders": [],
   "recurrenceOnNextLine": false,
+  "removeScheduledDateOnRecurrence": false,
   "statusSettings": {
     "coreStatuses": [
       {
@@ -54,7 +56,9 @@
   "generalSettings": {},
   "headingOpened": {
     "Core Statuses": true,
-    "Custom Statuses": true
+    "Custom Statuses": true,
+    "核心状态": true,
+    "自定义状态": true
   },
   "debugSettings": {
     "ignoreSortInstructions": false,

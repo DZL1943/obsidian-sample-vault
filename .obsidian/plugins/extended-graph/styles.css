@@ -441,7 +441,9 @@ body {
     .setting-item-heading.setting-images.is-collapsed ~ .setting-images,
     .setting-item-heading.setting-icons.is-collapsed ~ .setting-icons,
     .setting-item-heading.setting-focus.is-collapsed ~ .setting-focus,
+    .setting-item-heading.setting-names.is-collapsed ~ .setting-names,
     .setting-item-heading.setting-shapes.is-collapsed ~ .setting-shapes,
+    .setting-item-heading.setting-arrows.is-collapsed ~ .setting-arrows,
     .setting-item-heading.setting-elements-stats.is-collapsed ~ .setting-elements-stats {
         display: none;
     }
@@ -537,6 +539,35 @@ body {
 
         &.is-hidden {
             display: none;
+        }
+    }
+
+    .extended-graph-nav-settings {
+        display: flex;
+        padding-bottom: 0.75em;
+        gap: 0.75em;
+        justify-content: flex-start;
+        align-items: center;
+        overflow-x: auto;
+
+        > .clickable-icon {
+            background-color: var(--background-secondary);
+            
+            &:hover {
+                background-color: var(--background-modifier-hover);
+            }
+        }
+
+        > *:first-child {
+            margin-left: auto;
+        }
+        > *:last-child {
+            margin-right: auto;
+        }
+
+        .nav-label {
+            color: var(--text-muted);
+            font-size: var(--font-ui-smaller);
         }
     }
 }
