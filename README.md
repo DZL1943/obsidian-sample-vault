@@ -151,13 +151,3 @@ group by file.folder
 
 ## Changelogs
 
-- [2024-07-13] 重命名 90_Misc 为 Misc
-- [2024-07-18] 重命名 20_Journals 为 20_Private; 增加 Changelog
-- [2024-07-18] 更改日期格式 YYYY/MM/DD 为 YYYY-MM-DD
-- [2024-07-20] 将 Local、draft 移到 Inbox 中
-- [2024-07-27] ~~取消顶层目录名中的前缀编号~~
-- [2024-07-28] 禁用 Surfing 插件(不影响 canvas 中的网页)
-- [2024-10-04] 拆分库, 重新启用本 repo
-- [2024-12-29] 更改日记存储目录
-- [2024-12-31] 修复 yearly-template 的问题
-- [2025-01-21] 对 pages 内容进行分类

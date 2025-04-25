@@ -2,6 +2,5 @@
 
 # Log
 
-<% tp.file.include("[[week-days-h2]]") %>
-
+<% tp.user.generate_week_days({tp, prefix:"## "}) %>
 # Summary
