@@ -1,5 +1,7 @@
-## 计划
+# Plan
 
-<% tp.file.include("[[weekdays-h2.md]]") %>
+# Log
 
-## 总结
+<% tp.file.include("[[week-days-h2]]") %>
+
+# Summary

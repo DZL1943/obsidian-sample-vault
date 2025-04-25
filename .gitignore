@@ -7,7 +7,7 @@
 !*.jpg
 
 !.obsidian*/**
-!Misc/Code/*
+!Misc/Scripts/**
 
 .DS_Store
 *.sync-conflict-*
@@ -44,8 +44,6 @@ bookmarks.json
 **/plugins/recent-files-obsidian/data.json
 .obsidian/plugins/float-search/data.json
 .obsidian/plugins/obsidian-auto-hide/data.json
-
-
 
 
 # Ignore Smart Environment folder

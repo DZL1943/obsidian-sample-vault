@@ -1,14 +1,8 @@
-# Task
+# Plan
 
-# Context
+# Log
 
-# Habit
-
-<% tp.file.include("[[habit-calendar-dv]]") %>
-
-# Diary
-
-<% tp.file.include("[[days-h2]]") %>
+<% tp.user.generate_month_days({tp, prefix:"## "})%>
 # Summary
 
 ```dataview
