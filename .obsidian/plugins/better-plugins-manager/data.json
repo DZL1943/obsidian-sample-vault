@@ -721,7 +721,7 @@
       "tags": [
         "recommended"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "5"
     },
     {
@@ -1123,6 +1123,16 @@
       ],
       "enabled": true,
       "delay": "10",
+      "note": ""
+    },
+    {
+      "id": "obsidian-task-progress-bar",
+      "name": "Task Genius",
+      "desc": "Comprehensive task management that includes progress bars, task status cycling, and advanced task tracking features.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
       "note": ""
     }
   ]
