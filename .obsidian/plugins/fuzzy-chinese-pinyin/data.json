@@ -15,7 +15,7 @@
   },
   "file": {
     "showAttachments": false,
-    "showAllFileTypes": false,
+    "showAllFileTypes": true,
     "showUnresolvedLink": false,
     "quicklySelectHistoryFiles": false,
     "quicklySelectHistoryFilesHint": "asdfjklgh",
