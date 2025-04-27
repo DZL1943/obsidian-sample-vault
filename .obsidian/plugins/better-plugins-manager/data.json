@@ -1112,6 +1112,18 @@
       "enabled": false,
       "delay": "",
       "note": ""
+    },
+    {
+      "id": "unitade",
+      "name": "UNITADE.md",
+      "desc": "Effortlessly treat any file extension as note, organize diverse file formats in your vault and take advancements in control of extension system even with custom modals.",
+      "group": "3",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "10",
+      "note": ""
     }
   ]
 }
