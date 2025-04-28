@@ -23,6 +23,7 @@
 *[pP]rivate/*
 *[pP]rivate/*/
 !*[pP]rivate/*-index.md
+Archives/
 
 /.stfolder/
 /.stversions/

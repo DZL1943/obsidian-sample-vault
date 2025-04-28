@@ -13,5 +13,7 @@
   "move-tags": true,
   "move-dates": true,
   "new-card-insertion-method": "prepend-compact",
-  "tag-sort": []
+  "tag-sort": [],
+  "date-format": "YYYY-MM-DD",
+  "date-display-format": "M/D"
 }

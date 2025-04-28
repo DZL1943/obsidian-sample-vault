@@ -63,6 +63,10 @@
       "plugin-obsidian-day-planner;1": {
         "position": 15,
         "visible": true
+      },
+      "plugin-unitade;1": {
+        "position": 16,
+        "visible": true
       }
     }
   },

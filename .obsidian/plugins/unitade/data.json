@@ -11,12 +11,10 @@
   "is_grouped": false,
   "grouped_extensions": "",
   "mobile_settings": {
-    "enable": false,
-    "extensions": "txt",
-    "stable": true
+    "extensions": "txt"
   },
   "barefiling": true,
-  "stable": true,
+  "stable": false,
   "errors": {
     "": "Error from UNITADE plugin: Error: Attempting to register an existing view type \"\""
   },
@@ -45,7 +43,7 @@
   "SYS_FONTSIZE_MAX": 32,
   "SYS_FONTSIZE_MIN": 5,
   "status_bar": {
-    "enabled": true,
+    "enabled": false,
     "registered_extensions": {
       "enabled": false,
       "include_extensions": false,
