@@ -1,6 +1,6 @@
 {
   "markdown_overcharge": false,
-  "extensions": "txt>json>yaml>toml>html>css>js>py>sh",
+  "extensions": "txt>json>yaml>toml>html>css>js>py>sh>ledger",
   "is_case_insensitive": false,
   "is_onload": false,
   "is_onload_unsafe": false,
@@ -14,7 +14,7 @@
     "extensions": "txt"
   },
   "barefiling": true,
-  "stable": false,
+  "stable": true,
   "errors": {
     "": "Error from UNITADE plugin: Error: Attempting to register an existing view type \"\""
   },
