@@ -978,6 +978,9 @@ body {
     &.is-android {
         --cg-nt-fab-border-radius: var(--radius-xl);
     }
+    &.is-mobile {
+        --cg-nt-fab-border-color: var(--interactive-accent);
+    }
 }
 
 .metadata-container {
@@ -1241,6 +1244,10 @@ body {
             border-top: solid 1px var(--cg-nt-tbar-border-color);
             border-bottom: solid 1px var(--cg-nt-tbar-border-color);
             border-radius: 0;
+            [data-tbar-position="bottom"] & {
+                border: solid 1px var(--cg-nt-tbar-border-color);
+                border-radius: var(--cg-nt-tbar-bottom-border-radius);
+            }
         }
     }
 
@@ -1452,6 +1459,11 @@ body:not(.is-mobile):not(.is-focused), .workspace-leaf:not(.mod-active) {
     }
     & button[data-fab-metadata*="border"] {
         border: solid 1px var(--cg-nt-fab-border-color);
+    }
+    & button[data-fab-metadata*="mbrder"] {
+        .is-mobile & {
+            border: solid 1px var(--cg-nt-fab-border-color);
+        }
     }
 }
 
@@ -2104,6 +2116,11 @@ input[type="text"].note-toolbar-setting-error,
     }
     & .setting-item-heading {
         padding: 0.75em 0;
+        .is-mobile & {
+            & .setting-item-control {
+                gap: var(--size-4-4);
+            }
+        }
     }
     & #tbar-search {
         padding-top: 0;
@@ -2150,11 +2167,18 @@ input[type="text"].note-toolbar-setting-error,
             border-top: 1px solid var(--background-modifier-border);
         }
     }
+    &[data-active="true"] {
+        border-bottom: solid 1px var(--background-modifier-border);
+        margin-bottom: 0.75em;
+    }
 }
 
 .note-toolbar-setting-contexts-container {
     &[data-active="false"] {
-        border-bottom: solid 1px var(--background-modifier-border);
+        & .setting-item-heading {
+            border-bottom: solid 1px var(--background-modifier-border);
+            margin-bottom: 0;
+        }
     }
 }
 
@@ -2166,6 +2190,16 @@ input[type="text"].note-toolbar-setting-error,
                 width: unset !important;
             }
         }
+    }
+}
+
+.note-toolbar-setting-items-list-container {
+    .is-phone & {
+        & .note-toolbar-setting-button {
+            & .setting-item-info {
+                display: none;
+            }
+        }       
     }
 }
 
@@ -2914,6 +2948,11 @@ input[type="text"].note-toolbar-setting-error,
 .note-toolbar-setting-confirm-dialog-buttons {
     column-gap: 0.5em;
     display: flex;
+    justify-content: flex-end;
+}
+
+.note-toolbar-setting-confirm-dialog-note {
+    font-size: var(--font-ui-small);
 }
 
 .note-toolbar-share-dialog {
@@ -3018,6 +3057,20 @@ input[type="text"].note-toolbar-setting-error,
     }
 }
 
+.note-toolbar-setting-remote-skeleton {
+    background: linear-gradient(90deg, var(--text-normal) 25%, var(--text-muted) 50%, var(--text-normal) 75%);
+    opacity: 0.25;
+    background-size: 200% 100%;
+    animation: note-toolbar-setting-remote-shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes note-toolbar-setting-remote-shimmer {
+    100% {
+        background-position: -200% 0;
+    }
+}
+
 .note-toolbar-setting-modal-container {
     .is-phone & {
         /* fix/workaround for Obsidian v1.5.11 bug: modals opened from settings have an inaccessible close button */
@@ -3080,6 +3133,9 @@ input[type="text"].note-toolbar-setting-error,
     &[data-ntb-ui-type="modal"] {
         .is-phone & {
             padding-bottom: var(--size-4-6);
+        }
+        & .view-header-left, .view-actions {
+            display: none;
         }
         & .modal-content {
             overflow-y: auto;
