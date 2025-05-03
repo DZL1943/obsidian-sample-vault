@@ -7,6 +7,7 @@
     "delayBetweenPlugins": 40,
     "defaultStartupType": null,
     "showDescriptions": true,
+    "enableDependencies": false,
     "plugins": {
       "table-editor-obsidian": {
         "startupType": "short"
@@ -338,14 +339,16 @@
       "better-plugins-manager": {
         "startupType": "instant"
       }
-    }
+    },
+    "loadOrder": []
   },
   "mobile": {
     "shortDelaySeconds": 5,
-    "longDelaySeconds": 15,
+    "longDelaySeconds": 10,
     "delayBetweenPlugins": 40,
     "defaultStartupType": null,
     "showDescriptions": true,
+    "enableDependencies": true,
     "plugins": {
       "table-editor-obsidian": {
         "startupType": "short"
@@ -468,7 +471,7 @@
         "startupType": "short"
       },
       "ledger-obsidian": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "links": {
         "startupType": "long"
@@ -510,10 +513,10 @@
         "startupType": "short"
       },
       "quickadd": {
-        "startupType": "short"
+        "startupType": "disabled"
       },
       "refresh-preview": {
-        "startupType": "instant"
+        "startupType": "disabled"
       },
       "obsidian-relative-line-numbers": {
         "startupType": "instant"
@@ -600,8 +603,9 @@
         "startupType": "disabled"
       },
       "any-block-min": {
-        "startupType": "short"
+        "startupType": "long"
       }
-    }
+    },
+    "loadOrder": []
   }
 }
