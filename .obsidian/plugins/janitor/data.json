@@ -23,6 +23,8 @@
     "Misc/Configs/",
     "Ext/",
     ".ledger",
-    ".pdf"
+    ".pdf",
+    "Misc/Scripts/",
+    "Misc/Data/"
   ]
 }
