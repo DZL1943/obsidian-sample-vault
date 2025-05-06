@@ -6,57 +6,35 @@ function generate_month_days({
   dataview = false,
   tp,
 } = {}) {
-  if (!(year && month)) {
-    try {
-      // 尝试从标题解析年月（格式示例：2023-10）
-      const [titleYear, titleMonth] = tp.file.title.split("-");
-      year = parseInt(titleYear);
-      month = parseInt(titleMonth);
+  const isValidDate = (y, m) =>
+    Number.isFinite(y) && Number.isFinite(m) && m >= 1 && m <= 12;
 
-      // 验证解析结果有效性
-      if (isNaN(year) || isNaN(month) || month < 1 || month > 12) {
-        throw new Error("无效的日期格式");
-      }
-    } catch (e) {
-      // 解析失败时回退到当前日期
-      console.log(e);
-      const now = new Date();
-      year = now.getFullYear();
-      month = now.getMonth() + 1;
-    }
+  if (!isValidDate(year, month)) {
+    [year, month] = tp.file.title.split("-").map(Number);
   }
 
-  month += offset; //todo
+  if (!isValidDate(year, month)) {
+    const now = new Date();
+    [year, month] = [now.getFullYear(), now.getMonth() + 1];
+  }
 
+  month += offset;  //todo
+
+  const lastDate = new Date(year, month, 0).getDate();
   const weekdayMap = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+  const pad = (n) => n.toString().padStart(2, "0");
 
-  const getLocalDate = (y, m, d) => {
-    const date = new Date(y, m - 1, d);
-    return {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-      weekday: date.getDay(),
-    };
-  };
+  return Array.from({ length: lastDate }, (_, i) => {
+    const date = new Date(year, month - 1, i + 1);
+    const dateStr = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    // const dateStr = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
 
-  let lastDate = new Date(year, month, 0).getDate();
-  let output = "";
-  for (let day = 1; day <= lastDate; day++) {
-    const {
-      year: y,
-      month: m,
-      day: d,
-      weekday,
-    } = getLocalDate(year, month, day);
-    const pad = (n) => n.toString().padStart(2, "0");
-    const dateStr = `${y}-${pad(m)}-${pad(d)}`;
-
-    output += dataview
-      ? `${prefix}${weekdayMap[weekday]}  (date:: ${dateStr})  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )\n`
-      : `${prefix}${dateStr}\n`;
-  }
-  return output;
+    return dataview
+      ? `${prefix}${
+          weekdayMap[date.getDay()]
+        }  (date:: ${dateStr})  (weather:: )  (mood:: )  (diet:: )  (habits:: )  (summary:: )`
+      : `${prefix}${dateStr}`;
+  }).join("\n");
 }
 
 module.exports = generate_month_days;
