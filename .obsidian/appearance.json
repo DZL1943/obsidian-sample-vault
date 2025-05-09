@@ -9,7 +9,6 @@
   "theme": "system",
   "enabledCssSnippets": [
     "basic",
-    "supercharged-links-gen",
     "font",
     "guideline",
     "he",
@@ -25,8 +24,6 @@
     "settings-layout",
     "mysnippets-layout",
     "anyblock",
-    "table",
-    "explorer",
     "embed",
     "S - Checkboxes"
   ],

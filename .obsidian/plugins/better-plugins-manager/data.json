@@ -1134,6 +1134,30 @@
       "enabled": false,
       "delay": "",
       "note": ""
+    },
+    {
+      "id": "novel-word-count",
+      "name": "Novel word count",
+      "desc": "Displays a word count (and more!) for each file, folder and vault in the File Explorer pane.",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5",
+      "note": ""
+    },
+    {
+      "id": "vault-explorer",
+      "name": "Vault Explorer",
+      "desc": "Explore your vault in visual format",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": "10",
+      "note": ""
     }
   ],
   "HIDES": []
