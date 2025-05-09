@@ -42,10 +42,11 @@ Archives/
 workspace.json
 workspace-mobile.json
 bookmarks.json
-**/plugins/vare/data.json
-**/plugins/recent-files-obsidian/data.json
+.obsidian/plugins/vare/data.json
+.obsidian/plugins/recent-files-obsidian/data.json
 .obsidian/plugins/float-search/data.json
 .obsidian/plugins/obsidian-auto-hide/data.json
+.obsidian/plugins/novel-word-count/data.json
 
 
 # Ignore Smart Environment folder
