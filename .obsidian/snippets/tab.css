@@ -1,9 +1,0 @@
-.workspace-tab-header:has(.mod-pinned) {
-  /* shrink if pinned */
-  max-width: 60px !important;
-
-  /* also hide the title of pinned tabs */
-  & .workspace-tab-header-inner-title {
-    /* display: none; */
-  }
-}

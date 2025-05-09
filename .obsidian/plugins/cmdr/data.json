@@ -114,6 +114,12 @@
       "icon": "brush",
       "name": "更换主题",
       "mode": "any"
+    },
+    {
+      "id": "app:open-help",
+      "icon": "question-mark-glyph",
+      "name": "查看帮助",
+      "mode": "any"
     }
   ],
   "rightRibbon": [],

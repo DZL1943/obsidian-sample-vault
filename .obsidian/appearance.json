@@ -8,26 +8,19 @@
   "translucency": false,
   "theme": "system",
   "enabledCssSnippets": [
-    "basic",
     "font",
     "guideline",
     "he",
     "S - Embed Adjustments",
     "S - Images Adjustments",
-    "checklist",
-    "statusbar",
-    "ribbon",
-    "list",
-    "tab",
     "img",
     "bugfix",
     "settings-layout",
     "mysnippets-layout",
     "anyblock",
-    "embed",
     "S - Checkboxes"
   ],
   "showViewHeader": false,
-  "cssTheme": "",
+  "cssTheme": "Custom",
   "showRibbon": false
 }
