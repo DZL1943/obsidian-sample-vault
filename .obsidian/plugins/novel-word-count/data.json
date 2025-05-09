@@ -646,7 +646,7 @@
         "newlineCount": 149
       }
     },
-    "Misc/Data/obsidian-mac-icon-old.icns": {
+    "Misc/Data/community-plugins.json": {
       "isCountable": false,
       "targetNodeType": "file",
       "noteCount": 0,
@@ -661,9 +661,9 @@
       "linkCount": 0,
       "embedCount": 0,
       "aliases": [],
-      "createdDate": 1683646523000,
-      "modifiedDate": 1683646523000,
-      "sizeInBytes": 239241,
+      "createdDate": 1744160756196,
+      "modifiedDate": 1746610599624,
+      "sizeInBytes": 614197,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -700,7 +700,7 @@
         "newlineCount": 0
       }
     },
-    "Misc/Data/community-plugins.json": {
+    "Misc/Data/obsidian-mac-icon-old.icns": {
       "isCountable": false,
       "targetNodeType": "file",
       "noteCount": 0,
@@ -715,9 +715,9 @@
       "linkCount": 0,
       "embedCount": 0,
       "aliases": [],
-      "createdDate": 1744160756196,
-      "modifiedDate": 1746610599624,
-      "sizeInBytes": 614197,
+      "createdDate": 1683646523000,
+      "modifiedDate": 1683646523000,
+      "sizeInBytes": 239241,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -892,6 +892,33 @@
         "newlineCount": 0
       }
     },
+    "Misc/Attachments/Images/1940AD4D018FAF066816DA60E744AE20.png": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1734250917941,
+      "modifiedDate": 1734250917954,
+      "sizeInBytes": 953784,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
     "Misc/Attachments/Images/Obsidian-20240908154942.png": {
       "isCountable": false,
       "targetNodeType": "file",
@@ -937,6 +964,33 @@
       "createdDate": 1734250917998,
       "modifiedDate": 1734250918000,
       "sizeInBytes": 216541,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Misc/Attachments/Images/21481DDD471A34BDB985668EECB450B5.jpeg": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1734250917994,
+      "modifiedDate": 1734250917996,
+      "sizeInBytes": 254361,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -1189,60 +1243,6 @@
         "newlineCount": 0
       }
     },
-    "Misc/Attachments/Images/21481DDD471A34BDB985668EECB450B5.jpeg": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1734250917994,
-      "modifiedDate": 1734250917996,
-      "sizeInBytes": 254361,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Misc/Attachments/Images/1940AD4D018FAF066816DA60E744AE20.png": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1734250917941,
-      "modifiedDate": 1734250917954,
-      "sizeInBytes": 953784,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
     "Misc/Attachments/Images/151EF685107A68F7D6BC02B7D2ABA19E.jpg": {
       "isCountable": false,
       "targetNodeType": "file",
@@ -1297,33 +1297,6 @@
         "newlineCount": 0
       }
     },
-    "Misc/Attachments/Documents/国民经济行业分类.pdf": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1723811917859,
-      "modifiedDate": 1723811917966,
-      "sizeInBytes": 7760030,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
     "Misc/Attachments/Documents/The_Oxford_3000.pdf": {
       "isCountable": false,
       "targetNodeType": "file",
@@ -1342,6 +1315,33 @@
       "createdDate": 1732673818886,
       "modifiedDate": 1732673818899,
       "sizeInBytes": 124825,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Misc/Attachments/Documents/国民经济行业分类.pdf": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1723811917859,
+      "modifiedDate": 1723811917966,
+      "sizeInBytes": 7760030,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -1530,8 +1530,8 @@
       "nonWhitespaceCharacterCount": 119,
       "newlineCount": 6,
       "readingTimeInMinutes": 0.033962264150943396,
-      "linkCount": 2,
-      "embedCount": 9,
+      "linkCount": 0,
+      "embedCount": 0,
       "aliases": null,
       "createdDate": 1735290397475,
       "modifiedDate": 1745813750643,
@@ -1572,88 +1572,7 @@
         "newlineCount": 0
       }
     },
-    "Ext/CSNotes/Inbox/query.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 3,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.01,
-      "characterCount": 22,
-      "nonWhitespaceCharacterCount": 19,
-      "newlineCount": 3,
-      "readingTimeInMinutes": 0.011320754716981131,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720943946157,
-      "modifiedDate": 1725590237310,
-      "sizeInBytes": 22,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.01,
-        "wordCount": 3,
-        "characterCount": 22,
-        "nonWhitespaceCharacterCount": 19,
-        "newlineCount": 3
-      }
-    },
-    "Ext/CSNotes/Inbox/draft.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1722264828730,
-      "modifiedDate": 1722269635637,
-      "sizeInBytes": 0,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Ext/CSNotes/README.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 83,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.27666666666666667,
-      "characterCount": 286,
-      "nonWhitespaceCharacterCount": 248,
-      "newlineCount": 22,
-      "readingTimeInMinutes": 0.2209811320754717,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720788385887,
-      "modifiedDate": 1725590237276,
-      "sizeInBytes": 390,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.27666666666666667,
-        "wordCount": 83,
-        "characterCount": 286,
-        "nonWhitespaceCharacterCount": 248,
-        "newlineCount": 22
-      }
-    },
-    "Ext/CSNotes/Snippets/python/zodiac.py": {
+    "Ext/CSNotes/Snippets/init_dirs.sh": {
       "isCountable": false,
       "targetNodeType": "file",
       "noteCount": 0,
@@ -1668,144 +1587,9 @@
       "linkCount": 0,
       "embedCount": 0,
       "aliases": [],
-      "createdDate": 1719748450465,
-      "modifiedDate": 1719748450465,
-      "sizeInBytes": 684,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Ext/CSNotes/Snippets/python/traverse_dir.py": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1719749515921,
-      "modifiedDate": 1719749515921,
-      "sizeInBytes": 520,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Ext/CSNotes/Snippets/python/time_divider.py": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1719749429007,
-      "modifiedDate": 1719749429007,
-      "sizeInBytes": 260,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Ext/CSNotes/Snippets/python/oxford3000.py": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1732680944301,
-      "modifiedDate": 1732846366113,
-      "sizeInBytes": 2678,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Ext/CSNotes/Snippets/python/guessNumber.py": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1719748450465,
-      "modifiedDate": 1719748450465,
-      "sizeInBytes": 595,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Ext/CSNotes/Snippets/python/github_top_repos.py": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1732680924563,
-      "modifiedDate": 1732680924563,
-      "sizeInBytes": 2514,
+      "createdDate": 1719748823691,
+      "modifiedDate": 1719748823691,
+      "sizeInBytes": 207,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -1842,6 +1626,168 @@
         "newlineCount": 0
       }
     },
+    "Ext/CSNotes/Snippets/python/zodiac.py": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1719748450465,
+      "modifiedDate": 1719748450465,
+      "sizeInBytes": 684,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Ext/CSNotes/Snippets/python/guessNumber.py": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1719748450465,
+      "modifiedDate": 1719748450465,
+      "sizeInBytes": 595,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Ext/CSNotes/Snippets/python/time_divider.py": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1719749429007,
+      "modifiedDate": 1719749429007,
+      "sizeInBytes": 260,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Ext/CSNotes/Snippets/python/traverse_dir.py": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1719749515921,
+      "modifiedDate": 1719749515921,
+      "sizeInBytes": 520,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Ext/CSNotes/Snippets/python/oxford3000.py": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1732680944301,
+      "modifiedDate": 1732846366113,
+      "sizeInBytes": 2678,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Ext/CSNotes/Snippets/python/github_top_repos.py": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1732680924563,
+      "modifiedDate": 1732680924563,
+      "sizeInBytes": 2514,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
     "Ext/CSNotes/Snippets/javascript/traverse_dir.js": {
       "isCountable": false,
       "targetNodeType": "file",
@@ -1869,7 +1815,7 @@
         "newlineCount": 0
       }
     },
-    "Ext/CSNotes/Snippets/init_dirs.sh": {
+    "Ext/CSNotes/Snippets/html/css_heart.html": {
       "isCountable": false,
       "targetNodeType": "file",
       "noteCount": 0,
@@ -1884,9 +1830,9 @@
       "linkCount": 0,
       "embedCount": 0,
       "aliases": [],
-      "createdDate": 1719748823691,
-      "modifiedDate": 1719748823691,
-      "sizeInBytes": 207,
+      "createdDate": 1719748450464,
+      "modifiedDate": 1719748450464,
+      "sizeInBytes": 1141,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -1914,33 +1860,6 @@
       "createdDate": 1719748450464,
       "modifiedDate": 1719748450464,
       "sizeInBytes": 1540,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Ext/CSNotes/Snippets/html/css_heart.html": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1719748450464,
-      "modifiedDate": 1719748450464,
-      "sizeInBytes": 1141,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -2004,6 +1923,33 @@
         "newlineCount": 0
       }
     },
+    "Ext/CSNotes/README.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 83,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.27666666666666667,
+      "characterCount": 286,
+      "nonWhitespaceCharacterCount": 248,
+      "newlineCount": 22,
+      "readingTimeInMinutes": 0.2209811320754717,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720788385887,
+      "modifiedDate": 1725590237276,
+      "sizeInBytes": 390,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.27666666666666667,
+        "wordCount": 83,
+        "characterCount": 286,
+        "nonWhitespaceCharacterCount": 248,
+        "newlineCount": 22
+      }
+    },
     "Ext/CSNotes/Misc/Attachments/软件质量-20240630201500491.png": {
       "isCountable": false,
       "targetNodeType": "file",
@@ -2049,33 +1995,6 @@
       "createdDate": 1734250910467,
       "modifiedDate": 1734250910469,
       "sizeInBytes": 397458,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "Ext/CSNotes/Misc/Attachments/解析技术-20240713181712654.png": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1734250910466,
-      "modifiedDate": 1734250910467,
-      "sizeInBytes": 185217,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -2139,7 +2058,7 @@
         "newlineCount": 0
       }
     },
-    "Ext/CSNotes/Misc/Attachments/解析技术-20240713181709824.png": {
+    "Ext/CSNotes/Misc/Attachments/解析技术-20240713181712654.png": {
       "isCountable": false,
       "targetNodeType": "file",
       "noteCount": 0,
@@ -2154,9 +2073,9 @@
       "linkCount": 0,
       "embedCount": 0,
       "aliases": [],
-      "createdDate": 1734250910462,
-      "modifiedDate": 1734250910464,
-      "sizeInBytes": 312376,
+      "createdDate": 1734250910466,
+      "modifiedDate": 1734250910467,
+      "sizeInBytes": 185217,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -2184,6 +2103,87 @@
       "createdDate": 1734250910460,
       "modifiedDate": 1734250910462,
       "sizeInBytes": 292472,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Ext/CSNotes/Misc/Attachments/解析技术-20240713181709824.png": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1734250910462,
+      "modifiedDate": 1734250910464,
+      "sizeInBytes": 312376,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Ext/CSNotes/Misc/Attachments/learn-scala-20240706-20240706225319129.png": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1734250910447,
+      "modifiedDate": 1734250910449,
+      "sizeInBytes": 133846,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
+    "Ext/CSNotes/Misc/Attachments/IP地址-20240630195057074.png": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1734250910442,
+      "modifiedDate": 1734250910445,
+      "sizeInBytes": 381450,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -2247,33 +2247,6 @@
         "newlineCount": 0
       }
     },
-    "Ext/CSNotes/Misc/Attachments/learn-scala-20240706-20240706225319129.png": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1734250910447,
-      "modifiedDate": 1734250910449,
-      "sizeInBytes": 133846,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
     "Ext/CSNotes/Misc/Attachments/learn-scala-20240706-20240706225318962.png": {
       "isCountable": false,
       "targetNodeType": "file",
@@ -2328,13 +2301,40 @@
         "newlineCount": 0
       }
     },
-    "Ext/CSNotes/Misc/Attachments/IP地址-20240630195057074.png": {
-      "isCountable": false,
+    "Ext/CSNotes/Inbox/query.md": {
+      "isCountable": true,
       "targetNodeType": "file",
-      "noteCount": 0,
+      "noteCount": 1,
+      "wordCount": 3,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.01,
+      "characterCount": 22,
+      "nonWhitespaceCharacterCount": 19,
+      "newlineCount": 3,
+      "readingTimeInMinutes": 0.011320754716981131,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720943946157,
+      "modifiedDate": 1725590237310,
+      "sizeInBytes": 22,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.01,
+        "wordCount": 3,
+        "characterCount": 22,
+        "nonWhitespaceCharacterCount": 19,
+        "newlineCount": 3
+      }
+    },
+    "Ext/CSNotes/Inbox/draft.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
       "wordCount": 0,
       "wordCountTowardGoal": 0,
-      "wordGoal": 0,
+      "wordGoal": null,
       "pageCount": 0,
       "characterCount": 0,
       "nonWhitespaceCharacterCount": 0,
@@ -2342,12 +2342,12 @@
       "readingTimeInMinutes": 0,
       "linkCount": 0,
       "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1734250910442,
-      "modifiedDate": 1734250910445,
-      "sizeInBytes": 381450,
+      "aliases": null,
+      "createdDate": 1722264828730,
+      "modifiedDate": 1722269635637,
+      "sizeInBytes": 0,
       "sessionStart": {
-        "noteCount": 0,
+        "noteCount": 1,
         "pageCount": 0,
         "wordCount": 0,
         "characterCount": 0,
@@ -2384,37 +2384,6 @@
       "frontmatter": {
         "created": "2024-07-14 16:40",
         "modified": "2024-07-15 16:42"
-      }
-    },
-    "Ext/CSNotes/Blogs/编程项目.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 66,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.22,
-      "characterCount": 333,
-      "nonWhitespaceCharacterCount": 154,
-      "newlineCount": 34,
-      "readingTimeInMinutes": 0.15860377358490566,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1724530424725,
-      "modifiedDate": 1725590237304,
-      "sizeInBytes": 499,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.22,
-        "wordCount": 66,
-        "characterCount": 333,
-        "nonWhitespaceCharacterCount": 154,
-        "newlineCount": 34
-      },
-      "frontmatter": {
-        "created": "2024-04-22 20:39",
-        "modified": "2024-08-25 04:41"
       }
     },
     "Ext/CSNotes/Blogs/程序员岗位.md": {
@@ -2477,6 +2446,37 @@
       "frontmatter": {
         "created": "2024-07-14 13:23",
         "modified": "2024-07-14 14:30"
+      }
+    },
+    "Ext/CSNotes/Blogs/编程项目.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 66,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.22,
+      "characterCount": 333,
+      "nonWhitespaceCharacterCount": 154,
+      "newlineCount": 34,
+      "readingTimeInMinutes": 0.15860377358490566,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1724530424725,
+      "modifiedDate": 1725590237304,
+      "sizeInBytes": 499,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.22,
+        "wordCount": 66,
+        "characterCount": 333,
+        "nonWhitespaceCharacterCount": 154,
+        "newlineCount": 34
+      },
+      "frontmatter": {
+        "created": "2024-04-22 20:39",
+        "modified": "2024-08-25 04:41"
       }
     },
     "Ext/CSNotes/Blogs/IT公司.md": {
@@ -2569,6 +2569,33 @@
         "modified": "2024-05-21 16:59"
       }
     },
+    "Ext/CSNotes/92_DevOps/开发工具.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 72,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.24,
+      "characterCount": 1404,
+      "nonWhitespaceCharacterCount": 787,
+      "newlineCount": 70,
+      "readingTimeInMinutes": 0.27169811320754716,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1721295649346,
+      "modifiedDate": 1733897481783,
+      "sizeInBytes": 1404,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.24,
+        "wordCount": 72,
+        "characterCount": 1404,
+        "nonWhitespaceCharacterCount": 787,
+        "newlineCount": 70
+      }
+    },
     "Ext/CSNotes/92_DevOps/正则表达式.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -2599,33 +2626,6 @@
         "title": "正则表达式",
         "created": "2024-11-28 16:20",
         "modified": "2024-11-28 16:20"
-      }
-    },
-    "Ext/CSNotes/92_DevOps/开发工具.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 72,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.24,
-      "characterCount": 1404,
-      "nonWhitespaceCharacterCount": 787,
-      "newlineCount": 70,
-      "readingTimeInMinutes": 0.27169811320754716,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1721295649346,
-      "modifiedDate": 1733897481783,
-      "sizeInBytes": 1404,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.24,
-        "wordCount": 72,
-        "characterCount": 1404,
-        "nonWhitespaceCharacterCount": 787,
-        "newlineCount": 70
       }
     },
     "Ext/CSNotes/92_DevOps/k8s.md": {
@@ -2694,31 +2694,35 @@
         "modified": "2024-05-21 16:59"
       }
     },
-    "Ext/CSNotes/92_DevOps/Tmux.md": {
+    "Ext/CSNotes/92_DevOps/Linux/crontab.md": {
       "isCountable": true,
       "targetNodeType": "file",
       "noteCount": 1,
-      "wordCount": 616,
+      "wordCount": 80,
       "wordCountTowardGoal": 0,
       "wordGoal": null,
-      "pageCount": 2.0533333333333332,
-      "characterCount": 4230,
-      "nonWhitespaceCharacterCount": 3083,
-      "newlineCount": 126,
-      "readingTimeInMinutes": 2.2730943396226415,
+      "pageCount": 0.26666666666666666,
+      "characterCount": 543,
+      "nonWhitespaceCharacterCount": 376,
+      "newlineCount": 36,
+      "readingTimeInMinutes": 0.23449056603773583,
       "linkCount": 0,
       "embedCount": 0,
       "aliases": null,
-      "createdDate": 1720794089024,
-      "modifiedDate": 1725590237302,
-      "sizeInBytes": 4288,
+      "createdDate": 1720793475869,
+      "modifiedDate": 1725590237327,
+      "sizeInBytes": 873,
       "sessionStart": {
         "noteCount": 1,
-        "pageCount": 2.0533333333333332,
-        "wordCount": 616,
-        "characterCount": 4230,
-        "nonWhitespaceCharacterCount": 3083,
-        "newlineCount": 126
+        "pageCount": 0.26666666666666666,
+        "wordCount": 80,
+        "characterCount": 543,
+        "nonWhitespaceCharacterCount": 376,
+        "newlineCount": 36
+      },
+      "frontmatter": {
+        "created": "2024-04-22 20:39",
+        "modified": "2024-05-21 16:59"
       }
     },
     "Ext/CSNotes/92_DevOps/Linux/命令行软件替代.md": {
@@ -2750,6 +2754,37 @@
       "frontmatter": {
         "created": "2024-07-25 17:45",
         "modified": "2024-08-25 21:46"
+      }
+    },
+    "Ext/CSNotes/92_DevOps/Linux/Shell编程.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 128,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.4266666666666667,
+      "characterCount": 1257,
+      "nonWhitespaceCharacterCount": 909,
+      "newlineCount": 69,
+      "readingTimeInMinutes": 0.392566037735849,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720792700424,
+      "modifiedDate": 1725590237326,
+      "sizeInBytes": 1431,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.4266666666666667,
+        "wordCount": 128,
+        "characterCount": 1257,
+        "nonWhitespaceCharacterCount": 909,
+        "newlineCount": 69
+      },
+      "frontmatter": {
+        "created": "2024-04-22 20:39",
+        "modified": "2024-05-21 16:59"
       }
     },
     "Ext/CSNotes/92_DevOps/Linux/stow.md": {
@@ -2785,68 +2820,6 @@
         "links": [
           "https://www.gnu.org/software/stow/"
         ]
-      }
-    },
-    "Ext/CSNotes/92_DevOps/Linux/crontab.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 80,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.26666666666666666,
-      "characterCount": 543,
-      "nonWhitespaceCharacterCount": 376,
-      "newlineCount": 36,
-      "readingTimeInMinutes": 0.23449056603773583,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720793475869,
-      "modifiedDate": 1725590237327,
-      "sizeInBytes": 873,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.26666666666666666,
-        "wordCount": 80,
-        "characterCount": 543,
-        "nonWhitespaceCharacterCount": 376,
-        "newlineCount": 36
-      },
-      "frontmatter": {
-        "created": "2024-04-22 20:39",
-        "modified": "2024-05-21 16:59"
-      }
-    },
-    "Ext/CSNotes/92_DevOps/Linux/Shell编程.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 128,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.4266666666666667,
-      "characterCount": 1257,
-      "nonWhitespaceCharacterCount": 909,
-      "newlineCount": 69,
-      "readingTimeInMinutes": 0.392566037735849,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720792700424,
-      "modifiedDate": 1725590237326,
-      "sizeInBytes": 1431,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.4266666666666667,
-        "wordCount": 128,
-        "characterCount": 1257,
-        "nonWhitespaceCharacterCount": 909,
-        "newlineCount": 69
-      },
-      "frontmatter": {
-        "created": "2024-04-22 20:39",
-        "modified": "2024-05-21 16:59"
       }
     },
     "Ext/CSNotes/92_DevOps/Linux/Linux发行版.md": {
@@ -2964,6 +2937,33 @@
         "modified": "2024-05-21 16:59"
       }
     },
+    "Ext/CSNotes/92_DevOps/Tmux.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 616,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 2.0533333333333332,
+      "characterCount": 4230,
+      "nonWhitespaceCharacterCount": 3083,
+      "newlineCount": 126,
+      "readingTimeInMinutes": 2.2730943396226415,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720794089024,
+      "modifiedDate": 1725590237302,
+      "sizeInBytes": 4288,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 2.0533333333333332,
+        "wordCount": 616,
+        "characterCount": 4230,
+        "nonWhitespaceCharacterCount": 3083,
+        "newlineCount": 126
+      }
+    },
     "Ext/CSNotes/92_DevOps/Lazygit.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -2996,6 +2996,37 @@
         "modified": "2024-09-28 21:51"
       }
     },
+    "Ext/CSNotes/92_DevOps/Ansible.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 39,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.13,
+      "characterCount": 304,
+      "nonWhitespaceCharacterCount": 249,
+      "newlineCount": 24,
+      "readingTimeInMinutes": 0.1312075471698113,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720793511262,
+      "modifiedDate": 1725590237300,
+      "sizeInBytes": 386,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.13,
+        "wordCount": 39,
+        "characterCount": 304,
+        "nonWhitespaceCharacterCount": 249,
+        "newlineCount": 24
+      },
+      "frontmatter": {
+        "created": "2024-04-22 20:39",
+        "modified": "2024-05-21 16:59"
+      }
+    },
     "Ext/CSNotes/92_DevOps/Jenkins.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -3021,6 +3052,37 @@
         "characterCount": 192,
         "nonWhitespaceCharacterCount": 144,
         "newlineCount": 27
+      },
+      "frontmatter": {
+        "created": "2024-04-22 20:39",
+        "modified": "2024-05-21 16:59"
+      }
+    },
+    "Ext/CSNotes/92_DevOps/Docker.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 15,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.05,
+      "characterCount": 216,
+      "nonWhitespaceCharacterCount": 179,
+      "newlineCount": 22,
+      "readingTimeInMinutes": 0.05660377358490566,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720793398005,
+      "modifiedDate": 1725590237300,
+      "sizeInBytes": 280,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.05,
+        "wordCount": 15,
+        "characterCount": 216,
+        "nonWhitespaceCharacterCount": 179,
+        "newlineCount": 22
       },
       "frontmatter": {
         "created": "2024-04-22 20:39",
@@ -3059,68 +3121,6 @@
         "links": [
           "https://git-scm.com/book/zh/v2"
         ]
-      }
-    },
-    "Ext/CSNotes/92_DevOps/Docker.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 15,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.05,
-      "characterCount": 216,
-      "nonWhitespaceCharacterCount": 179,
-      "newlineCount": 22,
-      "readingTimeInMinutes": 0.05660377358490566,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720793398005,
-      "modifiedDate": 1725590237300,
-      "sizeInBytes": 280,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.05,
-        "wordCount": 15,
-        "characterCount": 216,
-        "nonWhitespaceCharacterCount": 179,
-        "newlineCount": 22
-      },
-      "frontmatter": {
-        "created": "2024-04-22 20:39",
-        "modified": "2024-05-21 16:59"
-      }
-    },
-    "Ext/CSNotes/92_DevOps/Ansible.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 39,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.13,
-      "characterCount": 304,
-      "nonWhitespaceCharacterCount": 249,
-      "newlineCount": 24,
-      "readingTimeInMinutes": 0.1312075471698113,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720793511262,
-      "modifiedDate": 1725590237300,
-      "sizeInBytes": 386,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.13,
-        "wordCount": 39,
-        "characterCount": 304,
-        "nonWhitespaceCharacterCount": 249,
-        "newlineCount": 24
-      },
-      "frontmatter": {
-        "created": "2024-04-22 20:39",
-        "modified": "2024-05-21 16:59"
       }
     },
     "Ext/CSNotes/92_DevOps/Anaconda.md": {
@@ -3256,6 +3256,126 @@
         "modified": "2024-05-21 16:59"
       }
     },
+    "Ext/CSNotes/80_后端/Python/Python装饰器.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 45,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.15,
+      "characterCount": 326,
+      "nonWhitespaceCharacterCount": 268,
+      "newlineCount": 25,
+      "readingTimeInMinutes": 0.11660377358490566,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720792804999,
+      "modifiedDate": 1725590237312,
+      "sizeInBytes": 450,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.15,
+        "wordCount": 45,
+        "characterCount": 326,
+        "nonWhitespaceCharacterCount": 268,
+        "newlineCount": 25
+      },
+      "frontmatter": {
+        "created": "2024-04-22 20:39",
+        "modified": "2024-05-21 16:59"
+      }
+    },
+    "Ext/CSNotes/80_后端/Python/Python各种方法.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 143,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.4766666666666667,
+      "characterCount": 1260,
+      "nonWhitespaceCharacterCount": 924,
+      "newlineCount": 72,
+      "readingTimeInMinutes": 0.459811320754717,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720792868492,
+      "modifiedDate": 1725590237311,
+      "sizeInBytes": 1416,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.4766666666666667,
+        "wordCount": 143,
+        "characterCount": 1260,
+        "nonWhitespaceCharacterCount": 924,
+        "newlineCount": 72
+      },
+      "frontmatter": {
+        "created": "2024-04-22 20:39",
+        "modified": "2024-05-21 16:59"
+      }
+    },
+    "Ext/CSNotes/80_后端/Python/FastAPI.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 41,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.13666666666666666,
+      "characterCount": 372,
+      "nonWhitespaceCharacterCount": 313,
+      "newlineCount": 24,
+      "readingTimeInMinutes": 0.14762264150943397,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1721203423202,
+      "modifiedDate": 1725590237311,
+      "sizeInBytes": 380,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.13666666666666666,
+        "wordCount": 41,
+        "characterCount": 372,
+        "nonWhitespaceCharacterCount": 313,
+        "newlineCount": 24
+      }
+    },
+    "Ext/CSNotes/80_后端/Python/Django笔记.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 210,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.7,
+      "characterCount": 1434,
+      "nonWhitespaceCharacterCount": 1134,
+      "newlineCount": 79,
+      "readingTimeInMinutes": 0.5831698113207546,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1720793423516,
+      "modifiedDate": 1725590237310,
+      "sizeInBytes": 1752,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.7,
+        "wordCount": 210,
+        "characterCount": 1434,
+        "nonWhitespaceCharacterCount": 1134,
+        "newlineCount": 79
+      },
+      "frontmatter": {
+        "created": "2024-04-22 20:39",
+        "modified": "2024-05-21 16:59"
+      }
+    },
     "Ext/CSNotes/80_后端/Scala/Scala笔记.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -3346,33 +3466,6 @@
         "newlineCount": 23
       }
     },
-    "Ext/CSNotes/80_后端/Rust/serde.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 302,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 1.0066666666666666,
-      "characterCount": 3025,
-      "nonWhitespaceCharacterCount": 2186,
-      "newlineCount": 126,
-      "readingTimeInMinutes": 1.139622641509434,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1721121144974,
-      "modifiedDate": 1725590237319,
-      "sizeInBytes": 3025,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 1.0066666666666666,
-        "wordCount": 302,
-        "characterCount": 3025,
-        "nonWhitespaceCharacterCount": 2186,
-        "newlineCount": 126
-      }
-    },
     "Ext/CSNotes/80_后端/Rust/reqwest.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -3398,6 +3491,33 @@
         "characterCount": 500,
         "nonWhitespaceCharacterCount": 402,
         "newlineCount": 26
+      }
+    },
+    "Ext/CSNotes/80_后端/Rust/serde.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 302,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 1.0066666666666666,
+      "characterCount": 3025,
+      "nonWhitespaceCharacterCount": 2186,
+      "newlineCount": 126,
+      "readingTimeInMinutes": 1.139622641509434,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1721121144974,
+      "modifiedDate": 1725590237319,
+      "sizeInBytes": 3025,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 1.0066666666666666,
+        "wordCount": 302,
+        "characterCount": 3025,
+        "nonWhitespaceCharacterCount": 2186,
+        "newlineCount": 126
       }
     },
     "Ext/CSNotes/80_后端/Rust/clap.md": {
@@ -3542,126 +3662,6 @@
         "characterCount": 66,
         "nonWhitespaceCharacterCount": 48,
         "newlineCount": 10
-      }
-    },
-    "Ext/CSNotes/80_后端/Python/Python装饰器.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 45,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.15,
-      "characterCount": 326,
-      "nonWhitespaceCharacterCount": 268,
-      "newlineCount": 25,
-      "readingTimeInMinutes": 0.11660377358490566,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720792804999,
-      "modifiedDate": 1725590237312,
-      "sizeInBytes": 450,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.15,
-        "wordCount": 45,
-        "characterCount": 326,
-        "nonWhitespaceCharacterCount": 268,
-        "newlineCount": 25
-      },
-      "frontmatter": {
-        "created": "2024-04-22 20:39",
-        "modified": "2024-05-21 16:59"
-      }
-    },
-    "Ext/CSNotes/80_后端/Python/Python各种方法.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 143,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.4766666666666667,
-      "characterCount": 1260,
-      "nonWhitespaceCharacterCount": 924,
-      "newlineCount": 72,
-      "readingTimeInMinutes": 0.459811320754717,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720792868492,
-      "modifiedDate": 1725590237311,
-      "sizeInBytes": 1416,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.4766666666666667,
-        "wordCount": 143,
-        "characterCount": 1260,
-        "nonWhitespaceCharacterCount": 924,
-        "newlineCount": 72
-      },
-      "frontmatter": {
-        "created": "2024-04-22 20:39",
-        "modified": "2024-05-21 16:59"
-      }
-    },
-    "Ext/CSNotes/80_后端/Python/FastAPI.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 41,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.13666666666666666,
-      "characterCount": 372,
-      "nonWhitespaceCharacterCount": 313,
-      "newlineCount": 24,
-      "readingTimeInMinutes": 0.14762264150943397,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1721203423202,
-      "modifiedDate": 1725590237311,
-      "sizeInBytes": 380,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.13666666666666666,
-        "wordCount": 41,
-        "characterCount": 372,
-        "nonWhitespaceCharacterCount": 313,
-        "newlineCount": 24
-      }
-    },
-    "Ext/CSNotes/80_后端/Python/Django笔记.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 210,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.7,
-      "characterCount": 1434,
-      "nonWhitespaceCharacterCount": 1134,
-      "newlineCount": 79,
-      "readingTimeInMinutes": 0.5831698113207546,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1720793423516,
-      "modifiedDate": 1725590237310,
-      "sizeInBytes": 1752,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.7,
-        "wordCount": 210,
-        "characterCount": 1434,
-        "nonWhitespaceCharacterCount": 1134,
-        "newlineCount": 79
-      },
-      "frontmatter": {
-        "created": "2024-04-22 20:39",
-        "modified": "2024-05-21 16:59"
       }
     },
     "Ext/CSNotes/70_前端/前端笔记.md": {
@@ -4608,6 +4608,38 @@
         "newlineCount": 138
       }
     },
+    "42_Thoughts/OGSM.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 15,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.05,
+      "characterCount": 83,
+      "nonWhitespaceCharacterCount": 63,
+      "newlineCount": 10,
+      "readingTimeInMinutes": 0.04241509433962264,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1723195886413,
+      "modifiedDate": 1723196185930,
+      "sizeInBytes": 175,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.05,
+        "wordCount": 15,
+        "characterCount": 83,
+        "nonWhitespaceCharacterCount": 63,
+        "newlineCount": 10
+      },
+      "frontmatter": {
+        "title": "OGSM",
+        "created": "2024-08-09 17:31",
+        "modified": "2024-08-09 17:31"
+      }
+    },
     "42_Thoughts/领域.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -5145,38 +5177,6 @@
         "title": "三观",
         "created": "2023-05-17 14:01",
         "modified": "2024-07-31 15:03"
-      }
-    },
-    "42_Thoughts/OGSM.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 15,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.05,
-      "characterCount": 83,
-      "nonWhitespaceCharacterCount": 63,
-      "newlineCount": 10,
-      "readingTimeInMinutes": 0.04241509433962264,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1723195886413,
-      "modifiedDate": 1723196185930,
-      "sizeInBytes": 175,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.05,
-        "wordCount": 15,
-        "characterCount": 83,
-        "nonWhitespaceCharacterCount": 63,
-        "newlineCount": 10
-      },
-      "frontmatter": {
-        "title": "OGSM",
-        "created": "2024-08-09 17:31",
-        "modified": "2024-08-09 17:31"
       }
     },
     "42_Thoughts/5W2H.md": {
@@ -6306,6 +6306,38 @@
         ]
       }
     },
+    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-templater.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 128,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.4266666666666667,
+      "characterCount": 2022,
+      "nonWhitespaceCharacterCount": 1870,
+      "newlineCount": 24,
+      "readingTimeInMinutes": 0.4830188679245283,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1743990318655,
+      "modifiedDate": 1743991694961,
+      "sizeInBytes": 2112,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.4266666666666667,
+        "wordCount": 128,
+        "characterCount": 2022,
+        "nonWhitespaceCharacterCount": 1870,
+        "newlineCount": 24
+      },
+      "frontmatter": {
+        "title": "obsidian-templater",
+        "created": "2025-04-07 09:45",
+        "modified": "2025-04-07 09:45"
+      }
+    },
     "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-spaced-repetition.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -6347,38 +6379,6 @@
         "links": [
           "https://www.stephenmwangi.com/obsidian-spaced-repetition/"
         ]
-      }
-    },
-    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-templater.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 128,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.4266666666666667,
-      "characterCount": 2022,
-      "nonWhitespaceCharacterCount": 1870,
-      "newlineCount": 24,
-      "readingTimeInMinutes": 0.4830188679245283,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1743990318655,
-      "modifiedDate": 1743991694961,
-      "sizeInBytes": 2112,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.4266666666666667,
-        "wordCount": 128,
-        "characterCount": 2022,
-        "nonWhitespaceCharacterCount": 1870,
-        "newlineCount": 24
-      },
-      "frontmatter": {
-        "title": "obsidian-templater",
-        "created": "2025-04-07 09:45",
-        "modified": "2025-04-07 09:45"
       }
     },
     "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-quickadd.md": {
@@ -6459,46 +6459,6 @@
         ]
       }
     },
-    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-list-callouts.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 23,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.07666666666666666,
-      "characterCount": 154,
-      "nonWhitespaceCharacterCount": 89,
-      "newlineCount": 39,
-      "readingTimeInMinutes": 0.049547169811320756,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [
-        "obsidian-list-callouts"
-      ],
-      "createdDate": 1726997666277,
-      "modifiedDate": 1740041021151,
-      "sizeInBytes": 341,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.07666666666666666,
-        "wordCount": 23,
-        "characterCount": 154,
-        "nonWhitespaceCharacterCount": 89,
-        "newlineCount": 39
-      },
-      "frontmatter": {
-        "title": "List Callouts",
-        "created": "2024-09-22 17:34",
-        "modified": "2025-02-20 16:43",
-        "tags": [
-          "Obsidian/Plugin"
-        ],
-        "aliases": [
-          "obsidian-list-callouts"
-        ]
-      }
-    },
     "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-makemd.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -6539,6 +6499,46 @@
         ],
         "links": [
           "https://www.make.md"
+        ]
+      }
+    },
+    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-list-callouts.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 23,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.07666666666666666,
+      "characterCount": 154,
+      "nonWhitespaceCharacterCount": 89,
+      "newlineCount": 39,
+      "readingTimeInMinutes": 0.049547169811320756,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [
+        "obsidian-list-callouts"
+      ],
+      "createdDate": 1726997666277,
+      "modifiedDate": 1740041021151,
+      "sizeInBytes": 341,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.07666666666666666,
+        "wordCount": 23,
+        "characterCount": 154,
+        "nonWhitespaceCharacterCount": 89,
+        "newlineCount": 39
+      },
+      "frontmatter": {
+        "title": "List Callouts",
+        "created": "2024-09-22 17:34",
+        "modified": "2025-02-20 16:43",
+        "tags": [
+          "Obsidian/Plugin"
+        ],
+        "aliases": [
+          "obsidian-list-callouts"
         ]
       }
     },
@@ -6622,6 +6622,49 @@
         ]
       }
     },
+    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-excalidraw.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 221,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.7366666666666667,
+      "characterCount": 392,
+      "nonWhitespaceCharacterCount": 313,
+      "newlineCount": 28,
+      "readingTimeInMinutes": 0.4739245283018868,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [
+        "obsidian-excalidraw"
+      ],
+      "createdDate": 1731721528681,
+      "modifiedDate": 1740040878835,
+      "sizeInBytes": 977,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.7366666666666667,
+        "wordCount": 221,
+        "characterCount": 392,
+        "nonWhitespaceCharacterCount": 313,
+        "newlineCount": 28
+      },
+      "frontmatter": {
+        "title": "Excalidraw",
+        "created": "2024-11-16 09:45",
+        "modified": "2025-02-20 16:40",
+        "tags": [
+          "Obsidian/Plugin"
+        ],
+        "aliases": [
+          "obsidian-excalidraw"
+        ],
+        "links": [
+          "https://docs.excalidraw.com/"
+        ]
+      }
+    },
     "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-dataview.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -6665,49 +6708,6 @@
         ],
         "obsidianEditingMode": "source",
         "obsidianUIMode": "preview"
-      }
-    },
-    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-excalidraw.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 221,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.7366666666666667,
-      "characterCount": 392,
-      "nonWhitespaceCharacterCount": 313,
-      "newlineCount": 28,
-      "readingTimeInMinutes": 0.4739245283018868,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [
-        "obsidian-excalidraw"
-      ],
-      "createdDate": 1731721528681,
-      "modifiedDate": 1740040878835,
-      "sizeInBytes": 977,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.7366666666666667,
-        "wordCount": 221,
-        "characterCount": 392,
-        "nonWhitespaceCharacterCount": 313,
-        "newlineCount": 28
-      },
-      "frontmatter": {
-        "title": "Excalidraw",
-        "created": "2024-11-16 09:45",
-        "modified": "2025-02-20 16:40",
-        "tags": [
-          "Obsidian/Plugin"
-        ],
-        "aliases": [
-          "obsidian-excalidraw"
-        ],
-        "links": [
-          "https://docs.excalidraw.com/"
-        ]
       }
     },
     "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/obsidian-custom-sort.md": {
@@ -7471,38 +7471,6 @@
         "modified": "2024-10-22 16:55"
       }
     },
-    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian列表缩进.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 214,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.7133333333333334,
-      "characterCount": 815,
-      "nonWhitespaceCharacterCount": 530,
-      "newlineCount": 47,
-      "readingTimeInMinutes": 0.5149056603773585,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1725507999065,
-      "modifiedDate": 1740634383306,
-      "sizeInBytes": 1237,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.7133333333333334,
-        "wordCount": 214,
-        "characterCount": 815,
-        "nonWhitespaceCharacterCount": 530,
-        "newlineCount": 47
-      },
-      "frontmatter": {
-        "title": "Obsidian列表缩进",
-        "created": "2023-06-25 17:11",
-        "modified": "2024-07-31 15:06"
-      }
-    },
     "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -7539,6 +7507,38 @@
         "tags": [
           "linker-exclude"
         ]
+      }
+    },
+    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian列表缩进.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 214,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.7133333333333334,
+      "characterCount": 815,
+      "nonWhitespaceCharacterCount": 530,
+      "newlineCount": 47,
+      "readingTimeInMinutes": 0.5149056603773585,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1725507999065,
+      "modifiedDate": 1740634383306,
+      "sizeInBytes": 1237,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.7133333333333334,
+        "wordCount": 214,
+        "characterCount": 815,
+        "nonWhitespaceCharacterCount": 530,
+        "newlineCount": 47
+      },
+      "frontmatter": {
+        "title": "Obsidian列表缩进",
+        "created": "2023-06-25 17:11",
+        "modified": "2024-07-31 15:06"
       }
     },
     "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian-Tips.md": {
@@ -7646,6 +7646,41 @@
         "modified": "2024-08-08 17:16"
       }
     },
+    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian-Changelogs.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 152,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.5066666666666667,
+      "characterCount": 990,
+      "nonWhitespaceCharacterCount": 837,
+      "newlineCount": 36,
+      "readingTimeInMinutes": 0.48135849056603774,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1731465667073,
+      "modifiedDate": 1731471251945,
+      "sizeInBytes": 1222,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.5066666666666667,
+        "wordCount": 152,
+        "characterCount": 990,
+        "nonWhitespaceCharacterCount": 837,
+        "newlineCount": 36
+      },
+      "frontmatter": {
+        "title": "Obsidian-Changelogs",
+        "created": "2024-11-13 10:41",
+        "modified": "2024-11-13 10:41",
+        "links": [
+          "https://obsidian.md/changelog"
+        ]
+      }
+    },
     "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian-GTD类插件.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -7680,41 +7715,6 @@
         "modified": "2024-11-11 14:25",
         "aliases": [
           "Obsidian GTD"
-        ]
-      }
-    },
-    "40_Pages/60_经验实践/效率办公/笔记管理/Obsidian/Obsidian-Changelogs.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 152,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.5066666666666667,
-      "characterCount": 990,
-      "nonWhitespaceCharacterCount": 837,
-      "newlineCount": 36,
-      "readingTimeInMinutes": 0.48135849056603774,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1731465667073,
-      "modifiedDate": 1731471251945,
-      "sizeInBytes": 1222,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.5066666666666667,
-        "wordCount": 152,
-        "characterCount": 990,
-        "nonWhitespaceCharacterCount": 837,
-        "newlineCount": 36
-      },
-      "frontmatter": {
-        "title": "Obsidian-Changelogs",
-        "created": "2024-11-13 10:41",
-        "modified": "2024-11-13 10:41",
-        "links": [
-          "https://obsidian.md/changelog"
         ]
       }
     },
@@ -8269,6 +8269,72 @@
         "kanban-plugin": "board"
       }
     },
+    "40_Pages/60_经验实践/效率办公/信息管理/影视.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 22,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.07333333333333333,
+      "characterCount": 208,
+      "nonWhitespaceCharacterCount": 154,
+      "newlineCount": 45,
+      "readingTimeInMinutes": 0.047547169811320754,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1722171436463,
+      "modifiedDate": 1724154365201,
+      "sizeInBytes": 345,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.07333333333333333,
+        "wordCount": 22,
+        "characterCount": 208,
+        "nonWhitespaceCharacterCount": 154,
+        "newlineCount": 45
+      },
+      "frontmatter": {
+        "title": "影视",
+        "created": "2024-07-28 20:57",
+        "modified": "2024-07-31 15:06",
+        "kanban-plugin": "board"
+      }
+    },
+    "40_Pages/60_经验实践/效率办公/信息管理/游戏.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 19,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.06333333333333334,
+      "characterCount": 168,
+      "nonWhitespaceCharacterCount": 129,
+      "newlineCount": 33,
+      "readingTimeInMinutes": 0.04332075471698113,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1722171494856,
+      "modifiedDate": 1724154372385,
+      "sizeInBytes": 297,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.06333333333333334,
+        "wordCount": 19,
+        "characterCount": 168,
+        "nonWhitespaceCharacterCount": 129,
+        "newlineCount": 33
+      },
+      "frontmatter": {
+        "title": "游戏",
+        "created": "2024-07-28 20:58",
+        "modified": "2024-07-31 15:06",
+        "kanban-plugin": "board"
+      }
+    },
     "40_Pages/60_经验实践/效率办公/信息管理/记账.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -8344,39 +8410,6 @@
         "kanban-plugin": "board"
       }
     },
-    "40_Pages/60_经验实践/效率办公/信息管理/游戏.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 19,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.06333333333333334,
-      "characterCount": 168,
-      "nonWhitespaceCharacterCount": 129,
-      "newlineCount": 33,
-      "readingTimeInMinutes": 0.04332075471698113,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1722171494856,
-      "modifiedDate": 1724154372385,
-      "sizeInBytes": 297,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.06333333333333334,
-        "wordCount": 19,
-        "characterCount": 168,
-        "nonWhitespaceCharacterCount": 129,
-        "newlineCount": 33
-      },
-      "frontmatter": {
-        "title": "游戏",
-        "created": "2024-07-28 20:58",
-        "modified": "2024-07-31 15:06",
-        "kanban-plugin": "board"
-      }
-    },
     "40_Pages/60_经验实践/效率办公/信息管理/文件管理.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -8409,36 +8442,33 @@
         "modified": "2024-07-31 15:06"
       }
     },
-    "40_Pages/60_经验实践/效率办公/信息管理/影视.md": {
+    "40_Pages/60_经验实践/效率办公/信息管理/图片.md": {
       "isCountable": true,
       "targetNodeType": "file",
       "noteCount": 1,
-      "wordCount": 22,
+      "wordCount": 10,
       "wordCountTowardGoal": 0,
       "wordGoal": null,
-      "pageCount": 0.07333333333333333,
-      "characterCount": 208,
-      "nonWhitespaceCharacterCount": 154,
-      "newlineCount": 45,
-      "readingTimeInMinutes": 0.047547169811320754,
+      "pageCount": 0.03333333333333333,
+      "characterCount": 137,
+      "nonWhitespaceCharacterCount": 108,
+      "newlineCount": 25,
+      "readingTimeInMinutes": 0.023547169811320753,
       "linkCount": 0,
       "embedCount": 0,
       "aliases": null,
-      "createdDate": 1722171436463,
-      "modifiedDate": 1724154365201,
-      "sizeInBytes": 345,
+      "createdDate": 1724154344840,
+      "modifiedDate": 1724154344841,
+      "sizeInBytes": 183,
       "sessionStart": {
         "noteCount": 1,
-        "pageCount": 0.07333333333333333,
-        "wordCount": 22,
-        "characterCount": 208,
-        "nonWhitespaceCharacterCount": 154,
-        "newlineCount": 45
+        "pageCount": 0.03333333333333333,
+        "wordCount": 10,
+        "characterCount": 137,
+        "nonWhitespaceCharacterCount": 108,
+        "newlineCount": 25
       },
       "frontmatter": {
-        "title": "影视",
-        "created": "2024-07-28 20:57",
-        "modified": "2024-07-31 15:06",
         "kanban-plugin": "board"
       }
     },
@@ -8472,36 +8502,6 @@
         "title": "密码管理",
         "created": "2024-07-28 20:59",
         "modified": "2024-07-31 15:06",
-        "kanban-plugin": "board"
-      }
-    },
-    "40_Pages/60_经验实践/效率办公/信息管理/图片.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 10,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.03333333333333333,
-      "characterCount": 137,
-      "nonWhitespaceCharacterCount": 108,
-      "newlineCount": 25,
-      "readingTimeInMinutes": 0.023547169811320753,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1724154344840,
-      "modifiedDate": 1724154344841,
-      "sizeInBytes": 183,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.03333333333333333,
-        "wordCount": 10,
-        "characterCount": 137,
-        "nonWhitespaceCharacterCount": 108,
-        "newlineCount": 25
-      },
-      "frontmatter": {
         "kanban-plugin": "board"
       }
     },
@@ -11297,6 +11297,38 @@
         "kanban-plugin": "board"
       }
     },
+    "40_Pages/10_常识通识/历史时代.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 75,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.25,
+      "characterCount": 204,
+      "nonWhitespaceCharacterCount": 159,
+      "newlineCount": 12,
+      "readingTimeInMinutes": 0.17483018867924527,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1716281987000,
+      "modifiedDate": 1722409602464,
+      "sizeInBytes": 442,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.25,
+        "wordCount": 75,
+        "characterCount": 204,
+        "nonWhitespaceCharacterCount": 159,
+        "newlineCount": 12
+      },
+      "frontmatter": {
+        "title": "历史时代",
+        "created": "2024-04-22 20:39",
+        "modified": "2024-07-31 15:06"
+      }
+    },
     "40_Pages/10_常识通识/建筑设计.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -11361,70 +11393,6 @@
         "modified": "2024-08-06 21:53"
       }
     },
-    "40_Pages/10_常识通识/各洲主要国家.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 37,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.12333333333333334,
-      "characterCount": 169,
-      "nonWhitespaceCharacterCount": 59,
-      "newlineCount": 25,
-      "readingTimeInMinutes": 0.074,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1716281987000,
-      "modifiedDate": 1722409602464,
-      "sizeInBytes": 333,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.12333333333333334,
-        "wordCount": 37,
-        "characterCount": 169,
-        "nonWhitespaceCharacterCount": 59,
-        "newlineCount": 25
-      },
-      "frontmatter": {
-        "title": "各洲主要国家",
-        "created": "2023-06-08 18:11",
-        "modified": "2024-07-31 15:06"
-      }
-    },
-    "40_Pages/10_常识通识/历史时代.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 75,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.25,
-      "characterCount": 204,
-      "nonWhitespaceCharacterCount": 159,
-      "newlineCount": 12,
-      "readingTimeInMinutes": 0.17483018867924527,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1716281987000,
-      "modifiedDate": 1722409602464,
-      "sizeInBytes": 442,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.25,
-        "wordCount": 75,
-        "characterCount": 204,
-        "nonWhitespaceCharacterCount": 159,
-        "newlineCount": 12
-      },
-      "frontmatter": {
-        "title": "历史时代",
-        "created": "2024-04-22 20:39",
-        "modified": "2024-07-31 15:06"
-      }
-    },
     "40_Pages/10_常识通识/交通工具.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -11455,6 +11423,38 @@
         "title": "交通工具",
         "created": "2024-12-18 10:20",
         "modified": "2024-12-18 10:21"
+      }
+    },
+    "40_Pages/10_常识通识/各洲主要国家.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 37,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.12333333333333334,
+      "characterCount": 169,
+      "nonWhitespaceCharacterCount": 59,
+      "newlineCount": 25,
+      "readingTimeInMinutes": 0.074,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1716281987000,
+      "modifiedDate": 1722409602464,
+      "sizeInBytes": 333,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.12333333333333334,
+        "wordCount": 37,
+        "characterCount": 169,
+        "nonWhitespaceCharacterCount": 59,
+        "newlineCount": 25
+      },
+      "frontmatter": {
+        "title": "各洲主要国家",
+        "created": "2023-06-08 18:11",
+        "modified": "2024-07-31 15:06"
       }
     },
     "40_Pages/10_常识通识/中国近现代史.md": {
@@ -11695,38 +11695,6 @@
         "modified": "2024-11-20 14:32"
       }
     },
-    "30_Jottings/金钱观.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 228,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.76,
-      "characterCount": 307,
-      "nonWhitespaceCharacterCount": 262,
-      "newlineCount": 24,
-      "readingTimeInMinutes": 0.456,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1725507999060,
-      "modifiedDate": 1725507999061,
-      "sizeInBytes": 852,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.76,
-        "wordCount": 228,
-        "characterCount": 307,
-        "nonWhitespaceCharacterCount": 262,
-        "newlineCount": 24
-      },
-      "frontmatter": {
-        "title": "金钱观",
-        "created": "2024-08-06 21:38",
-        "modified": "2024-08-06 21:38"
-      }
-    },
     "30_Jottings/谈电动汽车.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -11757,6 +11725,38 @@
         "title": "谈电动汽车",
         "created": "2024-09-27 19:25",
         "modified": "2024-09-27 19:25"
+      }
+    },
+    "30_Jottings/金钱观.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 228,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.76,
+      "characterCount": 307,
+      "nonWhitespaceCharacterCount": 262,
+      "newlineCount": 24,
+      "readingTimeInMinutes": 0.456,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1725507999060,
+      "modifiedDate": 1725507999061,
+      "sizeInBytes": 852,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.76,
+        "wordCount": 228,
+        "characterCount": 307,
+        "nonWhitespaceCharacterCount": 262,
+        "newlineCount": 24
+      },
+      "frontmatter": {
+        "title": "金钱观",
+        "created": "2024-08-06 21:38",
+        "modified": "2024-08-06 21:38"
       }
     },
     "30_Jottings/行为决策影响因素.md": {
@@ -11821,6 +11821,38 @@
         "title": "答题技巧",
         "created": "2025-03-11 07:28",
         "modified": "2025-03-11 07:29"
+      }
+    },
+    "30_Jottings/人的弱点.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 31,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.10333333333333333,
+      "characterCount": 59,
+      "nonWhitespaceCharacterCount": 40,
+      "newlineCount": 11,
+      "readingTimeInMinutes": 0.062,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1732526415239,
+      "modifiedDate": 1732526415239,
+      "sizeInBytes": 205,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.10333333333333333,
+        "wordCount": 31,
+        "characterCount": 59,
+        "nonWhitespaceCharacterCount": 40,
+        "newlineCount": 11
+      },
+      "frontmatter": {
+        "title": "人的弱点",
+        "created": "2024-11-11 17:17",
+        "modified": "2024-11-11 17:17"
       }
     },
     "30_Jottings/狼蛛sc680鼠标评价.md": {
@@ -11952,36 +11984,36 @@
         "modified": "2024-10-13 17:20"
       }
     },
-    "30_Jottings/人的弱点.md": {
+    "30_Jottings/sex.md": {
       "isCountable": true,
       "targetNodeType": "file",
       "noteCount": 1,
-      "wordCount": 31,
+      "wordCount": 251,
       "wordCountTowardGoal": 0,
       "wordGoal": null,
-      "pageCount": 0.10333333333333333,
-      "characterCount": 59,
-      "nonWhitespaceCharacterCount": 40,
-      "newlineCount": 11,
-      "readingTimeInMinutes": 0.062,
+      "pageCount": 0.8366666666666667,
+      "characterCount": 346,
+      "nonWhitespaceCharacterCount": 288,
+      "newlineCount": 28,
+      "readingTimeInMinutes": 0.502,
       "linkCount": 0,
       "embedCount": 0,
       "aliases": null,
-      "createdDate": 1732526415239,
-      "modifiedDate": 1732526415239,
-      "sizeInBytes": 205,
+      "createdDate": 1722836203090,
+      "modifiedDate": 1730362691215,
+      "sizeInBytes": 921,
       "sessionStart": {
         "noteCount": 1,
-        "pageCount": 0.10333333333333333,
-        "wordCount": 31,
-        "characterCount": 59,
-        "nonWhitespaceCharacterCount": 40,
-        "newlineCount": 11
+        "pageCount": 0.8366666666666667,
+        "wordCount": 251,
+        "characterCount": 346,
+        "nonWhitespaceCharacterCount": 288,
+        "newlineCount": 28
       },
       "frontmatter": {
-        "title": "人的弱点",
-        "created": "2024-11-11 17:17",
-        "modified": "2024-11-11 17:17"
+        "title": "性",
+        "created": "2024-08-05 13:36",
+        "modified": "2024-10-31 16:17"
       }
     },
     "30_Jottings/两性择偶偏好.md": {
@@ -12014,38 +12046,6 @@
         "title": "两性择偶偏好",
         "created": "2024-08-28 14:57",
         "modified": "2024-08-28 14:57"
-      }
-    },
-    "30_Jottings/sex.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 251,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.8366666666666667,
-      "characterCount": 346,
-      "nonWhitespaceCharacterCount": 288,
-      "newlineCount": 28,
-      "readingTimeInMinutes": 0.502,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1722836203090,
-      "modifiedDate": 1730362691215,
-      "sizeInBytes": 921,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.8366666666666667,
-        "wordCount": 251,
-        "characterCount": 346,
-        "nonWhitespaceCharacterCount": 288,
-        "newlineCount": 28
-      },
-      "frontmatter": {
-        "title": "性",
-        "created": "2024-08-05 13:36",
-        "modified": "2024-10-31 16:17"
       }
     },
     "30_Jottings/jotting-index.md": {
@@ -12474,38 +12474,6 @@
         "modified": "2024-09-21 17:10"
       }
     },
-    "30_Jottings/202409121825.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 235,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.7833333333333333,
-      "characterCount": 321,
-      "nonWhitespaceCharacterCount": 268,
-      "newlineCount": 29,
-      "readingTimeInMinutes": 0.47,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1726136720793,
-      "modifiedDate": 1726136818730,
-      "sizeInBytes": 895,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.7833333333333333,
-        "wordCount": 235,
-        "characterCount": 321,
-        "nonWhitespaceCharacterCount": 268,
-        "newlineCount": 29
-      },
-      "frontmatter": {
-        "title": "浅淡职业规划",
-        "created": "2024-09-12 18:25",
-        "modified": "2024-09-12 18:25"
-      }
-    },
     "30_Jottings/202408151806.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -12536,6 +12504,38 @@
         "title": "谈35岁危机",
         "created": "2024-08-15 18:06",
         "modified": "2024-08-15 18:28"
+      }
+    },
+    "30_Jottings/202409121825.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 235,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.7833333333333333,
+      "characterCount": 321,
+      "nonWhitespaceCharacterCount": 268,
+      "newlineCount": 29,
+      "readingTimeInMinutes": 0.47,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1726136720793,
+      "modifiedDate": 1726136818730,
+      "sizeInBytes": 895,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.7833333333333333,
+        "wordCount": 235,
+        "characterCount": 321,
+        "nonWhitespaceCharacterCount": 268,
+        "newlineCount": 29
+      },
+      "frontmatter": {
+        "title": "浅淡职业规划",
+        "created": "2024-09-12 18:25",
+        "modified": "2024-09-12 18:25"
       }
     },
     "30_Jottings/202408091703.md": {
@@ -12661,6 +12661,33 @@
         "newlineCount": 20
       }
     },
+    "20_Private/Moments.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 592,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 1.9733333333333334,
+      "characterCount": 1482,
+      "nonWhitespaceCharacterCount": 1264,
+      "newlineCount": 75,
+      "readingTimeInMinutes": 1.2655849056603774,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1726056574442,
+      "modifiedDate": 1746623868250,
+      "sizeInBytes": 2580,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 1.9733333333333334,
+        "wordCount": 592,
+        "characterCount": 1482,
+        "nonWhitespaceCharacterCount": 1264,
+        "newlineCount": 75
+      }
+    },
     "20_Private/journal-index.md": {
       "isCountable": true,
       "targetNodeType": "file",
@@ -12722,60 +12749,6 @@
       },
       "frontmatter": {
         "kanban-plugin": "board"
-      }
-    },
-    "20_Private/Moments.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 592,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 1.9733333333333334,
-      "characterCount": 1482,
-      "nonWhitespaceCharacterCount": 1264,
-      "newlineCount": 75,
-      "readingTimeInMinutes": 1.2655849056603774,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1726056574442,
-      "modifiedDate": 1746623868250,
-      "sizeInBytes": 2580,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 1.9733333333333334,
-        "wordCount": 592,
-        "characterCount": 1482,
-        "nonWhitespaceCharacterCount": 1264,
-        "newlineCount": 75
-      }
-    },
-    "20_Private/Insights.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 961,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 3.203333333333333,
-      "characterCount": 1947,
-      "nonWhitespaceCharacterCount": 1704,
-      "newlineCount": 91,
-      "readingTimeInMinutes": 2.0053584905660378,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1726043791962,
-      "modifiedDate": 1746604061082,
-      "sizeInBytes": 3833,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 3.203333333333333,
-        "wordCount": 961,
-        "characterCount": 1947,
-        "nonWhitespaceCharacterCount": 1704,
-        "newlineCount": 91
       }
     },
     "20_Private/Journals/2025/2025.md": {
@@ -13103,6 +13076,60 @@
         "editor-width": 80
       }
     },
+    "20_Private/Insights.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 961,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 3.203333333333333,
+      "characterCount": 1947,
+      "nonWhitespaceCharacterCount": 1704,
+      "newlineCount": 91,
+      "readingTimeInMinutes": 2.0053584905660378,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1726043791962,
+      "modifiedDate": 1746604061082,
+      "sizeInBytes": 3833,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 3.203333333333333,
+        "wordCount": 961,
+        "characterCount": 1947,
+        "nonWhitespaceCharacterCount": 1704,
+        "newlineCount": 91
+      }
+    },
+    "20_Private/Finance/2024.ledger": {
+      "isCountable": false,
+      "targetNodeType": "file",
+      "noteCount": 0,
+      "wordCount": 0,
+      "wordCountTowardGoal": 0,
+      "wordGoal": 0,
+      "pageCount": 0,
+      "characterCount": 0,
+      "nonWhitespaceCharacterCount": 0,
+      "newlineCount": 0,
+      "readingTimeInMinutes": 0,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": [],
+      "createdDate": 1735627131364,
+      "modifiedDate": 1735627131364,
+      "sizeInBytes": 7493,
+      "sessionStart": {
+        "noteCount": 0,
+        "pageCount": 0,
+        "wordCount": 0,
+        "characterCount": 0,
+        "nonWhitespaceCharacterCount": 0,
+        "newlineCount": 0
+      }
+    },
     "20_Private/Finance/transactions.ledger": {
       "isCountable": false,
       "targetNodeType": "file",
@@ -13121,33 +13148,6 @@
       "createdDate": 1743670786318,
       "modifiedDate": 1743670786318,
       "sizeInBytes": 188,
-      "sessionStart": {
-        "noteCount": 0,
-        "pageCount": 0,
-        "wordCount": 0,
-        "characterCount": 0,
-        "nonWhitespaceCharacterCount": 0,
-        "newlineCount": 0
-      }
-    },
-    "20_Private/Finance/options.ledger": {
-      "isCountable": false,
-      "targetNodeType": "file",
-      "noteCount": 0,
-      "wordCount": 0,
-      "wordCountTowardGoal": 0,
-      "wordGoal": 0,
-      "pageCount": 0,
-      "characterCount": 0,
-      "nonWhitespaceCharacterCount": 0,
-      "newlineCount": 0,
-      "readingTimeInMinutes": 0,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": [],
-      "createdDate": 1743672800618,
-      "modifiedDate": 1743672800618,
-      "sizeInBytes": 1283,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -13184,7 +13184,7 @@
         "newlineCount": 0
       }
     },
-    "20_Private/Finance/2024.ledger": {
+    "20_Private/Finance/options.ledger": {
       "isCountable": false,
       "targetNodeType": "file",
       "noteCount": 0,
@@ -13199,9 +13199,9 @@
       "linkCount": 0,
       "embedCount": 0,
       "aliases": [],
-      "createdDate": 1735627131364,
-      "modifiedDate": 1735627131364,
-      "sizeInBytes": 7493,
+      "createdDate": 1743672800618,
+      "modifiedDate": 1743672800618,
+      "sizeInBytes": 1283,
       "sessionStart": {
         "noteCount": 0,
         "pageCount": 0,
@@ -13437,6 +13437,33 @@
         "title": "sync",
         "created": "2024-11-12 11:02",
         "modified": "2024-12-05 09:42"
+      }
+    },
+    "10_Inbox/202505070942.md": {
+      "isCountable": true,
+      "targetNodeType": "file",
+      "noteCount": 1,
+      "wordCount": 37,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 0.12333333333333334,
+      "characterCount": 102,
+      "nonWhitespaceCharacterCount": 71,
+      "newlineCount": 8,
+      "readingTimeInMinutes": 0.08464150943396226,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1746582152140,
+      "modifiedDate": 1746582164111,
+      "sizeInBytes": 174,
+      "sessionStart": {
+        "noteCount": 1,
+        "pageCount": 0.12333333333333334,
+        "wordCount": 37,
+        "characterCount": 102,
+        "nonWhitespaceCharacterCount": 71,
+        "newlineCount": 8
       }
     },
     "10_Inbox/Local/未命名.canvas": {
@@ -13676,33 +13703,6 @@
         "title": "202501131723",
         "created": "2025-01-13 17:23",
         "modified": "2025-01-13 17:24"
-      }
-    },
-    "10_Inbox/202505070942.md": {
-      "isCountable": true,
-      "targetNodeType": "file",
-      "noteCount": 1,
-      "wordCount": 37,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 0.12333333333333334,
-      "characterCount": 102,
-      "nonWhitespaceCharacterCount": 71,
-      "newlineCount": 8,
-      "readingTimeInMinutes": 0.08464150943396226,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1746582152140,
-      "modifiedDate": 1746582164111,
-      "sizeInBytes": 174,
-      "sessionStart": {
-        "noteCount": 1,
-        "pageCount": 0.12333333333333334,
-        "wordCount": 37,
-        "characterCount": 102,
-        "nonWhitespaceCharacterCount": 71,
-        "newlineCount": 8
       }
     }
   }

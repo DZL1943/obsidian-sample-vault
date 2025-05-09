@@ -156,7 +156,7 @@
         "reserved"
       ],
       "enabled": true,
-      "delay": "5"
+      "delay": "default"
     },
     {
       "id": "cm-chs-patch",
@@ -424,7 +424,7 @@
         "deprecated"
       ],
       "enabled": true,
-      "delay": "5"
+      "delay": "10"
     },
     {
       "id": "mysnippets-plugin",
@@ -446,7 +446,7 @@
         "beta"
       ],
       "enabled": true,
-      "delay": "",
+      "delay": "5",
       "note": ""
     },
     {
@@ -534,7 +534,7 @@
       "tags": [
         "optional"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "15"
     },
     {
@@ -780,17 +780,6 @@
       "delay": "5"
     },
     {
-      "id": "open-sidebar-on-hover",
-      "name": "Open Sidebar on Hover",
-      "desc": "Opens the sidebar by hovering over it.",
-      "group": "1",
-      "tags": [
-        "pending"
-      ],
-      "enabled": false,
-      "delay": "5"
-    },
-    {
       "id": "pdf-plus",
       "name": "PDF++",
       "desc": "The most Obsidian-native PDF annotation tool ever.",
@@ -886,7 +875,7 @@
       "tags": [
         "optional"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "5"
     },
     {
@@ -1091,8 +1080,8 @@
       "tags": [
         "optional"
       ],
-      "enabled": true,
-      "delay": "10",
+      "enabled": false,
+      "delay": "15",
       "note": ""
     },
     {
@@ -1147,6 +1136,16 @@
       ],
       "enabled": false,
       "delay": "10",
+      "note": ""
+    },
+    {
+      "id": "quick-peek-sidebar",
+      "name": "Quick Peek Sidebar",
+      "desc": "Opens the left and/or right side panel by hovering over it.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
       "note": ""
     }
   ],
