@@ -8,7 +8,7 @@ body {
   --italic-color: var(--color-orange);
   --bold-color: var(--color-red);
   --code-normal: var(--color-pink);
-  --caret-color: var(--color-cyan);
+  /* --caret-color: var(--color-cyan); */
   --file-line-width: 85vw;
   --embed-max-height: unset;
 }

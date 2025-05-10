@@ -557,7 +557,7 @@
         "optional"
       ],
       "enabled": true,
-      "delay": "default"
+      "delay": "5"
     },
     {
       "id": "obsidian-hover-editor",
