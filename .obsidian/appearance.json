@@ -5,7 +5,7 @@
   "monospaceFontFamily": "Menlo,Monaco",
   "baseFontSize": 18,
   "baseFontSizeAction": true,
-  "translucency": false,
+  "translucency": true,
   "theme": "system",
   "enabledCssSnippets": [
     "font",

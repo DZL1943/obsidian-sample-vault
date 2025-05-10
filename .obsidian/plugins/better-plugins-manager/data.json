@@ -178,7 +178,7 @@
         "required"
       ],
       "enabled": true,
-      "delay": "5"
+      "delay": ""
     },
     {
       "id": "code-styler",
@@ -222,7 +222,7 @@
         "recommended"
       ],
       "enabled": true,
-      "delay": "10"
+      "delay": ""
     },
     {
       "id": "easy-typing-obsidian",
@@ -266,7 +266,7 @@
         "required"
       ],
       "enabled": true,
-      "delay": "5"
+      "delay": ""
     },
     {
       "id": "find-unlinked-files",
