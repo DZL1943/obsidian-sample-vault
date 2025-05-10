@@ -124,7 +124,14 @@
   ],
   "rightRibbon": [],
   "titleBar": [],
-  "statusBar": [],
+  "statusBar": [
+    {
+      "id": "app:toggle-ribbon",
+      "icon": "lucide-toggle-left",
+      "name": "显示/隐藏功能区",
+      "mode": "any"
+    }
+  ],
   "pageHeader": [
     {
       "id": "templater-obsidian:insert-templater",
