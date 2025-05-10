@@ -15,6 +15,10 @@ body {
   --embed-max-height: unset;
 }
 
+/* .theme-light {} */
+
+/* .theme-dark {} */
+
 .cm-strikethrough,
 del {
   text-decoration-color: var(--text-faint);
@@ -26,8 +30,8 @@ u {
   text-decoration-thickness: 3px;
 }
 
-ul > li.task-list-item[data-task="x"],
-ul > li.task-list-item[data-task="X"] {
+ul>li.task-list-item[data-task="x"],
+ul>li.task-list-item[data-task="X"] {
   text-decoration: none;
 }
 
@@ -39,6 +43,7 @@ ul > li.task-list-item[data-task="X"] {
 .cm-formatting.cm-formatting-list.cm-formatting-list-ul {
   padding-left: 0;
 }
+
 .cm-formatting.cm-formatting-list.cm-formatting-list-ol {
   padding-left: 0;
 }
@@ -60,12 +65,20 @@ ul > li.task-list-item[data-task="X"] {
 /* ========== ========== */
 .side-dock-actions {
   height: 100%;
+  justify-content: flex-start;
 }
 
-body:not(.is-mobile) .side-dock-actions > *:nth-last-child(3) {
-  margin-top: auto;
+div[aria-label="打开其他仓库"] {
+  margin-top: auto !important;
+  order: 997;
 }
 
-/* .theme-light {} */
+div[aria-label="查看帮助"] {
+  margin-top: auto !important;
+  order: 998;
+}
 
-/* .theme-dark {} */
+div[aria-label="打开设置"] {
+  margin-top: auto !important;
+  order: 999;
+}

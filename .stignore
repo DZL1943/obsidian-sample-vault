@@ -2,6 +2,7 @@
 (?d).DS_Store
 .git
 .trash/
+.obsidian_test/
 [lL]ocal/
 /[eE]xt/
 未命名*
