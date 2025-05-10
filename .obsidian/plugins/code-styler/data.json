@@ -306,7 +306,7 @@
       },
       "gutter": {
         "highlight": true,
-        "activeLine": false
+        "activeLine": true
       },
       "header": {
         "title": {
@@ -333,7 +333,7 @@
         "foldPlaceholder": ""
       },
       "highlights": {
-        "activeCodeblockLine": false,
+        "activeCodeblockLine": true,
         "activeEditorLine": true
       },
       "inline": {
@@ -347,7 +347,7 @@
         "titleFontWeight": 8
       },
       "advanced": {
-        "gradientHighlights": false,
+        "gradientHighlights": true,
         "gradientHighlightsColourStop": "70%",
         "languageBorderColour": false,
         "languageBorderWidth": 5,

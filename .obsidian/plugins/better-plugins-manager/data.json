@@ -1147,6 +1147,16 @@
       "enabled": false,
       "delay": "",
       "note": ""
+    },
+    {
+      "id": "codeblock-customizer",
+      "name": "Codeblock Customizer",
+      "desc": "This Obsidian plugin lets you customize your codeblocks in editing, and reading mode as well.",
+      "group": "2",
+      "tags": [],
+      "enabled": true,
+      "delay": "5",
+      "note": ""
     }
   ],
   "HIDES": []
