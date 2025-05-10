@@ -1,5 +1,10 @@
 [
+  "cmdr",
+  "obsidian-advanced-uri",
+  "obsidian-front-matter-title-plugin",
   "obsidian-outliner",
-  "lazy-plugins",
-  "obsidian-advanced-uri"
+  "omnisearch",
+  "darlal-switcher-plus",
+  "solve",
+  "virtual-linker"
 ]
