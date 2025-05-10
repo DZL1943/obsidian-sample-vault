@@ -74,11 +74,9 @@ div[aria-label="打开其他仓库"] {
 }
 
 div[aria-label="查看帮助"] {
-  margin-top: auto !important;
   order: 998;
 }
 
 div[aria-label="打开设置"] {
-  margin-top: auto !important;
   order: 999;
 }
