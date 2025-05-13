@@ -1,0 +1,82 @@
+{
+  "confirmDeletion": true,
+  "showAddCommand": true,
+  "debug": false,
+  "editorMenu": [
+    {
+      "id": "editing-toolbar:hide-show-menu",
+      "icon": "cMenuToolbar",
+      "name": "Editing Toolbar: Hide/show ",
+      "mode": "any"
+    },
+    {
+      "id": "show-whitespace-cm6:whitespace-toggle",
+      "icon": "pilcrow",
+      "name": "Show Whitespace: Toggle Show Whitespace",
+      "mode": "any"
+    },
+    {
+      "id": "obsidian-linter:lint-file",
+      "icon": "lint-file",
+      "name": "Linter: 格式化当前文件",
+      "mode": "any"
+    }
+  ],
+  "fileMenu": [
+    {
+      "id": "refresh-preview:refresh-preview",
+      "icon": "refresh-cw",
+      "name": "Refresh Preview: Refresh",
+      "mode": "any"
+    }
+  ],
+  "leftRibbon": [],
+  "rightRibbon": [],
+  "titleBar": [],
+  "statusBar": [],
+  "pageHeader": [
+    {
+      "id": "templater-obsidian:insert-templater",
+      "icon": "templater-icon",
+      "name": "Templater: Open insert template modal",
+      "mode": "any"
+    },
+    {
+      "id": "zk-prefixer",
+      "icon": "box-glyph",
+      "name": "时间戳笔记生成器: 创建时间戳笔记",
+      "mode": "any"
+    },
+    {
+      "id": "app:open-settings",
+      "icon": "lucide-settings",
+      "name": "打开设置",
+      "mode": "any"
+    }
+  ],
+  "macros": [],
+  "explorer": [],
+  "hide": {
+    "statusbar": [
+      "word-count",
+      "backlink",
+      "keyboard-analyzer",
+      "editing-toolbar",
+      "vim-im-control",
+      "solve",
+      "janitor"
+    ],
+    "leftRibbon": []
+  },
+  "spacing": 8,
+  "advancedToolbar": {
+    "rowHeight": 48,
+    "rowCount": 2,
+    "spacing": 0,
+    "buttonWidth": 48,
+    "columnLayout": false,
+    "mappedIcons": [],
+    "tooltips": false,
+    "heightOffset": 26
+  }
+}

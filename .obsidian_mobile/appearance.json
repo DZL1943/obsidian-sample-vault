@@ -1,0 +1,17 @@
+{
+  "accentColor": "#00a86b",
+  "interfaceFontFamily": "Menlo,Monaco",
+  "textFontFamily": "Menlo,Monaco",
+  "monospaceFontFamily": "Menlo,Monaco",
+  "baseFontSize": 16,
+  "baseFontSizeAction": true,
+  "translucency": false,
+  "theme": "system",
+  "enabledCssSnippets": [
+    "basic",
+    "header"
+  ],
+  "showViewHeader": false,
+  "cssTheme": "",
+  "showRibbon": false
+}

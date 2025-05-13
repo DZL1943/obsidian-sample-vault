@@ -1,0 +1,58 @@
+# ignore all files by default
+*
+!*/
+
+# except for these file formats
+!*.md
+!*.canvas
+!*.png
+!*.jpg
+
+# and except for those dirs
+!.obsidian*/**
+!Misc/Scripts/**
+
+# common ignores
+.DS_Store
+
+# ignore files
+未命名*
+[uU]ntitled*
+[dD]raft*.*
+[tT]emp*.*
+[tT]est*.*
+*.sync-conflict-*
+
+# specific dirs and files, sort by name
+.makemd/
+/.obsidian_test/
+.smart-env/
+.space/
+.stfolder/
+.stversions/
+.trash/
+.vaultexplorer/
+.zettel-notes/
+Archive*/*
+/[eE]xt/
+*[iI]nbox/*
+[lL]ocal/*
+*[pP]rivate/*
+*[pP]rivate/*/
+!*[pP]rivate/*-index.md
+/Spaces/
+/Vaults/
+/Vault.md
+/broken links output.md
+/[cC]ontext.md
+/[hH]ome.canvas
+
+# obsidian config dir
+workspace.json
+workspace-mobile.json
+bookmarks.json
+.obsidian/plugins/vare/data.json
+.obsidian/plugins/recent-files-obsidian/data.json
+.obsidian/plugins/float-search/data.json
+.obsidian/plugins/obsidian-auto-hide/data.json
+.obsidian/plugins/novel-word-count/data.json

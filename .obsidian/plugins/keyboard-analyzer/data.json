@@ -1,0 +1,16 @@
+{
+  "showStatusBarItem": true,
+  "filterSettings": {
+    "FeaturedFirst": true,
+    "StrictSearch": false,
+    "HighlightCustom": true,
+    "HighlightDuplicates": true,
+    "DisplayWOhotkeys": false,
+    "DisplayIDs": false
+  },
+  "featuredCommandIDs": [
+    "float-search:search-obsidian-globally",
+    "fuzzy-chinese-pinyin:open-search",
+    "fuzzy-chinese-pinyin:execute-command"
+  ]
+}

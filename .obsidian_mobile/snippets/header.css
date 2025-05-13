@@ -1,0 +1,15 @@
+/* Hide top bar when keyboard is open on mobile (includes tab bar on tablet).
+Workaround for https://forum.obsidian.md/t/option-to-show-hide-top-bar-s-when-note-is-scrolled/69610?u=cawlinteffid
+Courtesy of sailKite https://discord.com/channels/686053708261228577/702656734631821413/1242571258881642547 
+Remaining border removed by me. */
+
+.workspace-leaf.mod-active > * > .view-header,
+body.is-tablet .workspace-tabs.mod-active > .workspace-tab-header-container {
+    transition: height 250ms;
+
+    .app-container:has(.mobile-toolbar) & {
+        border-bottom: 0;
+        height: 0;
+        overflow: hidden;
+    }
+}
