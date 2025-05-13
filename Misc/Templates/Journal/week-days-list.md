@@ -1,0 +1,1 @@
+<% tp.user.generate_week_days({tp}) %>

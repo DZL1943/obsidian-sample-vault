@@ -1,0 +1,11 @@
+{
+  "pinned": [
+    "workspaces:open-modal",
+    "theme:switch",
+    "templater-obsidian:insert-templater",
+    "zk-prefixer",
+    "omnisearch:show-modal",
+    "ledger-obsidian:ledger-add-transaction",
+    "better-plugins-manager:manager-view"
+  ]
+}

@@ -1,0 +1,12 @@
+.numberedrows table {
+  counter-reset: rowNumber;
+}
+
+.numberedrows table tr::before {
+  display: table-cell;
+  counter-increment: rowNumber;
+  content: counter(rowNumber) ".";
+  padding-right: 0.3em;
+  padding-top: 0.3em;
+  text-align: right;
+}

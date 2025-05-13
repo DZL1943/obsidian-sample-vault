@@ -1,0 +1,1163 @@
+{
+  "PERSISTENCE": false,
+  "FILTER_TAG": "",
+  "FILTER_GROUP": "",
+  "FILTER_DELAY": "",
+  "LANGUAGE": "zh-cn",
+  "CENTER": true,
+  "ITEM_STYLE": "clickExpand",
+  "GROUP_STYLE": "a",
+  "TAG_STYLE": "a",
+  "DELAY": true,
+  "FADE_OUT_DISABLED_PLUGINS": true,
+  "COMMAND_ITEM": false,
+  "COMMAND_GROUP": true,
+  "GROUPS": [
+    {
+      "id": "default",
+      "name": "默认",
+      "color": "#A079FF"
+    },
+    {
+      "id": "1",
+      "name": "本体界面",
+      "color": "#000000"
+    },
+    {
+      "id": "2",
+      "name": "编辑渲染",
+      "color": "#000000"
+    },
+    {
+      "id": "3",
+      "name": "功能扩展",
+      "color": "#000000"
+    },
+    {
+      "id": "4",
+      "name": "辅助工具",
+      "color": "#000000"
+    },
+    {
+      "id": "5",
+      "name": "备用待定",
+      "color": "#000000"
+    }
+  ],
+  "TAGS": [
+    {
+      "id": "default",
+      "name": "默认",
+      "color": "#A079FF"
+    },
+    {
+      "id": "required",
+      "name": "必备",
+      "color": "#000000"
+    },
+    {
+      "id": "recommended",
+      "name": "推荐",
+      "color": "#000000"
+    },
+    {
+      "id": "optional",
+      "name": "可选",
+      "color": "#000000"
+    },
+    {
+      "id": "reserved",
+      "name": "备用",
+      "color": "#000000"
+    },
+    {
+      "id": "pending",
+      "name": "待定",
+      "color": "#000000"
+    },
+    {
+      "id": "deprecated",
+      "name": "废弃",
+      "color": "#000000"
+    },
+    {
+      "id": "beta",
+      "name": "beta",
+      "color": "#000000"
+    },
+    {
+      "id": "bug",
+      "name": "bug",
+      "color": "#000000"
+    }
+  ],
+  "DELAYS": [
+    {
+      "id": "default",
+      "name": "默认",
+      "time": 0
+    },
+    {
+      "id": "5",
+      "name": "short",
+      "time": 5
+    },
+    {
+      "id": "10",
+      "name": "middle",
+      "time": 10
+    },
+    {
+      "id": "15",
+      "name": "long",
+      "time": 15
+    }
+  ],
+  "Plugins": [
+    {
+      "id": "advanced-canvas",
+      "name": "Advanced Canvas",
+      "desc": "Supercharge your canvas experience! Create presentations, flowcharts and more!",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "any-block",
+      "name": "AnyBlock",
+      "desc": "You can flexibility to create a 'Block' by some means. It also provides some useful features, like `list to table`. ",
+      "group": "2",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "15"
+    },
+    {
+      "id": "better-export-pdf",
+      "name": "Better Export PDF",
+      "desc": "Export your notes to PDF, support export preview, add bookmarks outline and header/footer.",
+      "group": "4",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "better-markdown-links",
+      "name": "Better Markdown Links",
+      "desc": "Adds support for angle bracket links and manages relative links properly",
+      "group": "4",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "cm-chs-patch",
+      "name": "Word Splitting for Simplified Chinese in Edit Mode and Vim Mode",
+      "desc": "A patch for Obsidian's built-in CodeMirror Editor to support Simplified Chinese word splitting",
+      "group": "3",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "15"
+    },
+    {
+      "id": "cmdr",
+      "name": "Commander",
+      "desc": "Customize your workspace by adding commands everywhere, create Macros and supercharge your mobile toolbar.",
+      "group": "1",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": ""
+    },
+    {
+      "id": "code-styler",
+      "name": "Code Styler",
+      "desc": "Style and customize codeblocks and inline code in both editing mode and reading mode.",
+      "group": "2",
+      "tags": [
+        "required"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "darlal-switcher-plus",
+      "name": "Quick Switcher++",
+      "desc": "Enhanced Quick Switcher, search open panels, and symbols.",
+      "group": "1",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "dataview",
+      "name": "Dataview",
+      "desc": "Complex data views for the data-obsessed.",
+      "group": "2",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "15"
+    },
+    {
+      "id": "dust-calendar",
+      "name": "Dust Calendar",
+      "desc": "更符合中国习惯的日历，可以显示农历、节气、节假日、调休信息，支持月视图和年视图切换，支持关联创建周期性笔记。",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": ""
+    },
+    {
+      "id": "easy-typing-obsidian",
+      "name": "Easy Typing",
+      "desc": "This plugin aims to enhance and optimize the editing experience in Obsidian",
+      "group": "2",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "editing-toolbar",
+      "name": "Editing Toolbar",
+      "desc": "The Obsidian Editing Toolbar is modified from cmenu, which provides more powerful customization settings and has many built-in editing commands to be a MS Word-like toolbar editing experience.",
+      "group": "2",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "external-rename-handler",
+      "name": "External Rename Handler",
+      "desc": "Handles renames made outside of the app",
+      "group": "1",
+      "tags": [
+        "pending"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "file-tree-alternative",
+      "name": "File Tree Alternative",
+      "desc": "This plugin allows you to have an alternative file tree view.",
+      "group": "1",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": ""
+    },
+    {
+      "id": "find-unlinked-files",
+      "name": "Find orphaned files and broken links",
+      "desc": "Find files that are not linked anywhere and would otherwise be lost in your vault. In other words: files with no backlinks.",
+      "group": "4",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "float-search",
+      "name": "Floating Search",
+      "desc": "You can use search view in modal/leaf/popout window now.",
+      "group": "1",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "floating-toc",
+      "name": "floating toc",
+      "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "10",
+      "note": ""
+    },
+    {
+      "id": "folder-notes",
+      "name": "Folder notes",
+      "desc": "Create notes within folders that can be accessed without collapsing the folder, similar to the functionality offered in Notion.",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": ""
+    },
+    {
+      "id": "fuzzy-chinese-pinyin",
+      "name": "Fuzzy Chinese Pinyin",
+      "desc": "Provide the function of fuzzy search using Chinese Pinyin.",
+      "group": "1",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "hotkey-helper",
+      "name": "Hotkey Helper",
+      "desc": "Easily see and access any plugin's settings or hotkey assignments (and conflicts) from the Community Plugins tab",
+      "group": "4",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "image-converter",
+      "name": "Image Converter",
+      "desc": "Convert, compress, resize, annotate, markup, draw, crop, rotate, flip, align images directly in Obsidian. Drag-resize, rename with variables, batch process. WEBP, JPG, PNG, HEIC, TIF.",
+      "group": "4",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "janitor",
+      "name": "Janitor",
+      "desc": "Performs cleanup tasks on the Obsidian vault",
+      "group": "4",
+      "tags": [
+        "recommended",
+        "deprecated"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "keyboard-analyzer",
+      "name": "Keyboard Analyzer",
+      "desc": "See and analyse your keyboard hotkeys and shortcuts",
+      "group": "4",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "ledger-obsidian",
+      "name": "Ledger",
+      "desc": "Plain text accounting",
+      "group": "3",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "legacy-vault-switcher",
+      "name": "Legacy vault switcher",
+      "desc": "For switching back to the legacy vault switcher.",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "links",
+      "name": "Links",
+      "desc": "Manipulate links",
+      "group": "4",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "make-md",
+      "name": "MAKE.md",
+      "desc": "Make.md gives you everything you need to organize and personalize your notes.",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "markdown-table-editor",
+      "name": "Markdown Table Editor",
+      "desc": "An Obsidian plugin to provide an editor for Markdown tables. It can open CSV, Microsoft Excel/Google Sheets data as Markdown tables from Obsidian Markdown editor.",
+      "group": "2",
+      "tags": [
+        "optional",
+        "deprecated"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "mysnippets-plugin",
+      "name": "MySnippets",
+      "desc": "MySnippets is a plugin that adds a status bar menu allowing the user to quickly toggle their snippets on and off 🖌.",
+      "group": "1",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "nldates-redux",
+      "name": "Natural Language Dates Redux",
+      "desc": "Work with dates in natural language. Now with Notion-like behavior!",
+      "group": "4",
+      "tags": [
+        "beta"
+      ],
+      "enabled": true,
+      "delay": "5",
+      "note": ""
+    },
+    {
+      "id": "note-refactor-obsidian",
+      "name": "Note Refactor",
+      "desc": "Extract note content into new notes and split notes",
+      "group": "2",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-admonition",
+      "name": "Admonition",
+      "desc": "Enhanced callouts for Obsidian.md",
+      "group": "2",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-advanced-uri",
+      "name": "Advanced URI",
+      "desc": "Advanced modes for Obsidian URI",
+      "group": "3",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-auto-hide",
+      "name": "Auto Hide",
+      "desc": "Collapse sidebars when clicking on the editor/viewer panel",
+      "group": "1",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "obsidian-auto-link-title",
+      "name": "Auto Link Title",
+      "desc": "This plugin automatically fetches the titles of links from the web",
+      "group": "4",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-completr",
+      "name": "Completr",
+      "desc": "This plugin provides advanced auto-completion functionality for LaTeX, Frontmatter and standard writing.",
+      "group": "2",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-excalidraw-plugin",
+      "name": "Excalidraw",
+      "desc": "An Obsidian plugin to edit and view Excalidraw drawings",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "15"
+    },
+    {
+      "id": "obsidian-export-image",
+      "name": "Export Image plugin",
+      "desc": "Easily convert your article to image.",
+      "group": "4",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": "15"
+    },
+    {
+      "id": "obsidian-front-matter-title-plugin",
+      "name": "Front Matter Title",
+      "desc": "Lets you define a title in frontmatter to be displayed as the filename for explorer, graph, search and etc.",
+      "group": "1",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-heading-shifter",
+      "name": "Heading Shifter",
+      "desc": "Easily Shift and Change markdown headings.",
+      "group": "2",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-hover-editor",
+      "name": "Hover Editor",
+      "desc": "Transform the Page Preview hover popover into a fully working editor instance",
+      "group": "1",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-importer",
+      "name": "Importer",
+      "desc": "Import data from Notion, Evernote, Apple Notes, Microsoft OneNote, Google Keep, Bear, Roam, and HTML files.",
+      "group": "3",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "obsidian-kanban",
+      "name": "Kanban",
+      "desc": "Create markdown-backed Kanban boards in Obsidian.",
+      "group": "2",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "obsidian-latex-suite",
+      "name": "Latex Suite",
+      "desc": "Make typesetting LaTeX math as fast as handwriting through snippets, text expansion, and editor enhancements",
+      "group": "2",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "obsidian-linter",
+      "name": "Linter",
+      "desc": "Formats and styles your notes. It can be used to format YAML tags, aliases, arrays, and metadata; footnotes; headings; spacing; math blocks; regular markdown contents like list, italics, and bold styles; and more with the use of custom rule options as well.",
+      "group": "4",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "obsidian-list-callouts",
+      "name": "List Callouts",
+      "desc": "Create simple callouts in lists.",
+      "group": "2",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-markmind",
+      "name": "Markmind",
+      "desc": "This is a mindmap , outline tool for obsidian.",
+      "group": "2",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "15"
+    },
+    {
+      "id": "obsidian-meta-bind-plugin",
+      "name": "Meta Bind",
+      "desc": "Make your notes interactive with inline input fields, metadata displays, and buttons.",
+      "group": "3",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "obsidian-outliner",
+      "name": "Outliner",
+      "desc": "Work with your lists like in Workflowy or RoamResearch.",
+      "group": "2",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "obsidian-projects",
+      "name": "Projects",
+      "desc": "Plain text project planning.",
+      "group": "3",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "obsidian-quiet-outline",
+      "name": "Quiet Outline",
+      "desc": "Make outline quiet and more powerful, including no-auto-expand, rendering heading as markdown, and search support.",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": ""
+    },
+    {
+      "id": "obsidian-relative-line-numbers",
+      "name": "Relative Line Numbers",
+      "desc": "Enables relative line numbers in editor mode",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "default"
+    },
+    {
+      "id": "obsidian-style-settings",
+      "name": "Style Settings",
+      "desc": "Offers controls for adjusting theme, plugin, and snippet CSS variables.",
+      "group": "1",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-tagfolder",
+      "name": "TagFolder",
+      "desc": "Show tags as folder",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-tasks-plugin",
+      "name": "Tasks",
+      "desc": "Track tasks across your vault. Supports due dates, recurring tasks, done dates, sub-set of checklist items, and filtering.",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-view-mode-by-frontmatter",
+      "name": "Force note view mode",
+      "desc": "This plugin allows to force the view mode and editing mode for a note by using front matter",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "obsidian-zoom",
+      "name": "Zoom",
+      "desc": "Zoom into heading and lists.",
+      "group": "1",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "obsidian42-brat",
+      "name": "BRAT",
+      "desc": "Easily install a beta version of a plugin for testing.",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "10"
+    },
+    {
+      "id": "obsidian42-strange-new-worlds",
+      "name": "Strange New Worlds",
+      "desc": "Help see how your vault is interconnected with visual indicators.",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "omnisearch",
+      "name": "Omnisearch",
+      "desc": "A search engine that just works",
+      "group": "1",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "pdf-plus",
+      "name": "PDF++",
+      "desc": "The most Obsidian-native PDF annotation tool ever.",
+      "group": "3",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": ""
+    },
+    {
+      "id": "plugin-proxy",
+      "name": "Plugin Proxy",
+      "desc": "For visiting plugin market quickly.",
+      "group": "4",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "quick-explorer",
+      "name": "Quick Explorer",
+      "desc": "Perform file explorer operations (and see your current file path) from the title bar, using the mouse or keyboard",
+      "group": "1",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "quickadd",
+      "name": "QuickAdd",
+      "desc": "Quickly add new pages or content to your vault.",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "recent-files-obsidian",
+      "name": "Recent Files",
+      "desc": "List files by most recently opened",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "refresh-preview",
+      "name": "Refresh Preview",
+      "desc": "Allows to refresh preview mode without reopening the note",
+      "group": "2",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "remotely-save",
+      "name": "Remotely Save",
+      "desc": "Yet another unofficial plugin allowing users to synchronize notes between local device and the cloud service.",
+      "group": "3",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "15"
+    },
+    {
+      "id": "settings-search",
+      "name": "Settings Search",
+      "desc": "Globally search settings in Obsidian.md",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "show-whitespace-cm6",
+      "name": "Show Whitespace",
+      "desc": "CSS styles and CM6 extensions to highlight whitespace in Source and Live Preview modes.",
+      "group": "2",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "slash-commander",
+      "name": "Slash Commander",
+      "desc": "Customize the slash command list, assign each command an icon.",
+      "group": "1",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": ""
+    },
+    {
+      "id": "solve",
+      "name": "Solve",
+      "desc": "Supercharge your notes with real-time calculations without AI fuss. From dates ('Now + 20 days'), percentages ('10% of 120'), units of measurement ('100cm + 2m'), arithmetic ('10 + 5') and more!",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "statusbar-organizer",
+      "name": "Status Bar Organizer",
+      "desc": "Lets you rearrange and hide specific status bar elements.",
+      "group": "1",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "table-editor-obsidian",
+      "name": "Advanced Tables",
+      "desc": "Improved table navigation, formatting, manipulation, and formulas",
+      "group": "2",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "templater-obsidian",
+      "name": "Templater",
+      "desc": "Create and use templates",
+      "group": "3",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "typewriter-mode",
+      "name": "Typewriter Mode",
+      "desc": "Typewriter scroll, highlight current line, dim unfocused paragraphs and sentences, writing focus, restore cursor position and more.",
+      "group": "2",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "url-into-selection",
+      "name": "Paste URL into selection",
+      "desc": "Paste URL \"into\" selected text.",
+      "group": "2",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "default"
+    },
+    {
+      "id": "vare",
+      "name": "VARE",
+      "desc": "Now you can easily manage your plugins and themes. Simply select the version you want or install unlisted versions from GitHub. You can also install beta version and switch back if necessary.",
+      "group": "3",
+      "tags": [
+        "pending"
+      ],
+      "enabled": false,
+      "delay": "15"
+    },
+    {
+      "id": "various-complements",
+      "name": "Various Complements",
+      "desc": "This plugin enables you to complete words like the auto-completion of IDE",
+      "group": "2",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": false,
+      "delay": "10"
+    },
+    {
+      "id": "vertical-tabs",
+      "name": "Vertical Tabs",
+      "desc": "Offer an alternative view that displays open tabs vertically, allowing users to group and organize tabs for a better navigation experience.",
+      "group": "1",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "vim-toggle",
+      "name": "Vim Toggle",
+      "desc": "A plugin for Obsidian that enables the toggling vim mode to on and off inside of the editor.",
+      "group": "2",
+      "tags": [
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "5"
+    },
+    {
+      "id": "virtual-linker",
+      "name": "Virtual Linker / Glossary",
+      "desc": "Automatically creates virtual links for text within your notes that match the titles or aliases of other notes in your vault. Create a glossary-like functionality, show unlinked mentions and transform them to real links.",
+      "group": "1",
+      "tags": [
+        "required"
+      ],
+      "enabled": true,
+      "delay": "5"
+    },
+    {
+      "id": "obsidian-day-planner",
+      "name": "Day Planner",
+      "desc": "A day planner with clean UI and readable syntax",
+      "group": "3",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": false,
+      "delay": "10",
+      "note": ""
+    },
+    {
+      "id": "extended-graph",
+      "name": "Extended Graph",
+      "desc": "Extends the features of the core Graph view, display images, manage states, remove links, change node shapes, and more.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "private-mode",
+      "name": "Private Mode",
+      "desc": "Simple #private mode",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "note-toolbar",
+      "name": "Note Toolbar",
+      "desc": "Add customizable toolbars to your notes.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "media-extended",
+      "name": "Media Extended",
+      "desc": "Media(Video/Audio) Playback Enhancement for Obsidian.md",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "block-link-plus",
+      "name": "Block Link Plus",
+      "desc": "Enhances right-click menu and global command with direct links to blocks and titles, adds support for multi-line blockquotes, and offers extensive customization options for block IDs.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "unitade",
+      "name": "UNITADE.md",
+      "desc": "Effortlessly treat any file extension as note, organize diverse file formats in your vault and take advancements in control of extension system even with custom modals.",
+      "group": "3",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": "15",
+      "note": ""
+    },
+    {
+      "id": "obsidian-task-progress-bar",
+      "name": "Task Genius",
+      "desc": "Comprehensive task management that includes progress bars, task status cycling, and advanced task tracking features.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "daily-notes-editor",
+      "name": "Daily Notes Editor",
+      "desc": "Edit a bunch of daily notes in one page(inline), which works similar to Roam Research's default daily note view.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "better-search-views",
+      "name": "Better Search Views",
+      "desc": "Outliner-like breadcrumb trees for search, backlinks and embedded queries ",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "novel-word-count",
+      "name": "Novel word count",
+      "desc": "Displays a word count (and more!) for each file, folder and vault in the File Explorer pane.",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "5",
+      "note": ""
+    },
+    {
+      "id": "vault-explorer",
+      "name": "Vault Explorer",
+      "desc": "Explore your vault in visual format",
+      "group": "1",
+      "tags": [
+        "optional"
+      ],
+      "enabled": false,
+      "delay": "10",
+      "note": ""
+    },
+    {
+      "id": "quick-peek-sidebar",
+      "name": "Quick Peek Sidebar",
+      "desc": "Opens the left and/or right side panel by hovering over it.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "codeblock-customizer",
+      "name": "Codeblock Customizer",
+      "desc": "This Obsidian plugin lets you customize your codeblocks in editing, and reading mode as well.",
+      "group": "2",
+      "tags": [],
+      "enabled": true,
+      "delay": "5",
+      "note": ""
+    }
+  ],
+  "HIDES": []
+}

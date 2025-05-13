@@ -1,0 +1,92 @@
+/* :root {} */
+
+body {
+  --h1-color: var(--color-red);
+  --h2-color: var(--color-orange);
+  --h3-color: var(--color-yellow);
+  --h4-color: var(--color-green);
+  --h5-color: var(--color-blue);
+  --h6-color: var(--color-purple);
+  --italic-color: var(--color-orange);
+  --bold-color: var(--color-red);
+  --code-normal: var(--color-pink);
+  --caret-color: var(--text-accent);
+  --file-line-width: 85vw;
+  --embed-max-height: unset;
+  --header-height: 34px;
+}
+
+/* .theme-light {} */
+
+/* .theme-dark {} */
+
+.cm-strikethrough,
+del {
+  text-decoration-color: var(--text-faint);
+  opacity: 0.7;
+}
+
+u {
+  text-decoration-color: var(--color-green);
+  text-decoration-thickness: 3px;
+}
+
+ul>li.task-list-item[data-task="x"],
+ul>li.task-list-item[data-task="X"] {
+  text-decoration: none;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task="x"],
+.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task="X"] {
+  text-decoration: none;
+}
+
+.cm-formatting.cm-formatting-list.cm-formatting-list-ul {
+  padding-left: 0;
+}
+
+.cm-formatting.cm-formatting-list.cm-formatting-list-ol {
+  padding-left: 0;
+}
+
+.workspace-tab-header:has(.mod-pinned) {
+  /* shrink if pinned */
+  max-width: 60px !important;
+}
+
+/* ========== ========== */
+.status-bar:not(:hover) {
+  opacity: 0;
+  min-height: 6px;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+/* .workspace-tab-header-container:not(:hover) {
+  opacity: 0;
+  height: 10px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+} */
+
+/* ========== ========== */
+.side-dock-actions {
+  height: 100%;
+  justify-content: flex-start;
+}
+
+div[aria-label="打开其他仓库"] {
+  margin-top: auto !important;
+  order: 997;
+}
+
+div[aria-label="查看帮助"] {
+  order: 998;
+}
+
+div[aria-label="打开设置"] {
+  order: 999;
+}

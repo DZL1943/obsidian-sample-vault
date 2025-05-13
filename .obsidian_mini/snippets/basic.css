@@ -1,0 +1,15 @@
+body {
+  --h1-color: var(--color-red);
+  --h2-color: var(--color-orange);
+  --h3-color: var(--color-yellow);
+  --h4-color: var(--color-green);
+  --h5-color: var(--color-blue);
+  --h6-color: var(--color-purple);
+  --italic-color: var(--color-orange);
+  --bold-color: var(--color-red);
+  --code-normal: var(--color-pink);
+  --caret-color: var(--text-accent);
+  --file-line-width: 85vw;
+  --embed-max-height: unset;
+  --header-height: 34px;
+}
