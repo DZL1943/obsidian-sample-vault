@@ -159,17 +159,6 @@
       "delay": "default"
     },
     {
-      "id": "cm-chs-patch",
-      "name": "Word Splitting for Simplified Chinese in Edit Mode and Vim Mode",
-      "desc": "A patch for Obsidian's built-in CodeMirror Editor to support Simplified Chinese word splitting",
-      "group": "3",
-      "tags": [
-        "optional"
-      ],
-      "enabled": true,
-      "delay": "15"
-    },
-    {
       "id": "cmdr",
       "name": "Commander",
       "desc": "Customize your workspace by adding commands everywhere, create Macros and supercharge your mobile toolbar.",
@@ -767,17 +756,6 @@
       ],
       "enabled": false,
       "delay": "10"
-    },
-    {
-      "id": "omnisearch",
-      "name": "Omnisearch",
-      "desc": "A search engine that just works",
-      "group": "1",
-      "tags": [
-        "recommended"
-      ],
-      "enabled": true,
-      "delay": "5"
     },
     {
       "id": "pdf-plus",
