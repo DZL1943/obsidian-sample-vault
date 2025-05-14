@@ -54,12 +54,12 @@
   "userDelRuleSettingsOpen": true,
   "userCvtRuleSettingsOpen": true,
   "StrictModeEnter": false,
-  "StrictLineMode": "enter_twice",
-  "EnhanceModA": false,
+  "StrictLineMode": "two_space",
+  "EnhanceModA": true,
   "TryFixChineseIM": false,
   "PuncRectify": false,
-  "FixMacOSContextMenu": false,
+  "FixMacOSContextMenu": true,
   "TryFixMSIME": false,
-  "CollapsePersistentEnter": false,
+  "CollapsePersistentEnter": true,
   "EnterTwice": false
 }
