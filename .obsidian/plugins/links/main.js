@@ -3006,12 +3006,13 @@ var ObsidianLinksSettingTab = class extends import_obsidian6.PluginSettingTab {
       });
     });
     this.setSettingHelpLink(settingConvertToWikilink, this.getFullDocUrl("convert-to-wiki-link"));
-    new import_obsidian6.Setting(containerEl).setName("Convert to autolink").setDesc("").addToggle((toggle) => {
+    const settingConvertToAutolink = new import_obsidian6.Setting(containerEl).setName("Convert to autolink").setDesc("").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.contexMenu.convertToAutolink).onChange(async (value) => {
         this.plugin.settings.contexMenu.convertToAutolink = value;
         await this.plugin.saveSettings();
       });
     });
+    this.setSettingHelpLink(settingConvertToAutolink, this.getFullDocUrl("convert-to-autolink"));
     new import_obsidian6.Setting(containerEl).setName("Convert to markdown link").setDesc("").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.contexMenu.convertToMakrdownLink).onChange(async (value) => {
         this.plugin.settings.contexMenu.convertToMakrdownLink = value;

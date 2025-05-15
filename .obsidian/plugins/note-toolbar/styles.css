@@ -30,7 +30,7 @@ settings:
     -
         id: cg-nt-fab-bg-color-desktop
         title: 'Background color on desktop'
-        title.uk: 'Колір фону на робочому столі'
+        title.uk: "Колір фону на комп'ютері"
         title.de: 'Hintergrundfarbe am PC'
         title.zh: '桌面端背景颜色'
         type: variable-themed-color
@@ -41,7 +41,7 @@ settings:
     -
         id: cg-nt-fab-bg-color
         title: 'Background color on mobile 📱'
-        title.uk: 'Колір фону на мобільному пристрої 📱'
+        title.uk: 'Колір фону на мобільному 📱'
         title.de: 'Hintergrundfarbe am Handy 📱'
         title.zh: '移动端背景颜色 📱'
         type: variable-themed-color
@@ -52,7 +52,7 @@ settings:
     -
         id: cg-nt-fab-bg-color-hover-desktop
         title: 'Background color on desktop (on hover)'
-        title.uk: 'Колір фону на робочому столі (при наведенні)'
+        title.uk: "Колір фону на комп'ютері (при наведенні)"
         title.de: 'Hintergrundfarbe am PC (beim Überfahren mit der Maus)'
         title.zh: '桌面端背景颜色（悬停）'
         type: variable-themed-color
@@ -63,7 +63,7 @@ settings:
     -
         id: cg-nt-fab-bg-color-hover
         title: 'Background color on mobile (on press) 📱'
-        title.uk: 'Колір фону на мобільному пристрої (при натисканні) 📱'
+        title.uk: 'Колір фону на мобільному (при натисканні) 📱'
         title.de: 'Hintergrundfarbe am Handy (bei Drücken) 📱'
         title.zh: '移动端背景颜色（按下） 📱'
         type: variable-themed-color
@@ -85,7 +85,7 @@ settings:
     -
         id: cg-nt-fab-icon-color-desktop
         title: 'Icon color on desktop'
-        title.uk: 'Колір іконок на робочому столі'
+        title.uk: "Колір іконок на комп'ютері"
         title.de: 'Symbolfarbe am PC'
         title.zh: '桌面端图标颜色'
         type: variable-themed-color
@@ -96,7 +96,7 @@ settings:
     -
         id: cg-nt-fab-icon-color
         title: 'Icon color on mobile 📱'
-        title.uk: 'Колір іконки на мобільному пристрої 📱'
+        title.uk: 'Колір іконки на мобільному 📱'
         title.de: 'Symbolfarbe am Handy 📱'
         title.zh: '移动端图标颜色 📱'
         type: variable-themed-color
@@ -116,7 +116,7 @@ settings:
     -
         id: cg-nt-fab-pos-x-desktop
         title: 'X position on desktop (in px units)'
-        title.uk: 'Позиція X на робочому столі (пікселі)'
+        title.uk: "Позиція X на комп'ютері (пікселі)"
         title.de: 'X-Position am PC (in px-Einheiten)'
         title.zh: '桌面端X轴位置（单位：px）'
         description: 'Distance from the edge of the editor view.'
@@ -142,7 +142,7 @@ settings:
     -
         id: cg-nt-fab-pos-y-desktop
         title: 'Y position on desktop (in px units)'
-        title.uk: 'Позиція Y на робочому столі (пікселі)'
+        title.uk: "Позиція Y на комп'ютері (пікселі)"
         title.de: 'Y-Position am PC (in px-Einheiten)'
         title.zh: '桌面端Y轴位置（单位：px）'
         description: "Distance from the bottom of the editor view."
@@ -155,7 +155,7 @@ settings:
     -
         id: cg-nt-fab-pos-y-mobile
         title: 'Y position on mobile (in px units) 📱'
-        title.uk: 'Позиція Y на мобільному пристрої (пікселі) 📱'
+        title.uk: 'Позиція Y на мобільному (пікселі) 📱'
         title.de: 'Y-Position am Handy (in px-Einheiten) 📱'
         title.zh: '移动端Y轴位置（单位：px）📱'
         description: "Distance from the bottom of the editor view."
@@ -177,7 +177,7 @@ settings:
     -
         id: cg-nt-fab-padding-desktop
         title: 'Padding on desktop (in px units)'
-        title.uk: 'Відступи на робочому столі (пікселі)'
+        title.uk: "Відступи на комп'ютері (пікселі)"
         title.de: 'Abstand am PC (in px)'
         title.zh: '桌面端内边距（单位：像素）'
         description: 'Spacing around the icon.'
@@ -190,7 +190,7 @@ settings:
     -
         id: cg-nt-fab-padding
         title: 'Padding on mobile (in px units) 📱'
-        title.uk: 'Відступи на мобільному пристрої (пікселі) 📱'
+        title.uk: 'Відступи на мобільному (пікселі) 📱'
         title.de: 'Abstand am Handy (in px) 📱'
         title.zh: '移动端内边距（单位：像素）📱'
         description: 'Spacing around the icon.'
@@ -202,7 +202,7 @@ settings:
     -
         id: cg-nt-fab-icon-size-desktop
         title: 'Icon size on desktop (in px units)'
-        title.uk: 'Розмір іконки на робочому столі (пікселі)'
+        title.uk: "Розмір іконки на комп'ютері (пікселі)"
         title.de: 'Symbolgröße am PC (in px) 📱'
         title.zh: '桌面端图标大小（单位：像素）'
         type: variable-number
@@ -211,7 +211,7 @@ settings:
     -
         id: cg-nt-fab-icon-size
         title: 'Icon size on mobile (in px units) 📱'
-        title.uk: 'Розмір іконки на мобільному пристрої (пікселі) 📱'
+        title.uk: 'Розмір іконки на мобільному (пікселі) 📱'
         title.de: 'Symbolgröße am Handy (in px) 📱'
         title.zh: '移动端图标大小（单位：像素）📱'
         type: variable-number
@@ -220,7 +220,7 @@ settings:
     -
         id: cg-nt-fab-icon-stroke-width-desktop
         title: 'Icon stroke width on desktop (in px units)'
-        title.uk: 'Ширина контуру іконки на робочому столі (пікселі)'
+        title.uk: "Ширина контуру іконки на комп'ютері (пікселі)"
         title.de: 'Symbol-Strichstärke am PC (in px)'
         title.zh: '桌面端图标描边宽度（单位：像素）'
         type: variable-number
@@ -229,7 +229,7 @@ settings:
     -
         id: cg-nt-fab-icon-stroke-width
         title: 'Icon stroke width on mobile (in px units) 📱'
-        title.uk: 'Ширина контуру іконки на мобільному пристрої (пікселі) 📱'
+        title.uk: 'Ширина контуру іконки на мобільному (пікселі) 📱'
         title.de: 'Symbol-Strichstärke am Handy (in px) 📱'
         title.zh: '移动端图标描边宽度（单位：像素）📱'
         type: variable-number
@@ -258,11 +258,11 @@ settings:
     -
         id: cg-nt-fab-border-radius-desktop
         title: 'Border radius on desktop (in px units)'
-        title.uk: 'Круглість рамки на робочому столі (пікселі)'
+        title.uk: "Круглість рамки на комп'ютері (пікселі)"
         title.de: 'Rahmenabrundung am PC (in px)'
         title.zh: '桌面端边框圆角（单位：像素）'
         description: 'How rounded the button is. The higher the number the more rounded. (Plugin defaults: Android = 16, iOS = 999)'
-        description.uk: 'Наскільки круглою є кнопка. Як більше число, тим більше округлення.'
+        description.uk: 'Наскільки круглою є кнопка. Чим більше число, тим більше округлення.'
         description.de: 'Wie abgerundet die Schaltfläche ist. Je höher die Zahl, desto runder.'
         description.zh: '按钮的圆角设置；数值越大，圆角越明显（默认值：Android = 16，iOS = 999）'
         type: variable-number
@@ -271,7 +271,7 @@ settings:
     -
         id: cg-nt-fab-border-radius
         title: 'Border radius on mobile (in px units) 📱'
-        title.uk: 'Круглість рамки на мобільному пристрої (пікселі) 📱'
+        title.uk: 'Круглість рамки на мобільному (пікселі) 📱'
         title.de: 'Rahmenabrundung am Handy (in px) 📱'
         title.zh: '移动端边框圆角（单位：像素）📱'
         description: 'How rounded the button is. The higher the number the more rounded. (Plugin defaults: Android = 16, iOS = 999)'
@@ -303,7 +303,7 @@ settings:
         title.de: 'Elemente'
         title.zh: '项目'
         description: 'Styles for items within toolbars'
-        description.uk: 'Стилі елементів у панелях'
+        description.uk: 'Стилі елементів панелей'
         description.de: 'Stile für Elemente von Toolbars'
         description.zh: '工具栏内项目的样式'
         type: heading
@@ -432,7 +432,7 @@ settings:
         title.de: 'Menüs'
         title.zh: '菜单'
         description: "Styles for toolbars shown as menus. (In Obsidian's settings, first disable: Appearance → Native menus)"
-        description.uk: 'Стилі елементів меню'
+        description.uk: "Стилі елементів меню. (Спочатку відключіть у налаштунках Obsidian: Оформлення → Нативні меню)"
         description.de: 'Stile für Element-Menüs'
         description.zh: '项目菜单类型的样式'
         type: heading
@@ -740,11 +740,11 @@ settings:
     -
         id: cg-nt-tbar-top-sticky-pos-desktop
         title: 'Top sticky offset on desktop (in px units)'
-        title.uk: 'Верхнє липке зміщення на робочому столі (пікселі)'
+        title.uk: "Верхнє липке зміщення на комп'ютері (пікселі)"
         title.de: 'Oberer Sticky-Offset am PC (in rem-Einheiten) 📱'
         title.zh: '桌面端顶部 Sticky 附着的偏移量（单位：像素）'
         description: "For some themes, the toolbar doesn't quite stick to the top (larger = further from the top). Note, this will not apply when Position = Top (fixed)."
-        description.uk: 'У деяких темах панель не прилипає до верху (чим більше значення, тим далі від верху). Це не застосовується, якщо позиція = Зверху (фіксовано).'
+        description.uk: 'У деяких темах панель не прилипає до верху (чим більше значення, тим далі від верху). Це не застосовується, якщо позиція = Фіксовано зверху.'
         description.de: 'Bei einigen Themes klebt die Symbolleiste nicht ganz oben (größer = weiter von oben). Beachten Sie, dass dies nicht gilt, wenn Position = Oben (fixiert)'
         description.zh: '对于某些主题，工具栏并不能完全贴在顶部（数值越大，离顶部越远）。注意，当位置为「置顶（固定）」时，此设置不适用。'
         type: variable-number
@@ -753,7 +753,7 @@ settings:
     -
         id: cg-nt-tbar-top-sticky-pos-mobile
         title: 'Top sticky offset on mobile (in rem units) 📱'
-        title.uk: 'Верхній липкий офсет на мобільному пристрої (rem) 📱'
+        title.uk: 'Верхній липкий офсет на мобільному (rem) 📱'
         title.de: 'Oberer Sticky-Offset am Handy (in rem-Einheiten) 📱'
         title.zh: '移动端顶部 Sticky 附着的偏移量（单位：rem）📱'
         description: 'See above.'
@@ -826,7 +826,7 @@ settings:
     -
         id: cg-nt-tbar-inactive-opacity-desktop
         title: 'Inactive opacity on desktop'
-        title.uk: 'Прозорість у неактивному режимі на ПК'
+        title.uk: "Прозорість у неактивному режимі на комп'ютері"
         title.de: 'Inaktive Deckkraft'
         title.zh: '非活动状态透明度'
         description: 'When focus is in another view, dim the toolbar'
@@ -867,7 +867,7 @@ settings:
         title: 'Toolbar border radius (in px units)'
         title.uk: 'Радіус закруглення рамки панелі (пікселі)'
         description: 'How rounded the toolbar is. The higher the number, the more rounded.'
-        description.uk: 'Наскільки закруглена панель. Чим більше число, тим більше заокруглення.'
+        description.uk: 'Закруглення панелі. Чим більше число, тим більше округлення.'
         type: variable-number
         default: 5
         format: px
@@ -907,6 +907,22 @@ settings:
         type: variable-number
         default: 1
         format: em
+    -
+        id: ui
+        title: 'Other UI'
+        title.uk: 'Додатковий UI'
+        description: 'Styles for other Note Toolbar UI elements'
+        description.uk: 'Стилі додаткових елементів Note Toolbar'
+        type: heading
+        level: 1
+        collapsed: true
+    -
+        id: cg-nt-ui-modal-width
+        title: 'Modal width on desktop (in px units)'
+        title.uk: "Ширина модального вікна на комп'ютері (пікселі)"
+        type: variable-number
+        default: 700
+        format: px
  */
 
 body {
@@ -974,6 +990,7 @@ body {
     --cg-nt-quick-tools-item-font-size: 1em;
     --cg-nt-quick-tools-item-border-radius: var(--radius-s);
     --cg-nt-quick-tools-item-text-color: var(--text-normal);
+    --cg-nt-ui-modal-width: var(--prompt-width);
 
     &.is-android {
         --cg-nt-fab-border-radius: var(--radius-xl);
@@ -1377,7 +1394,7 @@ body {
 
     &[data-callout-metadata*="tab"] ul {
         & li[data-active-file] {
-            border-bottom: 1px solid var(--link-color);
+            box-shadow: inset 0 -1px 0 var(--link-color);
             & span.external-link {
                 color: var(--link-color);
                 filter: unset;
@@ -1388,7 +1405,7 @@ body {
     &[data-callout-metadata*="mtb"] ul {
         .is-mobile & {
             & li[data-active-file] {
-                border-bottom: 1px solid var(--link-color);
+                box-shadow: inset 0 -1px 0 var(--link-color);
                 & span.external-link {
                     color: var(--link-color);
                     filter: unset;
@@ -1400,7 +1417,7 @@ body {
     &[data-callout-metadata*="mntb"] ul {
         .is-mobile & {
             & li[data-active-file] {
-                border-bottom: unset;
+                box-shadow: none;
                 & span.external-link {
                     color: var(--cg-nt-item-text-color);
                     filter: var(--link-external-filter);
@@ -1645,6 +1662,11 @@ body:not(.is-mobile):not(.is-focused), .workspace-leaf:not(.mod-active) {
                 width: var(--cg-nt-menu-icon-size);
             }
         }
+        /* fix for hotkeys not displaying next to text */
+        & .menu-item-title {
+            align-items: center;
+            display: flex;
+        }
     }
     & .menu-item.selected:not(.is-label):not(.is-disabled) {
         background-color: var(--cg-nt-menu-item-bg-color-hover);
@@ -1796,6 +1818,10 @@ body:not(.is-mobile):not(.is-focused), .workspace-leaf:not(.mod-active) {
             padding-bottom: 0;
         }
     }
+    + .note-toolbar-setting-field-error {
+        padding-top: 8px;
+        padding-bottom: 16px;
+    }
     &[data-active="true"] {
         display: flex !important;
     }
@@ -1883,10 +1909,6 @@ body:not(.is-mobile):not(.is-focused), .workspace-leaf:not(.mod-active) {
             height: var(--font-ui-medium);
             width: var(--font-ui-medium);            
         }
-    }
-    & .note-toolbar-setting-field-error {
-        padding-top: 8px;
-        width: 100%;
     }
     &:focus-within {
         border-radius: var(--input-radius);
@@ -2121,6 +2143,9 @@ input[type="text"].note-toolbar-setting-error,
                 gap: var(--size-4-4);
             }
         }
+        .is-phone & {
+            padding-top: 1.5em !important;
+        }
     }
     & #tbar-search {
         padding-top: 0;
@@ -2160,7 +2185,6 @@ input[type="text"].note-toolbar-setting-error,
 
 .note-toolbar-setting-callout-container,
 .note-toolbar-setting-contexts-container {
-    padding-top: 0;
     & .note-toolbar-setting-items-list-container {
         .setting-item:first-child {
             padding: 0.75em 0;
@@ -2193,14 +2217,13 @@ input[type="text"].note-toolbar-setting-error,
     }
 }
 
-.note-toolbar-setting-items-list-container {
-    .is-phone & {
-        & .note-toolbar-setting-button {
-            & .setting-item-info {
-                display: none;
-            }
-        }       
-    }
+.is-phone .note-toolbar-setting-items-container,
+.is-phone .note-toolbar-setting-items-list-container {
+    & .note-toolbar-setting-button {
+        & .setting-item-info {
+            display: none;
+        }
+    }  
 }
 
 .note-toolbar-setting-items-button-container {
@@ -2567,9 +2590,16 @@ input[type="text"].note-toolbar-setting-error,
     }
 }
 
-.note-toolbar-setting-item-link-subfield-with-info {
+.note-toolbar-setting-item-link-advanced {
+    display: none;
+    &[data-active] {
+        display: flex !important;
+    }
+    flex-direction: column;
     flex-grow: 1;
+    gap: 1em;
     & .setting-item {
+        border: none;
         padding: 0;
     }
     & .setting-item-info {
@@ -2591,15 +2621,23 @@ input[type="text"].note-toolbar-setting-error,
 }
 
 .note-toolbar-setting-item-field-link {
+    align-items: flex-start;
     border-top: none !important;
+    flex-direction: column;
+    gap: 0.5em;
     padding-top: 0 !important;
     width: 100%;
     & .setting-item-info {
         display: none;
     }
     & .setting-item-control {
-        flex-direction: column;
         align-items: flex-start;
+        flex-direction: column;
+        /* for the advanced settings gear */
+        &.note-toolbar-setting-item-control-advanced {
+            align-items: center;
+            flex-direction: row
+        }
     };
     & .setting-item-control, .search-input-container {
         width: 100%;
@@ -2650,6 +2688,9 @@ input[type="text"].note-toolbar-setting-error,
         margin-inline-start: 0.25em;
         width: var(--font-ui-smaller);
         vertical-align: middle;
+    }
+    &[data-active="false"] {
+        display: none !important;
     }
 }
 
@@ -2970,20 +3011,6 @@ input[type="text"].note-toolbar-setting-error,
     }
 }
 
-.is-phone .note-toolbar-setting-help-dialog {
-    padding: 1em;
-    .setting-item {
-        flex-direction: row !important;
-        .setting-item-control {
-            margin-top: 0 !important;
-            width: auto !important;
-            button {
-                width: auto;
-            }
-        }
-    }
-}
-
 .note-toolbar-setting-help-section {
     color: var(--text-muted);
     font-size: var(--font-ui-smaller);
@@ -3005,25 +3032,24 @@ input[type="text"].note-toolbar-setting-error,
     }
 }
 
+.note-toolbar-setting-help-view .is-readable-line-width,
 .note-toolbar-setting-whatsnew-view .is-readable-line-width {
     max-width: var(--file-line-width);
     margin-left: auto;
     margin-right: auto;
 }
 
-.note-toolbar-setting-whatsnew-cta {
-    border-top: 1px solid var(--background-modifier-border);
-    padding-top: 0.75em;
-}
-
-.is-phone .note-toolbar-setting-whatsnew-cta {
-    .setting-item {
-        flex-direction: row !important;
-        padding-top: 0 !important;
-        .setting-item-control {
-            width: auto !important;
-            button {
-                width: auto;
+.note-toolbar-setting-view-cta {
+    & .setting-item {
+        border-top: 1px solid var(--background-modifier-border);
+        padding-top: 0.75em;
+        .is-phone & {
+            flex-direction: row !important;
+            & .setting-item-control {
+                width: auto !important;
+                & button {
+                    width: auto;
+                }
             }
         }
     }
@@ -3083,6 +3109,7 @@ input[type="text"].note-toolbar-setting-error,
     padding-inline-start: var(--size-4-5);
     padding-inline-end: var(--size-4-5);
     .is-phone & {
+        padding-top: 0;
         padding-bottom: var(--size-4-12);
     }
     & .note-toolbar-setting-plugin-onboarding {
@@ -3131,14 +3158,20 @@ input[type="text"].note-toolbar-setting-error,
         }
     }
     &[data-ntb-ui-type="modal"] {
-        .is-phone & {
-            padding-bottom: var(--size-4-6);
-        }
+        height: 100%;
+        width: var(--cg-nt-ui-modal-width);
         & .view-header-left, .view-actions {
             display: none;
         }
         & .modal-content {
             overflow-y: auto;
+            .is-phone & {
+                padding: var(--size-4-5);
+            }
+            /* hide the Web Viewer navigation bar */
+            & .workspace-leaf-content[data-type="webviewer"] .view-header {
+                display: none !important;
+            }
         }
         & .modal-title > .markdown-preview-view > * {
             margin: unset;
@@ -3169,4 +3202,54 @@ input[type="text"].note-toolbar-setting-error,
 
 .note-toolbar-ui-input {
     flex-grow: 1;
+}
+
+/*************************************************************************
+ * Launchpad
+ *************************************************************************/
+
+.note-toolbar-launchpad-container {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    & .cg-note-toolbar-container {
+        margin: auto 0;
+    }
+    & .empty-state {
+        display: none;
+    }
+}
+
+.note-toolbar-launchpad {
+    & .callout-content ul[role="menu"] {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        .is-phone & {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+        margin: 0 auto;
+        & li {
+            background-color: var(--background-primary-alt);
+            border-radius: var(--button-radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            & .cg-note-toolbar-item {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                min-height: 100px;
+                gap: 4px;
+                .is-phone & {
+                    color: var(--interactive-accent);
+                }
+            }
+        }
+    }
+
 }
