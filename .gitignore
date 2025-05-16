@@ -23,7 +23,6 @@
 
 # specific dirs and files, sort by name
 .makemd/
-/.obsidian_test/
 .smart-env/
 .space/
 .stfolder/
@@ -42,12 +41,10 @@ Archive*/*
 /Vaults/
 /Vault.md
 /broken links output.md
-/[cC]ontext.md
 /[hH]ome.canvas
 
 # obsidian config dir
-workspace.json
-workspace-mobile.json
+workspace*.json
 bookmarks.json
 .obsidian/plugins/vare/data.json
 .obsidian/plugins/recent-files-obsidian/data.json
