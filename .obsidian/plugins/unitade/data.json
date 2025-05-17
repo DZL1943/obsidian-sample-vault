@@ -1,6 +1,6 @@
 {
   "markdown_overcharge": false,
-  "extensions": "txt>json>csv>yaml>toml>html>css>js>py>sh>ledger>org",
+  "extensions": "txt > json > csv > yaml > toml > html > css > js > py > sh > ledger > org",
   "is_case_insensitive": false,
   "is_onload": false,
   "is_onload_unsafe": false,
@@ -9,7 +9,7 @@
   "ignore_extensions": "",
   "ignore_masks": "",
   "is_grouped": false,
-  "grouped_extensions": "",
+  "grouped_extensions": "markdown: txt;",
   "mobile_settings": {
     "extensions": "txt"
   },
