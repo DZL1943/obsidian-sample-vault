@@ -952,7 +952,7 @@
       "tags": [
         "recommended"
       ],
-      "enabled": false,
+      "enabled": true,
       "delay": "10"
     },
     {

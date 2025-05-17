@@ -22,7 +22,7 @@
     "^```.*"
   ],
   "phrasePatternsToSuppressTrigger": [],
-  "noAutoFocusUntilCycle": false,
+  "noAutoFocusUntilCycle": true,
   "showMatchStrategy": false,
   "showComplementAutomatically": false,
   "showIndexingStatus": false,
@@ -30,9 +30,7 @@
   "hotkeys": {
     "select": [
       {
-        "modifiers": [
-          "Mod"
-        ],
+        "modifiers": [],
         "key": "Enter",
         "hideHotkeyGuide": false
       }
@@ -74,7 +72,7 @@
   "excludeCurrentVaultPathPrefixPatterns": "",
   "includeCurrentVaultOnlyFilesUnderCurrentDirectory": false,
   "excludeCurrentVaultWordPatterns": [],
-  "enableCustomDictionaryComplement": true,
+  "enableCustomDictionaryComplement": false,
   "customDictionaryPaths": "Misc/Data/callout.md",
   "columnDelimiter": "Tab",
   "customDictionaryWordRegexPattern": "",
@@ -85,6 +83,8 @@
   "enableInternalLinkComplement": true,
   "suggestInternalLinkWithAlias": true,
   "excludeInternalLinkPathPrefixPatterns": "",
+  "excludeSelfInternalLink": false,
+  "excludeExistingInActiveFileInternalLinks": false,
   "updateInternalLinksOnSave": true,
   "insertAliasTransformedFromDisplayedInternalLink": {
     "enabled": false,
@@ -92,6 +92,7 @@
     "after": ""
   },
   "frontMatterKeyForExclusionInternalLink": "",
+  "tagsForExclusionInternalLink": [],
   "enableFrontMatterComplement": true,
   "frontMatterComplementMatchStrategy": "inherit",
   "insertCommaAfterFrontMatterCompletion": false,
