@@ -22,8 +22,7 @@ body {
 
 .cm-strikethrough,
 del {
-  text-decoration-color: var(--text-faint);
-  opacity: 0.7;
+  color: var(--text-faint);
 }
 
 u {
