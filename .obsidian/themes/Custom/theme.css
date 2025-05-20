@@ -20,6 +20,12 @@ body {
 
 /* .theme-dark {} */
 
+/* .HyperMD-header-2.cm-line,
+h2 {
+  border-bottom: 2px solid var(--background-modifier-border);
+  padding-bottom: 2px;
+} */
+
 .cm-strikethrough,
 del {
   color: var(--text-faint);
@@ -46,6 +52,17 @@ ul>li.task-list-item[data-task="X"] {
 
 .cm-formatting.cm-formatting-list.cm-formatting-list-ol {
   padding-left: 0;
+}
+
+.markdown-preview-view tr,
+.markdown-rendered tr {
+  &:nth-child(odd) {
+    background-color: var(--background-primary);
+  }
+
+  &:nth-child(even) {
+    background-color: var(--background-secondary);
+  }
 }
 
 .workspace-tab-header:has(.mod-pinned) {

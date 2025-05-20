@@ -18,7 +18,8 @@
     "settings-layout",
     "mysnippets-layout",
     "anyblock",
-    "S - Checkboxes"
+    "S - Checkboxes",
+    "whitespace"
   ],
   "showViewHeader": false,
   "cssTheme": "Custom",

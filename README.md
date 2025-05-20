@@ -33,7 +33,7 @@ GROUP BY "`" + file.folder + "`"
 ### Root files
 
 ```dataviewjs
-var files = app.vault.getFiles().filter(f => f.parent.path == "/" && !["sortspec", "Vault", "broken links output"].some(s => f.name.includes(s))).sort((a,b)=>a.name.localeCompare(b.name));
+var files = app.vault.getFiles().filter(f => f.parent.path == "/" && ["md","canvas"].includes(f.extension) && !["sortspec", "Vault", "broken links output"].some(s => f.name.includes(s))).sort((a,b)=>a.name.localeCompare(b.name));
 //console.log(files);
 dv.list(files.map(f => dv.fileLink(f.path)));
 ```

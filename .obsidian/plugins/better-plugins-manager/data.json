@@ -1,5 +1,5 @@
 {
-  "PERSISTENCE": false,
+  "PERSISTENCE": true,
   "FILTER_TAG": "",
   "FILTER_GROUP": "",
   "FILTER_DELAY": "",
@@ -168,17 +168,6 @@
       ],
       "enabled": true,
       "delay": ""
-    },
-    {
-      "id": "code-styler",
-      "name": "Code Styler",
-      "desc": "Style and customize codeblocks and inline code in both editing mode and reading mode.",
-      "group": "2",
-      "tags": [
-        "required"
-      ],
-      "enabled": false,
-      "delay": "10"
     },
     {
       "id": "darlal-switcher-plus",
@@ -491,17 +480,6 @@
         "optional"
       ],
       "enabled": true,
-      "delay": "5"
-    },
-    {
-      "id": "obsidian-completr",
-      "name": "Completr",
-      "desc": "This plugin provides advanced auto-completion functionality for LaTeX, Frontmatter and standard writing.",
-      "group": "2",
-      "tags": [
-        "reserved"
-      ],
-      "enabled": false,
       "delay": "5"
     },
     {
@@ -843,17 +821,6 @@
         "optional"
       ],
       "enabled": true,
-      "delay": "5"
-    },
-    {
-      "id": "show-whitespace-cm6",
-      "name": "Show Whitespace",
-      "desc": "CSS styles and CM6 extensions to highlight whitespace in Source and Live Preview modes.",
-      "group": "2",
-      "tags": [
-        "optional"
-      ],
-      "enabled": false,
       "delay": "5"
     },
     {

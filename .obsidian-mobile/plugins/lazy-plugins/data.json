@@ -13,13 +13,13 @@
         "startupType": "short"
       },
       "any-block-min": {
-        "startupType": "disabled"
+        "startupType": "long"
       },
       "cmdr": {
         "startupType": "short"
       },
       "dataview": {
-        "startupType": "disabled"
+        "startupType": "long"
       },
       "obsidian-front-matter-title-plugin": {
         "startupType": "long"
