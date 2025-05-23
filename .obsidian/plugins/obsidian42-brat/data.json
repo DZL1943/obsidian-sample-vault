@@ -1,18 +1,14 @@
 {
   "pluginList": [
-    "any-block/obsidian-any-block-min",
     "Quorafind/Obsidian-Legacy-Vault-Switcher",
     "tbergeron/obsidian-nldates-redux",
     "wish5115/obsidian-floating-settings"
   ],
   "pluginSubListFrozenVersion": [
     {
-      "repo": "any-block/obsidian-any-block-min",
-      "version": "latest"
-    },
-    {
       "repo": "wish5115/obsidian-floating-settings",
-      "version": ""
+      "version": "latest",
+      "token": ""
     }
   ],
   "themesList": [],
