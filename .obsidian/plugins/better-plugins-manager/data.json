@@ -754,8 +754,8 @@
       "tags": [
         "optional"
       ],
-      "enabled": false,
-      "delay": "5"
+      "enabled": true,
+      "delay": "10"
     },
     {
       "id": "quick-explorer",

@@ -71,6 +71,10 @@
       "cmdr-clickable-icon;1": {
         "position": 0,
         "visible": true
+      },
+      "plugin-various-complements;1": {
+        "position": 18,
+        "visible": true
       }
     }
   },

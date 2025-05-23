@@ -49,6 +49,6 @@ bookmarks.json
 .obsidian/plugins/vare/data.json
 .obsidian/plugins/recent-files-obsidian/data.json
 .obsidian/plugins/float-search/data.json
-.obsidian/plugins/obsidian-auto-hide/data.json
+#.obsidian/plugins/obsidian-auto-hide/data.json
 .obsidian/plugins/novel-word-count/data.json
 .obsidian/plugins/various-complements/histories.json
