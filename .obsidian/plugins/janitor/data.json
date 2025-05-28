@@ -25,6 +25,7 @@
     ".ledger",
     ".pdf",
     "Misc/Scripts/",
-    "Misc/Data/"
+    "Misc/Data/",
+    "cedict_ts.u8"
   ]
 }

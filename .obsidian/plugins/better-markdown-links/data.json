@@ -1,7 +1,7 @@
 {
   "allowEmptyEmbedAlias": true,
-  "automaticallyConvertNewLinks": true,
-  "automaticallyUpdateLinksOnRenameOrMove": true,
+  "automaticallyConvertNewLinks": false,
+  "automaticallyUpdateLinksOnRenameOrMove": false,
   "excludePaths": [
     "Ext"
   ],

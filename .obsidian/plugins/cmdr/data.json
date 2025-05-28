@@ -50,6 +50,12 @@
       "icon": "lucide-quote",
       "name": "Admonition: Insert Admonition",
       "mode": "any"
+    },
+    {
+      "id": "better-markdown-links:convert-links-in-current-file",
+      "icon": "link",
+      "name": "Better Markdown Links: Convert links in current file",
+      "mode": "any"
     }
   ],
   "fileMenu": [
