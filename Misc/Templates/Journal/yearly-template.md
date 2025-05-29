@@ -1,11 +1,12 @@
 # <% tp.file.title %>
 
 ```dataviewjs
+var output = "";
 const months = Array.from({ length: 12 }, (_, i) => {
   const monthNum = String(i + 1).padStart(2, '0');
   return `[M${monthNum}](#M${monthNum})`;
 });
-dv.paragraph(`MM: ${months.join(' ')}`);
+output += `>MM: ${months.join(' ')}`;
 
 for (let q = 1; q <= 4; q++) {
   const start = (q - 1) * 13 + 1;
@@ -13,8 +14,12 @@ for (let q = 1; q <= 4; q++) {
     const weekNum = String(start + i).padStart(2, '0');
     return `[W${weekNum}](#W${weekNum})`;
   });
-  dv.paragraph(`[Q${q}](#Q${q}): ${weeks.join(' ')}`);
+  output += `\n>[Q${q}](#Q${q}): ${weeks.join(' ')}`;
 }
+dv.paragraph(`
+> [!info]- QuickAccess
+${output}
+`);
 ```
 
 ```dataview
