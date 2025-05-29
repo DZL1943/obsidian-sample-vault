@@ -15,7 +15,9 @@
     "Archives",
     "10_Inbox"
   ],
-  "excludedDirectoriesForLinking": [],
+  "excludedDirectoriesForLinking": [
+    "Archives"
+  ],
   "virtualLinkSuffix": "🔗",
   "virtualLinkAliasSuffix": "🔗",
   "useMarkdownLinks": true,

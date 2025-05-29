@@ -19,7 +19,7 @@
   "monthlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-MM",
   "monthlyTemplateFilename": "Journal/monthly-template",
   "quarterlyNoteOption": true,
-  "quarterlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-qq",
+  "quarterlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-'Q'q",
   "quarterlyTemplateFilename": "",
   "yearlyNoteOption": true,
   "yearlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy",
