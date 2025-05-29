@@ -17,7 +17,7 @@ for (let q = 1; q <= 4; q++) {
   output += `\n>[Q${q}](#Q${q}): ${weeks.join(' ')}`;
 }
 dv.paragraph(`
-> [!info]- QuickAccess
+> [!info]- TOC
 ${output}
 `);
 ```
