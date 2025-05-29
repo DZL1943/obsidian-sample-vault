@@ -10,10 +10,10 @@
   "shouldConfirmBeforeCreatingNote": true,
   "templatePlugin": 2,
   "dailyNoteOption": true,
-  "dailyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-MM-dd",
+  "dailyNotePattern": "'20_Private'/'Journals'/yyyy/MM/yyyy-MM-dd",
   "dailyTemplateFilename": "Journal/daily-template",
   "weeklyNoteOption": true,
-  "weeklyNotePattern": "'20_Private'/'Journals'/kkkk/kkkk-'W'WW",
+  "weeklyNotePattern": "'20_Private'/'Journals'/kkkk/'Q'q/kkkk-'W'WW",
   "weeklyTemplateFilename": "Journal/weekly-template",
   "monthlyNoteOption": true,
   "monthlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-MM",
@@ -22,6 +22,6 @@
   "quarterlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-'Q'q",
   "quarterlyTemplateFilename": "",
   "yearlyNoteOption": true,
-  "yearlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy",
+  "yearlyNotePattern": "'20_Private'/'Journals'/yyyy",
   "yearlyTemplateFilename": "Journal/yearly-template"
 }
