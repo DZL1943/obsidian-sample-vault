@@ -12,11 +12,12 @@ obsidianEditingMode: source
 
 ![](<Misc/Attachments/Images/Obsidian-20240908154942.png>)
 
+%%[list2table]%%
 - Obsidian 版本 | 1.8.10-mac-arm64
 - 主题 | 默认 `#00A86B`
-- ribbon | 基本不用
+- ribbon | 基本不用. 结合 cmdr 插件实现 legacy-vault-switcher
 - 标题栏 | 隐藏, 用 editing-toolbar、quick-explorer 以及"斜杆命令"替代
-- 状态栏 | 悬浮时显示, 用 statusbar-organizer 自定义
+- 状态栏 | 悬浮时显示, 用 statusbar-organizer 调整顺序
 - 菜单 | 用 cmdr 自定义
 
 ## Top folders
@@ -156,4 +157,5 @@ group by file.folder
 
 ## Changelog
 
-- [2025-05-11] obsidian_mini
+- 2025-05-11: obsidian_mini
+- 2025-05-29: 调整 yearly-template, 调整每日、每周、每月、每年目录
