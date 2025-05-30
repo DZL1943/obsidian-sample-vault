@@ -35,8 +35,8 @@ Archive*/*
 *[iI]nbox/*
 [lL]ocal/*
 *[pP]rivate/**
-!20_Private/Journals/journal-index.md
-!20_Private/Journals/
+!*[pP]rivate/Journals/
+!*[pP]rivate/Journals/*-index.md
 /Spaces/
 /Vaults/
 /Vault.md
