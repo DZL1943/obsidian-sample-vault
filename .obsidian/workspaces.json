@@ -29,7 +29,7 @@
                 }
               },
               {
-                "id": "0caaab658f336069",
+                "id": "4e6a03b6ca7adcca",
                 "type": "leaf",
                 "pinned": true,
                 "state": {
@@ -45,24 +45,9 @@
                 }
               },
               {
-                "id": "d86dcf06cbef1bd4",
+                "id": "85871c56503d6497",
                 "type": "leaf",
                 "pinned": true,
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "10_Inbox/Local/draft.excalidraw.md",
-                    "mode": "source",
-                    "source": true
-                  },
-                  "pinned": true,
-                  "icon": "lucide-file",
-                  "title": "draft.excalidraw"
-                }
-              },
-              {
-                "id": "1ac2acc944ef26d7",
-                "type": "leaf",
                 "state": {
                   "type": "kanban",
                   "state": {
@@ -77,8 +62,25 @@
                       ]
                     }
                   },
-                  "icon": "lucide-trello",
-                  "title": "Context"
+                  "pinned": true,
+                  "icon": "lucide-file",
+                  "title": "插件不再活动"
+                }
+              },
+              {
+                "id": "d86dcf06cbef1bd4",
+                "type": "leaf",
+                "pinned": true,
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "10_Inbox/Local/draft.excalidraw.md",
+                    "mode": "preview",
+                    "source": true
+                  },
+                  "pinned": true,
+                  "icon": "lucide-file",
+                  "title": "draft.excalidraw"
                 }
               },
               {
@@ -94,9 +96,23 @@
                   "icon": "lucide-file",
                   "title": "202411212147"
                 }
+              },
+              {
+                "id": "435f8570360a945a",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "10_Inbox/Local/temp.md",
+                    "mode": "source",
+                    "source": true
+                  },
+                  "icon": "lucide-file",
+                  "title": "temp"
+                }
               }
             ],
-            "currentTab": 4
+            "currentTab": 5
           }
         ],
         "direction": "vertical"
@@ -140,7 +156,7 @@
                 }
               },
               {
-                "id": "3a7b235e67a811a1",
+                "id": "5c251a5fe76de87f",
                 "type": "leaf",
                 "state": {
                   "type": "file-tree-view",
@@ -167,16 +183,6 @@
             "dimension": 49.375,
             "children": [
               {
-                "id": "f9a0b28bf085d20a",
-                "type": "leaf",
-                "state": {
-                  "type": "recent-files",
-                  "state": {},
-                  "icon": "clock",
-                  "title": "Recent Files"
-                }
-              },
-              {
                 "id": "a6fae1cf0ae0a586",
                 "type": "leaf",
                 "state": {
@@ -187,13 +193,37 @@
                 }
               },
               {
-                "id": "0e0b017e34f0b53e",
+                "id": "a9b42bc135af100f",
+                "type": "leaf",
+                "state": {
+                  "type": "recent-files",
+                  "state": {},
+                  "icon": "clock",
+                  "title": "Recent Files"
+                }
+              },
+              {
+                "id": "f39bc1e076f601bd",
                 "type": "leaf",
                 "state": {
                   "type": "calendar-view",
                   "state": {},
                   "icon": "lucide-calendar-check",
                   "title": "日历"
+                }
+              },
+              {
+                "id": "8c891d16a100416e",
+                "type": "leaf",
+                "state": {
+                  "type": "all-properties",
+                  "state": {
+                    "sortOrder": "frequency",
+                    "showSearch": false,
+                    "searchQuery": ""
+                  },
+                  "icon": "lucide-archive",
+                  "title": "添加笔记属性"
                 }
               }
             ],
@@ -297,8 +327,8 @@
           "obsidian-excalidraw-plugin:新建绘图文件": false
         }
       },
-      "active": "404235d0811f958b",
-      "mtime": "2025-05-16T10:32:45+08:00"
+      "active": "435f8570360a945a",
+      "mtime": "2025-05-30T20:25:36+08:00"
     },
     "init": {
       "main": {

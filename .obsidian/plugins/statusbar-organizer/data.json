@@ -75,6 +75,10 @@
       "plugin-various-complements;1": {
         "position": 18,
         "visible": true
+      },
+      "plugin-properties;1": {
+        "position": 19,
+        "visible": true
       }
     }
   },

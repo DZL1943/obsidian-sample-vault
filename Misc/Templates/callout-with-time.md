@@ -1,2 +1,2 @@
-> [!quote]+ <% tp.date.now("YYYY-MM-DDTHH:mmZ") %> 
+> [!quote]+ <% tp.date.now("YYYY-MM-DD[T]HH:mm:ss") %> 
 > 
