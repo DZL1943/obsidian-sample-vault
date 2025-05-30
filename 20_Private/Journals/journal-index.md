@@ -36,9 +36,9 @@ function getTodayInfo(lang = 'zh') {
 
   // 根据语言构建输出
   if (lang === 'zh') {
-    return `现在是 ${year}年${parts.month}月${parts.day}日 (${parts.timeZoneName}), ${parts.weekday}, 第${weekNumber}周`;
+    return `现在是 ${year}年${parts.month}月${parts.day}日, ${parts.weekday}, 第${weekNumber}周, ${parts.timeZoneName}`;
   } else {
-    return `Today is ${parts.weekday}, ${parts.month} ${parts.day} ${parts.year} (${parts.timeZoneName}), Week ${weekNumber}`;
+    return `Today is ${parts.weekday}, ${parts.month} ${parts.day} ${parts.year}, Week ${weekNumber}, ${parts.timeZoneName}`;
   }
 }
 
