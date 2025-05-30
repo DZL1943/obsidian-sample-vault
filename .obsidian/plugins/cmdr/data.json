@@ -187,7 +187,8 @@
       "vim-im-control",
       "solve",
       "janitor",
-      "obsidian-day-planner"
+      "obsidian-day-planner",
+      "properties"
     ],
     "leftRibbon": [
       "插入模板",

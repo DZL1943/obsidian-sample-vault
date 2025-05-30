@@ -15,7 +15,8 @@
     "statusbar": [
       "backlink",
       "word-count",
-      "editing-toolbar"
+      "editing-toolbar",
+      "properties"
     ],
     "leftRibbon": []
   },
