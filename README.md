@@ -158,4 +158,3 @@ group by file.folder
 ## Changelog
 
 - 2025-05-11: obsidian_mini
-- 2025-05-29: 调整 yearly-template, 调整每日、每周、每月、每年目录

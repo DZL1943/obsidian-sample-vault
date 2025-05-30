@@ -16,12 +16,12 @@
   "weeklyNotePattern": "'20_Private'/'Journals'/kkkk/'Q'q/kkkk-'W'WW",
   "weeklyTemplateFilename": "Journal/weekly-template",
   "monthlyNoteOption": true,
-  "monthlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-MM",
+  "monthlyNotePattern": "'20_Private'/'Journals'/yyyy/MM/yyyy-MM",
   "monthlyTemplateFilename": "Journal/monthly-template",
   "quarterlyNoteOption": true,
-  "quarterlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy-'Q'q",
+  "quarterlyNotePattern": "'20_Private'/'Journals'/yyyy/'Q'q/yyyy-'Q'q",
   "quarterlyTemplateFilename": "",
   "yearlyNoteOption": true,
-  "yearlyNotePattern": "'20_Private'/'Journals'/yyyy",
+  "yearlyNotePattern": "'20_Private'/'Journals'/yyyy/yyyy",
   "yearlyTemplateFilename": "Journal/yearly-template"
 }
