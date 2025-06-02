@@ -24,15 +24,6 @@
       "key": "F"
     }
   ],
-  "app:toggle-ribbon": [
-    {
-      "modifiers": [
-        "Ctrl",
-        "Mod"
-      ],
-      "key": "B"
-    }
-  ],
   "editor:swap-line-up": [
     {
       "modifiers": [

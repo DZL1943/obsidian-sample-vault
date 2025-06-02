@@ -344,15 +344,6 @@
       "key": "N"
     }
   ],
-  "app:toggle-ribbon": [
-    {
-      "modifiers": [
-        "Mod",
-        "Ctrl"
-      ],
-      "key": "B"
-    }
-  ],
   "zk-prefixer": [
     {
       "modifiers": [
@@ -432,8 +423,8 @@
   "floating-toc:scroll-to-top": [
     {
       "modifiers": [
-        "Mod",
-        "Ctrl"
+        "Ctrl",
+        "Shift"
       ],
       "key": "ArrowUp"
     }
@@ -441,8 +432,8 @@
   "floating-toc:scroll-to-bottom": [
     {
       "modifiers": [
-        "Mod",
-        "Ctrl"
+        "Ctrl",
+        "Shift"
       ],
       "key": "ArrowDown"
     }
@@ -494,6 +485,15 @@
         "Alt"
       ],
       "key": "S"
+    }
+  ],
+  "app:toggle-ribbon": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "B"
     }
   ]
 }
