@@ -1,25 +1,29 @@
 # <% tp.file.title %>
 
 ```dataviewjs
-var output = "";
-const months = Array.from({ length: 12 }, (_, i) => {
-  const monthNum = String(i + 1).padStart(2, '0');
-  return `[M${monthNum}](#M${monthNum})`;
-});
-output += `>MM: ${months.join(' ')}`;
+function getISOWeek(d) {
+  const date = new Date(d);
+  date.setHours(12, 0, 0, 0);
+  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+  return Math.floor((date - new Date(date.getFullYear(), 0, 1)) / 6048e5) + 1;
+}
+
+const currentWeek = getISOWeek(new Date());
+let toc = ">MM: " + Array.from({length:12}, (_,i) => 
+  `[M${(i+1).toString().padStart(2,'0')}](#M${(i+1).toString().padStart(2,'0')})`
+).join(' ');
 
 for (let q = 1; q <= 4; q++) {
   const start = (q - 1) * 13 + 1;
-  const weeks = Array.from({ length: 13 }, (_, i) => {
-    const weekNum = String(start + i).padStart(2, '0');
-    return `[W${weekNum}](#W${weekNum})`;
-  });
-  output += `\n>[Q${q}](#Q${q}): ${weeks.join(' ')}`;
+  toc += `\n>[Q${q}](#Q${q}): ` + Array.from({length:13}, (_,i) => {
+    const week = start + i;
+    return week === currentWeek 
+      ? `[**W${week.toString().padStart(2,'0')}**](#W${week.toString().padStart(2,'0')})` 
+      : `[W${week.toString().padStart(2,'0')}](#W${week.toString().padStart(2,'0')})`;
+  }).join(' ');
 }
-dv.paragraph(`
-> [!info]- TOC
-${output}
-`);
+
+dv.paragraph(`> [!info]- TOC\n${toc}`);
 ```
 
 ```dataview

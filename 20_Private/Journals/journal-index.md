@@ -6,6 +6,13 @@ obsidianEditingMode: source
 ---
 
 ```dataviewjs
+function getISOWeek(d) {
+  const date = new Date(d);
+  date.setHours(12, 0, 0, 0);
+  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+  return Math.floor((date - new Date(date.getFullYear(), 0, 1)) / 6048e5) + 1;
+}
+
 function getTodayInfo(lang = 'zh') {
   const now = new Date();
   const year = now.getFullYear();
@@ -27,12 +34,7 @@ function getTodayInfo(lang = 'zh') {
       .map(part => [part.type, part.value])
   );
   
-  // 计算 ISO 周数 (符合 ISO 8601 标准)
-  const firstDayOfYear = new Date(year, 0, 1);
-  const daysOffset = (7 + now.getDay() - 1) % 7; // 调整为周一为周起点
-  const weekNumber = Math.floor(
-    ((now - firstDayOfYear) / 86400000 + daysOffset) / 7 + 1
-  );
+  const weekNumber = getISOWeek(now);
 
   // 根据语言构建输出
   if (lang === 'zh') {
