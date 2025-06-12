@@ -12,7 +12,7 @@
   "archive-date-separator": "|",
   "move-tags": true,
   "move-dates": true,
-  "new-card-insertion-method": "prepend-compact",
+  "new-card-insertion-method": "append",
   "tag-sort": [],
   "date-format": "YYYY-MM-DD",
   "date-display-format": "M/D"

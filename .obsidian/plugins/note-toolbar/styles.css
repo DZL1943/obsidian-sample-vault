@@ -557,6 +557,82 @@ settings:
         default: 0
         format: px
     -
+        id: launchpad
+        title: 'New tab view (Launchpad)'
+        description: 'Style the toolbar replacing the New tab view'
+        type: heading
+        level: 1
+        collapsed: true
+    -
+        id: launchpad-colors
+        title: '↳ 🎨 Colors'
+        title.uk: '↳ 🎨 Кольори'
+        title.de: '↳ 🎨 Farben'
+        title.zh: '↳ 🎨 颜色'
+        type: heading
+        level: 2
+        collapsed: true
+    -
+        id: cg-nt-launchpad-item-bg-color
+        title: 'Item: Background color'
+        type: variable-themed-color
+        opacity: true
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    -
+        id: launchpad-sizing-spacing
+        title: '↳ 📐 Sizing and Spacing'
+        title.uk: '↳ 📐 Розміри та інтервали'
+        title.de: '↳ 📐 Größe und Abstände'
+        title.zh: '↳ 📐 大小和间距'
+        type: heading
+        level: 2
+        collapsed: true
+    -
+        id: cg-nt-launchpad-cols-desktop
+        title: 'Number of columns on desktop'
+        type: variable-number
+        default: 2
+    -
+        id: cg-nt-launchpad-cols-mobile
+        title: 'Number of columns on mobile 📱'
+        type: variable-number
+        default: 2
+    -
+        id: cg-nt-launchpad-max-width
+        title: 'Max width (in px units)'
+        type: variable-number
+        default: 0
+        format: px
+    -
+        id: cg-nt-launchpad-item-font-size
+        title: 'Item: Font size (in em units)'
+        type: variable-number
+        default: 0
+        format: em
+    -
+        id: cg-nt-launchpad-item-icon-size
+        title: 'Item: Icon size (in px units)'
+        type: variable-number
+        default: 0
+        format: px
+    -
+        id: launchpad-styles
+        title: '↳ 😎 Style'
+        title.uk: '↳ 😎 Стиль'
+        title.de: '↳ 😎 Stil'
+        title.zh: '↳ 😎 样式'
+        type: heading
+        level: 2
+        collapsed: true
+    -
+        id: cg-nt-launchpad-item-border-radius
+        title: 'Item: Border radius (in px units)'
+        type: variable-number
+        default: 0
+        format: px
+    -
         id: quick-tools
         title: 'Quick Tools'
         title.uk: 'Швидкі інструменти'
@@ -975,6 +1051,13 @@ body {
     --cg-nt-item-sep-margin-y: 0.25em;
     --cg-nt-item-text-color: var(--metadata-label-text-color);
     --cg-nt-item-text-color-hover: var(--text-normal);
+    --cg-nt-launchpad-cols-desktop: 2;
+    --cg-nt-launchpad-cols-mobile: 2;
+    --cg-nt-launchpad-item-bg-color: var(--background-primary-alt);
+    --cg-nt-launchpad-item-border-radius: var(--button-radius);
+    --cg-nt-launchpad-item-font-size: var(--metadata-label-font-size);
+    --cg-nt-launchpad-item-icon-size: var(--icon-size);
+    --cg-nt-launchpad-max-width: var(--file-line-width);
     --cg-nt-menu-bg-color: var(--background-secondary);
     --cg-nt-menu-border-color: var(--hr-color);
     --cg-nt-menu-border-radius: var(--radius-m);
@@ -2391,6 +2474,11 @@ input[type="text"].note-toolbar-setting-error,
             color: var(--text-on-accent);
         }
     }
+    @media (hover: hover) {
+        & button:hover {
+            box-shadow: inset 0 0 0 2px var(--text-normal);
+        }
+    }
 }
 
 .note-toolbar-view-heading {
@@ -2477,12 +2565,28 @@ input[type="text"].note-toolbar-setting-error,
             width: 30px;
         }
     }
-    & h3 {
+    .note-toolbar-card-item-plus {
+        position: absolute;
+        color: var(--interactive-accent);
+        top: 16px;
+        right: 16px;
+        opacity: 0;
+        & svg {
+            height: 24px;        
+            width: 24px;
+        }
+    }
+    &:hover .note-toolbar-card-item-plus {
+        opacity: 0.8;
+    }
+    & .note-toolbar-card-item-title {
         font-size: 1.25em;
+        font-weight: var(--h3-weight);
         .is-mobile & {
             font-size: var(--font-ui-small);
             font-weight: var(--font-bold);
         }
+        line-height: var(--h3-line-height);
         margin: 0;
         margin-top: 46px; /* icon height */
         text-wrap: wrap;
@@ -2491,24 +2595,25 @@ input[type="text"].note-toolbar-setting-error,
             display: none; /* fix for Border theme */
         }
     }
-    & p {
+    & .note-toolbar-card-item-description {
         align-self: start;
+        color: var(--text-muted);
+        .note-toolbar-tips-card-items & {
+            color: var(--text-normal);
+        }
         display: flex;
         font-size: var(--font-ui-small);
         margin: 0 !important;
         text-wrap: wrap;
-        &.note-toolbar-card-item-description {
-            color: var(--text-muted);
-        }
-        &.note-toolbar-card-item-plugins {
-            display: flex;
-            vertical-align: middle;
-            gap: 0.25em;
-            margin-top: 0.5em !important;
-            & svg {
-                height: var(--font-ui-small);
-                width: var(--font-ui-small);
-            }
+    }
+    & .note-toolbar-card-item-plugins {
+        display: flex;
+        vertical-align: middle;
+        gap: 0.25em;
+        margin-top: 0.5em !important;
+        & svg {
+            height: var(--font-ui-small);
+            width: var(--font-ui-small);
         }
     }
 }
@@ -2577,7 +2682,7 @@ input[type="text"].note-toolbar-setting-error,
     gap: 0.75em;
     width: 100%;
     & .setting-item {
-        padding: 0;
+        padding: 0 !important;
         & .setting-item-info {
             display: none;
         }
@@ -3068,11 +3173,68 @@ input[type="text"].note-toolbar-setting-error,
     }
 }
 
+.note-toolbar-setting-help-view-title {
+    & h1, p, svg {
+        color: var(--text-normal) !important;
+    }
+}
+
 .note-toolbar-setting-help-view-section {
     border-radius: 8px;
     border: 1px solid var(--background-modifier-border);
     margin: 0em 0em 1em 0em;
     padding: 0em 1em;
+    & .setting-item {
+        align-items: center !important;
+        padding: 1em 0em !important;
+    }
+    & .setting-item-control {
+        margin-top: 0 !important;
+    }
+}
+
+.note-toolbar-setting-help-video {
+    aspect-ratio: 8 / 5;
+    position: relative;
+    width: 100%;
+    & video {
+        border: 1px solid var(--background-modifier-border);
+        border-radius: 0.5em;
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+    & .note-toolbar-setting-help-video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+    & .note-toolbar-setting-help-video-play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: color-mix(in srgb, var(--interactive-normal) 45%, transparent);
+        opacity: 0.8;
+        border: none;
+        border-radius: 50%;
+        width: 6em;
+        height: 6em;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        svg {
+            color: var(--interactive-accent);
+            width: 5em;
+            height: 5em;
+            fill: var(--interactive-accent);
+        }
+    }
 }
 
 .note-toolbar-setting-gallery-view {
@@ -3105,9 +3267,8 @@ input[type="text"].note-toolbar-setting-error,
 }
 
 @keyframes note-toolbar-tip-icon-animation {
-    0%   { transform: translateY(0px) rotate(0deg); }
-    50%  { transform: translateY(-4px) rotate(2deg); }
-    100% { transform: translateY(0px) rotate(0deg); }
+  0% { opacity: 0.5; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .note-toolbar-setting-view-cta {
@@ -3295,21 +3456,18 @@ input[type="text"].note-toolbar-setting-error,
     & .callout-content {
         margin-left: auto;
         margin-right: auto;
-        max-width: var(--file-line-width);
+        max-width: var(--cg-nt-launchpad-max-width);
         & ul[role="menu"] {
             display: grid;
             gap: 1rem;
-            grid-template-columns: repeat(2, 1fr);
-            /* @media (min-width: 800px) {
-                grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(var(--cg-nt-launchpad-cols-desktop), 1fr);
+            .is-mobile & {
+                grid-template-columns: repeat(var(--cg-nt-launchpad-cols-mobile), 1fr);
             }
-            .is-phone & {
-                grid-template-columns: repeat(2, 1fr);
-            } */
             margin: 0 auto;
             & li {
-                background-color: var(--background-primary-alt);
-                border-radius: var(--button-radius);
+                background-color: var(--cg-nt-launchpad-item-bg-color);
+                border-radius: var(--cg-nt-launchpad-item-border-radius);
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -3318,13 +3476,21 @@ input[type="text"].note-toolbar-setting-error,
                     width: 100%;
                     display: flex;
                     flex-direction: column;
+                    font-size: var(--cg-nt-launchpad-item-font-size);
                     align-items: center;
                     justify-content: center;
                     text-align: center;
                     min-height: 100px;
                     gap: 4px;
+                    & .cg-note-toolbar-item-label {
+                        white-space: wrap;
+                    }
                     .is-phone & {
                         color: var(--interactive-accent);
+                    }
+                    & svg {
+                        height: var(--cg-nt-launchpad-item-icon-size);
+                        width: var(--cg-nt-launchpad-item-icon-size);
                     }
                 }
             }

@@ -63,7 +63,16 @@ var DEFAULT_SETTINGS = {
   heading_id_newline: false,
   enable_block_notification: true,
   enable_embed_notification: true,
-  enable_url_notification: true
+  enable_url_notification: true,
+  // Time Section
+  enable_time_section: true,
+  time_section_format: "HH:mm",
+  daily_note_pattern: "\\d{4}-\\d{1,2}-\\d{1,2}",
+  insert_heading_level: true,
+  daily_note_heading_level: 2,
+  enable_time_section_in_menu: false,
+  time_section_plain_style: false
+  // Default to standard heading style
 };
 function generateRandomId(prefix, length) {
   if (length < 3 || length > 7) {
@@ -81,6 +90,27 @@ function shouldInsertAfter(block) {
       "comment",
       "footnoteDefinition"
     ].includes(block.type);
+  }
+}
+function formatCurrentTime(format) {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, "0");
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  return format.replace("HH", hours).replace("mm", minutes);
+}
+function isTimeSection(text, format = "HH:mm") {
+  const regex = new RegExp(`^(#{1,6})\\s+(\\d{1,2}:\\d{1,2})$`);
+  return regex.test(text);
+}
+function isDailyNote(fileName, pattern) {
+  console.log(`isDailyNote checking: fileName="${fileName}", pattern="${pattern}"`);
+  try {
+    const regex = new RegExp(pattern);
+    const isMatch = regex.test(fileName);
+    return isMatch;
+  } catch (e) {
+    console.error("Invalid regex pattern for daily note:", e);
+    return false;
   }
 }
 function processLineContent(line) {
@@ -123,6 +153,28 @@ function processMultiLineContent(editor, start_line, end_line, alias_length) {
 }
 function analyzeHeadings(fileCache, editor, start_line, end_line) {
   var _a, _b, _c;
+  if (start_line === 0 && end_line === 0) {
+    console.log("block-link-plus: analyzeHeadings: start_line === 0 && end_line === 0");
+    return {
+      isValid: false,
+      start_line,
+      end_line,
+      isMultiline: false,
+      block: null,
+      nearestBeforeStartLevel: 0,
+      minLevelInRange: Infinity,
+      hasHeadingAtStart: false,
+      hasHeadingAtEnd: false,
+      headingAtStart: null,
+      headingAtEnd: null,
+      isStartHeadingMinLevel: false,
+      isEndLineJustBeforeHeading: false,
+      blockContent: null,
+      nearestHeadingTitle: null,
+      selectedText: null,
+      blockText: null
+    };
+  }
   if (!fileCache || end_line < start_line) {
     return {
       isValid: false,
@@ -159,6 +211,8 @@ function analyzeHeadings(fileCache, editor, start_line, end_line) {
       return section.position.start.line <= end_line && section.position.end.line >= end_line;
     });
     const blockContent2 = block2 ? processLineContent(editor.getLine(start_line)) : null;
+    let nearestBeforeStartLevel2 = 0;
+    let closestBeforeStartDistance2 = Infinity;
     (_b = fileCache.headings) == null ? void 0 : _b.forEach((heading) => {
       const { start, end } = heading.position;
       if (start.line < start_line) {
@@ -166,7 +220,9 @@ function analyzeHeadings(fileCache, editor, start_line, end_line) {
           return;
         }
         const distance = start_line - start.line;
-        if (start_line - start.line < closestBeforeStartDistance) {
+        if (distance < closestBeforeStartDistance2) {
+          closestBeforeStartDistance2 = distance;
+          nearestBeforeStartLevel2 = heading.level;
           nearestHeadingTitle = heading.heading;
         }
       }
@@ -177,7 +233,7 @@ function analyzeHeadings(fileCache, editor, start_line, end_line) {
       end_line,
       isMultiline: false,
       block: block2,
-      nearestBeforeStartLevel: 0,
+      nearestBeforeStartLevel: nearestBeforeStartLevel2,
       minLevelInRange: head_block ? head_block.level : Infinity,
       hasHeadingAtStart: !!block2,
       hasHeadingAtEnd: false,
@@ -389,30 +445,15 @@ function gen_insert_blocklink_multline_block(fileCache, editor, settings) {
   }
   return links;
 }
-function markdownPostProcessor(el) {
-  if (el.firstChild instanceof Node) {
-    let walker = document.createTreeWalker(
-      el.firstChild,
-      NodeFilter.SHOW_TEXT,
-      null
-    );
-    let nodes = [];
-    let node;
-    while (node = walker.nextNode()) {
-      nodes.push(node);
-    }
-    for (node of nodes) {
-      node.textContent = node.textContent.replace(
-        /\s*˅[a-zA-Z0-9-]*/g,
-        ""
-      );
-    }
-  }
-}
 function createViewPlugin(rule = "(^| )\u02C5[a-zA-Z0-9_]+$") {
   let decorator = new import_view.MatchDecorator({
     regexp: new RegExp(rule, "g"),
-    decoration: import_view.Decoration.mark({ class: "small-font" })
+    decoration: (match) => {
+      if (match[0].match(/^#{1,6}\s+\d{1,2}:\d{1,2}$/)) {
+        return import_view.Decoration.mark({ class: "time-section-plain" });
+      }
+      return import_view.Decoration.mark({ class: "small-font" });
+    }
   });
   return import_view.ViewPlugin.define(
     (view) => ({
@@ -436,6 +477,7 @@ var BlockLinkPlus = class extends import_obsidian.Plugin {
     console.log(`loading ${this.appName}`);
     await this.loadSettings();
     this.addSettingTab(new BlockLinkPlusSettingsTab(this.app, this));
+    this.addCustomStyles();
     this.registerEvent(
       this.app.workspace.on(
         "editor-menu",
@@ -463,9 +505,60 @@ var BlockLinkPlus = class extends import_obsidian.Plugin {
         return this.handleCommand(isChecking, editor, view, false, true);
       }
     });
-    this.registerMarkdownPostProcessor(markdownPostProcessor);
-    this.viewPlugin = createViewPlugin();
+    this.addCommand({
+      id: "insert-time-section",
+      name: "Insert Time Section",
+      editorCheckCallback: this.handleTimeCommand.bind(this)
+    });
+    this.registerMarkdownPostProcessor(this.markdownPostProcessor.bind(this));
+    this.updateViewPlugin();
+  }
+  /**
+   * Updates the view plugin with the current settings.
+   * This should be called whenever settings that affect the display are changed.
+   */
+  updateViewPlugin() {
+    let rule = "(^| )\u02C5[a-zA-Z0-9_]+$";
+    if (this.settings.time_section_plain_style) {
+      rule = `(${rule})|(^#{1,6}\\s+\\d{1,2}:\\d{1,2}$)`;
+    }
+    this.viewPlugin = createViewPlugin(rule);
     this.registerEditorExtension([this.viewPlugin]);
+  }
+  /**
+   * Processes markdown elements for rendering.
+   * Handles special markers and applies custom styling.
+   * @param el The HTML element to process
+   */
+  markdownPostProcessor(el) {
+    if (!el.firstChild)
+      return;
+    if (el.firstChild instanceof Node) {
+      let walker = document.createTreeWalker(
+        el.firstChild,
+        NodeFilter.SHOW_TEXT,
+        null
+      );
+      let nodes = [];
+      let node;
+      while (node = walker.nextNode()) {
+        nodes.push(node);
+      }
+      for (node of nodes) {
+        node.textContent = node.textContent.replace(
+          /\s*˅[a-zA-Z0-9-]*/g,
+          ""
+        );
+      }
+    }
+    if (this.settings.time_section_plain_style) {
+      const headings = el.querySelectorAll("h1, h2, h3, h4, h5, h6");
+      headings.forEach((heading) => {
+        if (heading.textContent && isTimeSection(heading.textContent.trim())) {
+          heading.classList.add("time-section-plain");
+        }
+      });
+    }
   }
   // Creates new LinkifyViewPlugins and registers them.
   // refreshExtensions() {
@@ -516,6 +609,13 @@ var BlockLinkPlus = class extends import_obsidian.Plugin {
         false,
         true
       );
+    }
+    if (this.settings.enable_time_section && this.settings.enable_time_section_in_menu) {
+      menu.addItem((item) => {
+        item.setTitle("Insert Time Section").setIcon("clock").onClick(() => {
+          this.handleInsertTimeSection(editor, view, head_analysis);
+        });
+      });
     }
   }
   handleMenuItemClick(view, isHeading, isEmbed, head_analysis, isUrl = false) {
@@ -614,6 +714,7 @@ var BlockLinkPlus = class extends import_obsidian.Plugin {
     }
   }
   onunload() {
+    console.log(`unloading ${this.appName}`);
   }
   async loadSettings() {
     this.settings = Object.assign(
@@ -624,6 +725,7 @@ var BlockLinkPlus = class extends import_obsidian.Plugin {
   }
   async saveSettings() {
     await this.saveData(this.settings);
+    this.updateViewPlugin();
   }
   handleCommand(isChecking, editor, view, isEmbed, isUrl = false) {
     if (isChecking) {
@@ -723,6 +825,103 @@ var BlockLinkPlus = class extends import_obsidian.Plugin {
       default:
         return void 0;
     }
+  }
+  /**
+   * Handle inserting time section
+   * @param editor Editor instance
+   * @param view Current view
+   * @param headAnalysis Optional existing heading analysis result
+   */
+  handleInsertTimeSection(editor, view, headAnalysis) {
+    if (!this.settings.enable_time_section)
+      return;
+    const file = view.file;
+    if (!file)
+      return;
+    const timeStr = formatCurrentTime(this.settings.time_section_format);
+    const cursorLine = editor.getCursor().line;
+    let headingLevel = 1;
+    let insertText = "";
+    const isDaily = isDailyNote(file.basename, this.settings.daily_note_pattern);
+    if (isDaily) {
+      headingLevel = this.settings.daily_note_heading_level;
+    } else {
+      if (headAnalysis && headAnalysis.isValid) {
+        headingLevel = Math.min(headAnalysis.nearestBeforeStartLevel + 1, 6);
+        if (headingLevel === 0)
+          headingLevel = 1;
+      } else {
+        const fileCache = this.app.metadataCache.getFileCache(file);
+        if (fileCache) {
+          const newHeadAnalysis = analyzeHeadings(fileCache, editor, cursorLine, cursorLine);
+          if (newHeadAnalysis.isValid) {
+            headingLevel = Math.min(newHeadAnalysis.nearestBeforeStartLevel + 1, 6);
+            if (headingLevel === 0)
+              headingLevel = 1;
+          }
+        }
+      }
+    }
+    if (this.settings.insert_heading_level) {
+      insertText = "#".repeat(headingLevel) + " " + timeStr + "\n";
+    } else {
+      insertText = timeStr + "\n";
+    }
+    editor.replaceRange(insertText, editor.getCursor());
+    const newPosition = {
+      line: cursorLine + 1,
+      ch: 0
+    };
+    editor.setCursor(newPosition);
+  }
+  /**
+   * Handle the insert time section command
+   * @param isChecking Whether this is a checking call
+   * @param editor Editor instance
+   * @param view Current view
+   * @returns Whether the command can be executed
+   */
+  handleTimeCommand(isChecking, editor, view) {
+    if (isChecking) {
+      return this.settings.enable_time_section;
+    }
+    const file = view.file;
+    if (!file)
+      return false;
+    const start_line = editor.getCursor("from").line;
+    const end_line = editor.getCursor("to").line;
+    const fileCache = this.app.metadataCache.getFileCache(file);
+    if (!fileCache)
+      return false;
+    let head_analysis = analyzeHeadings(fileCache, editor, start_line, end_line);
+    if (!head_analysis.isValid) {
+      this.handleInsertTimeSection(editor, view);
+    } else {
+      this.handleInsertTimeSection(editor, view, head_analysis);
+    }
+    return true;
+  }
+  /**
+   * Adds custom CSS styles to the document for plugin-specific styling
+   */
+  addCustomStyles() {
+    const css = `
+			.time-section-plain {
+				font-size: var(--font-text-size) !important;
+				font-weight: normal !important;
+				color: var(--text-normal) !important;
+				margin-top: 0 !important;
+				margin-bottom: 0 !important;
+				line-height: var(--line-height-normal) !important;
+				/* Remove any special heading styling */
+				border: none !important;
+				padding: 0 !important;
+			}
+		`;
+    const styleEl = document.createElement("style");
+    styleEl.textContent = css;
+    document.head.appendChild(styleEl);
+    this.register(() => styleEl.remove());
   }
 };
 var BlockLinkPlusSettingsTab = class extends import_obsidian.PluginSettingTab {
@@ -828,6 +1027,16 @@ var BlockLinkPlusSettingsTab = class extends import_obsidian.PluginSettingTab {
     this.addSliderSetting("id_length", 3, 7, 1).setName("Max block id Length").setDesc("Set the maximum number of characters for a block id.");
     this.addToggleSetting("enble_prefix").setName("Custom id prefix");
     this.addTextInputSetting("id_prefix", "").setName("Block id prefix").setDesc("Block id will be: prefix-random_str");
+    this.addHeading("Time Section").setDesc("Insert time-based headings");
+    this.addToggleSetting("enable_time_section").setName("Enable time section feature");
+    this.addToggleSetting("enable_time_section_in_menu").setName("Show in context menu").setDesc("If enabled, adds time section option to the right-click menu");
+    this.addTextInputSetting("time_section_format", "HH:mm").setName("Time format").setDesc("Format for the time section (HH:mm = 24-hour format)");
+    this.addToggleSetting("insert_heading_level").setName("Insert as heading").setDesc("If enabled, inserts time with heading marks (#), otherwise inserts just the time");
+    this.addToggleSetting("time_section_plain_style", (value) => {
+      this.plugin.updateViewPlugin();
+    }).setName("Plain text style in preview").setDesc("If enabled, time sections will appear as plain text in preview mode, even when inserted as headings");
+    this.addTextInputSetting("daily_note_pattern", "\\d{4}-\\d{1,2}-\\d{1,2}").setName("Daily note pattern").setDesc("Regular expression to identify daily note filenames (default: YYYY-MM-DD)");
+    this.addSliderSetting("daily_note_heading_level", 1, 6, 1).setName("Daily note heading level").setDesc("Heading level to use in daily notes (1-6, corresponds to #-######)");
   }
 };
 
