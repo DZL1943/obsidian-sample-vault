@@ -10,7 +10,7 @@ obsidianEditingMode: source
 
 ## Overview
 
-![](<Misc/Attachments/Images/Obsidian-20240908154942.png>)
+![](<Misc/Attachments/Public/Obsidian-20240908154942.png>)
 
 %%[list2table]%%
 - Obsidian 版本 | 1.8.10-mac-arm64
