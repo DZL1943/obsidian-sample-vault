@@ -9,14 +9,14 @@
   "theme": "system",
   "enabledCssSnippets": [
     "font",
-    "guideline",
     "he",
     "S - Embed Adjustments",
     "S - Images Adjustments",
     "img",
     "settings-layout",
     "mysnippets-layout",
-    "S - Checkboxes"
+    "S - Checkboxes",
+    "guideline"
   ],
   "showViewHeader": false,
   "cssTheme": "Custom",
