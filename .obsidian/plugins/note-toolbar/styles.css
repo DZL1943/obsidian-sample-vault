@@ -2187,6 +2187,7 @@ input[type="text"].note-toolbar-setting-error,
     border-top: 1px solid var(--background-modifier-border);
     padding: 8px 0;
     & .setting-item {
+        align-items: center !important;
         border-bottom: none !important;
     }
     & .note-toolbar-setting-item-fields {
@@ -3313,6 +3314,17 @@ input[type="text"].note-toolbar-setting-error,
         border-radius: 0.5rem;
         width: 100%;
     }
+    table {
+        border-collapse: collapse;
+        & td, th {
+            border-collapse: collapse;
+            border-color: grey;
+            border-style: solid;
+            border-width: 1px;
+            padding: var(--size-2-2) var(--size-4-2);
+            text-align: start;
+        }
+    }
 }
 
 .note-toolbar-setting-remote-skeleton {
@@ -3329,10 +3341,23 @@ input[type="text"].note-toolbar-setting-error,
     }
 }
 
-.note-toolbar-setting-modal-container {
+.note-toolbar-setting-modal-phone-inset-fix {
     .is-phone & {
-        /* fix/workaround for Obsidian v1.5.11 bug: modals opened from settings have an inaccessible close button */
+        /* fix/workaround for Obsidian v1.5.11 bug: tall modals opened from settings have an inaccessible close button */
         top: var(--safe-area-inset-top);
+    }
+}
+
+.note-toolbar-setting-modal-container {
+    & .modal-close-button {
+        z-index: 2; /* fix for modal title overlapping close button */
+        /* general ux improvement for small screens */
+        .is-mobile & {
+            background-color: var(--background-secondary-alt);
+            border-radius: var(--radius-l);
+            inset-inline-end: var(--size-4-3);
+            top: var(--size-4-3);
+        }
     }
 }
 
@@ -3357,6 +3382,12 @@ input[type="text"].note-toolbar-setting-error,
     min-height: unset;
     & .modal-close-button {
         z-index: 2; /* fix for modal title overlapping close button */
+        .is-mobile & {
+            background-color: var(--background-secondary-alt);
+            border-radius: var(--radius-l);
+            inset-inline-end: var(--size-4-3);
+            top: var(--size-4-3);
+        }
     }
     &.prompt {
         .is-mobile & {
