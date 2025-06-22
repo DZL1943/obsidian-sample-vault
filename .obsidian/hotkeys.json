@@ -495,5 +495,13 @@
       ],
       "key": "B"
     }
+  ],
+  "refresh-preview:refresh-active-view": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "R"
+    }
   ]
 }

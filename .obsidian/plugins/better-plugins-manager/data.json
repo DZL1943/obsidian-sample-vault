@@ -1102,6 +1102,26 @@
       "enabled": false,
       "delay": "",
       "note": ""
+    },
+    {
+      "id": "share-to-notionnext",
+      "name": "Share to NotionNext",
+      "desc": "Shares obsidian md file to notion with notion api for NotionNext web deploy, originally created by EasyChris/obsidian-to-notion.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "15",
+      "note": ""
+    },
+    {
+      "id": "note-to-mp",
+      "name": "NoteToMP",
+      "desc": "Send notes to WeChat MP drafts, or copy notes to WeChat MP editor, perfect preservation of note styles, support code highlighting, line numbers in code, and support local image uploads.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "15",
+      "note": ""
     }
   ],
   "HIDES": []
