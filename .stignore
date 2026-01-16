@@ -2,9 +2,9 @@
 
 (?d).DS_Store
 (?d).new
-.git/
-.trash/
-.zettel-notes/
+.git
+.trash
+.zettel-notes
 
 (?i)/ext
 (?i)local/*
