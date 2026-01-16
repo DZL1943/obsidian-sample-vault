@@ -15,7 +15,7 @@
       },
       "isDesktopOnly": false,
       "dir": ".obsidian-opt/plugins/ace-code-editor",
-      "enabled": true,
+      "enabled": false,
       "switched": 0,
       "groupInfo": {
         "hidden": false,
@@ -63,7 +63,7 @@
       },
       "isDesktopOnly": false,
       "dir": ".obsidian-opt/plugins/legacy-vault-switcher",
-      "enabled": true,
+      "enabled": false,
       "switched": 0,
       "groupInfo": {
         "hidden": false,
@@ -152,7 +152,7 @@
       "isDesktopOnly": false,
       "fundingUrl": "https://www.buymeacoffee.com/mnaoumov",
       "dir": ".obsidian-opt/plugins/refresh-preview",
-      "enabled": true,
+      "enabled": false,
       "switched": 0,
       "groupInfo": {
         "hidden": false,
@@ -1388,7 +1388,7 @@
       "authorUrl": "https://github.com/mgmeyers/obsidian-style-settings",
       "isDesktopOnly": false,
       "dir": ".obsidian-opt/plugins/obsidian-style-settings",
-      "enabled": true,
+      "enabled": false,
       "switched": 0,
       "groupInfo": {
         "hidden": false,

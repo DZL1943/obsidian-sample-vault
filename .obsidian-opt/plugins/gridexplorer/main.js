@@ -4021,7 +4021,7 @@ var FileSuggestionModal = class extends import_obsidian9.FuzzySuggestModal {
   }
 };
 
-// src/floatingAudioPlayer.ts
+// src/FloatingAudioPlayer.ts
 var import_obsidian10 = require("obsidian");
 var _FloatingAudioPlayer = class {
   constructor(app, file) {
@@ -6538,7 +6538,18 @@ var SearchModal = class extends import_obsidian13.Modal {
         return;
       }
       const query = match[1].toLowerCase();
-      tagSuggestions = allTagsArr.filter((t2) => t2.toLowerCase().startsWith(query)).slice(0, 10);
+      const filteredTags = allTagsArr.filter((t2) => t2.toLowerCase().includes(query));
+      tagSuggestions = filteredTags.sort((a, b) => {
+        const aLower = a.toLowerCase();
+        const bLower = b.toLowerCase();
+        const aStartsWith = aLower.startsWith(query);
+        const bStartsWith = bLower.startsWith(query);
+        if (aStartsWith && !bStartsWith)
+          return -1;
+        if (!aStartsWith && bStartsWith)
+          return 1;
+        return aLower.localeCompare(bLower);
+      }).slice(0, 10);
       if (tagSuggestions.length === 0) {
         tagSuggestionContainer.style.display = "none";
         selectedSuggestionIndex = -1;
@@ -8669,7 +8680,7 @@ function handleKeyDown(gridView, event) {
   }
 }
 
-// src/fileWatcher.ts
+// src/FileWatcher.ts
 var import_obsidian17 = require("obsidian");
 var FileWatcher = class {
   // 用於去抖動 render()

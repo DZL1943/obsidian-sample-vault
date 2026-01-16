@@ -332,6 +332,31 @@ class ConditionalPropertiesPlugin extends Plugin {
 						newFm[propToDelete] = undefined;
 						changed = true;
 					}
+				} else if (actionType === "rename") {
+					// Rename property: prop -> newPropName
+					const { newPropName } = action;
+
+					if (!newPropName) continue; // Skip if no new name specified
+
+					// Find the exact property name (case insensitive)
+					const propToRename = Object.keys(newFm).find(key => {
+						return key.toLowerCase() === prop.toLowerCase();
+					});
+
+					if (propToRename) {
+						// Check if target property name already exists
+						const targetExists = Object.keys(newFm).some(key => {
+							return key.toLowerCase() === newPropName.toLowerCase();
+						});
+
+						if (!targetExists) {
+							// Copy value to new property name
+							newFm[newPropName] = newFm[propToRename];
+							// Mark old property for deletion
+							newFm[propToRename] = undefined;
+							changed = true;
+						}
+					}
 				}
 			}
 		}
@@ -498,14 +523,8 @@ class ConditionalPropertiesPlugin extends Plugin {
 			}
 		}
 
-		// Check for inline title if showInlineTitle is enabled
-		const showInlineTitle = this.app.vault.getConfig('showInlineTitle');
-		if (showInlineTitle) {
-			// Get the file's display name (which would be the inline title)
-			return file.basename;
-		}
-
-		// No title available
+		// No title available - ignore inline title for conditional properties
+		// Only consider real H1 headings in the file content
 		return null;
 	}
 
@@ -976,6 +995,7 @@ class ConditionalPropertiesSettingTab extends PluginSettingTab {
 				d.addOption("remove", "Remove value");
 				d.addOption("overwrite", "Overwrite all values with");
 				d.addOption("delete", "Delete property");
+				d.addOption("rename", "Rename property to");
 				d.setValue(action.action || "add");
 				d.onChange(async (v) => {
 					action.action = v;
@@ -984,7 +1004,15 @@ class ConditionalPropertiesSettingTab extends PluginSettingTab {
 				});
 			});
 
-			if (action.action !== "delete") {
+			if (action.action === "rename") {
+				actionSetting.addText(t => t
+					.setPlaceholder("new property name")
+					.setValue(action.newPropName || "")
+					.onChange(async (v) => {
+						action.newPropName = v;
+						await this.plugin.saveData(this.plugin.settings);
+					}));
+			} else if (action.action !== "delete") {
 				actionSetting.addText(t => t
 					.setPlaceholder("value (use commas to separate multiple values)")
 					.setValue(action.value || "")
