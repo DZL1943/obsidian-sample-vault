@@ -46,7 +46,7 @@
   "recentNotesCount": 10,
   "calendarLocale": "system-default",
   "calendarHighlightToday": true,
-  "calendarShowWeekNumber": false,
+  "calendarShowWeekNumber": true,
   "calendarConfirmBeforeCreate": true,
   "colorIconOnly": false,
   "showNoteCount": true,
