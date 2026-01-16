@@ -12,22 +12,22 @@
         "/Attachments"
       ],
       "hiddenTags": [],
-      "hiddenFiles": [],
-      "hiddenFileNamePatterns": [],
       "navigationBanner": null,
       "shortcuts": [
         {
           "type": "note",
           "path": "README.md"
         }
-      ]
+      ],
+      "hiddenFileProperties": [],
+      "hiddenFileNames": [],
+      "hiddenFileTags": []
     }
   ],
   "vaultTitle": "navigation",
   "autoRevealActiveFile": false,
   "autoRevealIgnoreRightSidebar": true,
   "multiSelectModifier": "optionAlt",
-  "paneTransitionDuration": 150,
   "startView": "navigation",
   "interfaceIcons": {},
   "homepage": null,
@@ -48,27 +48,13 @@
   "skipAutoScroll": false,
   "showRecentNotes": true,
   "recentNotesCount": 10,
+  "calendarLocale": "system-default",
+  "calendarHighlightToday": true,
+  "calendarShowWeekNumber": true,
+  "calendarConfirmBeforeCreate": true,
   "colorIconOnly": false,
-  "toolbarVisibility": {
-    "navigation": {
-      "expandCollapse": true,
-      "hiddenItems": true,
-      "rootReorder": true,
-      "newFolder": true
-    },
-    "list": {
-      "search": true,
-      "descendants": true,
-      "sort": true,
-      "appearance": true,
-      "newNote": true
-    }
-  },
   "showNoteCount": true,
   "separateNoteCounts": false,
-  "navIndent": 10,
-  "navItemHeight": 28,
-  "navItemHeightScaleText": true,
   "rootLevelSpacing": 0,
   "autoSelectFirstFileOnFocusChange": false,
   "autoExpandFoldersTags": false,
@@ -83,6 +69,7 @@
   "folderNoteType": "markdown",
   "folderNoteName": "",
   "folderNoteProperties": "",
+  "openFolderNotesInNewTab": false,
   "hideFolderNoteInList": true,
   "pinCreatedFolderNote": false,
   "showTags": true,
@@ -99,8 +86,6 @@
   "showPinnedGroupHeader": true,
   "showPinnedIcon": false,
   "optimizeNoteHeight": true,
-  "compactItemHeight": 28,
-  "compactItemHeightScaleText": true,
   "showQuickActions": true,
   "quickActionRevealInFolder": false,
   "quickActionAddTag": false,
@@ -133,6 +118,7 @@
     "featureResized",
     "feature"
   ],
+  "featureImageExcludeProperties": [],
   "forceSquareFeatureImage": true,
   "downloadExternalFeatureImages": true,
   "showFileTags": true,
@@ -140,11 +126,16 @@
   "prioritizeColoredFileTags": true,
   "showFileTagAncestors": true,
   "showFileTagsInCompactMode": false,
+  "customPropertyType": "none",
+  "customPropertyFields": "",
+  "customPropertyColorFields": "",
+  "showCustomPropertyInCompactMode": false,
   "showFileDate": false,
   "alphabeticalDateMode": "modified",
   "showParentFolder": true,
   "parentFolderClickRevealsFile": false,
   "showParentFolderColor": true,
+  "showParentFolderIcon": false,
   "externalIconProviders": {},
   "keyboardShortcuts": {
     "pane:move-up": [
