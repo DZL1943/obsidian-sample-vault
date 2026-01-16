@@ -486,5 +486,13 @@
       ],
       "key": "D"
     }
+  ],
+  "workspaces:open-modal": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "W"
+    }
   ]
 }
