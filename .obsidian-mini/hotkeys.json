@@ -80,5 +80,13 @@
       ],
       "key": "Q"
     }
+  ],
+  "workspaces:open-modal": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "W"
+    }
   ]
 }
