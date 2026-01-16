@@ -1,0 +1,16 @@
+{
+  "leftSidebar": true,
+  "rightSidebar": true,
+  "syncLeftRight": false,
+  "enforceSameDelay": true,
+  "sidebarDelay": 100,
+  "sidebarExpandDelay": 300,
+  "leftSideBarPixelTrigger": 10,
+  "rightSideBarPixelTrigger": 20,
+  "overlayMode": false,
+  "doubleClickPin": true,
+  "onlyWhenFocused": true,
+  "expandCollapseSpeed": 300,
+  "leftSidebarMaxWidth": 325,
+  "rightSidebarMaxWidth": 325
+}

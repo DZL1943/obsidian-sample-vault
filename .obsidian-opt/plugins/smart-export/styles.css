@@ -1,0 +1,334 @@
+/*
+
+This CSS file will be included with your plugin, and
+available in the app when your plugin is enabled.
+
+If your plugin does not need CSS, delete this file.
+
+*/
+
+/*
+Smart Export - Plugin Styles
+Modern, clean styling for the export modal interface
+*/
+
+/* Header Section */
+.smart-export-modal-shell {
+	width: min(1100px, 92vw);
+	max-width: 92vw;
+}
+
+.smart-export-modal-shell .modal-content {
+	width: 100%;
+}
+
+.smart-export-header {
+	text-align: center;
+	padding: 4px 0 18px 0;
+	margin-bottom: 24px;
+}
+
+.smart-export-title {
+	color: var(--text-normal);
+	margin: 0 0 8px 0;
+	font-size: 1.35em;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+
+.smart-export-description {
+	color: var(--text-muted);
+	margin: 0 auto;
+	font-size: var(--font-ui-medium);
+	line-height: 1.4;
+	max-width: 640px;
+}
+
+/* Section Organization */
+.smart-export-section {
+	margin: 20px 0;
+	padding: 0;
+	background: transparent;
+	border: none;
+}
+
+
+.smart-export-section-title {
+	margin: 0 0 12px 0;
+	color: var(--text-normal);
+	font-size: calc(var(--font-ui-large) * 1.05);
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.smart-export-section-description {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	margin: 0 0 12px 0;
+	line-height: 1.4;
+}
+
+/* Info Boxes */
+.smart-export-info-box {
+	background: transparent;
+	padding: 10px 12px;
+	border-radius: 6px;
+	margin: 0 0 16px 0;
+	font-size: var(--font-ui-small);
+	line-height: 1.4;
+	border: 1px solid var(--background-modifier-border);
+}
+
+.smart-export-info-box strong {
+	color: var(--text-normal);
+}
+
+/* Selected File Display */
+.smart-export-selected-file {
+	font-size: var(--font-ui-medium);
+	color: var(--text-muted);
+	margin: 10px 0 0 0;
+	padding: 8px 10px;
+	background: var(--background-primary);
+	border-radius: 6px;
+	border: 1px solid var(--background-modifier-border);
+}
+
+/* Export Action Section */
+.smart-export-action-section {
+	background: transparent;
+	padding: 0;
+	border: none;
+	text-align: left;
+}
+
+/* Token Count Display */
+.smart-export-token-count {
+	font-size: var(--font-ui-large);
+	font-weight: 600;
+	color: var(--text-normal);
+	margin: 0 0 8px 0;
+	padding: 0;
+	background: transparent;
+	border-radius: 0;
+	border: none;
+}
+
+.smart-export-token-info {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	margin: 0 0 12px 0;
+	line-height: 1.4;
+}
+
+/* Tree Visualization */
+.smart-export-tree-container {
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	padding: 10px 12px;
+	max-height: 320px;
+	overflow-x: auto;
+	overflow-y: auto;
+}
+
+.smart-export-tree-controls {
+	display: flex;
+	gap: 8px;
+	margin: 8px 0 12px 0;
+}
+
+.smart-export-tree-summary {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	margin: 0 0 8px 0;
+}
+
+.smart-export-tree-control {
+	border: 1px solid var(--background-modifier-border);
+	background: transparent;
+	color: var(--text-normal);
+	border-radius: 6px;
+	padding: 6px 10px;
+	font-size: var(--font-ui-small);
+	cursor: pointer;
+}
+
+.smart-export-tree-control:hover {
+	background: var(--background-modifier-hover);
+}
+
+.smart-export-tree-placeholder {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	padding: 6px 0;
+}
+
+.smart-export-tree {
+	list-style: none;
+	margin: 0;
+	padding-left: 16px;
+	width: max-content;
+	min-width: 100%;
+}
+
+.smart-export-tree--collapsed {
+	display: none;
+}
+
+.smart-export-tree-item {
+	margin: 6px 0;
+}
+
+.smart-export-tree-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--text-normal);
+	padding: 2px 4px;
+	border-radius: 4px;
+}
+
+.smart-export-tree-row--disabled {
+	color: var(--text-muted);
+}
+
+.smart-export-tree-row:hover {
+	background: var(--background-modifier-hover);
+}
+
+.smart-export-tree-row--disabled:hover {
+	background: transparent;
+}
+
+.smart-export-tree-checkbox {
+	margin: 0;
+}
+
+.smart-export-tree-toggle {
+	border: none;
+	background: transparent;
+	color: var(--text-muted);
+	border-radius: 4px;
+	width: 18px;
+	height: 18px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.9em;
+	padding: 0;
+	cursor: pointer;
+}
+
+.smart-export-tree-toggle:hover {
+	color: var(--text-normal);
+}
+
+.smart-export-tree-toggle-placeholder {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+}
+
+.smart-export-tree-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: var(--font-ui-medium);
+	cursor: pointer;
+}
+
+.smart-export-tree-root {
+	font-weight: 600;
+	cursor: default;
+	white-space: nowrap;
+}
+
+.smart-export-tree-root--toggle {
+	cursor: pointer;
+}
+
+.smart-export-tree-label-text {
+	display: inline-flex;
+	white-space: nowrap;
+}
+
+.smart-export-tree-token {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	margin-left: 6px;
+}
+
+/* Setting Enhancements */
+.smart-export-modal .setting-item {
+	border: none;
+	padding: 10px 0;
+}
+
+.smart-export-modal .setting-item:not(:last-child) {
+	border-bottom: none;
+}
+
+.smart-export-modal .setting-item-name {
+	font-weight: 500;
+	color: var(--text-normal);
+}
+
+.smart-export-modal .setting-item-description {
+	color: var(--text-muted);
+	margin-top: 4px;
+}
+
+/* Dropdown Improvements */
+.smart-export-modal .dropdown select {
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	padding: 6px 8px;
+	color: var(--text-normal);
+}
+
+/* Button Improvements */
+.smart-export-modal .mod-cta {
+	background: var(--interactive-accent) !important;
+	color: var(--text-on-accent) !important;
+	border: none !important;
+	padding: 8px 16px !important;
+	border-radius: 6px !important;
+	font-weight: 500 !important;
+	font-size: var(--font-ui-medium) !important;
+	transition: background-color 0.2s ease !important;
+}
+
+.smart-export-modal .mod-cta:hover {
+	background: var(--interactive-accent-hover) !important;
+}
+
+/* Remove old separator styling */
+.smart-export-separator {
+	display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+	.smart-export-modal-shell {
+		width: 96vw;
+		max-width: 96vw;
+	}
+
+	.smart-export-section {
+		margin: 16px 0;
+		padding: 0;
+	}
+
+	.smart-export-title {
+		font-size: 1.15em;
+	}
+
+	.smart-export-description {
+		font-size: var(--font-ui-small);
+	}
+}
