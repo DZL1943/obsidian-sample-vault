@@ -2,9 +2,9 @@
 
 (?d).DS_Store
 (?d).new
-(?d).git/
-(?d).trash/
-(?d).zettel-notes/
+.git/
+.trash/
+.zettel-notes/
 
 (?i)/ext
 (?i)local/*
@@ -21,8 +21,4 @@ broken links output.md
 orphaned files output.md
 files without tags.md
 empty files.md
-.obsidian
-.obsidian*/workspace.json
-.obsidian*/workspace-mobile.json
-.obsidian*/plugins/recent-files-obsidian/data.json
-.obsidian*/plugins/various-complements/histories.json
+.obsidian*
