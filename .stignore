@@ -6,7 +6,7 @@
 .trash
 .zettel-notes
 
-(?i)/ext
+(?i)/misc/
 (?i)local/*
 !(?i)/*inbox/*/
 (?i)/*inbox/*
@@ -22,7 +22,4 @@ orphaned files output.md
 files without tags.md
 empty files.md
 
-// Areas
-// Templates
-// Scripts
 // .obsidian

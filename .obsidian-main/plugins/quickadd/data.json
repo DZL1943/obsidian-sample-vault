@@ -132,7 +132,7 @@
       "name": "create-in-folder",
       "type": "Template",
       "command": false,
-      "templatePath": "Templates/default-template.md",
+      "templatePath": "Misc/Templates/default-template.md",
       "fileNameFormat": {
         "enabled": true,
         "format": "Untitled"
@@ -170,8 +170,8 @@
           {
             "name": "currentDir",
             "type": "UserScript",
-            "id": "86bd8cc1-30c0-4b92-9fd9-0c25d4eafa60",
-            "path": "Scripts/currentDir.js",
+            "id": "a8aa1eb5-6ae9-4842-9cbe-caf7c459df70",
+            "path": "Misc/Scripts/currentDir.js",
             "settings": {}
           }
         ]
@@ -190,12 +190,9 @@
           {
             "name": "replace",
             "type": "UserScript",
-            "id": "0b27be61-7128-449d-9825-67cacbe4351c",
-            "path": "Scripts/replace.js",
-            "settings": {
-              "rules": "",
-              "scope": "file"
-            }
+            "id": "7f1d22b6-389e-49ab-8c4f-207278c1fca4",
+            "path": "Misc/Scripts/replace.js",
+            "settings": {}
           }
         ]
       }
@@ -213,8 +210,8 @@
           {
             "name": "headings",
             "type": "UserScript",
-            "id": "630aa948-e232-468b-b3c4-c072351c9655",
-            "path": "Scripts/Universal/headings.js",
+            "id": "64734d07-837d-4fff-a1d7-128977bb2304",
+            "path": "Misc/Scripts/Universal/headings.js",
             "settings": {}
           }
         ]
@@ -233,8 +230,8 @@
           {
             "name": "bookmarks",
             "type": "UserScript",
-            "id": "d7ab96de-d85a-4f45-b36b-f56f24b57012",
-            "path": "Scripts/bookmarks.js",
+            "id": "7bfe5c0d-55d4-4fb2-a147-1c42a5a0c3d9",
+            "path": "Misc/Scripts/bookmarks.js",
             "settings": {}
           }
         ]
@@ -253,8 +250,8 @@
           {
             "name": "snippets",
             "type": "UserScript",
-            "id": "a3797942-783c-456a-aa89-057f7661ecff",
-            "path": "Scripts/snippets.js",
+            "id": "b72373d8-5148-4ce6-944a-1cfce9a513e8",
+            "path": "Misc/Scripts/snippets.js",
             "settings": {}
           }
         ]
@@ -273,8 +270,8 @@
           {
             "name": "periodicNote",
             "type": "UserScript",
-            "id": "8b49c826-5eee-42df-8d9b-a0515292cc5c",
-            "path": "Scripts/Universal/periodicNote.js",
+            "id": "238986c0-ea28-4645-a750-ee6eb6eee378",
+            "path": "Misc/Scripts/Universal/periodicNote.js",
             "settings": {}
           }
         ]
@@ -293,8 +290,8 @@
           {
             "name": "weekdays",
             "type": "UserScript",
-            "id": "f102edb6-5a01-49c3-8ed1-10892d07ba24",
-            "path": "Scripts/Universal/weekdays.js",
+            "id": "05f56954-3b74-4419-90f5-d1110750c390",
+            "path": "Misc/Scripts/Universal/weekdays.js",
             "settings": {}
           },
           {
@@ -358,8 +355,8 @@
           {
             "name": "monthdays",
             "type": "UserScript",
-            "id": "703d0ce6-8504-4528-ab55-9f65d17427c0",
-            "path": "Scripts/Universal/monthdays.js",
+            "id": "110b5a87-79c1-49d0-a8e4-cadb3c02d3c2",
+            "path": "Misc/Scripts/Universal/monthdays.js",
             "settings": {}
           },
           {
@@ -423,8 +420,8 @@
           {
             "name": "attachments",
             "type": "UserScript",
-            "id": "aa532677-49bd-4ec2-89c0-a873abe3cf4e",
-            "path": "Scripts/attachments.js",
+            "id": "af9d26e7-9eb8-4ac0-a570-b7399b2a9385",
+            "path": "Misc/Scripts/attachments.js",
             "settings": {}
           }
         ]
@@ -443,8 +440,8 @@
           {
             "name": "calc",
             "type": "UserScript",
-            "id": "0d71d71b-c079-4a14-a246-7fbbfe61c13a",
-            "path": "Scripts/calc.js",
+            "id": "2f355cf9-54ac-4de3-92e2-6a90f5cbcc86",
+            "path": "Misc/Scripts/calc.js",
             "settings": {}
           }
         ]
@@ -463,8 +460,8 @@
           {
             "name": "test",
             "type": "UserScript",
-            "id": "2674f396-d7f2-489d-ad10-cabbeb313a93",
-            "path": "Scripts/test.js",
+            "id": "4401ce1d-c8e9-4a4e-bce8-6e5f07ea702e",
+            "path": "Misc/Scripts/test.js",
             "settings": {}
           },
           {
@@ -521,7 +518,7 @@
   ],
   "inputPrompt": "multi-line",
   "devMode": false,
-  "templateFolderPath": "Templates",
+  "templateFolderPath": "Misc/Templates",
   "announceUpdates": "none",
   "version": "2.9.4",
   "globalVariables": {},

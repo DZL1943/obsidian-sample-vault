@@ -17,8 +17,8 @@ obsidianEditingMode: source
 - 仓库和配置 | `~/Documents/Obsidian` `~/Library/Application Support/obsidian/Obsidian Sandbox`
     - .obsidian | default. 使用默认的"文件与链接"设置(wiki链接, 尽可能简短) %% 也可以用软链接链接到其他配置目录 %%
     - .obsidian-mini | 最简库
-    - .obsidian-main | 自用主库
-    - .obsidian-mobile | 自用移动端
+    - .obsidian-main | 主库
+    - .obsidian-mobile | 移动端
     - .obsidian-opt | 实验库
 - 主题 | 默认 <span style="background:#14907a; color:white;">"#14907a"</span>. 可用 style settings 插件进一步调整
 - 功能区 | 基本不用. 结合 cmdr 插件实现 legacy-vault-switcher
@@ -32,7 +32,7 @@ obsidianEditingMode: source
 - 编辑器
     - 默认视图: 阅读视图
     - 缩减栏宽
-    - 严格换行: 
+    - 严格换行:
     - 显示行号
     - 使用制表符: 否
 - 文件与链接
@@ -68,8 +68,9 @@ obsidianEditingMode: source
 - Resources/ | 资源
 - Archives/ | 归档
 - Attachments/ | 附件
-- Templates/ | 模板
 - Misc/ | 杂项
+    - Templates/ | 模板
+    - Scripts/ | 脚本
 
 > [!FAQ]-
 > - Inbox Vs Projects: 前者更通用, 后者更正式且偏向工作用途

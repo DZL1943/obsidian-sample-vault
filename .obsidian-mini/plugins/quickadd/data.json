@@ -1,26 +1,5 @@
 {
-  "choices": [
-    {
-      "id": "b4ef5a5c-5b8b-464e-a867-7211df43e38c",
-      "name": "attachments",
-      "type": "Macro",
-      "command": false,
-      "runOnStartup": false,
-      "macro": {
-        "name": "attachments",
-        "id": "8f3b925b-6088-4c48-bc47-bf7010ebbaa0",
-        "commands": [
-          {
-            "name": "attachments",
-            "type": "UserScript",
-            "id": "7f51ca85-e6c5-4037-ab51-5146ee330e2a",
-            "path": "Scripts/attachments.js",
-            "settings": {}
-          }
-        ]
-      }
-    }
-  ],
+  "choices": [],
   "inputPrompt": "multi-line",
   "devMode": false,
   "templateFolderPath": "",
