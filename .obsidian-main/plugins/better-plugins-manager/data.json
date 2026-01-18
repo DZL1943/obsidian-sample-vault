@@ -902,79 +902,79 @@
       "order": 12
     },
     {
-      "id": "float-search:Search obsidian in modal view",
-      "name": "Search obsidian in modal view",
-      "icon": "search",
-      "visible": true,
-      "order": 13
-    },
-    {
-      "id": "fuzzy-chinese-pinyin:FuzzySearch",
-      "name": "FuzzySearch",
-      "icon": "search",
-      "visible": true,
-      "order": 14
-    },
-    {
-      "id": "templater-obsidian:Templater",
-      "name": "Templater",
-      "icon": "templater-icon",
-      "visible": true,
-      "order": 15
-    },
-    {
-      "id": "obsidian42-brat:BRAT",
-      "name": "BRAT",
-      "icon": "BratIcon",
-      "visible": true,
-      "order": 16
-    },
-    {
-      "id": "obsidian-kanban:创建新看板",
-      "name": "创建新看板",
-      "icon": "lucide-trello",
-      "visible": true,
-      "order": 17
-    },
-    {
-      "id": "notebook-navigator:笔记本导航器",
-      "name": "笔记本导航器",
-      "icon": "notebook-navigator",
-      "visible": true,
-      "order": 18
-    },
-    {
-      "id": "obsidian-excalidraw-plugin:新建绘图文件",
-      "name": "新建绘图文件",
-      "icon": "excalidraw-icon",
-      "visible": true,
-      "order": 19
-    },
-    {
       "id": "cmdr:打开设置",
       "name": "打开设置",
       "icon": "lucide-settings",
       "visible": true,
-      "order": 20
+      "order": 13
     },
     {
       "id": "cmdr:打开其他仓库",
       "name": "打开其他仓库",
       "icon": "vault",
       "visible": true,
-      "order": 21
+      "order": 14
     },
     {
       "id": "cmdr:更换主题",
       "name": "更换主题",
       "icon": "brush",
       "visible": true,
-      "order": 22
+      "order": 15
     },
     {
       "id": "cmdr:查看帮助",
       "name": "查看帮助",
       "icon": "question-mark-glyph",
+      "visible": true,
+      "order": 16
+    },
+    {
+      "id": "float-search:Search obsidian in modal view",
+      "name": "Search obsidian in modal view",
+      "icon": "search",
+      "visible": true,
+      "order": 17
+    },
+    {
+      "id": "fuzzy-chinese-pinyin:FuzzySearch",
+      "name": "FuzzySearch",
+      "icon": "search",
+      "visible": true,
+      "order": 18
+    },
+    {
+      "id": "templater-obsidian:Templater",
+      "name": "Templater",
+      "icon": "templater-icon",
+      "visible": true,
+      "order": 19
+    },
+    {
+      "id": "obsidian42-brat:BRAT",
+      "name": "BRAT",
+      "icon": "BratIcon",
+      "visible": true,
+      "order": 20
+    },
+    {
+      "id": "obsidian-kanban:创建新看板",
+      "name": "创建新看板",
+      "icon": "lucide-trello",
+      "visible": true,
+      "order": 21
+    },
+    {
+      "id": "notebook-navigator:笔记本导航器",
+      "name": "笔记本导航器",
+      "icon": "notebook-navigator",
+      "visible": true,
+      "order": 22
+    },
+    {
+      "id": "obsidian-excalidraw-plugin:新建绘图文件",
+      "name": "新建绘图文件",
+      "icon": "excalidraw-icon",
       "visible": true,
       "order": 23
     }
