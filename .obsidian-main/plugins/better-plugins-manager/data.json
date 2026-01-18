@@ -6,7 +6,7 @@
   "FILTER_DELAY": "",
   "LANGUAGE": "zh-cn",
   "LANGUAGE_INITIALIZED": true,
-  "MIGRATION_VERSION": "0.4.0",
+  "MIGRATION_VERSION": "0.4.3",
   "DEBUG": false,
   "CENTER": true,
   "ITEM_STYLE": "clickExpand",
@@ -117,6 +117,11 @@
       "id": "bpm-install",
       "name": "bpm install",
       "color": "#409EFF"
+    },
+    {
+      "id": "bpm-ignore",
+      "name": "BPM 忽略",
+      "color": "#6c757d"
     }
   ],
   "DELAYS": [
@@ -803,5 +808,177 @@
       "note": ""
     }
   ],
-  "HIDES": []
+  "HIDES": [],
+  "RIBBON_SETTINGS": [
+    {
+      "id": "bases:新建数据库",
+      "name": "新建数据库",
+      "icon": "lucide-layout-list",
+      "visible": true,
+      "order": 0
+    },
+    {
+      "id": "workspaces:管理工作区布局",
+      "name": "管理工作区布局",
+      "icon": "lucide-layout",
+      "visible": true,
+      "order": 1
+    },
+    {
+      "id": "graph:查看关系图谱",
+      "name": "查看关系图谱",
+      "icon": "lucide-git-fork",
+      "visible": false,
+      "order": 2
+    },
+    {
+      "id": "random-note:开始漫游笔记",
+      "name": "开始漫游笔记",
+      "icon": "dice",
+      "visible": false,
+      "order": 3
+    },
+    {
+      "id": "canvas:新建白板",
+      "name": "新建白板",
+      "icon": "lucide-layout-dashboard",
+      "visible": true,
+      "order": 4
+    },
+    {
+      "id": "command-palette:打开命令面板",
+      "name": "打开命令面板",
+      "icon": "lucide-terminal",
+      "visible": false,
+      "order": 5
+    },
+    {
+      "id": "switcher:打开快速切换",
+      "name": "打开快速切换",
+      "icon": "lucide-file-search",
+      "visible": false,
+      "order": 6
+    },
+    {
+      "id": "zk-prefixer:创建时间戳笔记",
+      "name": "创建时间戳笔记",
+      "icon": "sheets-in-box",
+      "visible": true,
+      "order": 7
+    },
+    {
+      "id": "daily-notes:打开/创建今天的日记",
+      "name": "打开/创建今天的日记",
+      "icon": "lucide-calendar",
+      "visible": false,
+      "order": 8
+    },
+    {
+      "id": "templates:插入模板",
+      "name": "插入模板",
+      "icon": "lucide-files",
+      "visible": false,
+      "order": 9
+    },
+    {
+      "id": "better-plugins-manager:插件管理器",
+      "name": "插件管理器",
+      "icon": "folder-cog",
+      "visible": true,
+      "order": 10
+    },
+    {
+      "id": "custom-sort:Toggle custom sorting",
+      "name": "Toggle custom sorting",
+      "icon": "custom-sort-icon-suspended",
+      "visible": true,
+      "order": 11
+    },
+    {
+      "id": "css-editor:Open CSS editor quick switcher",
+      "name": "Open CSS editor quick switcher",
+      "icon": "css-editor-logo",
+      "visible": true,
+      "order": 12
+    },
+    {
+      "id": "float-search:Search obsidian in modal view",
+      "name": "Search obsidian in modal view",
+      "icon": "search",
+      "visible": true,
+      "order": 13
+    },
+    {
+      "id": "fuzzy-chinese-pinyin:FuzzySearch",
+      "name": "FuzzySearch",
+      "icon": "search",
+      "visible": true,
+      "order": 14
+    },
+    {
+      "id": "templater-obsidian:Templater",
+      "name": "Templater",
+      "icon": "templater-icon",
+      "visible": true,
+      "order": 15
+    },
+    {
+      "id": "obsidian42-brat:BRAT",
+      "name": "BRAT",
+      "icon": "BratIcon",
+      "visible": true,
+      "order": 16
+    },
+    {
+      "id": "obsidian-kanban:创建新看板",
+      "name": "创建新看板",
+      "icon": "lucide-trello",
+      "visible": true,
+      "order": 17
+    },
+    {
+      "id": "notebook-navigator:笔记本导航器",
+      "name": "笔记本导航器",
+      "icon": "notebook-navigator",
+      "visible": true,
+      "order": 18
+    },
+    {
+      "id": "obsidian-excalidraw-plugin:新建绘图文件",
+      "name": "新建绘图文件",
+      "icon": "excalidraw-icon",
+      "visible": true,
+      "order": 19
+    },
+    {
+      "id": "cmdr:打开设置",
+      "name": "打开设置",
+      "icon": "lucide-settings",
+      "visible": true,
+      "order": 20
+    },
+    {
+      "id": "cmdr:打开其他仓库",
+      "name": "打开其他仓库",
+      "icon": "vault",
+      "visible": true,
+      "order": 21
+    },
+    {
+      "id": "cmdr:更换主题",
+      "name": "更换主题",
+      "icon": "brush",
+      "visible": true,
+      "order": 22
+    },
+    {
+      "id": "cmdr:查看帮助",
+      "name": "查看帮助",
+      "icon": "question-mark-glyph",
+      "visible": true,
+      "order": 23
+    }
+  ],
+  "AUTO_TAKEOVER": false,
+  "USE_NATIVE_RIBBON_CONFIG": true
 }

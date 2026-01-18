@@ -24,7 +24,7 @@ __export(main_exports, {
 module.exports = __toCommonJS(main_exports);
 
 // src/main.ts
-var import_obsidian24 = require("obsidian");
+var import_obsidian26 = require("obsidian");
 
 // src/settings/data.ts
 var DEFAULT_SETTINGS = {
@@ -63,11 +63,14 @@ var DEFAULT_SETTINGS = {
     }
   ],
   Plugins: [],
-  HIDES: []
+  HIDES: [],
+  RIBBON_SETTINGS: [],
+  AUTO_TAKEOVER: false,
+  USE_NATIVE_RIBBON_CONFIG: true
 };
 
 // src/settings/index.ts
-var import_obsidian20 = require("obsidian");
+var import_obsidian21 = require("obsidian");
 
 // src/settings/base-setting.ts
 var BaseSetting = class {
@@ -84,10 +87,13 @@ var BaseSetting = class {
 };
 
 // src/settings/ui/manager-basis.ts
-var import_obsidian15 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 
 // src/modal/manager-modal.ts
-var import_obsidian13 = require("obsidian");
+var import_obsidian14 = require("obsidian");
+
+// src/data/types.ts
+var BPM_IGNORE_TAG = "bpm-ignore";
 
 // src/utils.ts
 var import_obsidian = require("obsidian");
@@ -432,7 +438,7 @@ var TagsModal = class extends import_obsidian4.Modal {
       itemEl.setClass("manager-editor__item");
       if (this.selected == "" || this.selected != tag.id) {
         itemEl.addExtraButton(
-          (cb) => cb.setIcon("settings").setDisabled(tag.id === BPM_TAG_ID).onClick(() => {
+          (cb) => cb.setIcon("settings").onClick(() => {
             this.selected = tag.id;
             this.reloadShowData();
           })
@@ -456,10 +462,6 @@ var TagsModal = class extends import_obsidian4.Modal {
         tempEl.appendChild(tagEl);
       }
       if (this.selected != "" && this.selected == tag.id) {
-        if (tag.id === BPM_TAG_ID) {
-          this.selected = "";
-          continue;
-        }
         itemEl.addColorPicker(
           (cb) => cb.setValue(tag.color).onChange((value) => {
             tag.color = value;
@@ -474,7 +476,11 @@ var TagsModal = class extends import_obsidian4.Modal {
           }).inputEl.addClass("manager-editor__item-input")
         );
         itemEl.addExtraButton(
-          (cb) => cb.setIcon("trash-2").setDisabled(tag.id === BPM_TAG_ID).onClick(() => {
+          (cb) => cb.setIcon("trash-2").onClick(() => {
+            if (tag.id === BPM_TAG_ID || tag.id === BPM_IGNORE_TAG) {
+              new import_obsidian4.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664"));
+              return;
+            }
             const hasTestTag = this.settings.Plugins.some((plugin) => plugin.tags && plugin.tags.includes(tag.id));
             if (!hasTestTag) {
               this.manager.settings.TAGS = this.manager.settings.TAGS.filter((t) => t.id !== tag.id);
@@ -525,7 +531,7 @@ var TagsModal = class extends import_obsidian4.Modal {
       foodBar.addExtraButton(
         (cb) => cb.setIcon("plus").onClick(() => {
           const containsId = this.manager.settings.TAGS.some((tag) => tag.id === id);
-          if (!containsId && id !== "" && id !== BPM_TAG_ID) {
+          if (!containsId && id !== "" && id !== BPM_TAG_ID && id !== BPM_IGNORE_TAG) {
             if (color === "")
               color = this.pickDistinctColor(this.settings.TAGS.map((t) => t.color));
             this.manager.settings.TAGS.push({ id, name, color });
@@ -842,9 +848,9 @@ var HideModal = class extends import_obsidian8.Modal {
   }
   async showData() {
     for (const plugin of this.plugins) {
-      const ManagerPlugin = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
-      const isEnabled = this.settings.DELAY ? ManagerPlugin == null ? void 0 : ManagerPlugin.enabled : this.appPlugins.enabledPlugins.has(plugin.id);
-      if (ManagerPlugin) {
+      const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+      const isEnabled = this.settings.DELAY ? ManagerPlugin4 == null ? void 0 : ManagerPlugin4.enabled : this.appPlugins.enabledPlugins.has(plugin.id);
+      if (ManagerPlugin4) {
         switch (this.filter) {
           case "enabled":
             if (!isEnabled)
@@ -855,35 +861,35 @@ var HideModal = class extends import_obsidian8.Modal {
               continue;
             break;
           case "grouped":
-            if (ManagerPlugin.group === "")
+            if (ManagerPlugin4.group === "")
               continue;
             break;
           case "ungrouped":
-            if (ManagerPlugin.group !== "")
+            if (ManagerPlugin4.group !== "")
               continue;
             break;
           case "tagged":
-            if (ManagerPlugin.tags.length === 0)
+            if (ManagerPlugin4.tags.length === 0)
               continue;
             break;
           case "untagged":
-            if (ManagerPlugin.tags.length > 0)
+            if (ManagerPlugin4.tags.length > 0)
               continue;
             break;
           case "noted":
-            if (!ManagerPlugin.note || ManagerPlugin.note === "")
+            if (!ManagerPlugin4.note || ManagerPlugin4.note === "")
               continue;
             break;
           default:
             break;
         }
-        if (this.group !== "" && ManagerPlugin.group !== this.group)
+        if (this.group !== "" && ManagerPlugin4.group !== this.group)
           continue;
-        if (this.tag !== "" && !ManagerPlugin.tags.includes(this.tag))
+        if (this.tag !== "" && !ManagerPlugin4.tags.includes(this.tag))
           continue;
-        if (this.delay !== "" && ManagerPlugin.delay !== this.delay)
+        if (this.delay !== "" && ManagerPlugin4.delay !== this.delay)
           continue;
-        if (this.searchText !== "" && ManagerPlugin.name.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && ManagerPlugin.desc.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && plugin.author.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1)
+        if (this.searchText !== "" && ManagerPlugin4.name.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && ManagerPlugin4.desc.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && plugin.author.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1)
           continue;
         if (plugin.id === this.manager.manifest.id)
           continue;
@@ -891,31 +897,31 @@ var HideModal = class extends import_obsidian8.Modal {
         itemEl.setClass("manager-item");
         itemEl.nameEl.addClass("manager-item__name-container");
         itemEl.descEl.addClass("manager-item__description-container");
-        if (ManagerPlugin.group !== "") {
+        if (ManagerPlugin4.group !== "") {
           const group = createSpan({ cls: "manager-item__name-group" });
           itemEl.nameEl.appendChild(group);
-          const item = this.settings.GROUPS.find((t) => t.id === ManagerPlugin.group);
+          const item = this.settings.GROUPS.find((t) => t.id === ManagerPlugin4.group);
           if (item) {
             const tag = this.manager.createTag(item.name, item.color, this.settings.GROUP_STYLE);
             group.appendChild(tag);
           }
         }
-        const title = createSpan({ text: ManagerPlugin.name, cls: "manager-item__name-title" });
+        const title = createSpan({ text: ManagerPlugin4.name, cls: "manager-item__name-title" });
         itemEl.nameEl.appendChild(title);
         const version = createSpan({ text: `[${plugin.version}]`, cls: ["manager-item__name-version"] });
         itemEl.nameEl.appendChild(version);
-        if (this.settings.DELAY && ManagerPlugin.delay !== "") {
-          const d = this.settings.DELAYS.find((item) => item.id === ManagerPlugin.delay);
+        if (this.settings.DELAY && ManagerPlugin4.delay !== "") {
+          const d = this.settings.DELAYS.find((item) => item.id === ManagerPlugin4.delay);
           if (d) {
             const delay = createSpan({ text: `${d.time}s`, cls: ["manager-item__name-delay"] });
             itemEl.nameEl.appendChild(delay);
           }
         }
-        const desc = createDiv({ text: ManagerPlugin.desc, cls: ["manager-item__name-desc"] });
+        const desc = createDiv({ text: ManagerPlugin4.desc, cls: ["manager-item__name-desc"] });
         itemEl.descEl.appendChild(desc);
         const tags = createDiv();
         itemEl.descEl.appendChild(tags);
-        ManagerPlugin.tags.map((id) => {
+        ManagerPlugin4.tags.map((id) => {
           const item = this.settings.TAGS.find((item2) => item2.id === id);
           if (item) {
             const tag = this.manager.createTag(item.name, item.color, this.settings.TAG_STYLE);
@@ -1140,7 +1146,7 @@ var TroubleshootAlgorithm = class {
       case "verify-pair":
         return this.handleVerifyPair(state, problemExists);
       default:
-        return { type: "error", message: "\u672A\u77E5\u7684\u7B97\u6CD5\u9636\u6BB5" };
+        return { type: "error", message: this.manager.translator.t("\u6392\u67E5_\u9519\u8BEF_\u672A\u77E5\u9636\u6BB5") };
     }
   }
   /**
@@ -1165,7 +1171,7 @@ var TroubleshootAlgorithm = class {
       nextAction: {
         action: "test",
         plugins: c1,
-        description: `\u6D4B\u8BD5\u524D\u534A (${c1.length} \u4E2A\u63D2\u4EF6)`
+        description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A").replace("{count}", c1.length.toString())
       }
     };
   }
@@ -1188,7 +1194,7 @@ var TroubleshootAlgorithm = class {
           nextAction: {
             action: "test",
             plugins: algo.c2,
-            description: `\u6D4B\u8BD5\u540E\u534A (${algo.c2.length} \u4E2A\u63D2\u4EF6)`
+            description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u540E\u534A").replace("{count}", algo.c2.length.toString())
           }
         };
       }
@@ -1216,7 +1222,7 @@ var TroubleshootAlgorithm = class {
         nextAction: {
           action: "test",
           plugins: [algo.foundFirst],
-          description: `\u9A8C\u8BC1\u5355\u63D2\u4EF6: ${this.getPluginName(algo.foundFirst)}`
+          description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u5355\u63D2\u4EF6").replace("{name}", this.getPluginName(algo.foundFirst))
         }
       };
     }
@@ -1231,7 +1237,7 @@ var TroubleshootAlgorithm = class {
         nextAction: {
           action: "test",
           plugins: [algo.currentSet[0]],
-          description: `\u9A8C\u8BC1: ${this.getPluginName(algo.currentSet[0])}`
+          description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1").replace("{name}", this.getPluginName(algo.currentSet[0]))
         }
       };
     }
@@ -1246,7 +1252,7 @@ var TroubleshootAlgorithm = class {
       nextAction: {
         action: "test",
         plugins: c1,
-        description: `\u6D4B\u8BD5\u524D\u534A (${c1.length} \u4E2A\u63D2\u4EF6)`
+        description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A").replace("{count}", c1.length.toString())
       }
     };
   }
@@ -1270,7 +1276,7 @@ var TroubleshootAlgorithm = class {
       nextAction: {
         action: "test",
         plugins: testSet,
-        description: `\u56FA\u5B9A A \u7EC4 (${algo.fixedSet.length}\u4E2A) + B \u7EC4\u524D\u534A (${b1.length}\u4E2A)`
+        description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D").replace("{countA}", algo.fixedSet.length.toString()).replace("{countB}", b1.length.toString())
       }
     };
   }
@@ -1301,7 +1307,7 @@ var TroubleshootAlgorithm = class {
         nextAction: {
           action: "test",
           plugins: testSet2,
-          description: `\u56FA\u5B9A ${this.getPluginName(algo.foundSecond)} + A \u7EC4\u524D\u534A (${a1.length}\u4E2A)`
+          description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D").replace("{countB}", algo.fixedSet.length.toString()).replace("{countA}", a1.length.toString())
         }
       };
     }
@@ -1316,7 +1322,7 @@ var TroubleshootAlgorithm = class {
       nextAction: {
         action: "test",
         plugins: testSet,
-        description: `\u56FA\u5B9A A \u7EC4 + B \u7EC4\u5B50\u96C6 (${b1.length}\u4E2A)`
+        description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D").replace("{countA}", algo.fixedSet.length.toString()).replace("{countB}", b1.length.toString())
       }
     };
   }
@@ -1356,7 +1362,7 @@ var TroubleshootAlgorithm = class {
       nextAction: {
         action: "test",
         plugins: testSet,
-        description: `\u56FA\u5B9A ${this.getPluginName(algo.foundSecond)} + A \u7EC4\u5B50\u96C6 (${a1.length}\u4E2A)`
+        description: this.manager.translator.t("\u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D").replace("{countB}", algo.fixedSet.length.toString()).replace("{countA}", a1.length.toString())
       }
     };
   }
@@ -1380,7 +1386,7 @@ var TroubleshootAlgorithm = class {
     } else {
       return {
         type: "error",
-        message: "\u5355\u4E2A\u63D2\u4EF6\u542F\u7528\u65F6\u95EE\u9898\u6D88\u5931\uFF0C\u53EF\u80FD\u662F\u591A\u63D2\u4EF6\u7EC4\u5408\u51B2\u7A81"
+        message: this.manager.translator.t("\u6392\u67E5_\u65E0\u6CD5\u5B9A\u4F4D_\u901A\u77E5")
       };
     }
   }
@@ -1422,7 +1428,7 @@ var TroubleshootAlgorithm = class {
       state.phase = "done";
       return { type: "pair", culpritA: pair[0], culpritB: pair[1] };
     }
-    return { type: "error", message: "\u9A8C\u8BC1\u9636\u6BB5\u72B6\u6001\u5F02\u5E38" };
+    return { type: "error", message: this.manager.translator.t("\u6392\u67E5_\u9519\u8BEF_\u72B6\u6001\u5F02\u5E38") };
   }
   /**
    * 开始排查（第一步：禁用全部）
@@ -1492,7 +1498,7 @@ var TroubleshootResultModal = class extends import_obsidian9.Modal {
       const isSinglePlugin = !this.state.result.plugin2;
       if (isSinglePlugin) {
         const resultContainer = contentEl.createDiv("troubleshoot-result-container");
-        resultContainer.createEl("h3", { text: `\u{1F3AF} \u53D1\u73B0\u95EE\u9898\u63D2\u4EF6` });
+        resultContainer.createEl("h3", { text: `\u{1F3AF} ${this.t("\u62A5\u544A_\u53D1\u73B0\u95EE\u9898\u63D2\u4EF6")}` });
         const conflictBox = resultContainer.createDiv("troubleshoot-conflict-box");
         const plugin1Name = this.getPluginName(this.state.result.plugin1);
         const plugin1Version = this.getPluginVersion(this.state.result.plugin1);
@@ -1503,10 +1509,10 @@ var TroubleshootResultModal = class extends import_obsidian9.Modal {
         const suggestionsDiv = contentEl.createDiv("troubleshoot-suggestions");
         suggestionsDiv.createEl("h4", { text: `\u{1F4CB} ${this.t("\u6392\u67E5_\u5EFA\u8BAE_\u6807\u9898")}` });
         const suggestionList = suggestionsDiv.createEl("ul");
-        suggestionList.createEl("li", { text: "\u5C1D\u8BD5\u66F4\u65B0\u6B64\u63D2\u4EF6\u5230\u6700\u65B0\u7248\u672C" });
-        suggestionList.createEl("li", { text: "\u68C0\u67E5\u63D2\u4EF6\u7684 GitHub Issues \u662F\u5426\u6709\u76F8\u5173\u95EE\u9898" });
-        suggestionList.createEl("li", { text: "\u8054\u7CFB\u63D2\u4EF6\u4F5C\u8005\u62A5\u544A\u95EE\u9898" });
-        suggestionList.createEl("li", { text: "\u6682\u65F6\u7981\u7528\u6B64\u63D2\u4EF6" });
+        suggestionList.createEl("li", { text: this.t("\u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE1") });
+        suggestionList.createEl("li", { text: this.t("\u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE2") });
+        suggestionList.createEl("li", { text: this.t("\u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE3") });
+        suggestionList.createEl("li", { text: this.t("\u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE4") });
       } else {
         const resultContainer = contentEl.createDiv("troubleshoot-result-container");
         resultContainer.createEl("h3", { text: `\u{1F3AF} ${this.t("\u6392\u67E5_\u53D1\u73B0\u51B2\u7A81_\u6587\u672C")}` });
@@ -1883,14 +1889,14 @@ var TroubleshootModal = class {
           break;
         case "verify-single":
         case "verify-pair":
-          phaseText = "\u9A8C\u8BC1\u9636\u6BB5";
+          phaseText = this.t("\u6392\u67E5_\u9636\u6BB5_\u9A8C\u8BC1");
           break;
       }
     }
     this.contentEl.createEl("p", { text: phaseText, cls: "troubleshoot-phase" });
     if (this.lastDescription) {
       this.contentEl.createEl("p", {
-        text: `\u5F53\u524D\u6D4B\u8BD5: ${this.lastDescription}`,
+        text: `${this.t("\u6392\u67E5_\u5F53\u524D\u6D4B\u8BD5")}: ${this.lastDescription}`,
         cls: "troubleshoot-desc"
       });
     }
@@ -1910,7 +1916,7 @@ var TroubleshootModal = class {
       enabledList.createEl("li", { text: this.algorithm.getPluginName(id) });
     }
     if (currentEnabled.length === 0) {
-      enabledList.createEl("li", { text: "(\u65E0)", cls: "muted" });
+      enabledList.createEl("li", { text: this.t("\u6392\u67E5_\u5217\u8868_\u65E0"), cls: "muted" });
     }
     this.contentEl.createEl("p", {
       text: this.t("\u6392\u67E5_\u6D4B\u8BD5\u63D0\u793A_\u6587\u672C"),
@@ -1950,7 +1956,7 @@ var TroubleshootModal = class {
    */
   async startTroubleshoot() {
     this.state = this.algorithm.initState();
-    this.lastDescription = "\u5DF2\u7981\u7528\u5168\u90E8\u63D2\u4EF6";
+    this.lastDescription = this.t("\u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8");
     await this.algorithm.startTroubleshoot(this.state);
     await this.saveState();
     new import_obsidian10.Notice(this.t("\u6392\u67E5_\u5DF2\u7981\u7528\u6240\u6709_\u901A\u77E5"));
@@ -2261,7 +2267,7 @@ var installThemeFromGithub = async (manager, repoInput, version) => {
 };
 
 // src/modal/manager-modal.ts
-var import_obsidian14 = require("obsidian");
+var import_obsidian15 = require("obsidian");
 
 // src/modal/update-modal.ts
 var import_obsidian12 = require("obsidian");
@@ -2332,8 +2338,243 @@ var UpdateModal = class extends import_obsidian12.Modal {
   }
 };
 
+// src/modal/ribbon-modal.ts
+var import_obsidian13 = require("obsidian");
+var RibbonModal = class extends import_obsidian13.Modal {
+  constructor(app, manager) {
+    super(app);
+    // 拖拽相关变量
+    this.draggedItemEl = null;
+    this.ghostEl = null;
+    this.placeholderEl = null;
+    this.dragStartIndex = -1;
+    this.dragOffsetX = 0;
+    this.dragOffsetY = 0;
+    this.activePointerId = null;
+    this.manager = manager;
+    this.handleDragMove = this.handleDragMove.bind(this);
+    this.handleDragEnd = this.handleDragEnd.bind(this);
+  }
+  async onOpen() {
+    this.manager.ribbonModal = this;
+    this.modalEl.addClass("ribbon-manager-modal");
+    this.titleEl.setText(this.manager.translator.t("Ribbon_\u6807\u9898"));
+    await this.syncRibbonItems();
+    this.display();
+  }
+  // 同步 Ribbon 项：读取当前工作区的 Ribbon，合并到设置中
+  async syncRibbonItems() {
+    const { orderedIds, hiddenStatus } = await this.manager.systemRibbonManager.load();
+    await this.manager.syncRibbonConfig(orderedIds, hiddenStatus);
+  }
+  display() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.createEl("p", {
+      text: this.manager.translator.t("Ribbon_\u8BF4\u660E"),
+      cls: "ribbon-manager-description"
+    });
+    this.renderDraggableList(contentEl);
+  }
+  renderDraggableList(containerEl) {
+    const listContainer = containerEl.createDiv("draggable-list-container");
+    const items = this.manager.settings.RIBBON_SETTINGS;
+    if (items.length === 0) {
+      listContainer.createEl("p", { text: this.manager.translator.t("Ribbon_\u65E0\u9879\u76EE") });
+      return;
+    }
+    items.forEach((item, index) => {
+      const setting = new import_obsidian13.Setting(listContainer);
+      const itemEl = setting.settingEl;
+      itemEl.addClass("draggable-item");
+      itemEl.setAttr("data-index", index);
+      const itemContent = setting.nameEl.createDiv({ cls: "draggable-item-content" });
+      const iconEl = itemContent.createDiv({ cls: "setting-item-icon" });
+      if (item.icon)
+        (0, import_obsidian13.setIcon)(iconEl, item.icon);
+      itemContent.createEl("div", {
+        text: item.name || this.manager.translator.t("Ribbon_\u672A\u547D\u540D"),
+        cls: "setting-item-name"
+      });
+      const controlBar = setting.controlEl.createDiv({ cls: "ribbon-manager-control-bar" });
+      const visibilityDiv = controlBar.createDiv({ cls: "ribbon-manager-control-visibility" });
+      new import_obsidian13.ButtonComponent(visibilityDiv).setIcon(item.visible ? "eye" : "eye-off").setTooltip(item.visible ? this.manager.translator.t("Ribbon_\u9690\u85CF") : this.manager.translator.t("Ribbon_\u663E\u793A")).onClick(async () => {
+        var _a, _b;
+        const newValue = !item.visible;
+        item.visible = newValue;
+        if (newValue) {
+          const ribbon = this.app.workspace.leftRibbon;
+          if (ribbon) {
+            this.manager.cleanRibbonItems();
+            const ribbonItems = ribbon.items;
+            if (!ribbonItems)
+              return;
+            const nativeItemIndex = ribbonItems.findIndex((i) => i && i.id === item.id);
+            const nativeItem = nativeItemIndex !== -1 ? ribbonItems[nativeItemIndex] : null;
+            let needsRestore = false;
+            if (nativeItem) {
+              if (nativeItem.hidden === true || !nativeItem.buttonEl) {
+                needsRestore = true;
+              }
+            }
+            if (needsRestore && nativeItem && nativeItem.callback) {
+              console.log(`[BPM] Restoring ribbon item: ${item.id}`);
+              try {
+                const { icon, callback } = nativeItem;
+                const titleToUse = item.name || (typeof nativeItem.title === "string" ? nativeItem.title : "") || (typeof nativeItem.name === "string" ? nativeItem.name : "") || "Ribbon Item";
+                this.manager.addRibbonIcon(icon, titleToUse, callback);
+                const newItem = ribbonItems[ribbonItems.length - 1];
+                if (newItem && newItem.id !== item.id) {
+                  newItem.id = item.id;
+                  newItem.hidden = false;
+                }
+                ribbonItems.splice(nativeItemIndex, 1);
+                for (let i = ribbonItems.length - 1; i >= 0; i--) {
+                  if (!ribbonItems[i]) {
+                    ribbonItems.splice(i, 1);
+                  }
+                }
+                console.log(`[BPM] Item restored: ${item.id}`);
+              } catch (e) {
+                console.error("[BPM] Restore failed:", e);
+                new import_obsidian13.Notice(this.manager.translator.t("Ribbon_\u590D\u6D3B\u5931\u8D25"));
+              }
+            }
+          }
+        }
+        await this.manager.saveSettings();
+        const items2 = this.manager.settings.RIBBON_SETTINGS;
+        const orderedIds = items2.map((i) => i.id);
+        const hiddenStatus = {};
+        items2.forEach((i) => hiddenStatus[i.id] = !i.visible);
+        await this.manager.systemRibbonManager.save(orderedIds, hiddenStatus);
+        this.manager.applyRibbonConfigToMemory(orderedIds, hiddenStatus);
+        (_b = (_a = this.manager).updateRibbonStyles) == null ? void 0 : _b.call(_a);
+        this.display();
+      });
+      const handle = controlBar.createDiv({
+        cls: "ribbon-manager-control-drag",
+        attr: { role: "button", "aria-label": "Drag" }
+      });
+      (0, import_obsidian13.setIcon)(handle, "grip-vertical");
+      handle.setAttr("draggable", "true");
+      handle.addEventListener("pointerdown", (e) => this.startDrag(itemEl, index, e));
+      handle.addEventListener("dragstart", (e) => e.preventDefault());
+    });
+  }
+  startDrag(itemEl, index, e) {
+    if (e.target && e.target.setPointerCapture) {
+      e.target.setPointerCapture(e.pointerId);
+    }
+    this.draggedItemEl = itemEl;
+    this.dragStartIndex = index;
+    const rect = itemEl.getBoundingClientRect();
+    this.dragOffsetX = e.clientX - rect.left;
+    this.dragOffsetY = e.clientY - rect.top;
+    this.activePointerId = e.pointerId;
+    this.ghostEl = itemEl.cloneNode(true);
+    this.ghostEl.addClass("drag-ghost");
+    document.body.appendChild(this.ghostEl);
+    this.ghostEl.style.width = `${rect.width}px`;
+    this.ghostEl.style.height = `${rect.height}px`;
+    this.updateGhostPosition(e);
+    this.placeholderEl = document.createElement("div");
+    this.placeholderEl.className = "drag-gap-placeholder";
+    this.placeholderEl.style.height = `${rect.height}px`;
+    this.placeholderEl.style.marginBottom = "8px";
+    itemEl.parentNode.insertBefore(this.placeholderEl, itemEl);
+    itemEl.addClass("dragging");
+    document.addEventListener("pointermove", this.handleDragMove, { passive: false });
+    document.addEventListener("pointerup", this.handleDragEnd, { once: true });
+    document.addEventListener("pointercancel", this.handleDragEnd, { once: true });
+  }
+  handleDragMove(e) {
+    if (!this.ghostEl || !this.placeholderEl || !this.draggedItemEl)
+      return;
+    if (e.pointerId !== this.activePointerId)
+      return;
+    e.preventDefault();
+    this.updateGhostPosition(e);
+    const listContainer = this.placeholderEl.parentNode;
+    const items = Array.from(listContainer.children).filter(
+      (el) => el !== this.placeholderEl && !el.classList.contains("dragging") && !el.classList.contains("drag-ghost")
+    );
+    let dropTarget = null;
+    for (const item of items) {
+      const rect = item.getBoundingClientRect();
+      if (e.clientY < rect.top + rect.height / 2) {
+        dropTarget = item;
+        break;
+      }
+    }
+    if (dropTarget) {
+      listContainer.insertBefore(this.placeholderEl, dropTarget);
+    } else {
+      listContainer.appendChild(this.placeholderEl);
+    }
+  }
+  updateGhostPosition(e) {
+    if (!this.ghostEl)
+      return;
+    this.ghostEl.style.left = `${e.clientX - this.dragOffsetX}px`;
+    this.ghostEl.style.top = `${e.clientY - this.dragOffsetY}px`;
+  }
+  async handleDragEnd(e) {
+    if (!this.draggedItemEl || !this.placeholderEl)
+      return;
+    const listContainer = this.placeholderEl.parentNode;
+    let newIndex = 0;
+    const children = Array.from(listContainer.children);
+    for (const child of children) {
+      if (child === this.placeholderEl)
+        break;
+      if (child.matches(".draggable-item:not(.dragging)")) {
+        newIndex++;
+      }
+    }
+    this.placeholderEl.remove();
+    this.placeholderEl = null;
+    if (this.ghostEl) {
+      this.ghostEl.remove();
+      this.ghostEl = null;
+    }
+    this.draggedItemEl.removeClass("dragging");
+    const oldIndex = this.dragStartIndex;
+    document.removeEventListener("pointermove", this.handleDragMove);
+    this.draggedItemEl = null;
+    this.dragStartIndex = -1;
+    this.activePointerId = null;
+    if (newIndex !== oldIndex) {
+      await this.moveItem(oldIndex, newIndex);
+    }
+  }
+  async moveItem(oldIndex, newIndex) {
+    var _a, _b;
+    const items = this.manager.settings.RIBBON_SETTINGS;
+    if (oldIndex < 0 || oldIndex >= items.length || newIndex < 0 || newIndex > items.length) {
+      this.display();
+      return;
+    }
+    const [movedItem] = items.splice(oldIndex, 1);
+    items.splice(newIndex, 0, movedItem);
+    items.forEach((item, idx) => item.order = idx);
+    await this.manager.saveSettings();
+    const currentItems = this.manager.settings.RIBBON_SETTINGS;
+    const orderedIds = currentItems.map((i) => i.id);
+    const hiddenStatus = {};
+    currentItems.forEach((i) => hiddenStatus[i.id] = !i.visible);
+    await this.manager.systemRibbonManager.save(orderedIds, hiddenStatus);
+    this.manager.applyRibbonConfigToMemory(orderedIds, hiddenStatus);
+    (_b = (_a = this.manager).updateRibbonStyles) == null ? void 0 : _b.call(_a);
+    this.display();
+  }
+  onClose() {
+    this.manager.ribbonModal = null;
+  }
+};
+
 // src/modal/manager-modal.ts
-var ManagerModal = class extends import_obsidian13.Modal {
+var ManagerModal = class extends import_obsidian14.Modal {
   constructor(app, manager) {
     super(app);
     // [本地][变量] 展示插件列表
@@ -2367,7 +2608,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     this.appPlugins = this.app.plugins;
     this.manager = manager;
     this.settings = manager.settings;
-    this.basePath = (0, import_obsidian14.normalizePath)(`${this.app.vault.configDir}`);
+    this.basePath = (0, import_obsidian15.normalizePath)(`${this.app.vault.configDir}`);
     manager.synchronizePlugins(
       Object.values(this.appPlugins.manifests).filter(
         (pm) => pm.id !== manager.manifest.id
@@ -2375,7 +2616,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     );
   }
   showInlineProgress(text, subText) {
-    const notice = new import_obsidian13.Notice("", 0);
+    const notice = new import_obsidian14.Notice("", 0);
     notice.noticeEl.empty();
     const wrap = document.createElement("div");
     wrap.addClass("bpm-update-progress");
@@ -2434,9 +2675,9 @@ var ManagerModal = class extends import_obsidian13.Modal {
     const modalEl = this.contentEl.parentElement;
     this.modalContainer = modalEl;
     modalEl.addClass("manager-container");
-    if (import_obsidian13.Platform.isMobileApp)
+    if (import_obsidian14.Platform.isMobileApp)
       modalEl.addClass("manager-container--mobile");
-    if (!this.settings.CENTER && !import_obsidian13.Platform.isMobileApp)
+    if (!this.settings.CENTER && !import_obsidian14.Platform.isMobileApp)
       modalEl.addClass("manager-container__top");
     if (this.editorMode)
       modalEl.addClass("manager-container--editing");
@@ -2446,7 +2687,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     this.footEl = document.createElement("div");
     this.footEl.addClass("manager-food");
     this.modalEl.appendChild(this.footEl);
-    if (import_obsidian13.Platform.isMobileApp) {
+    if (import_obsidian14.Platform.isMobileApp) {
       this.showHeadMobile();
       return;
     }
@@ -2456,7 +2697,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     const bindLongPressTooltip = (btn, text) => {
       let timer;
       const show = () => {
-        new import_obsidian13.Notice(text, 1500);
+        new import_obsidian14.Notice(text, 1500);
       };
       btn.buttonEl.addEventListener("touchstart", () => {
         timer = window.setTimeout(show, 500);
@@ -2469,22 +2710,22 @@ var ManagerModal = class extends import_obsidian13.Modal {
       btn.buttonEl.addEventListener("touchend", clear);
       btn.buttonEl.addEventListener("touchcancel", clear);
     };
-    const actionBar = new import_obsidian13.Setting(actionContent).setClass("manager-bar__action").setName("");
-    const githubButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const actionBar = new import_obsidian14.Setting(actionContent).setClass("manager-bar__action").setName("");
+    const githubButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     githubButton.setIcon("github");
     githubButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0"));
     this.bindLongPressTooltip(githubButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0"));
     githubButton.onClick(() => {
       window.open("https://github.com/zenozero-dev/obsidian-manager");
     });
-    const tutorialButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const tutorialButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     tutorialButton.setIcon("book-open");
     tutorialButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0"));
     this.bindLongPressTooltip(tutorialButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0"));
     tutorialButton.onClick(() => {
       window.open("https://www.bilibili.com/video/BV1WyrkYMEce/");
     });
-    const updateButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const updateButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     updateButton.setIcon("rss");
     updateButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
     this.bindLongPressTooltip(updateButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
@@ -2493,16 +2734,24 @@ var ManagerModal = class extends import_obsidian13.Modal {
       try {
         await this.manager.checkUpdatesWithNotice();
         const count = Object.values(this.manager.updateStatus || {}).filter((s) => s.hasUpdate).length;
-        new import_obsidian13.Notice(`\u68C0\u67E5\u5B8C\u6210\uFF0C\u53D1\u73B0 ${count} \u4E2A\u63D2\u4EF6\u6709\u53EF\u7528\u66F4\u65B0`);
+        new import_obsidian14.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210").replace("{count}", `${count}`));
         this.reloadShowData();
       } catch (error) {
+        updateButton.setIcon("refresh-cw");
         console.error("\u68C0\u67E5\u66F4\u65B0\u65F6\u51FA\u9519:", error);
-        new import_obsidian13.Notice("\u68C0\u67E5\u66F4\u65B0\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+        new import_obsidian14.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25"));
       } finally {
         updateButton.setDisabled(false);
       }
     });
-    const hideButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const ribbonButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
+    ribbonButton.setIcon("grip-vertical");
+    ribbonButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0"));
+    this.bindLongPressTooltip(ribbonButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0"));
+    ribbonButton.onClick(() => {
+      new RibbonModal(this.app, this.manager).open();
+    });
+    const hideButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     hideButton.setIcon("eye-off");
     const hideTooltip = this.manager.translator.t("\u83DC\u5355_\u9690\u85CF\u63D2\u4EF6_\u6807\u9898");
     hideButton.setTooltip(hideTooltip);
@@ -2515,7 +2764,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       });
       new HideModal(this.app, this.manager, this, plugins).open();
     });
-    const reloadButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const reloadButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     reloadButton.setIcon("refresh-ccw");
     reloadButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0"));
     this.bindLongPressTooltip(reloadButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0"));
@@ -2524,21 +2773,26 @@ var ManagerModal = class extends import_obsidian13.Modal {
         return;
       this.reloadingManifests = true;
       reloadButton.setDisabled(true);
-      const notice = new import_obsidian13.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5F00\u59CB\u63D0\u793A"), 0);
+      const notice = new import_obsidian14.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5F00\u59CB\u63D0\u793A"), 0);
       await new Promise((r) => window.setTimeout(r, 50));
       try {
         await this.appPlugins.loadManifests();
+        this.manager.synchronizePlugins(
+          Object.values(this.appPlugins.manifests).filter(
+            (pm) => pm.id !== this.manager.manifest.id
+          )
+        );
         await this.reloadShowData();
       } catch (e) {
         console.error("[BPM] reload manifests failed", e);
-        new import_obsidian13.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5931\u8D25\u63D0\u793A"), 4e3);
+        new import_obsidian14.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5931\u8D25\u63D0\u793A"), 4e3);
       } finally {
         notice.hide();
         reloadButton.setDisabled(false);
         this.reloadingManifests = false;
       }
     });
-    const disableButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const disableButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     disableButton.setIcon("square");
     disableButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0"));
     this.bindLongPressTooltip(disableButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0"));
@@ -2548,18 +2802,18 @@ var ManagerModal = class extends import_obsidian13.Modal {
           if (plugin.id === this.manager.manifest.id)
             continue;
           if (this.settings.DELAY) {
-            const ManagerPlugin = this.settings.Plugins.find((p) => p.id === plugin.id);
-            if (ManagerPlugin && ManagerPlugin.enabled) {
+            const ManagerPlugin4 = this.settings.Plugins.find((p) => p.id === plugin.id);
+            if (ManagerPlugin4 && ManagerPlugin4.enabled) {
               await this.appPlugins.disablePlugin(plugin.id);
-              ManagerPlugin.enabled = false;
+              ManagerPlugin4.enabled = false;
               await this.manager.savePluginAndExport(plugin.id);
               this.reloadShowData();
             }
           } else {
             if (this.appPlugins.enabledPlugins.has(plugin.id)) {
-              const ManagerPlugin = this.settings.Plugins.find((p) => p.id === plugin.id);
-              if (ManagerPlugin)
-                ManagerPlugin.enabled = false;
+              const ManagerPlugin4 = this.settings.Plugins.find((p) => p.id === plugin.id);
+              if (ManagerPlugin4)
+                ManagerPlugin4.enabled = false;
               await this.appPlugins.disablePluginAndSave(plugin.id);
               await this.manager.savePluginAndExport(plugin.id);
               this.reloadShowData();
@@ -2569,7 +2823,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         }
       }).open();
     });
-    const enableButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const enableButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     enableButton.setIcon("square-check");
     enableButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0"));
     this.bindLongPressTooltip(enableButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0"));
@@ -2579,18 +2833,18 @@ var ManagerModal = class extends import_obsidian13.Modal {
           if (plugin.id === this.manager.manifest.id)
             continue;
           if (this.settings.DELAY) {
-            const ManagerPlugin = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
-            if (ManagerPlugin && !ManagerPlugin.enabled) {
+            const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+            if (ManagerPlugin4 && !ManagerPlugin4.enabled) {
               await this.appPlugins.enablePlugin(plugin.id);
-              ManagerPlugin.enabled = true;
+              ManagerPlugin4.enabled = true;
               await this.manager.savePluginAndExport(plugin.id);
               this.reloadShowData();
             }
           } else {
             if (!this.appPlugins.enabledPlugins.has(plugin.id)) {
-              const ManagerPlugin = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
-              if (ManagerPlugin)
-                ManagerPlugin.enabled = true;
+              const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+              if (ManagerPlugin4)
+                ManagerPlugin4.enabled = true;
               await this.appPlugins.enablePluginAndSave(plugin.id);
               await this.manager.savePluginAndExport(plugin.id);
               this.reloadShowData();
@@ -2600,14 +2854,14 @@ var ManagerModal = class extends import_obsidian13.Modal {
         }
       }).open();
     });
-    const troubleshootButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const troubleshootButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     troubleshootButton.setIcon("search");
     troubleshootButton.setTooltip(this.manager.translator.t("\u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0"));
     this.bindLongPressTooltip(troubleshootButton.buttonEl, this.manager.translator.t("\u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0"));
     troubleshootButton.onClick(() => {
       new TroubleshootModal(this.app, this.manager).open();
     });
-    const editorButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const editorButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     this.editorMode ? editorButton.setIcon("pen-off") : editorButton.setIcon("pen");
     editorButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
     this.bindLongPressTooltip(editorButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
@@ -2621,15 +2875,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         this.renderContent();
       }
     });
-    const settingsButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
-    settingsButton.setIcon("settings");
-    settingsButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0"));
-    this.bindLongPressTooltip(settingsButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0"));
-    settingsButton.onClick(() => {
-      this.appSetting.open();
-      this.appSetting.openTabById(this.manager.manifest.id);
-    });
-    const installToggle = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+    const installToggle = new import_obsidian14.ButtonComponent(actionBar.controlEl);
     installToggle.setIcon("download");
     const installTooltip = this.manager.translator.t("\u7BA1\u7406\u5668_\u5B89\u88C5_GITHUB_\u63CF\u8FF0");
     installToggle.setTooltip(installTooltip);
@@ -2642,8 +2888,16 @@ var ManagerModal = class extends import_obsidian13.Modal {
       }
       this.renderContent();
     });
+    const settingsButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
+    settingsButton.setIcon("settings");
+    settingsButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0"));
+    this.bindLongPressTooltip(settingsButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0"));
+    settingsButton.onClick(() => {
+      this.appSetting.open();
+      this.appSetting.openTabById(this.manager.manifest.id);
+    });
     if (this.developerMode) {
-      const testButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+      const testButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
       testButton.setIcon("refresh-ccw");
       testButton.setTooltip("\u5237\u65B0\u63D2\u4EF6");
       testButton.onClick(async () => {
@@ -2653,7 +2907,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       });
     }
     if (this.developerMode) {
-      const testButton = new import_obsidian13.ButtonComponent(actionBar.controlEl);
+      const testButton = new import_obsidian14.ButtonComponent(actionBar.controlEl);
       testButton.setIcon("test-tube");
       testButton.setTooltip("\u6D4B\u8BD5\u63D2\u4EF6");
       testButton.onClick(async () => {
@@ -2662,7 +2916,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     const filterWrapper = this.titleEl.createDiv("manager-section manager-section--filters");
     const filterContent = filterWrapper.createDiv("manager-section__content");
     filterContent.addClass("manager-section__content--filters");
-    const searchBar = new import_obsidian13.Setting(filterContent).setClass("manager-bar__search").setName("");
+    const searchBar = new import_obsidian14.Setting(filterContent).setClass("manager-bar__search").setName("");
     this.searchBarEl = searchBar.settingEl;
     const filterOptions = {
       "all": this.manager.translator.t("\u7B5B\u9009_\u72B6\u6001_\u5168\u90E8"),
@@ -2672,9 +2926,10 @@ var ManagerModal = class extends import_obsidian13.Modal {
       "ungrouped": this.manager.translator.t("\u7B5B\u9009_\u672A\u5206\u7EC4_\u63CF\u8FF0"),
       "tagged": this.manager.translator.t("\u7B5B\u9009_\u6709\u6807\u7B7E_\u63CF\u8FF0"),
       "untagged": this.manager.translator.t("\u7B5B\u9009_\u65E0\u6807\u7B7E_\u63CF\u8FF0"),
-      "noted": this.manager.translator.t("\u7B5B\u9009_\u6709\u7B14\u8BB0_\u63CF\u8FF0")
+      "noted": this.manager.translator.t("\u7B5B\u9009_\u6709\u7B14\u8BB0_\u63CF\u8FF0"),
+      "has-update": this.manager.translator.t("\u7B5B\u9009_\u53EF\u66F4\u65B0_\u63CF\u8FF0")
     };
-    const filterDropdown = new import_obsidian13.DropdownComponent(searchBar.controlEl);
+    const filterDropdown = new import_obsidian14.DropdownComponent(searchBar.controlEl);
     filterDropdown.addOptions(filterOptions);
     filterDropdown.setValue(this.filter || "all");
     filterDropdown.onChange((value) => {
@@ -2690,7 +2945,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       acc[item.id] = `${item.name} [${groupCounts[item.id] || 0}]`;
       return acc;
     }, { "": this.manager.translator.t("\u7B5B\u9009_\u5206\u7EC4_\u5168\u90E8") });
-    this.groupDropdown = new import_obsidian13.DropdownComponent(searchBar.controlEl);
+    this.groupDropdown = new import_obsidian14.DropdownComponent(searchBar.controlEl);
     this.groupDropdown.addOptions(groups);
     this.groupDropdown.setValue(this.settings.PERSISTENCE ? this.settings.FILTER_GROUP : this.group);
     this.groupDropdown.onChange((value) => {
@@ -2712,7 +2967,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       acc[item.id] = `${item.name} [${tagCounts[item.id] || 0}]`;
       return acc;
     }, { "": this.manager.translator.t("\u7B5B\u9009_\u6807\u7B7E_\u5168\u90E8") });
-    this.tagDropdown = new import_obsidian13.DropdownComponent(searchBar.controlEl);
+    this.tagDropdown = new import_obsidian14.DropdownComponent(searchBar.controlEl);
     this.tagDropdown.addOptions(tags);
     this.tagDropdown.setValue(this.settings.PERSISTENCE ? this.settings.FILTER_TAG : this.tag);
     this.tagDropdown.onChange((value) => {
@@ -2734,7 +2989,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         acc[item.id] = `${item.name} (${item.time}s) [${delayCounts[item.id] || 0}]`;
         return acc;
       }, { "": this.manager.translator.t("\u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8") });
-      this.delayDropdown = new import_obsidian13.DropdownComponent(searchBar.controlEl);
+      this.delayDropdown = new import_obsidian14.DropdownComponent(searchBar.controlEl);
       this.delayDropdown.addOptions(delays);
       this.delayDropdown.setValue(this.settings.PERSISTENCE ? this.settings.FILTER_DELAY : this.delay);
       this.delayDropdown.onChange((value) => {
@@ -2747,7 +3002,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         this.reloadShowData();
       });
     }
-    this.searchEl = new import_obsidian13.SearchComponent(searchBar.controlEl);
+    this.searchEl = new import_obsidian14.SearchComponent(searchBar.controlEl);
     if (this.settings.PERSISTENCE && typeof this.settings.FILTER_SEARCH === "string") {
       this.searchText = this.settings.FILTER_SEARCH;
       this.searchEl.inputEl.value = this.searchText;
@@ -2767,7 +3022,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     const header = this.titleEl.createDiv("bpm-mobile-header");
     const topRow = header.createDiv("bpm-mobile-header__top");
     const topActions = topRow.createDiv("bpm-mobile-header__actions");
-    const editorBtn = new import_obsidian13.ButtonComponent(topActions);
+    const editorBtn = new import_obsidian14.ButtonComponent(topActions);
     editorBtn.setIcon(this.editorMode ? "pen-off" : "pen");
     editorBtn.setTooltip(t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
     this.bindLongPressTooltip(editorBtn.buttonEl, t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
@@ -2781,7 +3036,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       }
       this.showHeadMobile();
     });
-    const installBtn = new import_obsidian13.ButtonComponent(topActions);
+    const installBtn = new import_obsidian14.ButtonComponent(topActions);
     installBtn.setIcon(this.installMode ? "arrow-left" : "download");
     installBtn.setTooltip(this.installMode ? t("\u901A\u7528_\u8FD4\u56DE_\u6587\u672C") : t("\u7BA1\u7406\u5668_\u5B89\u88C5_GITHUB_\u63CF\u8FF0"));
     this.bindLongPressTooltip(installBtn.buttonEl, this.installMode ? t("\u901A\u7528_\u8FD4\u56DE_\u6587\u672C") : t("\u7BA1\u7406\u5668_\u5B89\u88C5_GITHUB_\u63CF\u8FF0"));
@@ -2793,7 +3048,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       this.renderContent();
       this.showHeadMobile();
     });
-    const updateBtn = new import_obsidian13.ButtonComponent(topActions);
+    const updateBtn = new import_obsidian14.ButtonComponent(topActions);
     updateBtn.setIcon("rss");
     updateBtn.setTooltip(t("\u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
     this.bindLongPressTooltip(updateBtn.buttonEl, t("\u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
@@ -2801,29 +3056,29 @@ var ManagerModal = class extends import_obsidian13.Modal {
       await this.manager.checkUpdatesWithNotice();
       await this.reloadShowData();
     });
-    const moreBtn = new import_obsidian13.ButtonComponent(topActions);
+    const moreBtn = new import_obsidian14.ButtonComponent(topActions);
     moreBtn.setIcon("more-vertical");
     moreBtn.setTooltip(t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
     this.bindLongPressTooltip(moreBtn.buttonEl, t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
     moreBtn.buttonEl.addEventListener("click", (ev) => {
-      const menu = new import_obsidian13.Menu();
+      const menu = new import_obsidian14.Menu();
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0")).setIcon("square").onClick(async () => {
         new DisableModal(this.app, this.manager, async () => {
           for (const plugin of this.displayPlugins) {
             if (plugin.id === this.manager.manifest.id)
               continue;
             if (this.settings.DELAY) {
-              const ManagerPlugin = this.settings.Plugins.find((p) => p.id === plugin.id);
-              if (ManagerPlugin && ManagerPlugin.enabled) {
+              const ManagerPlugin4 = this.settings.Plugins.find((p) => p.id === plugin.id);
+              if (ManagerPlugin4 && ManagerPlugin4.enabled) {
                 await this.appPlugins.disablePlugin(plugin.id);
-                ManagerPlugin.enabled = false;
+                ManagerPlugin4.enabled = false;
                 await this.manager.savePluginAndExport(plugin.id);
               }
             } else {
               if (this.appPlugins.enabledPlugins.has(plugin.id)) {
-                const ManagerPlugin = this.settings.Plugins.find((p) => p.id === plugin.id);
-                if (ManagerPlugin)
-                  ManagerPlugin.enabled = false;
+                const ManagerPlugin4 = this.settings.Plugins.find((p) => p.id === plugin.id);
+                if (ManagerPlugin4)
+                  ManagerPlugin4.enabled = false;
                 await this.appPlugins.disablePluginAndSave(plugin.id);
                 await this.manager.savePluginAndExport(plugin.id);
               }
@@ -2839,17 +3094,17 @@ var ManagerModal = class extends import_obsidian13.Modal {
             if (plugin.id === this.manager.manifest.id)
               continue;
             if (this.settings.DELAY) {
-              const ManagerPlugin = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
-              if (ManagerPlugin && !ManagerPlugin.enabled) {
+              const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+              if (ManagerPlugin4 && !ManagerPlugin4.enabled) {
                 await this.appPlugins.enablePlugin(plugin.id);
-                ManagerPlugin.enabled = true;
+                ManagerPlugin4.enabled = true;
                 await this.manager.savePluginAndExport(plugin.id);
               }
             } else {
               if (!this.appPlugins.enabledPlugins.has(plugin.id)) {
-                const ManagerPlugin = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
-                if (ManagerPlugin)
-                  ManagerPlugin.enabled = true;
+                const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+                if (ManagerPlugin4)
+                  ManagerPlugin4.enabled = true;
                 await this.appPlugins.enablePluginAndSave(plugin.id);
                 await this.manager.savePluginAndExport(plugin.id);
               }
@@ -2862,6 +3117,11 @@ var ManagerModal = class extends import_obsidian13.Modal {
       menu.addSeparator();
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0")).setIcon("refresh-ccw").onClick(async () => {
         await this.appPlugins.loadManifests();
+        this.manager.synchronizePlugins(
+          Object.values(this.appPlugins.manifests).filter(
+            (pm) => pm.id !== this.manager.manifest.id
+          )
+        );
         await this.reloadShowData();
       }));
       menu.addItem((item) => item.setTitle(t("\u83DC\u5355_\u9690\u85CF\u63D2\u4EF6_\u6807\u9898")).setIcon("eye-off").onClick(async () => {
@@ -2871,6 +3131,9 @@ var ManagerModal = class extends import_obsidian13.Modal {
         new HideModal(this.app, this.manager, this, plugins).open();
       }));
       menu.addSeparator();
+      menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0")).setIcon("grip-vertical").onClick(() => {
+        new RibbonModal(this.app, this.manager).open();
+      }));
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0")).setIcon("settings").onClick(() => {
         this.appSetting.open();
         this.appSetting.openTabById(this.manager.manifest.id);
@@ -2884,7 +3147,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       menu.showAtMouseEvent(ev);
     });
     const searchWrap = header.createDiv("bpm-mobile-header__search");
-    this.searchEl = new import_obsidian13.SearchComponent(searchWrap);
+    this.searchEl = new import_obsidian14.SearchComponent(searchWrap);
     if (this.settings.PERSISTENCE && typeof this.settings.FILTER_SEARCH === "string") {
       this.searchText = this.settings.FILTER_SEARCH;
       this.searchEl.inputEl.value = this.searchText;
@@ -2926,7 +3189,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         const chip = activeFiltersContainer.createDiv("bpm-active-filter-chip");
         chip.setText(filterLabels[this.filter] || this.filter);
         const closeIcon = chip.createSpan("bpm-active-filter-chip__close");
-        (0, import_obsidian13.setIcon)(closeIcon, "x");
+        (0, import_obsidian14.setIcon)(closeIcon, "x");
         chip.addEventListener("click", () => {
           this.filter = "all";
           this.showHeadMobile();
@@ -2939,7 +3202,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
           const chip = activeFiltersContainer.createDiv("bpm-active-filter-chip");
           chip.setText(groupItem.name);
           const closeIcon = chip.createSpan("bpm-active-filter-chip__close");
-          (0, import_obsidian13.setIcon)(closeIcon, "x");
+          (0, import_obsidian14.setIcon)(closeIcon, "x");
           chip.addEventListener("click", () => {
             if (this.settings.PERSISTENCE) {
               this.settings.FILTER_GROUP = "";
@@ -2958,7 +3221,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
           const chip = activeFiltersContainer.createDiv("bpm-active-filter-chip");
           chip.setText(tagItem.name);
           const closeIcon = chip.createSpan("bpm-active-filter-chip__close");
-          (0, import_obsidian13.setIcon)(closeIcon, "x");
+          (0, import_obsidian14.setIcon)(closeIcon, "x");
           chip.addEventListener("click", () => {
             if (this.settings.PERSISTENCE) {
               this.settings.FILTER_TAG = "";
@@ -2979,7 +3242,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     };
     updateActiveFilters();
     const filterPanel = header.createDiv(`bpm-mobile-header__filters${this.mobileFiltersCollapsed ? " is-collapsed" : ""}`);
-    const statusSetting = new import_obsidian13.Setting(filterPanel).setName(t("\u7B5B\u9009_\u72B6\u6001_\u5168\u90E8"));
+    const statusSetting = new import_obsidian14.Setting(filterPanel).setName(t("\u7B5B\u9009_\u72B6\u6001_\u5168\u90E8"));
     statusSetting.addDropdown((dd) => {
       dd.addOptions({
         "all": t("\u7B5B\u9009_\u72B6\u6001_\u5168\u90E8"),
@@ -3006,7 +3269,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       acc[item.id] = `${item.name} [${groupCounts[item.id] || 0}]`;
       return acc;
     }, { "": t("\u7B5B\u9009_\u5206\u7EC4_\u5168\u90E8") });
-    const groupSetting = new import_obsidian13.Setting(filterPanel).setName(t("\u7B5B\u9009_\u5206\u7EC4_\u5168\u90E8"));
+    const groupSetting = new import_obsidian14.Setting(filterPanel).setName(t("\u7B5B\u9009_\u5206\u7EC4_\u5168\u90E8"));
     groupSetting.addDropdown((dd) => {
       dd.addOptions(groups);
       dd.setValue(this.settings.PERSISTENCE ? this.settings.FILTER_GROUP : this.group);
@@ -3030,7 +3293,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       acc[item.id] = `${item.name} [${tagCounts[item.id] || 0}]`;
       return acc;
     }, { "": t("\u7B5B\u9009_\u6807\u7B7E_\u5168\u90E8") });
-    const tagSetting = new import_obsidian13.Setting(filterPanel).setName(t("\u7B5B\u9009_\u6807\u7B7E_\u5168\u90E8"));
+    const tagSetting = new import_obsidian14.Setting(filterPanel).setName(t("\u7B5B\u9009_\u6807\u7B7E_\u5168\u90E8"));
     tagSetting.addDropdown((dd) => {
       dd.addOptions(tags);
       dd.setValue(this.settings.PERSISTENCE ? this.settings.FILTER_TAG : this.tag);
@@ -3054,7 +3317,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         acc[item.id] = `${item.name} (${delayCounts[item.id] || 0})`;
         return acc;
       }, { "": t("\u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8") });
-      const delaySetting = new import_obsidian13.Setting(filterPanel).setName(t("\u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8"));
+      const delaySetting = new import_obsidian14.Setting(filterPanel).setName(t("\u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8"));
       delaySetting.addDropdown((dd) => {
         dd.addOptions(delays);
         dd.setValue(this.settings.PERSISTENCE ? this.settings.FILTER_DELAY : this.delay);
@@ -3081,7 +3344,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     const createFooterBtn = (icon, label, onClick) => {
       const btn = document.createElement("button");
       btn.addClass("bpm-mobile-footer__btn");
-      (0, import_obsidian13.setIcon)(btn, icon);
+      (0, import_obsidian14.setIcon)(btn, icon);
       const labelEl = document.createElement("span");
       labelEl.addClass("bpm-mobile-footer__btn-label");
       labelEl.setText(label);
@@ -3096,17 +3359,17 @@ var ManagerModal = class extends import_obsidian13.Modal {
           if (plugin.id === this.manager.manifest.id)
             continue;
           if (this.settings.DELAY) {
-            const ManagerPlugin = this.settings.Plugins.find((p) => p.id === plugin.id);
-            if (ManagerPlugin && ManagerPlugin.enabled) {
+            const ManagerPlugin4 = this.settings.Plugins.find((p) => p.id === plugin.id);
+            if (ManagerPlugin4 && ManagerPlugin4.enabled) {
               await this.appPlugins.disablePlugin(plugin.id);
-              ManagerPlugin.enabled = false;
+              ManagerPlugin4.enabled = false;
               await this.manager.savePluginAndExport(plugin.id);
             }
           } else {
             if (this.appPlugins.enabledPlugins.has(plugin.id)) {
-              const ManagerPlugin = this.settings.Plugins.find((p) => p.id === plugin.id);
-              if (ManagerPlugin)
-                ManagerPlugin.enabled = false;
+              const ManagerPlugin4 = this.settings.Plugins.find((p) => p.id === plugin.id);
+              if (ManagerPlugin4)
+                ManagerPlugin4.enabled = false;
               await this.appPlugins.disablePluginAndSave(plugin.id);
               await this.manager.savePluginAndExport(plugin.id);
             }
@@ -3123,17 +3386,17 @@ var ManagerModal = class extends import_obsidian13.Modal {
           if (plugin.id === this.manager.manifest.id)
             continue;
           if (this.settings.DELAY) {
-            const ManagerPlugin = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
-            if (ManagerPlugin && !ManagerPlugin.enabled) {
+            const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+            if (ManagerPlugin4 && !ManagerPlugin4.enabled) {
               await this.appPlugins.enablePlugin(plugin.id);
-              ManagerPlugin.enabled = true;
+              ManagerPlugin4.enabled = true;
               await this.manager.savePluginAndExport(plugin.id);
             }
           } else {
             if (!this.appPlugins.enabledPlugins.has(plugin.id)) {
-              const ManagerPlugin = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
-              if (ManagerPlugin)
-                ManagerPlugin.enabled = true;
+              const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+              if (ManagerPlugin4)
+                ManagerPlugin4.enabled = true;
               await this.appPlugins.enablePluginAndSave(plugin.id);
               await this.manager.savePluginAndExport(plugin.id);
             }
@@ -3157,7 +3420,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     const moreBtn = createFooterBtn("more-horizontal", t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"), () => {
     });
     moreBtn.addEventListener("click", (ev) => {
-      const menu = new import_obsidian13.Menu();
+      const menu = new import_obsidian14.Menu();
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0")).setIcon("refresh-ccw").onClick(async () => {
         await this.appPlugins.loadManifests();
         await this.reloadShowData();
@@ -3181,7 +3444,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     this.modalEl.appendChild(footer);
   }
   async showData() {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g;
     const manifestMap = this.appPlugins.manifests;
     if (this.settings.DEBUG)
       console.log("[BPM] render showData manifests size:", Object.keys(manifestMap).length);
@@ -3200,26 +3463,26 @@ var ManagerModal = class extends import_obsidian13.Modal {
       if (renderedIds.has(plugin.id))
         continue;
       renderedIds.add(plugin.id);
-      const ManagerPlugin = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+      const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
       const getBasePath = (_b = (_a = this.app.vault.adapter) == null ? void 0 : _a.getBasePath) == null ? void 0 : _b.call(_a);
-      const basePath = getBasePath ? (0, import_obsidian14.normalizePath)(getBasePath) : "";
+      const basePath = getBasePath ? (0, import_obsidian15.normalizePath)(getBasePath) : "";
       const cfgDir = this.app.vault.configDir;
       const rawDir = plugin.dir || `plugins/${plugin.id}`;
       const isAbsolute = new RegExp("^(?:[a-zA-Z]:[\\\\/]|[\\\\/])").test(rawDir);
       let pluginDir;
       if (isAbsolute) {
-        pluginDir = (0, import_obsidian14.normalizePath)(rawDir);
+        pluginDir = (0, import_obsidian15.normalizePath)(rawDir);
       } else if (rawDir.startsWith(cfgDir) || rawDir.startsWith(".") || rawDir.startsWith("/")) {
-        pluginDir = (0, import_obsidian14.normalizePath)(`${basePath}/${rawDir}`);
+        pluginDir = (0, import_obsidian15.normalizePath)(`${basePath}/${rawDir}`);
       } else {
-        pluginDir = (0, import_obsidian14.normalizePath)(`${basePath}/${cfgDir}/${rawDir}`);
+        pluginDir = (0, import_obsidian15.normalizePath)(`${basePath}/${cfgDir}/${rawDir}`);
       }
       if (this.settings.DEBUG)
         console.log("[BPM] render item", plugin.id, "children before add:", this.contentEl.children.length);
-      if (!ManagerPlugin)
+      if (!ManagerPlugin4)
         continue;
       const isSelf = plugin.id === this.manager.manifest.id;
-      const isEnabled = this.settings.DELAY ? ManagerPlugin.enabled : this.appPlugins.enabledPlugins.has(plugin.id);
+      const isEnabled = this.settings.DELAY ? ManagerPlugin4.enabled : this.appPlugins.enabledPlugins.has(plugin.id);
       switch (this.filter) {
         case "enabled":
           if (!isEnabled)
@@ -3230,48 +3493,52 @@ var ManagerModal = class extends import_obsidian13.Modal {
             continue;
           break;
         case "grouped":
-          if (ManagerPlugin.group === "")
+          if (ManagerPlugin4.group === "")
             continue;
           break;
         case "ungrouped":
-          if (ManagerPlugin.group !== "")
+          if (ManagerPlugin4.group !== "")
             continue;
           break;
         case "tagged":
-          if (ManagerPlugin.tags.length === 0)
+          if (ManagerPlugin4.tags.length === 0)
             continue;
           break;
         case "untagged":
-          if (ManagerPlugin.tags.length > 0)
+          if (ManagerPlugin4.tags.length > 0)
             continue;
           break;
         case "noted":
-          if (!ManagerPlugin.note || ManagerPlugin.note === "")
+          if (!ManagerPlugin4.note || ManagerPlugin4.note === "")
+            continue;
+          break;
+        case "has-update":
+          if (!((_c = this.manager.updateStatus[plugin.id]) == null ? void 0 : _c.hasUpdate))
             continue;
           break;
         default:
           break;
       }
       if (this.settings.PERSISTENCE) {
-        if (this.settings.FILTER_GROUP !== "" && ManagerPlugin.group !== this.settings.FILTER_GROUP)
+        if (this.settings.FILTER_GROUP !== "" && ManagerPlugin4.group !== this.settings.FILTER_GROUP)
           continue;
-        if (this.settings.FILTER_TAG !== "" && !ManagerPlugin.tags.includes(this.settings.FILTER_TAG))
+        if (this.settings.FILTER_TAG !== "" && !ManagerPlugin4.tags.includes(this.settings.FILTER_TAG))
           continue;
-        if (this.settings.FILTER_DELAY !== "" && ManagerPlugin.delay !== this.settings.FILTER_DELAY)
+        if (this.settings.FILTER_DELAY !== "" && ManagerPlugin4.delay !== this.settings.FILTER_DELAY)
           continue;
       } else {
-        if (this.group !== "" && ManagerPlugin.group !== this.group)
+        if (this.group !== "" && ManagerPlugin4.group !== this.group)
           continue;
-        if (this.tag !== "" && !ManagerPlugin.tags.includes(this.tag))
+        if (this.tag !== "" && !ManagerPlugin4.tags.includes(this.tag))
           continue;
-        if (this.delay !== "" && ManagerPlugin.delay !== this.delay)
+        if (this.delay !== "" && ManagerPlugin4.delay !== this.delay)
           continue;
       }
-      if (this.searchText !== "" && ManagerPlugin.name.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && ManagerPlugin.desc.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && plugin.author.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1)
+      if (this.searchText !== "" && ManagerPlugin4.name.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && ManagerPlugin4.desc.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && plugin.author.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1)
         continue;
       if (!isSelf && this.settings.HIDES.includes(plugin.id))
         continue;
-      const itemEl = new import_obsidian13.Setting(this.contentEl);
+      const itemEl = new import_obsidian14.Setting(this.contentEl);
       itemEl.settingEl.setAttr("data-plugin-id", plugin.id);
       itemEl.setClass("manager-item");
       itemEl.nameEl.addClass("manager-item__name-container");
@@ -3279,7 +3546,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       itemEl.controlEl.addClass("manager-item__controls");
       itemEl.settingEl.addEventListener("contextmenu", (event) => {
         event.preventDefault();
-        const menu = new import_obsidian13.Menu();
+        const menu = new import_obsidian14.Menu();
         menu.addItem(
           (item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setIcon("rss").onClick(async () => {
             await this.manager.checkUpdateForPlugin(plugin.id);
@@ -3290,7 +3557,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         if (!this.settings.DELAY)
           menu.addItem(
             (item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u5355\u6B21\u542F\u52A8_\u63CF\u8FF0")).setIcon("repeat-1").setDisabled(isSelf || isEnabled).onClick(async () => {
-              new import_obsidian13.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u5355\u6B21\u542F\u52A8\u4E2D_\u63D0\u793A"));
+              new import_obsidian14.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u5355\u6B21\u542F\u52A8\u4E2D_\u63D0\u793A"));
               await this.appPlugins.enablePlugin(plugin.id);
               await this.reloadShowData();
             })
@@ -3298,7 +3565,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         if (!this.settings.DELAY)
           menu.addItem(
             (item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u91CD\u542F\u63D2\u4EF6_\u63CF\u8FF0")).setIcon("refresh-ccw").setDisabled(isSelf || !isEnabled).onClick(async () => {
-              new import_obsidian13.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u542F\u4E2D_\u63D0\u793A"));
+              new import_obsidian14.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u542F\u4E2D_\u63D0\u793A"));
               await this.appPlugins.disablePluginAndSave(plugin.id);
               await this.appPlugins.enablePluginAndSave(plugin.id);
               await this.reloadShowData();
@@ -3321,7 +3588,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         menu.addSeparator();
         menu.addItem(
           (item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u7B14\u8BB0_\u6807\u9898")).setIcon("notebook-pen").onClick(() => {
-            new NoteModal(this.app, this.manager, ManagerPlugin, this).open();
+            new NoteModal(this.app, this.manager, ManagerPlugin4, this).open();
           })
         );
         menu.addItem(
@@ -3337,7 +3604,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         menu.addItem(
           (item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u590D\u5236ID_\u6807\u9898")).setIcon("copy").onClick(() => {
             navigator.clipboard.writeText(plugin.id);
-            new import_obsidian13.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
+            new import_obsidian14.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
           })
         );
         menu.showAtPosition({ x: event.clientX, y: event.clientY });
@@ -3397,38 +3664,38 @@ var ManagerModal = class extends import_obsidian13.Modal {
             break;
         }
       }
-      if (ManagerPlugin.group !== "") {
+      if (ManagerPlugin4.group !== "") {
         const group = createSpan({ cls: "manager-item__name-group" });
         itemEl.nameEl.appendChild(group);
-        const item = this.settings.GROUPS.find((t) => t.id === ManagerPlugin.group);
+        const item = this.settings.GROUPS.find((t) => t.id === ManagerPlugin4.group);
         if (item) {
           const tag = this.manager.createTag(item.name, item.color, this.settings.GROUP_STYLE);
           if (this.editorMode)
             tag.onclick = () => {
-              new GroupModal(this.app, this.manager, this, ManagerPlugin).open();
+              new GroupModal(this.app, this.manager, this, ManagerPlugin4).open();
             };
           group.appendChild(tag);
         }
       }
-      if (ManagerPlugin.group === "" && this.editorMode) {
+      if (ManagerPlugin4.group === "" && this.editorMode) {
         const group = createSpan({ cls: "manager-item__name-group" });
         if (this.editorMode)
           itemEl.nameEl.appendChild(group);
         const tag = this.manager.createTag("+", "", "");
         if (this.editorMode)
           tag.onclick = () => {
-            new GroupModal(this.app, this.manager, this, ManagerPlugin).open();
+            new GroupModal(this.app, this.manager, this, ManagerPlugin4).open();
           };
         if (this.editorMode)
           group.appendChild(tag);
       }
-      const title = createSpan({ text: ManagerPlugin.name, title: plugin.name, cls: "manager-item__name-title" });
+      const title = createSpan({ text: ManagerPlugin4.name, title: plugin.name, cls: "manager-item__name-title" });
       if (this.editorMode) {
         title.setAttribute("style", "border-width: 1px;border-style: dashed;");
         title.setAttribute("contenteditable", "true");
         title.addEventListener("input", async () => {
           if (title.textContent) {
-            ManagerPlugin.name = title.textContent;
+            ManagerPlugin4.name = title.textContent;
             await this.manager.savePluginAndExport(plugin.id);
             command_default(this.app, this.manager);
           }
@@ -3451,20 +3718,20 @@ var ManagerModal = class extends import_obsidian13.Modal {
             new UpdateModal(this.app, this.manager, plugin.id, versions, (_a2 = st == null ? void 0 : st.remoteVersion) != null ? _a2 : null, (st == null ? void 0 : st.repo) || void 0).open();
           } catch (e) {
             console.error("[BPM] fetch remote versions failed", e);
-            new import_obsidian13.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u83B7\u53D6\u5931\u8D25\u63D0\u793A"), 4e3);
+            new import_obsidian14.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u83B7\u53D6\u5931\u8D25\u63D0\u793A"), 4e3);
           } finally {
             progress.hide();
           }
         });
       }
-      const updateInfo = (_c = this.manager.updateStatus) == null ? void 0 : _c[plugin.id];
+      const updateInfo = (_d = this.manager.updateStatus) == null ? void 0 : _d[plugin.id];
       if ((updateInfo == null ? void 0 : updateInfo.hasUpdate) && updateInfo.remoteVersion) {
         const arrow = createSpan({ text: "\u2192", cls: ["manager-item__name-remote-arrow"] });
         versionWrap.appendChild(arrow);
         const remote = createSpan({ text: `${updateInfo.remoteVersion}`, cls: ["manager-item__name-remote"] });
         versionWrap.appendChild(remote);
-        if (!this.editorMode && !import_obsidian13.Platform.isMobileApp) {
-          const downloadBtn = new import_obsidian13.ExtraButtonComponent(itemEl.controlEl);
+        if (!this.editorMode && !import_obsidian14.Platform.isMobileApp) {
+          const downloadBtn = new import_obsidian14.ExtraButtonComponent(itemEl.controlEl);
           downloadBtn.setIcon("download");
           downloadBtn.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u4E0B\u8F7D\u66F4\u65B0_\u63CF\u8FF0"));
           downloadBtn.onClick(() => {
@@ -3474,29 +3741,29 @@ var ManagerModal = class extends import_obsidian13.Modal {
         }
       }
       itemEl.nameEl.appendChild(versionWrap);
-      if (((_d = ManagerPlugin.note) == null ? void 0 : _d.length) > 0) {
+      if (((_e = ManagerPlugin4.note) == null ? void 0 : _e.length) > 0) {
         const note = createSpan();
         note.style.cssText = "width:16px; height:16px; display:inline-flex; color: var(--text-accent);";
         note.addEventListener("click", () => {
-          new NoteModal(this.app, this.manager, ManagerPlugin, this).open();
+          new NoteModal(this.app, this.manager, ManagerPlugin4, this).open();
         });
         itemEl.nameEl.appendChild(note);
-        (0, import_obsidian13.setIcon)(note, "notebook-pen");
+        (0, import_obsidian14.setIcon)(note, "notebook-pen");
       }
-      if (this.settings.DELAY && !this.editorMode && !isSelf && ManagerPlugin.delay !== "") {
-        const d = this.settings.DELAYS.find((item) => item.id === ManagerPlugin.delay);
+      if (this.settings.DELAY && !this.editorMode && !isSelf && ManagerPlugin4.delay !== "") {
+        const d = this.settings.DELAYS.find((item) => item.id === ManagerPlugin4.delay);
         if (d) {
           const delay = createSpan({ text: `${d.time}s`, cls: ["manager-item__name-delay"] });
           itemEl.nameEl.appendChild(delay);
         }
       }
-      const desc = createDiv({ text: ManagerPlugin.desc, title: plugin.description, cls: ["manager-item__name-desc"] });
+      const desc = createDiv({ text: ManagerPlugin4.desc, title: plugin.description, cls: ["manager-item__name-desc"] });
       if (this.editorMode) {
         desc.setAttribute("style", "border-width: 1px;border-style: dashed");
         desc.setAttribute("contenteditable", "true");
         desc.addEventListener("input", async () => {
           if (desc.textContent) {
-            ManagerPlugin.desc = desc.textContent;
+            ManagerPlugin4.desc = desc.textContent;
             await this.manager.savePluginAndExport(plugin.id);
           }
         });
@@ -3504,15 +3771,15 @@ var ManagerModal = class extends import_obsidian13.Modal {
       itemEl.descEl.appendChild(desc);
       const tags = createDiv();
       itemEl.descEl.appendChild(tags);
-      ManagerPlugin.tags.map((id) => {
+      ManagerPlugin4.tags.map((id) => {
         const item = this.settings.TAGS.find((item2) => item2.id === id);
         if (item) {
-          if (item.id === BPM_TAG_ID && this.settings.HIDE_BPM_TAG) {
+          if ((item.id === BPM_TAG_ID || item.id === BPM_IGNORE_TAG) && this.settings.HIDE_BPM_TAG) {
           } else {
             const tag = this.manager.createTag(item.name, item.color, this.settings.TAG_STYLE);
             if (this.editorMode && item.id !== BPM_TAG_ID)
               tag.onclick = () => {
-                new TagsModal(this.app, this.manager, this, ManagerPlugin).open();
+                new TagsModal(this.app, this.manager, this, ManagerPlugin4).open();
               };
             tags.appendChild(tag);
           }
@@ -3521,16 +3788,16 @@ var ManagerModal = class extends import_obsidian13.Modal {
       if (this.editorMode) {
         const tag = this.manager.createTag("+", "", "");
         tag.onclick = () => {
-          new TagsModal(this.app, this.manager, this, ManagerPlugin).open();
+          new TagsModal(this.app, this.manager, this, ManagerPlugin4).open();
         };
         tags.appendChild(tag);
       }
       if (!this.editorMode) {
-        const isMobile = import_obsidian13.Platform.isMobileApp;
+        const isMobile = import_obsidian14.Platform.isMobileApp;
         let openPluginSetting = null;
         let openPluginSettingEl;
         if (isMobile) {
-          const moreButton = new import_obsidian13.ExtraButtonComponent(itemEl.controlEl);
+          const moreButton = new import_obsidian14.ExtraButtonComponent(itemEl.controlEl);
           moreButton.setIcon("more-vertical");
           moreButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
           const moreEl = moreButton.extraSettingsEl || moreButton.buttonEl;
@@ -3538,7 +3805,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
           moreEl == null ? void 0 : moreEl.addEventListener("click", (event) => {
             event.preventDefault();
             event.stopPropagation();
-            const menu = new import_obsidian13.Menu();
+            const menu = new import_obsidian14.Menu();
             menu.addItem((item) => item.setTitle(this.manager.translator.t("\u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0")).setIcon("rss").onClick(async () => {
               await this.manager.checkUpdateForPlugin(plugin.id);
               await this.reloadShowData();
@@ -3563,7 +3830,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
                 window.open(`https://github.com/${repo}`);
               } else {
                 const isBpmInstall = this.manager.settings.BPM_INSTALLED.includes(plugin.id);
-                new import_obsidian13.Notice(isBpmInstall ? this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u672A\u8BB0\u5F55_\u63D0\u793A") : this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A"));
+                new import_obsidian14.Notice(isBpmInstall ? this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u672A\u8BB0\u5F55_\u63D0\u793A") : this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A"));
               }
             }));
             menu.addSeparator();
@@ -3576,13 +3843,13 @@ var ManagerModal = class extends import_obsidian13.Modal {
                 this.reloadShowData();
                 command_default(this.app, this.manager);
                 this.manager.synchronizePlugins(Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manager.manifest.id));
-                new import_obsidian13.Notice(this.manager.translator.t("\u5378\u8F7D_\u901A\u77E5_\u4E00"));
+                new import_obsidian14.Notice(this.manager.translator.t("\u5378\u8F7D_\u901A\u77E5_\u4E00"));
               }).open();
             }));
             menu.showAtMouseEvent(event);
           });
         } else {
-          const openRepoButton = new import_obsidian13.ExtraButtonComponent(itemEl.controlEl);
+          const openRepoButton = new import_obsidian14.ExtraButtonComponent(itemEl.controlEl);
           openRepoButton.setIcon("github");
           openRepoButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u68C0\u6D4B\u4E2D_\u63D0\u793A"));
           openRepoButton.setDisabled(true);
@@ -3595,7 +3862,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
             const isBpmInstall = this.manager.settings.BPM_INSTALLED.includes(plugin.id);
             openRepoButton.setTooltip(isBpmInstall ? this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u672A\u8BB0\u5F55_\u63D0\u793A") : this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A"));
           }
-          openPluginSetting = new import_obsidian13.ExtraButtonComponent(itemEl.controlEl);
+          openPluginSetting = new import_obsidian14.ExtraButtonComponent(itemEl.controlEl);
           openPluginSetting.setIcon("settings");
           openPluginSetting.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u6253\u5F00\u8BBE\u7F6E_\u63CF\u8FF0"));
           openPluginSetting.onClick(() => {
@@ -3610,7 +3877,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
             if (openPluginSettingEl)
               openPluginSettingEl.style.display = "none";
           }
-          const openPluginDirButton = new import_obsidian13.ExtraButtonComponent(itemEl.controlEl);
+          const openPluginDirButton = new import_obsidian14.ExtraButtonComponent(itemEl.controlEl);
           openPluginDirButton.setIcon("folder-open");
           openPluginDirButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u6253\u5F00\u76EE\u5F55_\u63CF\u8FF0"));
           openPluginDirButton.onClick(() => {
@@ -3618,7 +3885,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
             managerOpen(pluginDir, this.manager);
             openPluginDirButton.setDisabled(false);
           });
-          const deletePluginButton = new import_obsidian13.ExtraButtonComponent(itemEl.controlEl);
+          const deletePluginButton = new import_obsidian14.ExtraButtonComponent(itemEl.controlEl);
           deletePluginButton.setIcon("trash");
           deletePluginButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u5220\u9664\u63D2\u4EF6_\u63CF\u8FF0"));
           if (isSelf)
@@ -3632,21 +3899,34 @@ var ManagerModal = class extends import_obsidian13.Modal {
               this.reloadShowData();
               command_default(this.app, this.manager);
               this.manager.synchronizePlugins(Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manager.manifest.id));
-              new import_obsidian13.Notice(this.manager.translator.t("\u5378\u8F7D_\u901A\u77E5_\u4E00"));
+              new import_obsidian14.Notice(this.manager.translator.t("\u5378\u8F7D_\u901A\u77E5_\u4E00"));
             }).open();
           });
         }
-        const toggleSwitch = new import_obsidian13.ToggleComponent(itemEl.controlEl);
+        const toggleSwitch = new import_obsidian14.ToggleComponent(itemEl.controlEl);
         toggleSwitch.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u5207\u6362\u72B6\u6001_\u63CF\u8FF0"));
         toggleSwitch.setValue(isEnabled);
+        const ManagerPlugin5 = this.settings.Plugins.find((p) => p.id === plugin.id);
+        const isBpmIgnored = (_f = ManagerPlugin5 == null ? void 0 : ManagerPlugin5.tags) == null ? void 0 : _f.includes(BPM_IGNORE_TAG);
         if (isSelf) {
           toggleSwitch.setValue(true);
           toggleSwitch.setDisabled(true);
           toggleSwitch.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u81EA\u8EAB\u4E0D\u53EF\u7981\u7528_\u63D0\u793A"));
-        } else
+        } else {
+          let isRestoring = false;
+          if (isBpmIgnored)
+            toggleSwitch.setTooltip(this.manager.translator.t("\u63D0\u793A_BPM\u5FFD\u7565_\u63CF\u8FF0"));
           toggleSwitch.onChange(async () => {
-            const ManagerPlugin2 = this.settings.Plugins.find((p) => p.id === plugin.id);
+            if (isRestoring)
+              return;
             const targetEnabled = toggleSwitch.getValue();
+            if (isBpmIgnored) {
+              new import_obsidian14.Notice(this.manager.translator.t("\u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A"));
+              isRestoring = true;
+              toggleSwitch.setValue(!targetEnabled);
+              isRestoring = false;
+              return;
+            }
             const removeByFilter = this.filter === "enabled" && !targetEnabled || this.filter === "disabled" && targetEnabled;
             const updateCardUI = () => {
               if (this.settings.FADE_OUT_DISABLED_PLUGINS) {
@@ -3664,24 +3944,24 @@ var ManagerModal = class extends import_obsidian13.Modal {
             };
             if (this.settings.DELAY) {
               if (targetEnabled) {
-                if (ManagerPlugin2)
-                  ManagerPlugin2.enabled = true;
+                if (ManagerPlugin5)
+                  ManagerPlugin5.enabled = true;
                 await this.manager.savePluginAndExport(plugin.id);
                 await this.appPlugins.enablePlugin(plugin.id);
               } else {
-                if (ManagerPlugin2)
-                  ManagerPlugin2.enabled = false;
+                if (ManagerPlugin5)
+                  ManagerPlugin5.enabled = false;
                 await this.manager.savePluginAndExport(plugin.id);
                 await this.appPlugins.disablePlugin(plugin.id);
               }
             } else {
               if (targetEnabled) {
-                if (ManagerPlugin2)
-                  ManagerPlugin2.enabled = true;
+                if (ManagerPlugin5)
+                  ManagerPlugin5.enabled = true;
                 await this.appPlugins.enablePluginAndSave(plugin.id);
               } else {
-                if (ManagerPlugin2)
-                  ManagerPlugin2.enabled = false;
+                if (ManagerPlugin5)
+                  ManagerPlugin5.enabled = false;
                 await this.appPlugins.disablePluginAndSave(plugin.id);
               }
               await this.manager.savePluginAndExport(plugin.id);
@@ -3689,17 +3969,20 @@ var ManagerModal = class extends import_obsidian13.Modal {
             command_default(this.app, this.manager);
             updateCardUI();
           });
+        }
       }
       if (this.editorMode) {
-        const reloadButton = new import_obsidian13.ExtraButtonComponent(itemEl.controlEl);
+        const reloadButton = new import_obsidian14.ExtraButtonComponent(itemEl.controlEl);
         reloadButton.setIcon("refresh-ccw");
         reloadButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u8FD8\u539F\u5185\u5BB9_\u63CF\u8FF0"));
         reloadButton.onClick(async () => {
-          ManagerPlugin.name = plugin.name;
-          ManagerPlugin.desc = plugin.description;
-          ManagerPlugin.group = "";
-          ManagerPlugin.delay = "";
-          ManagerPlugin.tags = [];
+          if (!ManagerPlugin4)
+            return;
+          ManagerPlugin4.name = plugin.name;
+          ManagerPlugin4.desc = plugin.description;
+          ManagerPlugin4.group = "";
+          ManagerPlugin4.delay = "";
+          ManagerPlugin4.tags = [];
           await this.manager.savePluginAndExport(plugin.id);
           this.reloadShowData();
         });
@@ -3708,22 +3991,36 @@ var ManagerModal = class extends import_obsidian13.Modal {
             acc[item.id] = item.name;
             return acc;
           }, { "": this.manager.translator.t("\u901A\u7528_\u65E0\u5EF6\u8FDF_\u6587\u672C") });
-          const delaysEl = new import_obsidian13.DropdownComponent(itemEl.controlEl);
+          const delaysEl = new import_obsidian14.DropdownComponent(itemEl.controlEl);
           delaysEl.addOptions(delays);
-          delaysEl.setValue(ManagerPlugin.delay);
-          delaysEl.onChange(async (value) => {
-            ManagerPlugin.delay = value;
+          delaysEl.setValue((ManagerPlugin4 == null ? void 0 : ManagerPlugin4.delay) || "");
+          const pSettings = this.settings.Plugins.find((p) => p.id === plugin.id);
+          const isIgnored = (_g = pSettings == null ? void 0 : pSettings.tags) == null ? void 0 : _g.includes(BPM_IGNORE_TAG);
+          let isRestoring = false;
+          delaysEl.onChange(async (val) => {
+            if (!ManagerPlugin4)
+              return;
+            if (isRestoring)
+              return;
+            if (isIgnored) {
+              new import_obsidian14.Notice(this.manager.translator.t("\u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A"));
+              isRestoring = true;
+              delaysEl.setValue(ManagerPlugin4.delay || "");
+              isRestoring = false;
+              return;
+            }
+            ManagerPlugin4.delay = val;
             await this.manager.savePluginAndExport(plugin.id);
             this.reloadShowData();
           });
         }
       }
+      if (this.settings.DEBUG) {
+        const cards = Array.from(this.contentEl.querySelectorAll(".manager-item"));
+        console.log("[BPM] render showData after loop, cards:", cards.length, "ids:", cards.map((el) => el.getAttribute("data-plugin-id")).filter(Boolean).join(","));
+      }
+      this.footEl.innerHTML = this.count();
     }
-    if (this.settings.DEBUG) {
-      const cards = Array.from(this.contentEl.querySelectorAll(".manager-item"));
-      console.log("[BPM] render showData after loop, cards:", cards.length, "ids:", cards.map((el) => el.getAttribute("data-plugin-id")).filter(Boolean).join(","));
-    }
-    this.footEl.innerHTML = this.count();
   }
   count() {
     let totalCount = 0;
@@ -3752,7 +4049,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
     const info = this.contentEl.createEl("div");
     info.addClass("manager-install__info");
     info.setText(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ECB\u7ECD"));
-    const typeSetting = new import_obsidian13.Setting(this.contentEl).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u63CF\u8FF0"));
+    const typeSetting = new import_obsidian14.Setting(this.contentEl).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u63CF\u8FF0"));
     typeSetting.addDropdown((dd) => {
       dd.addOptions({ "plugin": t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u63D2\u4EF6"), "theme": t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u4E3B\u9898") });
       dd.setValue(this.installType);
@@ -3760,7 +4057,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         this.installType = v;
       });
     });
-    const repoSetting = new import_obsidian13.Setting(this.contentEl).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u63CF\u8FF0"));
+    const repoSetting = new import_obsidian14.Setting(this.contentEl).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u63CF\u8FF0"));
     repoSetting.addText((text) => {
       text.setPlaceholder(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u5360\u4F4D"));
       text.setValue(this.installRepo);
@@ -3771,7 +4068,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
         this.renderContent();
       });
     });
-    const versionSetting = new import_obsidian13.Setting(this.contentEl).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u63CF\u8FF0"));
+    const versionSetting = new import_obsidian14.Setting(this.contentEl).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u63CF\u8FF0"));
     versionSetting.addDropdown((dd) => {
       dd.addOption("", t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u9ED8\u8BA4\u6700\u65B0"));
       this.installVersions.forEach((v) => dd.addOption(v.version, `${v.version}${v.prerelease ? " (pre)" : ""}`));
@@ -3786,7 +4083,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       btn.setCta();
       btn.onClick(async () => {
         if (!this.installRepo) {
-          new import_obsidian13.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93\u4E3A\u7A7A\u63D0\u793A"));
+          new import_obsidian14.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93\u4E3A\u7A7A\u63D0\u793A"));
           return;
         }
         btn.setDisabled(true);
@@ -3794,24 +4091,24 @@ var ManagerModal = class extends import_obsidian13.Modal {
         try {
           this.installVersions = await fetchReleaseVersions(this.manager, this.installRepo);
           if (this.installVersions.length === 0)
-            new import_obsidian13.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u7A7A\u63D0\u793A"));
+            new import_obsidian14.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u7A7A\u63D0\u793A"));
           this.installVersion = "";
         } catch (e) {
           console.error(e);
-          new import_obsidian13.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u5931\u8D25\u63D0\u793A"));
+          new import_obsidian14.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u5931\u8D25\u63D0\u793A"));
         }
         btn.setDisabled(false);
         btn.setButtonText(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u83B7\u53D6\u6309\u94AE"));
         this.renderContent();
       });
     });
-    const action = new import_obsidian13.Setting(this.contentEl).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u64CD\u4F5C_\u6807\u9898"));
+    const action = new import_obsidian14.Setting(this.contentEl).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u64CD\u4F5C_\u6807\u9898"));
     action.addButton((btn) => {
       btn.setButtonText(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u64CD\u4F5C_\u6309\u94AE"));
       btn.setCta();
       btn.onClick(async () => {
         if (!this.installRepo) {
-          new import_obsidian13.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93\u4E3A\u7A7A\u63D0\u793A"));
+          new import_obsidian14.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93\u4E3A\u7A7A\u63D0\u793A"));
           return;
         }
         btn.setDisabled(true);
@@ -3839,7 +4136,7 @@ var ManagerModal = class extends import_obsidian13.Modal {
       return;
     let timer;
     const show = () => {
-      new import_obsidian13.Notice(text, 1500);
+      new import_obsidian14.Notice(text, 1500);
     };
     const clear = () => {
       if (timer)
@@ -4105,8 +4402,8 @@ var command_default = Commands;
 // src/settings/ui/manager-basis.ts
 var ManagerBasis = class extends BaseSetting {
   main() {
-    const languageBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u63CF\u8FF0"));
-    const languageDropdown = new import_obsidian15.DropdownComponent(languageBar.controlEl);
+    const languageBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u63CF\u8FF0"));
+    const languageDropdown = new import_obsidian16.DropdownComponent(languageBar.controlEl);
     languageDropdown.addOptions(this.manager.translator.language);
     languageDropdown.setValue(this.settings.LANGUAGE);
     languageDropdown.onChange((value) => {
@@ -4117,8 +4414,8 @@ var ManagerBasis = class extends BaseSetting {
       this.settingTab.display();
       this.display();
     });
-    const DelayBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u63CF\u8FF0"));
-    const DelayToggle = new import_obsidian15.ToggleComponent(DelayBar.controlEl);
+    const DelayBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u63CF\u8FF0"));
+    const DelayToggle = new import_obsidian16.ToggleComponent(DelayBar.controlEl);
     DelayToggle.setValue(this.settings.DELAY);
     DelayToggle.onChange((value) => {
       this.settings.DELAY = value;
@@ -4127,45 +4424,52 @@ var ManagerBasis = class extends BaseSetting {
       this.settingTab.display();
       this.display();
     });
-    const persistenceBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0"));
-    const persistenceToggle = new import_obsidian15.ToggleComponent(persistenceBar.controlEl);
+    const persistenceBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0"));
+    const persistenceToggle = new import_obsidian16.ToggleComponent(persistenceBar.controlEl);
     persistenceToggle.setValue(this.settings.PERSISTENCE);
     persistenceToggle.onChange((value) => {
       this.settings.PERSISTENCE = value;
       this.manager.saveSettings();
     });
-    const debugBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0"));
-    const debugToggle = new import_obsidian15.ToggleComponent(debugBar.controlEl);
+    const debugBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0"));
+    const debugToggle = new import_obsidian16.ToggleComponent(debugBar.controlEl);
     debugToggle.setValue(this.settings.DEBUG);
     debugToggle.onChange((value) => {
       this.settings.DEBUG = value;
       this.manager.saveSettings();
     });
-    const startupCheckBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
-    const startupCheckToggle = new import_obsidian15.ToggleComponent(startupCheckBar.controlEl);
+    const startupCheckBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
+    const startupCheckToggle = new import_obsidian16.ToggleComponent(startupCheckBar.controlEl);
     startupCheckToggle.setValue(this.settings.STARTUP_CHECK_UPDATES);
     startupCheckToggle.onChange((value) => {
       this.settings.STARTUP_CHECK_UPDATES = value;
       this.manager.saveSettings();
     });
-    const CommandItemBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0"));
-    const CommandItemToggle = new import_obsidian15.ToggleComponent(CommandItemBar.controlEl);
+    const autoTakeoverBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0"));
+    const autoTakeoverToggle = new import_obsidian16.ToggleComponent(autoTakeoverBar.controlEl);
+    autoTakeoverToggle.setValue(this.settings.AUTO_TAKEOVER);
+    autoTakeoverToggle.onChange((value) => {
+      this.settings.AUTO_TAKEOVER = value;
+      this.manager.saveSettings();
+    });
+    const CommandItemBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0"));
+    const CommandItemToggle = new import_obsidian16.ToggleComponent(CommandItemBar.controlEl);
     CommandItemToggle.setValue(this.settings.COMMAND_ITEM);
     CommandItemToggle.onChange((value) => {
       this.settings.COMMAND_ITEM = value;
       this.manager.saveSettings();
       command_default(this.app, this.manager);
     });
-    const CommandGroupBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0"));
-    const CommandGroupToggle = new import_obsidian15.ToggleComponent(CommandGroupBar.controlEl);
+    const CommandGroupBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0"));
+    const CommandGroupToggle = new import_obsidian16.ToggleComponent(CommandGroupBar.controlEl);
     CommandGroupToggle.setValue(this.settings.COMMAND_GROUP);
     CommandGroupToggle.onChange((value) => {
       this.settings.COMMAND_GROUP = value;
       this.manager.saveSettings();
       command_default(this.app, this.manager);
     });
-    const hideBpmTagBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0"));
-    const hideBpmTagToggle = new import_obsidian15.ToggleComponent(hideBpmTagBar.controlEl);
+    const hideBpmTagBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0"));
+    const hideBpmTagToggle = new import_obsidian16.ToggleComponent(hideBpmTagBar.controlEl);
     hideBpmTagToggle.setValue(this.settings.HIDE_BPM_TAG);
     hideBpmTagToggle.onChange((value) => {
       var _a;
@@ -4173,8 +4477,8 @@ var ManagerBasis = class extends BaseSetting {
       this.manager.saveSettings();
       (_a = this.manager.managerModal) == null ? void 0 : _a.reloadShowData();
     });
-    const exportDirBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u63CF\u8FF0"));
-    const exportDirInput = new import_obsidian15.TextComponent(exportDirBar.controlEl);
+    const exportDirBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u63CF\u8FF0"));
+    const exportDirInput = new import_obsidian16.TextComponent(exportDirBar.controlEl);
     exportDirInput.setPlaceholder(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u793A\u4F8B"));
     exportDirInput.setValue(this.settings.EXPORT_DIR || "");
     exportDirInput.inputEl.addEventListener("blur", () => {
@@ -4189,21 +4493,20 @@ var ManagerBasis = class extends BaseSetting {
         this.manager.exportAllPluginNotes();
       });
     });
-    new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u63D0\u793A_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u63D0\u793A_\u63CF\u8FF0"));
-    const tokenBar = new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6807\u9898")).setDesc(`${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u63CF\u8FF0")} (${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6743\u9650")})`);
-    const tokenInput = new import_obsidian15.TextComponent(tokenBar.controlEl);
+    new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u63D0\u793A_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u63D0\u793A_\u63CF\u8FF0"));
+    const tokenBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6807\u9898")).setDesc(`${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u63CF\u8FF0")} (${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6743\u9650")})`);
+    const tokenInput = new import_obsidian16.TextComponent(tokenBar.controlEl);
     tokenInput.setPlaceholder("ghp_xxx");
     tokenInput.setValue(this.settings.GITHUB_TOKEN || "");
     tokenInput.onChange((value) => {
       this.settings.GITHUB_TOKEN = value.trim();
       this.manager.saveSettings();
     });
-    new import_obsidian15.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u63D0\u793A_\u4E00_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u63D0\u793A_\u4E00_\u63CF\u8FF0"));
   }
 };
 
 // src/settings/ui/manager-style.ts
-var import_obsidian16 = require("obsidian");
+var import_obsidian17 = require("obsidian");
 var ManagerBasis2 = class extends BaseSetting {
   constructor() {
     super(...arguments);
@@ -4227,39 +4530,39 @@ var ManagerBasis2 = class extends BaseSetting {
     };
   }
   main() {
-    const itemStyleBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u63CF\u8FF0"));
-    const itemStyleDropdown = new import_obsidian16.DropdownComponent(itemStyleBar.controlEl);
+    const itemStyleBar = new import_obsidian17.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u63CF\u8FF0"));
+    const itemStyleDropdown = new import_obsidian17.DropdownComponent(itemStyleBar.controlEl);
     itemStyleDropdown.addOptions(this.ITEM_STYLE);
     itemStyleDropdown.setValue(this.settings.ITEM_STYLE);
     itemStyleDropdown.onChange((value) => {
       this.settings.ITEM_STYLE = value;
       this.manager.saveSettings();
     });
-    const groupStyleBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u63CF\u8FF0"));
-    const groupStyleDropdown = new import_obsidian16.DropdownComponent(groupStyleBar.controlEl);
+    const groupStyleBar = new import_obsidian17.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u63CF\u8FF0"));
+    const groupStyleDropdown = new import_obsidian17.DropdownComponent(groupStyleBar.controlEl);
     groupStyleDropdown.addOptions(this.GROUP_STYLE);
     groupStyleDropdown.setValue(this.settings.GROUP_STYLE);
     groupStyleDropdown.onChange((value) => {
       this.settings.GROUP_STYLE = value;
       this.manager.saveSettings();
     });
-    const tagStyleBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u63CF\u8FF0"));
-    const tagStyleDropdown = new import_obsidian16.DropdownComponent(tagStyleBar.controlEl);
+    const tagStyleBar = new import_obsidian17.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u63CF\u8FF0"));
+    const tagStyleDropdown = new import_obsidian17.DropdownComponent(tagStyleBar.controlEl);
     tagStyleDropdown.addOptions(this.TAG_STYLE);
     tagStyleDropdown.setValue(this.settings.TAG_STYLE);
     tagStyleDropdown.onChange((value) => {
       this.settings.TAG_STYLE = value;
       this.manager.saveSettings();
     });
-    const topBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0"));
-    const topToggle = new import_obsidian16.ToggleComponent(topBar.controlEl);
+    const topBar = new import_obsidian17.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0"));
+    const topToggle = new import_obsidian17.ToggleComponent(topBar.controlEl);
     topToggle.setValue(this.settings.CENTER);
     topToggle.onChange((value) => {
       this.settings.CENTER = value;
       this.manager.saveSettings();
     });
-    const fadeOutDisabledPluginsBar = new import_obsidian16.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u63CF\u8FF0"));
-    const fadeOutDisabledPluginsToggle = new import_obsidian16.ToggleComponent(fadeOutDisabledPluginsBar.controlEl);
+    const fadeOutDisabledPluginsBar = new import_obsidian17.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u63CF\u8FF0"));
+    const fadeOutDisabledPluginsToggle = new import_obsidian17.ToggleComponent(fadeOutDisabledPluginsBar.controlEl);
     fadeOutDisabledPluginsToggle.setValue(this.settings.FADE_OUT_DISABLED_PLUGINS);
     fadeOutDisabledPluginsToggle.onChange((value) => {
       this.settings.FADE_OUT_DISABLED_PLUGINS = value;
@@ -4269,13 +4572,13 @@ var ManagerBasis2 = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-delay.ts
-var import_obsidian17 = require("obsidian");
+var import_obsidian18 = require("obsidian");
 var ManagerDelay = class extends BaseSetting {
   main() {
     let id = "";
     let name = "";
     let time = 0;
-    new import_obsidian17.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).addSlider(
+    new import_obsidian18.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).addSlider(
       (cb) => cb.setLimits(0, 100, 1).setValue(time).setDynamicTooltip().onChange((value) => {
         time = value;
       })
@@ -4294,14 +4597,14 @@ var ManagerDelay = class extends BaseSetting {
           this.manager.settings.DELAYS.push({ id, name, time });
           this.manager.saveSettings();
           this.settingTab.delayDisplay();
-          new import_obsidian17.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian18.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian17.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian18.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     this.manager.settings.DELAYS.forEach((delay, index) => {
-      const item = new import_obsidian17.Setting(this.containerEl);
+      const item = new import_obsidian18.Setting(this.containerEl);
       item.settingEl.addClass("manager-setting-group__item");
       item.setName(`[${delay.id}]`);
       item.addSlider(
@@ -4323,9 +4626,9 @@ var ManagerDelay = class extends BaseSetting {
             this.manager.settings.DELAYS = this.manager.settings.DELAYS.filter((t) => t.id !== delay.id);
             this.manager.saveSettings();
             this.settingTab.delayDisplay();
-            new import_obsidian17.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian18.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian17.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian18.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -4334,13 +4637,13 @@ var ManagerDelay = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-tag.ts
-var import_obsidian18 = require("obsidian");
+var import_obsidian19 = require("obsidian");
 var ManagerTag = class extends BaseSetting {
   main() {
     let id = "";
     let name = "";
     let color = this.manager.generateAutoColor(this.manager.settings.TAGS.map((t) => t.color));
-    new import_obsidian18.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).addColorPicker(
+    new import_obsidian19.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).addColorPicker(
       (cb) => cb.setValue(color).onChange((value) => {
         color = value;
       })
@@ -4356,31 +4659,30 @@ var ManagerTag = class extends BaseSetting {
     ).addExtraButton(
       (cb) => cb.setIcon("plus").onClick(() => {
         const containsId = this.manager.settings.TAGS.some((tag) => tag.id === id);
-        if (!containsId && id !== "") {
+        if (!containsId && id !== "" && id !== BPM_TAG_ID && id !== BPM_IGNORE_TAG) {
           if (color === "")
             color = this.manager.generateAutoColor(this.manager.settings.TAGS.map((t) => t.color));
           this.manager.settings.TAGS.push({ id, name, color });
           this.manager.saveSettings();
           this.settingTab.tagDisplay();
-          new import_obsidian18.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian18.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     this.manager.settings.TAGS.forEach((tag, index) => {
-      const item = new import_obsidian18.Setting(this.containerEl);
+      const item = new import_obsidian19.Setting(this.containerEl);
       item.setClass("manager-setting-tag__item");
-      const isBpmTag = tag.id === BPM_TAG_ID;
       item.addColorPicker(
-        (cb) => cb.setDisabled(isBpmTag).setValue(tag.color).onChange((value) => {
+        (cb) => cb.setValue(tag.color).onChange((value) => {
           tag.color = value;
           this.manager.saveSettings();
           this.settingTab.tagDisplay();
         })
       );
       item.addText(
-        (cb) => cb.setDisabled(isBpmTag).setValue(tag.name).onChange((value) => {
+        (cb) => cb.setValue(tag.name).onChange((value) => {
           tag.name = value;
           this.manager.saveSettings();
         }).inputEl.addEventListener("blur", () => {
@@ -4388,15 +4690,19 @@ var ManagerTag = class extends BaseSetting {
         })
       );
       item.addExtraButton(
-        (cb) => cb.setIcon("trash-2").setDisabled(isBpmTag).onClick(() => {
+        (cb) => cb.setIcon("trash-2").onClick(() => {
+          if (tag.id === BPM_TAG_ID || tag.id === BPM_IGNORE_TAG) {
+            new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664"));
+            return;
+          }
           const hasTestTag = this.settings.Plugins.some((plugin) => plugin.tags && plugin.tags.includes(tag.id));
           if (!hasTestTag) {
             this.manager.settings.TAGS = this.manager.settings.TAGS.filter((t) => t.id !== tag.id);
             this.manager.saveSettings();
             this.settingTab.tagDisplay();
-            new import_obsidian18.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian18.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -4408,13 +4714,13 @@ var ManagerTag = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-group.ts
-var import_obsidian19 = require("obsidian");
+var import_obsidian20 = require("obsidian");
 var ManagerGroup = class extends BaseSetting {
   main() {
     let id = "";
     let name = "";
     let color = this.manager.generateAutoColor(this.manager.settings.GROUPS.map((g) => g.color));
-    new import_obsidian19.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).addColorPicker(
+    new import_obsidian20.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).addColorPicker(
       (cb) => cb.setValue(color).onChange((value) => {
         color = value;
       })
@@ -4437,14 +4743,14 @@ var ManagerGroup = class extends BaseSetting {
           this.manager.saveSettings();
           this.settingTab.groupDisplay();
           command_default(this.app, this.manager);
-          new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian20.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian20.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     this.manager.settings.GROUPS.forEach((group, index) => {
-      const item = new import_obsidian19.Setting(this.containerEl);
+      const item = new import_obsidian20.Setting(this.containerEl);
       item.settingEl.addClass("manager-setting-group__item");
       item.addColorPicker(
         (cb) => cb.setValue(group.color).onChange((value) => {
@@ -4469,9 +4775,9 @@ var ManagerGroup = class extends BaseSetting {
             this.manager.saveSettings();
             this.settingTab.groupDisplay();
             command_default(this.app, this.manager);
-            new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian20.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian19.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian20.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -4483,7 +4789,7 @@ var ManagerGroup = class extends BaseSetting {
 };
 
 // src/settings/index.ts
-var ManagerSettingTab = class extends import_obsidian20.PluginSettingTab {
+var ManagerSettingTab = class extends import_obsidian21.PluginSettingTab {
   constructor(app, manager) {
     super(app, manager);
     this.manager = manager;
@@ -4575,8 +4881,8 @@ var zh_cn_default = {
   \u547D\u4EE4\u884C_\u4E00\u952E\u7981\u7528_\u6587\u672C: "\u4E00\u952E\u7981\u7528",
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "\u8BBF\u95EE\u4ED3\u5E93",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "\u8BBF\u95EE\u89C6\u9891\u6559\u7A0B",
-  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u542F\u7528\u7F16\u8F91\u6A21\u5F0F\uFF0C\u6DF1\u5EA6\u81EA\u5B9A\u4E49\u63D2\u4EF6\u914D\u7F6E",
-  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u91CD\u8F7D\u63D2\u4EF6\uFF0C\u5373\u65F6\u751F\u6548",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u542F\u7528\u7F16\u8F91\u6A21\u5F0F",
+  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u91CD\u8F7D\u63D2\u4EF6\u5217\u8868",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5F00\u59CB\u63D0\u793A: "\u6B63\u5728\u91CD\u65B0\u8BFB\u53D6\u63D2\u4EF6\u6E05\u5355\u2026",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5931\u8D25\u63D0\u793A: "\u91CD\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\uFF08\u8BE6\u60C5\u89C1\u63A7\u5236\u53F0\uFF09\u3002",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u68C0\u67E5\u63D2\u4EF6\u66F4\u65B0",
@@ -4600,12 +4906,17 @@ var zh_cn_default = {
   \u7BA1\u7406\u5668_\u4ED3\u5E93\u672A\u8BB0\u5F55_\u63D0\u793A: "\u672A\u8BB0\u5F55\u4ED3\u5E93\u5730\u5740",
   \u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A: "\u672C\u63D2\u4EF6\u975E\u5B98\u65B9/bpm\u5B89\u88C5\uFF0C\u8BF7\u624B\u52A8\u6DFB\u52A0\u6765\u6E90",
   \u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A: "\u7F3A\u5C11\u4ED3\u5E93\u6765\u6E90\uFF0C\u65E0\u6CD5\u4E0B\u8F7D\u66F4\u65B0",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898: "\u9690\u85CF\u201Cbpm\u5B89\u88C5\u201D\u6807\u7B7E",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0: "\u5F00\u542F\u540E\u5217\u8868\u4E0D\u663E\u793A\u81EA\u52A8\u6DFB\u52A0\u7684 bpm \u5B89\u88C5\u6807\u7B7E\uFF0C\u4EC5\u9690\u85CF\u5C55\u793A\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898: "\u9690\u85CF BPM \u9884\u8BBE\u6807\u7B7E(Install/Ignore)",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0: "\u5F00\u542F\u540E\u5217\u8868\u4E0D\u663E\u793A\u81EA\u52A8\u6DFB\u52A0\u7684 bpm-install \u548C bpm-ignore \u6807\u7B7E\u3002",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898: "\u542F\u52A8\u65F6\u68C0\u6D4B\u63D2\u4EF6\u66F4\u65B0",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u6253\u5F00 BPM \u65F6\u81EA\u52A8\u68C0\u6D4B\u53EF\u66F4\u65B0\u63D2\u4EF6\uFF0C\u5E76\u5728\u53F3\u4E0A\u89D2\u63D0\u793A\u6570\u91CF\u3002",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u6807\u9898: "\u63D2\u4EF6\u4FE1\u606F\u5BFC\u51FA\u76EE\u5F55",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u63CF\u8FF0: "\u76F8\u5BF9\u5E93\u8DEF\u5F84\u7684\u6587\u4EF6\u5939\uFF0C\u7528\u4E8E\u5BFC\u51FA BPM \u63D2\u4EF6\u4FE1\u606F\uFF08\u652F\u6301 Base\uFF09\u3002\u4E0D\u4F1A\u5728\u8F93\u5165\u65F6\u7ACB\u523B\u5199\u5165\uFF0C\u9700\u70B9\u51FB\u201C\u4FDD\u5B58\u8BBE\u7F6E\u201D\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898: "\u81EA\u52A8\u63A5\u7BA1\u63D2\u4EF6",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0: "\u5F00\u542F\u540E\uFF0C\u5C06\u81EA\u52A8\u63A5\u7BA1\u5728 Obsidian \u63D2\u4EF6\u5E02\u573A\u5B89\u88C5\u7684\u65B0\u63D2\u4EF6\uFF08\u542F\u7528\u5E76\u7EB3\u5165 BPM \u7BA1\u7406\uFF09\uFF0C\u4E0D\u518D\u5F39\u7A97\u63D0\u793A\u3002",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u6807\u9898: "BPM \u5FFD\u7565",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u63CF\u8FF0: "\u6B64\u63D2\u4EF6\u5DF2\u88AB\u6807\u8BB0\u4E3A\u201Cbpm-ignore\u201D\uFF0CBPM \u5C06\u4E0D\u518D\u7BA1\u7406\u5176\u542F\u505C\u548C\u5EF6\u8FDF\u3002",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A: "\u6B64\u63D2\u4EF6\u5DF2\u88AB\u6807\u8BB0\u4E3A\u201Cbpm-ignore\u201D\uFF0CBPM \u65E0\u6CD5\u5BF9\u5176\u8FDB\u884C\u64CD\u4F5C\u3002",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u793A\u4F8B: "\u4F8B\u5982: BPM-Export",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u63D0\u793A_\u6807\u9898: "\u524D\u7F6E\u7EA6\u5B9A\uFF08frontmatter \u952E\u540D\uFF09",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u63D0\u793A_\u63CF\u8FF0: "\u53EA\u8BFB: bpm_ro_id/name/group/tags/delay/installed_via_bpm\uFF1B\u53EF\u5199: bpm_rw_desc/note/enabled\uFF1B\u6761\u4EF6\u53EF\u5199: bpm_rwc_repo\uFF08\u4EC5\u5B98\u65B9\u672A\u5339\u914D\u4E14\u975E BPM \u5B89\u88C5\u65F6\uFF09\u3002",
@@ -4669,6 +4980,7 @@ var zh_cn_default = {
   \u7B5B\u9009_\u5206\u7EC4_\u5168\u90E8: "\u5206\u7EC4\uFF1A\u5168\u90E8",
   \u7B5B\u9009_\u6807\u7B7E_\u5168\u90E8: "\u6807\u7B7E\uFF1A\u5168\u90E8",
   \u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8: "\u5EF6\u8FDF\uFF1A\u5168\u90E8",
+  \u7B5B\u9009_\u53EF\u66F4\u65B0_\u63CF\u8FF0: "\u6709\u53EF\u7528\u66F4\u65B0",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u524D\u7F00: "\u57FA\u7840",
   \u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u524D\u7F00: "\u6837\u5F0F",
   \u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u524D\u7F00: "\u5206\u7EC4",
@@ -4719,6 +5031,7 @@ var zh_cn_default = {
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C: "[\u6807\u7B7E] ID\u5DF2\u5B58\u5728\u6216\u4E3A\u7A7A",
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09: "[\u6807\u7B7E] \u5220\u9664\u6210\u529F",
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB: "[\u6807\u7B7E] \u5220\u9664\u5931\u8D25\uFF0C\u6B64\u6807\u7B7E\u4E0B\u5B58\u5728\u63D2\u4EF6",
+  \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664: "\u7CFB\u7EDF\u9884\u8BBE\u6807\u7B7E\u4E0D\u5141\u8BB8\u5220\u9664",
   \u8BBE\u7F6E_\u63D0\u793A_\u4E00_\u6807\u9898: "\u5982\u679C\u9047\u5230\u672C\u63D2\u4EF6\u4E0E\u5176\u4ED6\u63D2\u4EF6\u51B2\u7A81",
   \u8BBE\u7F6E_\u63D0\u793A_\u4E00_\u63CF\u8FF0: "\u4E2A\u4EBA\u80FD\u529B\u6709\u9650\uFF0C\u65E0\u6CD5\u4FEE\u590D\u6B64\u95EE\u9898\uFF0C\u8BF7\u5173\u95ED\u5EF6\u65F6\u542F\u52A8\uFF0C\u5373\u53EF\u89E3\u51B3\u4E00\u5207\u51B2\u7A81\u95EE\u9898\u3002",
   \u901A\u77E5_\u68C0\u6D4B\u66F4\u65B0\u4E2D\u6587\u6848: "\u68C0\u6D4B\u63D2\u4EF6\u66F4\u65B0\u60C5\u51B5\u4E2D...",
@@ -4817,7 +5130,38 @@ var zh_cn_default = {
   \u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5: "\u63A5\u7BA1\u5931\u8D25\uFF0C\u8BF7\u624B\u52A8\u4FEE\u6539 community-plugins.json",
   \u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5: "\u5EFA\u8BAE\u91CD\u542F Obsidian \u4EE5\u786E\u4FDD\u66F4\u6539\u751F\u6548",
   \u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5: "\u5DF2\u5FFD\u7565\u8B66\u544A\uFF0C\u540C\u65F6\u4F7F\u7528 Obsidian \u548C BPM \u7BA1\u7406\u63D2\u4EF6\u53EF\u80FD\u5BFC\u81F4\u95EE\u9898",
-  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "\u5DF2\u8BBE\u7F6E\u4E0D\u518D\u63D0\u793A\uFF0C\u53EF\u5728\u8BBE\u7F6E\u4E2D\u91CD\u65B0\u542F\u7528"
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "\u5DF2\u8BBE\u7F6E\u4E0D\u518D\u63D0\u793A\uFF0C\u53EF\u5728\u8BBE\u7F6E\u4E2D\u91CD\u65B0\u542F\u7528",
+  // Ribbon 管理
+  \u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0: "\u7BA1\u7406\u529F\u80FD\u533A\u56FE\u6807",
+  Ribbon_\u6807\u9898: "\u529F\u80FD\u533A\u7BA1\u7406",
+  Ribbon_\u8BF4\u660E: "\u62D6\u52A8 \u2261 \u56FE\u6807\u8C03\u6574\u987A\u5E8F\uFF0C\u70B9\u51FB\u773C\u775B\u56FE\u6807\u5207\u6362\u53EF\u89C1\u6027\u3002",
+  Ribbon_\u9700\u91CD\u8F7D_\u63D0\u793A: "\u90E8\u5206\u5DF2\u542F\u7528\u7684\u56FE\u6807\u56E0\u542F\u52A8\u65F6\u88AB\u9690\u85CF\uFF0C\u9700\u8981\u91CD\u8F7D\u754C\u9762\u624D\u4F1A\u663E\u793A\u3002",
+  Ribbon_\u91CD\u8F7D_\u6309\u94AE: "\u91CD\u8F7D\u754C\u9762",
+  Ribbon_\u539F\u751F\u6A21\u5F0F_\u6807\u7B7E: "\u539F\u751F\u540C\u6B65\u6A21\u5F0F (Native Sync)",
+  Ribbon_\u5DF2\u9690\u85CF: "\u5DF2\u9690\u85CF Ribbon \u56FE\u6807",
+  Ribbon_\u65E0\u9879\u76EE: "\u6CA1\u6709\u627E\u5230\u53EF\u914D\u7F6E\u7684\u529F\u80FD\u533A\u56FE\u6807\u3002",
+  Ribbon_\u9690\u85CF: "\u9690\u85CF",
+  Ribbon_\u663E\u793A: "\u663E\u793A",
+  Ribbon_\u672A\u547D\u540D: "\uFF08\u672A\u547D\u540D\u9879\uFF09",
+  \u6807\u7B7E_BPM\u5FFD\u7565_\u540D\u79F0: "BPM \u5FFD\u7565",
+  Ribbon_\u590D\u6D3B\u5931\u8D25: "\u5C1D\u8BD5\u6062\u590D\u56FE\u6807\u5931\u8D25\uFF0C\u8BF7\u91CD\u8F7D\u754C\u9762\u3002",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210: "\u68C0\u67E5\u5B8C\u6210\uFF0C\u53D1\u73B0 {count} \u4E2A\u63D2\u4EF6\u6709\u53EF\u7528\u66F4\u65B0",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25: "\u68C0\u67E5\u66F4\u65B0\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5",
+  \u6392\u67E5_\u9636\u6BB5_\u9A8C\u8BC1: "\u9A8C\u8BC1\u9636\u6BB5",
+  \u6392\u67E5_\u5F53\u524D\u6D4B\u8BD5: "\u5F53\u524D\u6D4B\u8BD5",
+  \u6392\u67E5_\u5217\u8868_\u65E0: "(\u65E0)",
+  \u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8: "\u5DF2\u7981\u7528\u5168\u90E8\u63D2\u4EF6",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A: "\u6D4B\u8BD5\u524D\u534A ({count} \u4E2A\u63D2\u4EF6)",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u540E\u534A: "\u6D4B\u8BD5\u540E\u534A ({count} \u4E2A\u63D2\u4EF6)",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u5355\u63D2\u4EF6: "\u9A8C\u8BC1\u5355\u63D2\u4EF6: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1: "\u9A8C\u8BC1: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D: "\u56FA\u5B9A A \u7EC4 ({countA}\u4E2A) + B \u7EC4\u524D\u534A ({countB}\u4E2A)",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u540E: "\u56FA\u5B9A A \u7EC4 ({countA}\u4E2A) + B \u7EC4\u540E\u534A ({countB}\u4E2A)",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D: "\u56FA\u5B9A B \u7EC4 ({countB}\u4E2A) + A \u7EC4\u524D\u534A ({countA}\u4E2A)",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u540E: "\u56FA\u5B9A B \u7EC4 ({countB}\u4E2A) + A \u7EC4\u540E\u534A ({countA}\u4E2A)",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u51B2\u7A81\u5BF9: "\u9A8C\u8BC1\u51B2\u7A81\u5BF9: {name1} + {name2}",
+  \u6392\u67E5_\u9519\u8BEF_\u72B6\u6001\u5F02\u5E38: "\u9A8C\u8BC1\u9636\u6BB5\u72B6\u6001\u5F02\u5E38",
+  \u6392\u67E5_\u9519\u8BEF_\u672A\u77E5\u9636\u6BB5: "\u672A\u77E5\u7684\u7B97\u6CD5\u9636\u6BB5"
 };
 
 // src/lang/locale/en.ts
@@ -4842,10 +5186,13 @@ var en_default = {
   \u901A\u7528_\u53D6\u6D88_\u6587\u672C: "Cancel",
   \u901A\u7528_\u8FD4\u56DE_\u6587\u672C: "Back",
   \u5BFC\u51FA_\u6B63\u6587\u63D0\u793A: "Body section: you can edit or replace this content.",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898: "Hide \u201Cbpm install\u201D tag",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0: "Hide the auto-added bpm install tag in the list (only hide display, keep mark).",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u6807\u9898: "Export directory for plugin info",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u63CF\u8FF0: "Relative vault path to export BPM plugin info (for Base). Changes apply when clicking \u201CSave settings\u201D.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898: "Auto Takeover Plugins",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0: "Automatically takeover new plugins installed from the market (enable and manage via BPM), suppressing the takeover prompt.",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u6807\u9898: "BPM Ignore",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u63CF\u8FF0: 'This plugin is tagged with "bpm-ignore". BPM will not manage its status or delay.',
+  \u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A: 'This plugin is tagged with "bpm-ignore", operations are disabled in BPM.',
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u793A\u4F8B: "e.g., BPM-Export",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u63D0\u793A_\u6807\u9898: "Frontmatter conventions",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u63D0\u793A_\u63CF\u8FF0: "Read-only: bpm_ro_id/name/group/tags/delay/installed_via_bpm; writable: bpm_rw_desc/note/enabled; conditional: bpm_rwc_repo (only when official match is missing and not BPM-installed).",
@@ -4903,10 +5250,11 @@ var en_default = {
   \u7B5B\u9009_\u5206\u7EC4_\u5168\u90E8: "Groups: All",
   \u7B5B\u9009_\u6807\u7B7E_\u5168\u90E8: "Tags: All",
   \u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8: "Delay: All",
+  \u7B5B\u9009_\u53EF\u66F4\u65B0_\u63CF\u8FF0: "Has Update",
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "Visit Repository",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "Access video tutorials",
-  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Enable edit mode for in-depth plugin configuration customization",
-  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Reload plugins to take effect immediately",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Enable edit mode",
+  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Reload plugin list",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5F00\u59CB\u63D0\u793A: "Refreshing plugin manifests\u2026",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5931\u8D25\u63D0\u793A: "Reload failed. Please try again (see console for details).",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "Check for plugin updates",
@@ -4971,6 +5319,8 @@ var en_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u63CF\u8FF0: "Enabling the delayed startup feature can optimize the loading order, but please note that this may cause compatibility issues with some plugins.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u6807\u9898: "Fade Plugins",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u63CF\u8FF0: "Provide a visual fade effect for disabled plugins to clearly distinguish between enabled and disabled plugins.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898: "Hide Preset Tags (Install/Ignore)",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0: "Hides automatically added bpm-install and bpm-ignore tags from the list.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898: "Check updates on startup",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "When BPM opens, automatically check for plugin updates and briefly show the count.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898: "Filter Persistence",
@@ -4991,6 +5341,7 @@ var en_default = {
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C: "[Tag] ID already exists or is empty",
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09: "[Tag] Deleted successfully",
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB: "[Tag] Deletion failed, plugins exist under this tag",
+  \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664: "System preset tags cannot be deleted",
   \u8BBE\u7F6E_\u63D0\u793A_\u4E00_\u6807\u9898: "If You Encounter Conflicts with Other Plugins",
   \u8BBE\u7F6E_\u63D0\u793A_\u4E00_\u63CF\u8FF0: "Due to limited capabilities, I cannot fix this issue. Please disable delayed startup to resolve all conflict issues.",
   \u901A\u77E5_\u68C0\u6D4B\u66F4\u65B0\u4E2D\u6587\u6848: "Checking plugin updates...",
@@ -5090,7 +5441,38 @@ var en_default = {
   \u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5: "Takeover failed, please manually modify community-plugins.json",
   \u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5: "Please restart Obsidian for the changes to take effect",
   \u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5: "Warning ignored. Using both Obsidian and BPM to manage plugins may cause issues",
-  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "Will not show again. You can re-enable this in settings"
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "Will not show again. You can re-enable this in settings",
+  // Ribbon Management
+  \u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0: "Manage ribbon icons",
+  Ribbon_\u6807\u9898: "Ribbon Manager",
+  Ribbon_\u8BF4\u660E: "Drag the \u2261 handle to reorder, click the eye icon to toggle visibility.",
+  Ribbon_\u9700\u91CD\u8F7D_\u63D0\u793A: "Some enabled icons need an app reload to appear because they were hidden at startup.",
+  Ribbon_\u91CD\u8F7D_\u6309\u94AE: "Reload App",
+  Ribbon_\u539F\u751F\u6A21\u5F0F_\u6807\u7B7E: "Native Sync Mode",
+  Ribbon_\u5DF2\u9690\u85CF: "Hidden Ribbon Icon",
+  \u6807\u7B7E_BPM\u5FFD\u7565_\u540D\u79F0: "BPM Ignored",
+  Ribbon_\u65E0\u9879\u76EE: "No configurable ribbon icons found.",
+  Ribbon_\u9690\u85CF: "Hide",
+  Ribbon_\u663E\u793A: "Show",
+  Ribbon_\u672A\u547D\u540D: "(Untitled)",
+  Ribbon_\u590D\u6D3B\u5931\u8D25: "Failed to restore icon, please reload app.",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210: "Check complete, {count} updates found",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25: "Check failed, please try again",
+  \u6392\u67E5_\u9636\u6BB5_\u9A8C\u8BC1: "Verification Phase",
+  \u6392\u67E5_\u5F53\u524D\u6D4B\u8BD5: "Current Test",
+  \u6392\u67E5_\u5217\u8868_\u65E0: "(None)",
+  \u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8: "All plugins disabled",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A: "Testing first half ({count} plugins)",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u540E\u534A: "Testing second half ({count} plugins)",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u5355\u63D2\u4EF6: "Verifying single plugin: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1: "Verifying: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D: "Fixed Group A ({countA}) + Group B First Half ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u540E: "Fixed Group A ({countA}) + Group B Second Half ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D: "Fixed Group B ({countB}) + Group A First Half ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u540E: "Fixed Group B ({countB}) + Group A Second Half ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u51B2\u7A81\u5BF9: "Verifying conflict pair: {name1} + {name2}",
+  \u6392\u67E5_\u9519\u8BEF_\u72B6\u6001\u5F02\u5E38: "Validation phase state error",
+  \u6392\u67E5_\u9519\u8BEF_\u672A\u77E5\u9636\u6BB5: "Unknown algorithm stage"
 };
 
 // src/lang/locale/ru.ts
@@ -5166,8 +5548,8 @@ var ru_default = {
   \u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8: "\u0417\u0430\u0434\u0435\u0440\u0436\u043A\u0430: \u0412\u0441\u0435",
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u044C \u0440\u0435\u043F\u043E\u0437\u0438\u0442\u043E\u0440\u0438\u0439",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "\u0414\u043E\u0441\u0442\u0443\u043F \u043A \u0432\u0438\u0434\u0435\u043E-\u0443\u0440\u043E\u043A\u0430\u043C",
-  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u0420\u0435\u0436\u0438\u043C \u0440\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F \u0434\u043B\u044F \u0433\u043B\u0443\u0431\u043E\u043A\u043E\u0439 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438",
-  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u041F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u0434\u043B\u044F \u043D\u0435\u043C\u0435\u0434\u043B\u0435\u043D\u043D\u043E\u0433\u043E \u044D\u0444\u0444\u0435\u043A\u0442\u0430",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0440\u0435\u0436\u0438\u043C \u0440\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F",
+  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u041F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0441\u043F\u0438\u0441\u043E\u043A \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u041F\u0440\u043E\u0432\u0435\u0440\u0438\u0442\u044C \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "\u041E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0432\u0441\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u0440\u0430\u0437\u043E\u043C",
   \u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0432\u0441\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u0440\u0430\u0437\u043E\u043C",
@@ -5271,7 +5653,129 @@ var ru_default = {
   \u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A: "\u041F\u043B\u0430\u0433\u0438\u043D \u043D\u0435 \u0438\u0437 \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u043E\u0433\u043E/BPM \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0430. \u0423\u043A\u0430\u0436\u0438\u0442\u0435 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A \u0432\u0440\u0443\u0447\u043D\u0443\u044E.",
   \u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A: "\u041D\u0435\u0442 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0430 \u0440\u0435\u043F\u043E\u0437\u0438\u0442\u043E\u0440\u0438\u044F \u2014 \u043D\u0435\u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E \u0441\u043A\u0430\u0447\u0430\u0442\u044C \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435.",
   \u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0: "\u0414\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F",
-  \u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898: "\u041E\u0442\u043A\u0440\u044B\u0442\u044C \u0440\u0435\u043F\u043E\u0437\u0438\u0442\u043E\u0440\u0438\u0439"
+  \u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898: "\u041E\u0442\u043A\u0440\u044B\u0442\u044C \u0440\u0435\u043F\u043E\u0437\u0438\u0442\u043E\u0440\u0438\u0439",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898: "\u0410\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u043E\u0435 \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043D\u043E\u0432\u044B\u043C\u0438 \u043F\u043B\u0430\u0433\u0438\u043D\u0430\u043C\u0438",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0: "\u0410\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u0443\u043F\u0440\u0430\u0432\u043B\u044F\u0442\u044C \u043D\u043E\u0432\u044B\u043C\u0438 \u043F\u043B\u0430\u0433\u0438\u043D\u0430\u043C\u0438, \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043D\u044B\u043C\u0438 \u0438\u0437 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430 (\u0432\u043A\u043B\u044E\u0447\u0430\u0442\u044C \u0438 \u0443\u043F\u0440\u0430\u0432\u043B\u044F\u0442\u044C \u0447\u0435\u0440\u0435\u0437 BPM), \u043F\u043E\u0434\u0430\u0432\u043B\u044F\u044F \u0437\u0430\u043F\u0440\u043E\u0441 \u043D\u0430 \u043F\u0435\u0440\u0435\u0445\u0432\u0430\u0442 \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u044F.",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u6807\u9898: "\u0418\u0433\u043D\u043E\u0440\u0438\u0440\u0443\u0435\u0442\u0441\u044F BPM",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u63CF\u8FF0: '\u042D\u0442\u043E\u0442 \u043F\u043B\u0430\u0433\u0438\u043D \u043F\u043E\u043C\u0435\u0447\u0435\u043D \u0442\u0435\u0433\u043E\u043C "bpm-ignore". BPM \u043D\u0435 \u0431\u0443\u0434\u0435\u0442 \u0443\u043F\u0440\u0430\u0432\u043B\u044F\u0442\u044C \u0435\u0433\u043E \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435\u043C \u0438\u043B\u0438 \u0437\u0430\u0434\u0435\u0440\u0436\u043A\u043E\u0439.',
+  \u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A: '\u042D\u0442\u043E\u0442 \u043F\u043B\u0430\u0433\u0438\u043D \u043F\u043E\u043C\u0435\u0447\u0435\u043D \u0442\u0435\u0433\u043E\u043C "bpm-ignore", \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438 \u043E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u044B \u0432 BPM.',
+  // Self-check
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u6807\u9898: "\u041E\u0431\u043D\u0430\u0440\u0443\u0436\u0435\u043D\u044B \u043F\u043B\u0430\u0433\u0438\u043D\u044B, \u043D\u0435 \u0443\u043F\u0440\u0430\u0432\u043B\u044F\u0435\u043C\u044B\u0435 BPM",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u8BF4\u660E: "\u0412 community-plugins.json Obsidian \u0435\u0441\u0442\u044C \u043F\u043B\u0430\u0433\u0438\u043D\u044B, \u0437\u0430\u043F\u0443\u0449\u0435\u043D\u043D\u044B\u0435 \u0441\u0430\u043C\u0438\u043C Obsidian. \u0427\u0442\u043E\u0431\u044B \u0438\u0437\u0431\u0435\u0436\u0430\u0442\u044C \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u043E\u0432, \u0440\u0435\u043A\u043E\u043C\u0435\u043D\u0434\u0443\u0435\u0442\u0441\u044F \u043F\u0435\u0440\u0435\u0434\u0430\u0442\u044C \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 BPM.",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u5217\u8868: "\u041E\u0431\u043D\u0430\u0440\u0443\u0436\u0435\u043D\u043D\u044B\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B:",
+  \u81EA\u68C0_\u8B66\u544A_\u6587\u672C: "\u0418\u0433\u043D\u043E\u0440\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u044D\u0442\u043E\u0433\u043E \u043C\u043E\u0436\u0435\u0442 \u043F\u0440\u0438\u0432\u0435\u0441\u0442\u0438 \u043A \u043D\u0435\u0441\u043E\u0433\u043B\u0430\u0441\u043E\u0432\u0430\u043D\u043D\u043E\u0441\u0442\u0438 \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u044F \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432 \u0438\u043B\u0438 \u0441\u0431\u043E\u044F\u043C \u0444\u0443\u043D\u043A\u0446\u0438\u0438 \u043E\u0442\u043B\u043E\u0436\u0435\u043D\u043D\u043E\u0433\u043E \u0437\u0430\u043F\u0443\u0441\u043A\u0430.",
+  \u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE: "\u041F\u0435\u0440\u0435\u0434\u0430\u0442\u044C \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 BPM",
+  \u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE: "\u0418\u0433\u043D\u043E\u0440\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0432 \u044D\u0442\u043E\u0442 \u0440\u0430\u0437",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A_\u6309\u94AE: "\u0411\u043E\u043B\u044C\u0448\u0435 \u043D\u0435 \u043F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C",
+  \u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u0430\u043C\u0438 \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u043F\u0435\u0440\u0435\u0434\u0430\u043D\u043E",
+  \u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043F\u0435\u0440\u0435\u0434\u0430\u0442\u044C \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435, \u0438\u0437\u043C\u0435\u043D\u0438\u0442\u0435 community-plugins.json \u0432\u0440\u0443\u0447\u043D\u0443\u044E",
+  \u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5: "\u041F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430, \u043F\u0435\u0440\u0435\u0437\u0430\u043F\u0443\u0441\u0442\u0438\u0442\u0435 Obsidian \u0434\u043B\u044F \u043F\u0440\u0438\u043C\u0435\u043D\u0435\u043D\u0438\u044F \u0438\u0437\u043C\u0435\u043D\u0435\u043D\u0438\u0439",
+  \u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5: "\u041F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u0435 \u043F\u0440\u043E\u0438\u0433\u043D\u043E\u0440\u0438\u0440\u043E\u0432\u0430\u043D\u043E. \u0421\u043C\u0435\u0448\u0430\u043D\u043D\u043E\u0435 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u0435 Obsidian \u0438 BPM \u043C\u043E\u0436\u0435\u0442 \u0432\u044B\u0437\u0432\u0430\u0442\u044C \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u044B",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "\u0411\u043E\u043B\u044C\u0448\u0435 \u043D\u0435 \u0431\u0443\u0434\u0435\u0442 \u043F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C\u0441\u044F. \u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u0432\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u044D\u0442\u043E \u0432 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430\u0445",
+  // Ribbon
+  \u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u0438\u043A\u043E\u043D\u043A\u0430\u043C\u0438 Ribbon",
+  Ribbon_\u6807\u9898: "\u041C\u0435\u043D\u0435\u0434\u0436\u0435\u0440 Ribbon",
+  Ribbon_\u8BF4\u660E: "\u041F\u0435\u0440\u0435\u0442\u0430\u0449\u0438\u0442\u0435 \u0438\u043A\u043E\u043D\u043A\u0443 \u2261 \u0434\u043B\u044F \u0438\u0437\u043C\u0435\u043D\u0435\u043D\u0438\u044F \u043F\u043E\u0440\u044F\u0434\u043A\u0430, \u043D\u0430\u0436\u043C\u0438\u0442\u0435 \u043D\u0430 \u0433\u043B\u0430\u0437 \u0434\u043B\u044F \u043F\u0435\u0440\u0435\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u044F \u0432\u0438\u0434\u0438\u043C\u043E\u0441\u0442\u0438.",
+  Ribbon_\u9700\u91CD\u8F7D_\u63D0\u793A: "\u041D\u0435\u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u043D\u044B\u0435 \u0438\u043A\u043E\u043D\u043A\u0438 \u0442\u0440\u0435\u0431\u0443\u044E\u0442 \u043F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u043F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u044F \u0434\u043B\u044F \u043F\u043E\u044F\u0432\u043B\u0435\u043D\u0438\u044F.",
+  Ribbon_\u91CD\u8F7D_\u6309\u94AE: "\u041F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u043F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u0435",
+  Ribbon_\u539F\u751F\u6A21\u5F0F_\u6807\u7B7E: "\u0420\u0435\u0436\u0438\u043C \u043D\u0430\u0442\u0438\u0432\u043D\u043E\u0439 \u0441\u0438\u043D\u0445\u0440\u043E\u043D\u0438\u0437\u0430\u0446\u0438\u0438",
+  Ribbon_\u5DF2\u9690\u85CF: "\u0421\u043A\u0440\u044B\u0442\u0430\u044F \u0438\u043A\u043E\u043D\u043A\u0430 Ribbon",
+  \u6807\u7B7E_BPM\u5FFD\u7565_\u540D\u79F0: "\u0418\u0433\u043D\u043E\u0440\u0438\u0440\u0443\u0435\u0442\u0441\u044F BPM",
+  Ribbon_\u65E0\u9879\u76EE: "\u041D\u0430\u0441\u0442\u0440\u0430\u0438\u0432\u0430\u0435\u043C\u044B\u0435 \u0438\u043A\u043E\u043D\u043A\u0438 \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u044B.",
+  Ribbon_\u9690\u85CF: "\u0421\u043A\u0440\u044B\u0442\u044C",
+  Ribbon_\u663E\u793A: "\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u044C",
+  Ribbon_\u672A\u547D\u540D: "(\u0411\u0435\u0437 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044F)",
+  Ribbon_\u590D\u6D3B\u5931\u8D25: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0432\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C \u0438\u043A\u043E\u043D\u043A\u0443, \u043F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u0435 \u043F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u0435.",
+  // Troubleshooter
+  \u6392\u67E5_\u6B22\u8FCE_\u6807\u9898: "\u{1F50D} \u041C\u0430\u0441\u0442\u0435\u0440 \u0443\u0441\u0442\u0440\u0430\u043D\u0435\u043D\u0438\u044F \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u043E\u0432 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u6392\u67E5_\u6B22\u8FCE_\u8BF4\u660E: "\u042D\u0442\u043E\u0442 \u043C\u0430\u0441\u0442\u0435\u0440 \u043F\u043E\u043C\u043E\u0436\u0435\u0442 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0439\u0442\u0438 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u0443\u044E\u0449\u0438\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u0441 \u043F\u043E\u043C\u043E\u0449\u044C\u044E \u0431\u0438\u043D\u0430\u0440\u043D\u043E\u0433\u043E \u043F\u043E\u0438\u0441\u043A\u0430. \u041F\u043B\u0430\u0433\u0438\u043D\u044B \u0431\u0443\u0434\u0443\u0442 \u0432\u043A\u043B\u044E\u0447\u0430\u0442\u044C\u0441\u044F/\u043E\u0442\u043A\u043B\u044E\u0447\u0430\u0442\u044C\u0441\u044F \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435.",
+  \u6392\u67E5_\u5F53\u524D\u542F\u7528_\u6587\u672C: "\u0422\u0435\u043A\u0443\u0449\u0438\u0435 \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u043D\u044B\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B",
+  \u6392\u67E5_\u9884\u8BA1\u6B65\u9AA4_\u6587\u672C: "\u041E\u0436\u0438\u0434\u0430\u0435\u043C\u044B\u0435 \u0448\u0430\u0433\u0438",
+  \u6392\u67E5_\u5F00\u59CB_\u6309\u94AE: "\u041D\u0430\u0447\u0430\u0442\u044C \u0443\u0441\u0442\u0440\u0430\u043D\u0435\u043D\u0438\u0435 \u043F\u0440\u043E\u0431\u043B\u0435\u043C",
+  \u6392\u67E5_\u53D6\u6D88_\u6309\u94AE: "\u041E\u0442\u043C\u0435\u043D\u0430",
+  \u6392\u67E5_\u6B65\u9AA4_\u6587\u672C: "\u0428\u0430\u0433",
+  \u6392\u67E5_\u9636\u6BB5_\u786E\u8BA4: "\u042D\u0442\u0430\u043F 1: \u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u0438\u0435 \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u044B (\u0432\u0441\u0435 \u043E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u044B)",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E00: "\u042D\u0442\u0430\u043F 2: \u0411\u0438\u043D\u0430\u0440\u043D\u044B\u0439 \u043F\u043E\u0438\u0441\u043A \u043F\u0435\u0440\u0432\u043E\u0433\u043E \u043F\u043E\u0434\u043E\u0437\u0440\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0433\u043E \u043F\u043B\u0430\u0433\u0438\u043D\u0430",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E8C: "\u042D\u0442\u0430\u043F 3: \u0411\u0438\u043D\u0430\u0440\u043D\u044B\u0439 \u043F\u043E\u0438\u0441\u043A \u0432\u0442\u043E\u0440\u043E\u0433\u043E \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u043D\u043E\u0433\u043E \u043F\u043B\u0430\u0433\u0438\u043D\u0430",
+  \u6392\u67E5_\u7B2C\u4E00\u51B2\u7A81_\u6587\u672C: "\u041F\u0435\u0440\u0432\u044B\u0439 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u043D\u044B\u0439 \u043F\u043B\u0430\u0433\u0438\u043D",
+  \u6392\u67E5_\u5DF2\u542F\u7528_\u6587\u672C: "\u0412\u043A\u043B\u044E\u0447\u0435\u043D\u043E",
+  \u6392\u67E5_\u5DF2\u7981\u7528_\u6587\u672C: "\u041E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u043E",
+  \u6392\u67E5_\u6D4B\u8BD5\u63D0\u793A_\u6587\u672C: "\u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435, \u0441\u043E\u0445\u0440\u0430\u043D\u044F\u0435\u0442\u0441\u044F \u043B\u0438 \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u0430, \u0437\u0430\u0442\u0435\u043C \u0432\u044B\u0431\u0435\u0440\u0438\u0442\u0435:",
+  \u6392\u67E5_\u95EE\u9898\u8FD8\u5728_\u6309\u94AE: "\u041F\u0440\u043E\u0431\u043B\u0435\u043C\u0430 \u0441\u043E\u0445\u0440\u0430\u043D\u044F\u0435\u0442\u0441\u044F",
+  \u6392\u67E5_\u95EE\u9898\u6D88\u5931_\u6309\u94AE: "\u041F\u0440\u043E\u0431\u043B\u0435\u043C\u0430 \u0438\u0441\u0447\u0435\u0437\u043B\u0430",
+  \u6392\u67E5_\u91CD\u542F_\u6309\u94AE: "\u041F\u0435\u0440\u0435\u0437\u0430\u043F\u0443\u0441\u0442\u0438\u0442\u044C Obsidian",
+  \u6392\u67E5_\u64A4\u9500_\u6309\u94AE: "\u041E\u0442\u043C\u0435\u043D\u0438\u0442\u044C \u0448\u0430\u0433",
+  \u6392\u67E5_\u9000\u51FA_\u6309\u94AE: "\u0412\u044B\u0445\u043E\u0434",
+  \u6392\u67E5_\u5DF2\u7981\u7528\u6240\u6709_\u901A\u77E5: "\u0412\u0441\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u043E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u044B. \u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435, \u0441\u043E\u0445\u0440\u0430\u043D\u044F\u0435\u0442\u0441\u044F \u043B\u0438 \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u0430.",
+  \u6392\u67E5_\u975E\u63D2\u4EF6\u95EE\u9898_\u901A\u77E5: "\u041F\u0440\u043E\u0431\u043B\u0435\u043C\u0430 \u0441\u043E\u0445\u0440\u0430\u043D\u044F\u0435\u0442\u0441\u044F \u0441\u043E \u0432\u0441\u0435\u043C\u0438 \u043E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u043D\u044B\u043C\u0438 \u043F\u043B\u0430\u0433\u0438\u043D\u0430\u043C\u0438. \u042D\u0442\u043E \u043D\u0435 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432.",
+  \u6392\u67E5_\u5DF2\u64A4\u9500_\u901A\u77E5: "\u0412\u043E\u0437\u0432\u0440\u0430\u0442 \u043A \u043F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0435\u043C\u0443 \u0448\u0430\u0433\u0443",
+  \u6392\u67E5_\u65E0\u6CD5\u5B9A\u4F4D_\u901A\u77E5: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043D\u0430\u0439\u0442\u0438 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442. \u0412\u043E\u0437\u043C\u043E\u0436\u043D\u043E, \u0441\u043B\u043E\u0436\u043D\u044B\u0439 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442.",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6807\u9898: "\u0412\u044B\u0445\u043E\u0434 \u0438\u0437 \u0443\u0441\u0442\u0440\u0430\u043D\u0435\u043D\u0438\u044F \u043F\u0440\u043E\u0431\u043B\u0435\u043C",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6587\u672C: "\u0412\u044B \u0443\u0432\u0435\u0440\u0435\u043D\u044B, \u0447\u0442\u043E \u0445\u043E\u0442\u0438\u0442\u0435 \u0432\u044B\u0439\u0442\u0438? \u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u0432\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C \u0438\u0441\u0445\u043E\u0434\u043D\u043E\u0435 \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435 \u0438\u043B\u0438 \u043E\u0441\u0442\u0430\u0432\u0438\u0442\u044C \u0442\u0435\u043A\u0443\u0449\u0435\u0435.",
+  \u6392\u67E5_\u6062\u590D\u5E76\u9000\u51FA_\u6309\u94AE: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C \u0438 \u0432\u044B\u0439\u0442\u0438",
+  \u6392\u67E5_\u4FDD\u6301\u5E76\u9000\u51FA_\u6309\u94AE: "\u041E\u0441\u0442\u0430\u0432\u0438\u0442\u044C \u0438 \u0432\u044B\u0439\u0442\u0438",
+  \u6392\u67E5_\u7EE7\u7EED\u6392\u67E5_\u6309\u94AE: "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C",
+  \u6392\u67E5_\u5B8C\u6210_\u6807\u9898: "\u0423\u0441\u0442\u0440\u0430\u043D\u0435\u043D\u0438\u0435 \u043F\u0440\u043E\u0431\u043B\u0435\u043C \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E",
+  \u6392\u67E5_\u53D1\u73B0\u51B2\u7A81_\u6587\u672C: "\u041D\u0430\u0439\u0434\u0435\u043D \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u6392\u67E5_\u5EFA\u8BAE_\u6807\u9898: "\u041F\u0440\u0435\u0434\u043B\u0430\u0433\u0430\u0435\u043C\u044B\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F",
+  \u6392\u67E5_\u5EFA\u8BAE1_\u6587\u672C: "\u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435 GitHub Issues \u043E\u0431\u043E\u0438\u0445 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u6392\u67E5_\u5EFA\u8BAE2_\u6587\u672C: "\u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u043E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u043E\u0431\u0430 \u043F\u043B\u0430\u0433\u0438\u043D\u0430",
+  \u6392\u67E5_\u5EFA\u8BAE3_\u6587\u672C: "\u0412\u0440\u0435\u043C\u0435\u043D\u043D\u043E \u043E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u0435 \u043E\u0434\u0438\u043D \u0438\u0437 \u043D\u0438\u0445",
+  \u6392\u67E5_\u603B\u6B65\u9AA4_\u6587\u672C: "\u0412\u0441\u0435\u0433\u043E \u0448\u0430\u0433\u043E\u0432",
+  \u6392\u67E5_\u6062\u590D\u539F\u59CB_\u6309\u94AE: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C \u0438\u0441\u0445\u043E\u0434\u043D\u043E\u0435 \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435",
+  \u6392\u67E5_\u4FDD\u6301\u5F53\u524D_\u6309\u94AE: "\u041E\u0441\u0442\u0430\u0432\u0438\u0442\u044C \u0442\u0435\u043A\u0443\u0449\u0435\u0435 \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435",
+  \u6392\u67E5_\u751F\u6210\u62A5\u544A_\u6309\u94AE: "\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u043E\u0442\u0447\u0435\u0442",
+  \u6392\u67E5_\u5DF2\u6062\u590D_\u901A\u77E5: "\u0418\u0441\u0445\u043E\u0434\u043D\u043E\u0435 \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432 \u0432\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E",
+  \u6392\u67E5_\u65E0\u7ED3\u679C_\u901A\u77E5: "\u041D\u0435\u0442 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u043E\u0432 \u0434\u043B\u044F \u043E\u0442\u0447\u0435\u0442\u0430",
+  \u6392\u67E5_\u62A5\u544A\u5DF2\u751F\u6210_\u901A\u77E5: "\u041E\u0442\u0447\u0435\u0442 \u043E \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u0435 \u0441\u043E\u0437\u0434\u0430\u043D",
+  \u6392\u67E5_\u62A5\u544A\u5931\u8D25_\u901A\u77E5: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043E\u0437\u0434\u0430\u0442\u044C \u043E\u0442\u0447\u0435\u0442",
+  \u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0: "\u0423\u0441\u0442\u0440\u0430\u043D\u0435\u043D\u0438\u0435 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u043E\u0432 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  // Updates
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210: "\u041F\u0440\u043E\u0432\u0435\u0440\u043A\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u0430, \u043D\u0430\u0439\u0434\u0435\u043D\u043E {count} \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0439",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25: "\u041E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0438, \u043F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u0441\u043D\u043E\u0432\u0430",
+  \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664: "\u041F\u0440\u0435\u0434\u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043D\u044B\u0435 \u0442\u0435\u0433\u0438 \u043D\u0435\u043B\u044C\u0437\u044F \u0443\u0434\u0430\u043B\u0438\u0442\u044C",
+  // Troubleshooter Algorithm Descriptions
+  \u6392\u67E5_\u5217\u8868_\u65E0: "(\u041D\u0435\u0442)",
+  \u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8: "\u0412\u0441\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u043E\u0442\u043A\u043B\u044E\u0447\u0435\u043D\u044B",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A: "\u0422\u0435\u0441\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u043F\u0435\u0440\u0432\u043E\u0439 \u043F\u043E\u043B\u043E\u0432\u0438\u043D\u044B ({count} \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432)",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u540E\u534A: "\u0422\u0435\u0441\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0432\u0442\u043E\u0440\u043E\u0439 \u043F\u043E\u043B\u043E\u0432\u0438\u043D\u044B ({count} \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432)",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u5355\u63D2\u4EF6: "\u041F\u0440\u043E\u0432\u0435\u0440\u043A\u0430 \u043E\u0434\u043D\u043E\u0433\u043E \u043F\u043B\u0430\u0433\u0438\u043D\u0430: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1: "\u041F\u0440\u043E\u0432\u0435\u0440\u043A\u0430: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D: "\u0424\u0438\u043A\u0441. \u0413\u0440\u0443\u043F\u043F\u0430 A ({countA}) + \u0413\u0440\u0443\u043F\u043F\u0430 B 1-\u044F \u043F\u043E\u043B. ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u540E: "\u0424\u0438\u043A\u0441. \u0413\u0440\u0443\u043F\u043F\u0430 A ({countA}) + \u0413\u0440\u0443\u043F\u043F\u0430 B 2-\u044F \u043F\u043E\u043B. ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D: "\u0424\u0438\u043A\u0441. \u0413\u0440\u0443\u043F\u043F\u0430 B ({countB}) + \u0413\u0440\u0443\u043F\u043F\u0430 A 1-\u044F \u043F\u043E\u043B. ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u540E: "\u0424\u0438\u043A\u0441. \u0413\u0440\u0443\u043F\u043F\u0430 B ({countB}) + \u0413\u0440\u0443\u043F\u043F\u0430 A 2-\u044F \u043F\u043E\u043B. ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u51B2\u7A81\u5BF9: "\u041F\u0440\u043E\u0432\u0435\u0440\u043A\u0430 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u043D\u043E\u0439 \u043F\u0430\u0440\u044B: {name1} + {name2}",
+  \u6392\u67E5_\u9519\u8BEF_\u72B6\u6001\u5F02\u5E38: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u044F \u043D\u0430 \u044D\u0442\u0430\u043F\u0435 \u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0438",
+  \u6392\u67E5_\u9519\u8BEF_\u672A\u77E5\u9636\u6BB5: "\u041D\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043D\u044B\u0439 \u044D\u0442\u0430\u043F \u0430\u043B\u0433\u043E\u0440\u0438\u0442\u043C\u0430",
+  // Report
+  \u62A5\u544A_\u5355\u63D2\u4EF6_\u6807\u9898: "\u041E\u0442\u0447\u0435\u0442 \u043E \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u0430",
+  \u62A5\u544A_\u51B2\u7A81_\u6807\u9898: "\u041E\u0442\u0447\u0435\u0442 \u043E \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u62A5\u544A_\u751F\u6210\u8BF4\u660E: "\u0421\u043E\u0437\u0434\u0430\u043D\u043E **Better Plugins Manager** \u0432",
+  \u62A5\u544A_\u53D1\u73B0\u95EE\u9898\u63D2\u4EF6: "\u041D\u0430\u0439\u0434\u0435\u043D \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u043D\u044B\u0439 \u043F\u043B\u0430\u0433\u0438\u043D",
+  \u62A5\u544A_\u53D1\u73B0\u51B2\u7A81: "\u041E\u0431\u043D\u0430\u0440\u0443\u0436\u0435\u043D \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442",
+  \u62A5\u544A_\u63D2\u4EF6: "\u041F\u043B\u0430\u0433\u0438\u043D",
+  \u62A5\u544A_\u63D2\u4EF61: "\u041F\u043B\u0430\u0433\u0438\u043D 1",
+  \u62A5\u544A_\u63D2\u4EF62: "\u041F\u043B\u0430\u0433\u0438\u043D 2",
+  \u62A5\u544A_\u6392\u67E5\u6458\u8981: "\u0421\u0432\u043E\u0434\u043A\u0430 \u0443\u0441\u0442\u0440\u0430\u043D\u0435\u043D\u0438\u044F \u043F\u0440\u043E\u0431\u043B\u0435\u043C",
+  \u62A5\u544A_\u603B\u6B65\u9AA4: "\u0412\u0441\u0435\u0433\u043E \u0448\u0430\u0433\u043E\u0432",
+  \u62A5\u544A_\u7ED3\u679C\u7C7B\u578B: "\u0422\u0438\u043F \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u0430",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u95EE\u9898: "\u041F\u0440\u043E\u0431\u043B\u0435\u043C\u0430 \u043E\u0434\u043D\u043E\u0433\u043E \u043F\u043B\u0430\u0433\u0438\u043D\u0430",
+  \u62A5\u544A_\u51B2\u7A81\u5BF9: "\u041A\u043E\u043D\u0444\u043B\u0438\u043A\u0442 \u043F\u0430\u0440\u044B \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u6570: "\u0418\u0437\u043D\u0430\u0447\u0430\u043B\u044C\u043D\u043E \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u043E \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u62A5\u544A_\u5EFA\u8BAE\u64CD\u4F5C: "\u041F\u0440\u0435\u0434\u043B\u0430\u0433\u0430\u0435\u043C\u044B\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE1: "\u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u043E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u043F\u043B\u0430\u0433\u0438\u043D \u0434\u043E \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0435\u0439 \u0432\u0435\u0440\u0441\u0438\u0438",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE2: "\u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435 GitHub Issues \u043F\u043B\u0430\u0433\u0438\u043D\u0430 \u043D\u0430 \u043D\u0430\u043B\u0438\u0447\u0438\u0435 \u043F\u043E\u0445\u043E\u0436\u0438\u0445 \u043F\u0440\u043E\u0431\u043B\u0435\u043C",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE3: "\u0421\u0432\u044F\u0436\u0438\u0442\u0435\u0441\u044C \u0441 \u0430\u0432\u0442\u043E\u0440\u043E\u043C \u043F\u043B\u0430\u0433\u0438\u043D\u0430, \u0447\u0442\u043E\u0431\u044B \u0441\u043E\u043E\u0431\u0449\u0438\u0442\u044C \u043E \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u0435",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE4: "\u0412\u0440\u0435\u043C\u0435\u043D\u043D\u043E \u043E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u0435 \u044D\u0442\u043E\u0442 \u043F\u043B\u0430\u0433\u0438\u043D",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE1: "\u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435 GitHub Issues \u043E\u0431\u043E\u0438\u0445 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432 \u043D\u0430 \u043D\u0430\u043B\u0438\u0447\u0438\u0435 \u0438\u0437\u0432\u0435\u0441\u0442\u043D\u044B\u0445 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u043E\u0432",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE2: "\u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u043E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u043E\u0431\u0430 \u043F\u043B\u0430\u0433\u0438\u043D\u0430 \u0434\u043E \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0435\u0439 \u0432\u0435\u0440\u0441\u0438\u0438",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE3: "\u0412\u0440\u0435\u043C\u0435\u043D\u043D\u043E \u043E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u0435 \u043E\u0434\u0438\u043D \u0438\u0437 \u043A\u043E\u043D\u0444\u043B\u0438\u043A\u0442\u043D\u044B\u0445 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE4: "\u0421\u043E\u043E\u0431\u0449\u0438\u0442\u0435 \u043E\u0431 \u044D\u0442\u043E\u0439 \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u0435 \u0430\u0432\u0442\u043E\u0440\u0430\u043C \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u62A5\u544A_\u5907\u6CE8: "\u0417\u0430\u043C\u0435\u0442\u043A\u0438",
+  \u62A5\u544A_\u5907\u6CE8\u63D0\u793A: "*\u0414\u043E\u0431\u0430\u0432\u044C\u0442\u0435 \u0432\u0430\u0448\u0438 \u0437\u0430\u043C\u0435\u0442\u043A\u0438 \u0437\u0434\u0435\u0441\u044C...*",
+  \u62A5\u544A_\u6280\u672F\u8BE6\u60C5: "\u0422\u0435\u0445\u043D\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0434\u0435\u0442\u0430\u043B\u0438",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u5217\u8868: "\u0418\u0437\u043D\u0430\u0447\u0430\u043B\u044C\u043D\u043E \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u043D\u044B\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B"
 };
 
 // src/lang/locale/ja.ts
@@ -5293,8 +5797,8 @@ var ja_default = {
   \u901A\u7528_\u8FD4\u56DE_\u6587\u672C: "\u623B\u308B",
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "\u30EA\u30DD\u30B8\u30C8\u30EA\u3092\u898B\u308B",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "\u30D3\u30C7\u30AA\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB\u306B\u30A2\u30AF\u30BB\u30B9",
-  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u7DE8\u96C6\u30E2\u30FC\u30C9\u3092\u6709\u52B9\u306B\u3057\u3066\u3001\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u8A2D\u5B9A\u3092\u30AB\u30B9\u30BF\u30DE\u30A4\u30BA\u3057\u307E\u3059",
-  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u30EA\u30ED\u30FC\u30C9\u3057\u3066\u5373\u5EA7\u306B\u52B9\u679C\u3092\u767A\u63EE\u3057\u307E\u3059",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u7DE8\u96C6\u30E2\u30FC\u30C9\u3092\u6709\u52B9\u306B\u3059\u308B",
+  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u30D7\u30E9\u30B0\u30A4\u30F3\u30EA\u30B9\u30C8\u3092\u518D\u8AAD\u307F\u8FBC\u307F",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u66F4\u65B0\u3092\u78BA\u8A8D\u3059\u308B",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "\u4E00\u5EA6\u306B\u3059\u3079\u3066\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u7121\u52B9\u306B\u3057\u307E\u3059",
   \u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0: "\u4E00\u5EA6\u306B\u3059\u3079\u3066\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u6709\u52B9\u306B\u3057\u307E\u3059",
@@ -5333,6 +5837,7 @@ var ja_default = {
   \u5378\u8F7D_\u53D6\u6D88: "\u30AD\u30E3\u30F3\u30BB\u30EB",
   \u5378\u8F7D_\u901A\u77E5_\u4E00: "\u30A2\u30F3\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u306B\u6210\u529F\u3057\u307E\u3057\u305F",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u524D\u7F00: "\u57FA\u672C",
+  \u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u524D\u7F00: "\u30B9\u30BF\u30A4\u30EB",
   \u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u524D\u7F00: "\u30B0\u30EB\u30FC\u30D7",
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u524D\u7F00: "\u30BF\u30B0",
   \u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u524D\u7F00: "\u9045\u5EF6",
@@ -5394,7 +5899,154 @@ var ja_default = {
   \u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8: "\u9045\u5EF6\uFF1A\u5168\u90E8",
   \u547D\u4EE4_\u7BA1\u7406\u9762\u677F_\u63CF\u8FF0: "\u30D7\u30E9\u30B0\u30A4\u30F3\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u3092\u958B\u304F",
   \u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0: "\u305D\u306E\u4ED6\u306E\u64CD\u4F5C",
-  \u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898: "\u30EA\u30DD\u30B8\u30C8\u30EA\u3092\u958B\u304F"
+  \u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898: "\u30EA\u30DD\u30B8\u30C8\u30EA\u3092\u958B\u304F",
+  \u7BA1\u7406\u5668_\u4E0B\u8F7D\u66F4\u65B0_\u63CF\u8FF0: "\u66F4\u65B0\u3092\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\uFF08\u30D0\u30FC\u30B8\u30E7\u30F3\u9078\u629E\u3001\u30D7\u30EC\u30EA\u30EA\u30FC\u30B9\u3092\u542B\u3080\uFF09",
+  \u5B89\u88C5_\u6210\u529F_\u63D0\u793A: "\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB/\u66F4\u65B0\u6210\u529F: ",
+  \u5B89\u88C5_\u9519\u8BEF_\u9650\u901F: "GitHub API \u5236\u9650 (403)\u3002Token \u3092\u8A2D\u5B9A\u3057\u3066\u518D\u8A66\u884C\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  \u5B89\u88C5_\u9519\u8BEF_\u7F3A\u5C11\u8D44\u6E90: "\u30EA\u30EA\u30FC\u30B9\u30A2\u30BB\u30C3\u30C8\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3002\u30EA\u30DD\u30B8\u30C8\u30EA/\u30D0\u30FC\u30B8\u30E7\u30F3\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  \u5B89\u88C5_\u9519\u8BEF_\u901A\u7528: "\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u5931\u6557\u3002\u30EA\u30DD\u30B8\u30C8\u30EA/\u30D0\u30FC\u30B8\u30E7\u30F3\u307E\u305F\u306F\u30CD\u30C3\u30C8\u30EF\u30FC\u30AF\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898: "\u30C7\u30D0\u30C3\u30B0\u30E2\u30FC\u30C9",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0: "\u30AA\u30D5\u306E\u5834\u5408\u30A8\u30E9\u30FC\u306E\u307F\u8868\u793A\u3002\u30AA\u30F3\u306E\u5834\u5408\u30C7\u30D0\u30C3\u30B0\u30ED\u30B0\u3092\u51FA\u529B\u3057\u307E\u3059\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898: "\u65B0\u3057\u3044\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u81EA\u52D5\u7BA1\u7406",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0: "\u5E02\u5834\u304B\u3089\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3055\u308C\u305F\u65B0\u3057\u3044\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u81EA\u52D5\u7684\u306B\u7BA1\u7406\uFF08BPM \u3067\u6709\u52B9\u5316\u30FB\u7BA1\u7406\uFF09\u3057\u3001\u5F15\u304D\u7D99\u304E\u30D7\u30ED\u30F3\u30D7\u30C8\u3092\u6291\u5236\u3057\u307E\u3059\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898: "BPM\u30BF\u30B0\u3092\u96A0\u3059 (install/ignore)",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0: "\u30EA\u30B9\u30C8\u304B\u3089 bpm-install \u304A\u3088\u3073 bpm-ignore \u30BF\u30B0\u3092\u8FFD\u52A0\u8868\u793A\u3057\u306A\u3044\u3088\u3046\u306B\u3057\u307E\u3059\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898: "\u30D5\u30A3\u30EB\u30BF\u30FC\u72B6\u614B\u306E\u4FDD\u6301",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0: "\u6709\u52B9\u306B\u3059\u308B\u3068\u3001\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u3092\u958B\u304F\u305F\u3073\u306B\u540C\u3058\u30D7\u30E9\u30B0\u30A4\u30F3\u30EA\u30B9\u30C8\uFF08\u30D5\u30A3\u30EB\u30BF\u30FC\u72B6\u614B\uFF09\u304C\u8868\u793A\u3055\u308C\u307E\u3059\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898: "\u30A4\u30F3\u30BF\u30FC\u30D5\u30A7\u30FC\u30B9\u3092\u4E2D\u592E\u5BC4\u305B",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0: "\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u753B\u9762\u3092\u4E2D\u592E\u306B\u8868\u793A\u3059\u308B\u304B\u3069\u3046\u304B\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E00: "\u5E38\u306B\u5C55\u958B",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E8C: "\u5E38\u306B\u6298\u308A\u305F\u305F\u307F",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E09: "\u30DB\u30D0\u30FC\u3067\u5C55\u958B",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u56DB: "\u30AF\u30EA\u30C3\u30AF\u3067\u5C55\u958B",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E00: "\u30B9\u30BF\u30A4\u30EB 1",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E8C: "\u30B9\u30BF\u30A4\u30EB 2",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E09: "\u30B9\u30BF\u30A4\u30EB 3",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u56DB: "\u30B9\u30BF\u30A4\u30EB 4",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E00: "\u30B9\u30BF\u30A4\u30EB 1",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E8C: "\u30B9\u30BF\u30A4\u30EB 2",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E09: "\u30B9\u30BF\u30A4\u30EB 3",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u56DB: "\u30B9\u30BF\u30A4\u30EB 4",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u6807\u9898: "BPM \u7121\u8996",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u63CF\u8FF0: '\u3053\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u306B\u306F "bpm-ignore" \u30BF\u30B0\u304C\u4ED8\u3044\u3066\u3044\u307E\u3059\u3002BPM \u306F\u3053\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u72B6\u614B\u3084\u9045\u5EF6\u3092\u7BA1\u7406\u3057\u307E\u305B\u3093\u3002',
+  \u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A: '\u3053\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u306B\u306F "bpm-ignore" \u30BF\u30B0\u304C\u4ED8\u3044\u3066\u3044\u308B\u305F\u3081\u3001BPM \u3067\u306E\u64CD\u4F5C\u306F\u7121\u52B9\u3067\u3059\u3002',
+  // Self-check
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u6807\u9898: "BPM \u7BA1\u7406\u5916\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u691C\u51FA",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u8BF4\u660E: "Obsidian \u306E community-plugins.json \u306B\u3001Obsidian \u81EA\u8EAB\u306B\u3088\u3063\u3066\u958B\u59CB\u3055\u308C\u305F\u30D7\u30E9\u30B0\u30A4\u30F3\u304C\u542B\u307E\u308C\u3066\u3044\u307E\u3059\u3002\u7AF6\u5408\u3092\u907F\u3051\u308B\u305F\u3081\u3001BPM \u306B\u7BA1\u7406\u3092\u5F15\u304D\u7D99\u3050\u3053\u3068\u3092\u63A8\u5968\u3057\u307E\u3059\u3002",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u5217\u8868: "\u691C\u51FA\u3055\u308C\u305F\u30D7\u30E9\u30B0\u30A4\u30F3:",
+  \u81EA\u68C0_\u8B66\u544A_\u6587\u672C: "\u3053\u308C\u3092\u7121\u8996\u3059\u308B\u3068\u3001\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u72B6\u614B\u306E\u4E0D\u6574\u5408\u3084\u9045\u5EF6\u8D77\u52D5\u6A5F\u80FD\u306E\u4E0D\u5177\u5408\u304C\u767A\u751F\u3059\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\u3002",
+  \u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE: "BPM \u306B\u7BA1\u7406\u3055\u305B\u308B",
+  \u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE: "\u4ECA\u56DE\u306F\u7121\u8996",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A_\u6309\u94AE: "\u4ECA\u5F8C\u8868\u793A\u3057\u306A\u3044",
+  \u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5: "\u30D7\u30E9\u30B0\u30A4\u30F3\u7BA1\u7406\u306E\u5F15\u304D\u7D99\u304E\u306B\u6210\u529F\u3057\u307E\u3057\u305F",
+  \u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5: "\u5F15\u304D\u7D99\u304E\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002community-plugins.json \u3092\u624B\u52D5\u3067\u4FEE\u6B63\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5: "\u5909\u66F4\u3092\u9069\u7528\u3059\u308B\u306B\u306F Obsidian \u3092\u518D\u8D77\u52D5\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5: "\u8B66\u544A\u3092\u7121\u8996\u3057\u307E\u3057\u305F\u3002Obsidian \u3068 BPM \u306E\u4F75\u7528\u306F\u554F\u984C\u3092\u5F15\u304D\u8D77\u3053\u3059\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "\u4ECA\u5F8C\u8868\u793A\u3055\u308C\u307E\u305B\u3093\u3002\u8A2D\u5B9A\u304B\u3089\u518D\u5EA6\u6709\u52B9\u306B\u3067\u304D\u307E\u3059",
+  // Ribbon
+  \u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0: "\u30EA\u30DC\u30F3\u30A2\u30A4\u30B3\u30F3\u3092\u7BA1\u7406",
+  Ribbon_\u6807\u9898: "\u30EA\u30DC\u30F3\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC",
+  Ribbon_\u8BF4\u660E: "\u2261 \u30A2\u30A4\u30B3\u30F3\u3092\u30C9\u30E9\u30C3\u30B0\u3057\u3066\u4E26\u3079\u66FF\u3048\u3001\u76EE\u306E\u30A2\u30A4\u30B3\u30F3\u3092\u30AF\u30EA\u30C3\u30AF\u3057\u3066\u8868\u793A/\u975E\u8868\u793A\u3092\u5207\u308A\u66FF\u3048\u307E\u3059\u3002",
+  Ribbon_\u9700\u91CD\u8F7D_\u63D0\u793A: "\u4E00\u90E8\u306E\u6709\u52B9\u5316\u3055\u308C\u305F\u30A2\u30A4\u30B3\u30F3\u306F\u3001\u8868\u793A\u3059\u308B\u305F\u3081\u306B\u30A2\u30D7\u30EA\u306E\u518D\u8D77\u52D5\u304C\u5FC5\u8981\u3067\u3059\u3002",
+  Ribbon_\u91CD\u8F7D_\u6309\u94AE: "\u30A2\u30D7\u30EA\u3092\u518D\u8AAD\u307F\u8FBC\u307F",
+  Ribbon_\u539F\u751F\u6A21\u5F0F_\u6807\u7B7E: "\u30CD\u30A4\u30C6\u30A3\u30D6\u540C\u671F\u30E2\u30FC\u30C9",
+  Ribbon_\u5DF2\u9690\u85CF: "\u96A0\u3055\u308C\u305F\u30EA\u30DC\u30F3\u30A2\u30A4\u30B3\u30F3",
+  \u6807\u7B7E_BPM\u5FFD\u7565_\u540D\u79F0: "BPM \u7121\u8996",
+  Ribbon_\u65E0\u9879\u76EE: "\u8A2D\u5B9A\u53EF\u80FD\u306A\u30EA\u30DC\u30F3\u30A2\u30A4\u30B3\u30F3\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3002",
+  Ribbon_\u9690\u85CF: "\u96A0\u3059",
+  Ribbon_\u663E\u793A: "\u8868\u793A",
+  Ribbon_\u672A\u547D\u540D: "(\u7121\u984C)",
+  Ribbon_\u590D\u6D3B\u5931\u8D25: "\u30A2\u30A4\u30B3\u30F3\u306E\u5FA9\u5143\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\u30A2\u30D7\u30EA\u3092\u518D\u8AAD\u307F\u8FBC\u307F\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  // Troubleshooter
+  \u6392\u67E5_\u6B22\u8FCE_\u6807\u9898: "\u{1F50D} \u30D7\u30E9\u30B0\u30A4\u30F3\u7AF6\u5408\u30C8\u30E9\u30D6\u30EB\u30B7\u30E5\u30FC\u30C6\u30A3\u30F3\u30B0",
+  \u6392\u67E5_\u6B22\u8FCE_\u8BF4\u660E: "\u3053\u306E\u30A6\u30A3\u30B6\u30FC\u30C9\u306F\u3001\u4E8C\u5206\u63A2\u7D22\u3092\u4F7F\u7528\u3057\u3066\u7AF6\u5408\u3059\u308B\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u7D20\u65E9\u304F\u7279\u5B9A\u3059\u308B\u306E\u306B\u5F79\u7ACB\u3061\u307E\u3059\u3002\u30D7\u30ED\u30BB\u30B9\u4E2D\u306B\u30D7\u30E9\u30B0\u30A4\u30F3\u304C\u6709\u52B9\u5316/\u7121\u52B9\u5316\u3055\u308C\u307E\u3059\u3002",
+  \u6392\u67E5_\u5F53\u524D\u542F\u7528_\u6587\u672C: "\u73FE\u5728\u6709\u52B9\u306A\u30D7\u30E9\u30B0\u30A4\u30F3",
+  \u6392\u67E5_\u9884\u8BA1\u6B65\u9AA4_\u6587\u672C: "\u63A8\u5B9A\u30B9\u30C6\u30C3\u30D7\u6570",
+  \u6392\u67E5_\u5F00\u59CB_\u6309\u94AE: "\u30C8\u30E9\u30D6\u30EB\u30B7\u30E5\u30FC\u30C6\u30A3\u30F3\u30B0\u958B\u59CB",
+  \u6392\u67E5_\u53D6\u6D88_\u6309\u94AE: "\u30AD\u30E3\u30F3\u30BB\u30EB",
+  \u6392\u67E5_\u6B65\u9AA4_\u6587\u672C: "\u30B9\u30C6\u30C3\u30D7",
+  \u6392\u67E5_\u9636\u6BB5_\u786E\u8BA4: "\u30D5\u30A7\u30FC\u30BA 1: \u554F\u984C\u306E\u78BA\u8A8D\uFF08\u3059\u3079\u3066\u7121\u52B9\u5316\uFF09",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E00: "\u30D5\u30A7\u30FC\u30BA 2: \u6700\u521D\u306E\u7591\u308F\u3057\u3044\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u4E8C\u5206\u63A2\u7D22",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E8C: "\u30D5\u30A7\u30FC\u30BA 3: 2\u756A\u76EE\u306E\u7AF6\u5408\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u4E8C\u5206\u63A2\u7D22",
+  \u6392\u67E5_\u7B2C\u4E00\u51B2\u7A81_\u6587\u672C: "\u6700\u521D\u306E\u7AF6\u5408\u30D7\u30E9\u30B0\u30A4\u30F3",
+  \u6392\u67E5_\u5DF2\u542F\u7528_\u6587\u672C: "\u6709\u52B9",
+  \u6392\u67E5_\u5DF2\u7981\u7528_\u6587\u672C: "\u7121\u52B9",
+  \u6392\u67E5_\u6D4B\u8BD5\u63D0\u793A_\u6587\u672C: "\u554F\u984C\u304C\u307E\u3060\u5B58\u5728\u3059\u308B\u304B\u30C6\u30B9\u30C8\u3057\u3001\u4EE5\u4E0B\u306E\u30DC\u30BF\u30F3\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\uFF1A",
+  \u6392\u67E5_\u95EE\u9898\u8FD8\u5728_\u6309\u94AE: "\u554F\u984C\u306F\u307E\u3060\u5B58\u5728\u3057\u307E\u3059",
+  \u6392\u67E5_\u95EE\u9898\u6D88\u5931_\u6309\u94AE: "\u554F\u984C\u306F\u89E3\u6C7A\u3057\u307E\u3057\u305F",
+  \u6392\u67E5_\u91CD\u542F_\u6309\u94AE: "Obsidian \u3092\u518D\u8D77\u52D5",
+  \u6392\u67E5_\u64A4\u9500_\u6309\u94AE: "\u524D\u306E\u30B9\u30C6\u30C3\u30D7\u306B\u623B\u308B",
+  \u6392\u67E5_\u9000\u51FA_\u6309\u94AE: "\u7D42\u4E86",
+  \u6392\u67E5_\u5DF2\u7981\u7528\u6240\u6709_\u901A\u77E5: "\u3059\u3079\u3066\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u7121\u52B9\u5316\u3057\u307E\u3057\u305F\u3002\u554F\u984C\u304C\u307E\u3060\u5B58\u5728\u3059\u308B\u304B\u30C6\u30B9\u30C8\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  \u6392\u67E5_\u975E\u63D2\u4EF6\u95EE\u9898_\u901A\u77E5: "\u3059\u3079\u3066\u7121\u52B9\u5316\u3057\u3066\u3082\u554F\u984C\u304C\u89E3\u6C7A\u3057\u307E\u305B\u3093\u3002\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u7AF6\u5408\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002",
+  \u6392\u67E5_\u5DF2\u64A4\u9500_\u901A\u77E5: "\u524D\u306E\u30B9\u30C6\u30C3\u30D7\u306B\u623B\u308A\u307E\u3057\u305F",
+  \u6392\u67E5_\u65E0\u6CD5\u5B9A\u4F4D_\u901A\u77E5: "\u7AF6\u5408\u3092\u7279\u5B9A\u3067\u304D\u307E\u305B\u3093\u3067\u3057\u305F\u3002\u8907\u96D1\u306A\u7AF6\u5408\u306E\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\u3002",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6807\u9898: "\u30C8\u30E9\u30D6\u30EB\u30B7\u30E5\u30FC\u30C6\u30A3\u30F3\u30B0\u3092\u7D42\u4E86",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6587\u672C: "\u7D42\u4E86\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F\u5143\u306E\u72B6\u614B\u306B\u623B\u3059\u304B\u3001\u73FE\u5728\u306E\u72B6\u614B\u3092\u7DAD\u6301\u3059\u308B\u304B\u9078\u629E\u3067\u304D\u307E\u3059\u3002",
+  \u6392\u67E5_\u6062\u590D\u5E76\u9000\u51FA_\u6309\u94AE: "\u5FA9\u5143\u3057\u3066\u7D42\u4E86",
+  \u6392\u67E5_\u4FDD\u6301\u5E76\u9000\u51FA_\u6309\u94AE: "\u7DAD\u6301\u3057\u3066\u7D42\u4E86",
+  \u6392\u67E5_\u7EE7\u7EED\u6392\u67E5_\u6309\u94AE: "\u7D9A\u3051\u308B",
+  \u6392\u67E5_\u5B8C\u6210_\u6807\u9898: "\u30C8\u30E9\u30D6\u30EB\u30B7\u30E5\u30FC\u30C6\u30A3\u30F3\u30B0\u5B8C\u4E86",
+  \u6392\u67E5_\u53D1\u73B0\u51B2\u7A81_\u6587\u672C: "\u7AF6\u5408\u30DA\u30A2\u304C\u898B\u3064\u304B\u308A\u307E\u3057\u305F",
+  \u6392\u67E5_\u5EFA\u8BAE_\u6807\u9898: "\u63A8\u5968\u3055\u308C\u308B\u30A2\u30AF\u30B7\u30E7\u30F3",
+  \u6392\u67E5_\u5EFA\u8BAE1_\u6587\u672C: "\u4E21\u65B9\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u306E GitHub Issues \u3092\u78BA\u8A8D",
+  \u6392\u67E5_\u5EFA\u8BAE2_\u6587\u672C: "\u4E21\u65B9\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u6700\u65B0\u7248\u306B\u66F4\u65B0",
+  \u6392\u67E5_\u5EFA\u8BAE3_\u6587\u672C: "\u3069\u3061\u3089\u304B\u4E00\u65B9\u3092\u4E00\u6642\u7684\u306B\u7121\u52B9\u5316",
+  \u6392\u67E5_\u603B\u6B65\u9AA4_\u6587\u672C: "\u5408\u8A08\u30B9\u30C6\u30C3\u30D7\u6570",
+  \u6392\u67E5_\u6062\u590D\u539F\u59CB_\u6309\u94AE: "\u5143\u306E\u72B6\u614B\u306B\u623B\u3059",
+  \u6392\u67E5_\u4FDD\u6301\u5F53\u524D_\u6309\u94AE: "\u73FE\u5728\u306E\u72B6\u614B\u3092\u7DAD\u6301",
+  \u6392\u67E5_\u751F\u6210\u62A5\u544A_\u6309\u94AE: "\u30EC\u30DD\u30FC\u30C8\u3092\u751F\u6210",
+  \u6392\u67E5_\u5DF2\u6062\u590D_\u901A\u77E5: "\u5143\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u72B6\u614B\u306B\u5FA9\u5143\u3057\u307E\u3057\u305F",
+  \u6392\u67E5_\u65E0\u7ED3\u679C_\u901A\u77E5: "\u30EC\u30DD\u30FC\u30C8\u7528\u306E\u7D50\u679C\u304C\u3042\u308A\u307E\u305B\u3093",
+  \u6392\u67E5_\u62A5\u544A\u5DF2\u751F\u6210_\u901A\u77E5: "\u7AF6\u5408\u30EC\u30DD\u30FC\u30C8\u304C\u751F\u6210\u3055\u308C\u307E\u3057\u305F",
+  \u6392\u67E5_\u62A5\u544A\u5931\u8D25_\u901A\u77E5: "\u30EC\u30DD\u30FC\u30C8\u306E\u751F\u6210\u306B\u5931\u6557\u3057\u307E\u3057\u305F",
+  \u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0: "\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u7AF6\u5408\u3092\u8ABF\u67FB",
+  // Updates
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210: "\u78BA\u8A8D\u5B8C\u4E86\u3001{count} \u4EF6\u306E\u66F4\u65B0\u304C\u898B\u3064\u304B\u308A\u307E\u3057\u305F",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25: "\u78BA\u8A8D\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\u518D\u8A66\u884C\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664: "\u30D7\u30EA\u30BB\u30C3\u30C8\u30BF\u30B0\u306F\u524A\u9664\u3067\u304D\u307E\u305B\u3093",
+  // Troubleshooter Algorithm Descriptions
+  \u6392\u67E5_\u5217\u8868_\u65E0: "(\u306A\u3057)",
+  \u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8: "\u3059\u3079\u3066\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u7121\u52B9\u5316",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A: "\u524D\u534A\u3092\u30C6\u30B9\u30C8\u4E2D ({count} \u500B\u306E\u30D7\u30E9\u30B0\u30A4\u30F3)",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u540E\u534A: "\u5F8C\u534A\u3092\u30C6\u30B9\u30C8\u4E2D ({count} \u500B\u306E\u30D7\u30E9\u30B0\u30A4\u30F3)",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u5355\u63D2\u4EF6: "\u5358\u4E00\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u691C\u8A3C\u4E2D: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1: "\u691C\u8A3C\u4E2D: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D: "\u30B0\u30EB\u30FC\u30D7 A \u56FA\u5B9A ({countA}) + \u30B0\u30EB\u30FC\u30D7 B \u524D\u534A ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u540E: "\u30B0\u30EB\u30FC\u30D7 A \u56FA\u5B9A ({countA}) + \u30B0\u30EB\u30FC\u30D7 B \u5F8C\u534A ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D: "\u30B0\u30EB\u30FC\u30D7 B \u56FA\u5B9A ({countB}) + \u30B0\u30EB\u30FC\u30D7 A \u524D\u534A ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u540E: "\u30B0\u30EB\u30FC\u30D7 B \u56FA\u5B9A ({countB}) + \u30B0\u30EB\u30FC\u30D7 A \u5F8C\u534A ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u51B2\u7A81\u5BF9: "\u7AF6\u5408\u30DA\u30A2\u3092\u691C\u8A3C\u4E2D: {name1} + {name2}",
+  \u6392\u67E5_\u9519\u8BEF_\u72B6\u6001\u5F02\u5E38: "\u691C\u8A3C\u30D5\u30A7\u30FC\u30BA\u3067\u72B6\u614B\u30A8\u30E9\u30FC",
+  \u6392\u67E5_\u9519\u8BEF_\u672A\u77E5\u9636\u6BB5: "\u4E0D\u660E\u306A\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0\u6BB5\u968E",
+  // Report
+  \u62A5\u544A_\u5355\u63D2\u4EF6_\u6807\u9898: "\u30D7\u30E9\u30B0\u30A4\u30F3\u554F\u984C\u30EC\u30DD\u30FC\u30C8",
+  \u62A5\u544A_\u51B2\u7A81_\u6807\u9898: "\u30D7\u30E9\u30B0\u30A4\u30F3\u7AF6\u5408\u30EC\u30DD\u30FC\u30C8",
+  \u62A5\u544A_\u751F\u6210\u8BF4\u660E: "\u751F\u6210\u5143: **Better Plugins Manager** \u65E5\u6642:",
+  \u62A5\u544A_\u53D1\u73B0\u95EE\u9898\u63D2\u4EF6: "\u554F\u984C\u306E\u3042\u308B\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u767A\u898B",
+  \u62A5\u544A_\u53D1\u73B0\u51B2\u7A81: "\u7AF6\u5408\u3092\u691C\u51FA",
+  \u62A5\u544A_\u63D2\u4EF6: "\u30D7\u30E9\u30B0\u30A4\u30F3",
+  \u62A5\u544A_\u63D2\u4EF61: "\u30D7\u30E9\u30B0\u30A4\u30F3 1",
+  \u62A5\u544A_\u63D2\u4EF62: "\u30D7\u30E9\u30B0\u30A4\u30F3 2",
+  \u62A5\u544A_\u6392\u67E5\u6458\u8981: "\u30C8\u30E9\u30D6\u30EB\u30B7\u30E5\u30FC\u30C6\u30A3\u30F3\u30B0\u6982\u8981",
+  \u62A5\u544A_\u603B\u6B65\u9AA4: "\u5408\u8A08\u30B9\u30C6\u30C3\u30D7",
+  \u62A5\u544A_\u7ED3\u679C\u7C7B\u578B: "\u7D50\u679C\u30BF\u30A4\u30D7",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u95EE\u9898: "\u5358\u4E00\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u554F\u984C",
+  \u62A5\u544A_\u51B2\u7A81\u5BF9: "\u30D7\u30E9\u30B0\u30A4\u30F3\u30DA\u30A2\u306E\u7AF6\u5408",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u6570: "\u5143\u3005\u6709\u52B9\u3060\u3063\u305F\u30D7\u30E9\u30B0\u30A4\u30F3\u6570",
+  \u62A5\u544A_\u5EFA\u8BAE\u64CD\u4F5C: "\u63A8\u5968\u3055\u308C\u308B\u30A2\u30AF\u30B7\u30E7\u30F3",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE1: "\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u6700\u65B0\u30D0\u30FC\u30B8\u30E7\u30F3\u306B\u66F4\u65B0\u3057\u3066\u307F\u3066\u304F\u3060\u3055\u3044",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE2: "\u30D7\u30E9\u30B0\u30A4\u30F3\u306E GitHub Issues \u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE3: "\u30D7\u30E9\u30B0\u30A4\u30F3\u4F5C\u8005\u306B\u554F\u984C\u3092\u5831\u544A\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE4: "\u3053\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u4E00\u6642\u7684\u306B\u7121\u52B9\u5316\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE1: "\u4E21\u65B9\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u306E GitHub Issues \u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE2: "\u4E21\u65B9\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u6700\u65B0\u30D0\u30FC\u30B8\u30E7\u30F3\u306B\u66F4\u65B0\u3057\u3066\u307F\u3066\u304F\u3060\u3055\u3044",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE3: "\u7AF6\u5408\u3059\u308B\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u7247\u65B9\u3092\u4E00\u6642\u7684\u306B\u7121\u52B9\u5316\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE4: "\u30D7\u30E9\u30B0\u30A4\u30F3\u4F5C\u8005\u306B\u554F\u984C\u3092\u5831\u544A\u3057\u3066\u304F\u3060\u3055\u3044",
+  \u62A5\u544A_\u5907\u6CE8: "\u30E1\u30E2",
+  \u62A5\u544A_\u5907\u6CE8\u63D0\u793A: "*\u3053\u3053\u306B\u30E1\u30E2\u3092\u8FFD\u52A0...*",
+  \u62A5\u544A_\u6280\u672F\u8BE6\u60C5: "\u6280\u8853\u8A73\u7D30",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u5217\u8868: "\u5143\u3005\u6709\u52B9\u3060\u3063\u305F\u30D7\u30E9\u30B0\u30A4\u30F3\u4E00\u89A7"
 };
 
 // src/lang/locale/ko.ts
@@ -5416,8 +6068,8 @@ var ko_default = {
   \u901A\u7528_\u8FD4\u56DE_\u6587\u672C: "\uB4A4\uB85C",
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "\uC800\uC7A5\uC18C \uBC29\uBB38",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "\uBE44\uB514\uC624 \uD29C\uD1A0\uB9AC\uC5BC\uC5D0 \uC561\uC138\uC2A4",
-  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\uD3B8\uC9D1 \uBAA8\uB4DC\uB97C \uD65C\uC131\uD654\uD558\uC5EC \uD50C\uB7EC\uADF8\uC778 \uC124\uC815\uC744 \uC790\uC138\uD788 \uCEE4\uC2A4\uD130\uB9C8\uC774\uC9D5\uD558\uC138\uC694",
-  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\uD50C\uB7EC\uADF8\uC778\uC744 \uB2E4\uC2DC \uB85C\uB4DC\uD558\uC5EC \uC989\uC2DC \uC801\uC6A9\uD558\uC138\uC694",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\uD3B8\uC9D1 \uBAA8\uB4DC \uD65C\uC131\uD654",
+  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\uD50C\uB7EC\uADF8\uC778 \uBAA9\uB85D \uB2E4\uC2DC \uB85C\uB4DC",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\uD50C\uB7EC\uADF8\uC778 \uC5C5\uB370\uC774\uD2B8\uB97C \uD655\uC778\uD558\uC138\uC694",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "\uD55C \uBC88\uC5D0 \uBAA8\uB4E0 \uD50C\uB7EC\uADF8\uC778\uC744 \uBE44\uD65C\uC131\uD654\uD558\uC138\uC694",
   \u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0: "\uD55C \uBC88\uC5D0 \uBAA8\uB4E0 \uD50C\uB7EC\uADF8\uC778\uC744 \uD65C\uC131\uD654\uD558\uC138\uC694",
@@ -5456,6 +6108,7 @@ var ko_default = {
   \u5378\u8F7D_\u53D6\u6D88: "\uCDE8\uC18C",
   \u5378\u8F7D_\u901A\u77E5_\u4E00: "\uC131\uACF5\uC801\uC73C\uB85C \uC81C\uAC70\uB418\uC5C8\uC2B5\uB2C8\uB2E4",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u524D\u7F00: "\uAE30\uBCF8",
+  \u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u524D\u7F00: "\uC2A4\uD0C0\uC77C",
   \u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u524D\u7F00: "\uADF8\uB8F9",
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u524D\u7F00: "\uD0DC\uADF8",
   \u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u524D\u7F00: "\uB51C\uB808\uC774",
@@ -5515,7 +6168,156 @@ var ko_default = {
   \u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A: "\uC774 \uD50C\uB7EC\uADF8\uC778\uC740 \uACF5\uC2DD/BPM \uC124\uCE58\uAC00 \uC544\uB2D9\uB2C8\uB2E4. \uC18C\uC2A4\uB97C \uC218\uB3D9\uC73C\uB85C \uC124\uC815\uD558\uC138\uC694.",
   \u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A: "\uC800\uC7A5\uC18C \uC815\uBCF4\uAC00 \uC5C6\uC5B4 \uC5C5\uB370\uC774\uD2B8\uB97C \uB2E4\uC6B4\uB85C\uB4DC\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.",
   \u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0: "\uB354 \uB9CE\uC740 \uC791\uC5C5",
-  \u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898: "\uC800\uC7A5\uC18C \uC5F4\uAE30"
+  \u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898: "\uC800\uC7A5\uC18C \uC5F4\uAE30",
+  \u901A\u77E5_\u68C0\u6D4B\u66F4\u65B0\u4E2D\u6587\u6848: "\uD50C\uB7EC\uADF8\uC778 \uC5C5\uB370\uC774\uD2B8 \uD655\uC778 \uC911...",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25_\u5EFA\u8BAEToken: "\uB124\uD2B8\uC6CC\uD06C/API \uC81C\uD55C. GitHub \uD1A0\uD070(Public repositories)\uC744 \uC124\uC815\uD558\uACE0 \uB2E4\uC2DC \uC2DC\uB3C4\uD558\uC138\uC694.",
+  \u7BA1\u7406\u5668_\u4E0B\u8F7D\u66F4\u65B0_\u63CF\u8FF0: "\uC5C5\uB370\uC774\uD2B8 \uB2E4\uC6B4\uB85C\uB4DC (\uBC84\uC804 \uC120\uD0DD, \uD504\uB9AC\uB9B4\uB9AC\uC2A4 \uD3EC\uD568)",
+  \u5B89\u88C5_\u6210\u529F_\u63D0\u793A: "\uC124\uCE58/\uC5C5\uB370\uC774\uD2B8 \uC131\uACF5: ",
+  \u5B89\u88C5_\u9519\u8BEF_\u9650\u901F: "GitHub \uC18D\uB3C4 \uC81C\uD55C (403). \uD1A0\uD070\uC744 \uC124\uC815\uD558\uACE0 \uB2E4\uC2DC \uC2DC\uB3C4\uD558\uC138\uC694.",
+  \u5B89\u88C5_\u9519\u8BEF_\u7F3A\u5C11\u8D44\u6E90: "\uB9B4\uB9AC\uC2A4 \uC790\uC0B0\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC800\uC7A5\uC18C/\uBC84\uC804\uC744 \uD655\uC778\uD558\uC138\uC694.",
+  \u5B89\u88C5_\u9519\u8BEF_\u901A\u7528: "\uC124\uCE58 \uC2E4\uD328. \uC800\uC7A5\uC18C/\uBC84\uC804 \uB610\uB294 \uB124\uD2B8\uC6CC\uD06C\uB97C \uD655\uC778\uD558\uC138\uC694.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898: "\uB514\uBC84\uADF8 \uBAA8\uB4DC",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0: "\uAEBC\uC9D0: \uC624\uB958\uB9CC \uAE30\uB85D, \uCF1C\uC9D0: \uB514\uBC84\uADF8 \uB85C\uADF8 \uCD9C\uB825.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898: "\uC0C8 \uD50C\uB7EC\uADF8\uC778 \uC790\uB3D9 \uAD00\uB9AC",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0: "\uB9C8\uCF13\uC5D0\uC11C \uC124\uCE58\uB41C \uC0C8 \uD50C\uB7EC\uADF8\uC778\uC744 \uC790\uB3D9\uC73C\uB85C \uAD00\uB9AC(BPM\uC73C\uB85C \uD65C\uC131\uD654 \uBC0F \uAD00\uB9AC)\uD558\uACE0, \uC778\uACC4 \uBA54\uC2DC\uC9C0\uB97C \uC5B5\uC81C\uD569\uB2C8\uB2E4.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898: "\uC0AC\uC804 \uC124\uC815 \uD0DC\uADF8 \uC228\uAE30\uAE30 (\uC124\uCE58/\uBB34\uC2DC)",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0: "\uBAA9\uB85D\uC5D0\uC11C \uC790\uB3D9\uC73C\uB85C \uCD94\uAC00\uB41C bpm-install \uBC0F bpm-ignore \uD0DC\uADF8\uB97C \uC228\uAE41\uB2C8\uB2E4.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898: "\uD544\uD130 \uC0C1\uD0DC \uC720\uC9C0",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0: "\uD65C\uC131\uD654\uD558\uBA74 \uAD00\uB9AC\uC790\uB97C \uC5F4 \uB54C\uB9C8\uB2E4 \uB3D9\uC77C\uD55C \uD50C\uB7EC\uADF8\uC778 \uBAA9\uB85D(\uD544\uD130 \uC0C1\uD0DC)\uC744 \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898: "\uC778\uD130\uD398\uC774\uC2A4 \uC911\uC559 \uC815\uB82C",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0: "\uAD00\uB9AC\uC790 \uC778\uD130\uD398\uC774\uC2A4\uB97C \uD654\uBA74 \uC911\uC559\uC5D0 \uD45C\uC2DC\uD560\uC9C0 \uC5EC\uBD80\uB97C \uC124\uC815\uD569\uB2C8\uB2E4.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E00: "\uD56D\uC0C1 \uD3BC\uCE58\uAE30",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E8C: "\uD56D\uC0C1 \uC811\uAE30",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E09: "\uB9C8\uC6B0\uC2A4 \uC624\uBC84 \uC2DC \uD3BC\uCE58\uAE30",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u56DB: "\uD074\uB9AD \uC2DC \uD3BC\uCE58\uAE30",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E00: "\uC2A4\uD0C0\uC77C 1",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E8C: "\uC2A4\uD0C0\uC77C 2",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E09: "\uC2A4\uD0C0\uC77C 3",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u56DB: "\uC2A4\uD0C0\uC77C 4",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E00: "\uC2A4\uD0C0\uC77C 1",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E8C: "\uC2A4\uD0C0\uC77C 2",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E09: "\uC2A4\uD0C0\uC77C 3",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u56DB: "\uC2A4\uD0C0\uC77C 4",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u6807\u9898: "BPM \uBB34\uC2DC",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u63CF\u8FF0: '\uC774 \uD50C\uB7EC\uADF8\uC778\uC740 "bpm-ignore" \uD0DC\uADF8\uAC00 \uC9C0\uC815\uB418\uC5B4 \uC788\uC2B5\uB2C8\uB2E4. BPM\uC740 \uC774 \uD50C\uB7EC\uADF8\uC778\uC758 \uC0C1\uD0DC\uB098 \uC9C0\uC5F0\uC744 \uAD00\uB9AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.',
+  \u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A: '\uC774 \uD50C\uB7EC\uADF8\uC778\uC740 "bpm-ignore" \uD0DC\uADF8\uAC00 \uC788\uC5B4 BPM\uC5D0\uC11C \uC791\uC5C5\uC774 \uBE44\uD65C\uC131\uD654\uB429\uB2C8\uB2E4.',
+  // Self-check
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u6807\u9898: "BPM \uBBF8\uAD00\uB9AC \uD50C\uB7EC\uADF8\uC778 \uAC10\uC9C0\uB428",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u8BF4\u660E: "Obsidian\uC758 community-plugins.json\uC5D0 Obsidian\uC774 \uC9C1\uC811 \uC2DC\uC791\uD55C \uD50C\uB7EC\uADF8\uC778\uC774 \uD3EC\uD568\uB418\uC5B4 \uC788\uC2B5\uB2C8\uB2E4. \uCDA9\uB3CC\uC744 \uBC29\uC9C0\uD558\uAE30 \uC704\uD574 BPM\uC774 \uC81C\uC5B4\uAD8C\uC744 \uAC00\uC838\uC624\uB294 \uAC83\uC774 \uC88B\uC2B5\uB2C8\uB2E4.",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u5217\u8868: "\uAC10\uC9C0\uB41C \uD50C\uB7EC\uADF8\uC778:",
+  \u81EA\u68C0_\u8B66\u544A_\u6587\u672C: "\uC774\uB97C \uBB34\uC2DC\uD558\uBA74 \uD50C\uB7EC\uADF8\uC778 \uC0C1\uD0DC \uBD88\uC77C\uCE58\uB098 \uC9C0\uC5F0 \uC2DC\uC791 \uAE30\uB2A5 \uC624\uC791\uB3D9\uC774 \uBC1C\uC0DD\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
+  \u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE: "BPM\uC774 \uC81C\uC5B4\uD558\uB3C4\uB85D \uC124\uC815",
+  \u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE: "\uC774\uBC88\uB9CC \uBB34\uC2DC",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A_\u6309\u94AE: "\uB2E4\uC2DC \uD45C\uC2DC \uC548 \uD568",
+  \u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5: "\uD50C\uB7EC\uADF8\uC778 \uC81C\uC5B4 \uAD8C\uD55C \uD68D\uB4DD \uC131\uACF5",
+  \u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5: "\uC81C\uC5B4 \uAD8C\uD55C \uD68D\uB4DD \uC2E4\uD328, community-plugins.json\uC744 \uC218\uB3D9\uC73C\uB85C \uC218\uC815\uD558\uC138\uC694",
+  \u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5: "\uBCC0\uACBD \uC0AC\uD56D\uC744 \uC801\uC6A9\uD558\uB824\uBA74 Obsidian\uC744 \uB2E4\uC2DC \uC2DC\uC791\uD558\uC138\uC694",
+  \u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5: "\uACBD\uACE0 \uBB34\uC2DC\uB428. Obsidian\uACFC BPM\uC744 \uD63C\uC6A9\uD558\uBA74 \uBB38\uC81C\uAC00 \uBC1C\uC0DD\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "\uB2E4\uC2DC \uD45C\uC2DC\uB418\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC124\uC815\uC5D0\uC11C \uB2E4\uC2DC \uD65C\uC131\uD654\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4",
+  // Ribbon
+  \u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0: "\uB9AC\uBCF8 \uC544\uC774\uCF58 \uAD00\uB9AC",
+  Ribbon_\u6807\u9898: "\uB9AC\uBCF8 \uAD00\uB9AC\uC790",
+  Ribbon_\u8BF4\u660E: "\u2261 \uC544\uC774\uCF58\uC744 \uB4DC\uB798\uADF8\uD558\uC5EC \uC21C\uC11C\uB97C \uBCC0\uACBD\uD558\uACE0, \uB208 \uC544\uC774\uCF58\uC744 \uD074\uB9AD\uD558\uC5EC \uAC00\uC2DC\uC131\uC744 \uC804\uD658\uD558\uC138\uC694.",
+  Ribbon_\u9700\u91CD\u8F7D_\u63D0\u793A: "\uC77C\uBD80 \uD65C\uC131\uD654\uB41C \uC544\uC774\uCF58\uC740 \uC571\uC744 \uB2E4\uC2DC \uB85C\uB4DC\uD574\uC57C \uD45C\uC2DC\uB429\uB2C8\uB2E4.",
+  Ribbon_\u91CD\u8F7D_\u6309\u94AE: "\uC571 \uB2E4\uC2DC \uB85C\uB4DC",
+  Ribbon_\u539F\u751F\u6A21\u5F0F_\u6807\u7B7E: "\uB124\uC774\uD2F0\uBE0C \uB3D9\uAE30\uD654 \uBAA8\uB4DC",
+  Ribbon_\u5DF2\u9690\u85CF: "\uC228\uACA8\uC9C4 \uB9AC\uBCF8 \uC544\uC774\uCF58",
+  \u6807\u7B7E_BPM\u5FFD\u7565_\u540D\u79F0: "BPM \uBB34\uC2DC",
+  Ribbon_\u65E0\u9879\u76EE: "\uAD6C\uC131 \uAC00\uB2A5\uD55C \uB9AC\uBCF8 \uC544\uC774\uCF58\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.",
+  Ribbon_\u9690\u85CF: "\uC228\uAE30\uAE30",
+  Ribbon_\u663E\u793A: "\uBCF4\uC774\uAE30",
+  Ribbon_\u672A\u547D\u540D: "(\uC81C\uBAA9 \uC5C6\uC74C)",
+  Ribbon_\u590D\u6D3B\u5931\u8D25: "\uC544\uC774\uCF58 \uBCF5\uC6D0 \uC2E4\uD328, \uC571\uC744 \uB2E4\uC2DC \uB85C\uB4DC\uD558\uC138\uC694.",
+  // Troubleshooter
+  \u6392\u67E5_\u6B22\u8FCE_\u6807\u9898: "\u{1F50D} \uD50C\uB7EC\uADF8\uC778 \uCDA9\uB3CC \uD574\uACB0 \uB9C8\uBC95\uC0AC",
+  \u6392\u67E5_\u6B22\u8FCE_\u8BF4\u660E: "\uC774 \uB9C8\uBC95\uC0AC\uB294 \uC774\uC9C4 \uD0D0\uC0C9\uC744 \uC0AC\uC6A9\uD558\uC5EC \uCDA9\uB3CC\uD558\uB294 \uD50C\uB7EC\uADF8\uC778\uC744 \uBE60\uB974\uAC8C \uCC3E\uB3C4\uB85D \uB3C4\uC640\uC90D\uB2C8\uB2E4. \uACFC\uC815 \uC911\uC5D0 \uD50C\uB7EC\uADF8\uC778\uC774 \uD65C\uC131\uD654/\uBE44\uD65C\uC131\uD654\uB429\uB2C8\uB2E4.",
+  \u6392\u67E5_\u5F53\u524D\u542F\u7528_\u6587\u672C: "\uD604\uC7AC \uD65C\uC131\uD654\uB41C \uD50C\uB7EC\uADF8\uC778",
+  \u6392\u67E5_\u9884\u8BA1\u6B65\u9AA4_\u6587\u672C: "\uC608\uC0C1 \uB2E8\uACC4",
+  \u6392\u67E5_\u5F00\u59CB_\u6309\u94AE: "\uBB38\uC81C \uD574\uACB0 \uC2DC\uC791",
+  \u6392\u67E5_\u53D6\u6D88_\u6309\u94AE: "\uCDE8\uC18C",
+  \u6392\u67E5_\u6B65\u9AA4_\u6587\u672C: "\uB2E8\uACC4",
+  \u6392\u67E5_\u9636\u6BB5_\u786E\u8BA4: "1\uB2E8\uACC4: \uBB38\uC81C \uD655\uC778 (\uBAA8\uB450 \uBE44\uD65C\uC131\uD654)",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E00: "2\uB2E8\uACC4: \uCCAB \uBC88\uC9F8 \uC758\uC2EC \uD50C\uB7EC\uADF8\uC778 \uC774\uC9C4 \uD0D0\uC0C9",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E8C: "3\uB2E8\uACC4: \uB450 \uBC88\uC9F8 \uCDA9\uB3CC \uD50C\uB7EC\uADF8\uC778 \uC774\uC9C4 \uD0D0\uC0C9",
+  \u6392\u67E5_\u7B2C\u4E00\u51B2\u7A81_\u6587\u672C: "\uCCAB \uBC88\uC9F8 \uCDA9\uB3CC \uD50C\uB7EC\uADF8\uC778",
+  \u6392\u67E5_\u5DF2\u542F\u7528_\u6587\u672C: "\uD65C\uC131",
+  \u6392\u67E5_\u5DF2\u7981\u7528_\u6587\u672C: "\uBE44\uD65C\uC131",
+  \u6392\u67E5_\u6D4B\u8BD5\u63D0\u793A_\u6587\u672C: "\uBB38\uC81C\uAC00 \uC5EC\uC804\uD788 \uC874\uC7AC\uD558\uB294\uC9C0 \uD14C\uC2A4\uD2B8\uD558\uACE0 \uC544\uB798 \uBC84\uD2BC\uC744 \uC120\uD0DD\uD558\uC138\uC694:",
+  \u6392\u67E5_\u95EE\u9898\u8FD8\u5728_\u6309\u94AE: "\uBB38\uC81C\uAC00 \uC5EC\uC804\uD788 \uC788\uC74C",
+  \u6392\u67E5_\u95EE\u9898\u6D88\u5931_\u6309\u94AE: "\uBB38\uC81C\uAC00 \uD574\uACB0\uB428",
+  \u6392\u67E5_\u91CD\u542F_\u6309\u94AE: "Obsidian \uC7AC\uC2DC\uC791",
+  \u6392\u67E5_\u64A4\u9500_\u6309\u94AE: "\uC774\uC804 \uB2E8\uACC4 \uCDE8\uC18C",
+  \u6392\u67E5_\u9000\u51FA_\u6309\u94AE: "\uC885\uB8CC",
+  \u6392\u67E5_\u5DF2\u7981\u7528\u6240\u6709_\u901A\u77E5: "\uBAA8\uB4E0 \uD50C\uB7EC\uADF8\uC778\uC774 \uBE44\uD65C\uC131\uD654\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uBB38\uC81C\uAC00 \uC5EC\uC804\uD788 \uC874\uC7AC\uD558\uB294\uC9C0 \uD14C\uC2A4\uD2B8\uD558\uC138\uC694.",
+  \u6392\u67E5_\u975E\u63D2\u4EF6\u95EE\u9898_\u901A\u77E5: "\uBAA8\uB450 \uBE44\uD65C\uC131\uD654\uD574\uB3C4 \uBB38\uC81C\uAC00 \uC9C0\uC18D\uB429\uB2C8\uB2E4. \uD50C\uB7EC\uADF8\uC778 \uCDA9\uB3CC\uC774 \uC544\uB2D0 \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
+  \u6392\u67E5_\u5DF2\u64A4\u9500_\u901A\u77E5: "\uC774\uC804 \uB2E8\uACC4\uB85C \uB418\uB3CC\uB838\uC2B5\uB2C8\uB2E4",
+  \u6392\u67E5_\u65E0\u6CD5\u5B9A\u4F4D_\u901A\u77E5: "\uCDA9\uB3CC\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uBCF5\uC7A1\uD55C \uCDA9\uB3CC\uC77C \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6807\u9898: "\uBB38\uC81C \uD574\uACB0 \uC885\uB8CC",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6587\u672C: "\uC885\uB8CC\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C? \uC6D0\uB798 \uC0C1\uD0DC\uB85C \uBCF5\uC6D0\uD558\uAC70\uB098 \uD604\uC7AC \uC0C1\uD0DC\uB97C \uC720\uC9C0\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
+  \u6392\u67E5_\u6062\u590D\u5E76\u9000\u51FA_\u6309\u94AE: "\uBCF5\uC6D0 \uBC0F \uC885\uB8CC",
+  \u6392\u67E5_\u4FDD\u6301\u5E76\u9000\u51FA_\u6309\u94AE: "\uC720\uC9C0 \uBC0F \uC885\uB8CC",
+  \u6392\u67E5_\u7EE7\u7EED\u6392\u67E5_\u6309\u94AE: "\uACC4\uC18D",
+  \u6392\u67E5_\u5B8C\u6210_\u6807\u9898: "\uBB38\uC81C \uD574\uACB0 \uC644\uB8CC",
+  \u6392\u67E5_\u53D1\u73B0\u51B2\u7A81_\u6587\u672C: "\uCDA9\uB3CC \uC30D \uBC1C\uACAC",
+  \u6392\u67E5_\u5EFA\u8BAE_\u6807\u9898: "\uC81C\uC548\uB41C \uC870\uCE58",
+  \u6392\u67E5_\u5EFA\u8BAE1_\u6587\u672C: "\uB450 \uD50C\uB7EC\uADF8\uC778\uC758 GitHub \uC774\uC288 \uD655\uC778",
+  \u6392\u67E5_\u5EFA\u8BAE2_\u6587\u672C: "\uB450 \uD50C\uB7EC\uADF8\uC778\uC744 \uCD5C\uC2E0 \uBC84\uC804\uC73C\uB85C \uC5C5\uB370\uC774\uD2B8",
+  \u6392\u67E5_\u5EFA\u8BAE3_\u6587\u672C: "\uB458 \uC911 \uD558\uB098\uB97C \uC77C\uC2DC\uC801\uC73C\uB85C \uBE44\uD65C\uC131\uD654",
+  \u6392\u67E5_\u603B\u6B65\u9AA4_\u6587\u672C: "\uCD1D \uB2E8\uACC4 \uC218",
+  \u6392\u67E5_\u6062\u590D\u539F\u59CB_\u6309\u94AE: "\uC6D0\uB798 \uC0C1\uD0DC \uBCF5\uC6D0",
+  \u6392\u67E5_\u4FDD\u6301\u5F53\u524D_\u6309\u94AE: "\uD604\uC7AC \uC0C1\uD0DC \uC720\uC9C0",
+  \u6392\u67E5_\u751F\u6210\u62A5\u544A_\u6309\u94AE: "\uBCF4\uACE0\uC11C \uC0DD\uC131",
+  \u6392\u67E5_\u5DF2\u6062\u590D_\u901A\u77E5: "\uC6D0\uB798 \uD50C\uB7EC\uADF8\uC778 \uC0C1\uD0DC\uAC00 \uBCF5\uC6D0\uB418\uC5C8\uC2B5\uB2C8\uB2E4",
+  \u6392\u67E5_\u65E0\u7ED3\u679C_\u901A\u77E5: "\uBCF4\uACE0\uC11C \uACB0\uACFC \uC5C6\uC74C",
+  \u6392\u67E5_\u62A5\u544A\u5DF2\u751F\u6210_\u901A\u77E5: "\uCDA9\uB3CC \uBCF4\uACE0\uC11C \uC0DD\uC131\uB428",
+  \u6392\u67E5_\u62A5\u544A\u5931\u8D25_\u901A\u77E5: "\uBCF4\uACE0\uC11C \uC0DD\uC131 \uC2E4\uD328",
+  \u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0: "\uD50C\uB7EC\uADF8\uC778 \uCDA9\uB3CC \uD574\uACB0",
+  // Updates
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210: "\uD655\uC778 \uC644\uB8CC, {count}\uAC1C\uC758 \uC5C5\uB370\uC774\uD2B8 \uBC1C\uACAC",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25: "\uD655\uC778 \uC2E4\uD328, \uB2E4\uC2DC \uC2DC\uB3C4\uD558\uC138\uC694",
+  \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664: "\uC0AC\uC804 \uC124\uC815 \uD0DC\uADF8\uB294 \uC0AD\uC81C\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4",
+  // Troubleshooter Algorithm Descriptions
+  \u6392\u67E5_\u5217\u8868_\u65E0: "(\uC5C6\uC74C)",
+  \u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8: "\uBAA8\uB4E0 \uD50C\uB7EC\uADF8\uC778 \uBE44\uD65C\uC131\uD654",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A: "\uC804\uBC18\uBD80 \uD14C\uC2A4\uD2B8 \uC911 ({count}\uAC1C \uD50C\uB7EC\uADF8\uC778)",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u540E\u534A: "\uD6C4\uBC18\uBD80 \uD14C\uC2A4\uD2B8 \uC911 ({count}\uAC1C \uD50C\uB7EC\uADF8\uC778)",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u5355\u63D2\u4EF6: "\uB2E8\uC77C \uD50C\uB7EC\uADF8\uC778 \uD655\uC778 \uC911: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1: "\uD655\uC778 \uC911: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D: "\uADF8\uB8F9 A \uACE0\uC815 ({countA}) + \uADF8\uB8F9 B \uC804\uBC18\uBD80 ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u540E: "\uADF8\uB8F9 A \uACE0\uC815 ({countA}) + \uADF8\uB8F9 B \uD6C4\uBC18\uBD80 ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D: "\uADF8\uB8F9 B \uACE0\uC815 ({countB}) + \uADF8\uB8F9 A \uC804\uBC18\uBD80 ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u540E: "\uADF8\uB8F9 B \uACE0\uC815 ({countB}) + \uADF8\uB8F9 A \uD6C4\uBC18\uBD80 ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u51B2\u7A81\u5BF9: "\uCDA9\uB3CC \uC30D \uD655\uC778 \uC911: {name1} + {name2}",
+  \u6392\u67E5_\u9519\u8BEF_\u72B6\u6001\u5F02\u5E38: "\uAC80\uC99D \uB2E8\uACC4 \uC0C1\uD0DC \uC624\uB958",
+  \u6392\u67E5_\u9519\u8BEF_\u672A\u77E5\u9636\u6BB5: "\uC54C \uC218 \uC5C6\uB294 \uC54C\uACE0\uB9AC\uC998 \uB2E8\uACC4",
+  // Report
+  \u62A5\u544A_\u5355\u63D2\u4EF6_\u6807\u9898: "\uD50C\uB7EC\uADF8\uC778 \uBB38\uC81C \uBCF4\uACE0\uC11C",
+  \u62A5\u544A_\u51B2\u7A81_\u6807\u9898: "\uD50C\uB7EC\uADF8\uC778 \uCDA9\uB3CC \uBCF4\uACE0\uC11C",
+  \u62A5\u544A_\u751F\u6210\u8BF4\u660E: "\uC0DD\uC131: **Better Plugins Manager**, \uC77C\uC2DC:",
+  \u62A5\u544A_\u53D1\u73B0\u95EE\u9898\u63D2\u4EF6: "\uBB38\uC81C\uC758 \uD50C\uB7EC\uADF8\uC778 \uBC1C\uACAC",
+  \u62A5\u544A_\u53D1\u73B0\u51B2\u7A81: "\uCDA9\uB3CC \uAC10\uC9C0\uB428",
+  \u62A5\u544A_\u63D2\u4EF6: "\uD50C\uB7EC\uADF8\uC778",
+  \u62A5\u544A_\u63D2\u4EF61: "\uD50C\uB7EC\uADF8\uC778 1",
+  \u62A5\u544A_\u63D2\u4EF62: "\uD50C\uB7EC\uADF8\uC778 2",
+  \u62A5\u544A_\u6392\u67E5\u6458\u8981: "\uBB38\uC81C \uD574\uACB0 \uC694\uC57D",
+  \u62A5\u544A_\u603B\u6B65\u9AA4: "\uCD1D \uB2E8\uACC4",
+  \u62A5\u544A_\u7ED3\u679C\u7C7B\u578B: "\uACB0\uACFC \uC720\uD615",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u95EE\u9898: "\uB2E8\uC77C \uD50C\uB7EC\uADF8\uC778 \uBB38\uC81C",
+  \u62A5\u544A_\u51B2\u7A81\u5BF9: "\uD50C\uB7EC\uADF8\uC778 \uC30D \uCDA9\uB3CC",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u6570: "\uC6D0\uB798 \uD65C\uC131\uD654\uB41C \uD50C\uB7EC\uADF8\uC778 \uC218",
+  \u62A5\u544A_\u5EFA\u8BAE\u64CD\u4F5C: "\uC81C\uC548\uB41C \uC870\uCE58",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE1: "\uD50C\uB7EC\uADF8\uC778\uC744 \uCD5C\uC2E0 \uBC84\uC804\uC73C\uB85C \uC5C5\uB370\uC774\uD2B8\uD574\uBCF4\uC138\uC694",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE2: "\uAD00\uB828 \uBB38\uC81C\uC5D0 \uB300\uD574 \uD50C\uB7EC\uADF8\uC778\uC758 GitHub \uC774\uC288\uB97C \uD655\uC778\uD558\uC138\uC694",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE3: "\uD50C\uB7EC\uADF8\uC778 \uC791\uC131\uC790\uC5D0\uAC8C \uBB38\uC81C\uB97C \uBCF4\uACE0\uD558\uC138\uC694",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE4: "\uC774 \uD50C\uB7EC\uADF8\uC778\uC744 \uC77C\uC2DC\uC801\uC73C\uB85C \uBE44\uD65C\uC131\uD654\uD558\uC138\uC694",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE1: "\uB450 \uD50C\uB7EC\uADF8\uC778\uC758 GitHub \uC774\uC288\uB97C \uD655\uC778\uD558\uC5EC \uC54C\uB824\uC9C4 \uCDA9\uB3CC\uC778\uC9C0 \uD655\uC778\uD558\uC138\uC694",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE2: "\uB450 \uD50C\uB7EC\uADF8\uC778 \uBAA8\uB450 \uCD5C\uC2E0 \uBC84\uC804\uC73C\uB85C \uC5C5\uB370\uC774\uD2B8\uD574\uBCF4\uC138\uC694",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE3: "\uCDA9\uB3CC\uD558\uB294 \uD50C\uB7EC\uADF8\uC778 \uC911 \uD558\uB098\uB97C \uC77C\uC2DC\uC801\uC73C\uB85C \uBE44\uD65C\uC131\uD654\uD558\uC138\uC694",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE4: "\uC774 \uBB38\uC81C\uB97C \uD50C\uB7EC\uADF8\uC778 \uC791\uC131\uC790\uC5D0\uAC8C \uBCF4\uACE0\uD558\uC138\uC694",
+  \u62A5\u544A_\u5907\u6CE8: "\uCC38\uACE0",
+  \u62A5\u544A_\u5907\u6CE8\u63D0\u793A: "*\uC5EC\uAE30\uC5D0 \uBA54\uBAA8 \uCD94\uAC00...*",
+  \u62A5\u544A_\u6280\u672F\u8BE6\u60C5: "\uAE30\uC220 \uC138\uBD80 \uC815\uBCF4",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u5217\u8868: "\uC6D0\uB798 \uD65C\uC131\uD654\uB41C \uD50C\uB7EC\uADF8\uC778 \uBAA9\uB85D"
 };
 
 // src/lang/locale/fr.ts
@@ -5607,8 +6409,8 @@ var fr_default = {
   \u7B5B\u9009_\u5EF6\u8FDF_\u5168\u90E8: "Retard : Tous",
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "Visiter le d\xE9p\xF4t",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "Acc\xE9der aux tutoriels vid\xE9o",
-  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Activer le mode \xE9dition pour personnaliser en profondeur",
-  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Recharger les plugins pour prise d\u2019effet imm\xE9diate",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Activer le mode \xE9dition",
+  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Recharger la liste des plugins",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "V\xE9rifier les mises \xE0 jour de plugins",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "Tout d\xE9sactiver en un clic",
   \u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0: "Tout activer en un clic",
@@ -5697,7 +6499,129 @@ var fr_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898: "Mode debug",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0: "D\xE9sactiv\xE9 : erreurs uniquement. Activ\xE9 : logs de debug.",
   \u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0: "Plus d\u2019actions",
-  \u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898: "Ouvrir le d\xE9p\xF4t"
+  \u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898: "Ouvrir le d\xE9p\xF4t",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898: "G\xE9rer automatiquement les nouveaux plugins",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0: "G\xE9rer automatiquement les nouveaux plugins install\xE9s depuis le march\xE9 (activer et g\xE9rer via BPM), en supprimant le message de prise de contr\xF4le.",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u6807\u9898: "Ignor\xE9 par BPM",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u63CF\u8FF0: `Ce plugin a l'\xE9tiquette "bpm-ignore". BPM ne g\xE9rera pas son \xE9tat ni son d\xE9lai.`,
+  \u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A: `Ce plugin a l'\xE9tiquette "bpm-ignore", les op\xE9rations sont d\xE9sactiv\xE9es dans BPM.`,
+  // Self-check
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u6807\u9898: "Plugins non g\xE9r\xE9s par BPM d\xE9tect\xE9s",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u8BF4\u660E: "Le fichier community-plugins.json d'Obsidian contient des plugins lanc\xE9s par Obsidian. Pour \xE9viter les conflits, il est recommand\xE9 de laisser BPM prendre le contr\xF4le.",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u5217\u8868: "Plugins d\xE9tect\xE9s :",
+  \u81EA\u68C0_\u8B66\u544A_\u6587\u672C: "Ignorer ceci peut causer des incoh\xE9rences d'\xE9tat des plugins ou des dysfonctionnements du d\xE9marrage diff\xE9r\xE9.",
+  \u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE: "Laisser BPM prendre le contr\xF4le",
+  \u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE: "Ignorer cette fois",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A_\u6309\u94AE: "Ne plus afficher",
+  \u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5: "Contr\xF4le des plugins pris avec succ\xE8s",
+  \u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5: "\xC9chec de la prise de contr\xF4le, veuillez modifier community-plugins.json manuellement",
+  \u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5: "Veuillez red\xE9marrer Obsidian pour appliquer les modifications",
+  \u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5: "Avertissement ignor\xE9. L'utilisation mixte d'Obsidian et BPM peut causer des probl\xE8mes",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "Ne s'affichera plus. Vous pouvez le r\xE9activer dans les param\xE8tres",
+  // Ribbon
+  \u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0: "G\xE9rer les ic\xF4nes du ruban",
+  Ribbon_\u6807\u9898: "Gestionnaire de ruban",
+  Ribbon_\u8BF4\u660E: "Faites glisser l'ic\xF4ne \u2261 pour r\xE9organiser, cliquez sur l'\u0153il pour masquer/afficher.",
+  Ribbon_\u9700\u91CD\u8F7D_\u63D0\u793A: "Certaines ic\xF4nes activ\xE9es n\xE9cessitent un red\xE9marrage pour appara\xEEtre.",
+  Ribbon_\u91CD\u8F7D_\u6309\u94AE: "Recharger l'application",
+  Ribbon_\u539F\u751F\u6A21\u5F0F_\u6807\u7B7E: "Mode Synchronisation Native",
+  Ribbon_\u5DF2\u9690\u85CF: "Ic\xF4ne de ruban masqu\xE9e",
+  \u6807\u7B7E_BPM\u5FFD\u7565_\u540D\u79F0: "Ignor\xE9 par BPM",
+  Ribbon_\u65E0\u9879\u76EE: "Aucune ic\xF4ne configurable trouv\xE9e.",
+  Ribbon_\u9690\u85CF: "Masquer",
+  Ribbon_\u663E\u793A: "Afficher",
+  Ribbon_\u672A\u547D\u540D: "(Sans titre)",
+  Ribbon_\u590D\u6D3B\u5931\u8D25: "\xC9chec de la restauration de l'ic\xF4ne, veuillez recharger l'application.",
+  // Troubleshooter
+  \u6392\u67E5_\u6B22\u8FCE_\u6807\u9898: "\u{1F50D} D\xE9panneur de conflits de plugins",
+  \u6392\u67E5_\u6B22\u8FCE_\u8BF4\u660E: "Cet assistant vous aide \xE0 localiser rapidement les plugins en conflit via une recherche binaire. Les plugins seront activ\xE9s/d\xE9sactiv\xE9s pendant le processus.",
+  \u6392\u67E5_\u5F53\u524D\u542F\u7528_\u6587\u672C: "Plugins actuellement activ\xE9s",
+  \u6392\u67E5_\u9884\u8BA1\u6B65\u9AA4_\u6587\u672C: "\xC9tapes estim\xE9es",
+  \u6392\u67E5_\u5F00\u59CB_\u6309\u94AE: "Commencer le d\xE9pannage",
+  \u6392\u67E5_\u53D6\u6D88_\u6309\u94AE: "Annuler",
+  \u6392\u67E5_\u6B65\u9AA4_\u6587\u672C: "\xC9tape",
+  \u6392\u67E5_\u9636\u6BB5_\u786E\u8BA4: "Phase 1 : Confirmation du probl\xE8me (tous d\xE9sactiv\xE9s)",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E00: "Phase 2 : Recherche binaire du premier plugin suspect",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E8C: "Phase 3 : Recherche binaire du second plugin conflictuel",
+  \u6392\u67E5_\u7B2C\u4E00\u51B2\u7A81_\u6587\u672C: "Premier plugin conflictuel",
+  \u6392\u67E5_\u5DF2\u542F\u7528_\u6587\u672C: "Activ\xE9",
+  \u6392\u67E5_\u5DF2\u7981\u7528_\u6587\u672C: "D\xE9sactiv\xE9",
+  \u6392\u67E5_\u6D4B\u8BD5\u63D0\u793A_\u6587\u672C: "Veuillez tester si le probl\xE8me persiste, puis cliquez ci-dessous :",
+  \u6392\u67E5_\u95EE\u9898\u8FD8\u5728_\u6309\u94AE: "Le probl\xE8me persiste",
+  \u6392\u67E5_\u95EE\u9898\u6D88\u5931_\u6309\u94AE: "Le probl\xE8me a disparu",
+  \u6392\u67E5_\u91CD\u542F_\u6309\u94AE: "Red\xE9marrer Obsidian",
+  \u6392\u67E5_\u64A4\u9500_\u6309\u94AE: "Annuler l'\xE9tape",
+  \u6392\u67E5_\u9000\u51FA_\u6309\u94AE: "Quitter",
+  \u6392\u67E5_\u5DF2\u7981\u7528\u6240\u6709_\u901A\u77E5: "Tous les plugins d\xE9sactiv\xE9s. Veuillez tester si le probl\xE8me persiste.",
+  \u6392\u67E5_\u975E\u63D2\u4EF6\u95EE\u9898_\u901A\u77E5: "Le probl\xE8me persiste avec tout d\xE9sactiv\xE9. Ce n'est pas un conflit de plugins.",
+  \u6392\u67E5_\u5DF2\u64A4\u9500_\u901A\u77E5: "Retour \xE0 l'\xE9tape pr\xE9c\xE9dente",
+  \u6392\u67E5_\u65E0\u6CD5\u5B9A\u4F4D_\u901A\u77E5: "Impossible de localiser le conflit. Peut \xEAtre un conflit complexe.",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6807\u9898: "Quitter le d\xE9pannage",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6587\u672C: "\xCAtes-vous s\xFBr de vouloir quitter ? Vous pouvez restaurer l'\xE9tat initial ou conserver l'\xE9tat actuel.",
+  \u6392\u67E5_\u6062\u590D\u5E76\u9000\u51FA_\u6309\u94AE: "Restaurer et quitter",
+  \u6392\u67E5_\u4FDD\u6301\u5E76\u9000\u51FA_\u6309\u94AE: "Conserver et quitter",
+  \u6392\u67E5_\u7EE7\u7EED\u6392\u67E5_\u6309\u94AE: "Continuer",
+  \u6392\u67E5_\u5B8C\u6210_\u6807\u9898: "D\xE9pannage termin\xE9",
+  \u6392\u67E5_\u53D1\u73B0\u51B2\u7A81_\u6587\u672C: "Paire de conflit trouv\xE9e",
+  \u6392\u67E5_\u5EFA\u8BAE_\u6807\u9898: "Actions sugg\xE9r\xE9es",
+  \u6392\u67E5_\u5EFA\u8BAE1_\u6587\u672C: "V\xE9rifiez les GitHub Issues des deux plugins",
+  \u6392\u67E5_\u5EFA\u8BAE2_\u6587\u672C: "Essayez de mettre \xE0 jour les deux plugins",
+  \u6392\u67E5_\u5EFA\u8BAE3_\u6587\u672C: "D\xE9sactivez temporairement l'un des deux",
+  \u6392\u67E5_\u603B\u6B65\u9AA4_\u6587\u672C: "Nombre total d'\xE9tapes",
+  \u6392\u67E5_\u6062\u590D\u539F\u59CB_\u6309\u94AE: "Restaurer l'\xE9tat original",
+  \u6392\u67E5_\u4FDD\u6301\u5F53\u524D_\u6309\u94AE: "Conserver l'\xE9tat actuel",
+  \u6392\u67E5_\u751F\u6210\u62A5\u544A_\u6309\u94AE: "G\xE9n\xE9rer un rapport",
+  \u6392\u67E5_\u5DF2\u6062\u590D_\u901A\u77E5: "\xC9tat original des plugins restaur\xE9",
+  \u6392\u67E5_\u65E0\u7ED3\u679C_\u901A\u77E5: "Aucun r\xE9sultat pour le rapport",
+  \u6392\u67E5_\u62A5\u544A\u5DF2\u751F\u6210_\u901A\u77E5: "Rapport de conflit g\xE9n\xE9r\xE9",
+  \u6392\u67E5_\u62A5\u544A\u5931\u8D25_\u901A\u77E5: "\xC9chec de la g\xE9n\xE9ration du rapport",
+  \u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0: "D\xE9panner les conflits de plugins",
+  // Updates
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210: "V\xE9rification termin\xE9e, {count} mises \xE0 jour trouv\xE9es",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25: "\xC9chec de la v\xE9rification, veuillez r\xE9essayer",
+  \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664: "Les tags pr\xE9d\xE9finis ne peuvent pas \xEAtre supprim\xE9s",
+  // Troubleshooter Algorithm Descriptions
+  \u6392\u67E5_\u5217\u8868_\u65E0: "(Aucun)",
+  \u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8: "Tous les plugins d\xE9sactiv\xE9s",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A: "Test de la premi\xE8re moiti\xE9 ({count} plugins)",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u540E\u534A: "Test de la seconde moiti\xE9 ({count} plugins)",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u5355\u63D2\u4EF6: "V\xE9rification plugin unique : {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1: "V\xE9rification : {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D: "Groupe A Fixe ({countA}) + Groupe B 1\xE8re Moiti\xE9 ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u540E: "Groupe A Fixe ({countA}) + Groupe B 2\xE8me Moiti\xE9 ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D: "Groupe B Fixe ({countB}) + Groupe A 1\xE8re Moiti\xE9 ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u540E: "Groupe B Fixe ({countB}) + Groupe A 2\xE8me Moiti\xE9 ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u51B2\u7A81\u5BF9: "V\xE9rification paire conflictuelle : {name1} + {name2}",
+  \u6392\u67E5_\u9519\u8BEF_\u72B6\u6001\u5F02\u5E38: "Erreur d'\xE9tat en phase de validation",
+  \u6392\u67E5_\u9519\u8BEF_\u672A\u77E5\u9636\u6BB5: "\xC9tape d'algorithme inconnue",
+  // Report
+  \u62A5\u544A_\u5355\u63D2\u4EF6_\u6807\u9898: "Rapport de probl\xE8me plugin",
+  \u62A5\u544A_\u51B2\u7A81_\u6807\u9898: "Rapport de conflit plugins",
+  \u62A5\u544A_\u751F\u6210\u8BF4\u660E: "G\xE9n\xE9r\xE9 par **Better Plugins Manager** le",
+  \u62A5\u544A_\u53D1\u73B0\u95EE\u9898\u63D2\u4EF6: "Plugin probl\xE9matique trouv\xE9",
+  \u62A5\u544A_\u53D1\u73B0\u51B2\u7A81: "Conflit d\xE9tect\xE9",
+  \u62A5\u544A_\u63D2\u4EF6: "Plugin",
+  \u62A5\u544A_\u63D2\u4EF61: "Plugin 1",
+  \u62A5\u544A_\u63D2\u4EF62: "Plugin 2",
+  \u62A5\u544A_\u6392\u67E5\u6458\u8981: "R\xE9sum\xE9 du d\xE9pannage",
+  \u62A5\u544A_\u603B\u6B65\u9AA4: "Nombre d'\xE9tapes",
+  \u62A5\u544A_\u7ED3\u679C\u7C7B\u578B: "Type de r\xE9sultat",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u95EE\u9898: "Probl\xE8me de plugin unique",
+  \u62A5\u544A_\u51B2\u7A81\u5BF9: "Conflit de paire de plugins",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u6570: "Plugins activ\xE9s \xE0 l'origine",
+  \u62A5\u544A_\u5EFA\u8BAE\u64CD\u4F5C: "Actions sugg\xE9r\xE9es",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE1: "Essayez de mettre \xE0 jour le plugin",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE2: "V\xE9rifiez les GitHub Issues du plugin",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE3: "Contactez l'auteur du plugin",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE4: "D\xE9sactivez temporairement ce plugin",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE1: "V\xE9rifiez les GitHub Issues des deux plugins",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE2: "Essayez de mettre \xE0 jour les deux plugins",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE3: "D\xE9sactivez temporairement l'un des plugins",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE4: "Signalez ce probl\xE8me aux auteurs",
+  \u62A5\u544A_\u5907\u6CE8: "Notes",
+  \u62A5\u544A_\u5907\u6CE8\u63D0\u793A: "*Ajoutez vos notes ici...*",
+  \u62A5\u544A_\u6280\u672F\u8BE6\u60C5: "D\xE9tails techniques",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u5217\u8868: "Plugins activ\xE9s \xE0 l'origine"
 };
 
 // src/lang/locale/es.ts
@@ -5719,8 +6643,8 @@ var es_default = {
   \u901A\u7528_\u8FD4\u56DE_\u6587\u672C: "Volver",
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "Visitar repositorio",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "Acceder a tutoriales en video",
-  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Habilitar modo de edici\xF3n para una personalizaci\xF3n profunda de la configuraci\xF3n del plugin",
-  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Recargar plugins para que surtan efecto inmediatamente",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Habilitar modo de edici\xF3n",
+  \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Recargar lista de plugins",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "Comprobar actualizaciones de plugins",
   \u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0: "M\xE1s acciones",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "Deshabilitar todos los plugins a la vez",
@@ -5788,6 +6712,7 @@ var es_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6807\u9898: "GitHub API Token",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u63CF\u8FF0: "Para descargar plugins/temas de GitHub y reducir l\xEDmites de API. Opcional.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u524D\u7F00: "Configuraci\xF3n b\xE1sica",
+  \u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u524D\u7F00: "Estilo",
   \u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u524D\u7F00: "Grupo",
   \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u524D\u7F00: "Etiqueta",
   \u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u524D\u7F00: "Retraso",
@@ -5809,6 +6734,22 @@ var es_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0: "Habilite esta opci\xF3n para habilitar o deshabilitar todos los plugins de un grupo espec\xEDfico con un solo clic. (Reinicie Obsidian para que surtan efecto)",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898: "Comprobar actualizaciones al inicio",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "Al abrir BPM, comprueba autom\xE1ticamente actualizaciones y muestra un aviso breve con el recuento.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898: "Persistencia de filtros",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0: "Al habilitar, ver\xE1 la misma lista de plugins filtrada cada vez que abra el administrador.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898: "Centrar la interfaz",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0: "Establecer si la interfaz del administrador est\xE1 centrada",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E00: "Siempre expandido",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E8C: "Nunca expandido",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u4E09: "Expandir al pasar el rat\xF3n",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u9009\u9879_\u56DB: "Expandir al hacer clic",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E00: "Estilo Uno",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E8C: "Estilo Dos",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u4E09: "Estilo Tres",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u9009\u9879_\u56DB: "Estilo Cuatro",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E00: "Estilo Uno",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E8C: "Estilo Dos",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u4E09: "Estilo Tres",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u56DB: "Estilo Cuatro",
   \u6807\u7B7E_BPM\u5B89\u88C5_\u540D\u79F0: "bpm install",
   \u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E00: "[Retraso] A\xF1adido",
   \u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E8C: "[Retraso] El ID ya existe o est\xE1 vac\xEDo",
@@ -5838,7 +6779,129 @@ var es_default = {
   \u5B89\u88C5_\u9519\u8BEF_\u7F3A\u5C11\u8D44\u6E90: "No se encontraron assets/archivos de la release. Verifique repositorio/versi\xF3n.",
   \u5B89\u88C5_\u9519\u8BEF_\u901A\u7528: "Fallo al instalar. Verifique repositorio/versi\xF3n o red.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898: "Modo depuraci\xF3n",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0: "Si est\xE1 desactivado, solo se muestran errores; si est\xE1 activado, se imprimen logs de depuraci\xF3n."
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0: "Si est\xE1 desactivado, solo se muestran errores; si est\xE1 activado, se imprimen logs de depuraci\xF3n.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898: "Auto-gestionar nuevos plugins",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0: "Gestionar autom\xE1ticamente los nuevos plugins instalados desde el mercado (habilitar y gestionar con BPM), suprimiendo el aviso de toma de control.",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u6807\u9898: "Ignorado por BPM",
+  \u63D0\u793A_BPM\u5FFD\u7565_\u63CF\u8FF0: 'Este plugin tiene la etiqueta "bpm-ignore". BPM no gestionar\xE1 su estado ni retraso.',
+  \u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A: 'Este plugin tiene la etiqueta "bpm-ignore", las operaciones est\xE1n deshabilitadas en BPM.',
+  // Self-check
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u6807\u9898: "Plugins no gestionados por BPM detectados",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u8BF4\u660E: "El community-plugins.json de Obsidian contiene plugins iniciados por Obsidian. Para evitar conflictos, se recomienda dejar que BPM tome el control.",
+  \u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u5217\u8868: "Plugins detectados:",
+  \u81EA\u68C0_\u8B66\u544A_\u6587\u672C: "Ignorar esto puede causar inconsistencias en el estado de los plugins o fallos en el inicio retrasado.",
+  \u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE: "Permitir que BPM tome el control",
+  \u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE: "Ignorar esta vez",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A_\u6309\u94AE: "No mostrar de nuevo",
+  \u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5: "Control de plugins asumido con \xE9xito",
+  \u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5: "Fallo al asumir control, modifique community-plugins.json manualmente",
+  \u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5: "Por favor reinicie Obsidian para aplicar los cambios",
+  \u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5: "Advertencia ignorada. El uso mixto de Obsidian y BPM puede causar problemas",
+  \u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5: "No se mostrar\xE1 de nuevo. Puede reactivarlo en la configuraci\xF3n",
+  // Ribbon
+  \u7BA1\u7406\u5668_Ribbon\u7BA1\u7406_\u63CF\u8FF0: "Gestionar iconos Ribbon",
+  Ribbon_\u6807\u9898: "Gestor de Ribbon",
+  Ribbon_\u8BF4\u660E: "Arrastre el icono \u2261 para reordenar, haga clic en el ojo para alternar visibilidad.",
+  Ribbon_\u9700\u91CD\u8F7D_\u63D0\u793A: "Algunos iconos habilitados necesitan reinicio para aparecer.",
+  Ribbon_\u91CD\u8F7D_\u6309\u94AE: "Recargar App",
+  Ribbon_\u539F\u751F\u6A21\u5F0F_\u6807\u7B7E: "Modo Sincronizaci\xF3n Nativa",
+  Ribbon_\u5DF2\u9690\u85CF: "Icono de Ribbon oculto",
+  \u6807\u7B7E_BPM\u5FFD\u7565_\u540D\u79F0: "Ignorado por BPM",
+  Ribbon_\u65E0\u9879\u76EE: "No se encontraron iconos configurables.",
+  Ribbon_\u9690\u85CF: "Ocultar",
+  Ribbon_\u663E\u793A: "Mostrar",
+  Ribbon_\u672A\u547D\u540D: "(Sin t\xEDtulo)",
+  Ribbon_\u590D\u6D3B\u5931\u8D25: "Fallo al restaurar icono, reinicie la app.",
+  // Troubleshooter
+  \u6392\u67E5_\u6B22\u8FCE_\u6807\u9898: "\u{1F50D} Solucionador de Conflictos",
+  \u6392\u67E5_\u6B22\u8FCE_\u8BF4\u660E: "Este asistente le ayuda a localizar plugins conflictivos mediante b\xFAsqueda binaria. Los plugins se habilitar\xE1n/deshabilitar\xE1n durante el proceso.",
+  \u6392\u67E5_\u5F53\u524D\u542F\u7528_\u6587\u672C: "Plugins habilitados actualmente",
+  \u6392\u67E5_\u9884\u8BA1\u6B65\u9AA4_\u6587\u672C: "Pasos estimados",
+  \u6392\u67E5_\u5F00\u59CB_\u6309\u94AE: "Iniciar Soluci\xF3n de Problemas",
+  \u6392\u67E5_\u53D6\u6D88_\u6309\u94AE: "Cancelar",
+  \u6392\u67E5_\u6B65\u9AA4_\u6587\u672C: "Paso",
+  \u6392\u67E5_\u9636\u6BB5_\u786E\u8BA4: "Fase 1: Confirmar problema (todos deshabilitados)",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E00: "Fase 2: B\xFAsqueda binaria del primer plugin sospechoso",
+  \u6392\u67E5_\u9636\u6BB5_\u67E5\u627E\u7B2C\u4E8C: "Fase 3: B\xFAsqueda binaria del segundo plugin conflictivo",
+  \u6392\u67E5_\u7B2C\u4E00\u51B2\u7A81_\u6587\u672C: "Primer plugin conflictivo",
+  \u6392\u67E5_\u5DF2\u542F\u7528_\u6587\u672C: "Habilitado",
+  \u6392\u67E5_\u5DF2\u7981\u7528_\u6587\u672C: "Deshabilitado",
+  \u6392\u67E5_\u6D4B\u8BD5\u63D0\u793A_\u6587\u672C: "Pruebe si el problema persiste y elija:",
+  \u6392\u67E5_\u95EE\u9898\u8FD8\u5728_\u6309\u94AE: "El problema persiste",
+  \u6392\u67E5_\u95EE\u9898\u6D88\u5931_\u6309\u94AE: "El problema desapareci\xF3",
+  \u6392\u67E5_\u91CD\u542F_\u6309\u94AE: "Reiniciar Obsidian",
+  \u6392\u67E5_\u64A4\u9500_\u6309\u94AE: "Deshacer paso",
+  \u6392\u67E5_\u9000\u51FA_\u6309\u94AE: "Salir",
+  \u6392\u67E5_\u5DF2\u7981\u7528\u6240\u6709_\u901A\u77E5: "Todos los plugins deshabilitados. Pruebe si el problema persiste.",
+  \u6392\u67E5_\u975E\u63D2\u4EF6\u95EE\u9898_\u901A\u77E5: "El problema persiste con todo deshabilitado. No es un conflicto de plugins.",
+  \u6392\u67E5_\u5DF2\u64A4\u9500_\u901A\u77E5: "Paso anterior restaurado",
+  \u6392\u67E5_\u65E0\u6CD5\u5B9A\u4F4D_\u901A\u77E5: "No se pudo localizar el conflicto. Puede ser complejo.",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6807\u9898: "Salir de Soluci\xF3n de Problemas",
+  \u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6587\u672C: "\xBFSeguro que desea salir? Puede restaurar o mantener el estado actual.",
+  \u6392\u67E5_\u6062\u590D\u5E76\u9000\u51FA_\u6309\u94AE: "Restaurar y Salir",
+  \u6392\u67E5_\u4FDD\u6301\u5E76\u9000\u51FA_\u6309\u94AE: "Mantener y Salir",
+  \u6392\u67E5_\u7EE7\u7EED\u6392\u67E5_\u6309\u94AE: "Continuar",
+  \u6392\u67E5_\u5B8C\u6210_\u6807\u9898: "Soluci\xF3n Completada",
+  \u6392\u67E5_\u53D1\u73B0\u51B2\u7A81_\u6587\u672C: "Par de conflicto encontrado",
+  \u6392\u67E5_\u5EFA\u8BAE_\u6807\u9898: "Acciones Sugeridas",
+  \u6392\u67E5_\u5EFA\u8BAE1_\u6587\u672C: "Revise GitHub Issues de ambos plugins",
+  \u6392\u67E5_\u5EFA\u8BAE2_\u6587\u672C: "Intente actualizar ambos plugins",
+  \u6392\u67E5_\u5EFA\u8BAE3_\u6587\u672C: "Deshabilite temporalmente uno de ellos",
+  \u6392\u67E5_\u603B\u6B65\u9AA4_\u6587\u672C: "Pasos totales",
+  \u6392\u67E5_\u6062\u590D\u539F\u59CB_\u6309\u94AE: "Restaurar Estado Original",
+  \u6392\u67E5_\u4FDD\u6301\u5F53\u524D_\u6309\u94AE: "Mantener Estado Actual",
+  \u6392\u67E5_\u751F\u6210\u62A5\u544A_\u6309\u94AE: "Generar Informe",
+  \u6392\u67E5_\u5DF2\u6062\u590D_\u901A\u77E5: "Estado original restaurado",
+  \u6392\u67E5_\u65E0\u7ED3\u679C_\u901A\u77E5: "Sin resultados para informe",
+  \u6392\u67E5_\u62A5\u544A\u5DF2\u751F\u6210_\u901A\u77E5: "Informe generado",
+  \u6392\u67E5_\u62A5\u544A\u5931\u8D25_\u901A\u77E5: "Fallo al generar informe",
+  \u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0: "Solucionar conflictos de plugins",
+  // Updates
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210: "Comprobaci\xF3n completa, {count} actualizaciones encontradas",
+  \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25: "Fallo al comprobar, intente de nuevo",
+  \u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664: "Las etiquetas preestablecidas no se pueden eliminar",
+  // Troubleshooter Algorithm Descriptions
+  \u6392\u67E5_\u5217\u8868_\u65E0: "(Ninguno)",
+  \u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8: "Todos los plugins deshabilitados",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u524D\u534A: "Probando primera mitad ({count} plugins)",
+  \u6392\u67E5_\u63CF\u8FF0_\u6D4B\u8BD5\u540E\u534A: "Probando segunda mitad ({count} plugins)",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u5355\u63D2\u4EF6: "Verificando plugin \xFAnico: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1: "Verificando: {name}",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u524D: "Grupo A Fijo ({countA}) + Grupo B 1\xAA Mitad ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AA\u6D4B\u8BD5B\u540E: "Grupo A Fijo ({countA}) + Grupo B 2\xAA Mitad ({countB})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u524D: "Grupo B Fijo ({countB}) + Grupo A 1\xAA Mitad ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u56FA\u5B9AB\u6D4B\u8BD5A\u540E: "Grupo B Fijo ({countB}) + Grupo A 2\xAA Mitad ({countA})",
+  \u6392\u67E5_\u63CF\u8FF0_\u9A8C\u8BC1\u51B2\u7A81\u5BF9: "Verificando par conflictivo: {name1} + {name2}",
+  \u6392\u67E5_\u9519\u8BEF_\u72B6\u6001\u5F02\u5E38: "Error de estado en fase de validaci\xF3n",
+  \u6392\u67E5_\u9519\u8BEF_\u672A\u77E5\u9636\u6BB5: "Etapa de algoritmo desconocida",
+  // Report
+  \u62A5\u544A_\u5355\u63D2\u4EF6_\u6807\u9898: "Informe de Problema de Plugin",
+  \u62A5\u544A_\u51B2\u7A81_\u6807\u9898: "Informe de Conflicto de Plugins",
+  \u62A5\u544A_\u751F\u6210\u8BF4\u660E: "Generado por **Better Plugins Manager** el",
+  \u62A5\u544A_\u53D1\u73B0\u95EE\u9898\u63D2\u4EF6: "Plugin Problem\xE1tico Encontrado",
+  \u62A5\u544A_\u53D1\u73B0\u51B2\u7A81: "Conflicto Detectado",
+  \u62A5\u544A_\u63D2\u4EF6: "Plugin",
+  \u62A5\u544A_\u63D2\u4EF61: "Plugin 1",
+  \u62A5\u544A_\u63D2\u4EF62: "Plugin 2",
+  \u62A5\u544A_\u6392\u67E5\u6458\u8981: "Resumen de Soluci\xF3n",
+  \u62A5\u544A_\u603B\u6B65\u9AA4: "Pasos Totales",
+  \u62A5\u544A_\u7ED3\u679C\u7C7B\u578B: "Tipo de Resultado",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u95EE\u9898: "Problema de Plugin \xDAnico",
+  \u62A5\u544A_\u51B2\u7A81\u5BF9: "Conflicto de Par de Plugins",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u6570: "Plugins Originalmente Habilitados",
+  \u62A5\u544A_\u5EFA\u8BAE\u64CD\u4F5C: "Acciones Sugeridas",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE1: "Intente actualizar el plugin a la \xFAltima versi\xF3n",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE2: "Revise los GitHub Issues del plugin",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE3: "Contacte al autor del plugin",
+  \u62A5\u544A_\u5355\u63D2\u4EF6\u5EFA\u8BAE4: "Deshabilite temporalmente este plugin",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE1: "Revise GitHub Issues de ambos plugins",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE2: "Intente actualizar ambos plugins",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE3: "Deshabilite temporalmente uno de los plugins",
+  \u62A5\u544A_\u51B2\u7A81\u5EFA\u8BAE4: "Reporte este problema a los autores",
+  \u62A5\u544A_\u5907\u6CE8: "Notas",
+  \u62A5\u544A_\u5907\u6CE8\u63D0\u793A: "*A\xF1ada sus notas aqu\xED...*",
+  \u62A5\u544A_\u6280\u672F\u8BE6\u60C5: "Detalles T\xE9cnicos",
+  \u62A5\u544A_\u539F\u59CB\u542F\u7528\u5217\u8868: "Plugins Originalmente Habilitados"
 };
 
 // src/lang/inxdex.ts
@@ -5892,7 +6955,7 @@ var Translator = class {
 };
 
 // src/agreement.ts
-var import_obsidian21 = require("obsidian");
+var import_obsidian22 = require("obsidian");
 var Agreement = class {
   /**
    * 构造函数，初始化插件安装器
@@ -5902,7 +6965,7 @@ var Agreement = class {
     // 标记是否已经加载了社区插件列表
     this.loaded = false;
     // 防抖函数，用于定时刷新社区插件列表，每小时执行一次
-    this.debounceFetch = (0, import_obsidian21.debounce)(async () => {
+    this.debounceFetch = (0, import_obsidian22.debounce)(async () => {
       await this.fetchCommunityPlugins();
     }, 1e3 * 60 * 60);
     this.plugin = SMPL;
@@ -5929,7 +6992,7 @@ var Agreement = class {
     }
     const pluginInfo = this.communityPlugins[id];
     if (!pluginInfo) {
-      new import_obsidian21.Notice(`[\u63D2\u4EF6\u7BA1\u7406\u5668] \u672A\u77E5\u63D2\u4EF6ID: ${id}`);
+      new import_obsidian22.Notice(`[\u63D2\u4EF6\u7BA1\u7406\u5668] \u672A\u77E5\u63D2\u4EF6ID: ${id}`);
       return null;
     }
     window.open(`https://github.com/${pluginInfo.repo}`);
@@ -5952,11 +7015,11 @@ var Agreement = class {
     const repo = github !== "" ? github : (_a = this.communityPlugins[id]) == null ? void 0 : _a.repo;
     console.log(repo);
     if (!repo) {
-      new import_obsidian21.Notice(`[\u63D2\u4EF6\u7BA1\u7406\u5668] \u672A\u77E5\u63D2\u4EF6ID: ${id}`);
+      new import_obsidian22.Notice(`[\u63D2\u4EF6\u7BA1\u7406\u5668] \u672A\u77E5\u63D2\u4EF6ID: ${id}`);
       return;
     }
     if (pluginRegistry.manifests[id]) {
-      new import_obsidian21.Notice(`[\u63D2\u4EF6\u7BA1\u7406\u5668] \u63D2\u4EF6 ${pluginRegistry.manifests[id].name} \u5DF2\u5B89\u88C5`);
+      new import_obsidian22.Notice(`[\u63D2\u4EF6\u7BA1\u7406\u5668] \u63D2\u4EF6 ${pluginRegistry.manifests[id].name} \u5DF2\u5B89\u88C5`);
       if (version !== "" && version !== ((_b = pluginRegistry.manifests[id]) == null ? void 0 : _b.version))
         installFlag = true;
     } else {
@@ -6001,10 +7064,10 @@ var Agreement = class {
 };
 
 // src/main.ts
-var import_obsidian25 = require("obsidian");
+var import_obsidian27 = require("obsidian");
 
 // src/migrations.ts
-var import_obsidian22 = require("obsidian");
+var import_obsidian23 = require("obsidian");
 var compare = (a, b) => {
   const pa = (a || "0").split(".").map(Number);
   const pb = (b || "0").split(".").map(Number);
@@ -6057,9 +7120,9 @@ var migrations = [
       const exportDir = manager.settings.EXPORT_DIR;
       if (!exportDir)
         return;
-      const normalizedDir = (0, import_obsidian22.normalizePath)(exportDir);
+      const normalizedDir = (0, import_obsidian23.normalizePath)(exportDir);
       const mdFiles = manager.app.vault.getMarkdownFiles().filter((f) => {
-        const p = (0, import_obsidian22.normalizePath)(f.path);
+        const p = (0, import_obsidian23.normalizePath)(f.path);
         return p === normalizedDir || p.startsWith(normalizedDir + "/");
       });
       const parseFrontmatter = (content) => {
@@ -6071,7 +7134,7 @@ var migrations = [
         const raw = content.slice(3, end).trim();
         let fm = null;
         try {
-          fm = (0, import_obsidian22.parseYaml)(raw);
+          fm = (0, import_obsidian23.parseYaml)(raw);
         } catch (e) {
           fm = null;
         }
@@ -6087,7 +7150,7 @@ var migrations = [
           if (!fm || !fm["bpm_ro_id"] || !("bpm_ro_updated" in fm))
             continue;
           delete fm["bpm_ro_updated"];
-          const yaml = (0, import_obsidian22.stringifyYaml)(fm).trimEnd();
+          const yaml = (0, import_obsidian23.stringifyYaml)(fm).trimEnd();
           const next = `---
 ${yaml}
 ---${parsed.body.startsWith("\n") ? "" : "\n"}${parsed.body}`;
@@ -6120,7 +7183,7 @@ var runMigrations = async (manager) => {
 };
 
 // src/self-check.ts
-var import_obsidian23 = require("obsidian");
+var import_obsidian24 = require("obsidian");
 var COMMUNITY_PLUGINS_PATH = ".obsidian/community-plugins.json";
 async function readCommunityPlugins(app) {
   try {
@@ -6142,11 +7205,58 @@ async function writeCommunityPlugins(app, plugins) {
     return false;
   }
 }
+async function execTakeover(app, manager, pluginIds) {
+  const bpmId = manager.manifest.id;
+  const success = await writeCommunityPlugins(app, [bpmId]);
+  if (success) {
+    for (const id of pluginIds) {
+      const existing = manager.settings.Plugins.find((p) => p.id === id);
+      if (existing) {
+        existing.enabled = true;
+      } else {
+        const manifest = app.plugins.manifests[id];
+        if (manifest) {
+          manager.settings.Plugins.push({
+            id,
+            name: manifest.name,
+            desc: manifest.description || "",
+            group: "",
+            tags: [],
+            enabled: true,
+            delay: "default",
+            note: ""
+          });
+        }
+      }
+    }
+    await manager.saveSettings();
+    return true;
+  } else {
+    return false;
+  }
+}
 async function performSelfCheck(manager) {
   const bpmId = manager.manifest.id;
   const communityPlugins = await readCommunityPlugins(manager.app);
-  const nonBpmPlugins = communityPlugins.filter((id) => id !== bpmId);
+  const nonBpmPlugins = communityPlugins.filter((id) => {
+    if (id === bpmId)
+      return false;
+    const pluginInBpm = manager.settings.Plugins.find((p) => p.id === id);
+    if (pluginInBpm && pluginInBpm.tags.includes(BPM_IGNORE_TAG)) {
+      return false;
+    }
+    return true;
+  });
   if (nonBpmPlugins.length === 0) {
+    return;
+  }
+  if (manager.settings.AUTO_TAKEOVER) {
+    const success = await execTakeover(manager.app, manager, nonBpmPlugins);
+    if (success) {
+      new import_obsidian24.Notice(manager.translator.t("\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5"));
+    } else {
+      new import_obsidian24.Notice(manager.translator.t("\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
+    }
     return;
   }
   if (manager.settings.SELF_CHECK_IGNORED) {
@@ -6154,7 +7264,7 @@ async function performSelfCheck(manager) {
   }
   new TakeoverModal(manager.app, manager, nonBpmPlugins).open();
 }
-var TakeoverModal = class extends import_obsidian23.Modal {
+var TakeoverModal = class extends import_obsidian24.Modal {
   constructor(app, manager, nonBpmPlugins) {
     super(app);
     this.manager = manager;
@@ -6185,18 +7295,18 @@ var TakeoverModal = class extends import_obsidian23.Modal {
       cls: "takeover-warning"
     });
     const actionContainer = contentEl.createDiv("takeover-actions");
-    const takeoverBtn = new import_obsidian23.ButtonComponent(actionContainer);
+    const takeoverBtn = new import_obsidian24.ButtonComponent(actionContainer);
     takeoverBtn.setButtonText(this.t("\u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE"));
     takeoverBtn.setCta();
     takeoverBtn.onClick(async () => {
       await this.takeoverPlugins();
     });
-    const ignoreBtn = new import_obsidian23.ButtonComponent(actionContainer);
+    const ignoreBtn = new import_obsidian24.ButtonComponent(actionContainer);
     ignoreBtn.setButtonText(this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE"));
     ignoreBtn.onClick(async () => {
       await this.ignoreWarning();
     });
-    const ignoreForeverBtn = new import_obsidian23.ButtonComponent(actionContainer);
+    const ignoreForeverBtn = new import_obsidian24.ButtonComponent(actionContainer);
     ignoreForeverBtn.setButtonText(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A_\u6309\u94AE"));
     ignoreForeverBtn.onClick(async () => {
       await this.ignoreForever();
@@ -6211,42 +7321,20 @@ var TakeoverModal = class extends import_obsidian23.Modal {
    * 执行接管
    */
   async takeoverPlugins() {
-    const bpmId = this.manager.manifest.id;
-    const success = await writeCommunityPlugins(this.app, [bpmId]);
+    const success = await execTakeover(this.app, this.manager, this.nonBpmPlugins);
     if (success) {
-      new import_obsidian23.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5"));
-      for (const id of this.nonBpmPlugins) {
-        const existing = this.manager.settings.Plugins.find((p) => p.id === id);
-        if (existing) {
-          existing.enabled = true;
-        } else {
-          const manifest = this.app.plugins.manifests[id];
-          if (manifest) {
-            this.manager.settings.Plugins.push({
-              id,
-              name: manifest.name,
-              desc: manifest.description || "",
-              group: "",
-              tags: [],
-              enabled: true,
-              delay: "default",
-              note: ""
-            });
-          }
-        }
-      }
-      await this.manager.saveSettings();
+      new import_obsidian24.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5"));
       this.close();
-      new import_obsidian23.Notice(this.t("\u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5"), 5e3);
+      new import_obsidian24.Notice(this.t("\u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5"), 5e3);
     } else {
-      new import_obsidian23.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
+      new import_obsidian24.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
     }
   }
   /**
    * 忽略警告（本次）
    */
   async ignoreWarning() {
-    new import_obsidian23.Notice(this.t("\u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5"), 5e3);
+    new import_obsidian24.Notice(this.t("\u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5"), 5e3);
     this.close();
   }
   /**
@@ -6255,7 +7343,7 @@ var TakeoverModal = class extends import_obsidian23.Modal {
   async ignoreForever() {
     this.manager.settings.SELF_CHECK_IGNORED = true;
     await this.manager.saveSettings();
-    new import_obsidian23.Notice(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5"));
+    new import_obsidian24.Notice(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5"));
     this.close();
   }
   onClose() {
@@ -6264,8 +7352,118 @@ var TakeoverModal = class extends import_obsidian23.Modal {
   }
 };
 
+// src/manager/system-ribbon-manager.ts
+var import_obsidian25 = require("obsidian");
+var SystemRibbonManager = class {
+  constructor(app, manager) {
+    this.isInternalUpdate = false;
+    this.app = app;
+    this.manager = manager;
+    this.configPath = import_obsidian25.Platform.isMobile ? ".obsidian/workspace-mobile.json" : ".obsidian/workspace.json";
+    if (this.app.vault.configDir) {
+      this.configPath = import_obsidian25.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
+    }
+  }
+  /**
+   * 读取配置
+   * @returns 返回有序的 ID 列表和显隐状态 Map
+   */
+  async load() {
+    try {
+      const exists = await this.app.vault.adapter.exists(this.configPath);
+      if (!exists) {
+        console.warn(`[BPM] Workspace config not found at ${this.configPath}`);
+        return { orderedIds: [], hiddenStatus: {} };
+      }
+      const content = await this.app.vault.adapter.read(this.configPath);
+      const json = JSON.parse(content);
+      const leftRibbon = json["left-ribbon"];
+      if (!leftRibbon || !leftRibbon.hiddenItems) {
+        return { orderedIds: [], hiddenStatus: {} };
+      }
+      const hiddenItems = leftRibbon.hiddenItems;
+      const orderedIds = Object.keys(hiddenItems);
+      const hiddenStatus = hiddenItems;
+      return { orderedIds, hiddenStatus };
+    } catch (e) {
+      console.error("[BPM] Failed to load workspace config", e);
+      return { orderedIds: [], hiddenStatus: {} };
+    }
+  }
+  /**
+   * 保存配置
+   * @param orderedIds 按期望顺序排列的 ID 列表
+   * @param hiddenStatus 每个 ID 的显隐状态
+   */
+  async save(orderedIds, hiddenStatus) {
+    var _a;
+    if (this.isInternalUpdate)
+      return;
+    this.isInternalUpdate = true;
+    try {
+      const exists = await this.app.vault.adapter.exists(this.configPath);
+      if (!exists) {
+        console.warn(`[BPM] Workspace config not found at ${this.configPath}, skipping save.`);
+        return;
+      }
+      const content = await this.app.vault.adapter.read(this.configPath);
+      const json = JSON.parse(content);
+      const newHiddenItems = {};
+      for (const id of orderedIds) {
+        newHiddenItems[id] = (_a = hiddenStatus[id]) != null ? _a : false;
+      }
+      if (json["left-ribbon"] && json["left-ribbon"].hiddenItems) {
+        const oldKeys = Object.keys(json["left-ribbon"].hiddenItems);
+        for (const oldKey of oldKeys) {
+          if (!(oldKey in newHiddenItems)) {
+            newHiddenItems[oldKey] = json["left-ribbon"].hiddenItems[oldKey];
+          }
+        }
+      }
+      if (!json["left-ribbon"])
+        json["left-ribbon"] = {};
+      json["left-ribbon"].hiddenItems = newHiddenItems;
+      console.log(`[BPM] Saving workspace config to ${this.configPath}`);
+      console.log(`[BPM] New hiddenItems:`, newHiddenItems);
+      await this.app.vault.adapter.write(this.configPath, JSON.stringify(json, null, 2));
+      console.log("[BPM] Workspace config saved successfully.");
+    } catch (e) {
+      console.error("[BPM] Failed to save workspace config", e);
+      new import_obsidian25.Notice("\u4FDD\u5B58 Ribbon \u914D\u7F6E\u5931\u8D25\uFF0C\u8BF7\u67E5\u770B\u63A7\u5236\u53F0");
+    } finally {
+      setTimeout(() => {
+        this.isInternalUpdate = false;
+      }, 1e3);
+    }
+  }
+  /**
+   * 启动文件监听
+   * @param callback 配置变更时的回调
+   */
+  startWatch(callback) {
+    this.onConfigChange = callback;
+    const debouncedReload = (0, import_obsidian25.debounce)(() => {
+      if (this.isInternalUpdate)
+        return;
+      console.log("[BPM] Detected workspace config change, reloading...");
+      this.onConfigChange();
+    }, 1e3, true);
+    this.fileWatcher = this.app.vault.on("modify", (file) => {
+      if (file instanceof import_obsidian25.TFile && file.path === this.configPath) {
+        debouncedReload();
+      }
+    });
+  }
+  stopWatch() {
+    if (this.fileWatcher) {
+      this.app.vault.offref(this.fileWatcher);
+      this.fileWatcher = null;
+    }
+  }
+};
+
 // src/main.ts
-var Manager = class extends import_obsidian24.Plugin {
+var Manager = class extends import_obsidian26.Plugin {
   constructor() {
     super(...arguments);
     this.exportWatcher = null;
@@ -6274,6 +7472,11 @@ var Manager = class extends import_obsidian24.Plugin {
     this.toggleNotice = null;
     this.updateStatus = {};
     this.updateProgressNotice = null;
+    // 拖拽隐藏功能相关状态
+    this.isRibbonDragging = false;
+    this.draggedRibbonItem = null;
+    this.dragObserverCleanup = null;
+    this.menuObserver = null;
   }
   async onload() {
     this.appPlugins = this.app.plugins;
@@ -6290,7 +7493,25 @@ var Manager = class extends import_obsidian24.Plugin {
     ensureBpmTagExists(this);
     this.ensureBpmTagAndRecords();
     this.ensureSelfPluginRecord();
+    if (!this.settings.TAGS.some((t) => t.id === BPM_IGNORE_TAG)) {
+      this.settings.TAGS.push({
+        id: BPM_IGNORE_TAG,
+        name: this.translator.t("\u6807\u7B7E_BPM\u5FFD\u7565_\u540D\u79F0") || "BPM Ignored",
+        color: "#6c757d"
+        // 灰色
+      });
+      await this.saveSettings();
+    }
     this.repoResolver = new RepoResolver(this);
+    this.systemRibbonManager = new SystemRibbonManager(this.app, this);
+    this.systemRibbonManager.startWatch(async () => {
+      const { orderedIds: orderedIds2, hiddenStatus: hiddenStatus2 } = await this.systemRibbonManager.load();
+      await this.syncRibbonConfig(orderedIds2, hiddenStatus2);
+    });
+    const { orderedIds, hiddenStatus } = await this.systemRibbonManager.load();
+    if (orderedIds.length > 0) {
+      await this.syncRibbonConfig(orderedIds, hiddenStatus);
+    }
     this.addRibbonIcon("folder-cog", this.translator.t("\u901A\u7528_\u7BA1\u7406\u5668_\u6587\u672C"), () => {
       this.managerModal = new ManagerModal(this.app, this);
       this.managerModal.open();
@@ -6303,19 +7524,116 @@ var Manager = class extends import_obsidian24.Plugin {
     if (this.settings.EXPORT_DIR)
       this.exportAllPluginNotes();
     this.startupCheckForUpdates();
-    performSelfCheck(this);
     this.registerObsidianProtocolHandler("BPM-plugin-install", async (params) => {
       await this.agreement.parsePluginInstall(params);
     });
     this.registerObsidianProtocolHandler("BPM-plugin-github", async (params) => {
       await this.agreement.parsePluginGithub(params);
     });
+    this.app.workspace.onLayoutReady(() => {
+      this.updateRibbonStyles();
+      if (import_obsidian27.Platform.isMobile) {
+        this.setupMenuObserver();
+      } else {
+        this.setupDragToHideObserver();
+      }
+      setTimeout(() => {
+        this.cleanRibbonItems();
+        performSelfCheck(this);
+      }, 2e3);
+    });
   }
   async onunload() {
+    var _a;
+    if (this.dragObserverCleanup) {
+      this.dragObserverCleanup();
+      this.dragObserverCleanup = null;
+    }
     if (this.settings.DELAY)
       this.disableDelaysForAllPlugins();
     if (this.exportWatcher)
       this.app.vault.offref(this.exportWatcher);
+    if (this.menuObserver) {
+      this.menuObserver.disconnect();
+    }
+    const items = this.settings.RIBBON_SETTINGS;
+    const orderedIds = items.map((i) => i.id);
+    const hiddenStatus = {};
+    items.forEach((i) => hiddenStatus[i.id] = !i.visible);
+    this.cleanRibbonItems();
+    this.systemRibbonManager.save(orderedIds, hiddenStatus).catch((err) => console.error("Failed to save on unload", err));
+    (_a = this.systemRibbonManager) == null ? void 0 : _a.stopWatch();
+  }
+  setupDragToHideObserver() {
+    const handlePointerDown = (e) => {
+      const target = e.target;
+      if (target && target.closest && target.closest(".side-dock-ribbon-action")) {
+        this.isRibbonDragging = true;
+        this.draggedRibbonItem = target.closest(".side-dock-ribbon-action");
+      }
+    };
+    const handlePointerUp = async (e) => {
+      if (!this.isRibbonDragging || !this.draggedRibbonItem) {
+        this.isRibbonDragging = false;
+        this.draggedRibbonItem = null;
+        return;
+      }
+      const container = document.querySelector(".side-dock-actions");
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        const buffer = 50;
+        const isOutside = e.clientX > rect.right + buffer || e.clientX < rect.left - buffer || // 左侧通常不可能，除非浮动
+        e.clientY < rect.top - buffer || // 向上拖出
+        e.clientY > rect.bottom + buffer;
+        if (isOutside) {
+          const label = this.draggedRibbonItem.getAttribute("aria-label");
+          if (label) {
+            await this.hideRibbonItemByLabel(label);
+          }
+        }
+      }
+      this.isRibbonDragging = false;
+      this.draggedRibbonItem = null;
+    };
+    document.addEventListener("pointerdown", handlePointerDown, true);
+    document.addEventListener("pointerup", handlePointerUp, true);
+    this.dragObserverCleanup = () => {
+      document.removeEventListener("pointerdown", handlePointerDown, true);
+      document.removeEventListener("pointerup", handlePointerUp, true);
+    };
+  }
+  async hideRibbonItemByLabel(label) {
+    var _a;
+    const items = this.settings.RIBBON_SETTINGS;
+    const targetItem = items.find((i) => i.name === label);
+    let targetId = targetItem == null ? void 0 : targetItem.id;
+    if (!targetId) {
+      const ribbonItems = ((_a = this.app.workspace.leftRibbon) == null ? void 0 : _a.items) || [];
+      const nativeItem = ribbonItems.find((i) => i.title === label || i.name === label);
+      if (nativeItem)
+        targetId = nativeItem.id;
+    }
+    if (targetId) {
+      console.log(`[BPM] Drag-to-hide triggered for: ${label} (${targetId})`);
+      const targetConfig = this.settings.RIBBON_SETTINGS.find((i) => i.id === targetId);
+      if (targetConfig) {
+        targetConfig.visible = false;
+      } else {
+        return;
+      }
+      await this.saveSettings();
+      const orderedIds = this.settings.RIBBON_SETTINGS.map((i) => i.id);
+      const hiddenStatus = {};
+      this.settings.RIBBON_SETTINGS.forEach((i) => hiddenStatus[i.id] = !i.visible);
+      await this.systemRibbonManager.save(orderedIds, hiddenStatus);
+      this.applyRibbonConfigToMemory(orderedIds, hiddenStatus);
+      this.updateRibbonStyles();
+      this.reloadIfCurrentModal();
+      await this.systemRibbonManager.save(orderedIds, hiddenStatus);
+      this.applyRibbonConfigToMemory(orderedIds, hiddenStatus);
+      this.updateRibbonStyles();
+      new import_obsidian27.Notice(this.translator.t("Ribbon_\u5DF2\u9690\u85CF") + `: ${label}`);
+    }
   }
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
@@ -6331,7 +7649,7 @@ var Manager = class extends import_obsidian24.Plugin {
   showUpdateProgress(total) {
     if (this.updateProgressNotice)
       this.updateProgressNotice.hide();
-    const notice = new import_obsidian25.Notice("", 0);
+    const notice = new import_obsidian27.Notice("", 0);
     notice.noticeEl.empty();
     const wrap = document.createElement("div");
     wrap.addClass("bpm-update-progress");
@@ -6411,14 +7729,14 @@ var Manager = class extends import_obsidian24.Plugin {
       const count = Object.values(status || {}).filter((s) => s.hasUpdate).length;
       if (count > 0) {
         const msg = this.translator.t("\u901A\u77E5_\u53EF\u66F4\u65B0\u6570\u91CF").replace("{count}", `${count}`);
-        new import_obsidian25.Notice(msg, 5e3);
+        new import_obsidian27.Notice(msg, 5e3);
       }
       progress.dispose();
     } catch (e) {
       if (this.settings.DEBUG)
         console.error("[BPM] startup check updates failed", e);
       if (!this.settings.GITHUB_TOKEN) {
-        new import_obsidian25.Notice(this.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25_\u5EFA\u8BAEToken"));
+        new import_obsidian27.Notice(this.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25_\u5EFA\u8BAEToken"));
       }
     }
   }
@@ -6433,7 +7751,7 @@ var Manager = class extends import_obsidian24.Plugin {
   getExportDir() {
     if (!this.settings.EXPORT_DIR)
       return null;
-    return (0, import_obsidian25.normalizePath)(this.settings.EXPORT_DIR);
+    return (0, import_obsidian27.normalizePath)(this.settings.EXPORT_DIR);
   }
   pauseExportWatcher() {
     if (this.exportWatcher) {
@@ -6472,8 +7790,8 @@ var Manager = class extends import_obsidian24.Plugin {
       return;
     if (!file.path.endsWith(".md"))
       return;
-    const normalized = (0, import_obsidian25.normalizePath)(file.path);
-    if (!normalized.startsWith((0, import_obsidian25.normalizePath)(exportDir) + "/") && (0, import_obsidian25.normalizePath)(exportDir) !== normalized)
+    const normalized = (0, import_obsidian27.normalizePath)(file.path);
+    if (!normalized.startsWith((0, import_obsidian27.normalizePath)(exportDir) + "/") && (0, import_obsidian27.normalizePath)(exportDir) !== normalized)
       return;
     try {
       const content = await this.app.vault.read(file);
@@ -6528,7 +7846,7 @@ var Manager = class extends import_obsidian24.Plugin {
     const raw = content.slice(3, end).trim();
     let fm = null;
     try {
-      fm = (0, import_obsidian25.parseYaml)(raw);
+      fm = (0, import_obsidian27.parseYaml)(raw);
     } catch (e) {
       fm = null;
     }
@@ -6554,7 +7872,7 @@ var Manager = class extends import_obsidian24.Plugin {
       return;
     try {
       const adapter = this.app.vault.adapter;
-      const vaultRelativeDir = (0, import_obsidian25.normalizePath)(this.settings.EXPORT_DIR);
+      const vaultRelativeDir = (0, import_obsidian27.normalizePath)(this.settings.EXPORT_DIR);
       if (!await adapter.exists(vaultRelativeDir)) {
         await adapter.mkdir(vaultRelativeDir);
       }
@@ -6593,7 +7911,7 @@ ${this.translator.t("\u5BFC\u51FA_\u6B63\u6587\u63D0\u793A")}`;
       };
       const kept = Object.fromEntries(Object.entries(existingFrontmatter != null ? existingFrontmatter : {}).filter(([k]) => !k.startsWith("bpm_")));
       const frontmatter = { ...bpmFrontmatter, ...kept };
-      const yaml = (0, import_obsidian25.stringifyYaml)(frontmatter).trimEnd();
+      const yaml = (0, import_obsidian27.stringifyYaml)(frontmatter).trimEnd();
       const content = `---
 ${yaml}
 ---${body.startsWith("\n") ? "" : "\n"}${body}`;
@@ -6636,16 +7954,38 @@ ${yaml}
     existing.delay = "";
   }
   reloadIfCurrentModal() {
-    var _a;
+    var _a, _b;
     try {
       (_a = this.managerModal) == null ? void 0 : _a.reloadShowData();
     } catch (e) {
     }
+    try {
+      (_b = this.ribbonModal) == null ? void 0 : _b.display();
+    } catch (e) {
+    }
+  }
+  /**
+   * 清理 Obsidian Ribbon 内部 items 数组中的 undefined/null 项
+   * 防止原生方法遍历时 crash
+   */
+  cleanRibbonItems() {
+    const ribbon = this.app.workspace.leftRibbon;
+    if (!ribbon || !ribbon.items || !Array.isArray(ribbon.items))
+      return;
+    let cleaned = false;
+    for (let i = ribbon.items.length - 1; i >= 0; i--) {
+      if (!ribbon.items[i]) {
+        ribbon.items.splice(i, 1);
+        cleaned = true;
+      }
+    }
+    if (cleaned)
+      console.log("[BPM] Cleaned undefined items from leftRibbon.");
   }
   showToggleNotice() {
     if (this.toggleNotice)
       return;
-    this.toggleNotice = new import_obsidian25.Notice("\u6B63\u5728\u5E94\u7528\u66F4\u6539\uFF0C\u8BF7\u52FF\u9891\u7E41\u64CD\u4F5C\u3002", 3e3);
+    this.toggleNotice = new import_obsidian27.Notice("\u6B63\u5728\u5E94\u7528\u66F4\u6539\uFF0C\u8BF7\u52FF\u9891\u7E41\u64CD\u4F5C\u3002", 3e3);
   }
   hideToggleNotice() {
     if (this.toggleNotice) {
@@ -6661,10 +8001,10 @@ ${yaml}
   // 查找/重命名导出文件：优先按 frontmatter 中的 bpm_ro_id 匹配，必要时将旧文件名重命名为当前 name
   async resolveExportPath(mp, vaultRelativeDir) {
     const adapter = this.app.vault.adapter;
-    const normalizedDir = (0, import_obsidian25.normalizePath)(vaultRelativeDir);
-    const desired = (0, import_obsidian25.normalizePath)(`${normalizedDir}/${this.exportFileName(mp)}.md`);
+    const normalizedDir = (0, import_obsidian27.normalizePath)(vaultRelativeDir);
+    const desired = (0, import_obsidian27.normalizePath)(`${normalizedDir}/${this.exportFileName(mp)}.md`);
     const files = this.app.vault.getMarkdownFiles().filter((f) => {
-      const p = (0, import_obsidian25.normalizePath)(f.path);
+      const p = (0, import_obsidian27.normalizePath)(f.path);
       return p === normalizedDir || p.startsWith(normalizedDir + "/");
     });
     for (const f of files) {
@@ -6672,7 +8012,7 @@ ${yaml}
         const content = await this.app.vault.read(f);
         const { frontmatter } = this.parseFrontmatter(content);
         if ((frontmatter == null ? void 0 : frontmatter["bpm_ro_id"]) === mp.id) {
-          const currentPath = (0, import_obsidian25.normalizePath)(f.path);
+          const currentPath = (0, import_obsidian27.normalizePath)(f.path);
           if (currentPath !== desired) {
             if (!await adapter.exists(desired)) {
               await adapter.rename(currentPath, desired);
@@ -6687,7 +8027,7 @@ ${yaml}
     }
     if (await adapter.exists(desired))
       return desired;
-    const legacyById = (0, import_obsidian25.normalizePath)(`${normalizedDir}/${(mp.id || "plugin").replace(/[/\\?%*:|"<>]/g, "-") || "plugin"}.md`);
+    const legacyById = (0, import_obsidian27.normalizePath)(`${normalizedDir}/${(mp.id || "plugin").replace(/[/\\?%*:|"<>]/g, "-") || "plugin"}.md`);
     if (await adapter.exists(legacyById)) {
       if (!await adapter.exists(desired)) {
         await adapter.rename(legacyById, desired);
@@ -6997,7 +8337,7 @@ ${yaml}
   async fetchOfficialStats() {
     const url = "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugin-stats.json";
     try {
-      const res = await (0, import_obsidian25.requestUrl)({ url });
+      const res = await (0, import_obsidian27.requestUrl)({ url });
       const json = res.json;
       const map = {};
       Object.entries(json || {}).forEach(([id, entry]) => {
@@ -7032,11 +8372,11 @@ ${yaml}
     if (this.settings.GITHUB_TOKEN)
       headers["Authorization"] = `Bearer ${this.settings.GITHUB_TOKEN}`;
     try {
-      const release = await (0, import_obsidian25.requestUrl)({ url: `https://api.github.com/repos/${repo}/releases/latest`, headers });
+      const release = await (0, import_obsidian27.requestUrl)({ url: `https://api.github.com/repos/${repo}/releases/latest`, headers });
       const assets = ((_a = release.json) == null ? void 0 : _a.assets) || [];
       const manifestAsset = assets.find((a) => a.name === "manifest.json");
       if (manifestAsset == null ? void 0 : manifestAsset.browser_download_url) {
-        const manifestRes = await (0, import_obsidian25.requestUrl)({ url: manifestAsset.browser_download_url, headers });
+        const manifestRes = await (0, import_obsidian27.requestUrl)({ url: manifestAsset.browser_download_url, headers });
         const manifest = manifestRes.json;
         if (manifest == null ? void 0 : manifest.version)
           return manifest.version;
@@ -7050,7 +8390,7 @@ ${yaml}
     ];
     for (const url of candidates) {
       try {
-        const res = await (0, import_obsidian25.requestUrl)({ url, headers });
+        const res = await (0, import_obsidian27.requestUrl)({ url, headers });
         const manifest = res.json;
         if (manifest == null ? void 0 : manifest.version)
           return manifest.version;
@@ -7078,7 +8418,7 @@ ${yaml}
       }
     }
     if (!repo) {
-      new import_obsidian25.Notice(this.translator.t("\u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A"));
+      new import_obsidian27.Notice(this.translator.t("\u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A"));
       return false;
     }
     const ok = await installPluginFromGithub(this, repo, version, false);
@@ -7128,7 +8468,237 @@ ${yaml}
     const b = Math.round(255 * f(4));
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
   }
+  updateRibbonStyles() {
+    if (!this.settings)
+      return;
+    let styleEl = document.getElementById("bpm-ribbon-manager-style");
+    if (!styleEl) {
+      styleEl = document.createElement("style");
+      styleEl.id = "bpm-ribbon-manager-style";
+      document.head.appendChild(styleEl);
+    }
+    const items = this.settings.RIBBON_SETTINGS || [];
+    if (items.length === 0) {
+      styleEl.innerHTML = "";
+      return;
+    }
+    let baseSelector = "";
+    let isMobile = import_obsidian27.Platform.isMobile;
+    if (isMobile) {
+      baseSelector = `.menu-scroll .menu-item`;
+    } else {
+      baseSelector = `.side-dock-actions div.clickable-icon.side-dock-ribbon-action`;
+    }
+    const cssRules = items.map((item) => {
+      if (!item.name)
+        return "";
+      if (!item.visible) {
+        const selector = this.generateMultiLineAriaLabelSelector(baseSelector, item.name);
+        return `${selector} { display: none !important; }`;
+      }
+      return "";
+    }).filter((rule) => rule !== "").join("\n");
+    styleEl.innerHTML = cssRules;
+  }
+  generateMultiLineAriaLabelSelector(baseSelector, ariaLabelText) {
+    const lines = ariaLabelText.split("\n").filter((line) => line.trim() !== "");
+    if (lines.length <= 1) {
+      const escapedName = ariaLabelText.replace(/"/g, '\\"');
+      return `${baseSelector}[aria-label="${escapedName}"]`;
+    } else {
+      const selectors = lines.map((line) => {
+        const trimmedLine = line.trim();
+        const escapedLine = trimmedLine.replace(/"/g, '\\"');
+        return `[aria-label*="${escapedLine}"]`;
+      }).join("");
+      return `${baseSelector}${selectors}`;
+    }
+  }
+  setupMenuObserver() {
+    this.menuObserver = new MutationObserver((mutations) => {
+      var _a;
+      let shouldProcess = false;
+      let targetNode = null;
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0) {
+          for (const node of Array.from(mutation.addedNodes)) {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              const element = node;
+              if ((_a = element.classList) == null ? void 0 : _a.contains("menu-scroll")) {
+                targetNode = element;
+                shouldProcess = true;
+                break;
+              } else {
+                const menuScroll = element.querySelector(".menu-scroll");
+                if (menuScroll) {
+                  targetNode = menuScroll;
+                  shouldProcess = true;
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+      if (shouldProcess && targetNode) {
+        this.processMenuItems(targetNode);
+      }
+    });
+    this.menuObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+  processMenuItems(menuScrollElement) {
+    let containerElement = menuScrollElement;
+    const menuGroup = menuScrollElement.querySelector(".menu-group");
+    if (menuGroup) {
+      containerElement = menuGroup;
+    }
+    const menuItems = Array.from(containerElement.querySelectorAll(".menu-item"));
+    if (menuItems.length === 0)
+      return;
+    const ribbonSettings = this.settings.RIBBON_SETTINGS || [];
+    const itemMap = /* @__PURE__ */ new Map();
+    menuItems.forEach((item) => {
+      if (item.getAttribute("data-bpm-processed") !== "true") {
+        const titleEl = item.querySelector(".menu-item-title");
+        if (titleEl && titleEl.textContent) {
+          const name2 = titleEl.textContent;
+          if (!item.hasAttribute("aria-label"))
+            item.setAttribute("aria-label", name2);
+          item.setAttribute("data-bpm-processed", "true");
+        }
+      }
+      const name = item.getAttribute("aria-label");
+      if (name)
+        itemMap.set(item, name);
+    });
+    const itemsWithOrder = menuItems.map((item) => {
+      const name = itemMap.get(item);
+      let order = 9999;
+      let visible = true;
+      if (name) {
+        const setting = ribbonSettings.find((s) => s.name === name);
+        if (setting) {
+          order = setting.order;
+          visible = setting.visible;
+        }
+      }
+      return { item, order, visible };
+    });
+    let visualChange = false;
+    itemsWithOrder.forEach(({ item, visible }) => {
+      const currentDisplay = item.style.display;
+      const targetDisplay = visible ? "" : "none";
+      if (currentDisplay !== targetDisplay) {
+        item.style.display = targetDisplay;
+        visualChange = true;
+      }
+    });
+    itemsWithOrder.sort((a, b) => a.order - b.order);
+    let needSort = false;
+    for (let i = 0; i < itemsWithOrder.length; i++) {
+      if (menuScrollElement.children[i] !== itemsWithOrder[i].item) {
+        needSort = true;
+        break;
+      }
+    }
+    if (needSort) {
+      const fragment = document.createDocumentFragment();
+      itemsWithOrder.forEach(({ item }) => fragment.appendChild(item));
+      containerElement.appendChild(fragment);
+    }
+  }
+  // 将配置应用到 Obsidian 的内存对象中 (Hack)
+  // 这能确保 Obsidian 在退出保存时，写入的是我们期望的状态，防止覆盖我们的修改
+  applyRibbonConfigToMemory(orderedIds, hiddenStatus) {
+    const ribbon = this.app.workspace.leftRibbon;
+    if (!ribbon || !ribbon.items || !Array.isArray(ribbon.items))
+      return;
+    for (let i = ribbon.items.length - 1; i >= 0; i--) {
+      if (!ribbon.items[i]) {
+        ribbon.items.splice(i, 1);
+      }
+    }
+    const items = ribbon.items;
+    items.forEach((item) => {
+      if (!item)
+        return;
+      if (item.id && hiddenStatus.hasOwnProperty(item.id)) {
+        item.hidden = hiddenStatus[item.id];
+      }
+    });
+    const orderMap = /* @__PURE__ */ new Map();
+    orderedIds.forEach((id, index) => orderMap.set(id, index));
+    items.sort((a, b) => {
+      const indexA = orderMap.has(a.id) ? orderMap.get(a.id) : 9999;
+      const indexB = orderMap.has(b.id) ? orderMap.get(b.id) : 9999;
+      return indexA - indexB;
+    });
+    if (!import_obsidian27.Platform.isMobile) {
+      const container = document.querySelector(".side-dock-actions");
+      if (container) {
+        items.forEach((item) => {
+          if (!item)
+            return;
+          if (item.buttonEl && container.contains(item.buttonEl)) {
+            container.appendChild(item.buttonEl);
+          }
+        });
+      }
+    }
+    console.log("[BPM] Applied ribbon config to memory and DOM.", items);
+  }
+  async syncRibbonConfig(orderedIds, hiddenStatus) {
+    var _a;
+    const currentItems = this.settings.RIBBON_SETTINGS || [];
+    const itemMap = new Map(currentItems.map((i) => [i.id, i]));
+    const newItems = [];
+    orderedIds.forEach((id, index) => {
+      var _a2, _b;
+      let item = itemMap.get(id);
+      if (!item) {
+        const nativeItem = (_b = (_a2 = this.app.workspace.leftRibbon) == null ? void 0 : _a2.items) == null ? void 0 : _b.find((i) => i.id === id);
+        const name = (nativeItem == null ? void 0 : nativeItem.title) || (nativeItem == null ? void 0 : nativeItem.ariaLabel) || id;
+        const icon = (nativeItem == null ? void 0 : nativeItem.icon) || "help-circle";
+        item = {
+          id,
+          name,
+          icon,
+          visible: !hiddenStatus[id],
+          order: index
+        };
+      } else {
+        item.order = index;
+        item.visible = !hiddenStatus[id];
+      }
+      newItems.push(item);
+    });
+    const memoryItems = ((_a = this.app.workspace.leftRibbon) == null ? void 0 : _a.items) || [];
+    const seenIds = new Set(orderedIds);
+    memoryItems.forEach((mItem) => {
+      if (!mItem)
+        return;
+      if (!seenIds.has(mItem.id)) {
+        const item = {
+          id: mItem.id,
+          name: mItem.title || mItem.ariaLabel || mItem.id,
+          icon: mItem.icon || "help-circle",
+          visible: true,
+          // 默认为显示
+          order: newItems.length
+        };
+        newItems.push(item);
+      }
+    });
+    this.settings.RIBBON_SETTINGS = newItems;
+    await this.saveSettings();
+    this.updateRibbonStyles();
+  }
 };
 
 // main.ts
 var main_default = Manager;
+
+/* nosourcemap */
