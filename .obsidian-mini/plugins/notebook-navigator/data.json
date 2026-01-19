@@ -364,7 +364,9 @@
     "Areas",
     "Resources",
     "Archives",
-    "Attachments"
+    "Attachments",
+    "Misc",
+    "Private"
   ],
   "rootTagOrder": [],
   "iconizeFormat": false,
