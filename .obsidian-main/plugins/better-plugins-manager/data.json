@@ -928,55 +928,6 @@
       "icon": "question-mark-glyph",
       "visible": true,
       "order": 16
-    },
-    {
-      "id": "float-search:Search obsidian in modal view",
-      "name": "float-search:Search obsidian in modal view",
-      "icon": "help-circle",
-      "visible": true,
-      "order": 17
-    },
-    {
-      "id": "fuzzy-chinese-pinyin:FuzzySearch",
-      "name": "fuzzy-chinese-pinyin:FuzzySearch",
-      "icon": "help-circle",
-      "visible": true,
-      "order": 18
-    },
-    {
-      "id": "templater-obsidian:Templater",
-      "name": "templater-obsidian:Templater",
-      "icon": "help-circle",
-      "visible": true,
-      "order": 19
-    },
-    {
-      "id": "obsidian42-brat:BRAT",
-      "name": "obsidian42-brat:BRAT",
-      "icon": "help-circle",
-      "visible": true,
-      "order": 20
-    },
-    {
-      "id": "obsidian-kanban:创建新看板",
-      "name": "obsidian-kanban:创建新看板",
-      "icon": "help-circle",
-      "visible": true,
-      "order": 21
-    },
-    {
-      "id": "notebook-navigator:笔记本导航器",
-      "name": "notebook-navigator:笔记本导航器",
-      "icon": "help-circle",
-      "visible": true,
-      "order": 22
-    },
-    {
-      "id": "obsidian-excalidraw-plugin:新建绘图文件",
-      "name": "obsidian-excalidraw-plugin:新建绘图文件",
-      "icon": "help-circle",
-      "visible": true,
-      "order": 23
     }
   ],
   "AUTO_TAKEOVER": false,
