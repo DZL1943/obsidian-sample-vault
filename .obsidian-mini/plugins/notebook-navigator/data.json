@@ -320,7 +320,10 @@
   "folderIcons": {},
   "folderColors": {},
   "folderBackgroundColors": {},
-  "folderSortOverrides": {},
+  "folderSortOverrides": {
+    "blog": "created-desc",
+    "thoughts": "created-desc"
+  },
   "folderAppearances": {},
   "tagIcons": {},
   "tagColors": {},
@@ -354,6 +357,7 @@
   "lastAnnouncedRelease": "",
   "rootFolderOrder": [
     "Inbox",
+    "Private",
     "thoughts",
     "blog",
     "docs",
@@ -365,8 +369,7 @@
     "Resources",
     "Archives",
     "Attachments",
-    "Misc",
-    "Private"
+    "Misc"
   ],
   "rootTagOrder": [],
   "iconizeFormat": false,
