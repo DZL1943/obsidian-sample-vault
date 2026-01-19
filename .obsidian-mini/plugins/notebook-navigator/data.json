@@ -354,6 +354,7 @@
   "lastAnnouncedRelease": "",
   "rootFolderOrder": [
     "Inbox",
+    "thoughts",
     "blog",
     "docs",
     "Journals",
@@ -363,10 +364,7 @@
     "Areas",
     "Resources",
     "Archives",
-    "Attachments",
-    "Scripts",
-    "Misc",
-    "Templates"
+    "Attachments"
   ],
   "rootTagOrder": [],
   "iconizeFormat": false,
