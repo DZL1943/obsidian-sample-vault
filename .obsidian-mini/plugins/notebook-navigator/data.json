@@ -43,7 +43,7 @@
     "compactItemHeightScaleText": "local",
     "uiScale": "local"
   },
-  "autoRevealActiveFile": false,
+  "autoRevealActiveFile": true,
   "autoRevealIgnoreRightSidebar": true,
   "multiSelectModifier": "optionAlt",
   "startView": "navigation",
