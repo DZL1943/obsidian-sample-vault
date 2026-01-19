@@ -931,43 +931,43 @@
     },
     {
       "id": "float-search:Search obsidian in modal view",
-      "name": "Search obsidian in modal view",
-      "icon": "search",
+      "name": "float-search:Search obsidian in modal view",
+      "icon": "help-circle",
       "visible": true,
       "order": 17
     },
     {
       "id": "fuzzy-chinese-pinyin:FuzzySearch",
-      "name": "FuzzySearch",
-      "icon": "search",
+      "name": "fuzzy-chinese-pinyin:FuzzySearch",
+      "icon": "help-circle",
       "visible": true,
       "order": 18
     },
     {
       "id": "templater-obsidian:Templater",
-      "name": "Templater",
-      "icon": "templater-icon",
+      "name": "templater-obsidian:Templater",
+      "icon": "help-circle",
       "visible": true,
       "order": 19
     },
     {
       "id": "obsidian42-brat:BRAT",
-      "name": "BRAT",
-      "icon": "BratIcon",
+      "name": "obsidian42-brat:BRAT",
+      "icon": "help-circle",
       "visible": true,
       "order": 20
     },
     {
       "id": "obsidian-kanban:创建新看板",
-      "name": "创建新看板",
-      "icon": "lucide-trello",
+      "name": "obsidian-kanban:创建新看板",
+      "icon": "help-circle",
       "visible": true,
       "order": 21
     },
     {
       "id": "notebook-navigator:笔记本导航器",
-      "name": "笔记本导航器",
-      "icon": "notebook-navigator",
+      "name": "notebook-navigator:笔记本导航器",
+      "icon": "help-circle",
       "visible": true,
       "order": 22
     },
