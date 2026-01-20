@@ -6,10 +6,10 @@
       "fileVisibility": "supported",
       "hiddenFolders": [
         "/Misc",
-        "/Archives",
         "/Scripts",
         "/Templates",
-        "/Attachments"
+        "/Attachments",
+        "/assets"
       ],
       "hiddenTags": [],
       "navigationBanner": null,
@@ -321,8 +321,8 @@
   "folderColors": {},
   "folderBackgroundColors": {},
   "folderSortOverrides": {
-    "blog": "created-desc",
-    "thoughts": "created-desc"
+    "Thoughts": "created-desc",
+    "Pages": "created-desc"
   },
   "folderAppearances": {},
   "tagIcons": {},
@@ -357,13 +357,10 @@
   "lastAnnouncedRelease": "",
   "rootFolderOrder": [
     "Inbox",
-    "Private",
-    "thoughts",
-    "blog",
-    "docs",
     "Journals",
     "Jottings",
     "Pages",
+    "Thoughts",
     "Projects",
     "Areas",
     "Resources",
