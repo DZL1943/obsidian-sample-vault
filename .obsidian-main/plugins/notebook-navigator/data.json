@@ -9,7 +9,8 @@
         "/Scripts",
         "/Templates",
         "/Attachments",
-        "assets"
+        "assets",
+        "NSFW"
       ],
       "hiddenTags": [],
       "navigationBanner": null,
