@@ -14,7 +14,12 @@
       ],
       "hiddenTags": [],
       "navigationBanner": null,
-      "shortcuts": [],
+      "shortcuts": [
+        {
+          "type": "note",
+          "path": "README.md"
+        }
+      ],
       "hiddenFileProperties": [],
       "hiddenFileNames": [],
       "hiddenFileTags": []
