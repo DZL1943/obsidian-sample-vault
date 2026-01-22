@@ -355,7 +355,7 @@
       "tags": [
         "required"
       ],
-      "enabled": false,
+      "enabled": true,
       "delay": "default"
     },
     {
@@ -815,7 +815,7 @@
       "tags": [
         "required"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "",
       "note": ""
     }
