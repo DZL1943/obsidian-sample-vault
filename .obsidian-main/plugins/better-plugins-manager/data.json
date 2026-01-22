@@ -355,7 +355,7 @@
       "tags": [
         "required"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "default"
     },
     {
@@ -803,6 +803,18 @@
       "desc": "Plugin Manager: Simplify, Enhance, Personalize | 插件管理器：简化操作、增强功能、个性化设置",
       "group": "",
       "tags": [],
+      "enabled": true,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "quick-peek-sidebar",
+      "name": "Quick Peek Sidebar",
+      "desc": "Opens the left and/or right side panel by hovering over it.",
+      "group": "ui",
+      "tags": [
+        "required"
+      ],
       "enabled": true,
       "delay": "",
       "note": ""
