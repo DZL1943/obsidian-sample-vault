@@ -4,5 +4,11 @@
   "useTab": false,
   "attachmentFolderPath": "./",
   "newFileLocation": "current",
-  "livePreview": false
+  "livePreview": false,
+  "strictLineBreaks": true,
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "showUnsupportedFiles": true,
+  "promptDelete": false,
+  "alwaysUpdateLinks": true
 }

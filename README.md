@@ -12,6 +12,8 @@ obsidianEditingMode: source
 
 ## Overview
 
+![](Attachments/20260122171605.png)
+
 %%[list2lt]%%
 - 版本 | v1.11.4-mac-arm64
 - 仓库和配置 | `~/Documents/Obsidian` `~/Library/Application Support/obsidian/Obsidian Sandbox`

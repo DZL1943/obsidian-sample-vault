@@ -1613,30 +1613,6 @@
       "delayed": false,
       "time": 0
     },
-    "quick-peek-sidebar": {
-      "id": "quick-peek-sidebar",
-      "name": "Quick Peek Sidebar",
-      "version": "1.0.2",
-      "minAppVersion": "0.15.0",
-      "description": "Opens the left and/or right side panel by hovering over it.",
-      "author": "Bradley Wyatt",
-      "authorUrl": "https://github.com/bwya77",
-      "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com/bwya77",
-        "GitHub Sponsor": "https://github.com/sponsors/bwya77"
-      },
-      "isDesktopOnly": true,
-      "dir": ".obsidian-opt/plugins/quick-peek-sidebar",
-      "enabled": false,
-      "switched": 0,
-      "groupInfo": {
-        "hidden": false,
-        "groupIndices": [],
-        "groupWasEnabled": false
-      },
-      "delayed": false,
-      "time": 0
-    },
     "quicklink": {
       "id": "quicklink",
       "name": "QuickLink",
