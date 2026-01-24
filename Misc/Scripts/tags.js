@@ -2,11 +2,12 @@ module.exports = async function start(params) {
     const { obsidian, quickAddApi = app.plugins.plugins.quickadd.api } = params || {};
 
     const inputs = await quickAddApi.requestInputs([
+        {id: 'operation', type: 'dropdown', options:['add', 'remove', 'replace']},
         {id: 'tag', type: 'text'},
-        {id: 'operation', type: 'select', options:['add', 'remove', 'replace']}
+        {id: 'newTag', type: 'text'},
     ]);
 
-    const {tag, operation} = inputs;
+    const {operation, tag, newTag} = inputs;
     const files = app.vault.getMarkdownFiles();
     let modified = 0;
     for (const file of files) {

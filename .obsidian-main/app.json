@@ -12,7 +12,7 @@
   "newLinkFormat": "relative",
   "useMarkdownLinks": true,
   "showUnsupportedFiles": true,
-  "attachmentFolderPath": "./",
+  "attachmentFolderPath": "Attachments",
   "showInlineTitle": false,
   "vimMode": false,
   "showLineNumber": false,
