@@ -2453,6 +2453,88 @@
               }
             }
           }
+        },
+        {
+          "uuid": "5e21f497-d726-4a7c-be73-4210b4f2036e",
+          "hasCommand": false,
+          "icon": "",
+          "inGallery": false,
+          "label": "",
+          "link": "快速切换: 打开快速切换",
+          "linkAttr": {
+            "commandCheck": false,
+            "commandId": "switcher:open",
+            "hasVars": false,
+            "type": "command"
+          },
+          "tooltip": "快速切换",
+          "visibility": {
+            "desktop": {
+              "allViews": {
+                "components": [
+                  "icon",
+                  "label"
+                ]
+              }
+            },
+            "mobile": {
+              "allViews": {
+                "components": [
+                  "icon",
+                  "label"
+                ]
+              }
+            },
+            "tablet": {
+              "allViews": {
+                "components": [
+                  "icon",
+                  "label"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "uuid": "6b56e560-53bc-486b-bc82-fdc27756e62b",
+          "hasCommand": false,
+          "icon": "",
+          "inGallery": false,
+          "label": "",
+          "link": "命令面板: 打开命令面板",
+          "linkAttr": {
+            "commandCheck": false,
+            "commandId": "command-palette:open",
+            "hasVars": false,
+            "type": "command"
+          },
+          "tooltip": "命令面板",
+          "visibility": {
+            "desktop": {
+              "allViews": {
+                "components": [
+                  "icon",
+                  "label"
+                ]
+              }
+            },
+            "mobile": {
+              "allViews": {
+                "components": [
+                  "icon",
+                  "label"
+                ]
+              }
+            },
+            "tablet": {
+              "allViews": {
+                "components": [
+                  "icon",
+                  "label"
+                ]
+              }
+            }
+          }
         }
       ],
       "mobileStyles": [],
@@ -2474,7 +2556,7 @@
           }
         }
       },
-      "updated": "2025-12-31T02:34:26.044Z"
+      "updated": "2026-01-24T01:31:30.108Z"
     }
   ],
   "version": 20250313.1,
