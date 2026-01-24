@@ -56393,7 +56393,7 @@ var obsidianCSSVariables_default = {
     "--anim-motion-swing": "cubic-bezier(0, 0.55, 0.45, 1)"
   },
   bases: {
-    "--bases-header-border-width": "0 0 1px 0",
+    "--bases-header-border-width": "0 0 var(--border-width) 0",
     "--bases-header-height": "40px",
     "--bases-header-padding-start": "2px",
     "--bases-header-padding-end": "2px",
@@ -56409,7 +56409,7 @@ var obsidianCSSVariables_default = {
     "--bases-group-heading-value-size": "var(--font-smaller)",
     "--bases-group-heading-value-weight": "var(--font-semibold)",
     "--bases-group-heading-property-display": "block",
-    "--bases-table-container-border-width": "1px",
+    "--bases-table-container-border-width": "var(--border-width)",
     "--bases-table-container-border-radius": "var(--radius-s)",
     "--bases-table-group-background": "var(--background-primary-alt)",
     "--bases-table-header-weight": "var(--font-weight)",
@@ -56421,9 +56421,9 @@ var obsidianCSSVariables_default = {
     "--bases-table-summary-background": "var(--background-primary)",
     "--bases-table-summary-background-hover": "var(--background-modifier-hover)",
     "--bases-table-border-color": "var(--table-border-color)",
-    "--bases-table-column-border-width": "1px",
+    "--bases-table-column-border-width": "var(--border-width)",
     "--bases-table-group-gap": "10px",
-    "--bases-table-row-border-width": "1px",
+    "--bases-table-row-border-width": "var(--border-width)",
     "--bases-table-row-background-hover": "var(--table-row-background-hover)",
     "--bases-table-row-height": "30px",
     "--bases-table-font-size": "var(--font-smaller)",
@@ -56441,7 +56441,7 @@ var obsidianCSSVariables_default = {
     "--bases-cards-cover-background": "var(--background-primary-alt)",
     "--bases-cards-scale": "1",
     "--bases-cards-line-height": "24px",
-    "--bases-cards-border-width": "1px",
+    "--bases-cards-border-width": "var(--border-width)",
     "--bases-cards-shadow": "0 0 0 1px var(--background-modifier-border)",
     "--bases-cards-shadow-hover": "0 0 0 1px var(--background-modifier-border-hover)",
     "--bases-cards-font-size": "var(--font-smaller)"
@@ -56452,6 +56452,19 @@ var obsidianCSSVariables_default = {
     "--blockquote-font-style": "normal",
     "--blockquote-color": "inherit",
     "--blockquote-background-color": "transparent"
+  },
+  blurs: {
+    "--blur-background": "color-mix(in srgb, var(--background-primary) var(--blur-opacity-s), transparent) linear-gradient(var(--background-primary), color-mix(in srgb, var(--background-primary) var(--blur-opacity-s), transparent))",
+    "--blur-opacity-s": "65%",
+    "--blur-opacity-m": "90%",
+    "--blur-brightness": "1.15",
+    "--blur-saturation": "1.5",
+    "--blur-radius-s": "6px",
+    "--blur-radius-m": "10px",
+    "--blur-radius-l": "16px",
+    "--blur-s": "blur(var(--blur-radius-s)) saturate(var(--blur-saturation)) brightness(var(--blur-brightness))",
+    "--blur-m": "blur(var(--blur-radius-m)) saturate(var(--blur-saturation)) brightness(var(--blur-brightness))",
+    "--blur-l": "blur(var(--blur-radius-l)) saturate(var(--blur-saturation)) brightness(var(--blur-brightness))"
   },
   borders: {
     "--border-width": "1px"
@@ -56496,7 +56509,10 @@ var obsidianCSSVariables_default = {
     "--canvas-color-4": "var(--color-green-rgb)",
     "--canvas-color-5": "var(--color-cyan-rgb)",
     "--canvas-color-6": "var(--color-purple-rgb)",
-    "--canvas-dot-pattern": "var(--color-base-30)"
+    "--canvas-dot-pattern": "var(--color-base-30)",
+    "--canvas-controls-radius": "var(--radius-s)",
+    "--canvas-controls-icon-size": "var(--icon-s)",
+    "--canvas-controls-icon-stroke": "var(--icon-s-stroke-width)"
   },
   checkbox: {
     "--checkbox-radius": "var(--radius-s)",
@@ -56608,9 +56624,13 @@ var obsidianCSSVariables_default = {
   },
   dropdowns: {
     "--dropdown-background-blend-mode": "hard-light",
-    "--dropdown-background-position": "right 0.5em top 50%, 0 0",
-    "--dropdown-background-size": "1em auto, 100%",
-    "--dropdown-padding": "0 1.9em 0 0.8em"
+    "--dropdown-background-position": "var(--inset-end) var(--dropdown-icon-inset) top 50%, 0 0",
+    "--dropdown-background-size": "var(--dropdown-icon-width) auto, 100%",
+    "--dropdown-icon-width": "1em",
+    "--dropdown-icon-inset": "0.5em",
+    "--dropdown-padding": "0 var(--dropdown-padding-end) 0 var(--dropdown-padding-start)",
+    "--dropdown-padding-start": "0.8em",
+    "--dropdown-padding-end": "1.9em"
   },
   embed: {
     "--embed-max-height": "4000px",
@@ -56626,25 +56646,21 @@ var obsidianCSSVariables_default = {
   file: {
     "--file-line-width": "700px",
     "--file-folding-offset": "24px",
-    "--file-margins": "var(--size-4-8)",
+    "--file-margins": "var(--file-margins-y) var(--file-margins-x)",
+    "--file-margins-x": "var(--size-4-8)",
+    "--file-margins-y": "var(--size-4-8)",
     "--file-header-font": "var(--font-interface)",
     "--file-header-font-size": "var(--font-ui-small)",
     "--file-header-font-weight": "400",
+    "--file-header-background": "var(--background-primary)",
+    "--file-header-background-focused": "var(--background-primary)",
     "--file-header-border": "var(--border-width) solid transparent",
     "--file-header-justify": "center"
-  },
-  fileexplorer: {
-    "--vault-profile-display": "flex",
-    "--vault-profile-actions-display": "flex",
-    "--vault-profile-font-size": "var(--font-ui-small)",
-    "--vault-profile-font-weight": "var(--font-medium)",
-    "--vault-profile-color": "var(--text-normal)",
-    "--vault-profile-color-hover": "var(--vault-profile-color)"
   },
   footnote: {
     "--footnote-divider-color-active": "var(--metadata-divider-color-focus)",
     "--footnote-divider-color": "var(--metadata-divider-color)",
-    "--footnote-divider-width": "1px",
+    "--footnote-divider-width": "var(--border-width)",
     "--footnote-gap": "var(--size-4-1)",
     "--footnote-id-color-no-occurrences": "var(--text-faint)",
     "--footnote-id-color": "var(--text-muted)",
@@ -56748,8 +56764,8 @@ var obsidianCSSVariables_default = {
   indentation: {
     "--indent-size": "4",
     "--indent-unit": "0.5625em",
-    "--indentation-guide-width": "1px",
-    "--indentation-guide-width-active": "1px",
+    "--indentation-guide-width": "var(--border-width)",
+    "--indentation-guide-width-active": "var(--border-width)",
     "--indentation-guide-color": "rgba(var(--mono-rgb-100), 0.12)",
     "--indentation-guide-color-active": "rgba(var(--mono-rgb-100), 0.3)",
     "--indentation-guide-editing-indent": "0.85em",
@@ -56811,13 +56827,25 @@ var obsidianCSSVariables_default = {
     "--list-numbered-style": "decimal",
     "--list-bullet-end-padding": "1.3rem"
   },
+  menu: {
+    "--menu-padding": "var(--size-2-3)",
+    "--menu-shadow": "var(--shadow-s)",
+    "--menu-radius": "var(--radius-m)",
+    "--menu-background": "var(--background-secondary)",
+    "--menu-border-color": "var(--background-modifier-border-hover)",
+    "--menu-border-width": "var(--border-width)",
+    "--menu-backdrop-filter": "none",
+    "--menu-scroll-mask": "linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.1) 48px)"
+  },
   modal: {
     "--modal-background": "var(--background-primary)",
+    "--modal-header-height": "auto",
     "--modal-width": "90vw",
     "--modal-height": "85vh",
     "--modal-max-width": "1100px",
     "--modal-max-height": "1000px",
     "--modal-max-width-narrow": "800px",
+    "--modal-shadow": "none",
     "--modal-border-width": "var(--border-width)",
     "--modal-border-color": "var(--color-base-40, var(--background-modifier-border-focus))",
     "--modal-radius": "var(--radius-l)",
@@ -56854,6 +56882,8 @@ var obsidianCSSVariables_default = {
     "--nav-item-parent-padding": "var(--nav-item-padding)",
     "--nav-item-children-padding-start": "var(--size-2-2)",
     "--nav-item-children-margin-start": "var(--size-4-3)",
+    "--nav-item-margin-bottom": "var(--size-2-1)",
+    "--nav-item-radius": "var(--radius-s);",
     "--nav-item-weight": "inherit",
     "--nav-item-weight-hover": "inherit",
     "--nav-item-weight-active": "inherit",
@@ -56889,7 +56919,9 @@ var obsidianCSSVariables_default = {
     "--prompt-max-width": "80vw",
     "--prompt-max-height": "70vh",
     "--prompt-border-width": "var(--border-width)",
-    "--prompt-border-color": "var(--color-base-40, var(--background-modifier-border-focus))"
+    "--prompt-border-color": "var(--color-base-40, var(--background-modifier-border-focus))",
+    "--prompt-background": "var(--background-primary)",
+    "--prompt-backdrop-filter": "none"
   },
   properties: {
     "--metadata-background": "transparent",
@@ -56912,7 +56944,7 @@ var obsidianCSSVariables_default = {
     "--metadata-property-background": "transparent",
     "--metadata-property-background-hover": "transparent",
     "--metadata-property-background-active": "var(--background-modifier-hover)",
-    "--metadata-property-box-shadow-hover": "0 0 0 1px var(--background-modifier-border-hover)",
+    "--metadata-property-box-shadow-hover": "0 0 0 var(--border-width) var(--background-modifier-border-hover)",
     "--metadata-property-box-shadow-focus": "0 0 0 2px var(--background-modifier-border-focus)",
     "--metadata-label-background": "transparent",
     "--metadata-label-background-hover": "transparent",
@@ -56931,8 +56963,18 @@ var obsidianCSSVariables_default = {
     "--metadata-input-background-hover": "transparent",
     "--metadata-input-background-active": "var(--background-modifier-hover)",
     "--metadata-input-longtext-lines": "3",
+    "--metadata-input-padding": "var(--size-4-1) var(--size-4-2)",
     "--metadata-sidebar-label-font-size": "var(--font-ui-small)",
     "--metadata-sidebar-input-font-size": "var(--font-ui-small)"
+  },
+  raised: {
+    "--raised-background": "var(--blur-background)",
+    "--raised-blur": "var(--blur-s)",
+    "--raised-shadow": "var(--shadow-xs)",
+    "--raised-mask-background": "linear-gradient(to bottom left, white, transparent, white) border-box no-repeat",
+    "--raised-mask": "linear-gradient(white, white) padding-box, linear-gradient(white, white) border-box",
+    "--raised-mask-composite": "exclude, add",
+    "--raised-mask-border-width": "0"
   },
   radiuses: {
     "--radius-s": "4px",
@@ -56962,6 +57004,16 @@ var obsidianCSSVariables_default = {
     "--search-icon-size": "18px",
     "--search-result-background": "var(--background-primary)"
   },
+  settinggroup: {
+    "--setting-group-heading-color": "var(--text-normal)",
+    "--setting-group-heading-size": "var(--font-ui-medium)",
+    "--setting-group-heading-weight": "var(--font-semibold)",
+    "--setting-items-background": "var(--background-primary-alt)",
+    "--setting-items-padding": "var(--size-4-5)",
+    "--setting-items-radius": "var(--radius-l)",
+    "--setting-items-border-width": "0",
+    "--setting-items-border-color": "var(--background-modifier-border)"
+  },
   sidebar: {
     "--sidebar-markdown-font-size": "calc(var(--font-text-size) * 0.9)",
     "--sidebar-tab-text-display": "none",
@@ -56971,12 +57023,12 @@ var obsidianCSSVariables_default = {
     "--sidebar-right-toggle-inner-width-open": "24%"
   },
   slider: {
-    "--slider-thumb-border-width": "1px",
+    "--slider-thumb-border-width": "var(--border-width)",
     "--slider-thumb-border-color": "var(--background-modifier-border-hover)",
     "--slider-thumb-height": "18px",
     "--slider-thumb-width": "18px",
     "--slider-thumb-y": "-6px",
-    "--slider-thumb-radius": "50%",
+    "--slider-thumb-radius": "var(--slider-thumb-height)",
     "--slider-s-thumb-size": "15px",
     "--slider-s-thumb-position": "-5px",
     "--slider-track-background": "var(--background-modifier-border)",
@@ -57002,11 +57054,15 @@ var obsidianCSSVariables_default = {
   statusbar: {
     "--status-bar-background": "var(--background-secondary)",
     "--status-bar-border-color": "var(--divider-color)",
-    "--status-bar-border-width": "1px 0 0 1px",
+    "--status-bar-border-width": "var(--border-width) 0 0 var(--border-width)",
     "--status-bar-font-size": "var(--font-ui-smaller)",
     "--status-bar-text-color": "var(--text-muted)",
     "--status-bar-position": "fixed",
     "--status-bar-radius": "var(--radius-m) 0 0 0"
+  },
+  suggestion: {
+    "--suggestion-background": "var(--background-primary)",
+    "--suggestion-backdrop-filter": "none"
   },
   sync: {
     "--sync-avatar-color-current-user": "transparent",
@@ -57087,6 +57143,14 @@ var obsidianCSSVariables_default = {
     "--tab-stacked-text-writing-mode": "vertical-lr",
     "--tab-stacked-shadow": "-8px 0 8px 0 rgba(0, 0, 0, 0.05)"
   },
+  tabswitcher: {
+    "--tab-switcher-menubar-background": "linear-gradient(to top, var(--background-secondary), transparent)",
+    "--tab-switcher-background": "var(--background-secondary)",
+    "--tab-switcher-preview-radius": "var(--radius-xl)",
+    "--tab-switcher-preview-background-shadow": "0 4px 30px 2px rgba(0, 0, 0, 0.2)",
+    "--tab-switcher-preview-shadow": "0 0 0 1px rgba(var(--mono-rgb-100), 0.05)",
+    "--tab-switcher-preview-shadow-active": "0 0 0 2px var(--color-accent)"
+  },
   tag: {
     "--tag-size": "var(--font-smaller)",
     "--tag-color": "var(--text-accent)",
@@ -57108,8 +57172,9 @@ var obsidianCSSVariables_default = {
     "--input-padding": "var(--size-4-1) var(--size-4-2)",
     "--input-radius": "5px",
     "--input-font-weight": "var(--font-normal)",
-    "--input-border-width": "1px",
+    "--input-border-width": "var(--border-width)",
     "--input-border-width-focus": "2px",
+    "--input-icon-inset": "var(--size-4-1)",
     "--input-placeholder-color": "var(--text-faint)",
     "--input-date-separator": "var(--text-faint)"
   },
@@ -57125,6 +57190,20 @@ var obsidianCSSVariables_default = {
     "--toggle-s-width": "34px",
     "--toggle-s-thumb-height": "15px",
     "--toggle-s-thumb-width": "15px"
+  },
+  touch: {
+    "--touch-size-xxs": "24px",
+    "--touch-size-xs": "30px",
+    "--touch-size-s": "40px",
+    "--touch-size-m": "44px",
+    "--touch-size-l": "52px",
+    "--touch-size-xl": "60px",
+    "--touch-radius-xxs": "var(--touch-size-xxs)",
+    "--touch-radius-xs": "var(--touch-size-xs)",
+    "--touch-radius-s": "var(--touch-size-s)",
+    "--touch-radius-m": "var(--touch-size-m)",
+    "--touch-radius-l": "var(--touch-size-l)",
+    "--touch-radius-xl": "var(--touch-size-xl)"
   },
   themelight: {
     "--highlight-mix-blend-mode": "darken",
@@ -57167,6 +57246,8 @@ var obsidianCSSVariables_default = {
     "--background-modifier-cover": "rgba(220, 220, 220, 0.4)",
     "--input-shadow": "inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 1.5px 0 rgba(0, 0, 0, 0.03), 0 1px 2px 0 rgba(0, 0, 0, 0.04), 0 0 0 0 transparent",
     "--input-shadow-hover": "inset 0 0 0 1px rgba(0, 0, 0, 0.17), 0 2px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 1.5px 0 rgba(0, 0, 0, 0.03), 0 1px 2px 0 rgba(0, 0, 0, 0.04), 0 0 0 0 transparent",
+    "--shadow-edges": "0 0 transparent",
+    "--shadow-xs": "0 1px 6px rgba(0, 0, 0, 0.015), 0 4px 24px rgba(0, 0, 0, 0.065), var(--shadow-edges)",
     "--shadow-s": "0px 1px 2px rgba(0, 0, 0, 0.028), 0px 3.4px 6.7px rgba(0, 0, 0, 0.042), 0px 15px 30px rgba(0, 0, 0, 0.07)",
     "--shadow-l": "0px 1.8px 7.3px rgba(0, 0, 0, 0.071), 0px 6.3px 24.7px rgba(0, 0, 0, 0.112), 0px 15px 30px rgba(0, 0, 0, 0.1)"
   },
@@ -57206,6 +57287,7 @@ var obsidianCSSVariables_default = {
     "--color-accent": "hsl(var(--accent-h), var(--accent-s), var(--accent-l))",
     "--color-accent-1": "hsl(calc(var(--accent-h) - 3), calc(var(--accent-s) * 1.02), calc(var(--accent-l) * 1.15))",
     "--color-accent-2": "hsl(calc(var(--accent-h) - 5), calc(var(--accent-s) * 1.05), calc(var(--accent-l) * 1.29))",
+    "--blur-background": "color-mix(in srgb, var(--interactive-normal) var(--blur-opacity-s), transparent) linear-gradient(var(--interactive-normal), color-mix(in srgb, var(--interactive-normal) var(--blur-opacity-s), transparent))",
     "--background-modifier-form-field": "var(--color-base-25)",
     "--background-secondary-alt": "var(--color-base-30)",
     "--interactive-normal": "var(--color-base-30)",
@@ -57215,16 +57297,18 @@ var obsidianCSSVariables_default = {
     "--interactive-accent-hover": "var(--color-accent-1)",
     "--background-modifier-box-shadow": "rgba(0, 0, 0, 0.3)",
     "--background-modifier-cover": "rgba(10, 10, 10, 0.4)",
+    "--raised-mask-background": "transparent",
     "--text-selection": "hsla(var(--interactive-accent-hsl), 0.33)",
     "--input-shadow": "inset 0 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.09), 0 2px 4px 0 rgba(0, 0, 0, 0.15), 0 1px 1.5px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 0 0 0 transparent",
     "--input-shadow-hover": "inset 0 0.5px 1px 0.5px rgba(255, 255, 255, 0.16), 0 2px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 1.5px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.4), 0 0 0 0 transparent",
+    "--shadow-xs": "0 1px 6px rgba(0, 0, 0, 0.045), 0 4px 24px rgba(0, 0, 0, 0.195), var(--shadow-edges)",
     "--shadow-s": "0px 1px 2px rgba(0, 0, 0, 0.121), 0px 3.4px 6.7px rgba(0, 0, 0, 0.179), 0px 15px 30px rgba(0, 0, 0, 0.3)",
     "--shadow-l": "0px 1.8px 7.3px rgba(0, 0, 0, 0.071), 0px 6.3px 24.7px rgba(0, 0, 0, 0.112), 0px 30px 90px rgba(0, 0, 0, 0.2)",
     "--pdf-shadow": "0 0 0 1px var(--background-modifier-border)",
     "--pdf-thumbnail-shadow": "0 0 0 1px var(--background-modifier-border)"
   },
   typography: {
-    "--font-default": 'ui-sans-serif, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, "Inter", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
+    "--font-default": 'ui-sans-serif, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", "Google Sans Flex", Roboto, "Inter Variable", "Inter", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
     "--font-monospace-default": 'ui-monospace, SFMono-Regular, "Cascadia Mono", "Roboto Mono", "DejaVu Sans Mono", "Liberation Mono", Menlo, Monaco, "Consolas", "Source Code Pro", monospace',
     "--font-interface-override": "'??'",
     "--font-interface-theme": "'??'",
@@ -57269,11 +57353,18 @@ var obsidianCSSVariables_default = {
   },
   vaultprofile: {
     "--vault-profile-display": "flex",
+    "--vault-profile-order": "2",
     "--vault-profile-actions-display": "flex",
     "--vault-profile-font-size": "var(--font-ui-small)",
     "--vault-profile-font-weight": "var(--font-medium)",
     "--vault-profile-color": "var(--text-normal)",
     "--vault-profile-color-hover": "var(--vault-profile-color)"
+  },
+  view: {
+    "--view-top-fade-opacity": "0.25",
+    "--view-bottom-fade-opacity": "0.5",
+    "--view-top-fade-mask": "linear-gradient(to bottom, rgba(0, 0, 0, var(--view-top-fade-opacity)) 0%, #000000 calc(var(--safe-area-inset-top) + var(--view-header-height) + 12px))",
+    "--view-bottom-fade-mask": "linear-gradient(to top, rgba(0, 0, 0, var(--view-bottom-fade-opacity)) 0%, #000000 calc(var(--safe-area-inset-bottom) - var(--keyboard-height) + 12px))"
   },
   windowframe: {
     "--titlebar-background": "var(--background-secondary)",
@@ -57313,6 +57404,7 @@ var variableCategories = {
   animation: { parent: "Foundations", category: "Animation", text: "Animation variables" },
   bases: { parent: "Editor", category: "Bases" },
   blockquote: { parent: "Editor", category: "Blockquote" },
+  blurs: { parent: "Foundations", category: "Blurs", text: "Blurs variables" },
   borders: { parent: "Foundations", category: "Borders" },
   button: { parent: "Components", category: "Button" },
   callout: { parent: "Editor", category: "Callout" },
@@ -57348,21 +57440,27 @@ var variableCategories = {
   prompt: { parent: "Components", category: "Prompt" },
   properties: { parent: "Editor", category: "Properties" },
   radiuses: { parent: "Foundations", category: "Radiuses" },
+  raised: { parent: "Foundations", category: "Raised", text: "Raised variables" },
   ribbon: { parent: "Window", category: "Ribbon" },
   scrollbar: { parent: "Window", category: "Scrollbar" },
   search: { parent: "Plugins", category: "Search" },
+  settinggroup: { parent: "Components", category: "Settings group", text: "Settings group variables" },
   sidebar: { parent: "Window", category: "Sidebar" },
   slider: { parent: "Components", category: "Slider" },
   spacing: { parent: "Foundations", category: "Spacing" },
   statusbar: { parent: "Window", category: "Status+bar" },
+  suggestion: { parent: "components", category: "Suggestion", text: "Suggestion variables" },
   sync: { parent: "Plugins", category: "Sync" },
   table: { parent: "Editor", category: "Table" },
   tabs: { parent: "Components", category: "Tabs" },
+  tabswitcher: { parent: "Mobile", category: "Tab Switcher", text: "Tab switcher variables" },
   tag: { parent: "Editor", category: "Tag" },
   textinput: { parent: "Components", category: "Text+input" },
   toggle: { parent: "Components", category: "Toggle" },
   themelight: { parent: "Theme-light", category: "Theme - light", text: "Variables specifically for light theme" },
   themedark: { parent: "Theme-dark", category: "Theme - dark", text: "Variables specifically for dark theme" },
+  touch: { parent: "Mobile", category: "Touch", text: "Touch variables" },
+  view: { parent: "Foundations", category: "View", text: "View variables" },
   typography: { parent: "Foundations", category: "Typography" },
   vaultprofile: { parent: "Window", category: "Vault+profile" },
   windowframe: { parent: "Window", category: "Window+frame" },
@@ -67017,6 +67115,7 @@ var CSSVariablesSection = class extends UIComponent {
       "components",
       "editor",
       "foundations",
+      "mobile",
       "plugins",
       "window",
       "theme-dark",
@@ -67061,6 +67160,7 @@ var CSSVariablesSection = class extends UIComponent {
     if (this.variableSearch !== "") {
       this.updateVariableListVisibility();
     }
+    this.updateAllFilteredCounts();
   }
   renderSearch(container) {
     const searchContainer = container.querySelector(".search-container");
@@ -67073,6 +67173,7 @@ var CSSVariablesSection = class extends UIComponent {
       },
       onClear: () => {
         this.variableSearch = "";
+        this.filterVariables("");
         this.resetVariableListVisibility();
       }
     });
@@ -67169,6 +67270,25 @@ var CSSVariablesSection = class extends UIComponent {
       return cssVariableDefaults.filter((cat) => cat.cat === category).length;
     }
   }
+  /**
+   * Get the count of visible (filtered) variables in a category
+   */
+  getFilteredCategoryItemCount(category) {
+    const categoryEl = this.container.querySelector(`#variable-category-${category}`);
+    if (!categoryEl) return 0;
+    const variableList = categoryEl.querySelector(".variable-list");
+    if (!variableList) return 0;
+    let count = 0;
+    this.variableItems.forEach((item) => {
+      if (variableList.contains(item.getElement()) && item.isVisible()) {
+        count++;
+      }
+    });
+    return count;
+  }
+  /**
+   * Update count badge for a single category with filtered count
+   */
   updateCategoryItemCount(category) {
     const categoryEl = this.container.querySelector(`#variable-category-${category}`);
     if (categoryEl) {
@@ -67178,6 +67298,35 @@ var CSSVariablesSection = class extends UIComponent {
         countBadge.textContent = `${newCount}`;
       }
     }
+  }
+  /**
+   * Update all category count badges with filtered counts and hide empty categories
+   */
+  updateAllFilteredCounts() {
+    const categoryElements = this.container.querySelectorAll(".variable-category");
+    categoryElements.forEach((categoryEl) => {
+      const categoryId = categoryEl.id;
+      const category = categoryId.replace("variable-category-", "");
+      const countBadge = categoryEl.querySelector(".category-item-count");
+      const variableList = categoryEl.querySelector(".variable-list");
+      if (!countBadge || !variableList) return;
+      const categoryTag = categoryEl.getAttribute("data-filter-tag");
+      const isTagVisible = this.activeTag === "all" || categoryTag === this.activeTag;
+      if (!isTagVisible) {
+        categoryEl.addClass("hide");
+        categoryEl.removeClass("show");
+        return;
+      }
+      const filteredCount = this.getFilteredCategoryItemCount(category);
+      countBadge.textContent = `${filteredCount}`;
+      if (filteredCount === 0) {
+        categoryEl.addClass("hide");
+        categoryEl.removeClass("show");
+      } else {
+        categoryEl.addClass("show");
+        categoryEl.removeClass("hide");
+      }
+    });
   }
   renderCategoryVariables(container, category) {
     if (category.category === "custom") {
@@ -67473,6 +67622,7 @@ ${rule.css}
         visibleCount++;
       }
     });
+    this.updateAllFilteredCounts();
     this.eventManager.emit("search:variable", {
       term: searchTerm,
       results: visibleCount
@@ -69715,3 +69865,5 @@ ace-builds/src-noconflict/ace.js:
   * see: http://github.com/jrburke/requirejs for details
   *)
 */
+
+/* nosourcemap */
