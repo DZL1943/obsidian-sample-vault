@@ -348,17 +348,6 @@
       "delay": "5"
     },
     {
-      "id": "obsidian-auto-hide",
-      "name": "Auto Hide",
-      "desc": "Collapse sidebars when clicking on the editor/viewer panel",
-      "group": "ui",
-      "tags": [
-        "required"
-      ],
-      "enabled": true,
-      "delay": "default"
-    },
-    {
       "id": "obsidian-excalidraw-plugin",
       "name": "Excalidraw",
       "desc": "An Obsidian plugin to edit and view Excalidraw drawings",
@@ -815,7 +804,7 @@
       "tags": [
         "required"
       ],
-      "enabled": false,
+      "enabled": true,
       "delay": "",
       "note": ""
     }
