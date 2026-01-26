@@ -88,7 +88,7 @@ views:
         direction: DESC
     limit: 50
     columnSize:
-      file.name: 216
+      file.name: 190
       note.title: 308
   - type: cards
     name: Attachments
