@@ -60,3 +60,4 @@ empty files.md
 .obsidian*/plugins/float-search/data.json
 .obsidian*/plugins/image-converter/image-converter-image-alignments.json
 .obsidian*/plugins/better-plugins-manager/community-plugins-cache.json
+.obsidian*/plugins/obsidian-local-rest-api/data.json
