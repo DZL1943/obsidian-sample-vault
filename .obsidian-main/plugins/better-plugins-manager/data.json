@@ -802,7 +802,19 @@
       "desc": "Opens the left and/or right side panel by hovering over it.",
       "group": "ui",
       "tags": [
-        "required"
+        "reserved"
+      ],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "obsidian-auto-hide",
+      "name": "Auto Hide",
+      "desc": "Collapse sidebars when clicking on the editor/viewer panel",
+      "group": "ui",
+      "tags": [
+        "reserved"
       ],
       "enabled": true,
       "delay": "",
