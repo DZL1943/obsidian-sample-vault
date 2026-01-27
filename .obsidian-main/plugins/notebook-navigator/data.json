@@ -85,7 +85,7 @@
   "calendarCustomWeekPattern": "gggg/gggg-[W]ww",
   "calendarCustomMonthPattern": "YYYY/YYYY-MM",
   "calendarCustomQuarterPattern": "YYYY/YYYY-[Q]Q",
-  "calendarCustomYearPattern": "YYYY",
+  "calendarCustomYearPattern": "YYYY/YYYY",
   "colorIconOnly": false,
   "pinNavigationBanner": true,
   "showNoteCount": true,
