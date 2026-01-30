@@ -17,6 +17,7 @@ module.exports = async (params) => {
         const anchor = ev.target.closest('a');
         if (!anchor?.href?.startsWith('http')) return;
         ev.preventDefault();
+        ev.stopPropagation();
         window.open(anchor.href);
     };
 
