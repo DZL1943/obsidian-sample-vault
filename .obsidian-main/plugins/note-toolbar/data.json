@@ -66,28 +66,22 @@
           "tooltip": "用默认应用打开",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -107,28 +101,22 @@
           "tooltip": "复制文件路径",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -148,28 +136,22 @@
           "tooltip": "下载附件",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -192,28 +174,22 @@
           "tooltip": "插入附件",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -233,28 +209,22 @@
           "tooltip": "插入时间",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -274,28 +244,22 @@
           "tooltip": "插入日期",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -318,28 +282,22 @@
           "tooltip": "插入公式",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -362,28 +320,22 @@
           "tooltip": "插入表格",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -406,28 +358,22 @@
           "tooltip": "插入标注",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -447,28 +393,22 @@
           "tooltip": "插入脚注",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -490,28 +430,22 @@
           "tooltip": "插入模板",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -533,28 +467,22 @@
           "tooltip": "查找和替换",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -574,28 +502,22 @@
           "tooltip": "切换看板模式",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -617,28 +539,22 @@
           "tooltip": "切换源码模式",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -660,28 +576,22 @@
           "tooltip": "切换视图",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         }
@@ -734,28 +644,22 @@
           "tooltip": "QuickAdd",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -775,28 +679,22 @@
           "tooltip": "全局搜索",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -818,28 +716,22 @@
           "tooltip": "从模板新建",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -859,28 +751,22 @@
           "tooltip": "打开日记",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -902,28 +788,22 @@
           "tooltip": "新建看板",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -943,28 +823,22 @@
           "tooltip": "新建绘图",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -984,28 +858,22 @@
           "tooltip": "新建数据库",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1027,28 +895,22 @@
           "tooltip": "新建白板",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1068,25 +930,19 @@
           "tooltip": "新建时间戳笔记",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": []
-              }
+              "components": []
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1106,28 +962,22 @@
           "tooltip": "新建笔记",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         }
@@ -1182,28 +1032,22 @@
           "tooltip": "上一条每日笔记",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1225,28 +1069,22 @@
           "tooltip": "今天的每日笔记",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1268,28 +1106,22 @@
           "tooltip": "下一条每日笔记",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         }
@@ -1342,28 +1174,22 @@
           "tooltip": "ui",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1383,28 +1209,22 @@
           "tooltip": "edit",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1424,28 +1244,22 @@
           "tooltip": "file",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1465,28 +1279,22 @@
           "tooltip": "settings",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         }
@@ -1538,28 +1346,22 @@
           "tooltip": "打开社区插件市场",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           },
           "scriptConfig": {
@@ -1583,28 +1385,22 @@
           "tooltip": "插件管理",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1624,28 +1420,22 @@
           "tooltip": "管理工作区",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1665,28 +1455,22 @@
           "tooltip": "显示/隐藏功能区",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1712,28 +1496,22 @@
           "tooltip": "切换 Vim 模式",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1759,28 +1537,22 @@
           "tooltip": "切换浅色/深色",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1802,28 +1574,22 @@
           "tooltip": "更改主题",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1843,25 +1609,19 @@
           "tooltip": "设置",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": []
-              }
+              "components": []
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         }
@@ -1915,28 +1675,22 @@
           "tooltip": "主页",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -1956,28 +1710,22 @@
           "tooltip": "刷新",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           },
           "scriptConfig": {
@@ -2001,25 +1749,19 @@
           "tooltip": "返回",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": []
-              }
+              "components": []
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2039,25 +1781,19 @@
           "tooltip": "前进",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": []
-              }
+              "components": []
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2083,28 +1819,22 @@
           "tooltip": "跳到顶部",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2130,28 +1860,22 @@
           "tooltip": "跳到底部",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2171,28 +1895,22 @@
           "tooltip": "上下分屏",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2212,28 +1930,22 @@
           "tooltip": "左右分屏",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2253,28 +1965,22 @@
           "tooltip": "折叠所有",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2294,28 +2000,22 @@
           "tooltip": "展开所有",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2341,28 +2041,22 @@
           "tooltip": "上一个文件",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2388,28 +2082,22 @@
           "tooltip": "下一个文件",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2429,28 +2117,22 @@
           "tooltip": "在文件列表中显示",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2470,28 +2152,22 @@
           "tooltip": "快速切换",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         },
@@ -2511,28 +2187,22 @@
           "tooltip": "命令面板",
           "visibility": {
             "desktop": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "mobile": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             },
             "tablet": {
-              "allViews": {
-                "components": [
-                  "icon",
-                  "label"
-                ]
-              }
+              "components": [
+                "icon",
+                "label"
+              ]
             }
           }
         }
@@ -2559,6 +2229,6 @@
       "updated": "2026-01-24T01:31:30.108Z"
     }
   ],
-  "version": 20250313.1,
+  "version": 20260122.1,
   "whatsnew_version": "1.27"
 }
