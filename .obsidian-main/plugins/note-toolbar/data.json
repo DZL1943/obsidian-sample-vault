@@ -174,21 +174,22 @@
           }
         },
         {
-          "uuid": "555cdb29-6539-4166-968a-c095653f51af",
+          "uuid": "4cb01d5c-c950-48cf-b49d-c7e984d1b369",
           "hasCommand": false,
-          "icon": "file-search",
+          "icon": "paperclip",
           "inGallery": false,
           "label": "",
           "link": "",
           "linkAttr": {
             "commandCheck": true,
-            "commandId": "editor:open-search-replace",
+            "commandId": "editor:attach-file",
+            "focus": "editor",
             "hasVars": false,
             "target": "",
             "type": "command"
           },
           "plugin": "",
-          "tooltip": "查找和替换",
+          "tooltip": "插入附件",
           "visibility": {
             "desktop": {
               "allViews": {
@@ -472,22 +473,21 @@
           }
         },
         {
-          "uuid": "4cb01d5c-c950-48cf-b49d-c7e984d1b369",
+          "uuid": "5f2d5292-3773-46b3-9398-0940f432692d",
           "hasCommand": false,
-          "icon": "paperclip",
+          "icon": "templater-icon",
           "inGallery": false,
           "label": "",
           "link": "",
           "linkAttr": {
-            "commandCheck": true,
-            "commandId": "editor:attach-file",
-            "focus": "editor",
+            "commandCheck": false,
+            "commandId": "templater-obsidian:insert-templater",
             "hasVars": false,
             "target": "",
             "type": "command"
           },
           "plugin": "",
-          "tooltip": "插入附件",
+          "tooltip": "插入模板",
           "visibility": {
             "desktop": {
               "allViews": {
@@ -516,21 +516,21 @@
           }
         },
         {
-          "uuid": "5f2d5292-3773-46b3-9398-0940f432692d",
+          "uuid": "555cdb29-6539-4166-968a-c095653f51af",
           "hasCommand": false,
-          "icon": "templater-icon",
+          "icon": "file-search",
           "inGallery": false,
           "label": "",
           "link": "",
           "linkAttr": {
-            "commandCheck": false,
-            "commandId": "templater-obsidian:insert-templater",
+            "commandCheck": true,
+            "commandId": "editor:open-search-replace",
             "hasVars": false,
             "target": "",
             "type": "command"
           },
           "plugin": "",
-          "tooltip": "插入模板",
+          "tooltip": "查找和替换",
           "visibility": {
             "desktop": {
               "allViews": {
