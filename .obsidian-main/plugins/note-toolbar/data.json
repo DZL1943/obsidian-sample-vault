@@ -21,6 +21,7 @@
   "obsidianUiVisibility": {},
   "onboarding": {},
   "ribbonAction": "toolbar",
+  "ribbonToolbar": null,
   "rules": [],
   "scriptingEnabled": true,
   "showEditInFabMenu": false,
@@ -2230,5 +2231,5 @@
     }
   ],
   "version": 20260122.1,
-  "whatsnew_version": "1.27"
+  "whatsnew_version": "1.28"
 }
