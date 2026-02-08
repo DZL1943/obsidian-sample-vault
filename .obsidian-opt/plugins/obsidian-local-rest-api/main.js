@@ -56930,14 +56930,17 @@ function getSplicePosition(fileLines, heading, insert, ignoreNewLines) {
   return splicePosition;
 }
 function toArrayBuffer(arr) {
-  if (arr instanceof Uint8Array) {
-    return arr.buffer.slice(arr.byteOffset, arr.byteOffset + arr.byteLength);
-  }
-  if (arr instanceof DataView) {
-    return arr.buffer.slice(arr.byteOffset, arr.byteOffset + arr.byteLength);
-  }
   if (arr instanceof ArrayBuffer) {
     return arr;
+  }
+  if (arr instanceof Uint8Array || arr instanceof DataView) {
+    const view = arr instanceof Uint8Array ? arr : new Uint8Array(arr.buffer, arr.byteOffset, arr.byteLength);
+    if (view.buffer instanceof ArrayBuffer) {
+      return view.buffer.slice(view.byteOffset, view.byteOffset + view.byteLength);
+    }
+    const copy = new Uint8Array(view.byteLength);
+    copy.set(view);
+    return copy.buffer;
   }
   const encoder = new TextEncoder();
   return encoder.encode(JSON.stringify(arr)).buffer;
@@ -57110,13 +57113,47 @@ var RequestHandler = class {
       };
     });
   }
+  waitForFileCache(file, timeoutMs = 5e3) {
+    const existingCache = this.app.metadataCache.getFileCache(file);
+    if (existingCache) {
+      return Promise.resolve(existingCache);
+    }
+    return new Promise((resolve) => {
+      let resolved = false;
+      const onCacheChange = (...data) => {
+        const changedFile = data[0];
+        if (changedFile.path === file.path && !resolved) {
+          resolved = true;
+          this.app.metadataCache.off("changed", onCacheChange);
+          clearTimeout(timeoutId);
+          resolve(this.app.metadataCache.getFileCache(file));
+        }
+      };
+      const timeoutId = setTimeout(() => {
+        if (!resolved) {
+          resolved = true;
+          this.app.metadataCache.off("changed", onCacheChange);
+          console.warn(`[REST API] Timeout waiting for metadata cache for ${file.path} after ${timeoutMs}ms`);
+          resolve(this.app.metadataCache.getFileCache(file));
+        }
+      }, timeoutMs);
+      this.app.metadataCache.on("changed", onCacheChange);
+      const cacheAfterListener = this.app.metadataCache.getFileCache(file);
+      if (cacheAfterListener && !resolved) {
+        resolved = true;
+        this.app.metadataCache.off("changed", onCacheChange);
+        clearTimeout(timeoutId);
+        resolve(cacheAfterListener);
+      }
+    });
+  }
   getFileMetadataObject(file) {
     return __async(this, null, function* () {
-      var _a2, _b, _c;
-      const cache = this.app.metadataCache.getFileCache(file);
-      const frontmatter = __spreadValues({}, (_a2 = cache.frontmatter) != null ? _a2 : {});
+      var _a2, _b;
+      const cache = yield this.waitForFileCache(file);
+      const frontmatter = __spreadValues({}, (_a2 = cache == null ? void 0 : cache.frontmatter) != null ? _a2 : {});
       delete frontmatter.position;
-      const directTags = (_c = ((_b = cache.tags) != null ? _b : []).filter((tag) => tag).map((tag) => tag.tag)) != null ? _c : [];
+      const directTags = ((_b = cache == null ? void 0 : cache.tags) != null ? _b : []).filter((tag) => tag).map((tag) => tag.tag);
       const frontmatterTags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [];
       const filteredTags = [...frontmatterTags, ...directTags].filter((tag) => tag).map((tag) => tag.toString().replace(/^#/, "")).filter((value, index, self2) => self2.indexOf(value) === index);
       return {
@@ -57133,11 +57170,12 @@ var RequestHandler = class {
     message,
     errorCode
   }) {
+    var _a2;
     const errorMessages = [];
     if (errorCode) {
       errorMessages.push(ERROR_CODE_MESSAGES[errorCode]);
     } else {
-      errorMessages.push(import_http.default.STATUS_CODES[statusCode]);
+      errorMessages.push((_a2 = import_http.default.STATUS_CODES[statusCode]) != null ? _a2 : "Unknown Error");
     }
     if (message) {
       errorMessages.push(message);
@@ -57147,20 +57185,28 @@ var RequestHandler = class {
   getStatusCode({ statusCode, errorCode }) {
     if (statusCode) {
       return statusCode;
+    } else if (errorCode) {
+      return Math.floor(errorCode / 100);
     }
-    return Math.floor(errorCode / 100);
+    throw new Error("Either statusCode or errorCode must be provided");
   }
   returnCannedResponse(res, { statusCode, message, errorCode }) {
+    if (!statusCode && !errorCode) {
+      throw new Error("Either statusCode or errorCode must be provided");
+    }
     const response = {
       message: this.getResponseMessage({ statusCode, message, errorCode }),
-      errorCode: errorCode != null ? errorCode : statusCode * 100
+      errorCode: errorCode != null ? errorCode : (statusCode != null ? statusCode : -1) * 100
     };
     res.status(this.getStatusCode({ statusCode, errorCode })).json(response);
   }
   root(req, res) {
+    var _a2;
     let certificate;
     try {
-      certificate = import_node_forge.default.pki.certificateFromPem(this.settings.crypto.cert);
+      if ((_a2 = this.settings.crypto) == null ? void 0 : _a2.cert) {
+        certificate = import_node_forge.default.pki.certificateFromPem(this.settings.crypto.cert);
+      }
     } catch (e) {
     }
     res.status(200).json({
@@ -57201,7 +57247,8 @@ var RequestHandler = class {
         });
       } else {
         const exists = yield this.app.vault.adapter.exists(path2);
-        if (exists && (yield this.app.vault.adapter.stat(path2)).type === "file") {
+        const statResult = exists ? yield this.app.vault.adapter.stat(path2) : null;
+        if (statResult && statResult.type === "file") {
           const content = yield this.app.vault.adapter.readBinary(path2);
           const mimeType = import_mime_types.default.lookup(path2);
           res.set({
@@ -57264,6 +57311,7 @@ var RequestHandler = class {
   }
   _vaultPatchV2(path2, req, res) {
     return __async(this, null, function* () {
+      var _a2;
       const headingBoundary = req.get("Heading-Boundary") || "::";
       const heading = (req.get("Heading") || "").split(headingBoundary).filter(Boolean);
       const contentPosition = req.get("Content-Insertion-Position");
@@ -57288,7 +57336,7 @@ var RequestHandler = class {
         return;
       }
       if (typeof req.get("Content-Insertion-Ignore-Newline") == "string") {
-        aboveNewLine = req.get("Content-Insertion-Ignore-Newline").toLowerCase() == "true";
+        aboveNewLine = ((_a2 = req.get("Content-Insertion-Ignore-Newline")) == null ? void 0 : _a2.toLowerCase()) == "true";
       }
       if (!heading.length) {
         this.returnCannedResponse(res, {
@@ -57304,6 +57352,9 @@ var RequestHandler = class {
         return;
       }
       const cache = this.app.metadataCache.getFileCache(file);
+      if (!cache) {
+        throw new Error("Error awaiting metadata cache for file in _vaultPatchV2: cache is null");
+      }
       const position = findHeadingBoundary(cache, heading);
       if (!position) {
         this.returnCannedResponse(res, {
@@ -57323,9 +57374,10 @@ var RequestHandler = class {
   }
   _vaultPatchV3(path2, req, res) {
     return __async(this, null, function* () {
+      var _a2;
       const operation = req.get("Operation");
       const targetType = req.get("Target-Type");
-      const rawTarget = decodeURIComponent(req.get("Target"));
+      const rawTarget = decodeURIComponent((_a2 = req.get("Target")) != null ? _a2 : "");
       const contentType = req.get("Content-Type");
       const createTargetIfMissing = req.get("Create-Target-If-Missing") == "true";
       const applyIfContentPreexists = req.get("Apply-If-Content-Preexists") == "true";
@@ -57532,8 +57584,8 @@ var RequestHandler = class {
   }
   periodicGetNote(periodName, timestamp) {
     const [period, err] = this.periodicGetInterface(periodName);
-    if (err) {
-      return [null, err];
+    if (err || !period) {
+      return [null, err != null ? err : ErrorCode.PeriodDoesNotExist];
     }
     const now = window.moment(timestamp);
     const all = period.getAll();
@@ -57549,15 +57601,20 @@ var RequestHandler = class {
       let file = gottenFile;
       if (err === ErrorCode.PeriodicNoteDoesNotExist) {
         const [period] = this.periodicGetInterface(periodName);
+        if (!period) {
+          return [null, ErrorCode.PeriodDoesNotExist];
+        }
         const now = window.moment(Date.now());
         file = yield period.create(now);
         const metadataCachePromise = new Promise((resolve) => {
           let cache = null;
           const interval = setInterval(() => {
-            cache = this.app.metadataCache.getFileCache(file);
-            if (cache) {
-              clearInterval(interval);
-              resolve(cache);
+            if (file) {
+              cache = this.app.metadataCache.getFileCache(file);
+              if (cache) {
+                clearInterval(interval);
+                resolve(cache);
+              }
             }
           }, 100);
         });
@@ -57576,7 +57633,7 @@ var RequestHandler = class {
   getPeriodicDateFromParams(params) {
     const { year, month, day } = params;
     if (year && month && day) {
-      const date = new Date(year, month - 1, day);
+      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
       return date.getTime();
     }
     return Date.now();
@@ -57585,8 +57642,10 @@ var RequestHandler = class {
     return __async(this, null, function* () {
       const date = this.getPeriodicDateFromParams(req.params);
       const [file, err] = this.periodicGetNote(req.params.period, date);
-      if (err) {
-        this.returnCannedResponse(res, { errorCode: err });
+      if (err || !file) {
+        this.returnCannedResponse(res, {
+          errorCode: err != null ? err : ErrorCode.PeriodicNoteDoesNotExist
+        });
         return;
       }
       return this.redirectToVaultPath(file, req, res, this._vaultGet.bind(this));
@@ -57596,8 +57655,10 @@ var RequestHandler = class {
     return __async(this, null, function* () {
       const date = this.getPeriodicDateFromParams(req.params);
       const [file, err] = yield this.periodicGetOrCreateNote(req.params.period, date);
-      if (err) {
-        this.returnCannedResponse(res, { errorCode: err });
+      if (err || !file) {
+        this.returnCannedResponse(res, {
+          errorCode: err != null ? err : ErrorCode.PeriodicNoteDoesNotExist
+        });
         return;
       }
       return this.redirectToVaultPath(file, req, res, this._vaultPut.bind(this));
@@ -57607,8 +57668,10 @@ var RequestHandler = class {
     return __async(this, null, function* () {
       const date = this.getPeriodicDateFromParams(req.params);
       const [file, err] = yield this.periodicGetOrCreateNote(req.params.period, date);
-      if (err) {
-        this.returnCannedResponse(res, { errorCode: err });
+      if (err || !file) {
+        this.returnCannedResponse(res, {
+          errorCode: err != null ? err : ErrorCode.PeriodicNoteDoesNotExist
+        });
         return;
       }
       return this.redirectToVaultPath(file, req, res, this._vaultPost.bind(this));
@@ -57618,8 +57681,10 @@ var RequestHandler = class {
     return __async(this, null, function* () {
       const date = this.getPeriodicDateFromParams(req.params);
       const [file, err] = yield this.periodicGetOrCreateNote(req.params.period, date);
-      if (err) {
-        this.returnCannedResponse(res, { errorCode: err });
+      if (err || !file) {
+        this.returnCannedResponse(res, {
+          errorCode: err != null ? err : ErrorCode.PeriodicNoteDoesNotExist
+        });
         return;
       }
       return this.redirectToVaultPath(file, req, res, this._vaultPatch.bind(this));
@@ -57629,8 +57694,10 @@ var RequestHandler = class {
     return __async(this, null, function* () {
       const date = this.getPeriodicDateFromParams(req.params);
       const [file, err] = this.periodicGetNote(req.params.period, date);
-      if (err) {
-        this.returnCannedResponse(res, { errorCode: err });
+      if (err || !file) {
+        this.returnCannedResponse(res, {
+          errorCode: err != null ? err : ErrorCode.PeriodicNoteDoesNotExist
+        });
         return;
       }
       return this.redirectToVaultPath(file, req, res, this._vaultDelete.bind(this));
@@ -57639,30 +57706,50 @@ var RequestHandler = class {
   activeFileGet(req, res) {
     return __async(this, null, function* () {
       const file = this.app.workspace.getActiveFile();
+      if (!file) {
+        this.returnCannedResponse(res, { statusCode: 404 });
+        return;
+      }
       return this.redirectToVaultPath(file, req, res, this._vaultGet.bind(this));
     });
   }
   activeFilePut(req, res) {
     return __async(this, null, function* () {
       const file = this.app.workspace.getActiveFile();
+      if (!file) {
+        this.returnCannedResponse(res, { statusCode: 404 });
+        return;
+      }
       return this.redirectToVaultPath(file, req, res, this._vaultPut.bind(this));
     });
   }
   activeFilePost(req, res) {
     return __async(this, null, function* () {
       const file = this.app.workspace.getActiveFile();
+      if (!file) {
+        this.returnCannedResponse(res, { statusCode: 404 });
+        return;
+      }
       return this.redirectToVaultPath(file, req, res, this._vaultPost.bind(this));
     });
   }
   activeFilePatch(req, res) {
     return __async(this, null, function* () {
       const file = this.app.workspace.getActiveFile();
+      if (!file) {
+        this.returnCannedResponse(res, { statusCode: 404 });
+        return;
+      }
       return this.redirectToVaultPath(file, req, res, this._vaultPatch.bind(this));
     });
   }
   activeFileDelete(req, res) {
     return __async(this, null, function* () {
       const file = this.app.workspace.getActiveFile();
+      if (!file) {
+        this.returnCannedResponse(res, { statusCode: 404 });
+        return;
+      }
       return this.redirectToVaultPath(file, req, res, this._vaultDelete.bind(this));
     });
   }
@@ -57691,7 +57778,11 @@ var RequestHandler = class {
       try {
         this.app.commands.executeCommandById(req.params.commandId);
       } catch (e) {
-        this.returnCannedResponse(res, { statusCode: 500, message: e.message });
+        const error = e;
+        this.returnCannedResponse(res, {
+          statusCode: 500,
+          message: error.message
+        });
         return;
       }
       this.returnCannedResponse(res, { statusCode: 204 });
@@ -57755,7 +57846,10 @@ var RequestHandler = class {
           });
         }
       }
-      results.sort((a, b2) => a.score > b2.score ? 1 : -1);
+      results.sort((a, b2) => {
+        var _a2, _b;
+        return ((_a2 = a.score) != null ? _a2 : 0) > ((_b = b2.score) != null ? _b : 0) ? 1 : -1;
+      });
       res.json(results);
     });
   }
@@ -57810,7 +57904,8 @@ var RequestHandler = class {
                 });
               }
             } catch (e) {
-              throw new Error(`${e.message} (while processing ${file.path})`);
+              const error = e;
+              throw new Error(`${error.message} (while processing ${file.path})`);
             }
           }
           return results;
@@ -57832,9 +57927,10 @@ var RequestHandler = class {
         const results = yield handlers[contentType]();
         res.json(results);
       } catch (e) {
+        const error = e;
         this.returnCannedResponse(res, {
           errorCode: ErrorCode.InvalidFilterQuery,
-          message: `${e.message}`
+          message: `${error.message}`
         });
         return;
       }
@@ -57853,6 +57949,11 @@ var RequestHandler = class {
   }
   certificateGet(req, res) {
     return __async(this, null, function* () {
+      var _a2;
+      if (!((_a2 = this.settings.crypto) == null ? void 0 : _a2.cert)) {
+        this.returnCannedResponse(res, { statusCode: 404 });
+        return;
+      }
       res.set("Content-type", `application/octet-stream; filename="${CERT_NAME}"`);
       res.status(200).send(this.settings.crypto.cert);
     });

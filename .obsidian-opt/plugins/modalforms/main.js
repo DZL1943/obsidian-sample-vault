@@ -15366,13 +15366,31 @@ function makeFormEngine({
 }) {
   const formStore = writable({ fields: {}, status: "draft" });
   function setFormField({ name, input }) {
+    const isNumericField = (input == null ? void 0 : input.type) === "number" || (input == null ? void 0 : input.type) === "slider";
+    function coerceValue(value) {
+      if (isNumericField && typeof value === "string" && value !== "") {
+        const num = Number(value);
+        if (!isNaN(num))
+          return num;
+      }
+      return value;
+    }
     function initField(errors2 = [], rules) {
+      const defaultValue = defaultValues[name];
       formStore.update((form) => {
         return {
           ...form,
           fields: {
             ...form.fields,
-            [name]: { value: fromNullable2(defaultValues[name]), name, errors: errors2, rules }
+            [name]: {
+              value: pipe2(
+                fromNullable2(defaultValue),
+                map4(coerceValue)
+              ),
+              name,
+              errors: errors2,
+              rules
+            }
           }
         };
       });
@@ -15388,7 +15406,7 @@ function makeFormEngine({
           ...form,
           fields: {
             ...form.fields,
-            [name]: { ...field, value: some3(value), errors: [] }
+            [name]: { ...field, value: some3(coerceValue(value)), errors: [] }
           }
         };
       });
@@ -30064,3 +30082,5 @@ var ModalFormPlugin = class extends import_obsidian34.Plugin {
     picker.open();
   }
 };
+
+/* nosourcemap */
