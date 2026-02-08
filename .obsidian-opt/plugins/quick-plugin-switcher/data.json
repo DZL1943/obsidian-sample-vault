@@ -1284,7 +1284,7 @@
       "isDesktopOnly": false,
       "minAppVersion": "0.9.11",
       "dir": ".obsidian-opt/plugins/obsidian-plugin-proxy",
-      "enabled": true,
+      "enabled": false,
       "switched": 0,
       "groupInfo": {
         "hidden": false,
