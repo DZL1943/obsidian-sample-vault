@@ -486,9 +486,12 @@
           {
             "name": "ghproxy",
             "type": "UserScript",
-            "id": "ff94bf26-7ffb-4187-b5ae-eb49affc8414",
+            "id": "e2481b9b-7607-4c36-b909-73734a670362",
             "path": "Misc/Scripts/ghproxy.js",
-            "settings": {}
+            "settings": {
+              "config": "{\"github\": \"https://ghfast.top/\"}",
+              "transform": "prepend"
+            }
           }
         ]
       }
