@@ -9,10 +9,11 @@ function delegateIpcRendererSend(config) {
                 if (e.url.startsWith(prefix)) {
                     e.url = e.url.replace(prefix, config[prefix]);
                     console.debug(e.url);
-                    e.headers = e.headers || {};
-                    e.headers["content-type"] =
-                        "application/x-www-form-urlencoded";
-                    e.headers["Access-Control-Allow-Origin"] = "*";
+                    e.headers = {
+                        ...(e.headers || {}),
+                        "content-type": "application/x-www-form-urlencoded",
+                        "Access-Control-Allow-Origin": "*"
+                    };
                     break;
                 }
             }
