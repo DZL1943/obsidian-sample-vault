@@ -474,6 +474,26 @@
       }
     },
     {
+      "id": "ee42c374-763f-438c-9f25-ca821112fd74",
+      "name": "proxy",
+      "type": "Macro",
+      "command": false,
+      "runOnStartup": false,
+      "macro": {
+        "name": "proxy",
+        "id": "f46d04a1-e993-4d0f-9471-34b3be227f7a",
+        "commands": [
+          {
+            "name": "ghproxy",
+            "type": "UserScript",
+            "id": "ff94bf26-7ffb-4187-b5ae-eb49affc8414",
+            "path": "Misc/Scripts/ghproxy.js",
+            "settings": {}
+          }
+        ]
+      }
+    },
+    {
       "id": "1a389c44-1933-410d-ab41-e5579a8a68c8",
       "name": "calc",
       "type": "Macro",
