@@ -4,10 +4,10 @@ function delegateIpcRendererSend(config, rules, transform) {
     const send = ipcRenderer.send;
     ipcRenderer.send = function (...args) {
         const [type, , e] = args;
-        if (type === "request-url" && e?.url) {
+        if (type === "request-url" && e?.url?.includes("github")) {
             for (const r of rules) {
                 if (r.regex.test(e.url)) {
-                    const proxy = config[r.key] || config['default'];
+                    const proxy = config[r.key] || config["default"];
                     if (proxy) {
                         switch (transform) {
                             case "replace":
@@ -36,9 +36,9 @@ function delegateIpcRendererSend(config, rules, transform) {
 
 async function start(params, settings) {
     const rules = [
-        { regex: /^https:\/\/raw\.githubusercontent\.com\//, key: 'github-raw' },
-        { regex: /\/releases\/download\//, key: 'github-download' },
-        { regex: /^https:\/\/github\.com\//, key: 'github' }
+        { regex: /^https:\/\/raw\.githubusercontent\.com\//, key: "raw" },
+        { regex: /\/releases\/download\//, key: "download" },
+        { regex: /^https:\/\/github\.com\//, key: "github" }
     ];
     
     delegateIpcRendererSend(
@@ -58,7 +58,7 @@ module.exports = {
             config: {
                 type: "textarea",
                 defaultValue: `{"default": "https://ghfast.top/"}`,
-                description: `代理配置. 格式 {key: url}. 支持的key及优先级顺序: github-raw, github-download, github; 若未找到则用default (需结合prepend使用)`,
+                description: `代理配置. 格式 {key: url}. 支持的key及优先级顺序: raw, download, github; 若未找到则用default (需结合prepend使用)`,
             },
             transform: {
                 type: "dropdown",
