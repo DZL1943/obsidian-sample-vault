@@ -2,14 +2,12 @@ const { ipcRenderer } = require("electron");
 
 function delegateIpcRendererSend(config, rules, transform) {
     const send = ipcRenderer.send;
-    const defaultKey = rules[rules.length - 1]?.key;
-    
     ipcRenderer.send = function (...args) {
         const [type, , e] = args;
         if (type === "request-url" && e?.url) {
             for (const r of rules) {
                 if (r.regex.test(e.url)) {
-                    const proxy = config[r.key] || config[defaultKey];
+                    const proxy = config[r.key] || config['default'];
                     if (proxy) {
                         switch (transform) {
                             case "replace":
@@ -40,7 +38,6 @@ async function start(params, settings) {
     const rules = [
         { regex: /^https:\/\/raw\.githubusercontent\.com\//, key: 'github-raw' },
         { regex: /\/releases\/download\//, key: 'github-download' },
-        { regex: /^https:\/\/gist\.github\.com\//, key: 'github-gist' },
         { regex: /^https:\/\/github\.com\//, key: 'github' }
     ];
     
@@ -60,8 +57,8 @@ module.exports = {
         options: {
             config: {
                 type: "textarea",
-                defaultValue: `{"github": "https://ghfast.top/"}`,
-                description: `代理配置. 格式 {key: url}. 支持的key及优先级顺序: github-raw, github-download, github-gist, github; 若未找到则用最后一个(github)`,
+                defaultValue: `{"default": "https://ghfast.top/"}`,
+                description: `代理配置. 格式 {key: url}. 支持的key及优先级顺序: github-raw, github-download, github; 若未找到则用default (需结合prepend使用)`,
             },
             transform: {
                 type: "dropdown",
