@@ -58,7 +58,7 @@ module.exports = {
             config: {
                 type: "textarea",
                 defaultValue: `{"default": "https://ghfast.top/"}`,
-                description: `代理配置. 格式 {key: url}. 支持的key及优先级顺序: raw, download, github; 若未找到则用default (需结合prepend使用)`,
+                description: `代理配置. 格式 {key: url}. 支持的key及优先级顺序: raw, download, github; 若未找到则用default`,
             },
             transform: {
                 type: "dropdown",
