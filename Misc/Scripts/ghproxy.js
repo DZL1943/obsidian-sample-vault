@@ -39,7 +39,6 @@ function delegateIpcRendererSend(config, rules, transform) {
 async function start(params, settings) {
     const rules = [
         { regex: /^https:\/\/raw\.githubusercontent\.com\//, key: 'github-raw' },
-        { regex: /^https:\/\/api\.github\.com\//, key: 'github-api' },
         { regex: /\/releases\/download\//, key: 'github-download' },
         { regex: /^https:\/\/gist\.github\.com\//, key: 'github-gist' },
         { regex: /^https:\/\/github\.com\//, key: 'github' }
@@ -62,7 +61,7 @@ module.exports = {
             config: {
                 type: "textarea",
                 defaultValue: `{"github": "https://ghfast.top/"}`,
-                description: `代理配置. 格式 {key: url}. 支持的key及优先级顺序: github-raw, github-api, github-download, github-gist, github; 若未找到则用最后一个(github)`,
+                description: `代理配置. 格式 {key: url}. 支持的key及优先级顺序: github-raw, github-download, github-gist, github; 若未找到则用最后一个(github)`,
             },
             transform: {
                 type: "dropdown",
