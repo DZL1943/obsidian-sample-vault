@@ -11,14 +11,12 @@ function delegateIpcRendererSend(config, rules, transform) {
                 if (r.regex.test(e.url)) {
                     const proxy = config[r.key] || config[defaultKey];
                     if (proxy) {
-                        const originalUrl = new URL(e.url);
-                        const proxyUrl = new URL(proxy);
                         switch (transform) {
                             case "replace":
-                                e.url = proxyUrl.href.replace(/\/+$/, '') + originalUrl.href.substring(originalUrl.origin.length);
+                                e.url = proxy.replace(/\/+$/, '') + e.url.substring(e.url.indexOf('/', 8));
                                 break;
                             case "prepend":
-                                e.url = proxyUrl.href.replace(/\/?$/, '/') + originalUrl.href;
+                                e.url = proxy.replace(/\/?$/, '/') + e.url;
                                 break;
                             default:
                                 break;
