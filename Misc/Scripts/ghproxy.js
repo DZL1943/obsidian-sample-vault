@@ -13,7 +13,7 @@ function delegateIpcRendererSend(config, rules, transform) {
                     if (proxy) {
                         switch (transform) {
                             case "replace":
-                                e.url = proxy.replace(/\/+$/, '') + e.url.substring(e.url.indexOf('/', 8));
+                                e.url = proxy.replace(/\/+$/, '') + e.url.replace(/^[^:]+:\/\/[^\/]+(\/.*|$)/, '$1');
                                 break;
                             case "prepend":
                                 e.url = proxy.replace(/\/?$/, '/') + e.url;
