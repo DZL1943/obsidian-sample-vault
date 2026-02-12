@@ -591,7 +591,7 @@
   "devMode": false,
   "templateFolderPath": "Misc/Templates",
   "announceUpdates": "none",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "globalVariables": {},
   "onePageInputEnabled": true,
   "disableOnlineFeatures": true,

@@ -19060,10 +19060,25 @@ var ABConvert = class {
   }
 };
 
-// ../ABConverter/ABReg.ts
+// ../ABConverter/ABSetting.ts
+var ABCSetting = {
+  is_debug: false,
+  env: "obsidian",
+  obsidian: {
+    global_app: null,
+    global_ctx: null,
+    mermaid: void 0
+  },
+  pro: {
+    disable: false,
+    enable_callout_selector: true,
+    editableblock_defaultRender: "readmode",
+    create_decorations: void 0
+  }
+};
 var ABReg = {
-  reg_header: /^((\s|>\s|-\s|\*\s|\+\s)*)(%%)?(\[((?!toc|TOC|\!|< )[\|\!#:;\(\)\s0-9a-zA-Z\u4e00-\u9fa5](?!.*::).*)\]):?(%%)?\s*$/,
-  reg_header_up: /^((\s|>\s|-\s|\*\s|\+\s)*)(%%)?(\[((?!toc|TOC|\!)< [\|\!#:;\(\)\s0-9a-zA-Z\u4e00-\u9fa5](?!.*::).*)\]):?(%%)?\s*$/,
+  reg_header: /^((\s|>\s|-\s|\*\s|\+\s)*)(%%)?(\[((?!toc|TOC|\!|< )[\|\!#:;\(\)\s0-9a-zA-Z\u4e00-\u9fa5](?!.*::).*)\]):?\3\s*$/,
+  reg_header_up: /^((\s|>\s|-\s|\*\s|\+\s)*)(%%)?(\[((?!toc|TOC|\!)< [\|\!#:;\(\)\s0-9a-zA-Z\u4e00-\u9fa5](?!.*::).*)\]):?\3\s*$/,
   reg_mdit_head: /^((\s|>\s|-\s|\*\s|\+\s)*)(::::*)\s?(.*)/,
   reg_mdit_tail: /^((\s|>\s|-\s|\*\s|\+\s)*)(::::*)/,
   reg_list: /^((\s|>\s|-\s|\*\s|\+\s)*)(-\s|\*\s|\+\s)(.*)/,
@@ -19071,8 +19086,8 @@ var ABReg = {
   reg_quote: /^((\s|>\s|-\s|\*\s|\+\s)*)(>\s)(.*)/,
   reg_heading: /^((\s|>\s|-\s|\*\s|\+\s)*)(\#+\s)(.*)/,
   reg_table: /^((\s|>\s|-\s|\*\s|\+\s)*)(\|(.*)\|)/,
-  reg_header_noprefix: /^((\s)*)(%%)?(\[((?!toc|TOC|\!|< )[\|\!#:;\(\)\s0-9a-zA-Z\u4e00-\u9fa5](?!.*::).*)\]):?(%%)?\s*$/,
-  reg_header_up_noprefix: /^((\s)*)(%%)?(\[((?!toc|TOC|\!)< [\|\!#:;\(\)\s0-9a-zA-Z\u4e00-\u9fa5](?!.*::).*)\]):?(%%)?\s*$/,
+  reg_header_noprefix: /^((\s)*)(%%)?(\[((?!toc|TOC|\!|< )[\|\!#:;\(\)\s0-9a-zA-Z\u4e00-\u9fa5](?!.*::).*)\]):?\3\s*$/,
+  reg_header_up_noprefix: /^((\s)*)(%%)?(\[((?!toc|TOC|\!)< [\|\!#:;\(\)\s0-9a-zA-Z\u4e00-\u9fa5](?!.*::).*)\]):?\3\s*$/,
   reg_mdit_head_noprefix: /^((\s)*)(::::*)\s?(.*)/,
   reg_mdit_tail_noprefix: /^((\s)*)(::::*)/,
   reg_list_noprefix: /^((\s)*)(-\s|\*\s|\+\s)(.*)/,
@@ -19083,13 +19098,6 @@ var ABReg = {
   reg_emptyline_noprefix: /^\s*$/,
   reg_indentline_noprefix: /^\s+?\S/,
   inline_split: /\| |,  |， |\.  |。 |:  |： /
-};
-var ABCSetting = {
-  is_debug: false,
-  env: "obsidian",
-  global_app: null,
-  global_ctx: null,
-  mermaid: void 0
 };
 
 // ../ABConverter/ABAlias.ts
@@ -27482,8 +27490,8 @@ async function data2mindmap(list_itemInfo, div) {
   return render_mermaidText(mermaidText, div);
 }
 async function render_mermaidText(mermaidText, div) {
-  if (ABCSetting.env.startsWith("obsidian") && ABCSetting.mermaid) {
-    ABCSetting.mermaid.then(async (mermaid) => {
+  if (ABCSetting.env.startsWith("obsidian") && ABCSetting.obsidian.mermaid) {
+    ABCSetting.obsidian.mermaid.then(async (mermaid) => {
       const { svg } = await mermaid.render("ab-mermaid-" + getID(), mermaidText);
       const div_mermaid = document.createElement("div");
       div.appendChild(div_mermaid);
@@ -27505,7 +27513,7 @@ function abConvertEvent(d, isCycle = false) {
   if (d.querySelector(".ab-super-width")) {
     const els_note = d.querySelectorAll(".ab-note");
     for (const el_note of els_note) {
-      if (el_note.querySelector(".ab-super-width")) {
+      if (el_note.classList.contains("ab-super-width") || el_note.querySelector(".ab-super-width")) {
         const el_replace = el_note.parentNode;
         if (el_replace && el_replace.classList.contains("ab-replace")) {
           el_replace.classList.add("ab-super-width-p");
@@ -53491,8 +53499,8 @@ var _ABReplacer_Widget = class extends import_view.WidgetType {
           parent_prefix: this.rangeSpec.prefix
         },
         setting: {},
-        ctx: ABCSetting.global_ctx,
-        app: ABCSetting.global_app
+        ctx: ABCSetting.obsidian.global_ctx,
+        app: ABCSetting.obsidian.global_app
       }
     );
     if (!this.global_editor)
@@ -53532,8 +53540,23 @@ var _ABReplacer_Widget = class extends import_view.WidgetType {
       navigator.clipboard.writeText(content);
       new import_obsidian.Notice("Copied to clipboard");
     };
-    const btn_refresh = this.div.createEl("div", {
+    const btn_wider = this.div.createEl("div", {
       cls: ["ab-button", "ab-button-4", "edit-block-button"],
+      attr: { "aria-label": "Make the block wider" }
+    });
+    btn_wider.empty();
+    btn_wider.appendChild((0, import_obsidian.sanitizeHTMLToDom)(_ABReplacer_Widget.STR_ICON_WIDER));
+    btn_wider.onclick = () => {
+      if (dom_note.classList.contains("ab-super-width")) {
+        dom_note.classList.remove("ab-super-width");
+        this.div.classList.remove("ab-super-width-p");
+      } else {
+        dom_note.classList.add("ab-super-width");
+        this.div.classList.add("ab-super-width-p");
+      }
+    };
+    const btn_refresh = this.div.createEl("div", {
+      cls: ["ab-button", "ab-button-5", "edit-block-button"],
       attr: { "aria-label": "Refresh the block" }
     });
     btn_refresh.empty();
@@ -53553,16 +53576,18 @@ var _ABReplacer_Widget = class extends import_view.WidgetType {
     switch_more(false);
     btn_more.onclick = () => switch_more();
     function switch_more(_is_show) {
-      if (_is_show)
+      if (_is_show !== void 0)
         is_show = _is_show;
       else
         is_show = !is_show;
       if (is_show) {
         btn_copy.style.display = "block";
         btn_refresh.style.display = "block";
+        btn_wider.style.display = "block";
       } else {
         btn_copy.style.display = "none";
         btn_refresh.style.display = "none";
+        btn_wider.style.display = "none";
       }
     }
     return this.div;
@@ -53628,6 +53653,16 @@ ABReplacer_Widget.STR_ICON_COPY = `<svg xmlns="http://www.w3.org/2000/svg"
     <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
     <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
   </svg>`;
+ABReplacer_Widget.STR_ICON_WIDER = `<svg xmlns="http://www.w3.org/2000/svg"
+    width="24" height="24" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+    class="lucide lucide-move-horizontal-icon lucide-move-horizontal"
+  >
+    <path d="m18 8 4 4-4 4"/>
+    <path d="M2 12h20"/>
+    <path d="m6 8-4 4 4 4"/>
+  </svg>
+  `;
 ABReplacer_Widget.STR_ICON_ELLIPSIS = `<svg xmlns="http://www.w3.org/2000/svg"
     width="24" height="24" viewBox="0 0 24 24" fill="none"
     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -53641,7 +53676,7 @@ ABReplacer_Widget.STR_ICON_ELLIPSIS = `<svg xmlns="http://www.w3.org/2000/svg"
 // ab_manager/abm_code/ABReplacer_CodeBlock.ts
 var ABReplacer_CodeBlock = class {
   static processor(src, blockEl, ctx) {
-    ABCSetting.global_ctx = ctx;
+    ABCSetting.obsidian.global_ctx = ctx;
     const root_div = document.createElement("div");
     blockEl.appendChild(root_div);
     root_div.classList.add("ab-replace");
@@ -53702,273 +53737,7 @@ var import_obsidian5 = require("obsidian");
 // config/ABSettingTab.ts
 var import_obsidian4 = require("obsidian");
 
-// ../ABConverter/demo.ts
-var root_menu_demo = [
-  {
-    label: "list",
-    children: [
-      {
-        label: "\u5217\u8868\u8F6C\u8868\u683C",
-        detail: "https://cdn.pkmer.cn/images/202508241625503.png!pkmer",
-        callback: `[table]
-
-- 1
-  - 2
-  - 3
-- 2
-  - 4 | <
-  - 5
-    - 6
-    - 7
-
-`
-      },
-      { label: "\u5217\u8868\u8F6C\u76EE\u5F55", callback: `[dir]
-
-- vue-demo/
-  - build/\uFF0C \u9879\u76EE\u6784\u5EFA(webpack)\u76F8\u5173\u4EE3\u7801
-  - config/\uFF0C \u914D\u7F6E\u76EE\u5F55\uFF0C\u5305\u62EC\u7AEF\u53E3\u53F7\u7B49\u3002\u6211\u4EEC\u521D\u5B66\u53EF\u4EE5\u4F7F\u7528\u9ED8\u8BA4\u7684
-  - node_modules/\uFF0C npm \u52A0\u8F7D\u7684\u9879\u76EE\u4F9D\u8D56\u6A21\u5757
-  - src/\uFF0C \u8FD9\u91CC\u662F\u6211\u4EEC\u8981\u5F00\u53D1\u7684\u76EE\u5F55
-    - assets/\uFF0C \u653E\u7F6E\u4E00\u4E9B\u56FE\u7247\uFF0C\u5982logo\u7B49
-    - components\uFF0C \u76EE\u5F55\u91CC\u9762\u653E\u4E86\u4E00\u4E2A\u7EC4\u4EF6\u6587\u4EF6\uFF0C\u53EF\u4EE5\u4E0D\u7528
-    - App.vue\uFF0C \u9879\u76EE\u5165\u53E3\u6587\u4EF6\uFF0C\u6211\u4EEC\u4E5F\u53EF\u4EE5\u76F4\u63A5\u5C06\u7EC4\u4EF6\u5199\u8FD9\u91CC\uFF0C\u800C\u4E0D\u4F7F\u7528 components \u76EE\u5F55
-    - main.js\uFF0C \u9879\u76EE\u7684\u6838\u5FC3\u6587\u4EF6\u3002
-  - static/\uFF0C \u9759\u6001\u8D44\u6E90\u76EE\u5F55\uFF0C\u5982\u56FE\u7247\u3001\u5B57\u4F53\u7B49
-  - test/\uFF0C \u521D\u59CB\u6D4B\u8BD5\u76EE\u5F55\uFF0C\u53EF\u5220\u9664
-  - .eslintignore
-  - .gitignore\uFF0C git\u914D\u7F6E
-  - .index.html\uFF0C \u9996\u9875\u5165\u53E3\u6587\u4EF6\uFF0C\u4F60\u53EF\u4EE5\u6DFB\u52A0\u4E00\u4E9B meta \u4FE1\u606F\u6216\u7EDF\u8BA1\u4EE3\u7801\u5565\u7684
-  - package.json\uFF0C \u9879\u76EE\u914D\u7F6E\u6587\u4EF6
-  - READED.md\uFF0C \u9879\u76EE\u7684\u8BF4\u660E\u6587\u6863\uFF0Cmarkdown \u683C\u5F0F<br>\u624B\u52A8\u6362\u884C\u6D4B\u8BD5<br>\u81EA\u52A8\u6362\u884C\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5\u6D4B\u8BD5k
-  - ...
-
-` }
-    ]
-  },
-  {
-    label: "mindmap",
-    children: [
-      {
-        label: "node",
-        detail: "https://cdn.pkmer.cn/images/202508241625515.png!pkmer",
-        callback: `[nodes]
-
-- a
-  - b
-  - c
-  - d
-    - e
-    - f
-
-`
-      },
-      { label: "plantuml mindmap", callback: `[mindmap]
-
-- a
-  - b
-  - c
-  - d
-    - e
-    - f
-
-` },
-      { label: "pumlWBS", callback: `[list2pumlWBS]
-
-- vue-demo/
-  - build/
-  - config/
-  - node_modules/
-  - src/
-    - < assets/
-      - < a
-        - b
-        - < c
-      - d
-      - e
-    - components
-    - App.vue
-    - main.js
-  - static/
-  - test/
-
-` },
-      { label: "mermaid", callback: `[mermaid]
-
-- \u6811\u7ED3\u6784
-  - \u57FA\u672C\u672F\u8BED
-    - A
-    - B(BB)
-    - C(CC)
-      - A
-  - \u6027\u8D28
-  - \u57FA\u672C\u8FD0\u7B97
-  - \u4E8C\u53C9\u6811
-    - \u5206\u652F1
-    - \u5206\u652F2
-
-` },
-      { label: "mermaid mindmap", callback: `[listroot(root((mindmap)))|list2mindmap]
-
-- Origins
-  - Long history
-  - ::icon(fa fa-book)
-  - Popularisation
-    - British popular psychology author Tony Buzan
-- Research
-  - On effectiveness<br/>and features
-  - On Automatic creation
-    - Uses
-      - Creative techniques
-      - Strategic planning
-      - Argument mapping
-- Tools
-  - Pen and paper
-  - Mermaid
-
-` },
-      { label: "markmap", callback: `[list2markmap]
-
-- Links
-  - [Website](https://markmap.js.org/)
-  - [GitHub](https://github.com/gera2ld/markmap)
-- Related Projects
-  - [coc-markmap](https://github.com/gera2ld/coc-markmap) for Neovim
-  - [markmap-vscode](https://marketplace.visualstudio.com/items?itemName=gera2ld.markmap-vscode) for VSCode
-  - [eaf-markmap](https://github.com/emacs-eaf/eaf-markmap) for Emacs
-- Features
-  - Lists
-    - **strong** ~~del~~ *italic* ==highlight==
-    - \`inline code\`
-    - [x] checkbox
-    - Katex: $x = {-b pm sqrt{b^2-4ac} over 2a}$ <!-- markmap: fold -->
-    - [More Katex Examples](#?d=gist:af76a4c245b302206b16aec503dbe07b:katex.md)
-    - Now we can wrap very very very very long text based on \`maxWidth\` option
-
-` }
-    ]
-  },
-  {
-    label: "table",
-    children: [
-      { label: "\u5217\u8868\u8F6C\u8868\u683C", callback: `[table]
-
-- 1
-  - 2
-  - 3
-- 2
-  - 4 | <
-  - 5
-    - 6
-    - 7
-
-` },
-      { label: "\u5408\u5E76\u8868\u683C", callback: `[exTable]
-
-|*A*| a | < |
-|---|---|---|
-| ^ | 2 | 3 |
-
-` }
-    ]
-  },
-  {
-    label: "heading",
-    children: [
-      { label: "\u6807\u9898\u8F6C\u8868\u683C", callback: () => console.warn("\u6267\u884C\u4E86\u64CD\u4F5C2.2.1") }
-    ]
-  },
-  {
-    label: "callout",
-    children: [
-      { label: "note", callback: `> [!note]
-> 
-> Note demo.
-
-` },
-      { label: "warning", callback: `> [!warning]
-> 
-> Warning demo.
-
-` },
-      { label: "tip", callback: `> [!tip]
-> 
-> Tip demo.
-
-` },
-      { label: "note_complex", callback: `> [!note]+ title
-> Note demo.
-
-` }
-    ]
-  },
-  {
-    label: "mdit container",
-    children: [
-      { label: "note", callback: `:::note
-Note demo.
-:::
-
-` },
-      { label: "warning", callback: `:::warning
-Warning demo.
-:::
-
-` },
-      { label: "tip", callback: `:::tip
-Tip demo.
-:::
-
-` },
-      { label: "note_complex", callback: `:::note+ title
-Note demo.
-:::
-
-` }
-    ]
-  },
-  {
-    label: "two layout",
-    children: [
-      { label: "col", callback: `:::col
-
-@col
-
-text1
-
-@col
-
-text2
-
-@col
-
-text3
-
-:::
-
-` },
-      { label: "tabs", callback: `:::tabs
-
-@tab title1
-
-text1
-
-@tab title2
-
-text2
-
-@tab title3
-
-text3
-
-:::
-
-` }
-    ]
-  }
-];
-
-// ab_manager/abm_cm/ABSelector_Md.ts
+// ../CodeMirror2/ABSelector_Md.ts
 function autoMdSelector(mdText = "") {
   let list_mdSelectorRangeSpec = [];
   let list_text = mdText.split("\n");
@@ -54049,7 +53818,7 @@ function registerMdSelector(simp) {
   });
 }
 
-// ab_manager/abm_cm/ABSelector_MdBase.ts
+// ../CodeMirror2/ABSelector_MdBase.ts
 function easySelector(list_text, from_line, selector, frist_reg) {
   let mdRange = {
     from_line: from_line - 1,
@@ -54370,10 +54139,23 @@ var en_default = {
   "Custom processor7": "Using `/` including it indicates a regular expression",
   "Custom processor8": "Processor replacement",
   "Custom processor9": "Using `/` including it indicates a regular expression",
+  "Pro": "Pro",
+  "Pro2": "Pro version enhanced settings",
+  "Pro disable": "Disable pro feat",
+  "Pro disable2": "(The modification requires restarting the plugin) Disable the Pro version features. Once enabled, they will be equivalent to the non-Pro version functions. This is convenient for debugging bugs or checking whether the function is generated by this module.",
+  "Pro editableblock render": "EditableBlock default render",
+  "Pro editableblock render2": "EditableBlock default render mode",
+  "Pro editableblock render21": "- Read mode: you need to press the middle key to enter the editing mode. Press the middle key / Esc / move the cursor outside to complete the editing.",
+  "Pro editableblock render22": "- Teal time: allows for direct editing but requires more performance.",
+  "Pro editableblock render23": "- Only take over during editing (developing)",
+  "Pro editableblock render3": "Read mode",
+  "Pro editableblock render4": "Real mode",
+  "Pro callout": "Callout selector",
+  "Pro callout2": "Use the Callout selector and enable editable Callout",
   "License": "License",
-  "License2": "This is a license for the Pro version. The display of expiration time needs to be updated by reopening the settings panel.",
+  "License2": "This is a license for the Pro version. The display of expiration time needs to be updated by reopening the settings panel.\nBy adopting a dual-licensing mechanism, a certain period of default free licenses (coexisting with the user licenses) will be provided with each update.",
   "License key": "License key",
-  "License Expiry": "License Expiry",
+  "License Expiry": "License Expiry. The display of expiration time needs to be updated by reopening the settings panel.",
   "Submit": "Submit",
   "Edit": "Edit",
   "Refresh": "Refresh",
@@ -54424,10 +54206,23 @@ var zh_cn_default = {
   "Custom processor7": "\u7528 `/` \u5305\u62EC\u8D77\u6765\u5219\u8868\u793A\u6B63\u5219",
   "Custom processor8": "\u6CE8\u518C\u5668\u66FF\u6362\u4E3A",
   "Custom processor9": "\u7528 `/` \u5305\u62EC\u8D77\u6765\u5219\u8868\u793A\u6B63\u5219",
+  "Pro": "Pro",
+  "Pro2": "Pro \u7248\u589E\u5F3A\u9009\u9879",
+  "Pro disable": "\u7981\u7528 Pro \u7248\u529F\u80FD",
+  "Pro disable2": "(\u4FEE\u6539\u540E\u9700\u8981\u91CD\u542F\u63D2\u4EF6) \u7981\u7528 Pro \u7248\u529F\u80FD\uFF0C\u5F00\u542F\u540E\u7B49\u540C\u4E8E\u975E Pro \u7248\u529F\u80FD\uFF0C\u4FBF\u4E8E\u8C03\u8BD5 bug \u6216\u529F\u80FD\u662F\u5426\u8BE5\u6A21\u5757\u4EA7\u751F\u7684",
+  "Pro editableblock render": "\u53EF\u7F16\u8F91\u5757\u7684\u9ED8\u8BA4\u6E32\u67D3",
+  "Pro editableblock render2": "\u53EF\u7F16\u8F91\u5757\u7684\u9ED8\u8BA4\u6E32\u67D3\u6A21\u5F0F",
+  "Pro editableblock render21": "- \u9605\u8BFB\u6A21\u5F0F: \u9700\u8981\u4F7F\u7528\u4E2D\u952E\u8FDB\u5165\u7F16\u8F91\uFF0C\u4E2D\u952E/Esc/\u5149\u6807\u5916\u90E8\u805A\u7126\u5B8C\u6210\u7F16\u8F91",
+  "Pro editableblock render22": "- \u5B9E\u65F6\u6A21\u5F0F: \u53EF\u76F4\u63A5\u7F16\u8F91\u4F46\u4F1A\u66F4\u5403\u6027\u80FD",
+  "Pro editableblock render23": "- \u4EC5\u7F16\u8F91\u65F6\u63A5\u7BA1 (\u5F00\u53D1\u4E2D): \u4E0D\u4FEE\u6539\u9ED8\u8BA4\u6E32\u67D3\u903B\u8F91\uFF0C\u4EC5\u4E2D\u952E\u5C06\u5176\u4FEE\u6539\u4E3A\u53EF\u7F16\u8F91\u72B6\u6001",
+  "Pro editableblock render3": "\u9605\u8BFB\u6A21\u5F0F",
+  "Pro editableblock render4": "\u5B9E\u65F6\u6A21\u5F0F",
+  "Pro callout": "Callout \u9009\u62E9\u5668",
+  "Pro callout2": "\u4F7F\u7528 Callout \u9009\u62E9\u5668\uFF0C\u5E76\u542F\u7528\u53EF\u7F16\u8F91 Callout",
   "License": "\u8BB8\u53EF\u8BC1",
-  "License2": "\u8FD9\u662FPro\u7248\u7684\u8BB8\u53EF\u8BC1\uFF0C\u5230\u671F\u65F6\u95F4\u7684\u663E\u793A\u9700\u8981\u91CD\u65B0\u6253\u5F00\u8BBE\u7F6E\u9762\u677F\u6765\u66F4\u65B0",
+  "License2": "\u8FD9\u662FPro\u7248\u7684\u8BB8\u53EF\u8BC1\uFF0C\u5230\u671F\u65F6\u95F4\u7684\u663E\u793A\u9700\u8981\u91CD\u65B0\u6253\u5F00\u8BBE\u7F6E\u9762\u677F\u6765\u66F4\u65B0\n\u91C7\u7528\u53CC\u8BB8\u53EF\u8BC1\u673A\u5236\uFF0C\u6BCF\u6B21\u66F4\u65B0\u90FD\u4F1A\u7ED9\u4E00\u5B9A\u65F6\u957F\u7684\u9ED8\u8BA4\u514D\u8D39\u8BB8\u53EF\u8BC1 (\u4E0E\u7528\u6237\u8BB8\u53EF\u8BC1\u5E76\u5B58)",
   "License key": "\u8BB8\u53EF\u8BC1\u5BC6\u94A5",
-  "License Expiry": "\u8BB8\u53EF\u8BC1\u5230\u671F\u65F6\u95F4",
+  "License Expiry": "\u8BB8\u53EF\u8BC1\u5230\u671F\u65F6\u95F4\uFF0C\u5230\u671F\u65F6\u95F4\u7684\u663E\u793A\u9700\u8981\u91CD\u65B0\u6253\u5F00\u8BBE\u7F6E\u9762\u677F\u6765\u66F4\u65B0",
   "Submit": "\u63D0\u4EA4",
   "Edit": "\u7F16\u8F91",
   "Refresh": "\u5237\u65B0",
@@ -54449,7 +54244,6 @@ function t(str) {
 }
 
 // config/ABSettingTab.ts
-var LICENSE_KEY_DEFAULT = "eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJleHBpcnkiOjE3NTk5MzA4MDYwOTcsInRpZXIiOiJwcm8ifQ==.e7jggys0LBESQU5CPbQwIId0iyZZJZoyx2FHc7JPC6BsncUHL+oYORUYceqYeKjmnQIt+FcgqCeE44930sSUmKJVamxqJKB//zZL/RPnyYbqS1aujzZlNmTWx8MRkr4A4V8+0esQIXBHpZS3Ye5gtwWVg/YuLcHq+cPsh9rxWOEmljauclSmCI4zm0o+pMEoY2NbntPv5DBUZ7k7rh7/a4WGUekb2mu9BmQuK+IzqpdjqDrFs6cn50KjqD122U9Wic7rPk1IqH2TMUjOyo8UIFjbs8RsCy//F6rcY5KJ/kDVjyqBMYaDvwZpbY8qzO1xPWc/GBaezk5SVeQrpek7jQ==";
 var AB_SETTINGS = {
   select_list: "ifhead" /* ifhead */,
   select_quote: "ifhead" /* ifhead */,
@@ -54482,7 +54276,12 @@ var AB_SETTINGS = {
   reg_header: ABReg.reg_header.toString(),
   reg_header_noprefix: ABReg.reg_header_noprefix.toString(),
   inline_split: ABReg.inline_split.toString(),
-  license_key: LICENSE_KEY_DEFAULT
+  pro: {
+    license_key: "",
+    disable: false,
+    enable_callout_selector: true,
+    editableblock_defaultRender: "readmode"
+  }
 };
 var expiry = {
   expiry: -1
@@ -54591,19 +54390,43 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
       ab_tab_content_item.createEl("p", { text: `\u4F60\u53EF\u4EE5\u5728\u8FD9\u91CC\u7F16\u8F91\u6269\u5C55\u7684\u7F16\u8F91\u5668\u53F3\u952E\u83DC\u5355\uFF0C\u52A0\u5165\u81EA\u5B9A\u4E49\u8981\u9ECF\u8D34\u7684\u9884\u8BBE\u6587\u672C\u3002
 \u7F16\u8F91\u5668\u83DC\u5355\u662F\u4E00\u4E2A\u72EC\u7ACB\u529F\u80FD\u7684\u901A\u7528\u6A21\u5757\uFF0C\u4F60\u53EF\u4EE5\u628A\u4ED6\u5F53\u4F5C\u53E6\u4E00\u4E2A\u72EC\u7ACB\u529F\u80FD\u7684\u63D2\u4EF6\u6765\u4F7F\u7528` });
       ab_tab_content_item.createEl("p", { text: `! \u4EC5\u6D4B\u8BD5\u7528\u3002\u76EE\u524D\u8FD9\u4E00\u90E8\u5206\u5728\u975EPro\u7248\u4EC5\u4F9B\u67E5\u8BE2\u4E0D\u53EF\u7F16\u8F91\uFF0C\u4E14\u76EE\u524D\u4E0D\u5199\u914D\u7F6E\u6587\u4EF6\uFF0C\u8BBE\u7F6E\u540E\u91CD\u542F\u5C31\u4E0D\u751F\u6548\u4E86` });
-      const div2 = ab_tab_content_item.createEl("div");
-      ABConvertManager.autoABConvert(div2, "json-e", `\`\`\`json
-${JSON.stringify(root_menu_demo, null, 2)}
-\`\`\``, "unknown", {
-        save: (str_with_prefix, force_refresh = false) => {
-          const match3 = /^(```+|~~~+)(.*)\n([\s\S]*?)\n(\1)$/gm.exec(str_with_prefix);
-          let content2 = str_with_prefix;
-          if (match3) {
-            content2 = match3[3];
-          }
-          Object.assign(root_menu_demo, JSON.parse(content2));
-        }
+    }
+    if (ABCSetting.env === "obsidian-pro") {
+      ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: t("Pro") });
+      ab_tab_content_item = el_tab_content.createEl("div", { cls: "ab-tab-content-item" });
+      new import_obsidian4.Setting(ab_tab_content_item).setName(t("Pro")).setHeading();
+      ab_tab_content_item.createEl("p", { text: t("Pro2") });
+      new import_obsidian4.Setting(ab_tab_content_item).setName(t("Pro disable")).setDesc(t("Pro disable2")).addToggle(
+        (toggle) => toggle.setValue(settings.pro.disable).onChange(async (value) => {
+          settings.pro.disable = value;
+          ABCSetting.pro.disable = value;
+          await this.plugin.saveSettings();
+        })
+      );
+      new import_obsidian4.Setting(ab_tab_content_item).setName(t("Pro editableblock render")).setDesc(
+        createFragment((frag) => {
+          frag.appendText(t("Pro editableblock render2"));
+          frag.appendChild(document.createElement("br"));
+          frag.appendText(t("Pro editableblock render21"));
+          frag.appendChild(document.createElement("br"));
+          frag.appendText(t("Pro editableblock render22"));
+          frag.appendChild(document.createElement("br"));
+          frag.appendText(t("Pro editableblock render23"));
+        })
+      ).addDropdown((component) => {
+        component.addOption("readmode", t("Pro editableblock render3")).addOption("realtime", t("Pro editableblock render4")).setValue(settings.pro.editableblock_defaultRender).onChange(async (v) => {
+          const value = v;
+          settings.pro.editableblock_defaultRender = value;
+          ABCSetting.pro.editableblock_defaultRender = value;
+        });
       });
+      new import_obsidian4.Setting(ab_tab_content_item).setName(t("Pro callout")).setDesc(t("Pro callout2")).addToggle(
+        (toggle) => toggle.setValue(settings.pro.enable_callout_selector).onChange(async (value) => {
+          settings.pro.enable_callout_selector = value;
+          ABCSetting.pro.enable_callout_selector = value;
+          await this.plugin.saveSettings();
+        })
+      );
     }
     if (ABCSetting.env === "obsidian-pro") {
       ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: t("License") });
@@ -54611,8 +54434,8 @@ ${JSON.stringify(root_menu_demo, null, 2)}
       new import_obsidian4.Setting(ab_tab_content_item).setName(t("License")).setHeading();
       ab_tab_content_item.createEl("p", { text: t("License2") });
       new import_obsidian4.Setting(ab_tab_content_item).setName(t("License key")).addTextArea(
-        (text4) => text4.setValue(settings.license_key).onChange(async (value) => {
-          settings.license_key = value;
+        (text4) => text4.setValue(settings.pro.license_key).onChange(async (value) => {
+          settings.pro.license_key = value;
           await this.plugin.saveSettings();
         })
       );
@@ -54622,6 +54445,7 @@ ${JSON.stringify(root_menu_demo, null, 2)}
       new import_obsidian4.Setting(ab_tab_content_item).setName("Debug").setDesc("Only for developer use").addToggle(
         (toggle) => toggle.setValue(settings.is_debug).onChange(async (value) => {
           settings.is_debug = value;
+          ABCSetting.is_debug = value;
           await this.plugin.saveSettings();
         })
       );
@@ -54844,10 +54668,34 @@ var ABStateManager = class {
       this.prev_editor_mode = editor_mode;
       return decorationSet;
     }
-    const new_decorationSet = this.onUpdate_refresh(decorationSet, tr, decoration_mode, editor_mode);
-    this.prev_decoration_mode = decoration_mode;
-    this.prev_editor_mode = editor_mode;
-    return new_decorationSet;
+    if (ABCSetting.env != "obsidian-pro" || ABCSetting.pro.disable || ABCSetting.pro.create_decorations == void 0) {
+      const new_decorationSet = this.onUpdate_refresh(decorationSet, tr, decoration_mode, editor_mode);
+      this.prev_decoration_mode = decoration_mode;
+      this.prev_editor_mode = editor_mode;
+      return new_decorationSet;
+    } else {
+      const create_widget = (customData, state, oldView, rangeSpec, focusLine = null, focusOffset = 0) => {
+        const rangeSpec_ = {
+          content: rangeSpec.text_content,
+          from_ch: rangeSpec.fromPos,
+          to_ch: rangeSpec.toPos,
+          header: rangeSpec.header,
+          selector: rangeSpec.selector,
+          prefix: rangeSpec.parent_prefix
+        };
+        return new ABReplacer_Widget(rangeSpec_, this.editor, customData);
+      };
+      const new_decorationSet = ABCSetting.pro.create_decorations(
+        this.customData,
+        this.editorView,
+        tr,
+        decorationSet,
+        create_widget
+      );
+      this.prev_decoration_mode = decoration_mode;
+      this.prev_editor_mode = editor_mode;
+      return new_decorationSet;
+    }
   }
   onUpdate_refresh(decorationSet, tr, decoration_mode, editor_mode) {
     const updateMode = this.customData.updateMode;
@@ -54875,7 +54723,7 @@ var ABStateManager = class {
       if (this.customData.cancelFlag.includes(rangeSpec.from_ch)) {
         if (isCursorIn) {
           const decoration = import_view2.Decoration.mark({
-            class: "cm-line-yellow",
+            class: "ab-line-yellow",
             inclusive: true
           });
           list_decoration_change.push(decoration.range(rangeSpec.from_ch, rangeSpec.to_ch));
@@ -55102,7 +54950,7 @@ ABReplacer_Render.str_icon_code2 = `<svg xmlns="http://www.w3.org/2000/svg" widt
 var ABSelector_PostHtml = class {
   static processor(el, ctx) {
     var _a3, _b, _c, _d, _e, _f, _g;
-    ABCSetting.global_ctx = ctx;
+    ABCSetting.obsidian.global_ctx = ctx;
     if (this.settings.decoration_render == "none" /* none */)
       return;
     const mdSrc = getSourceMarkdown(el, ctx);
@@ -55618,7 +55466,7 @@ function registerStatus(plugin2) {
 // main.ts
 var AnyBlockPlugin = class extends import_obsidian9.Plugin {
   async onload() {
-    ABCSetting.global_app = this.app;
+    ABCSetting.obsidian.global_app = this.app;
     await this.loadSettings();
     this.addSettingTab(new ABSettingTab(this.app, this));
     registerStatus(this);
@@ -55629,11 +55477,11 @@ var AnyBlockPlugin = class extends import_obsidian9.Plugin {
       const mdrc = new import_obsidian9.MarkdownRenderChild(el);
       if (ctx)
         ctx.addChild(mdrc);
-      else if (ABCSetting.global_ctx)
-        ABCSetting.global_ctx.addChild(mdrc);
+      else if (ABCSetting.obsidian.global_ctx)
+        ABCSetting.obsidian.global_ctx.addChild(mdrc);
       import_obsidian9.MarkdownRenderer.render(this.app, markdown, el, (_c = (_b = (_a3 = this.app.workspace.getActiveViewOfType(import_obsidian9.MarkdownView)) == null ? void 0 : _a3.file) == null ? void 0 : _b.path) != null ? _c : "", mdrc);
     });
-    ABCSetting.mermaid = (0, import_obsidian9.loadMermaid)();
+    ABCSetting.obsidian.mermaid = (0, import_obsidian9.loadMermaid)();
     this.registerMarkdownCodeBlockProcessor("ab", ABReplacer_CodeBlock.processor);
     this.registerMarkdownCodeBlockProcessor("anyblock", ABReplacer_CodeBlock.processor);
     {
@@ -55674,12 +55522,17 @@ var AnyBlockPlugin = class extends import_obsidian9.Plugin {
         replacement: result.replacement
       });
     }
-    if (!data2) {
-      this.saveData(this.settings);
-    }
+    ABCSetting.is_debug = this.settings.is_debug;
+    ABCSetting.pro.disable = this.settings.pro.disable;
+    ABCSetting.pro.enable_callout_selector = this.settings.pro.enable_callout_selector;
+    ABCSetting.pro.editableblock_defaultRender = this.settings.pro.editableblock_defaultRender;
+    this.saveData(this.settings);
   }
   async saveSettings() {
     ABCSetting.is_debug = this.settings.is_debug;
+    ABCSetting.pro.disable = this.settings.pro.disable;
+    ABCSetting.pro.enable_callout_selector = this.settings.pro.enable_callout_selector;
+    ABCSetting.pro.editableblock_defaultRender = this.settings.pro.editableblock_defaultRender;
     await this.saveData(this.settings);
   }
   onunload() {
@@ -55690,3 +55543,5 @@ var AnyBlockPlugin = class extends import_obsidian9.Plugin {
   }
 };
 /*! @gera2ld/jsx-dom v2.2.2 | ISC License */
+
+/* nosourcemap */
