@@ -486,12 +486,9 @@
           {
             "name": "ghproxy",
             "type": "UserScript",
-            "id": "e2481b9b-7607-4c36-b909-73734a670362",
+            "id": "a9b4616c-d4ed-4a91-8da8-146a39345360",
             "path": "Misc/Scripts/ghproxy.js",
-            "settings": {
-              "config": "{\"github\": \"https://ghfast.top/\"}",
-              "transform": "prepend"
-            }
+            "settings": {}
           }
         ]
       }
@@ -591,7 +588,7 @@
   "devMode": false,
   "templateFolderPath": "Misc/Templates",
   "announceUpdates": "none",
-  "version": "2.11.0",
+  "version": "2.10.0",
   "globalVariables": {},
   "onePageInputEnabled": true,
   "disableOnlineFeatures": true,

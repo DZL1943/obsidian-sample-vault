@@ -2016,7 +2016,17 @@ var DefFileUpdater = class {
       return;
     }
     if (fileDef.position) {
-      const newLines = this.replaceDefinition(fileDef.position, def, lines);
+      const fileMetadata = this.app.metadataCache.getFileCache(file);
+      const fmPos = fileMetadata == null ? void 0 : fileMetadata.frontmatterPosition;
+      if (fmPos) {
+        fileDef.position.to += fmPos.end.line + 1;
+        fileDef.position.from += fmPos.end.line + 1;
+      }
+      const newLines = this.replaceDefinition(
+        fileDef.position,
+        def,
+        lines
+      );
       const newContent = newLines.join("\n");
       await this.app.vault.modify(file, newContent);
     }
@@ -2053,7 +2063,10 @@ var DefFileUpdater = class {
       fmBuilder.add("aliases", "\n" + aliases.join("\n"));
     }
     const fm = fmBuilder.finish();
-    const file = await this.app.vault.create(`${folder}/${def.word}.md`, fm + def.definition);
+    const file = await this.app.vault.create(
+      `${folder}/${def.word}.md`,
+      fm + def.definition
+    );
     getDefFileManager().addDefFile(file);
     getDefFileManager().markDirty(file);
   }
@@ -2104,7 +2117,10 @@ var DefFileUpdater = class {
     const before = lines.slice(0, position.from);
     const after = lines.slice(position.to);
     const newLines = this.constructLinesFromDef(def);
-    return before.concat(newLines, this.isSeparator(lines[position.to]) ? after : []);
+    return before.concat(
+      newLines,
+      this.isSeparator(lines[position.to]) ? after : []
+    );
   }
   isSeparator(line) {
     return line === "---" || line === "___";
@@ -2180,6 +2196,7 @@ var AddDefinitionModal = class {
     this.modal = new import_obsidian9.Modal(app);
   }
   open(text) {
+    this.activeFile = this.app.workspace.getActiveFile();
     this.submitting = false;
     this.modal.setTitle("Add Definition");
     this.modal.contentEl.createDiv({
@@ -2215,12 +2232,23 @@ var AddDefinitionModal = class {
     });
     const defManager = getDefFileManager();
     this.defFilePickerSetting = new import_obsidian9.Setting(this.modal.contentEl).setName("Definition file").addDropdown((component) => {
+      var _a;
       const defFiles = defManager.getConsolidatedDefFiles();
       defFiles.forEach((file) => {
         component.addOption(file.path, file.path);
       });
       if (defFiles.length > 0) {
-        component.setValue(defFiles[0].path);
+        let val = defFiles[0].path;
+        if (this.activeFile) {
+          const metadataCache = this.app.metadataCache.getFileCache(
+            this.activeFile
+          );
+          const paths = (_a = metadataCache == null ? void 0 : metadataCache.frontmatter) == null ? void 0 : _a[DEF_CTX_FM_KEY];
+          if (paths) {
+            val = paths[0];
+          }
+        }
+        component.setValue(val);
       }
       this.defFilePicker = component;
     });
