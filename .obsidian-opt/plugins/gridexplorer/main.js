@@ -3701,7 +3701,7 @@ var MediaModal = class extends import_obsidian7.Modal {
       const touch = e.touches[0];
       const deltaX = Math.abs(touch.clientX - this.touchStartX);
       const deltaY = Math.abs(touch.clientY - this.touchStartY);
-      if (deltaX > deltaY && deltaX > 10) {
+      if (deltaX > deltaY && deltaX > 10 || deltaY > deltaX && deltaY > 10) {
         this.isDragging = true;
         e.preventDefault();
       }
@@ -3716,13 +3716,18 @@ var MediaModal = class extends import_obsidian7.Modal {
       const deltaY = touch.clientY - this.touchStartY;
       const deltaTime = Date.now() - this.touchStartTime;
       const isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY);
-      const isValidDistance = Math.abs(deltaX) >= this.minSwipeDistance;
+      const isVerticalSwipe = Math.abs(deltaY) > Math.abs(deltaX);
+      const isValidDistance = Math.abs(deltaX) >= this.minSwipeDistance || Math.abs(deltaY) >= this.minSwipeDistance;
       const isValidTime = deltaTime <= this.maxSwipeTime;
-      if (isHorizontalSwipe && isValidDistance && isValidTime) {
-        if (deltaX > 0) {
-          this.showPrevMedia();
-        } else {
-          this.showNextMedia();
+      if (isValidDistance && isValidTime) {
+        if (isHorizontalSwipe) {
+          if (deltaX > 0) {
+            this.showPrevMedia();
+          } else {
+            this.showNextMedia();
+          }
+        } else if (isVerticalSwipe && deltaY > 0) {
+          this.close();
         }
       }
       this.isDragging = false;
@@ -10726,12 +10731,16 @@ var GridView = class extends import_obsidian20.ItemView {
     const rightBar = topBar.createDiv("ge-note-top-right");
     const noteTitle = leftBar.createDiv("ge-note-title");
     noteTitle.textContent = file.basename;
-    (0, import_obsidian20.setTooltip)(noteTitle, file.basename);
+    if (import_obsidian20.Platform.isDesktop) {
+      (0, import_obsidian20.setTooltip)(noteTitle, file.basename);
+    }
     const editButton = rightBar.createEl("button", { cls: "ge-note-edit-button" });
     (0, import_obsidian20.setIcon)(editButton, "pencil");
     editButton.addEventListener("click", () => {
       this.getLeafByMode(file).openFile(file);
     });
+    const infoButton = rightBar.createEl("button", { cls: "ge-note-info-button" });
+    (0, import_obsidian20.setIcon)(infoButton, "info");
     const closeButton = rightBar.createEl("button", { cls: "ge-note-close-button" });
     (0, import_obsidian20.setIcon)(closeButton, "x");
     closeButton.addEventListener("click", () => {
@@ -10746,6 +10755,122 @@ var GridView = class extends import_obsidian20.ItemView {
     const noteContent = scrollContainer.createDiv("ge-note-content-container");
     if (isInSidebar) {
       noteContent.style.padding = "15px";
+    }
+    const fileCache = this.app.metadataCache.getFileCache(file);
+    const frontmatter = fileCache == null ? void 0 : fileCache.frontmatter;
+    if (frontmatter) {
+      const keys = Object.keys(frontmatter).filter((k) => k !== "position");
+      if (keys.length > 0) {
+        const metadataContainer = noteContent.createDiv("ge-note-metadata-container");
+        infoButton.addEventListener("click", () => {
+          metadataContainer.classList.toggle("is-visible");
+          scrollContainer.scrollTo(0, 0);
+        });
+        const metadataContent = metadataContainer.createDiv("ge-note-metadata-content");
+        for (const key of keys) {
+          const item = metadataContent.createDiv("ge-note-metadata-item");
+          item.createSpan({ cls: "ge-note-metadata-key", text: `${key}: ` });
+          const value = frontmatter[key];
+          const valueSpan = item.createSpan({ cls: "ge-note-metadata-value" });
+          const values = Array.isArray(value) ? value : [value];
+          values.forEach((val, index) => {
+            const valStr = String(val);
+            const wikilinkRegex = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const tagRegex = /#([^\s#]+)/g;
+            if (wikilinkRegex.test(valStr)) {
+              wikilinkRegex.lastIndex = 0;
+              let lastIndex = 0;
+              let match;
+              while ((match = wikilinkRegex.exec(valStr)) !== null) {
+                if (match.index > lastIndex) {
+                  valueSpan.createSpan({ text: valStr.substring(lastIndex, match.index) });
+                }
+                const linkPath = match[1];
+                const linkAlias = match[2] || linkPath;
+                const linkEl = valueSpan.createEl("a", {
+                  cls: "internal-link",
+                  text: linkAlias,
+                  attr: { "data-href": linkPath }
+                });
+                linkEl.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  const linkedFile = this.app.metadataCache.getFirstLinkpathDest(linkPath, file.path);
+                  if (linkedFile) {
+                    this.getLeafByMode(linkedFile).openFile(linkedFile);
+                  }
+                });
+                lastIndex = wikilinkRegex.lastIndex;
+              }
+              if (lastIndex < valStr.length) {
+                valueSpan.createSpan({ text: valStr.substring(lastIndex) });
+              }
+            } else if (urlRegex.test(valStr)) {
+              urlRegex.lastIndex = 0;
+              let lastIndex = 0;
+              let match;
+              while ((match = urlRegex.exec(valStr)) !== null) {
+                if (match.index > lastIndex) {
+                  valueSpan.createSpan({ text: valStr.substring(lastIndex, match.index) });
+                }
+                const url = match[1];
+                valueSpan.createEl("a", {
+                  cls: "external-link",
+                  text: url,
+                  attr: { "href": url, "target": "_blank", "rel": "noopener" }
+                });
+                lastIndex = urlRegex.lastIndex;
+              }
+              if (lastIndex < valStr.length) {
+                valueSpan.createSpan({ text: valStr.substring(lastIndex) });
+              }
+            } else if (key.toLowerCase() === "tags" || key.toLowerCase() === "tag" || tagRegex.test(valStr)) {
+              if ((key.toLowerCase() === "tags" || key.toLowerCase() === "tag") && !valStr.startsWith("#")) {
+                const tagEl = valueSpan.createEl("a", {
+                  cls: "tag",
+                  text: "#" + valStr,
+                  attr: { "href": "#" + valStr }
+                });
+                tagEl.addEventListener("click", (e) => {
+                  var _a, _b, _c;
+                  e.preventDefault();
+                  (_c = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.getPluginById("global-search")) == null ? void 0 : _b.instance) == null ? void 0 : _c.openGlobalSearch("tag:#" + valStr);
+                });
+              } else {
+                tagRegex.lastIndex = 0;
+                let lastIndex = 0;
+                let match;
+                while ((match = tagRegex.exec(valStr)) !== null) {
+                  if (match.index > lastIndex) {
+                    valueSpan.createSpan({ text: valStr.substring(lastIndex, match.index) });
+                  }
+                  const tagName = match[1];
+                  const tagEl = valueSpan.createEl("a", {
+                    cls: "tag",
+                    text: "#" + tagName,
+                    attr: { "href": "#" + tagName }
+                  });
+                  tagEl.addEventListener("click", (e) => {
+                    var _a, _b, _c;
+                    e.preventDefault();
+                    (_c = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.getPluginById("global-search")) == null ? void 0 : _b.instance) == null ? void 0 : _c.openGlobalSearch("tag:#" + tagName);
+                  });
+                  lastIndex = tagRegex.lastIndex;
+                }
+                if (lastIndex < valStr.length) {
+                  valueSpan.createSpan({ text: valStr.substring(lastIndex) });
+                }
+              }
+            } else {
+              valueSpan.createSpan({ text: valStr });
+            }
+            if (index < values.length - 1) {
+              const isTag = key.toLowerCase() === "tags" || key.toLowerCase() === "tag";
+              valueSpan.createSpan({ text: isTag ? " " : ", " });
+            }
+          });
+        }
+      }
     }
     const noteContentArea = noteContent.createDiv("ge-note-content");
     try {
