@@ -5,16 +5,6 @@
 > [W27](<#W27>) [W28](<#W28>) [W29](<#W29>) [W30](<#W30>) [W31](<#W31>) [W32](<#W32>) [W33](<#W33>) [W34](<#W34>) [W35](<#W35>) [W36](<#W36>) [W37](<#W37>) [W38](<#W38>) [W39](<#W39>)  
 > [W40](<#W40>) [W41](<#W41>) [W42](<#W42>) [W43](<#W43>) [W44](<#W44>) [W45](<#W45>) [W46](<#W46>) [W47](<#W47>) [W48](<#W48>) [W49](<#W49>) [W50](<#W50>) [W51](<#W51>) [W52](<#W52>)  
 
-# Timestamps
-
-```dataview
-list rows.file.link
-where contains(file.folder, this.file.folder)
-where regexmatch("[0-9]{4}-[0-9]{2}-[0-9]{2}", file.name) or regexmatch("^[0-9]{8,15}", file.name)
-sort file.name desc
-limit 30
-```
-
 # Daily
 
 ```dataview
