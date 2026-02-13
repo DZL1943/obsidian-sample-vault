@@ -224,26 +224,6 @@
       }
     },
     {
-      "id": "a37e4f10-4c51-4283-beed-e6320ebd72e2",
-      "name": "find-replace",
-      "type": "Macro",
-      "command": false,
-      "runOnStartup": false,
-      "macro": {
-        "name": "find-replace",
-        "id": "5ccd97f7-a78f-4366-a0ef-15af4639d3b0",
-        "commands": [
-          {
-            "name": "replace",
-            "type": "UserScript",
-            "id": "7f1d22b6-389e-49ab-8c4f-207278c1fca4",
-            "path": "Misc/Scripts/replace.js",
-            "settings": {}
-          }
-        ]
-      }
-    },
-    {
       "id": "bb31ff8b-59b0-4ec7-8b8c-060b65be1330",
       "name": "show-and-goto-headings",
       "type": "Macro",
@@ -298,6 +278,66 @@
             "type": "UserScript",
             "id": "b72373d8-5148-4ce6-944a-1cfce9a513e8",
             "path": "Misc/Scripts/snippets.js",
+            "settings": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "a37e4f10-4c51-4283-beed-e6320ebd72e2",
+      "name": "find-replace",
+      "type": "Macro",
+      "command": false,
+      "runOnStartup": false,
+      "macro": {
+        "name": "find-replace",
+        "id": "5ccd97f7-a78f-4366-a0ef-15af4639d3b0",
+        "commands": [
+          {
+            "name": "replace",
+            "type": "UserScript",
+            "id": "7f1d22b6-389e-49ab-8c4f-207278c1fca4",
+            "path": "Misc/Scripts/replace.js",
+            "settings": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "b72a76ff-0e7c-420c-b51a-001c2318a6f7",
+      "name": "tags",
+      "type": "Macro",
+      "command": false,
+      "runOnStartup": false,
+      "macro": {
+        "name": "tags",
+        "id": "b4f3760b-143e-428b-b38f-4483abe3c5d8",
+        "commands": [
+          {
+            "name": "tags",
+            "type": "UserScript",
+            "id": "02b61442-daf5-4c5f-9528-4cc8d1a2139c",
+            "path": "Misc/Scripts/tags.js",
+            "settings": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "98b82b09-4f6a-4bde-95c3-a252d2cd4f21",
+      "name": "attachment-management",
+      "type": "Macro",
+      "command": false,
+      "runOnStartup": false,
+      "macro": {
+        "name": "attachment-management",
+        "id": "fd3e316f-b555-4615-aeb2-bd57b82e8055",
+        "commands": [
+          {
+            "name": "attachments",
+            "type": "UserScript",
+            "id": "af9d26e7-9eb8-4ac0-a570-b7399b2a9385",
+            "path": "Misc/Scripts/attachments.js",
             "settings": {}
           }
         ]
@@ -454,26 +494,6 @@
       }
     },
     {
-      "id": "98b82b09-4f6a-4bde-95c3-a252d2cd4f21",
-      "name": "attachment-management",
-      "type": "Macro",
-      "command": false,
-      "runOnStartup": false,
-      "macro": {
-        "name": "attachment-management",
-        "id": "fd3e316f-b555-4615-aeb2-bd57b82e8055",
-        "commands": [
-          {
-            "name": "attachments",
-            "type": "UserScript",
-            "id": "af9d26e7-9eb8-4ac0-a570-b7399b2a9385",
-            "path": "Misc/Scripts/attachments.js",
-            "settings": {}
-          }
-        ]
-      }
-    },
-    {
       "id": "ee42c374-763f-438c-9f25-ca821112fd74",
       "name": "proxy",
       "type": "Macro",
@@ -588,7 +608,7 @@
   "devMode": false,
   "templateFolderPath": "Misc/Templates",
   "announceUpdates": "none",
-  "version": "2.11.0",
+  "version": "2.10.0",
   "globalVariables": {},
   "onePageInputEnabled": true,
   "disableOnlineFeatures": true,
