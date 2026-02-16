@@ -218,6 +218,8 @@ var zh_TW_default = {
   "all": "\u5168\u90E8",
   "default": "\u9810\u8A2D",
   "hidden": "\u96B1\u85CF",
+  "all_bookmarks": "\u5168\u90E8\u66F8\u7C64",
+  "ungrouped_bookmarks": "\u7121\u7FA4\u7D44\u66F8\u7C64",
   // 隱藏頂部元素
   "hide_header_elements": "\u96B1\u85CF\u9802\u90E8\u5143\u7D20",
   // 預設開啟位置設定
@@ -520,6 +522,8 @@ var en_default = {
   "all": "All",
   "default": "Default",
   "hidden": "Hidden",
+  "all_bookmarks": "All Bookmarks",
+  "ungrouped_bookmarks": "Ungrouped Bookmarks",
   // Hide header elements setting
   "hide_header_elements": "Hide header elements",
   // Default open location setting
@@ -821,6 +825,8 @@ var zh_default = {
   "all": "\u5168\u90E8",
   "default": "\u9ED8\u8BA4",
   "hidden": "\u9690\u85CF",
+  "all_bookmarks": "\u5168\u90E8\u4E66\u7B7E",
+  "ungrouped_bookmarks": "\u65E0\u7FA4\u7EC4\u4E66\u7B7E",
   // 隐藏頂部元素
   "hide_header_elements": "\u96B1\u85CF\u9802\u90E8\u5143\u7D20",
   // 默认打开位置设置
@@ -1122,6 +1128,8 @@ var ja_default = {
   "all": "\u3059\u3079\u3066",
   "default": "\u30C7\u30D5\u30A9\u30EB\u30C8",
   "hidden": "\u96A0\u3059",
+  "all_bookmarks": "\u3059\u3079\u3066\u306E\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF",
+  "ungrouped_bookmarks": "\u30B0\u30EB\u30FC\u30D7\u306A\u3057",
   // 隠すヘッダー要素
   "hide_header_elements": "\u30D8\u30C3\u30C0\u30FC\u8981\u7D20\u3092\u96A0\u3059",
   // 開く場所設定
@@ -1423,6 +1431,8 @@ var ru_default = {
   "all": "\u0412\u0441\u0435",
   "default": "\u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E",
   "hidden": "\u0421\u043A\u0440\u044B\u0442\u044B\u0435",
+  "all_bookmarks": "\u0412\u0441\u0435 \u0437\u0430\u043A\u043B\u0430\u0434\u043A\u0438",
+  "ungrouped_bookmarks": "\u0411\u0435\u0437 \u0433\u0440\u0443\u043F\u043F\u044B",
   // Hide header elements setting
   "hide_header_elements": "\u0421\u043A\u0440\u044B\u0442\u044C \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0437\u0430\u0433\u043E\u043B\u043E\u0432\u043A\u0430",
   // Default open location setting
@@ -1724,6 +1734,8 @@ var uk_default = {
   "all": "\u0423\u0441\u0456",
   "default": "\u0417\u0430 \u0437\u0430\u043C\u043E\u0432\u0447\u0443\u0432\u0430\u043D\u043D\u044F\u043C",
   "hidden": "\u041F\u0440\u0438\u0445\u043E\u0432\u0430\u043D\u0456",
+  "all_bookmarks": "\u0423\u0441\u0456 \u0437\u0430\u043A\u043B\u0430\u0434\u043A\u0438",
+  "ungrouped_bookmarks": "\u0411\u0435\u0437 \u0433\u0440\u0443\u043F\u0438",
   // Hide header elements setting
   "hide_header_elements": "\u041F\u0440\u0438\u0445\u043E\u0432\u0430\u0442\u0438 \u0435\u043B\u0435\u043C\u0435\u043D\u0442\u0438 \u0437\u0430\u0433\u043E\u043B\u043E\u0432\u043A\u0430",
   // Default open location setting
@@ -2026,6 +2038,8 @@ var ko_default = {
   "all": "\uC804\uCCB4",
   "default": "\uAE30\uBCF8\uAC12",
   "hidden": "\uC228\uAE40",
+  "all_bookmarks": "\uBAA8\uB4E0 \uBD81\uB9C8\uD06C",
+  "ungrouped_bookmarks": "\uADF8\uB8F9 \uD574\uC81C\uB428",
   // Hide header elements setting
   "hide_header_elements": "\uD5E4\uB354 \uC694\uC18C \uC228\uAE30\uAE30",
   // Default open location setting
@@ -2437,7 +2451,32 @@ async function getFiles(gridView, includeMediaFiles) {
         item.items.forEach(processBookmarkItem);
       }
     };
-    bookmarks.forEach(processBookmarkItem);
+    const bookmarkGroupId = gridView.bookmarkGroupId;
+    if (!bookmarkGroupId || bookmarkGroupId === "all") {
+      bookmarks.forEach(processBookmarkItem);
+    } else if (bookmarkGroupId === "ungrouped") {
+      bookmarks.forEach((item) => {
+        if (item.type === "file") {
+          processBookmarkItem(item);
+        }
+      });
+    } else {
+      const findAndProcessGroup = (items) => {
+        for (const item of items) {
+          if (item.type === "group") {
+            if (item.title === bookmarkGroupId) {
+              item.items.forEach(processBookmarkItem);
+              return true;
+            }
+            if (item.items && findAndProcessGroup(item.items)) {
+              return true;
+            }
+          }
+        }
+        return false;
+      };
+      findAndProcessGroup(bookmarks);
+    }
     return Array.from(bookmarkedFiles);
   } else if (sourceMode === "tasks") {
     const filesWithTasks = /* @__PURE__ */ new Set();
@@ -3485,7 +3524,7 @@ var MediaModal = class extends import_obsidian7.Modal {
       this.showNextMedia();
       return false;
     });
-    this.registerTouchEvents(mediaContainer);
+    this.registerTouchEvents(this.contentEl);
     this.showMediaAtIndex(this.currentIndex);
   }
   onClose() {
@@ -3526,6 +3565,7 @@ var MediaModal = class extends import_obsidian7.Modal {
       this.handleWheel = null;
     }
     this.isZoomed = false;
+    this.contentEl.removeClass("is-zoomed");
     const mediaFile = this.mediaFiles[index];
     if (isImageFile(mediaFile)) {
       const img = document.createElement("img");
@@ -3631,16 +3671,9 @@ var MediaModal = class extends import_obsidian7.Modal {
         clickX = (event.clientX - rect.left) / rect.width;
         clickY = (event.clientY - rect.top) / rect.height;
       }
-      if (mediaView.clientWidth > mediaView.clientHeight) {
-        if (img.naturalHeight < mediaView.clientHeight) {
-          img.style.maxWidth = "none";
-        }
-      } else {
-        if (img.naturalWidth < mediaView.clientWidth) {
-          img.style.maxHeight = "none";
-        }
-      }
-      if (img.offsetWidth < mediaView.clientWidth) {
+      const imageAspect = img.naturalWidth / img.naturalHeight;
+      const screenAspect = mediaView.clientWidth / mediaView.clientHeight;
+      if (imageAspect < screenAspect) {
         img.style.width = "100vw";
         img.style.height = "auto";
         mediaView.style.overflowX = "hidden";
@@ -3675,6 +3708,7 @@ var MediaModal = class extends import_obsidian7.Modal {
       img.style.transform = "none";
       img.style.cursor = "zoom-out";
       this.isZoomed = true;
+      this.contentEl.addClass("is-zoomed");
     } else {
       if (this.handleWheel) {
         mediaView.removeEventListener("wheel", this.handleWheel);
@@ -3682,6 +3716,7 @@ var MediaModal = class extends import_obsidian7.Modal {
       }
       this.resetImageStyles(img);
       this.isZoomed = false;
+      this.contentEl.removeClass("is-zoomed");
     }
   }
   // 註冊觸控事件處理器（行動裝置拖曳翻頁）
@@ -3689,6 +3724,11 @@ var MediaModal = class extends import_obsidian7.Modal {
     element.addEventListener("touchstart", (e) => {
       if (this.isZoomed)
         return;
+      const target = e.target;
+      if (target.closest(".ge-media-close-button")) {
+        this.touchStartX = -1;
+        return;
+      }
       const touch = e.touches[0];
       this.touchStartX = touch.clientX;
       this.touchStartY = touch.clientY;
@@ -3696,18 +3736,25 @@ var MediaModal = class extends import_obsidian7.Modal {
       this.isDragging = false;
     }, { passive: true });
     element.addEventListener("touchmove", (e) => {
-      if (this.isZoomed)
+      if (this.isZoomed || this.touchStartX === -1)
         return;
       const touch = e.touches[0];
       const deltaX = Math.abs(touch.clientX - this.touchStartX);
       const deltaY = Math.abs(touch.clientY - this.touchStartY);
       if (deltaX > deltaY && deltaX > 10 || deltaY > deltaX && deltaY > 10) {
         this.isDragging = true;
-        e.preventDefault();
+        const target = e.target;
+        if (target.tagName === "VIDEO" || target.tagName === "AUDIO") {
+          if (deltaX > 20 || deltaY > 20) {
+            e.preventDefault();
+          }
+        } else {
+          e.preventDefault();
+        }
       }
     }, { passive: false });
     element.addEventListener("touchend", (e) => {
-      if (this.isZoomed)
+      if (this.isZoomed || this.touchStartX === -1)
         return;
       if (!this.isDragging)
         return;
@@ -6895,7 +6942,7 @@ function renderHeaderButton(gridView) {
   backButton.addEventListener("contextmenu", (event) => {
     if (gridView.recentSources.length > 0) {
       event.preventDefault();
-      const menu2 = new import_obsidian14.Menu();
+      const menu = new import_obsidian14.Menu();
       gridView.recentSources.forEach((sourceInfoStr, index) => {
         try {
           const sourceInfo = JSON.parse(sourceInfoStr);
@@ -6956,7 +7003,7 @@ function renderHeaderButton(gridView) {
               displayText += `: "${sourceInfo.searchQuery}"`;
             }
           }
-          menu2.addItem((item) => {
+          menu.addItem((item) => {
             item.setTitle(`${displayText}`).setIcon(`${icon}`).onClick(async () => {
               var _a, _b, _c;
               const currentKey = JSON.stringify({
@@ -6994,13 +7041,13 @@ function renderHeaderButton(gridView) {
           console.error("Failed to parse source info:", error);
         }
       });
-      menu2.showAtMouseEvent(event);
+      menu.showAtMouseEvent(event);
     }
   });
   forwardButton.addEventListener("contextmenu", (event) => {
     if (gridView.futureSources.length > 0) {
       event.preventDefault();
-      const menu2 = new import_obsidian14.Menu();
+      const menu = new import_obsidian14.Menu();
       gridView.futureSources.forEach((sourceInfoStr, index) => {
         try {
           const sourceInfo = JSON.parse(sourceInfoStr);
@@ -7061,7 +7108,7 @@ function renderHeaderButton(gridView) {
               displayText += `: "${sourceInfo.searchQuery}"`;
             }
           }
-          menu2.addItem((item) => {
+          menu.addItem((item) => {
             item.setTitle(`${displayText}`).setIcon(`${icon}`).onClick(async () => {
               var _a, _b, _c;
               const currentKey = JSON.stringify({
@@ -7099,7 +7146,7 @@ function renderHeaderButton(gridView) {
           console.error("Failed to parse source info:", error);
         }
       });
-      menu2.showAtMouseEvent(event);
+      menu.showAtMouseEvent(event);
     }
   });
   const updateNavButtons = () => {
@@ -7111,13 +7158,13 @@ function renderHeaderButton(gridView) {
   (0, import_obsidian14.setIcon)(newNoteButton, "square-pen");
   newNoteButton.addEventListener("click", (event) => {
     event.preventDefault();
-    const menu2 = new import_obsidian14.Menu();
-    menu2.addItem((item) => {
+    const menu = new import_obsidian14.Menu();
+    menu.addItem((item) => {
       item.setTitle(t("new_note")).setIcon("square-pen").onClick(async () => {
         await createNewNote(gridView.app, gridView.sourcePath);
       });
     });
-    menu2.addItem((item) => {
+    menu.addItem((item) => {
       item.setTitle(t("new_folder")).setIcon("folder").onClick(async () => {
         await createNewFolder(gridView.app, gridView.sourcePath, () => {
           requestAnimationFrame(() => {
@@ -7126,17 +7173,17 @@ function renderHeaderButton(gridView) {
         });
       });
     });
-    menu2.addItem((item) => {
+    menu.addItem((item) => {
       item.setTitle(t("new_canvas")).setIcon("layout-dashboard").onClick(async () => {
         await createNewCanvas(gridView.app, gridView.sourcePath);
       });
     });
-    menu2.addItem((item) => {
+    menu.addItem((item) => {
       item.setTitle(t("new_base")).setIcon("layout-dashboard").onClick(async () => {
         await createNewBase(gridView.app, gridView.sourcePath);
       });
     });
-    menu2.addItem((item) => {
+    menu.addItem((item) => {
       item.setTitle(t("new_shortcut")).setIcon("shuffle").onClick(async () => {
         const modal = new ShortcutSelectionModal(gridView.app, gridView.plugin, async (option) => {
           await createShortcut(gridView.app, gridView.sourcePath, option);
@@ -7144,7 +7191,7 @@ function renderHeaderButton(gridView) {
         modal.open();
       });
     });
-    menu2.showAtMouseEvent(event);
+    menu.showAtMouseEvent(event);
   });
   const reselectButton = headerButtonsDiv.createEl("button", { attr: { "aria-label": t("reselect") } });
   reselectButton.addEventListener("click", () => {
@@ -7168,8 +7215,8 @@ function renderHeaderButton(gridView) {
   searchButton.addEventListener("click", () => {
     showSearchModal(gridView.app, gridView, gridView.searchQuery, searchButton);
   });
-  const menu = new import_obsidian14.Menu();
-  menu.addItem((item) => {
+  const moreMenu = new import_obsidian14.Menu();
+  moreMenu.addItem((item) => {
     item.setTitle(t("open_new_grid_view")).setIcon("grid").onClick(() => {
       const { workspace } = gridView.app;
       let leaf = null;
@@ -7196,8 +7243,8 @@ function renderHeaderButton(gridView) {
       workspace.revealLeaf(leaf);
     });
   });
-  menu.addSeparator();
-  menu.addItem((item) => {
+  moreMenu.addSeparator();
+  moreMenu.addItem((item) => {
     item.setTitle(t("vertical_card")).setIcon("layout").setChecked(gridView.baseCardLayout === "vertical").onClick(() => {
       gridView.baseCardLayout = gridView.baseCardLayout === "vertical" ? "horizontal" : "vertical";
       gridView.cardLayout = gridView.baseCardLayout;
@@ -7205,7 +7252,7 @@ function renderHeaderButton(gridView) {
       gridView.render();
     });
   });
-  menu.addItem((item) => {
+  moreMenu.addItem((item) => {
     item.setTitle(t("min_mode")).setIcon("minimize-2").setChecked(gridView.minMode).onClick(() => {
       gridView.minMode = !gridView.minMode;
       gridView.app.workspace.requestSaveLayout();
@@ -7213,7 +7260,7 @@ function renderHeaderButton(gridView) {
     });
   });
   if (gridView.plugin.settings.dateDividerMode !== "none") {
-    menu.addItem((item) => {
+    moreMenu.addItem((item) => {
       item.setTitle(t("show_date_dividers")).setIcon("calendar").setChecked(gridView.showDateDividers).onClick(() => {
         gridView.showDateDividers = !gridView.showDateDividers;
         gridView.app.workspace.requestSaveLayout();
@@ -7221,22 +7268,22 @@ function renderHeaderButton(gridView) {
       });
     });
   }
-  menu.addItem((item) => {
+  moreMenu.addItem((item) => {
     item.setTitle(t("show_note_tags")).setIcon("tag").setChecked(gridView.showNoteTags).onClick(() => {
       gridView.showNoteTags = !gridView.showNoteTags;
       gridView.app.workspace.requestSaveLayout();
       gridView.render();
     });
   });
-  menu.addItem((item) => {
+  moreMenu.addItem((item) => {
     item.setTitle(t("show_ignored_items")).setIcon("folder-open-dot").setChecked(gridView.showIgnoredItems).onClick(() => {
       gridView.showIgnoredItems = !gridView.showIgnoredItems;
       gridView.app.workspace.requestSaveLayout();
       gridView.render();
     });
   });
-  menu.addSeparator();
-  menu.addItem((item) => {
+  moreMenu.addSeparator();
+  moreMenu.addItem((item) => {
     item.setTitle(t("open_explorer")).setIcon("folder-tree").onClick(() => {
       const existingLeaves = gridView.app.workspace.getLeavesOfType(EXPLORER_VIEW_TYPE);
       if (existingLeaves.length > 0) {
@@ -7252,7 +7299,7 @@ function renderHeaderButton(gridView) {
       gridView.app.workspace.revealLeaf(leaf);
     });
   });
-  menu.addItem((item) => {
+  moreMenu.addItem((item) => {
     item.setTitle(t("open_settings")).setIcon("settings").onClick(() => {
       gridView.app.setting.open();
       gridView.app.setting.openTabById(gridView.plugin.manifest.id);
@@ -7261,12 +7308,12 @@ function renderHeaderButton(gridView) {
   const moreOptionsButton = headerButtonsDiv.createEl("button", { attr: { "aria-label": t("more_options") } });
   (0, import_obsidian14.setIcon)(moreOptionsButton, "ellipsis-vertical");
   moreOptionsButton.addEventListener("click", (event) => {
-    menu.showAtMouseEvent(event);
+    moreMenu.showAtMouseEvent(event);
   });
   headerButtonsDiv.addEventListener("contextmenu", (event) => {
     if (event.target === headerButtonsDiv) {
       event.preventDefault();
-      menu.showAtMouseEvent(event);
+      moreMenu.showAtMouseEvent(event);
     }
   });
 }
@@ -7746,6 +7793,54 @@ function renderModePath(gridView) {
       });
     }
     switch (gridView.sourceMode) {
+      case "bookmarks":
+        let bookmarkGroupName = "";
+        if (gridView.bookmarkGroupId === "all") {
+          bookmarkGroupName = t("all_bookmarks");
+        } else if (gridView.bookmarkGroupId === "ungrouped") {
+          bookmarkGroupName = t("ungrouped_bookmarks");
+        } else {
+          bookmarkGroupName = gridView.bookmarkGroupId || t("all_bookmarks");
+        }
+        const bookmarkGroupSpan = modenameContainer.createEl("a", { text: bookmarkGroupName, cls: "ge-sub-option" });
+        bookmarkGroupSpan.addEventListener("click", (evt) => {
+          const menu = new import_obsidian15.Menu();
+          menu.addItem((item) => {
+            item.setTitle(t("all_bookmarks")).setIcon("layers").setChecked(gridView.bookmarkGroupId === "all").onClick(() => {
+              gridView.setSource("bookmarks", "", false, void 0, void 0, void 0, void 0, "all");
+            });
+          });
+          menu.addItem((item) => {
+            item.setTitle(t("ungrouped_bookmarks")).setIcon("bookmark").setChecked(gridView.bookmarkGroupId === "ungrouped").onClick(() => {
+              gridView.setSource("bookmarks", "", false, void 0, void 0, void 0, void 0, "ungrouped");
+            });
+          });
+          menu.addSeparator();
+          const bookmarksPlugin = gridView.app.internalPlugins.plugins.bookmarks;
+          if (bookmarksPlugin == null ? void 0 : bookmarksPlugin.enabled) {
+            const bookmarks = bookmarksPlugin.instance.items;
+            const groups = [];
+            const findGroups = (items) => {
+              items.forEach((item) => {
+                if (item.type === "group") {
+                  groups.push(item.title);
+                  if (item.items)
+                    findGroups(item.items);
+                }
+              });
+            };
+            findGroups(bookmarks);
+            groups.forEach((groupTitle) => {
+              menu.addItem((item) => {
+                item.setTitle(groupTitle).setIcon("folder").setChecked(gridView.bookmarkGroupId === groupTitle).onClick(() => {
+                  gridView.setSource("bookmarks", "", false, void 0, void 0, void 0, void 0, groupTitle);
+                });
+              });
+            });
+          }
+          menu.showAtMouseEvent(evt);
+        });
+        break;
       case "random-note":
       case "recent-files":
       case "all-files":
@@ -9309,6 +9404,8 @@ var GridView = class extends import_obsidian20.ItemView {
     // 任務分類
     this.hideHeaderElements = false;
     // 是否隱藏標題列元素（模式名稱和按鈕）
+    this.bookmarkGroupId = "all";
+    // 書籤群組 ID
     this.customOptionIndex = -1;
     // 自訂模式選項索引    
     this.baseCardLayout = "horizontal";
@@ -9472,9 +9569,9 @@ var GridView = class extends import_obsidian20.ItemView {
     }
   }
   // 設定來源模式
-  async setSource(mode, path = "", recordHistory = true, searchQuery, searchCurrentLocationOnly, searchFilesNameOnly, searchMediaFiles) {
+  async setSource(mode, path = "", recordHistory = true, searchQuery, searchCurrentLocationOnly, searchFilesNameOnly, searchMediaFiles, bookmarkGroupId) {
     var _a, _b, _c;
-    if (this.sourceMode === mode && this.sourcePath === path && this.searchQuery === searchQuery && this.searchCurrentLocationOnly === searchCurrentLocationOnly && this.searchFilesNameOnly === searchFilesNameOnly && this.searchMediaFiles === searchMediaFiles) {
+    if (this.sourceMode === mode && this.sourcePath === path && this.searchQuery === searchQuery && this.searchCurrentLocationOnly === searchCurrentLocationOnly && this.searchFilesNameOnly === searchFilesNameOnly && this.searchMediaFiles === searchMediaFiles && (bookmarkGroupId === void 0 || this.bookmarkGroupId === bookmarkGroupId)) {
       return;
     }
     if (this.sourceMode && recordHistory) {
@@ -9535,6 +9632,9 @@ var GridView = class extends import_obsidian20.ItemView {
     }
     if (searchMediaFiles !== void 0) {
       this.searchMediaFiles = searchMediaFiles;
+    }
+    if (bookmarkGroupId !== void 0) {
+      this.bookmarkGroupId = bookmarkGroupId;
     }
     this.app.workspace.requestSaveLayout();
     try {
@@ -10406,12 +10506,18 @@ var GridView = class extends import_obsidian20.ItemView {
         const selectedFiles = this.getSelectedFiles();
         let drag_filename = "";
         if (selectedFiles.length > 1) {
-          const mdList = selectedFiles.map((f) => this.app.fileManager.generateMarkdownLink(f, "")).join("\n");
+          const mdList = selectedFiles.map((f) => {
+            const link = this.app.fileManager.generateMarkdownLink(f, "");
+            return isMediaFile(f) ? `!${link}` : link;
+          }).join("\n");
           (_a2 = event.dataTransfer) == null ? void 0 : _a2.setData("text/plain", mdList);
           (_b = event.dataTransfer) == null ? void 0 : _b.setData("application/obsidian-grid-explorer-files", JSON.stringify(selectedFiles.map((f) => f.path)));
           drag_filename = `${selectedFiles.length} ${t("files")}`;
         } else {
-          const mdLink = this.app.fileManager.generateMarkdownLink(file, "");
+          let mdLink = this.app.fileManager.generateMarkdownLink(file, "");
+          if (isMediaFile(file)) {
+            mdLink = `!${mdLink}`;
+          }
           (_c = event.dataTransfer) == null ? void 0 : _c.setData("text/plain", mdLink);
           (_d = event.dataTransfer) == null ? void 0 : _d.setData("application/obsidian-grid-explorer-files", JSON.stringify([file.path]));
           drag_filename = file.basename;
@@ -10756,6 +10862,44 @@ var GridView = class extends import_obsidian20.ItemView {
     if (isInSidebar) {
       noteContent.style.padding = "15px";
     }
+    if (import_obsidian20.Platform.isPhone) {
+      let lastScrollTop = 0;
+      const handleScroll = () => {
+        const mobileNavbar = document.querySelector(".mobile-navbar");
+        if (!mobileNavbar)
+          return;
+        const currentScrollTop = scrollContainer.scrollTop;
+        if (currentScrollTop > lastScrollTop && currentScrollTop > 50) {
+          if (!document.body.classList.contains("is-floating-nav")) {
+            mobileNavbar.style.transform = "translateY(100%)";
+          } else {
+            mobileNavbar.style.transform = "translateY(200%)";
+          }
+          mobileNavbar.style.transition = "transform 0.3s ease-out";
+        } else if (currentScrollTop < lastScrollTop) {
+          mobileNavbar.style.transform = "translateY(0)";
+          mobileNavbar.style.transition = "transform 0.3s ease-in";
+        }
+        lastScrollTop = currentScrollTop;
+      };
+      scrollContainer.addEventListener("scroll", handleScroll);
+      const handleActiveLeafChange = () => {
+        const activeView = this.app.workspace.getActiveViewOfType(GridView);
+        if (activeView !== this || !this.isShowingNote) {
+          const navbar = document.querySelector(".mobile-navbar");
+          if (navbar) {
+            navbar.style.transform = "translateY(0)";
+            navbar.style.transition = "transform 0.3s ease-in";
+          }
+        }
+      };
+      this.registerEvent(
+        this.app.workspace.on("active-leaf-change", handleActiveLeafChange)
+      );
+      this.eventCleanupFunctions.push(() => {
+        scrollContainer.removeEventListener("scroll", handleScroll);
+      });
+    }
     const fileCache = this.app.metadataCache.getFileCache(file);
     const frontmatter = fileCache == null ? void 0 : fileCache.frontmatter;
     if (frontmatter) {
@@ -10918,6 +11062,13 @@ var GridView = class extends import_obsidian20.ItemView {
   hideNoteInGrid() {
     if (!this.isShowingNote)
       return;
+    if (import_obsidian20.Platform.isPhone) {
+      const mobileNavbar = document.querySelector(".mobile-navbar");
+      if (mobileNavbar) {
+        mobileNavbar.style.transform = "translateY(0)";
+        mobileNavbar.style.transition = "transform 0.3s ease-in";
+      }
+    }
     if (this.noteViewContainer) {
       const keydownHandler = this.noteViewContainer.keydownHandler;
       if (keydownHandler) {
@@ -10950,13 +11101,14 @@ var GridView = class extends import_obsidian20.ItemView {
         showDateDividers: this.showDateDividers,
         showNoteTags: this.showNoteTags,
         recentSources: this.recentSources,
-        futureSources: this.futureSources
+        futureSources: this.futureSources,
+        bookmarkGroupId: this.bookmarkGroupId
       }
     };
   }
   // 讀取視圖狀態
   async setState(state) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
     if (state == null ? void 0 : state.state) {
       this.sourceMode = state.state.sourceMode || "folder";
       this.sourcePath = state.state.sourcePath || "/";
@@ -10976,6 +11128,7 @@ var GridView = class extends import_obsidian20.ItemView {
       this.showNoteTags = (_k = state.state.showNoteTags) != null ? _k : this.plugin.settings.showNoteTags;
       this.recentSources = (_l = state.state.recentSources) != null ? _l : [];
       this.futureSources = (_m = state.state.futureSources) != null ? _m : [];
+      this.bookmarkGroupId = (_n = state.state.bookmarkGroupId) != null ? _n : "all";
       await this.render();
     }
   }
