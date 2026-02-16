@@ -1,5 +1,6 @@
 {
   "debugEnabled": false,
+  "defaultToolbar": null,
   "editorMenuAsToolbar": false,
   "editorMenuToolbar": null,
   "emptyViewToolbar": "a87fc66c-5fe4-4240-8642-b6021665783f",
@@ -19,7 +20,9 @@
   "keepPropsState": false,
   "lockCallouts": false,
   "obsidianUiVisibility": {},
-  "onboarding": {},
+  "onboarding": {
+    "startup-help-view": true
+  },
   "ribbonAction": "toolbar",
   "ribbonToolbar": null,
   "rules": [],
