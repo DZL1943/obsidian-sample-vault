@@ -88,7 +88,8 @@
       "enabled": true
     },
     "move-footnotes-to-the-bottom": {
-      "enabled": true
+      "enabled": true,
+      "include-blank-line-between-footnotes": false
     },
     "re-index-footnotes": {
       "enabled": true
@@ -273,6 +274,7 @@
   "lintOnSave": true,
   "recordLintOnSaveLogs": false,
   "displayChanged": true,
+  "suppressMessageWhenNoChange": false,
   "lintOnFileChange": false,
   "displayLintOnFileChangeNotice": true,
   "settingsConvertedToConfigKeyValues": true,
