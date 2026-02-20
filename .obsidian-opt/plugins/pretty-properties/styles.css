@@ -1098,12 +1098,22 @@ a.tag.transparent-color {
 }
 
 
-.cm-hashtag:hover,
+.cm-hashtag-inner:hover,
 .cm-hashtag-begin:hover + .cm-hashtag > .cm-hashtag-inner,
-.cm-hashtag-begin:hover + .cm-hashtag + .cm-hashtag > .cm-hashtag-inner,
+.cm-hashtag-begin:hover + .cm-hashtag:not(.cm-hashtag-end) + .cm-hashtag > .cm-hashtag-inner,
 .cm-hashtag:hover + .cm-hashtag-end > .cm-hashtag-inner,
-.cm-hashtag-begin:has(+ .cm-hashtag:hover, + .cm-hashtag + .cm-hashtag:hover) > .cm-hashtag-inner,
-.cm-hashtag:has(+ .cm-hashtag-end:hover) > .cm-hashtag-inner {
+.cm-hashtag-begin:has(+ .cm-hashtag:hover, + .cm-hashtag + .cm-hashtag-end:hover) > .cm-hashtag-inner,
+.cm-hashtag:has(+ .cm-hashtag-end:hover) > .cm-hashtag-inner
+
+/*
+,
+
+.
+
+,
+ 
+*/
+{
   background-color: var(--tag-background-hover);
 }
 
@@ -1133,17 +1143,20 @@ a.tag.transparent-color {
 /* We need to use more complex styles instead of just 'display: none' so the property can be revealed when selected by keyboard navigation. */
 
 /* Hide properties marked as hidden */
-body:not(.show-hidden-properties) .workspace-leaf-content[data-type='markdown'] .metadata-property.pp-property-hidden:not(:focus, :focus-within),
+body:not(.show-hidden-properties) .markdown-source-view .metadata-property.pp-property-hidden:not(:focus, :focus-within),
+body:not(.show-hidden-properties) .markdown-preview-view .metadata-property.pp-property-hidden:not(:focus, :focus-within),
 body:not(.show-hidden-properties).hidden-props-in-prop-tab .workspace-leaf-content[data-type='file-properties'] .metadata-property.pp-property-hidden:not(:focus, :focus-within),
 body:not(.show-hidden-properties) .hover-popover .metadata-property.pp-property-hidden:not(:focus, :focus-within),
 
 /* Hide empty properties when the settings set to hide all empty properties */
-.hide-all-empty-properties:not(.show-hidden-properties) .workspace-leaf-content[data-type='markdown'] .metadata-property.is-empty:not(:focus, :focus-within), 
+.hide-all-empty-properties:not(.show-hidden-properties) .markdown-source-view .metadata-property.is-empty:not(:focus, :focus-within), 
+.hide-all-empty-properties:not(.show-hidden-properties) .markdown-preview-view .metadata-property.is-empty:not(:focus, :focus-within), 
 .hide-all-empty-properties:not(.show-hidden-properties).hidden-props-in-prop-tab .workspace-leaf-content[data-type='file-properties'] .metadata-property.is-empty:not(:focus, :focus-within), 
 .hide-all-empty-properties:not(.show-hidden-properties) .hover-popover .metadata-property.is-empty:not(:focus, :focus-within),
 
 /* Hide empty properties when marked as hide when empty */
-body:not(.show-hidden-properties) .workspace-leaf-content[data-type='markdown'] .metadata-property.is-empty.pp-property-hidden-when-empty:not(:focus, :focus-within), 
+body:not(.show-hidden-properties) .markdown-source-view .metadata-property.is-empty.pp-property-hidden-when-empty:not(:focus, :focus-within), 
+body:not(.show-hidden-properties) .markdown-preview-view .metadata-property.is-empty.pp-property-hidden-when-empty:not(:focus, :focus-within), 
 body:not(.show-hidden-properties).hidden-props-in-prop-tab .workspace-leaf-content[data-type='file-properties'] .metadata-property.is-empty.pp-property-hidden-when-empty:not(:focus, :focus-within), 
 body:not(.show-hidden-properties) .hover-popover .metadata-property.is-empty.pp-property-hidden-when-empty:not(:focus, :focus-within),
 
@@ -1642,3 +1655,24 @@ max-width: unset;
   margin-block-end: 0;
   padding: 0;
 }
+
+.hide-properties-title .metadata-properties-heading.is-collapsed .collapse-indicator {
+    top:-1em;
+
+}
+
+/* Need to make inset smaller so collapse indicator is visible on canvas nodes */
+
+.hide-properties-title .markdown-embed-content .metadata-properties-heading .collapse-indicator,
+.hide-properties-title .mod-inside-iframe .metadata-properties-heading .collapse-indicator {
+    inset-inline-start: -16px;
+}
+
+/* Hide metadata add button */
+
+.hide-metadata-add-button .markdown-source-view .metadata-content:not(:focus-within) .metadata-add-button,
+.hide-metadata-add-button .markdown-preview-view .metadata-content:not(:focus-within) .metadata-add-button {
+  display: none;
+  
+}
+

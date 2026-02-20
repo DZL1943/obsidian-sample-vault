@@ -6562,20 +6562,50 @@ var SearchModal = class extends import_obsidian13.Modal {
       this.modalEl.addClass("ge-popup-modal");
       this.positionAsPopup();
     }
+    let searchTerms = this.defaultQuery.trim().split(/\s+/).filter((t2) => t2.length > 0);
+    let currentInputIndex = searchTerms.length;
     const searchContainer = contentEl.createDiv("ge-search-container");
     const searchInputWrapper = searchContainer.createDiv("ge-search-input-wrapper");
-    const tagDisplayArea = searchInputWrapper.createDiv("ge-search-tag-display-area");
-    const searchInput = searchInputWrapper.createEl("input", {
+    const inputContainer = searchInputWrapper.createDiv("ge-search-bar");
+    const flushInput = (appendRemaining = false) => {
+      const val = searchInput.value;
+      const parts = val.split(/\s+/);
+      const completeParts = appendRemaining ? parts.filter((p) => p.length > 0) : parts.slice(0, -1).filter((p) => p.length > 0);
+      const remaining = appendRemaining ? "" : parts[parts.length - 1];
+      if (completeParts.length > 0) {
+        searchTerms.splice(currentInputIndex, 0, ...completeParts);
+        currentInputIndex += completeParts.length;
+        searchInput.value = remaining;
+        return true;
+      } else {
+        searchInput.value = remaining;
+        return false;
+      }
+    };
+    inputContainer.addEventListener("click", (e) => {
+      if (e.target === inputContainer) {
+        if (currentInputIndex !== searchTerms.length) {
+          flushInput(true);
+          currentInputIndex = searchTerms.length;
+          searchInput.value = "";
+          renderTagButtons();
+        }
+        searchInput.focus();
+      }
+    });
+    const searchInput = inputContainer.createEl("input", {
       type: "text",
-      value: this.defaultQuery,
-      placeholder: t("search_placeholder"),
+      value: "",
+      placeholder: searchTerms.length === 0 ? t("search_placeholder") : "",
       cls: "ge-search-input"
     });
-    const inputContainer = searchInputWrapper.createDiv("ge-input-container");
-    inputContainer.appendChild(searchInput);
     const clearButton = inputContainer.createDiv("ge-search-clear-button");
-    clearButton.style.display = this.defaultQuery ? "flex" : "none";
+    clearButton.style.display = searchTerms.length > 0 ? "flex" : "none";
     (0, import_obsidian13.setIcon)(clearButton, "x");
+    const updateClearButton = () => {
+      const hasContent = searchTerms.length > 0 || searchInput.value.trim().length > 0;
+      clearButton.style.display = hasContent ? "flex" : "none";
+    };
     const tagSuggestionContainer = contentEl.createDiv("ge-search-tag-suggestions");
     tagSuggestionContainer.style.display = "none";
     const allTagsArr = Object.keys(((_b = (_a = this.app.metadataCache).getTags) == null ? void 0 : _b.call(_a)) || {}).map((t2) => t2.substring(1));
@@ -6623,50 +6653,20 @@ var SearchModal = class extends import_obsidian13.Modal {
     const applySuggestion = (index) => {
       if (index < 0 || index >= tagSuggestions.length)
         return;
-      const value = searchInput.value.trim();
+      const newTerm = `#${tagSuggestions[index]}`;
+      const value = searchInput.value;
       const cursor = searchInput.selectionStart || 0;
-      const beforeMatch = value.substring(0, cursor).replace(/#([^#\\s]*)$/, `#${tagSuggestions[index]} `);
+      const beforeMatch = value.substring(0, cursor).replace(/#([^#\s]*)$/, "");
       const afterCursor = value.substring(cursor);
-      searchInput.value = beforeMatch + afterCursor;
-      searchInput.value = searchInput.value.trim();
-      const newCursorPos = beforeMatch.length;
-      searchInput.setSelectionRange(newCursorPos, newCursorPos);
+      searchInput.value = beforeMatch + newTerm + " " + afterCursor;
+      flushInput(false);
       tagSuggestionContainer.style.display = "none";
       tagSuggestionContainer.empty();
       selectedSuggestionIndex = -1;
-      clearButton.style.display = searchInput.value ? "flex" : "none";
+      updateClearButton();
       renderTagButtons();
-    };
-    searchInput.addEventListener("input", () => {
-      clearButton.style.display = searchInput.value ? "flex" : "none";
-      updateTagSuggestions();
-      renderTagButtons();
-    });
-    searchInput.addEventListener("keydown", (e) => {
-      if (tagSuggestionContainer.style.display === "none")
-        return;
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        selectedSuggestionIndex = (selectedSuggestionIndex + 1) % tagSuggestions.length;
-        updateTagSuggestions();
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        selectedSuggestionIndex = (selectedSuggestionIndex - 1 + tagSuggestions.length) % tagSuggestions.length;
-        updateTagSuggestions();
-      } else if (e.key === "Enter") {
-        if (selectedSuggestionIndex >= 0) {
-          e.preventDefault();
-          applySuggestion(selectedSuggestionIndex);
-        }
-      }
-    });
-    clearButton.addEventListener("click", () => {
-      searchInput.value = "";
-      clearButton.style.display = "none";
-      tagDisplayArea.empty();
-      tagDisplayArea.style.display = "none";
       searchInput.focus();
-    });
+    };
     const searchOptionsContainer = contentEl.createDiv("ge-search-options-container");
     const searchScopeContainer = searchOptionsContainer.createDiv("ge-search-scope-container");
     const searchScopeCheckbox = searchScopeContainer.createEl("input", {
@@ -6707,29 +6707,147 @@ var SearchModal = class extends import_obsidian13.Modal {
       searchMediaFilesCheckbox.checked = false;
       this.gridView.searchMediaFiles = false;
     }
+    const optionsList = [searchScopeContainer, searchNameContainer, searchMediaFilesContainer];
+    searchInput.addEventListener("input", () => {
+      if (/\s/.test(searchInput.value)) {
+        if (flushInput(false)) {
+          renderTagButtons();
+        }
+      }
+      updateClearButton();
+      updateTagSuggestions();
+    });
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && searchInput.value === "") {
+        if (currentInputIndex > 0) {
+          currentInputIndex--;
+          searchInput.value = searchTerms.splice(currentInputIndex, 1)[0];
+          renderTagButtons();
+          e.preventDefault();
+        }
+        return;
+      }
+      if (e.key === "Delete" && searchInput.value === "") {
+        if (currentInputIndex < searchTerms.length) {
+          searchTerms.splice(currentInputIndex, 1);
+          renderTagButtons();
+          e.preventDefault();
+        }
+        return;
+      }
+      if (e.key === "ArrowLeft" && searchInput.selectionStart === 0 && searchInput.selectionEnd === 0) {
+        if (currentInputIndex > 0) {
+          flushInput(true);
+          currentInputIndex--;
+          searchInput.value = searchTerms.splice(currentInputIndex, 1)[0];
+          renderTagButtons();
+          e.preventDefault();
+          setTimeout(() => searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length), 0);
+        }
+        return;
+      }
+      if (e.key === "ArrowRight" && searchInput.selectionStart === searchInput.value.length && searchInput.selectionEnd === searchInput.value.length) {
+        if (currentInputIndex < searchTerms.length) {
+          flushInput(true);
+          searchInput.value = searchTerms.splice(currentInputIndex, 1)[0];
+          renderTagButtons();
+          e.preventDefault();
+          setTimeout(() => searchInput.setSelectionRange(0, 0), 0);
+        }
+        return;
+      }
+      if (tagSuggestionContainer.style.display !== "none") {
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          selectedSuggestionIndex = (selectedSuggestionIndex + 1) % tagSuggestions.length;
+          updateTagSuggestions();
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          selectedSuggestionIndex = (selectedSuggestionIndex - 1 + tagSuggestions.length) % tagSuggestions.length;
+          updateTagSuggestions();
+        } else if (e.key === "Enter") {
+          if (selectedSuggestionIndex >= 0) {
+            e.preventDefault();
+            applySuggestion(selectedSuggestionIndex);
+          }
+        }
+      } else {
+        if (e.key === "ArrowDown") {
+          const firstVisible = optionsList.find((o) => o.style.display !== "none");
+          if (firstVisible) {
+            e.preventDefault();
+            firstVisible.focus();
+          }
+        } else if (e.key === "Enter") {
+          e.preventDefault();
+          performSearch();
+        }
+      }
+    });
+    clearButton.addEventListener("click", () => {
+      searchInput.value = "";
+      searchTerms = [];
+      currentInputIndex = 0;
+      updateClearButton();
+      renderTagButtons();
+      tagSuggestionContainer.style.display = "none";
+      searchInput.focus();
+    });
+    optionsList.forEach((container, index) => {
+      container.setAttribute("tabindex", "0");
+      container.addEventListener("keydown", (e) => {
+        if (e.key === " ") {
+          e.preventDefault();
+          container.click();
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          for (let i = index + 1; i < optionsList.length; i++) {
+            if (optionsList[i].style.display !== "none") {
+              optionsList[i].focus();
+              return;
+            }
+          }
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          for (let i = index - 1; i >= 0; i--) {
+            if (optionsList[i].style.display !== "none") {
+              optionsList[i].focus();
+              return;
+            }
+          }
+          searchInput.focus();
+        } else if (e.key === "Enter") {
+          e.preventDefault();
+          performSearch();
+        }
+      });
+    });
     searchScopeContainer.addEventListener("click", (e) => {
       if (e.target !== searchScopeCheckbox) {
         searchScopeCheckbox.checked = !searchScopeCheckbox.checked;
-        this.gridView.searchCurrentLocationOnly = !searchScopeCheckbox.checked;
       }
+      this.gridView.searchCurrentLocationOnly = !searchScopeCheckbox.checked;
     });
     searchNameContainer.addEventListener("click", (e) => {
       if (e.target !== searchNameCheckbox) {
         searchNameCheckbox.checked = !searchNameCheckbox.checked;
-        this.gridView.searchFilesNameOnly = !searchNameCheckbox.checked;
       }
+      this.gridView.searchFilesNameOnly = searchNameCheckbox.checked;
     });
     searchMediaFilesContainer.addEventListener("click", (e) => {
       if (e.target !== searchMediaFilesCheckbox) {
         searchMediaFilesCheckbox.checked = !searchMediaFilesCheckbox.checked;
-        this.gridView.searchMediaFiles = !searchMediaFilesCheckbox.checked;
       }
+      this.gridView.searchMediaFiles = searchMediaFilesCheckbox.checked;
     });
     searchScopeCheckbox.addEventListener("change", () => {
       this.gridView.searchCurrentLocationOnly = !searchScopeCheckbox.checked;
     });
     searchMediaFilesCheckbox.addEventListener("change", () => {
-      this.gridView.searchMediaFiles = !searchMediaFilesCheckbox.checked;
+      this.gridView.searchMediaFiles = searchMediaFilesCheckbox.checked;
+    });
+    searchNameCheckbox.addEventListener("change", () => {
+      this.gridView.searchFilesNameOnly = searchNameCheckbox.checked;
     });
     const buttonContainer = contentEl.createDiv("ge-button-container");
     const searchButton = buttonContainer.createEl("button", {
@@ -6738,58 +6856,75 @@ var SearchModal = class extends import_obsidian13.Modal {
     const cancelButton = buttonContainer.createEl("button", {
       text: t("cancel")
     });
-    const renderTagButtons = () => {
-      tagDisplayArea.empty();
-      const inputValue = searchInput.value.trim();
-      if (!inputValue) {
-        tagDisplayArea.style.display = "none";
-        return;
+    const createTagButton = (term, index) => {
+      const tagDiv = document.createElement("div");
+      tagDiv.className = "ge-search-tag-button";
+      if (term.startsWith("#")) {
+        tagDiv.classList.add("is-tag");
       }
-      const terms = inputValue.split(/\s+/);
-      if (terms.length === 0) {
-        tagDisplayArea.style.display = "none";
-        return;
-      }
-      tagDisplayArea.style.display = "flex";
-      let currentIndex = 0;
-      const termPositions = [];
-      terms.forEach((term) => {
-        if (!term)
-          return;
-        const startIndex = inputValue.indexOf(term, currentIndex);
-        if (startIndex === -1)
-          return;
-        const endIndex = startIndex + term.length;
-        termPositions.push({
-          term,
-          startIndex,
-          endIndex
-        });
-        currentIndex = endIndex;
-      });
-      termPositions.forEach((termInfo) => {
-        const tagButton = tagDisplayArea.createDiv("ge-search-tag-button");
-        tagButton.textContent = termInfo.term;
-        if (termInfo.term.startsWith("#")) {
-          tagButton.addClass("is-tag");
+      tagDiv.textContent = term;
+      const deleteButton = document.createElement("div");
+      deleteButton.className = "ge-search-tag-delete-button";
+      (0, import_obsidian13.setIcon)(deleteButton, "x");
+      tagDiv.appendChild(deleteButton);
+      deleteButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        searchTerms.splice(index, 1);
+        if (index < currentInputIndex) {
+          currentInputIndex--;
         }
-        const deleteButton = tagButton.createDiv("ge-search-tag-delete-button");
-        (0, import_obsidian13.setIcon)(deleteButton, "x");
-        deleteButton.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const newValue = inputValue.substring(0, termInfo.startIndex) + inputValue.substring(termInfo.endIndex);
-          searchInput.value = newValue.trim();
-          const inputEvent = new Event("input", { bubbles: true });
-          searchInput.dispatchEvent(inputEvent);
-          searchInput.focus();
-        });
+        renderTagButtons();
+        updateClearButton();
+        searchInput.focus();
       });
+      tagDiv.addEventListener("click", (e) => {
+        let targetIndex = index;
+        flushInput(true);
+        if (targetIndex >= currentInputIndex && searchTerms.length > index) {
+          targetIndex += searchTerms.length - searchTerms.length;
+        }
+      });
+      tagDiv.addEventListener("click", (e) => {
+        let shift = 0;
+        const val = searchInput.value;
+        const parts = val.split(/\s+/).filter((p) => !!p);
+        if (parts.length > 0) {
+          shift = parts.length;
+          searchTerms.splice(currentInputIndex, 0, ...parts);
+        }
+        let targetIndex = index;
+        if (targetIndex >= currentInputIndex) {
+          targetIndex += shift;
+        }
+        searchInput.value = searchTerms.splice(targetIndex, 1)[0];
+        currentInputIndex = targetIndex;
+        renderTagButtons();
+        updateClearButton();
+        searchInput.focus();
+      });
+      return tagDiv;
+    };
+    const renderTagButtons = () => {
+      inputContainer.querySelectorAll(".ge-search-tag-button").forEach((el) => el.remove());
+      if (searchTerms.length === 0 && currentInputIndex === 0) {
+        searchInput.placeholder = t("search_placeholder");
+      } else {
+        searchInput.placeholder = "";
+      }
+      for (let i = 0; i < currentInputIndex; i++) {
+        inputContainer.insertBefore(createTagButton(searchTerms[i], i), searchInput);
+      }
+      for (let i = currentInputIndex; i < searchTerms.length; i++) {
+        inputContainer.insertBefore(createTagButton(searchTerms[i], i), clearButton);
+      }
+      updateClearButton();
     };
     const originalSearchQuery = this.gridView.searchQuery;
     const originalsearchCurrentLocationOnly = this.gridView.searchCurrentLocationOnly;
     const originalSearchFilesNameOnly = this.gridView.searchFilesNameOnly;
     const originalSearchMediaFiles = this.gridView.searchMediaFiles;
     const performSearch = () => {
+      flushInput(true);
       this.gridView.pushHistory(
         this.gridView.sourceMode,
         this.gridView.sourcePath,
@@ -6798,7 +6933,7 @@ var SearchModal = class extends import_obsidian13.Modal {
         originalSearchFilesNameOnly,
         originalSearchMediaFiles
       );
-      this.gridView.searchQuery = searchInput.value;
+      this.gridView.searchQuery = searchTerms.join(" ");
       this.gridView.searchCurrentLocationOnly = searchScopeCheckbox.checked;
       this.gridView.searchFilesNameOnly = searchNameCheckbox.checked;
       this.gridView.searchMediaFiles = searchMediaFilesCheckbox.checked;
@@ -6808,17 +6943,11 @@ var SearchModal = class extends import_obsidian13.Modal {
       this.close();
     };
     searchButton.addEventListener("click", performSearch);
-    searchInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        performSearch();
-      }
-    });
     cancelButton.addEventListener("click", () => {
       this.close();
     });
     renderTagButtons();
     searchInput.focus();
-    searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
   }
   onClose() {
     const { contentEl } = this;
@@ -7561,8 +7690,8 @@ function renderModePath(gridView) {
           }
         }
       }
-      if (el.className === "ge-current-folder") {
-        el.addEventListener("click", (event) => {
+      if (el.className === "ge-current-folder" || el instanceof HTMLAnchorElement && el.className.includes("ge-current-folder")) {
+        const showCurrentFolderMenu = (event) => {
           event.preventDefault();
           event.stopPropagation();
           const folder = gridView.app.vault.getAbstractFileByPath(gridView.sourcePath);
@@ -7694,9 +7823,23 @@ function renderModePath(gridView) {
           } else {
             menu.showAtMouseEvent(event);
           }
-        });
+        };
+        el.addEventListener("click", showCurrentFolderMenu);
+        el.addEventListener("contextmenu", showCurrentFolderMenu);
       }
     }
+    pathContainer.addEventListener("wheel", (evt) => {
+      if (evt.deltaY !== 0) {
+        pathContainer.scrollLeft += evt.deltaY;
+        evt.preventDefault();
+      }
+    });
+    requestAnimationFrame(() => {
+      const lastEl = pathElements[pathElements.length - 1];
+      if (lastEl) {
+        pathContainer.scrollLeft = lastEl.offsetLeft;
+      }
+    });
   } else if (!(gridView.searchQuery && !gridView.searchCurrentLocationOnly)) {
     let modeName = "";
     let modeIcon = "";
