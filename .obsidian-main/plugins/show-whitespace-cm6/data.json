@@ -1,9 +1,4 @@
 {
-  "version": {
-    "major": 0,
-    "minor": 2,
-    "patch": 8
-  },
   "disablePluginStyles": false,
   "enabled": true,
   "outlineListMarkers": false,
@@ -11,8 +6,14 @@
   "showAllWhitespace": false,
   "showBlockquoteMarkers": false,
   "showCodeblockWhitespace": true,
-  "showExtraWhitespace": false,
   "showFrontmatterWhitespace": true,
   "showLineEndings": false,
-  "showTableWhitespace": true
+  "showTableWhitespace": true,
+  "version": {
+    "major": 0,
+    "minor": 2,
+    "patch": 8
+  },
+  "showExtraWhitespace": false,
+  "cmExtensionEnabled": true
 }
