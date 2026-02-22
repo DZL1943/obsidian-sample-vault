@@ -326,17 +326,6 @@
       "delay": "5"
     },
     {
-      "id": "obsidian-advanced-uri",
-      "name": "Advanced URI",
-      "desc": "Advanced modes for Obsidian URI",
-      "group": "main",
-      "tags": [
-        "optional"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
       "id": "obsidian-excalidraw-plugin",
       "name": "Excalidraw",
       "desc": "An Obsidian plugin to edit and view Excalidraw drawings",
