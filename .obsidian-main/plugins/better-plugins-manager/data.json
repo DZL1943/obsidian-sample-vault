@@ -59,6 +59,11 @@
   ],
   "TAGS": [
     {
+      "id": "favorite",
+      "name": "精选",
+      "color": "#DE5470"
+    },
+    {
       "id": "required",
       "name": "必备",
       "color": "#000000"
@@ -158,7 +163,8 @@
       "desc": "Supercharge your canvas experience! Create presentations, flowcharts and more!",
       "group": "ext",
       "tags": [
-        "recommended"
+        "recommended",
+        "favorite"
       ],
       "enabled": true,
       "delay": "10"
@@ -169,7 +175,8 @@
       "desc": "You can flexibility to create a 'Block' by some means. It also provides some useful features, like `list to table`. ",
       "group": "render",
       "tags": [
-        "recommended"
+        "recommended",
+        "favorite"
       ],
       "enabled": true,
       "delay": "15"
@@ -181,7 +188,8 @@
       "group": "main",
       "tags": [
         "bug",
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "default",
@@ -194,7 +202,8 @@
       "group": "ui",
       "tags": [
         "config",
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": ""
@@ -205,7 +214,8 @@
       "desc": "Complex data views for the data-obsessed.",
       "group": "render",
       "tags": [
-        "recommended"
+        "recommended",
+        "favorite"
       ],
       "enabled": true,
       "delay": "15"
@@ -217,7 +227,8 @@
       "group": "edit",
       "tags": [
         "required",
-        "bug"
+        "bug",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -229,7 +240,8 @@
       "group": "edit",
       "tags": [
         "recommended",
-        "config"
+        "config",
+        "favorite"
       ],
       "enabled": false,
       "delay": "10"
@@ -240,7 +252,8 @@
       "desc": "You can use search view in modal/leaf/popout window now.",
       "group": "ui",
       "tags": [
-        "recommended"
+        "recommended",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -251,7 +264,8 @@
       "desc": "This is a floating Toc plugin that  hovers a table of content  containing a header level on the notes sidebar.",
       "group": "ui",
       "tags": [
-        "recommended"
+        "recommended",
+        "favorite"
       ],
       "enabled": false,
       "delay": "10",
@@ -263,7 +277,8 @@
       "desc": "Provide the function of fuzzy search using Chinese Pinyin.",
       "group": "main",
       "tags": [
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -275,7 +290,8 @@
       "group": "aux",
       "tags": [
         "recommended",
-        "config"
+        "config",
+        "favorite"
       ],
       "enabled": false,
       "delay": "10"
@@ -320,7 +336,8 @@
       "desc": "Enhanced callouts for Obsidian.md",
       "group": "render",
       "tags": [
-        "recommended"
+        "recommended",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -332,7 +349,8 @@
       "group": "ext",
       "tags": [
         "recommended",
-        "config"
+        "config",
+        "favorite"
       ],
       "enabled": true,
       "delay": "15"
@@ -356,7 +374,8 @@
       "group": "main",
       "tags": [
         "required",
-        "bug"
+        "bug",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5",
@@ -368,7 +387,8 @@
       "desc": "Easily Shift and Change markdown headings.",
       "group": "edit",
       "tags": [
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -379,7 +399,8 @@
       "desc": "Transform the Page Preview hover popover into a fully working editor instance",
       "group": "ui",
       "tags": [
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -402,7 +423,8 @@
       "group": "edit",
       "tags": [
         "recommended",
-        "config"
+        "config",
+        "favorite"
       ],
       "enabled": false,
       "delay": "10"
@@ -414,7 +436,8 @@
       "group": "edit",
       "tags": [
         "required",
-        "config"
+        "config",
+        "favorite"
       ],
       "enabled": true,
       "delay": "10"
@@ -440,7 +463,8 @@
       "tags": [
         "recommended",
         "dev",
-        "config"
+        "config",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5",
@@ -452,7 +476,8 @@
       "desc": "Track tasks across your vault. Supports due dates, recurring tasks, done dates, sub-set of checklist items, and filtering.",
       "group": "ext",
       "tags": [
-        "recommended"
+        "recommended",
+        "favorite"
       ],
       "enabled": false,
       "delay": "5"
@@ -509,7 +534,8 @@
       "group": "ext",
       "tags": [
         "config",
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -566,7 +592,8 @@
       "desc": "Improved table navigation, formatting, manipulation, and formulas",
       "group": "edit",
       "tags": [
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -578,7 +605,8 @@
       "group": "ext",
       "tags": [
         "recommended",
-        "config"
+        "config",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -590,7 +618,8 @@
       "group": "edit",
       "tags": [
         "config",
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "10"
@@ -601,7 +630,8 @@
       "desc": "Automatically creates virtual links for text within your notes that match the titles or aliases of other notes in your vault. Create a glossary-like functionality, show unlinked mentions and transform them to real links.",
       "group": "main",
       "tags": [
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "5"
@@ -612,7 +642,8 @@
       "desc": "This Obsidian plugin lets you customize your codeblocks in editing, and reading mode as well.",
       "group": "render",
       "tags": [
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "",
@@ -674,7 +705,8 @@
       "group": "ui",
       "tags": [
         "recommended",
-        "config"
+        "config",
+        "favorite"
       ],
       "enabled": true,
       "delay": "10",
@@ -698,7 +730,8 @@
       "desc": "Allows for manual and automatic, config-driven reordering and sorting of files and folders in File Explorer",
       "group": "main",
       "tags": [
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "",
@@ -710,7 +743,8 @@
       "desc": "Edit CSS snippet files.",
       "group": "main",
       "tags": [
-        "recommended"
+        "recommended",
+        "favorite"
       ],
       "enabled": true,
       "delay": "0",
@@ -734,7 +768,8 @@
       "desc": "Replace the default file explorer with a clean two-pane interface featuring folder tree, tag browsing, file previews, keyboard navigation, drag-and-drop, pinned notes, and customizable display options.",
       "group": "main",
       "tags": [
-        "required"
+        "required",
+        "favorite"
       ],
       "enabled": true,
       "delay": "10",
@@ -757,7 +792,9 @@
       "name": "Better Plugins Manager",
       "desc": "Plugin Manager: Simplify, Enhance, Personalize | 插件管理器：简化操作、增强功能、个性化设置",
       "group": "",
-      "tags": [],
+      "tags": [
+        "favorite"
+      ],
       "enabled": true,
       "delay": "",
       "note": ""
