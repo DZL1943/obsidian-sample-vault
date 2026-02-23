@@ -112,7 +112,7 @@
   "showUntagged": true,
   "inheritTagColors": true,
   "keepEmptyTagsProperty": false,
-  "showProperties": true,
+  "showProperties": false,
   "showPropertyIcons": true,
   "inheritPropertyColors": true,
   "propertySortOrder": "alpha-asc",
