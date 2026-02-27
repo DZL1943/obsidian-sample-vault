@@ -143,6 +143,16 @@ body {
   border-top: 1px solid var(--mk-ui-divider);
 }
 
+/* src/css/Obsidian/BlockMarker.css */
+.markdown-source-view.mod-cm6 .blp-block-marker:not(.cm-blockid) {
+  font-size: calc(var(--font-text-size, 16px) * 0.8);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 1;
+  vertical-align: text-top;
+}
+
 /* src/css/Obsidian/SettingsTabs.css */
 .blp-settings-title {
   display: flex;
@@ -480,6 +490,40 @@ body.blp-outliner-dragging .blp-file-outliner-view .bullet-container,
   padding: 4px 6px;
   border-radius: 6px;
 }
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed {
+  --embed-padding: 0px;
+  white-space: normal;
+}
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, pre, .callout) {
+  margin: revert;
+}
+@supports selector(p:has(+ ul)) {
+  .blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed:not(.blp-inline-edit-active) .markdown-preview-view > p:has(+ ul),
+  .blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed:not(.blp-inline-edit-active) .markdown-preview-view > p:has(+ ol) {
+    margin-bottom: 0;
+  }
+}
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed:not(.blp-inline-edit-active) .markdown-preview-view > p + ul,
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed:not(.blp-inline-edit-active) .markdown-preview-view > p + ol {
+  margin-top: 0;
+}
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view > ul,
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view > ol {
+  padding-left: 1em;
+}
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view li {
+  margin-left: 0;
+}
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view ul ul,
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view ul ol,
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view ol ul,
+.blp-file-outliner-view .blp-file-outliner-display .internal-embed.markdown-embed .markdown-preview-view ol ol {
+  padding-left: var(--list-indent);
+}
 .blp-file-outliner-view .blp-outliner-task-row {
   display: flex;
   gap: 6px;
@@ -501,6 +545,11 @@ body.blp-outliner-dragging .blp-file-outliner-view .bullet-container,
 .blp-file-outliner-view .blp-file-outliner-display p {
   margin: 0;
   white-space: pre-wrap;
+}
+@supports selector(p:has(br)) {
+  .blp-file-outliner-view .blp-file-outliner-display p:has(br) {
+    white-space: normal;
+  }
 }
 .blp-file-outliner-view .blp-file-outliner-display ul,
 .blp-file-outliner-view .blp-file-outliner-display ol,
@@ -620,6 +669,9 @@ body.blp-outliner-dragging .blp-file-outliner-view .bullet-container,
 }
 .blp-file-outliner-view .blp-file-outliner-editor .cm-gutters {
   display: none !important;
+}
+.blp-file-outliner-view .blp-inline-edit-root .markdown-source-view.is-readable-line-width {
+  --file-line-width: 100% !important;
 }
 .blp-file-outliner-view .blp-file-outliner-editor .cm-selectionBackground,
 .blp-file-outliner-view .blp-file-outliner-editor .cm-editor > .cm-scroller > .cm-selectionLayer > .cm-selectionBackground {

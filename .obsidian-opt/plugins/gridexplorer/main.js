@@ -6567,18 +6567,36 @@ var SearchModal = class extends import_obsidian13.Modal {
     const searchContainer = contentEl.createDiv("ge-search-container");
     const searchInputWrapper = searchContainer.createDiv("ge-search-input-wrapper");
     const inputContainer = searchInputWrapper.createDiv("ge-search-bar");
-    const flushInput = (appendRemaining = false) => {
+    const flushInput = (appendRemaining = false, onlyTags = false) => {
       const val = searchInput.value;
       const parts = val.split(/\s+/);
       const completeParts = appendRemaining ? parts.filter((p) => p.length > 0) : parts.slice(0, -1).filter((p) => p.length > 0);
       const remaining = appendRemaining ? "" : parts[parts.length - 1];
       if (completeParts.length > 0) {
+        if (onlyTags) {
+          const tags = completeParts.filter((p) => p.startsWith("#"));
+          if (tags.length > 0) {
+            const nonTags = completeParts.filter((p) => !p.startsWith("#"));
+            searchTerms.splice(currentInputIndex, 0, ...tags);
+            currentInputIndex += tags.length;
+            let newVal = nonTags.join(" ");
+            if (newVal && (remaining || val.endsWith(" "))) {
+              newVal += " ";
+            }
+            newVal += remaining;
+            searchInput.value = newVal;
+            return true;
+          }
+          return false;
+        }
         searchTerms.splice(currentInputIndex, 0, ...completeParts);
         currentInputIndex += completeParts.length;
         searchInput.value = remaining;
         return true;
       } else {
-        searchInput.value = remaining;
+        if (!onlyTags) {
+          searchInput.value = remaining;
+        }
         return false;
       }
     };
@@ -6710,7 +6728,7 @@ var SearchModal = class extends import_obsidian13.Modal {
     const optionsList = [searchScopeContainer, searchNameContainer, searchMediaFilesContainer];
     searchInput.addEventListener("input", () => {
       if (/\s/.test(searchInput.value)) {
-        if (flushInput(false)) {
+        if (flushInput(false, true)) {
           renderTagButtons();
         }
       }
@@ -6826,28 +6844,16 @@ var SearchModal = class extends import_obsidian13.Modal {
       if (e.target !== searchScopeCheckbox) {
         searchScopeCheckbox.checked = !searchScopeCheckbox.checked;
       }
-      this.gridView.searchCurrentLocationOnly = !searchScopeCheckbox.checked;
     });
     searchNameContainer.addEventListener("click", (e) => {
       if (e.target !== searchNameCheckbox) {
         searchNameCheckbox.checked = !searchNameCheckbox.checked;
       }
-      this.gridView.searchFilesNameOnly = searchNameCheckbox.checked;
     });
     searchMediaFilesContainer.addEventListener("click", (e) => {
       if (e.target !== searchMediaFilesCheckbox) {
         searchMediaFilesCheckbox.checked = !searchMediaFilesCheckbox.checked;
       }
-      this.gridView.searchMediaFiles = searchMediaFilesCheckbox.checked;
-    });
-    searchScopeCheckbox.addEventListener("change", () => {
-      this.gridView.searchCurrentLocationOnly = !searchScopeCheckbox.checked;
-    });
-    searchMediaFilesCheckbox.addEventListener("change", () => {
-      this.gridView.searchMediaFiles = searchMediaFilesCheckbox.checked;
-    });
-    searchNameCheckbox.addEventListener("change", () => {
-      this.gridView.searchFilesNameOnly = searchNameCheckbox.checked;
     });
     const buttonContainer = contentEl.createDiv("ge-button-container");
     const searchButton = buttonContainer.createEl("button", {
@@ -9504,7 +9510,7 @@ ${initialFrontmatter}---
 
 // src/GridView.ts
 var GridView = class extends import_obsidian20.ItemView {
-  // 存儲事件清理函數
+  // 指定下次渲染要對焦的檔案路徑
   constructor(leaf, plugin) {
     super(leaf);
     this.sourceMode = "";
@@ -9562,6 +9568,8 @@ var GridView = class extends import_obsidian20.ItemView {
     this.noteViewContainer = null;
     // 筆記檢視容器
     this.eventCleanupFunctions = [];
+    // 存儲事件清理函數
+    this.targetFocusPath = null;
     this.plugin = plugin;
     this.containerEl.addClass("ge-grid-view-container");
     this.baseSortType = this.plugin.settings.defaultSortType;
@@ -9955,7 +9963,7 @@ var GridView = class extends import_obsidian20.ItemView {
       const otherFiles = files.filter((f) => !this.pinnedList.includes(f.name));
       files = [...pinnedFiles, ...otherFiles];
     }
-    if (this.sourceMode === "folder" && this.sourcePath !== "/") {
+    if (this.sourceMode === "folder" && this.sourcePath !== "/" && this.searchQuery === "") {
       if (this.plugin.settings.folderNoteDisplaySettings === "hidden") {
         const currentFolder = this.app.vault.getAbstractFileByPath(this.sourcePath);
         if (currentFolder instanceof import_obsidian20.TFolder) {
@@ -10304,44 +10312,81 @@ var GridView = class extends import_obsidian20.ItemView {
       const state = { lastDateString, pinDividerAdded, blankDividerAdded };
       const paramsBase = { container, observer, files, dateDividerMode, sortType, shouldShowDateDividers, state };
       const selfRef = this;
-      if (import_obsidian20.Platform.isIosApp) {
-        const TIME_BUDGET_MS = 6;
-        const processChunk = (start) => {
-          if (currentToken !== this.renderToken)
+      const batchSize = 50;
+      let currentIndex = 0;
+      const sentinel = container.createDiv("ge-load-more-sentinel");
+      sentinel.style.height = "1px";
+      sentinel.style.width = "100%";
+      sentinel.style.flexShrink = "0";
+      let isLoading = false;
+      const loadMore = (entries) => {
+        if (currentToken !== selfRef.renderToken)
+          return;
+        if (entries && entries[0] && !entries[0].isIntersecting) {
+          return;
+        }
+        if (isLoading)
+          return;
+        isLoading = true;
+        sentinel.remove();
+        let targetMaxEnd = currentIndex + batchSize;
+        if (selfRef.targetFocusPath) {
+          const tIndex = files.findIndex((f) => f.path === selfRef.targetFocusPath);
+          if (tIndex >= currentIndex) {
+            targetMaxEnd = Math.max(targetMaxEnd, tIndex + 1);
+          }
+        }
+        const end = Math.min(targetMaxEnd, files.length);
+        const TIME_BUDGET_MS = import_obsidian20.Platform.isIosApp ? 6 : 16;
+        const renderChunk = () => {
+          if (currentToken !== selfRef.renderToken)
             return;
           const startTime = performance.now();
-          let i = start;
-          for (; i < files.length; i++) {
-            selfRef.processFile(files[i], paramsBase);
-            if (performance.now() - startTime > TIME_BUDGET_MS) {
-              break;
-            }
+          while (currentIndex < end && performance.now() - startTime < TIME_BUDGET_MS) {
+            selfRef.processFile(files[currentIndex], paramsBase);
+            currentIndex++;
           }
-          if (i < files.length) {
-            requestAnimationFrame(() => processChunk(i));
+          if (currentIndex < end) {
+            requestAnimationFrame(renderChunk);
+          } else {
+            if (selfRef.targetFocusPath) {
+              const gridItem = Array.from(container.querySelectorAll(".ge-grid-item")).find(
+                (item) => item.dataset.filePath === selfRef.targetFocusPath
+              );
+              if (gridItem) {
+                gridItem.scrollIntoView({ block: "nearest" });
+                const itemIndex = selfRef.gridItems.indexOf(gridItem);
+                if (itemIndex >= 0) {
+                  selfRef.selectItem(itemIndex);
+                }
+                selfRef.targetFocusPath = null;
+              }
+            }
+            if (currentIndex < files.length) {
+              container.appendChild(sentinel);
+              setTimeout(() => {
+                if (currentToken !== selfRef.renderToken)
+                  return;
+                const rect = sentinel.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                if (rect.top - containerRect.bottom < 400) {
+                  loadMore();
+                }
+              }, 50);
+            }
+            isLoading = false;
           }
         };
-        processChunk(0);
-      } else {
-        const batchSize = 50;
-        const processBatch = (start) => {
-          if (currentToken !== this.renderToken)
-            return;
-          const end = Math.min(start + batchSize, files.length);
-          for (let i = start; i < end; i++) {
-            selfRef.processFile(files[i], paramsBase);
-          }
-          if (end < files.length) {
-            const cb = () => processBatch(end);
-            if (typeof window.requestIdleCallback === "function") {
-              window.requestIdleCallback(cb);
-            } else {
-              setTimeout(cb, 0);
-            }
-          }
-        };
-        processBatch(0);
-      }
+        renderChunk();
+      };
+      const sentinelObserver = new IntersectionObserver(loadMore, {
+        root: container,
+        rootMargin: "400px",
+        // 提早 400px 載入
+        threshold: 0
+      });
+      sentinelObserver.observe(sentinel);
+      loadMore();
     }
     if (this.plugin.statusBarItem) {
       this.plugin.statusBarItem.setText(`${files.length} ${t("files")}`);
@@ -12576,24 +12621,8 @@ var GridExplorerPlugin = class extends import_obsidian22.Plugin {
   async openNoteInRecentFiles(file) {
     const view = await this.activateView();
     if (view instanceof GridView) {
+      view.targetFocusPath = file instanceof import_obsidian22.TFile ? file.path : null;
       await view.setSource("recent-files");
-      if (file instanceof import_obsidian22.TFile) {
-        requestAnimationFrame(() => {
-          const gridContainer = view.containerEl.querySelector(".ge-grid-container");
-          if (!gridContainer)
-            return;
-          const gridItem = Array.from(gridContainer.querySelectorAll(".ge-grid-item")).find(
-            (item) => item.dataset.filePath === file.path
-          );
-          if (gridItem) {
-            gridItem.scrollIntoView({ block: "nearest" });
-            const itemIndex = view.gridItems.indexOf(gridItem);
-            if (itemIndex >= 0) {
-              view.selectItem(itemIndex);
-            }
-          }
-        });
-      }
     }
   }
   // 打開筆記到資料夾模式
@@ -12602,24 +12631,8 @@ var GridExplorerPlugin = class extends import_obsidian22.Plugin {
     const folderPath = file ? file instanceof import_obsidian22.TFile ? (_a = file.parent) == null ? void 0 : _a.path : file.path : "/";
     const view = await this.activateView();
     if (view instanceof GridView) {
+      view.targetFocusPath = file instanceof import_obsidian22.TFile ? file.path : null;
       await view.setSource("folder", folderPath);
-      if (file instanceof import_obsidian22.TFile) {
-        requestAnimationFrame(() => {
-          const gridContainer = view.containerEl.querySelector(".ge-grid-container");
-          if (!gridContainer)
-            return;
-          const gridItem = Array.from(gridContainer.querySelectorAll(".ge-grid-item")).find(
-            (item) => item.dataset.filePath === file.path
-          );
-          if (gridItem) {
-            gridItem.scrollIntoView({ block: "nearest" });
-            const itemIndex = view.gridItems.indexOf(gridItem);
-            if (itemIndex >= 0) {
-              view.selectItem(itemIndex);
-            }
-          }
-        });
-      }
     }
   }
   // 激活視圖

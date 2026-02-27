@@ -12749,6 +12749,23 @@ var READING_RANGE_ACTIVE_CLASS = "blp-reading-range-active";
 var LIVE_PREVIEW_RANGE_ACTIVE_CLASS = "blp-live-preview-range-active";
 var READING_RANGE_HOST_CLASS = "blp-reading-range-host";
 var LIVE_PREVIEW_RANGE_HOST_CLASS = "blp-live-preview-range-host";
+function syncRangeEmbedWrapperPadding(embedEl, wrapper) {
+  try {
+    wrapper.style.padding = "var(--embed-padding, 0px)";
+    if (wrapper.style.padding)
+      return;
+  } catch (e) {
+  }
+  try {
+    const nativePreview = embedEl.querySelector(".markdown-embed-content .markdown-preview-view");
+    if (!nativePreview)
+      return;
+    const cs = getComputedStyle(nativePreview);
+    wrapper.style.paddingLeft = cs.paddingLeft;
+    wrapper.style.paddingRight = cs.paddingRight;
+  } catch (e) {
+  }
+}
 var InlineEditEngine = class {
   constructor(plugin) {
     this.loaded = false;
@@ -13778,6 +13795,31 @@ var InlineEditEngine = class {
       editableRange: [editableStart, end]
     };
   }
+  parseFileEmbed(embedEl, ctx) {
+    const embedLink = this.getInternalEmbedLink(embedEl);
+    if (!embedLink)
+      return null;
+    const pipeIndex = embedLink.indexOf("|");
+    const actualLink = pipeIndex === -1 ? embedLink : embedLink.substring(0, pipeIndex);
+    const hashIndex = actualLink.indexOf("#");
+    if (hashIndex !== -1)
+      return null;
+    let notePath = actualLink.trim();
+    if (!notePath) {
+      notePath = ctx.sourcePath;
+    }
+    const file = this.plugin.app.metadataCache.getFirstLinkpathDest(notePath, ctx.sourcePath);
+    if (!file)
+      return null;
+    const maxLine = Number.MAX_SAFE_INTEGER;
+    return {
+      kind: "file",
+      file,
+      subpath: "",
+      visibleRange: [1, maxLine],
+      editableRange: [1, maxLine]
+    };
+  }
   parseInlineEmbed(embedEl, ctx) {
     if (!this.plugin.settings.inlineEditEnabled)
       return null;
@@ -13794,7 +13836,14 @@ var InlineEditEngine = class {
       }
     }
     if (this.plugin.settings.inlineEditHeading) {
-      return this.parseHeadingEmbed(embedEl, ctx);
+      const parsedHeading = this.parseHeadingEmbed(embedEl, ctx);
+      if (parsedHeading)
+        return parsedHeading;
+    }
+    if (this.plugin.settings.inlineEditFile) {
+      const parsedFile = this.parseFileEmbed(embedEl, ctx);
+      if (parsedFile)
+        return parsedFile;
     }
     return null;
   }
@@ -14500,6 +14549,7 @@ var LivePreviewRangeEmbedChild = class extends import_obsidian7.MarkdownRenderCh
     const wrapper = document.createElement("div");
     wrapper.className = "markdown-preview-view markdown-rendered";
     wrapper.style.display = "none";
+    syncRangeEmbedWrapperPadding(this.embedEl, wrapper);
     const sizer = document.createElement("div");
     sizer.className = "markdown-preview-sizer markdown-preview-section";
     wrapper.appendChild(sizer);
@@ -14806,6 +14856,7 @@ var ReadingRangeEmbedChild = class extends import_obsidian7.MarkdownRenderChild 
     const wrapper = document.createElement("div");
     wrapper.className = "markdown-preview-view markdown-rendered";
     wrapper.style.display = "none";
+    syncRangeEmbedWrapperPadding(this.embedEl, wrapper);
     const sizer = document.createElement("div");
     sizer.className = "markdown-preview-sizer markdown-preview-section";
     wrapper.appendChild(sizer);
@@ -17481,10 +17532,13 @@ var BlockLinkPlusSettingsTab = class extends import_obsidian10.PluginSettingTab 
     this.addToggleSetting("enable_prefix", void 0, rootEl).setName(i18n_default.settings.blockId.enablePrefix.name);
     this.addTextInputSetting("id_prefix", "", rootEl).setName(i18n_default.settings.blockId.prefix.name).setDesc(i18n_default.settings.blockId.prefix.desc);
     this.addHeading(i18n_default.settings.inlineEdit.title, rootEl).setDesc(i18n_default.settings.inlineEdit.desc);
-    this.addToggleSetting("inlineEditEnabled", void 0, rootEl).setName(i18n_default.settings.inlineEdit.enable.name).setDesc(i18n_default.settings.inlineEdit.enable.desc);
-    this.addToggleSetting("inlineEditFile", void 0, rootEl).setName(i18n_default.settings.inlineEdit.file.name).setDesc(i18n_default.settings.inlineEdit.file.desc);
-    this.addToggleSetting("inlineEditHeading", void 0, rootEl).setName(i18n_default.settings.inlineEdit.heading.name).setDesc(i18n_default.settings.inlineEdit.heading.desc);
-    this.addToggleSetting("inlineEditBlock", void 0, rootEl).setName(i18n_default.settings.inlineEdit.block.name).setDesc(i18n_default.settings.inlineEdit.block.desc);
+    const inlineEditMaster = this.addToggleSetting("inlineEditEnabled", () => this.display(), rootEl).setName(i18n_default.settings.inlineEdit.enable.name).setDesc(i18n_default.settings.inlineEdit.enable.desc);
+    inlineEditMaster.settingEl.classList.add("blp-settings-master-toggle");
+    if (this.plugin.settings.inlineEditEnabled) {
+      this.addToggleSetting("inlineEditFile", void 0, rootEl).setName(i18n_default.settings.inlineEdit.file.name).setDesc(i18n_default.settings.inlineEdit.file.desc);
+      this.addToggleSetting("inlineEditHeading", void 0, rootEl).setName(i18n_default.settings.inlineEdit.heading.name).setDesc(i18n_default.settings.inlineEdit.heading.desc);
+      this.addToggleSetting("inlineEditBlock", void 0, rootEl).setName(i18n_default.settings.inlineEdit.block.name).setDesc(i18n_default.settings.inlineEdit.block.desc);
+    }
   }
   renderFileOutlinerTab(rootEl) {
     var _a2, _b2, _c2, _d2, _e2, _f2, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q;
@@ -17797,15 +17851,16 @@ var import_view2 = require("@codemirror/view");
 
 // src/shared/block-marker.ts
 var BLP_BLOCK_MARKER = "\u02C5";
-var BLP_BLOCK_MARKER_RULE = `(^| )${BLP_BLOCK_MARKER}[a-zA-Z0-9_]+$`;
+var BLP_BLOCK_MARKER_CLASS = "blp-block-marker";
+var BLP_BLOCK_MARKER_RULE = `(^| )${BLP_BLOCK_MARKER}[a-zA-Z0-9_-]+$`;
 
 // src/ui/ViewPlugin.ts
+var OBSIDIAN_BLOCKID_CLASS = "cm-blockid";
 function createViewPlugin(rule = BLP_BLOCK_MARKER_RULE) {
-  let decorator = new import_view2.MatchDecorator({
+  const decorator = new import_view2.MatchDecorator({
     regexp: new RegExp(rule, "g"),
-    decoration: () => {
-      return import_view2.Decoration.mark({ class: "small-font" });
-    }
+    // Reuse Obsidian's native block-id class so marker tokens render the same as `^id`.
+    decoration: () => import_view2.Decoration.mark({ class: `${OBSIDIAN_BLOCKID_CLASS} ${BLP_BLOCK_MARKER_CLASS}` })
   });
   return import_view2.ViewPlugin.define(
     (view) => ({
@@ -17818,6 +17873,30 @@ function createViewPlugin(rule = BLP_BLOCK_MARKER_RULE) {
       decorations: (v) => v.decorations
     }
   );
+}
+
+// src/ui/BlockMarkerPostProcessor.ts
+var MARKER_HEADING_RE = new RegExp(`^${BLP_BLOCK_MARKER}[a-zA-Z0-9_-]+$`);
+function blockMarkerMarkdownPostProcessor(el) {
+  var _a2, _b2;
+  if (el.closest(".blp-file-outliner-view"))
+    return;
+  const headings = el.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  if (headings.length === 0)
+    return;
+  for (const heading of Array.from(headings)) {
+    const text = ((_a2 = heading.textContent) != null ? _a2 : "").trim();
+    if (!MARKER_HEADING_RE.test(text))
+      continue;
+    for (const node of Array.from(heading.childNodes)) {
+      if (node.nodeType !== Node.TEXT_NODE)
+        continue;
+      const nodeText = ((_b2 = node.textContent) != null ? _b2 : "").trim();
+      if (MARKER_HEADING_RE.test(nodeText)) {
+        node.textContent = "";
+      }
+    }
+  }
 }
 
 // src/ui/MarkdownPostOutliner.ts
@@ -18298,6 +18377,18 @@ var WHATS_NEW_V2_0_1 = {
     "\u8A2D\u5B9A\uFF1A\u652F\u63F4\u5F9E\u7DE8\u8F2F\u5668\u53F3\u9375\u9078\u55AE\u767D\u540D\u55AE\u4E00\u9375\u8907\u88FD\u5230\u7DE8\u8F2F\u5668\u547D\u4EE4\u767D\u540D\u55AE\u3002"
   ]
 };
+var WHATS_NEW_V2_0_2 = {
+  en: [
+    "Outliner: display-mode embed preview (`![[...]]`) now renders closer to the inline editor (spacing/indent; avoid clipped list markers)."
+  ],
+  zh: ["Outliner\uFF1A\u5C55\u793A\u6001\u5D4C\u5165\u9884\u89C8\uFF08`![[...]]`\uFF09\u6E32\u67D3\u66F4\u63A5\u8FD1\u5185\u8054\u7F16\u8F91\uFF08\u884C\u8DDD/\u7F29\u8FDB\uFF1B\u907F\u514D\u5217\u8868 marker \u88AB\u88C1\u5207\uFF09\u3002"],
+  "zh-TW": ["Outliner\uFF1A\u986F\u793A\u614B\u5167\u5D4C\u9810\u89BD\uFF08`![[...]]`\uFF09\u6E32\u67D3\u66F4\u63A5\u8FD1\u5167\u5D4C\u7DE8\u8F2F\uFF08\u884C\u8DDD/\u7E2E\u6392\uFF1B\u907F\u514D\u6E05\u55AE marker \u88AB\u88C1\u5207\uFF09\u3002"]
+};
+var WHATS_NEW_V2_0_3 = {
+  en: ["Outliner: multi-line blocks no longer render with extra blank lines (strict line breaks)."],
+  zh: ["Outliner\uFF1A\u5355\u4E2A block \u5185\u591A\u884C\u6587\u672C\u6E32\u67D3\u4E0D\u518D\u51FA\u73B0\u989D\u5916\u7A7A\u884C\uFF08strict line breaks\uFF09\u3002"],
+  "zh-TW": ["Outliner\uFF1A\u55AE\u4E00 block \u5167\u591A\u884C\u6587\u5B57\u6E32\u67D3\u4E0D\u518D\u51FA\u73FE\u984D\u5916\u7A7A\u884C\uFF08strict line breaks\uFF09\u3002"]
+};
 var WhatsNewModal = class extends import_obsidian13.Modal {
   constructor(app, options) {
     super(app);
@@ -18336,15 +18427,21 @@ var WhatsNewModal = class extends import_obsidian13.Modal {
     this.contentEl.empty();
   }
   getWhatsNewItems() {
-    var _a2, _b2;
+    var _a2, _b2, _c2, _d2;
     if (this.currentVersion === "1.8.0") {
       return i18n_default.whatsNew.v1_8_0;
     }
+    if (this.currentVersion === "2.0.3") {
+      return (_a2 = WHATS_NEW_V2_0_3[i18n_default.lang]) != null ? _a2 : WHATS_NEW_V2_0_3.en;
+    }
+    if (this.currentVersion === "2.0.2") {
+      return (_b2 = WHATS_NEW_V2_0_2[i18n_default.lang]) != null ? _b2 : WHATS_NEW_V2_0_2.en;
+    }
     if (this.currentVersion === "2.0.1") {
-      return (_a2 = WHATS_NEW_V2_0_1[i18n_default.lang]) != null ? _a2 : WHATS_NEW_V2_0_1.en;
+      return (_c2 = WHATS_NEW_V2_0_1[i18n_default.lang]) != null ? _c2 : WHATS_NEW_V2_0_1.en;
     }
     if (this.currentVersion === "2.0.0" || this.currentVersion.startsWith("2.0.")) {
-      return (_b2 = WHATS_NEW_V2[i18n_default.lang]) != null ? _b2 : WHATS_NEW_V2.en;
+      return (_d2 = WHATS_NEW_V2[i18n_default.lang]) != null ? _d2 : WHATS_NEW_V2.en;
     }
     return i18n_default.whatsNew.fallback;
   }
@@ -18673,7 +18770,7 @@ function gen_insert_blocklink_multline_heading(block, editor, settings, heading_
  ${heading} ^${id}`, end);
   const cursor = editor.getCursor("from");
   editor.setCursor(cursor.line, cursor.ch);
-  editor.replaceRange(`${heading} ${BLP_BLOCK_MARKER}${id}
+  editor.replaceRange(` ${heading} ${BLP_BLOCK_MARKER}${id}
 
 `, {
     line: cursor.line,
@@ -18772,7 +18869,7 @@ function gen_insert_blocklink_multline_block(fileCache, editor, settings) {
   return links;
 }
 function gen_insert_blocklink_multiline_block(fileCache, editor, settings) {
-  var _a2, _b2, _c2, _d2, _e2, _f2;
+  var _a2, _b2, _c2, _d2, _e2, _f2, _g, _h, _i, _j;
   const cursorFrom = editor.getCursor("from");
   const cursorTo = editor.getCursor("to");
   const startLine = Math.min(cursorFrom.line, cursorTo.line);
@@ -18793,11 +18890,7 @@ function gen_insert_blocklink_multiline_block(fileCache, editor, settings) {
       return { ok: false, message: "Selection is invalid" };
     }
   }
-  let id;
   const fullText = editor.getValue();
-  do {
-    id = generateRandomId("", 6);
-  } while (fullText.includes(`^${id}`));
   const pickListItemForLine = (line) => {
     const listItems = fileCache.listItems;
     if (!listItems)
@@ -18819,13 +18912,36 @@ function gen_insert_blocklink_multiline_block(fileCache, editor, settings) {
   const startInsertLine = startListItem ? startListItem.end : startLine;
   const endInsertLine = endListItem ? endListItem.end : endLine;
   const startInsertText = editor.getLine(startInsertLine);
+  const endInsertText = editor.getLine(endInsertLine);
+  const endSection = (fileCache.sections || []).find((section) => {
+    return section.position.start.line <= endInsertLine && section.position.end.line >= endInsertLine;
+  });
+  const existingStartId = (_d2 = startInsertText.match(/\s*\^([a-zA-Z0-9]+)\s*$/)) == null ? void 0 : _d2[1];
+  if (existingStartId) {
+    const existingEndMarker = `^${existingStartId}-${existingStartId}`;
+    const endMarkerRegex = new RegExp(`\\s*\\^${existingStartId}-${existingStartId}\\s*$`);
+    const lines = fullText.split("\n");
+    const endSectionEndLine = (_f2 = (_e2 = endSection == null ? void 0 : endSection.position) == null ? void 0 : _e2.end) == null ? void 0 : _f2.line;
+    const scanEndLine = Math.min(
+      lines.length - 1,
+      (typeof endSectionEndLine === "number" ? endSectionEndLine : endInsertLine) + 10
+    );
+    for (let line = endInsertLine; line <= scanEndLine; line++) {
+      if (endMarkerRegex.test((_g = lines[line]) != null ? _g : "")) {
+        return { ok: true, link: existingEndMarker };
+      }
+    }
+  }
   if (lineEndsWithBlockId(startInsertText)) {
     return { ok: false, message: "Start line already has a block ID" };
   }
-  const endInsertText = editor.getLine(endInsertLine);
   if (lineEndsWithBlockId(endInsertText)) {
     return { ok: false, message: "End line already has a block ID" };
   }
+  let id;
+  do {
+    id = generateRandomId("", 6);
+  } while (fullText.includes(`^${id}`));
   const firstLine = startInsertText;
   let newFirstLine;
   if (firstLine.trim() === "") {
@@ -18833,9 +18949,6 @@ function gen_insert_blocklink_multiline_block(fileCache, editor, settings) {
   } else {
     newFirstLine = `${firstLine} ^${id}`;
   }
-  const endSection = (fileCache.sections || []).find((section) => {
-    return section.position.start.line <= endInsertLine && section.position.end.line >= endInsertLine;
-  });
   const endMarker = `^${id}-${id}`;
   const endMarkerInlineSafe = startInsertLine !== endInsertLine && Boolean(endInsertText.trim()) && !(endSection && shouldInsertAfter(endSection));
   const originalCursorFrom = editor.getCursor("from");
@@ -18858,14 +18971,14 @@ function gen_insert_blocklink_multiline_block(fileCache, editor, settings) {
       const insertAfterPos = { line: insertAfterLine, ch: insertAfterText.length };
       let nextLineText = "";
       try {
-        nextLineText = (_d2 = editor.getLine(insertAfterLine + 1)) != null ? _d2 : "";
+        nextLineText = (_h = editor.getLine(insertAfterLine + 1)) != null ? _h : "";
       } catch (e) {
         nextLineText = "";
       }
       const needsBlankLineAfterMarker = isLikelyParagraphContinuationLine(nextLineText);
       let markerLine = endMarker;
       if (insertEndMarkerAsListItemContinuation) {
-        const indent = (_f2 = (_e2 = editor.getLine(endInsertLine).match(/^\s*/)) == null ? void 0 : _e2[0]) != null ? _f2 : "";
+        const indent = (_j = (_i = editor.getLine(endInsertLine).match(/^\s*/)) == null ? void 0 : _i[0]) != null ? _j : "";
         markerLine = `${indent}${endMarker}`;
       }
       const insertText = needsBlankLineAfterMarker ? `
@@ -19027,7 +19140,7 @@ function handleMultiLineBlock(plugin, file, isEmbed, head_analysis, editor, file
       return;
     }
     const linkMethod = plugin.settings.mult_line_handle == 1 /* heading */ ? _gen_insert_blocklink_multline_heading : _gen_insert_blocklink_multline_block;
-    const link = linkMethod.call(
+    const link = linkMethod(
       plugin,
       fileCache,
       editor,
@@ -19145,7 +19258,7 @@ function handleMultiLineBlock2(plugin, file, isEmbed, head_analysis, editor, fil
       return;
     }
     const linkMethod = plugin.settings.mult_line_handle == 1 /* heading */ ? _gen_insert_blocklink_multline_heading2 : _gen_insert_blocklink_multline_block2;
-    const link = linkMethod.call(
+    const link = linkMethod(
       plugin,
       fileCache,
       editor,
@@ -34005,6 +34118,7 @@ var BlockLinkPlus = class extends import_obsidian23.Plugin {
         return handleCommand(this, isChecking, editor, view, false, true);
       }
     });
+    this.registerMarkdownPostProcessor((el) => blockMarkerMarkdownPostProcessor(el));
     this.registerMarkdownPostProcessor((el, ctx) => fileOutlinerMarkdownPostProcessor(el, ctx, this));
     this.updateViewPlugin();
     this.flowEditorManager = new FlowEditorManager(this);

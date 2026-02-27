@@ -571,12 +571,30 @@
 
 
 
+.banner-image .image-resize-container {
+  width: 100% !important;
+
+}
+
+.banner-image .image-resize-container img {
+  width: 100% !important;
+  
+}
+
 
 /* SUGGESTERS */
 
+.image-suggestion-item > div > p {
+  margin: 0;
+}
+.image-captions-enabled .image-suggestion-item .internal-embed.image-embed[alt] {
+  display: block !important;
+  width: 100%;
+}
+
 .image-suggestion-item.banner img {
   width: 100%;
-  height: 130px;
+  height: 130px !important;
   object-fit: cover;
   margin: 0;
 }
@@ -589,7 +607,7 @@
 
 
 .image-suggestion-item.cover {
-  height: 240px;
+  height: 200px !important;
   width: 130px;
   display: inline-block;
 }
@@ -602,7 +620,7 @@
 
 .image-suggestion-item.cover img {
   width: 100%;
-  height: 160px;
+  height: 160px !important;
   object-fit: cover;
   margin: 0;
 }
@@ -616,7 +634,7 @@
 
 
 .image-suggestion-item.icon {
-  height: calc(var(--pp-icon-size) + 70px);
+  height: calc(var(--pp-icon-size) + 35px) !important;
   width: calc(var(--pp-icon-size) + 24px);
   display: inline-block;
 }
@@ -629,7 +647,7 @@
 
 
 .image-suggestion-item.icon img {
-  height: var(--pp-icon-size);
+  height: var(--pp-icon-size) !important;
   width: var(--pp-icon-size);
   object-fit: contain;
   margin: 0;
@@ -1630,8 +1648,10 @@ button.longtext-color-button:hover {
 
 
 .multi-select-pill {
-max-width: unset;
+  max-width: unset;
 }
+
+
 
 .pp-pdf-cover-canvas {
   width: 100%;
@@ -1661,6 +1681,10 @@ max-width: unset;
 
 }
 
+.metadata-properties-heading .collapse-indicator {
+    inset-inline-start: -21px; 
+}
+
 /* Need to make inset smaller so collapse indicator is visible on canvas nodes */
 
 .hide-properties-title .markdown-embed-content .metadata-properties-heading .collapse-indicator,
@@ -1676,3 +1700,10 @@ max-width: unset;
   
 }
 
+/* Fix for Minimal theme */
+
+[data-theme="Minimal"] .markdown-source-view.mod-cm6.is-readable-line-width .cm-sizer>.title-wrapper {
+    max-width: var(--max-width);
+    width: var(--line-width);
+    margin-inline: var(--content-margin)!important;
+}

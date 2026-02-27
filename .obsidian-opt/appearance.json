@@ -9,5 +9,6 @@
   "textFontFamily": "Monaco",
   "monospaceFontFamily": "Monaco",
   "showRibbon": false,
-  "showViewHeader": false
+  "showViewHeader": false,
+  "cssTheme": ""
 }
