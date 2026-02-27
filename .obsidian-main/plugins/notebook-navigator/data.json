@@ -23,7 +23,8 @@
       "hiddenFileProperties": [],
       "hiddenFileNames": [],
       "hiddenFileTags": [],
-      "periodicNotesFolder": "Journals"
+      "periodicNotesFolder": "Journals",
+      "propertyKeys": []
     }
   ],
   "vaultTitle": "navigation",
@@ -49,6 +50,7 @@
     "compactItemHeightScaleText": "local",
     "uiScale": "local"
   },
+  "createNewNotesInNewTab": false,
   "autoRevealActiveFile": true,
   "autoRevealShortestPath": true,
   "autoRevealIgnoreRightSidebar": true,
@@ -71,9 +73,11 @@
   "dateFormat": "YYYY-MM-DD",
   "timeFormat": "HH:mm",
   "calendarTemplateFolder": "",
+  "confirmBeforeDelete": true,
+  "deleteAttachments": "ask",
+  "moveFileConflicts": "ask",
   "externalIconProviders": {},
   "checkForUpdatesOnStart": false,
-  "confirmBeforeDelete": true,
   "pinNavigationBanner": true,
   "showNoteCount": true,
   "separateNoteCounts": false,
@@ -117,7 +121,6 @@
   "inheritPropertyColors": true,
   "propertySortOrder": "alpha-asc",
   "showAllPropertiesFolder": true,
-  "propertyFields": "",
   "defaultListMode": "standard",
   "defaultFolderSort": "title-asc",
   "propertySortKey": "",
@@ -398,8 +401,7 @@
     "#404040",
     "#404040"
   ],
-  "lastShownVersion": "2.4.1",
-  "lastAnnouncedRelease": "",
+  "lastShownVersion": "2.4.2",
   "rootFolderOrder": [
     "Inbox",
     "Journals",
