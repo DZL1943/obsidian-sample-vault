@@ -365,7 +365,9 @@
   "folderIcons": {},
   "folderColors": {},
   "folderBackgroundColors": {},
-  "folderSortOverrides": {},
+  "folderSortOverrides": {
+    "Pages": "created-desc"
+  },
   "folderTreeSortOverrides": {},
   "folderAppearances": {},
   "tagIcons": {},
