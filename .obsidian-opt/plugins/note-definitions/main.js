@@ -1073,6 +1073,16 @@ var ConsolidatedDefParser = class extends BaseDefParser {
   parseDoc() {
     const blocks = [];
     while (this.cursor < this.fileContent.length) {
+      let c;
+      do {
+        c = this.consumeChar();
+      } while (/\s/.test(c));
+      if (c === EOF) {
+        return {
+          blocks
+        };
+      }
+      this.spitChar();
       blocks.push(this.parseDefBlock());
     }
     return {
@@ -1096,19 +1106,16 @@ var ConsolidatedDefParser = class extends BaseDefParser {
     };
   }
   parseHeader() {
-    let h;
-    do {
-      h = this.consumeChar();
-    } while (h == "\n");
+    const h = this.consumeChar();
     if (h != "#") {
       throw new Error(
-        `Parse Header for ${this.file.path}: Unexpected character '${h}', expected '#'`
+        `Parse Header for ${this.file.path} (at line ${this.currLine}): Unexpected character '${h}', expected '#'`
       );
     }
     let s = this.consumeChar();
     if (s != " ") {
       throw new Error(
-        `Parse Header for ${this.file.path}: Unexpected character '${s}', expected SPACE`
+        `Parse Header for ${this.file.path} (at line ${this.currLine}): Unexpected character '${s}', expected SPACE`
       );
     }
     let header = [];
@@ -1165,7 +1172,8 @@ var ConsolidatedDefParser = class extends BaseDefParser {
     }
   }
   checkDelimiter(d) {
-    return d === "\n---\n" || d === "\n___\n";
+    const r = /\n *((---)|(___)) *\n/;
+    return r.test(d);
   }
   // For backtracking, used for optional grammars rules
   spitChar(count) {

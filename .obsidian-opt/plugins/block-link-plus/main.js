@@ -18389,6 +18389,16 @@ var WHATS_NEW_V2_0_3 = {
   zh: ["Outliner\uFF1A\u5355\u4E2A block \u5185\u591A\u884C\u6587\u672C\u6E32\u67D3\u4E0D\u518D\u51FA\u73B0\u989D\u5916\u7A7A\u884C\uFF08strict line breaks\uFF09\u3002"],
   "zh-TW": ["Outliner\uFF1A\u55AE\u4E00 block \u5167\u591A\u884C\u6587\u5B57\u6E32\u67D3\u4E0D\u518D\u51FA\u73FE\u984D\u5916\u7A7A\u884C\uFF08strict line breaks\uFF09\u3002"]
 };
+var WHATS_NEW_V2_0_4 = {
+  en: ["Outliner: drag-select across blocks now selects a block range (whole-block highlight)."],
+  zh: ["Outliner\uFF1A\u5DE6\u952E\u62D6\u9009\u8DE8\u8D8A\u591A\u4E2A block \u65F6\u4F1A\u8FDB\u5165\u6574\u5757\u8303\u56F4\u9009\u62E9\uFF08\u9AD8\u4EAE\u8FDE\u7EED block\uFF09\u3002"],
+  "zh-TW": ["Outliner\uFF1A\u5DE6\u9375\u62D6\u9078\u8DE8\u8D8A\u591A\u500B block \u6642\u6703\u9032\u5165\u6574\u584A\u7BC4\u570D\u9078\u53D6\uFF08\u9AD8\u4EAE\u9023\u7E8C block\uFF09\u3002"]
+};
+var WHATS_NEW_V2_0_5 = {
+  en: ["Outliner: block-range selection now supports right-click on selected blocks to open the bullet menu."],
+  zh: ["Outliner\uFF1A\u6574\u5757\u8303\u56F4\u9009\u62E9\u540E\uFF0C\u53F3\u952E\u9009\u4E2D block \u4E5F\u80FD\u6253\u5F00\u5706\u70B9\u83DC\u5355\u3002"],
+  "zh-TW": ["Outliner\uFF1A\u6574\u584A\u7BC4\u570D\u9078\u53D6\u5F8C\uFF0C\u53F3\u9375\u9078\u4E2D block \u4E5F\u80FD\u958B\u555F\u5713\u9EDE\u9078\u55AE\u3002"]
+};
 var WhatsNewModal = class extends import_obsidian13.Modal {
   constructor(app, options) {
     super(app);
@@ -18427,21 +18437,27 @@ var WhatsNewModal = class extends import_obsidian13.Modal {
     this.contentEl.empty();
   }
   getWhatsNewItems() {
-    var _a2, _b2, _c2, _d2;
+    var _a2, _b2, _c2, _d2, _e2, _f2;
     if (this.currentVersion === "1.8.0") {
       return i18n_default.whatsNew.v1_8_0;
     }
+    if (this.currentVersion === "2.0.5") {
+      return (_a2 = WHATS_NEW_V2_0_5[i18n_default.lang]) != null ? _a2 : WHATS_NEW_V2_0_5.en;
+    }
+    if (this.currentVersion === "2.0.4") {
+      return (_b2 = WHATS_NEW_V2_0_4[i18n_default.lang]) != null ? _b2 : WHATS_NEW_V2_0_4.en;
+    }
     if (this.currentVersion === "2.0.3") {
-      return (_a2 = WHATS_NEW_V2_0_3[i18n_default.lang]) != null ? _a2 : WHATS_NEW_V2_0_3.en;
+      return (_c2 = WHATS_NEW_V2_0_3[i18n_default.lang]) != null ? _c2 : WHATS_NEW_V2_0_3.en;
     }
     if (this.currentVersion === "2.0.2") {
-      return (_b2 = WHATS_NEW_V2_0_2[i18n_default.lang]) != null ? _b2 : WHATS_NEW_V2_0_2.en;
+      return (_d2 = WHATS_NEW_V2_0_2[i18n_default.lang]) != null ? _d2 : WHATS_NEW_V2_0_2.en;
     }
     if (this.currentVersion === "2.0.1") {
-      return (_c2 = WHATS_NEW_V2_0_1[i18n_default.lang]) != null ? _c2 : WHATS_NEW_V2_0_1.en;
+      return (_e2 = WHATS_NEW_V2_0_1[i18n_default.lang]) != null ? _e2 : WHATS_NEW_V2_0_1.en;
     }
     if (this.currentVersion === "2.0.0" || this.currentVersion.startsWith("2.0.")) {
-      return (_d2 = WHATS_NEW_V2[i18n_default.lang]) != null ? _d2 : WHATS_NEW_V2.en;
+      return (_f2 = WHATS_NEW_V2[i18n_default.lang]) != null ? _f2 : WHATS_NEW_V2.en;
     }
     return i18n_default.whatsNew.fallback;
   }
@@ -28529,6 +28545,9 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.arrowNavGoalCh = null;
     this.arrowNavDispatching = false;
     this.preserveArrowNavGoalOnce = false;
+    this.blockRangeSelection = null;
+    this.blockRangeDrag = null;
+    this.blockRangeSelectedIds = /* @__PURE__ */ new Set();
     this.indentSize = 2;
     this.plugin = plugin;
     this.dom = new OutlinerDomController({
@@ -28690,6 +28709,9 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.display.reset();
     this.dirtyBlockIds.clear();
     this.editingId = null;
+    this.blockRangeSelection = null;
+    this.blockRangeDrag = null;
+    this.blockRangeSelectedIds.clear();
     this.pendingFocus = null;
     this.pendingScrollToId = null;
     if (this.pendingBlurTimer) {
@@ -28912,6 +28934,11 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       (evt) => handleOutlinerRootClickCapture(evt, clickHost),
       true
     );
+    root.addEventListener("contextmenu", (evt) => this.onOutlinerRootContextMenuCapture(evt), true);
+    root.addEventListener("pointerdown", (evt) => this.onOutlinerRootPointerDownCapture(evt), true);
+    root.addEventListener("pointermove", (evt) => this.onOutlinerRootPointerMoveCapture(evt), true);
+    root.addEventListener("pointerup", (evt) => this.onOutlinerRootPointerUpCapture(evt), true);
+    root.addEventListener("pointercancel", (evt) => this.onOutlinerRootPointerUpCapture(evt), true);
     const header = root.createDiv({ cls: "blp-file-outliner-zoom-header" });
     header.style.display = "none";
     this.zoomHeaderEl = header;
@@ -28956,6 +28983,145 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     });
     this.editorView.contentDOM.addEventListener("focusout", () => this.onEditorBlur());
     this.editorView.dom.addEventListener("contextmenu", (evt) => this.onEditorContextMenu(evt));
+  }
+  clearBlockRangeSelection() {
+    var _a2;
+    const cls = "is-blp-outliner-range-selected";
+    for (const id of Array.from(this.blockRangeSelectedIds)) {
+      (_a2 = this.dom.getBlockEl(id)) == null ? void 0 : _a2.classList.remove(cls);
+    }
+    this.blockRangeSelectedIds.clear();
+    this.blockRangeSelection = null;
+  }
+  setBlockRangeSelection(anchorId, focusId) {
+    var _a2, _b2;
+    if (!anchorId || !focusId) {
+      this.clearBlockRangeSelection();
+      return;
+    }
+    const nav = this.getVisibleBlockNav();
+    const anchorIndex = nav.indexById.get(anchorId);
+    const focusIndex = nav.indexById.get(focusId);
+    if (anchorIndex === void 0 || focusIndex === void 0) {
+      this.clearBlockRangeSelection();
+      return;
+    }
+    const start = Math.min(anchorIndex, focusIndex);
+    const end = Math.max(anchorIndex, focusIndex);
+    const nextIds = nav.order.slice(start, end + 1);
+    const cls = "is-blp-outliner-range-selected";
+    const next = new Set(nextIds);
+    for (const id of Array.from(this.blockRangeSelectedIds)) {
+      if (next.has(id))
+        continue;
+      (_a2 = this.dom.getBlockEl(id)) == null ? void 0 : _a2.classList.remove(cls);
+      this.blockRangeSelectedIds.delete(id);
+    }
+    for (const id of nextIds) {
+      if (this.blockRangeSelectedIds.has(id))
+        continue;
+      (_b2 = this.dom.getBlockEl(id)) == null ? void 0 : _b2.classList.add(cls);
+      this.blockRangeSelectedIds.add(id);
+    }
+    this.blockRangeSelection = { anchorId, focusId };
+  }
+  getBlockIdAtClientPoint(x, y) {
+    var _a2, _b2, _c2;
+    const hit = document.elementFromPoint(x, y);
+    if (!hit)
+      return null;
+    const blockEl = (_b2 = (_a2 = hit.closest) == null ? void 0 : _a2.call(hit, ".ls-block")) != null ? _b2 : null;
+    if (!blockEl)
+      return null;
+    if (!this.contentEl.contains(blockEl))
+      return null;
+    return (_c2 = blockEl.dataset.blpOutlinerId) != null ? _c2 : null;
+  }
+  onOutlinerRootPointerDownCapture(evt) {
+    if (evt.button !== 0)
+      return;
+    this.blockRangeDrag = null;
+    if (this.blockRangeSelection)
+      this.clearBlockRangeSelection();
+    const anchorId = this.editingId;
+    if (!anchorId)
+      return;
+    const target = evt.target;
+    if (!target)
+      return;
+    if (!target.closest(".blp-file-outliner-editor"))
+      return;
+    this.blockRangeDrag = {
+      pointerId: evt.pointerId,
+      anchorId,
+      active: false,
+      lastFocusId: anchorId
+    };
+  }
+  onOutlinerRootPointerMoveCapture(evt) {
+    const drag = this.blockRangeDrag;
+    if (!drag)
+      return;
+    if (evt.pointerId !== drag.pointerId)
+      return;
+    if ((evt.buttons & 1) === 0)
+      return;
+    const focusId = this.getBlockIdAtClientPoint(evt.clientX, evt.clientY);
+    if (!focusId)
+      return;
+    if (focusId === drag.lastFocusId)
+      return;
+    drag.lastFocusId = focusId;
+    if (!drag.active) {
+      if (focusId === drag.anchorId)
+        return;
+      drag.active = true;
+      if (this.editingId === drag.anchorId)
+        this.exitEditMode(drag.anchorId);
+    }
+    if (!drag.active)
+      return;
+    this.setBlockRangeSelection(drag.anchorId, focusId);
+  }
+  onOutlinerRootPointerUpCapture(evt) {
+    const drag = this.blockRangeDrag;
+    if (!drag)
+      return;
+    if (evt.pointerId !== drag.pointerId)
+      return;
+    this.blockRangeDrag = null;
+  }
+  onOutlinerRootContextMenuCapture(evt) {
+    if (evt.defaultPrevented)
+      return;
+    if (this.blockRangeSelectedIds.size === 0)
+      return;
+    if (!this.outlinerFile)
+      return;
+    if (!this.file)
+      return;
+    const target = evt.target;
+    if (!target)
+      return;
+    if (target.closest(".markdown-source-view"))
+      return;
+    if (target.closest(".blp-file-outliner-editor"))
+      return;
+    if (target.closest(".bullet-container"))
+      return;
+    const blockEl = target.closest(".ls-block");
+    if (!blockEl)
+      return;
+    if (!this.contentEl.contains(blockEl))
+      return;
+    if (!blockEl.classList.contains("is-blp-outliner-range-selected"))
+      return;
+    const id = blockEl.dataset.blpOutlinerId;
+    if (!id)
+      return;
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.openBulletMenu(id, evt);
   }
   createEditorState(doc, sel) {
     return createOutlinerEditorState(doc, sel, {
@@ -29200,6 +29366,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       return;
     this.renderZoomHeader();
     if (opts == null ? void 0 : opts.forceRebuild) {
+      this.clearBlockRangeSelection();
       this.tryOrLog("render/forceRebuild/keepEditorHost", () => {
         if (this.editorHostEl && this.rootEl) {
           this.rootEl.appendChild(this.editorHostEl);
@@ -29384,6 +29551,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     }
   }
   toggleCollapsed(id) {
+    this.clearBlockRangeSelection();
     this.setCollapsed(id, !this.collapsedIds.has(id));
   }
   zoomInto(id) {
@@ -29393,6 +29561,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       return;
     if (!this.blockById.has(id))
       return;
+    this.clearBlockRangeSelection();
     if (this.editingId)
       this.exitEditMode(this.editingId);
     const nextStack = [];
@@ -29414,6 +29583,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     var _a2, _b2, _c2, _d2;
     if (this.zoomStack.length === 0)
       return;
+    this.clearBlockRangeSelection();
     if (this.editingId)
       this.exitEditMode(this.editingId);
     const popped = this.zoomStack.pop();
@@ -29646,6 +29816,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
   enterEditMode(id, opts) {
     var _a2, _b2;
     this.ensureRoot();
+    this.clearBlockRangeSelection();
     if (!this.editorHostEl || !this.editorView)
       return;
     if (!this.outlinerFile)
