@@ -1410,6 +1410,18 @@ var require_loader = __commonJS({
         (c - 65536 & 1023) + 56320
       );
     }
+    function setProperty(object, key, value) {
+      if (key === "__proto__") {
+        Object.defineProperty(object, key, {
+          configurable: true,
+          enumerable: true,
+          writable: true,
+          value
+        });
+      } else {
+        object[key] = value;
+      }
+    }
     var simpleEscapeCheck = new Array(256);
     var simpleEscapeMap = new Array(256);
     for (i = 0; i < 256; i++) {
@@ -1517,7 +1529,7 @@ var require_loader = __commonJS({
       for (index2 = 0, quantity = sourceKeys.length; index2 < quantity; index2 += 1) {
         key = sourceKeys[index2];
         if (!_hasOwnProperty.call(destination, key)) {
-          destination[key] = source[key];
+          setProperty(destination, key, source[key]);
           overridableKeys[key] = true;
         }
       }
@@ -1556,7 +1568,7 @@ var require_loader = __commonJS({
           state.position = startPos || state.position;
           throwError(state, "duplicated mapping key");
         }
-        _result[keyNode] = valueNode;
+        setProperty(_result, keyNode, valueNode);
         delete overridableKeys[keyNode];
       }
       return _result;
@@ -3052,7 +3064,7 @@ __export(main_exports, {
   default: () => ObsidianSyncNotionPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian14 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 
 // src/ui/icon.ts
 var import_obsidian = require("obsidian");
@@ -3071,231 +3083,342 @@ var addIcons = () => {
 // src/lang/locale/en.ts
 var en = {
   databaseFormat: "Database Format",
-  databaseFormatDesc: "Select the database format you want to sync to NotionNext or General",
+  databaseFormatDesc: "Select the database format to sync to: NotionNext or General.",
   databaseNext: "NotionNext",
   databaseGeneral: "General",
   databaseCustom: "Custom",
   databaseFullName: "Database Full Name",
-  databaseFullNameDesc: "Please give a full name for your database",
-  databaseFullNameText: "Enter your database full name",
-  databaseAbbreviateName: "Database Abbreviate Name",
-  databaseAbbreviateNameDesc: "Please give a nick name for your database",
-  databaseAbbreviateNameText: "Enter your database nick name",
-  ribbonIcon: "Share to NotionNext",
-  GeneralSetting: "General information Settings",
+  databaseFullNameDesc: "Set a full name for your database.",
+  databaseFullNameText: "Enter your database's full name",
+  databaseAbbreviateName: "Abbreviated Name",
+  databaseAbbreviateNameDesc: "Set a shorter, abbreviated name for your database.",
+  databaseAbbreviateNameText: "Enter your database's abbreviated name",
+  ribbonIcon: "Sync to NotionNext",
+  GeneralSetting: "General Settings",
   CommandID: "share-to-notionnext",
-  CommandName: "Share to NotionNext Database",
+  CommandName: "Sync to NotionNext",
   CommandIDGeneral: "share-to-notion",
-  CommandNameGeneral: "Share to Notion General Database",
+  CommandNameGeneral: "Sync to General Database",
   NotionNextButton: "NotionNext Sync",
-  NotionNextButtonDesc: "Open this option, Sync to NotionNext command will be displayed in the command palette (default: ON)",
+  NotionNextButtonDesc: "Enables the 'Sync to NotionNext' command in the command palette (default: on).",
   NotionNextSettingHeader: "NotionNext Database Settings",
   NotionAPI: "Notion API Token",
-  NotionAPIDesc: "Generate from https://www.notion.so/my-integrations",
+  NotionAPIDesc: "Get yours from notion.so/my-integrations.",
   NotionAPIText: "Enter your Notion API Token",
   DatabaseID: "Database ID",
-  DatabaseIDDesc: "Collect from the top-right Share --> Publish",
+  DatabaseIDDesc: "Find this in your Notion page's top-right 'Share' menu.",
   DatabaseIDText: "Enter your Database ID",
-  BannerUrl: "Banner url (optional)",
-  BannerUrlDesc: "Default is empty, if you want to show a banner, please enter the url (like: https://abc.com/b.png)",
-  BannerUrlText: "Enter your banner url",
-  NotionUser: "Notion ID (username, optional)",
-  NotionUserDesc: "Collect from share link likes:https://username.notion.site. Your notion id is [username]",
-  NotionUserText: "Enter your notion ID",
-  NotionLinkDisplay: "Notion Link Display",
-  NotionLinkDisplayDesc: "Default is ON, if you want to hide the link in the front matter, please turn it off",
+  BannerUrl: "Banner URL (optional)",
+  BannerUrlDesc: "Leave empty for no banner. If you want a banner, enter an image URL (e.g., https://abc.com/b.png).",
+  BannerUrlText: "Enter your banner URL",
+  NotionUser: "Notion Username (optional)",
+  NotionUserDesc: "If your site is username.notion.site, your username is [username].",
+  NotionUserText: "Enter your Notion username",
+  NotionLinkDisplay: "Display Notion Link",
+  NotionLinkDisplayDesc: "If disabled, the Notion link won't be added to the front matter after syncing (default: on).",
+  AutoCopyNotionLink: "Auto-copy Notion Link",
+  AutoCopyNotionLinkDesc: "Automatically copy the Notion page link to the clipboard after syncing (default: on).",
+  AutoSync: "Auto Sync",
+  AutoSyncDesc: "Automatically syncs changes to Notion when the file's frontmatter or content is modified. Supports creating and updating pages.",
+  AutoSyncFrontmatterKey: "Auto Sync Frontmatter Key",
+  AutoSyncFrontmatterKeyDesc: "Specify the frontmatter key used to list the databases this file should auto-sync to (defaults to 'autosync-database').",
+  AutoSyncDelay: "Auto Sync Delay (seconds)",
+  AutoSyncDelayDesc: "Delay in seconds to wait before syncing after a change. Prevents excessive syncs (default: 5s, min: 2s).",
+  AutoSyncDelayText: "Enter delay in seconds",
+  AutoSyncSuccessNotice: "Auto Sync Success Notice",
+  AutoSyncSuccessNoticeDesc: "Show a notification when auto-sync succeeds (default: off; failures are still notified).",
   NotionGeneralSettingHeader: "General Notion Database Settings",
-  NotionGeneralButton: "Notion General Sync",
-  NotionGeneralButtonDesc: "Open this option, Sync to Notion General Database command will be displayed in the command palette (default: ON)",
-  NotionTagButton: "Notion Tags Sync",
-  NotionTagButtonDesc: "Sync Tags to Notion General Database (default: ON)",
-  NotionCustomTitle: "Customise title property",
-  NotionCustomTitleDesc: "Modify the column name of the Notion database (default: OFF)",
-  NotionCustomTitleName: "Preferred title name",
-  NotionCustomTitleNameDesc: "Enter the preferred title name for the first column of the Notion database (default: title)",
-  NotionCustomTitleText: "Enter the name",
-  NotionCustomValues: "Customise values property",
-  NotionCustomValuesDesc: "Modify the column name of the Notion database\uFF0Cone per line",
-  NotionCustomValuesText: "Enter all properties that you want to sync",
-  NotYetFinish: "Not finished. This function will be available in the next version",
-  PlaceHolder: "Enter database Name",
-  "notion-logo": "Share to NotionNext",
-  "sync-preffix": "Sync to ",
-  "sync-success": "success",
-  "sync-fail": "failed",
-  "open-notion": "Please open the file that needs to be synchronized",
-  "config-secrets-notion-api": "Please set up the notion API in the settings tab.",
-  "config-secrets-database-id": "Please set up the database id in the settings tab.",
-  "set-tags-fail": "Set tags fail,please check the frontmatter of the file or close the tag switch in the settings tab.",
-  NNonMissing: "The 'NNon' property is missing in the settings. Please set it up.",
-  "set-api-id": "Please set up the notion API and database ID in the settings tab.",
+  NotionGeneralButton: "General Database Sync",
+  NotionGeneralButtonDesc: "Enables the 'Sync to General Database' command in the command palette (default: on).",
+  NotionTagButton: "Sync Tags",
+  NotionTagButtonDesc: "Sync Obsidian tags to the Notion database (default: on).",
+  NotionCustomTitle: "Custom Title Property",
+  NotionCustomTitleDesc: "Customize the title property's name in your Notion database (default: off).",
+  NotionCustomTitleName: "Custom Title Property Name",
+  NotionCustomTitleNameDesc: "Enter the custom name for the title property of your Notion database (default: 'title').",
+  NotionCustomTitleText: "Enter the property name",
+  NotionCustomValues: "Custom Properties",
+  NotionCustomValuesDesc: "Define custom properties to sync to your Notion database, one per line.",
+  NotionCustomValuesText: "Enter all properties you want to sync",
+  NotYetFinish: "This feature will be available in a future version.",
+  PlaceHolder: "Enter database name",
+  "notion-logo": "Sync to NotionNext",
+  "sync-preffix": "\u{1F4C4}",
+  "sync-success": "Successfully synced to NotionNext:\n",
+  "sync-fail": "Failed to sync to NotionNext:\n",
+  "open-notion": "Please open a file to sync first.",
+  "config-secrets-notion-api": "Please configure your Notion API key in the plugin settings.",
+  "config-secrets-database-id": "Please configure your Database ID in the plugin settings.",
+  "set-tags-fail": "Failed to set tags. Check the frontmatter or disable tag sync in settings.",
+  NNonMissing: "The 'NNon' property is not set. Please select a NotionNext database in settings.",
+  "set-api-id": "Please configure your Notion API key and Database ID in the plugin settings.",
   NotionCustomSettingHeader: "Notion Custom Database Settings",
-  NotionCustomButton: "Notion Customised command switch",
-  NotionCustomButtonDesc: "Open this option, Sync to Notion Customised Database command will be displayed in the command palette",
+  NotionCustomButton: "Enable Custom Database Command",
+  NotionCustomButtonDesc: "If enabled, the 'Sync to Custom Database' command appears in the command palette.",
   CustomPropertyName: "Property Name",
-  CustomPropertyFirstColumn: "Title Column",
-  CustomPropertyFirstColumnDesc: "The title of the page, must be the first property",
+  CustomPropertyFirstColumn: "Title Property Name",
+  CustomPropertyFirstColumnDesc: "The page title. This must be the first property in the list.",
   CustomProperty: "Property",
   AddCustomProperty: "Add Custom Property",
   AddNewProperty: "Add New Property",
-  AddNewPropertyDesc: "Add new property match with your notion database",
-  CopyErrorMessage: "Auto copy failed, please copy it manually",
-  BlockUploaded: "All blocks uploaded",
-  ExtraBlockUploaded: "Extra blocks uploaded",
-  CheckConsole: "Check the console for more information \n opt+cmd+i/ctrl+shift+i",
-  "reach-mobile-limit": "The number of blocks exceeds the limit of 100, please use the desktop plugin"
+  AddNewPropertyDesc: "Add a new property that matches a property in your Notion database.",
+  CopyErrorMessage: "Auto-copy failed. Please copy the link manually.",
+  BlockUploaded: "All content blocks uploaded successfully.",
+  ExtraBlockUploaded: "Additional blocks uploaded successfully.",
+  CheckConsole: "For more details, open the developer console (opt+cmd+i or ctrl+shift+i).",
+  SettingsMigrated: "\u2728 Settings updated! Auto-Sync is now available. Check the settings to learn more.",
+  AutoSyncNoNotionID: "\u{1F195} Auto-sync: First upload to Notion",
+  AutoSyncMissingDatabaseList: "\u26A0\uFE0F Auto-sync skipped: Add `{key}: [database_name]` to your frontmatter to specify target databases.",
+  AutoSyncSkippedAttachments: "\u26A0\uFE0F Auto-sync skipped: {filename} contains internal attachments (images/PDFs). Please sync manually.",
+  AutoSyncMultipleSync: "\u{1F504} Auto-sync: Syncing to {count} database(s)...",
+  AutoSyncFailed: "Auto-sync to {database} failed: {error}",
+  AutoSyncError: "Auto-sync for {filename} failed: {error}",
+  "reach-mobile-limit": "Block limit (100) reached. For unlimited blocks, please use the desktop version.",
+  StartUpload: "Starting upload for {filename}...",
+  AddNewDatabase: "Add New Database",
+  AddNewDatabaseDesc: "Add a new database configuration",
+  AddNewDatabaseTooltip: "Add New Database",
+  EditDatabase: "Edit Database",
+  Preview: "Preview",
+  DatabaseFormatLabel: "Database Format",
+  DatabaseFullNameLabel: "Database Full Name",
+  DatabaseAbbreviateNameLabel: "Abbreviated Name",
+  NotionAPILabel: "Notion API Key",
+  DatabaseIDLabel: "Database ID",
+  ToggleAPIKeyVisibility: "Toggle API Key Visibility",
+  CopyAPIKey: "Copy API Key",
+  APIKeyCopied: "API key copied to clipboard.",
+  ToggleDatabaseIDVisibility: "Toggle Database ID Visibility",
+  CopyDatabaseID: "Copy Database ID",
+  DatabaseIDCopied: "Database ID copied to clipboard.",
+  AddNewDatabaseModal: "Add New Database"
 };
 
 // src/lang/locale/zh.ts
 var zh = {
   databaseFormat: "\u6570\u636E\u5E93\u683C\u5F0F",
-  databaseFormatDesc: "\u9009\u62E9\u4F60\u60F3\u8981\u540C\u6B65\u7684\u6570\u636E\u5E93\u683C\u5F0FNext \u6216\u8005 \u666E\u901A",
+  databaseFormatDesc: "\u9009\u62E9\u540C\u6B65\u7684\u76EE\u6807\u6570\u636E\u5E93\u683C\u5F0F\uFF1ANotionNext \u6216 \u901A\u7528",
   databaseNext: "NotionNext",
-  databaseGeneral: "\u666E\u901A",
+  databaseGeneral: "\u901A\u7528",
   databaseCustom: "\u81EA\u5B9A\u4E49",
-  databaseFullName: "\u6570\u636E\u5E93\u5168\u79F0",
-  databaseFullNameDesc: "\u7ED9\u4F60\u7684\u6570\u636E\u5E93\u8D77\u4E00\u4E2A\u5168\u79F0",
-  databaseFullNameText: "\u8F93\u5165\u4F60\u7684\u6570\u636E\u5E93\u5168\u79F0",
+  databaseFullName: "\u6570\u636E\u5E93\u5168\u540D",
+  databaseFullNameDesc: "\u4E3A\u6570\u636E\u5E93\u8BBE\u7F6E\u4E00\u4E2A\u5168\u540D",
+  databaseFullNameText: "\u8F93\u5165\u60A8\u7684\u6570\u636E\u5E93\u5168\u540D",
   databaseAbbreviateName: "\u6570\u636E\u5E93\u7B80\u79F0",
-  databaseAbbreviateNameDesc: "\u7ED9\u4F60\u7684\u6570\u636E\u5E93\u8D77\u4E00\u4E2A\u7B80\u79F0",
-  databaseAbbreviateNameText: "\u8F93\u5165\u4F60\u7684\u6570\u636E\u5E93\u7B80\u79F0",
-  ribbonIcon: "\u5206\u4EAB\u5230 NotionNext",
+  databaseAbbreviateNameDesc: "\u4E3A\u6570\u636E\u5E93\u8BBE\u7F6E\u4E00\u4E2A\u7B80\u79F0",
+  databaseAbbreviateNameText: "\u8F93\u5165\u60A8\u7684\u6570\u636E\u5E93\u7B80\u79F0",
+  ribbonIcon: "\u540C\u6B65\u5230 NotionNext",
   GeneralSetting: "\u901A\u7528\u8BBE\u7F6E",
   CommandID: "share-to-notionnext",
-  CommandName: "\u5206\u4EAB\u5230 NotionNext",
+  CommandName: "\u540C\u6B65\u5230 NotionNext",
   CommandIDGeneral: "share-to-notion",
-  CommandNameGeneral: "\u5206\u4EAB\u5230 Notion \u666E\u901A\u6570\u636E\u5E93",
+  CommandNameGeneral: "\u540C\u6B65\u5230\u901A\u7528\u6570\u636E\u5E93",
   NotionNextButton: "NotionNext \u540C\u6B65",
-  NotionNextButtonDesc: "\u6253\u5F00\u6B64\u9009\u9879\uFF0CNotionNext \u540C\u6B65\u5C06\u663E\u793A\u5728\u547D\u4EE4\u9762\u677F\u4E2D\uFF08\u9ED8\u8BA4\uFF1A\u5F00\uFF09",
-  NotionNextSettingHeader: "NotionNext \u6570\u636E\u5E93\u53C2\u6570\u8BBE\u7F6E",
+  NotionNextButtonDesc: "\u542F\u7528\u540E\uFF0C\u547D\u4EE4\u9762\u677F\u4E2D\u5C06\u663E\u793A\u201C\u540C\u6B65\u5230 NotionNext\u201D\u547D\u4EE4\uFF08\u9ED8\u8BA4\u5F00\u542F\uFF09",
+  NotionNextSettingHeader: "NotionNext \u6570\u636E\u5E93\u8BBE\u7F6E",
   NotionAPI: "Notion API \u4EE4\u724C",
-  NotionAPIDesc: "\u4ECE https://www.notion.so/my-integrations \u751F\u6210",
-  NotionAPIText: "\u8F93\u5165\u4F60\u7684 Notion API \u4EE4\u724C",
+  NotionAPIDesc: "\u4ECE notion.so/my-integrations \u83B7\u53D6",
+  NotionAPIText: "\u8F93\u5165\u60A8\u7684 Notion API \u4EE4\u724C",
   DatabaseID: "\u6570\u636E\u5E93 ID",
-  DatabaseIDDesc: "\u4ECE\u53F3\u4E0A\u89D2\u7684\u5206\u4EAB --> \u53D1\u5E03\u4E2D\u83B7\u53D6",
-  DatabaseIDText: "\u8F93\u5165\u4F60\u7684\u6570\u636E\u5E93 ID",
+  DatabaseIDDesc: "\u53EF\u4ECE Notion \u9875\u9762\u53F3\u4E0A\u89D2\u7684\u201C\u5206\u4EAB\u201D\u83DC\u5355\u4E2D\u83B7\u53D6",
+  DatabaseIDText: "\u8F93\u5165\u60A8\u7684\u6570\u636E\u5E93 ID",
   BannerUrl: "\u5C01\u9762\u56FE\u7247\u5730\u5740\uFF08\u53EF\u9009\uFF09",
-  BannerUrlDesc: "\u9ED8\u8BA4\u4E3A\u7A7A\uFF0C\u5982\u679C\u4F60\u60F3\u663E\u793A\u5C01\u9762\u56FE\u7247\uFF0C\u8BF7\u8F93\u5165\u56FE\u7247\u5730\u5740\uFF08\u4F8B\u5982\uFF1Ahttps://abc.com/b.png\uFF09",
-  BannerUrlText: "\u8F93\u5165\u4F60\u7684\u5C01\u9762\u56FE\u7247\u5730\u5740",
-  NotionUser: "Notion ID\uFF08\u7528\u6237\u540D\uFF0C\u53EF\u9009\uFF09",
-  NotionUserDesc: "\u6570\u636E\u5E93\u5206\u4EAB\u94FE\u63A5\u7C7B\u4F3C\uFF1Ahttps://username.notion.site/\u3002\u4F60\u7684 Notion ID \u662F [username]",
-  NotionUserText: "\u8F93\u5165\u4F60\u7684 Notion ID",
-  NotionLinkDisplay: "Notion \u94FE\u63A5\u663E\u793A",
-  NotionLinkDisplayDesc: "\u9ED8\u8BA4\u5F00\u542F\uFF0C\u5982\u679C\u4F60\u4E0D\u60F3\u5728front matter\u4E2D\u663E\u793A\u94FE\u63A5\uFF0C\u8BF7\u5173\u95ED",
-  NotionGeneralSettingHeader: "\u666E\u901A Notion \u6570\u636E\u5E93\u8BBE\u7F6E",
-  NotionGeneralButton: "\u666E\u901A\u6570\u636E\u5E93\u540C\u6B65",
-  NotionGeneralButtonDesc: "\u6253\u5F00\u6B64\u9009\u9879\uFF0C\u540C\u6B65\u5230\u666E\u901A\u6570\u636E\u5E93\u547D\u4EE4\u5C06\u663E\u793A\u5728\u547D\u4EE4\u9762\u677F\u4E2D\uFF08\u9ED8\u8BA4\uFF1A\u5F00\uFF09",
-  NotionTagButton: "\u6807\u7B7E\u540C\u6B65\u5F00\u5173",
-  NotionTagButtonDesc: "\u5C06\u6807\u7B7E\u540C\u6B65\u5230\u666E\u901A\u6570\u636E\u5E93\uFF08\u9ED8\u8BA4\uFF1A\u5F00\uFF09",
-  NotionCustomTitle: "\u4FEE\u6539 Notion \u6570\u636E\u5E93\u8868\u5934\u5F00\u5173",
-  NotionCustomTitleDesc: "\u81EA\u5B9A\u4E49Notion \u6570\u636E\u5E93\u7B2C\u4E00\u5217\u8868\u5934\u540D\uFF08\u9ED8\u8BA4\uFF1A\u5173\uFF09",
-  NotionCustomTitleName: "\u60F3\u8981\u4FEE\u6539\u7684\u8868\u5934\u540D",
-  NotionCustomTitleNameDesc: "\u8F93\u5165\u4F60\u60F3\u8981\u4FEE\u6539\u7684notion\u6570\u636E\u5E93\u7684\u8868\u5934\u540D\uFF08\u9ED8\u8BA4\uFF1Atitle\uFF09",
-  NotionCustomTitleText: "\u8F93\u5165\u8868\u5934\u540D",
-  NotionCustomValues: "\u81EA\u5B9A\u4E49Notion \u6570\u636E\u5E93\u8868\u5934",
-  NotionCustomValuesDesc: "\u81EA\u5B9A\u4E49Notion \u6570\u636E\u5E93\u8868\u5934\uFF0C\u6BCF\u884C\u4E00\u4E2A",
-  NotionCustomValuesText: "\u8F93\u5165\u4F60\u60F3\u8981\u540C\u6B65\u7684\u6240\u6709\u5C5E\u6027",
-  NotYetFinish: "\u672A\u5B8C\u6210\u3002\u6B64\u529F\u80FD\u5C06\u5728\u4E4B\u540E\u7248\u672C\u4E2D\u63D0\u4F9B",
+  BannerUrlDesc: "\u7559\u7A7A\u5219\u4E0D\u663E\u793A\u3002\u5982\u9700\u5C01\u9762\uFF0C\u8BF7\u8F93\u5165\u56FE\u7247\u5730\u5740\uFF08\u4F8B\u5982\uFF1Ahttps://abc.com/b.png\uFF09",
+  BannerUrlText: "\u8F93\u5165\u60A8\u7684\u5C01\u9762\u56FE\u7247\u5730\u5740",
+  NotionUser: "Notion \u7528\u6237\u540D\uFF08\u53EF\u9009\uFF09",
+  NotionUserDesc: "\u82E5\u5206\u4EAB\u94FE\u63A5\u4E3A username.notion.site\uFF0C\u4F60\u7684 Notion \u7528\u6237\u540D\u5373\u4E3A [username]",
+  NotionUserText: "\u8F93\u5165\u60A8\u7684 Notion \u7528\u6237\u540D",
+  NotionLinkDisplay: "\u663E\u793A Notion \u94FE\u63A5",
+  NotionLinkDisplayDesc: "\u9ED8\u8BA4\u5F00\u542F\u3002\u5173\u95ED\u540E\uFF0C\u540C\u6B65\u6210\u529F\u65F6 frontmatter \u4E2D\u4E0D\u4F1A\u51FA\u73B0 Notion \u94FE\u63A5",
+  AutoCopyNotionLink: "\u81EA\u52A8\u590D\u5236 Notion \u94FE\u63A5",
+  AutoCopyNotionLinkDesc: "\u540C\u6B65\u540E\u81EA\u52A8\u5C06 Notion \u94FE\u63A5\u590D\u5236\u5230\u526A\u8D34\u677F\uFF08\u9ED8\u8BA4\u5F00\u542F\uFF09",
+  AutoSync: "\u81EA\u52A8\u540C\u6B65",
+  AutoSyncDesc: "\u5F53\u6587\u6863\u7684 frontmatter \u6216\u5185\u5BB9\u4FEE\u6539\u65F6\uFF0C\u5C06\u81EA\u52A8\u540C\u6B65\u5230 Notion\uFF08\u652F\u6301\u65B0\u5EFA\u548C\u66F4\u65B0\uFF09",
+  AutoSyncFrontmatterKey: "\u81EA\u52A8\u540C\u6B65 Frontmatter \u952E\u540D",
+  AutoSyncFrontmatterKeyDesc: "\u8BBE\u7F6E\u7528\u4E8E\u6307\u5B9A\u81EA\u52A8\u540C\u6B65\u6570\u636E\u5E93\u5217\u8868\u7684 frontmatter \u952E\u540D\uFF08\u9ED8\u8BA4\u4E3A autosync-database\uFF09\u3002",
+  AutoSyncDelay: "\u81EA\u52A8\u540C\u6B65\u5EF6\u8FDF\uFF08\u79D2\uFF09",
+  AutoSyncDelayDesc: "\u6587\u6863\u4FEE\u6539\u540E\uFF0C\u7B49\u5F85\u6307\u5B9A\u79D2\u6570\u518D\u89E6\u53D1\u81EA\u52A8\u540C\u6B65\uFF0C\u4EE5\u907F\u514D\u9891\u7E41\u64CD\u4F5C\uFF08\u9ED8\u8BA4 5 \u79D2\uFF0C\u6700\u5C11 2 \u79D2\uFF09",
+  AutoSyncDelayText: "\u8F93\u5165\u5EF6\u8FDF\u79D2\u6570",
+  AutoSyncSuccessNotice: "\u81EA\u52A8\u540C\u6B65\u6210\u529F\u901A\u77E5",
+  AutoSyncSuccessNoticeDesc: "\u662F\u5426\u5728\u81EA\u52A8\u540C\u6B65\u6210\u529F\u540E\u5F39\u51FA\u901A\u77E5\uFF08\u9ED8\u8BA4\u5173\u95ED\uFF0C\u4EC5\u5728\u5931\u8D25\u65F6\u901A\u77E5\uFF09",
+  NotionGeneralSettingHeader: "\u901A\u7528 Notion \u6570\u636E\u5E93\u8BBE\u7F6E",
+  NotionGeneralButton: "\u901A\u7528\u6570\u636E\u5E93\u540C\u6B65",
+  NotionGeneralButtonDesc: "\u542F\u7528\u540E\uFF0C\u547D\u4EE4\u9762\u677F\u4E2D\u5C06\u663E\u793A\u201C\u540C\u6B65\u5230\u901A\u7528\u6570\u636E\u5E93\u201D\u547D\u4EE4\uFF08\u9ED8\u8BA4\u5F00\u542F\uFF09",
+  NotionTagButton: "\u6807\u7B7E\u540C\u6B65",
+  NotionTagButtonDesc: "\u5C06 Obsidian \u6807\u7B7E\u540C\u6B65\u5230 Notion \u6570\u636E\u5E93\uFF08\u9ED8\u8BA4\u5F00\u542F\uFF09",
+  NotionCustomTitle: "\u81EA\u5B9A\u4E49\u6807\u9898\u5C5E\u6027",
+  NotionCustomTitleDesc: "\u81EA\u5B9A\u4E49 Notion \u6570\u636E\u5E93\u4E2D\u6807\u9898\u5217\u7684\u540D\u79F0\uFF08\u9ED8\u8BA4\u5173\u95ED\uFF09",
+  NotionCustomTitleName: "\u81EA\u5B9A\u4E49\u6807\u9898\u540D\u79F0",
+  NotionCustomTitleNameDesc: "\u4E3A Notion \u6570\u636E\u5E93\u7684\u6807\u9898\u5217\u8BBE\u7F6E\u4E00\u4E2A\u81EA\u5B9A\u4E49\u540D\u79F0\uFF08\u9ED8\u8BA4\u4E3A title\uFF09",
+  NotionCustomTitleText: "\u8F93\u5165\u6807\u9898\u540D\u79F0",
+  NotionCustomValues: "\u81EA\u5B9A\u4E49\u5C5E\u6027",
+  NotionCustomValuesDesc: "\u81EA\u5B9A\u4E49\u540C\u6B65\u5230 Notion \u6570\u636E\u5E93\u7684\u5C5E\u6027\uFF0C\u6BCF\u884C\u4E00\u4E2A\u3002",
+  NotionCustomValuesText: "\u8F93\u5165\u6240\u6709\u4F60\u5E0C\u671B\u540C\u6B65\u7684\u5C5E\u6027",
+  NotYetFinish: "\u6B64\u529F\u80FD\u5C06\u5728\u672A\u6765\u7248\u672C\u4E2D\u63D0\u4F9B",
   PlaceHolder: "\u8F93\u5165\u6570\u636E\u5E93\u540D\u79F0",
-  "notion-logo": "\u5206\u4EAB\u5230NotionNext",
-  "sync-success": "\u540C\u6B65\u5230NotionNext\u6210\u529F:\n",
-  "sync-fail": "\u540C\u6B65\u5230NotionNext\u5931\u8D25: \n",
-  "open-file": "\u8BF7\u6253\u5F00\u9700\u8981\u540C\u6B65\u7684\u6587\u4EF6",
-  "config-secrets-notion-api": "\u8BF7\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u6DFB\u52A0notion API",
-  "config-secrets-database-id": "\u8BF7\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u6DFB\u52A0database id",
-  "set-tags-fail": "\u8BBE\u7F6E\u6807\u7B7E\u5931\u8D25,\u8BF7\u68C0\u67E5\u6587\u4EF6\u7684frontmatter,\u6216\u8005\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u5173\u95ED\u8BBE\u7F6Etags\u5F00\u5173",
-  NNonMissing: "\u672A\u8BBE\u7F6E'NNon'\u5C5E\u6027\uFF0C\u8BF7\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u9009\u62E9NotionNext\u6570\u636E\u5E93\u3002",
-  "set-api-id": "\u8BF7\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u8BBE\u7F6Enotion API\u548Cdatabase ID",
+  "notion-logo": "\u540C\u6B65\u5230 NotionNext",
+  "sync-preffix": "\u{1F4C4}",
+  "sync-success": "\u6210\u529F\u540C\u6B65\u5230 NotionNext\uFF1A\n",
+  "sync-fail": "\u540C\u6B65\u5230 NotionNext \u5931\u8D25\uFF1A\n",
+  "open-file": "\u8BF7\u5148\u6253\u5F00\u8981\u540C\u6B65\u7684\u6587\u4EF6\u3002",
+  "config-secrets-notion-api": "\u8BF7\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u914D\u7F6E Notion API \u5BC6\u94A5\u3002",
+  "config-secrets-database-id": "\u8BF7\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u914D\u7F6E\u6570\u636E\u5E93 ID\u3002",
+  "set-tags-fail": "\u6807\u7B7E\u8BBE\u7F6E\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5 frontmatter \u6216\u5728\u8BBE\u7F6E\u4E2D\u5173\u95ED\u6807\u7B7E\u540C\u6B65\u3002",
+  NNonMissing: "\u672A\u8BBE\u7F6E 'NNon' \u5C5E\u6027\uFF0C\u8BF7\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u9009\u62E9\u4E00\u4E2A NotionNext \u6570\u636E\u5E93\u3002",
+  "set-api-id": "\u8BF7\u5728\u63D2\u4EF6\u8BBE\u7F6E\u4E2D\u914D\u7F6E Notion API \u548C\u6570\u636E\u5E93 ID\u3002",
   NotionCustomSettingHeader: "Notion \u81EA\u5B9A\u4E49\u6570\u636E\u5E93\u8BBE\u7F6E",
-  NotionCustomButton: "Notion \u81EA\u5B9A\u4E49\u6570\u636E\u5E93\u540C\u6B65\u547D\u4EE4\u5F00\u5173",
-  NotionCustomButtonDesc: "\u6253\u5F00\u6B64\u9009\u9879\uFF0C\u540C\u6B65\u5230\u81EA\u5B9A\u4E49\u6570\u636E\u5E93\u547D\u4EE4\u5C06\u663E\u793A\u5728\u547D\u4EE4\u9762\u677F\u4E2D",
+  NotionCustomButton: "\u542F\u7528\u81EA\u5B9A\u4E49\u6570\u636E\u5E93\u540C\u6B65\u547D\u4EE4",
+  NotionCustomButtonDesc: "\u542F\u7528\u540E\uFF0C\u201C\u540C\u6B65\u5230\u81EA\u5B9A\u4E49\u6570\u636E\u5E93\u201D\u7684\u547D\u4EE4\u5C06\u51FA\u73B0\u5728\u547D\u4EE4\u9762\u677F\u4E2D\u3002",
   CustomPropertyName: "\u81EA\u5B9A\u4E49\u5C5E\u6027\u540D",
-  CustomPropertyFirstColumn: "\u7B2C\u4E00\u5217\u5C5E\u6027\u540D",
-  CustomPropertyFirstColumnDesc: "\u7B2C\u4E00\u5217\u5FC5\u987B\u4E3A\u6807\u9898\u5C5E\u6027\u540D",
+  CustomPropertyFirstColumn: "\u6807\u9898\u5C5E\u6027",
+  CustomPropertyFirstColumnDesc: "\u7B2C\u4E00\u5217\u5FC5\u987B\u4E3A\u6807\u9898\u5C5E\u6027\u3002",
   CustomProperty: "\u81EA\u5B9A\u4E49\u5C5E\u6027",
   AddCustomProperty: "\u6DFB\u52A0\u81EA\u5B9A\u4E49\u5C5E\u6027",
   AddNewProperty: "\u6DFB\u52A0\u65B0\u5C5E\u6027",
-  AddNewPropertyDesc: "\u6DFB\u52A0\u4E00\u4E2A\u548CNotion\u6570\u636E\u5E93\u5339\u914D\u7684\u65B0\u5C5E\u6027",
-  CopyErrorMessage: "\u590D\u5236\u94FE\u63A5\u5931\u8D25\uFF0C\u8BF7\u624B\u52A8\u590D\u5236",
-  BlockUploaded: "\u6240\u6709\u5185\u5BB9\u5DF2\u6210\u529F\u4E0A\u4F20",
-  ExtraBlockUploaded: "\u989D\u5916\u5185\u5BB9\u5DF2\u6210\u529F\u4E0A\u4F20",
-  CheckConsole: "opt+cmd+i/ctrl+shift+i\uFF0C\n\u6253\u5F00\u63A7\u5236\u53F0\u67E5\u770B\u66F4\u591A\u4FE1\u606F"
+  AddNewPropertyDesc: "\u6DFB\u52A0\u4E00\u4E2A\u4E0E\u60A8 Notion \u6570\u636E\u5E93\u4E2D\u7684\u5C5E\u6027\u76F8\u5339\u914D\u7684\u65B0\u5C5E\u6027\u3002",
+  CopyErrorMessage: "\u81EA\u52A8\u590D\u5236\u94FE\u63A5\u5931\u8D25\uFF0C\u8BF7\u624B\u52A8\u590D\u5236\u3002",
+  BlockUploaded: "\u6240\u6709\u5757\u5DF2\u4E0A\u4F20\u6210\u529F",
+  ExtraBlockUploaded: "\u989D\u5916\u5757\u5DF2\u4E0A\u4F20\u6210\u529F",
+  CheckConsole: "\u6309 opt+cmd+i / ctrl+shift+i \u6253\u5F00\u63A7\u5236\u53F0\u67E5\u770B\u8BE6\u60C5\u3002",
+  SettingsMigrated: "\u2728 \u63D2\u4EF6\u8BBE\u7F6E\u5DF2\u66F4\u65B0\uFF01\u65B0\u589E\u81EA\u52A8\u540C\u6B65\u529F\u80FD\uFF0C\u8BE6\u60C5\u8BF7\u67E5\u770B\u8BBE\u7F6E\u3002",
+  AutoSyncNoNotionID: "\u{1F195} \u81EA\u52A8\u540C\u6B65\uFF1A\u9996\u6B21\u4E0A\u4F20\u5230 Notion",
+  AutoSyncMissingDatabaseList: '\u26A0\uFE0F \u81EA\u52A8\u540C\u6B65\u5DF2\u8DF3\u8FC7\uFF1A\u8BF7\u5728 frontmatter \u4E2D\u6DFB\u52A0 "{key}" \u4EE5\u6307\u5B9A\u76EE\u6807\u6570\u636E\u5E93\u3002',
+  AutoSyncSkippedAttachments: "\u26A0\uFE0F \u81EA\u52A8\u540C\u6B65\u5DF2\u8DF3\u8FC7\uFF1A\u68C0\u6D4B\u5230 {filename} \u542B\u6709\u672C\u5730\u9644\u4EF6\uFF08\u56FE\u7247/PDF\uFF09\uFF0C\u8BF7\u624B\u52A8\u540C\u6B65\u3002",
+  AutoSyncMultipleSync: "\u{1F504} \u81EA\u52A8\u540C\u6B65\uFF1A\u6B63\u5728\u540C\u6B65\u5230 {count} \u4E2A\u6570\u636E\u5E93...",
+  AutoSyncFailed: "\u540C\u6B65\u5230 {database} \u5931\u8D25\uFF1A{error}",
+  AutoSyncError: "\u540C\u6B65 {filename} \u5931\u8D25\uFF1A{error}",
+  StartUpload: "\u5F00\u59CB\u4E0A\u4F20 {filename}...",
+  AddNewDatabase: "\u6DFB\u52A0\u65B0\u6570\u636E\u5E93",
+  AddNewDatabaseDesc: "\u6DFB\u52A0\u65B0\u7684\u6570\u636E\u5E93\u914D\u7F6E",
+  AddNewDatabaseTooltip: "\u6DFB\u52A0\u65B0\u6570\u636E\u5E93",
+  EditDatabase: "\u7F16\u8F91\u6570\u636E\u5E93",
+  Preview: "\u9884\u89C8",
+  DatabaseFormatLabel: "\u6570\u636E\u5E93\u683C\u5F0F",
+  DatabaseFullNameLabel: "\u6570\u636E\u5E93\u5168\u540D",
+  DatabaseAbbreviateNameLabel: "\u6570\u636E\u5E93\u7B80\u79F0",
+  NotionAPILabel: "Notion API \u5BC6\u94A5",
+  DatabaseIDLabel: "\u6570\u636E\u5E93 ID",
+  ToggleAPIKeyVisibility: "\u5207\u6362 API \u5BC6\u94A5\u53EF\u89C1\u6027",
+  CopyAPIKey: "\u590D\u5236 API \u5BC6\u94A5",
+  APIKeyCopied: "API \u5BC6\u94A5\u5DF2\u590D\u5236\u5230\u526A\u8D34\u677F\u3002",
+  ToggleDatabaseIDVisibility: "\u5207\u6362\u6570\u636E\u5E93 ID \u53EF\u89C1\u6027",
+  CopyDatabaseID: "\u590D\u5236\u6570\u636E\u5E93 ID",
+  DatabaseIDCopied: "\u6570\u636E\u5E93 ID \u5DF2\u590D\u5236\u5230\u526A\u8D34\u677F\u3002",
+  AddNewDatabaseModal: "\u6DFB\u52A0\u65B0\u6570\u636E\u5E93"
 };
 
 // src/lang/locale/ja.ts
 var ja = {
   databaseFormat: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u5F62\u5F0F",
-  databaseFormatDesc: "\u540C\u671F\u3057\u305F\u3044\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u5F62\u5F0F\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044",
+  databaseFormatDesc: "\u540C\u671F\u5148\u306E\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u5F62\u5F0F\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\uFF08NotionNext \u307E\u305F\u306F \u4E00\u822C\uFF09\u3002",
   databaseNext: "NotionNext",
-  databaseGeneral: "\u4E00\u822C\u7684\u306ANotion",
+  databaseGeneral: "\u4E00\u822C",
   databaseCustom: "\u30AB\u30B9\u30BF\u30E0",
   databaseFullName: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u5168\u79F0",
-  databaseFullNameDesc: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u5168\u79F0\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044",
+  databaseFullNameDesc: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u30D5\u30EB\u30CD\u30FC\u30E0\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002",
   databaseFullNameText: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u5168\u79F0\u3092\u5165\u529B",
   databaseAbbreviateName: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u7565\u79F0",
-  databaseAbbreviateNameDesc: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u7565\u79F0\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044",
+  databaseAbbreviateNameDesc: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u7565\u79F0\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002",
   databaseAbbreviateNameText: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u7565\u79F0\u3092\u5165\u529B",
-  ribbonIcon: "NotionNext\u3067\u5171\u6709",
+  ribbonIcon: "NotionNext\u3078\u540C\u671F",
   GeneralSetting: "\u4E00\u822C\u8A2D\u5B9A",
   CommandID: "share-to-notionnext",
-  CommandName: "NotionNext\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306B\u5171\u6709",
+  CommandName: "NotionNext\u3078\u540C\u671F",
   CommandIDGeneral: "share-to-notion",
-  CommandNameGeneral: "\u4E00\u822C\u7684\u306ANotion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306B\u5171\u6709",
+  CommandNameGeneral: "\u4E00\u822C\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3078\u540C\u671F",
   NotionNextButton: "NotionNext\u540C\u671F",
-  NotionNextButtonDesc: "\u3053\u306E\u30AA\u30D7\u30B7\u30E7\u30F3\u3092\u958B\u304F\u3068\u3001NotionNext\u540C\u671F\u30B3\u30DE\u30F3\u30C9\u304C\u30B3\u30DE\u30F3\u30C9\u30D1\u30EC\u30C3\u30C8\u306B\u8868\u793A\u3055\u308C\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1AON\uFF09",
+  NotionNextButtonDesc: "\u6709\u52B9\u306B\u3059\u308B\u3068\u3001\u30B3\u30DE\u30F3\u30C9\u30D1\u30EC\u30C3\u30C8\u306B\u300CNotionNext\u3078\u540C\u671F\u300D\u304C\u8868\u793A\u3055\u308C\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1A\u30AA\u30F3\uFF09\u3002",
   NotionNextSettingHeader: "NotionNext\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u8A2D\u5B9A",
   NotionAPI: "Notion API \u30C8\u30FC\u30AF\u30F3",
-  NotionAPIDesc: "https://www.notion.so/my-integrations \u304B\u3089\u751F\u6210\u3057\u3066\u304F\u3060\u3055\u3044",
+  NotionAPIDesc: "notion.so/my-integrations \u304B\u3089\u53D6\u5F97\u3057\u307E\u3059\u3002",
   NotionAPIText: "Notion API \u30C8\u30FC\u30AF\u30F3\u3092\u5165\u529B",
   DatabaseID: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9ID",
-  DatabaseIDDesc: "\u53F3\u4E0A\u306E\u5171\u6709 --> \u516C\u958B\u304B\u3089\u53D6\u5F97\u3057\u3066\u304F\u3060\u3055\u3044",
+  DatabaseIDDesc: "Notion\u30DA\u30FC\u30B8\u306E\u53F3\u4E0A\u300C\u5171\u6709\u300D\u30E1\u30CB\u30E5\u30FC\u304B\u3089\u53D6\u5F97\u3057\u307E\u3059\u3002",
   DatabaseIDText: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9ID\u3092\u5165\u529B",
-  BannerUrl: "\u30D0\u30CA\u30FC\u306EURL\uFF08\u4EFB\u610F\uFF09",
-  BannerUrlDesc: "\u30C7\u30D5\u30A9\u30EB\u30C8\u306F\u7A7A\u767D\u3067\u3059\u3002\u30D0\u30CA\u30FC\u3092\u8868\u793A\u3057\u305F\u3044\u5834\u5408\u306F\u3001URL\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\uFF08\u4F8B\uFF1Ahttps://abc.com/b.png\uFF09",
+  BannerUrl: "\u30D0\u30CA\u30FCURL\uFF08\u4EFB\u610F\uFF09",
+  BannerUrlDesc: "\u7A7A\u306E\u307E\u307E\u306B\u3059\u308B\u3068\u30D0\u30CA\u30FC\u306F\u8868\u793A\u3055\u308C\u307E\u305B\u3093\u3002\u8868\u793A\u3059\u308B\u306B\u306F\u753B\u50CF\u306EURL\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\uFF08\u4F8B\uFF1Ahttps://abc.com/b.png\uFF09\u3002",
   BannerUrlText: "\u30D0\u30CA\u30FC\u306EURL\u3092\u5165\u529B",
-  NotionUser: "Notion ID\uFF08\u30E6\u30FC\u30B6\u30FC\u540D\u3001\u4EFB\u610F\uFF09",
-  NotionUserDesc: "\u5171\u6709\u30EA\u30F3\u30AF\u304B\u3089\u53D6\u5F97\uFF08\u4F8B\uFF1Ahttps://username.notion.site\uFF09\u3002Notion ID\u306F[username]\u3067\u3059",
-  NotionUserText: "Notion ID\u3092\u5165\u529B",
+  NotionUser: "Notion\u30E6\u30FC\u30B6\u30FC\u540D\uFF08\u4EFB\u610F\uFF09",
+  NotionUserDesc: "\u5171\u6709\u30EA\u30F3\u30AF\u304C `username.notion.site` \u306E\u5834\u5408\u3001Notion\u30E6\u30FC\u30B6\u30FC\u540D\u306F `[username]` \u3067\u3059\u3002",
+  NotionUserText: "Notion\u30E6\u30FC\u30B6\u30FC\u540D\u3092\u5165\u529B",
   NotionLinkDisplay: "Notion\u30EA\u30F3\u30AF\u8868\u793A",
-  NotionLinkDisplayDesc: "\u30C7\u30D5\u30A9\u30EB\u30C8\u306FON\u3067\u3059\u3002front matter\u306B\u30EA\u30F3\u30AF\u3092\u975E\u8868\u793A\u306B\u3057\u305F\u3044\u5834\u5408\u306F\u3001\u30AA\u30D5\u306B\u3057\u3066\u304F\u3060\u3055\u3044",
-  NotionGeneralSettingHeader: "\u4E00\u822C\u7684\u306ANotion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u8A2D\u5B9A",
-  NotionGeneralButton: "\u4E00\u822C\u7684\u306ANotion\u540C\u671F",
-  NotionGeneralButtonDesc: "\u3053\u306E\u30AA\u30D7\u30B7\u30E7\u30F3\u3092\u958B\u304F\u3068\u3001\u4E00\u822C\u7684\u306ANotion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u540C\u671F\u30B3\u30DE\u30F3\u30C9\u304C\u30B3\u30DE\u30F3\u30C9\u30D1\u30EC\u30C3\u30C8\u306B\u8868\u793A\u3055\u308C\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1AON\uFF09",
-  NotionTagButton: "Notion\u30BF\u30B0\u540C\u671F",
-  NotionTagButtonDesc: "\u30BF\u30B0\u3092\u4E00\u822C\u7684\u306ANotion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306B\u540C\u671F\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1AON\uFF09",
-  NotionCustomTitle: "\u30BF\u30A4\u30C8\u30EB\u306E\u30AB\u30B9\u30BF\u30DE\u30A4\u30BA",
-  NotionCustomTitleDesc: "Notion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u5217\u540D\u3092\u5909\u66F4\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1AOFF\uFF09",
-  NotionCustomTitleName: "\u5E0C\u671B\u306E\u30BF\u30A4\u30C8\u30EB\u540D",
-  NotionCustomTitleNameDesc: "Notion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u6700\u521D\u306E\u5217\u306E\u305F\u3081\u306E\u5E0C\u671B\u306E\u30BF\u30A4\u30C8\u30EB\u540D\u3092\u5165\u529B\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1Atitle\uFF09",
-  NotionCustomTitleText: "\u540D\u524D\u3092\u5165\u529B",
-  NotionCustomValues: "\u5024\u306E\u30AB\u30B9\u30BF\u30DE\u30A4\u30BA",
-  NotionCustomValuesDesc: "Notion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u5217\u540D\u3092\u5909\u66F4\u30011\u884C\u306B1\u3064",
+  NotionLinkDisplayDesc: "\u30C7\u30D5\u30A9\u30EB\u30C8\u3067\u6709\u52B9\u3002\u7121\u52B9\u306B\u3059\u308B\u3068\u3001\u540C\u671F\u5F8C\u306Bfront matter\u3078Notion\u30EA\u30F3\u30AF\u304C\u8FFD\u52A0\u3055\u308C\u307E\u305B\u3093\u3002",
+  AutoCopyNotionLink: "Notion\u30EA\u30F3\u30AF\u3092\u81EA\u52D5\u30B3\u30D4\u30FC",
+  AutoCopyNotionLinkDesc: "\u540C\u671F\u5B8C\u4E86\u5F8C\u3001Notion\u30DA\u30FC\u30B8\u306E\u30EA\u30F3\u30AF\u3092\u30AF\u30EA\u30C3\u30D7\u30DC\u30FC\u30C9\u306B\u81EA\u52D5\u30B3\u30D4\u30FC\u3057\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1A\u30AA\u30F3\uFF09\u3002",
+  AutoSync: "\u81EA\u52D5\u540C\u671F",
+  AutoSyncDesc: "\u30D5\u30A1\u30A4\u30EB\u306E\u5185\u5BB9\uFF08frontmatter\u307E\u305F\u306F\u672C\u6587\uFF09\u304C\u5909\u66F4\u3055\u308C\u308B\u3068\u3001\u81EA\u52D5\u3067Notion\u306B\u540C\u671F\u3057\u307E\u3059\u3002\u65B0\u898F\u4F5C\u6210\u3068\u66F4\u65B0\u306E\u4E21\u65B9\u306B\u5BFE\u5FDC\u3002",
+  AutoSyncFrontmatterKey: "\u81EA\u52D5\u540C\u671F frontmatter \u30AD\u30FC",
+  AutoSyncFrontmatterKeyDesc: "\u81EA\u52D5\u540C\u671F\u306E\u5BFE\u8C61\u3068\u306A\u308B\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3092\u30EA\u30B9\u30C8\u30A2\u30C3\u30D7\u3059\u308B\u305F\u3081\u306E frontmatter\u30AD\u30FC\u3092\u8A2D\u5B9A\u3057\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1Aautosync-database\uFF09\u3002",
+  AutoSyncDelay: "\u81EA\u52D5\u540C\u671F\u306E\u9045\u5EF6\uFF08\u79D2\uFF09",
+  AutoSyncDelayDesc: "\u5909\u66F4\u304C\u691C\u77E5\u3055\u308C\u3066\u304B\u3089\u540C\u671F\u3092\u958B\u59CB\u3059\u308B\u307E\u3067\u306E\u9045\u5EF6\u6642\u9593\uFF08\u79D2\uFF09\u3002\u540C\u671F\u306E\u983B\u767A\u3092\u9632\u304E\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1A5\u79D2\u3001\u6700\u5C0F\uFF1A2\u79D2\uFF09\u3002",
+  AutoSyncDelayText: "\u9045\u5EF6\u79D2\u6570\u3092\u5165\u529B",
+  AutoSyncSuccessNotice: "\u81EA\u52D5\u540C\u671F\u6210\u529F\u901A\u77E5",
+  AutoSyncSuccessNoticeDesc: "\u81EA\u52D5\u540C\u671F\u304C\u6210\u529F\u3057\u305F\u3068\u304D\u306B\u901A\u77E5\u3092\u8868\u793A\u3057\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1A\u30AA\u30D5\u3002\u5931\u6557\u6642\u306F\u901A\u77E5\u3055\u308C\u307E\u3059\uFF09\u3002",
+  NotionGeneralSettingHeader: "\u4E00\u822CNotion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u8A2D\u5B9A",
+  NotionGeneralButton: "\u4E00\u822C\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u540C\u671F",
+  NotionGeneralButtonDesc: "\u6709\u52B9\u306B\u3059\u308B\u3068\u3001\u30B3\u30DE\u30F3\u30C9\u30D1\u30EC\u30C3\u30C8\u306B\u300C\u4E00\u822C\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3078\u540C\u671F\u300D\u304C\u8868\u793A\u3055\u308C\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1A\u30AA\u30F3\uFF09\u3002",
+  NotionTagButton: "\u30BF\u30B0\u3092\u540C\u671F",
+  NotionTagButtonDesc: "Obsidian\u306E\u30BF\u30B0\u3092Notion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306B\u540C\u671F\u3057\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1A\u30AA\u30F3\uFF09\u3002",
+  NotionCustomTitle: "\u30BF\u30A4\u30C8\u30EB\u30D7\u30ED\u30D1\u30C6\u30A3\u3092\u30AB\u30B9\u30BF\u30E0",
+  NotionCustomTitleDesc: "Notion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u30BF\u30A4\u30C8\u30EB\u5217\u306E\u540D\u524D\u3092\u30AB\u30B9\u30BF\u30DE\u30A4\u30BA\u3057\u307E\u3059\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1A\u30AA\u30D5\uFF09\u3002",
+  NotionCustomTitleName: "\u30AB\u30B9\u30BF\u30E0\u30BF\u30A4\u30C8\u30EB\u540D",
+  NotionCustomTitleNameDesc: "Notion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u30BF\u30A4\u30C8\u30EB\u5217\u306B\u4F7F\u7528\u3059\u308B\u30AB\u30B9\u30BF\u30E0\u540D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\uFF08\u30C7\u30D5\u30A9\u30EB\u30C8\uFF1A\u300Ctitle\u300D\uFF09\u3002",
+  NotionCustomTitleText: "\u30D7\u30ED\u30D1\u30C6\u30A3\u540D\u3092\u5165\u529B",
+  NotionCustomValues: "\u30AB\u30B9\u30BF\u30E0\u30D7\u30ED\u30D1\u30C6\u30A3",
+  NotionCustomValuesDesc: "Notion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306B\u540C\u671F\u3059\u308B\u30AB\u30B9\u30BF\u30E0\u30D7\u30ED\u30D1\u30C6\u30A3\u30921\u884C\u306B1\u3064\u305A\u3064\u5B9A\u7FA9\u3057\u307E\u3059\u3002",
   NotionCustomValuesText: "\u540C\u671F\u3057\u305F\u3044\u3059\u3079\u3066\u306E\u30D7\u30ED\u30D1\u30C6\u30A3\u3092\u5165\u529B",
-  NotYetFinish: "\u672A\u5B8C\u4E86\u3002\u3053\u306E\u6A5F\u80FD\u306F\u6B21\u306E\u30D0\u30FC\u30B8\u30E7\u30F3\u3067\u5229\u7528\u53EF\u80FD\u306B\u306A\u308A\u307E\u3059",
+  NotYetFinish: "\u3053\u306E\u6A5F\u80FD\u306F\u5C06\u6765\u306E\u30D0\u30FC\u30B8\u30E7\u30F3\u3067\u5229\u7528\u53EF\u80FD\u306B\u306A\u308A\u307E\u3059\u3002",
   PlaceHolder: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u540D\u3092\u5165\u529B",
-  "notion-logo": "NotionNext\u3067\u5171\u6709",
-  "sync-success": "NotionNext\u3078\u306E\u540C\u671F\u306B\u6210\u529F\uFF1A\n",
-  "sync-fail": "NotionNext\u3078\u306E\u540C\u671F\u306B\u5931\u6557\uFF1A\n",
-  "open-notion": "\u540C\u671F\u304C\u5FC5\u8981\u306A\u30D5\u30A1\u30A4\u30EB\u3092\u958B\u3044\u3066\u304F\u3060\u3055\u3044",
-  "config-secrets-notion-api": "\u8A2D\u5B9A\u30BF\u30D6\u3067Notion API\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044",
-  "config-secrets-database-id": "\u8A2D\u5B9A\u30BF\u30D6\u3067\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9ID\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044",
-  "set-tags-fail": "\u30BF\u30B0\u306E\u8A2D\u5B9A\u306B\u5931\u6557\u3002\u30D5\u30A1\u30A4\u30EB\u306Efrontmatter\u3092\u78BA\u8A8D\u3059\u308B\u304B\u3001\u8A2D\u5B9A\u30BF\u30D6\u3067\u30BF\u30B0\u306E\u30B9\u30A4\u30C3\u30C1\u3092\u30AA\u30D5\u306B\u3057\u3066\u304F\u3060\u3055\u3044",
-  NNonMissing: "\u8A2D\u5B9A\u306B 'NNon' \u30D7\u30ED\u30D1\u30C6\u30A3\u304C\u3042\u308A\u307E\u305B\u3093\u3002\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044",
-  "set-api-id": "\u8A2D\u5B9A\u30BF\u30D6\u3067Notion API\u304A\u3088\u3073\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9ID\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044",
+  "notion-logo": "NotionNext\u3078\u540C\u671F",
+  "sync-preffix": "\u{1F4C4}",
+  "sync-success": "NotionNext\u3078\u306E\u540C\u671F\u304C\u6210\u529F\u3057\u307E\u3057\u305F\u3002\n",
+  "sync-fail": "NotionNext\u3078\u306E\u540C\u671F\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\n",
+  "open-notion": "\u540C\u671F\u3059\u308B\u30D5\u30A1\u30A4\u30EB\u3092\u5148\u306B\u958B\u3044\u3066\u304F\u3060\u3055\u3044\u3002",
+  "config-secrets-notion-api": "\u30D7\u30E9\u30B0\u30A4\u30F3\u8A2D\u5B9A\u3067Notion API\u30AD\u30FC\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  "config-secrets-database-id": "\u30D7\u30E9\u30B0\u30A4\u30F3\u8A2D\u5B9A\u3067\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9ID\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  "set-tags-fail": "\u30BF\u30B0\u306E\u8A2D\u5B9A\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002frontmatter\u3092\u78BA\u8A8D\u3059\u308B\u304B\u3001\u8A2D\u5B9A\u3067\u30BF\u30B0\u540C\u671F\u3092\u7121\u52B9\u306B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  NNonMissing: "'NNon'\u30D7\u30ED\u30D1\u30C6\u30A3\u304C\u8A2D\u5B9A\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002\u8A2D\u5B9A\u3067NotionNext\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  "set-api-id": "\u30D7\u30E9\u30B0\u30A4\u30F3\u8A2D\u5B9A\u3067Notion API\u30AD\u30FC\u3068\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9ID\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
   NotionCustomSettingHeader: "Notion\u30AB\u30B9\u30BF\u30E0\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u8A2D\u5B9A",
-  NotionCustomButton: "Notion\u30AB\u30B9\u30BF\u30DE\u30A4\u30BA\u30B3\u30DE\u30F3\u30C9\u306E\u5207\u308A\u66FF\u3048",
-  NotionCustomButtonDesc: "\u3053\u306E\u30AA\u30D7\u30B7\u30E7\u30F3\u3092\u958B\u304F\u3068\u3001Notion\u30AB\u30B9\u30BF\u30E0\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u540C\u671F\u30B3\u30DE\u30F3\u30C9\u304C\u30B3\u30DE\u30F3\u30C9\u30D1\u30EC\u30C3\u30C8\u306B\u8868\u793A\u3055\u308C\u307E\u3059",
-  CustomPropertyName: "\u30AB\u30B9\u30BF\u30E0\u30D7\u30ED\u30D1\u30C6\u30A3\u540D",
-  CustomPropertyFirstColumn: "\u6700\u521D\u306E\u5217\u306E\u30AB\u30B9\u30BF\u30E0\u30D7\u30ED\u30D1\u30C6\u30A3\u540D",
-  CustomPropertyFirstColumnDesc: "\u6700\u521D\u306E\u5217\u306E\u30AB\u30B9\u30BF\u30E0\u30D7\u30ED\u30D1\u30C6\u30A3\u540D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044",
-  CustomProperty: "\u30AB\u30B9\u30BF\u30E0\u30D7\u30ED\u30D1\u30C6\u30A3",
+  NotionCustomButton: "\u30AB\u30B9\u30BF\u30E0\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u30B3\u30DE\u30F3\u30C9\u3092\u6709\u52B9\u5316",
+  NotionCustomButtonDesc: "\u6709\u52B9\u306B\u3059\u308B\u3068\u3001\u300C\u30AB\u30B9\u30BF\u30E0\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3078\u540C\u671F\u300D\u30B3\u30DE\u30F3\u30C9\u304C\u30B3\u30DE\u30F3\u30C9\u30D1\u30EC\u30C3\u30C8\u306B\u8868\u793A\u3055\u308C\u307E\u3059\u3002",
+  CustomPropertyName: "\u30D7\u30ED\u30D1\u30C6\u30A3\u540D",
+  CustomPropertyFirstColumn: "\u30BF\u30A4\u30C8\u30EB\u30D7\u30ED\u30D1\u30C6\u30A3\u540D",
+  CustomPropertyFirstColumnDesc: "\u30DA\u30FC\u30B8\u306E\u30BF\u30A4\u30C8\u30EB\u3002\u3053\u308C\u306F\u30EA\u30B9\u30C8\u306E\u6700\u521D\u306E\u30D7\u30ED\u30D1\u30C6\u30A3\u3067\u3042\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\u3002",
+  CustomProperty: "\u30D7\u30ED\u30D1\u30C6\u30A3",
   AddCustomProperty: "\u30AB\u30B9\u30BF\u30E0\u30D7\u30ED\u30D1\u30C6\u30A3\u3092\u8FFD\u52A0",
   AddNewProperty: "\u65B0\u3057\u3044\u30D7\u30ED\u30D1\u30C6\u30A3\u3092\u8FFD\u52A0",
-  AddNewPropertyDesc: "\u65B0\u3057\u3044\u30D7\u30ED\u30D1\u30C6\u30A3\u3092\u8FFD\u52A0\u3057\u3066\u304F\u3060\u3055\u3044",
-  CopyErrorMessage: "\u81EA\u52D5\u30B3\u30D4\u30FC\u306B\u5931\u6557\u3057\u307E\u3057\u305F",
-  BlockUploaded: "\u30D6\u30ED\u30C3\u30AF\u304C\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3055\u308C\u307E\u3057\u305F",
-  ExtraBlockUploaded: "\u8FFD\u52A0\u30D6\u30ED\u30C3\u30AF\u304C\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3055\u308C\u307E\u3057\u305F",
-  CheckConsole: "\u8A73\u7D30\u60C5\u5831\u3092\u78BA\u8A8D\u3059\u308B\u306B\u306F\u3001\u30B3\u30F3\u30BD\u30FC\u30EB\u3092\u958B\u3044\u3066\u304F\u3060\u3055\u3044 \n opt+cmd+i/ctrl+shift+i"
+  AddNewPropertyDesc: "Notion\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u30D7\u30ED\u30D1\u30C6\u30A3\u3068\u4E00\u81F4\u3059\u308B\u65B0\u3057\u3044\u30D7\u30ED\u30D1\u30C6\u30A3\u3092\u8FFD\u52A0\u3057\u307E\u3059\u3002",
+  CopyErrorMessage: "\u30EA\u30F3\u30AF\u306E\u81EA\u52D5\u30B3\u30D4\u30FC\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\u624B\u52D5\u3067\u30B3\u30D4\u30FC\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  BlockUploaded: "\u3059\u3079\u3066\u306E\u30D6\u30ED\u30C3\u30AF\u3092\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3057\u307E\u3057\u305F",
+  ExtraBlockUploaded: "\u8FFD\u52A0\u306E\u30D6\u30ED\u30C3\u30AF\u3092\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3057\u307E\u3057\u305F",
+  CheckConsole: "\u8A73\u7D30\u306F\u3001\u958B\u767A\u8005\u30B3\u30F3\u30BD\u30FC\u30EB\uFF08opt+cmd+i \u307E\u305F\u306F ctrl+shift+i\uFF09\u3067\u78BA\u8A8D\u3067\u304D\u307E\u3059\u3002",
+  SettingsMigrated: "\u2728 \u8A2D\u5B9A\u304C\u66F4\u65B0\u3055\u308C\u307E\u3057\u305F\uFF01\u81EA\u52D5\u540C\u671F\u304C\u5229\u7528\u53EF\u80FD\u3067\u3059\u3002\u8A73\u7D30\u306F\u8A2D\u5B9A\u753B\u9762\u3092\u3054\u78BA\u8A8D\u304F\u3060\u3055\u3044\u3002",
+  AutoSyncNoNotionID: "\u{1F195} \u81EA\u52D5\u540C\u671F\uFF1ANotion\u3078\u521D\u3081\u3066\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3057\u307E\u3059",
+  AutoSyncMissingDatabaseList: "\u26A0\uFE0F \u81EA\u52D5\u540C\u671F\u3092\u30B9\u30AD\u30C3\u30D7\uFF1Afrontmatter\u306B `{key}: [\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u540D]` \u3092\u8FFD\u52A0\u3057\u3066\u540C\u671F\u5148\u3092\u6307\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  AutoSyncSkippedAttachments: "\u26A0\uFE0F \u81EA\u52D5\u540C\u671F\u3092\u30B9\u30AD\u30C3\u30D7\uFF1A{filename} \u306B\u5185\u90E8\u6DFB\u4ED8\uFF08\u753B\u50CF/PDF\uFF09\u304C\u542B\u307E\u308C\u3066\u3044\u307E\u3059\u3002\u624B\u52D5\u3067\u540C\u671F\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+  AutoSyncMultipleSync: "\u{1F504} \u81EA\u52D5\u540C\u671F\uFF1A{count}\u500B\u306E\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306B\u540C\u671F\u3057\u3066\u3044\u307E\u3059...",
+  AutoSyncFailed: "{database}\u3078\u306E\u81EA\u52D5\u540C\u671F\u306B\u5931\u6557\u3057\u307E\u3057\u305F\uFF1A{error}",
+  AutoSyncError: "{filename}\u306E\u81EA\u52D5\u540C\u671F\u306B\u5931\u6557\u3057\u307E\u3057\u305F\uFF1A{error}",
+  "reach-mobile-limit": "\u30D6\u30ED\u30C3\u30AF\u4E0A\u9650\uFF08100\uFF09\u306B\u9054\u3057\u307E\u3057\u305F\u3002\u30D6\u30ED\u30C3\u30AF\u6570\u306B\u5236\u9650\u306E\u306A\u3044\u30C7\u30B9\u30AF\u30C8\u30C3\u30D7\u7248\u3092\u3054\u5229\u7528\u304F\u3060\u3055\u3044\u3002",
+  StartUpload: "{filename} \u306E\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u3092\u958B\u59CB\u3057\u307E\u3059...",
+  AddNewDatabase: "\u65B0\u3057\u3044\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3092\u8FFD\u52A0",
+  AddNewDatabaseDesc: "\u65B0\u3057\u3044\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u69CB\u6210\u3092\u8FFD\u52A0",
+  AddNewDatabaseTooltip: "\u65B0\u3057\u3044\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3092\u8FFD\u52A0",
+  EditDatabase: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3092\u7DE8\u96C6",
+  Preview: "\u30D7\u30EC\u30D3\u30E5\u30FC",
+  DatabaseFormatLabel: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u5F62\u5F0F",
+  DatabaseFullNameLabel: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u5168\u79F0",
+  DatabaseAbbreviateNameLabel: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u306E\u7565\u79F0",
+  NotionAPILabel: "Notion API \u30AD\u30FC",
+  DatabaseIDLabel: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9 ID",
+  ToggleAPIKeyVisibility: "API \u30AD\u30FC\u306E\u8868\u793A\u3092\u5207\u308A\u66FF\u3048",
+  CopyAPIKey: "API \u30AD\u30FC\u3092\u30B3\u30D4\u30FC",
+  APIKeyCopied: "API\u30AD\u30FC\u3092\u30AF\u30EA\u30C3\u30D7\u30DC\u30FC\u30C9\u306B\u30B3\u30D4\u30FC\u3057\u307E\u3057\u305F\u3002",
+  ToggleDatabaseIDVisibility: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9 ID \u306E\u8868\u793A\u3092\u5207\u308A\u66FF\u3048",
+  CopyDatabaseID: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9 ID \u3092\u30B3\u30D4\u30FC",
+  DatabaseIDCopied: "\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9ID\u3092\u30AF\u30EA\u30C3\u30D7\u30DC\u30FC\u30C9\u306B\u30B3\u30D4\u30FC\u3057\u307E\u3057\u305F\u3002",
+  AddNewDatabaseModal: "\u65B0\u3057\u3044\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3092\u8FFD\u52A0"
 };
 
 // src/lang/I18n.ts
@@ -3369,7 +3492,7 @@ var FuzzySuggester = class extends import_obsidian2.FuzzySuggestModal {
 };
 
 // src/upload/uploadCommand.ts
-var import_obsidian8 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 
 // node_modules/bail/index.js
 function bail(error) {
@@ -5074,11 +5197,7 @@ function decodeNamedCharacterReference(value) {
   const characterReference2 = "&" + value + ";";
   element.innerHTML = characterReference2;
   const character = element.textContent;
-  if (
-    // @ts-expect-error: TypeScript is wrong that `textContent` on elements can
-    // yield `null`.
-    character.charCodeAt(character.length - 1) === 59 && value !== "semi"
-  ) {
+  if (character.charCodeAt(character.length - 1) === 59 && value !== "semi") {
     return false;
   }
   return character === characterReference2 ? false : character;
@@ -9081,7 +9200,7 @@ function decode($0, $1, $2) {
 // node_modules/mdast-util-from-markdown/lib/index.js
 var own2 = {}.hasOwnProperty;
 function fromMarkdown(value, encoding, options) {
-  if (typeof encoding !== "string") {
+  if (encoding && typeof encoding === "object") {
     options = encoding;
     encoding = void 0;
   }
@@ -14282,6 +14401,59 @@ function loadFront(content3, options) {
 
 // src/upload/updateYaml.ts
 var import_obsidian3 = require("obsidian");
+
+// src/utils/frontmatter.ts
+var DEFAULT_AUTO_SYNC_DATABASE_KEY = "autosync-database";
+function resolveAutoSyncKey(rawKey) {
+  if (typeof rawKey === "string") {
+    const trimmed = rawKey.trim();
+    if (trimmed.length > 0) {
+      return trimmed;
+    }
+  }
+  return DEFAULT_AUTO_SYNC_DATABASE_KEY;
+}
+function toCandidateList(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item != null ? item : "").trim());
+  }
+  if (typeof value === "string") {
+    if (value.includes(",")) {
+      return value.split(",").map((item) => item.trim());
+    }
+    return [value.trim()];
+  }
+  return [];
+}
+function parseAutoSyncDatabaseList(value) {
+  const candidates = toCandidateList(value).map((name) => name.replace(/^\[|\]$/g, "").trim()).filter(Boolean);
+  const seen = /* @__PURE__ */ new Map();
+  for (const name of candidates) {
+    const key = name.toLowerCase();
+    if (!seen.has(key)) {
+      seen.set(key, name);
+    }
+  }
+  return Array.from(seen.values());
+}
+function ensureAutoSyncDatabaseEntry(value, abName) {
+  const current = parseAutoSyncDatabaseList(value);
+  const lower = abName.toLowerCase();
+  let contains = false;
+  const updated = current.map((name) => {
+    if (name.toLowerCase() === lower) {
+      contains = true;
+      return abName;
+    }
+    return name;
+  });
+  if (!contains) {
+    updated.push(abName);
+  }
+  return updated;
+}
+
+// src/upload/updateYaml.ts
 function updateYamlInfo(yamlContent, nowFile, res, app, plugin, dbDetails) {
   return __async(this, null, function* () {
     let { url, id } = res;
@@ -14289,6 +14461,7 @@ function updateYamlInfo(yamlContent, nowFile, res, app, plugin, dbDetails) {
     const { abName } = dbDetails;
     const notionIDKey = `NotionID-${abName}`;
     const linkKey = `link-${abName}`;
+    const autoSyncKey = plugin.getAutoSyncFrontmatterKey();
     if (notionUser !== "") {
       url = url.replace("www.notion.so", `${notionUser}.notion.site`);
     }
@@ -14301,22 +14474,36 @@ function updateYamlInfo(yamlContent, nowFile, res, app, plugin, dbDetails) {
       }
       yamlContent2[notionIDKey] = id;
       NotionLinkDisplay ? yamlContent2[linkKey] = url : null;
+      yamlContent2[autoSyncKey] = ensureAutoSyncDatabaseEntry(
+        yamlContent2[autoSyncKey],
+        abName
+      );
     });
-    try {
-      yield navigator.clipboard.writeText(url);
-    } catch (error) {
-      console.log(error);
-      new import_obsidian3.Notice(`${i18nConfig.CopyErrorMessage}`);
+    if (plugin.settings.autoCopyNotionLink) {
+      try {
+        yield navigator.clipboard.writeText(url);
+      } catch (error) {
+        console.log(error);
+        new import_obsidian3.Notice(`${i18nConfig.CopyErrorMessage}`);
+      }
     }
   });
 }
 
 // src/upload/common/UploadBase.ts
 var import_obsidian4 = require("obsidian");
+var NOTION_API_VERSION = "2025-09-03";
 var UploadBase = class {
   constructor(plugin, dbDetails) {
+    this.isAutoSync = false;
     this.plugin = plugin;
     this.dbDetails = dbDetails;
+  }
+  shouldShowSuccessNotices() {
+    if (!this.isAutoSync) {
+      return true;
+    }
+    return !!this.plugin.settings.autoSyncSuccessNotice;
   }
   deletePage(notionID) {
     return __async(this, null, function* () {
@@ -14327,7 +14514,7 @@ var UploadBase = class {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + notionAPI,
-          "Notion-Version": "2022-06-28"
+          "Notion-Version": NOTION_API_VERSION
         },
         body: "",
         throw: false
@@ -14408,7 +14595,7 @@ var UploadBase = class {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + notionAPI,
-          "Notion-Version": "2022-06-28"
+          "Notion-Version": NOTION_API_VERSION
         },
         body: JSON.stringify(body),
         throw: false
@@ -14460,7 +14647,7 @@ var UploadBase = class {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + notionAPI,
-            "Notion-Version": "2022-06-28"
+            "Notion-Version": NOTION_API_VERSION
           },
           body: JSON.stringify(extraBlocks),
           throw: false
@@ -14477,7 +14664,9 @@ var UploadBase = class {
           console.log(`${i18nConfig["ExtraBlockUploaded"]} to page: ${pageId}`);
           if (i === extraChunks.length - 1) {
             console.log(`${i18nConfig["BlockUploaded"]} to page: ${pageId}`);
-            new import_obsidian4.Notice(`${i18nConfig["BlockUploaded"]} page: ${pageId}`, 5e3);
+            if (this.shouldShowSuccessNotices()) {
+              new import_obsidian4.Notice(`${i18nConfig["BlockUploaded"]} page: ${pageId}`, 5e3);
+            }
           }
         }
       }
@@ -14491,7 +14680,7 @@ var UploadBase = class {
         method: "GET",
         headers: {
           Authorization: "Bearer " + notionAPI,
-          "Notion-Version": "2022-06-28"
+          "Notion-Version": NOTION_API_VERSION
         },
         throw: false
       }).catch(
@@ -14531,6 +14720,788 @@ var UploadBase = class {
   }
 };
 
+// src/upload/common/AttachmentProcessor.ts
+var import_obsidian6 = require("obsidian");
+
+// src/upload/common/AttachmentUploader.ts
+var import_obsidian5 = require("obsidian");
+var NOTION_API_VERSION2 = "2025-09-03";
+var MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
+var AttachmentUploader = class {
+  constructor(plugin, dbDetails) {
+    this.textEncoder = new TextEncoder();
+    this.plugin = plugin;
+    this.dbDetails = dbDetails;
+  }
+  uploadFile(file) {
+    return __async(this, null, function* () {
+      var _a, _b, _c;
+      const { notionAPI } = this.dbDetails;
+      const fileSizeBytes = (_b = (_a = file.stat) == null ? void 0 : _a.size) != null ? _b : 0;
+      const contentType = this.getContentType(file.extension);
+      if (fileSizeBytes > MAX_UPLOAD_BYTES) {
+        throw new Error(
+          `File too large for Notion upload (max 5MB): ${file.path} (${(fileSizeBytes / 1024 / 1024).toFixed(2)} MB)`
+        );
+      }
+      const mode = "single_part";
+      console.log(`[AttachmentUploader] uploadFile: ${file.name}`, {
+        path: file.path,
+        size: `${(fileSizeBytes / 1024).toFixed(2)} KB`,
+        contentType,
+        mode
+      });
+      const session = yield this.createUploadSession({
+        mode,
+        notionAPI
+      });
+      console.log(`[AttachmentUploader] Upload session created:`, {
+        sessionId: session.id,
+        status: session.status
+      });
+      const binary = yield this.plugin.app.vault.readBinary(file);
+      console.log(`[AttachmentUploader] Read binary data: ${binary.byteLength} bytes`);
+      if (binary.byteLength > MAX_UPLOAD_BYTES) {
+        throw new Error(
+          `File too large for Notion upload (max 5MB): ${file.path} (${(binary.byteLength / 1024 / 1024).toFixed(2)} MB)`
+        );
+      }
+      const uploadUrl = (_c = session.upload_url) != null ? _c : `https://api.notion.com/v1/file_uploads/${encodeURIComponent(session.id)}/send`;
+      yield this.sendFileData(session.id, uploadUrl, binary, notionAPI, file.name, contentType);
+      console.log(`[AttachmentUploader] Upload complete: ${file.name} -> ${session.id}`);
+      return { id: session.id, filename: file.name };
+    });
+  }
+  createUploadSession(params) {
+    return __async(this, null, function* () {
+      var _a, _b, _c;
+      console.log(`[AttachmentUploader] Creating upload session:`, {
+        mode: params.mode
+      });
+      const response = yield this.requestWithRetry({
+        url: "https://api.notion.com/v1/file_uploads",
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${params.notionAPI}`,
+          "Notion-Version": NOTION_API_VERSION2
+        },
+        body: JSON.stringify({
+          mode: params.mode
+        }),
+        throw: false
+      });
+      const data = response.json;
+      if (response.status < 200 || response.status >= 300) {
+        console.error(`[AttachmentUploader] Failed to create upload session:`, {
+          status: response.status,
+          message: data == null ? void 0 : data.message,
+          response: data
+        });
+        throw new Error(`Failed to create upload session: ${(_a = data == null ? void 0 : data.message) != null ? _a : response.status}`);
+      }
+      const id = (_c = data == null ? void 0 : data.id) != null ? _c : (_b = data == null ? void 0 : data.file_upload) == null ? void 0 : _b.id;
+      if (!id) {
+        throw new Error("Upload session response missing id");
+      }
+      return { id, status: data.status, upload_url: data.upload_url };
+    });
+  }
+  sendFileData(fileUploadId, uploadUrl, binary, notionAPI, filename, contentType) {
+    return __async(this, null, function* () {
+      var _a;
+      console.log(`[AttachmentUploader] Sending file data for session: ${fileUploadId} (${binary.byteLength} bytes)`);
+      const { body, boundary } = this.buildMultipartBody({
+        fieldName: "file",
+        filename,
+        contentType: contentType || "application/octet-stream",
+        binary
+      });
+      const response = yield this.requestWithRetry({
+        url: uploadUrl,
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "Content-Type": `multipart/form-data; boundary=${boundary}`,
+          Authorization: `Bearer ${notionAPI}`,
+          "Notion-Version": NOTION_API_VERSION2
+        },
+        body,
+        throw: false
+      });
+      const data = response.json;
+      if (response.status < 200 || response.status >= 300) {
+        console.error(`[AttachmentUploader] Failed to send file data:`, {
+          sessionId: fileUploadId,
+          status: response.status,
+          message: data == null ? void 0 : data.message,
+          response: data
+        });
+        throw new Error(`Failed to send file data: ${(_a = data == null ? void 0 : data.message) != null ? _a : response.status}`);
+      }
+      console.log(`[AttachmentUploader] File data sent successfully for session: ${fileUploadId}`);
+    });
+  }
+  buildMultipartBody(params) {
+    const boundary = `----NotionFormBoundary${Math.random().toString(16).slice(2)}${Math.random().toString(16).slice(2)}`;
+    const safeFilename = params.filename.replace(/"/g, '\\"');
+    const prefix = [
+      `--${boundary}\r
+`,
+      `Content-Disposition: form-data; name="${params.fieldName}"; filename="${safeFilename}"\r
+`,
+      `Content-Type: ${params.contentType}\r
+`,
+      `\r
+`
+    ].join("");
+    const suffix = `\r
+--${boundary}--\r
+`;
+    const prefixBytes = this.textEncoder.encode(prefix);
+    const fileBytes = new Uint8Array(params.binary);
+    const suffixBytes = this.textEncoder.encode(suffix);
+    const out = new Uint8Array(prefixBytes.length + fileBytes.length + suffixBytes.length);
+    out.set(prefixBytes, 0);
+    out.set(fileBytes, prefixBytes.length);
+    out.set(suffixBytes, prefixBytes.length + fileBytes.length);
+    return { body: out.buffer, boundary };
+  }
+  requestWithRetry(params, maxAttempts = 4) {
+    return __async(this, null, function* () {
+      let attempt = 0;
+      let lastError;
+      while (attempt < maxAttempts) {
+        attempt++;
+        try {
+          const response = yield (0, import_obsidian5.requestUrl)(params);
+          if (this.shouldRetry(response.status) && attempt < maxAttempts) {
+            const delayMs = this.getRetryDelay(response, attempt);
+            console.warn(`[AttachmentUploader] Retryable status ${response.status}, attempt ${attempt}/${maxAttempts}, retrying in ${delayMs}ms`);
+            yield this.sleep(delayMs);
+            continue;
+          }
+          return response;
+        } catch (error) {
+          lastError = error;
+          console.error(`[AttachmentUploader] Request failed, attempt ${attempt}/${maxAttempts}:`, error);
+          if (attempt >= maxAttempts)
+            break;
+          const delayMs = this.getRetryDelay(void 0, attempt);
+          console.warn(`[AttachmentUploader] Retrying in ${delayMs}ms`);
+          yield this.sleep(delayMs);
+        }
+      }
+      console.error(`[AttachmentUploader] Request failed after ${maxAttempts} attempts`);
+      throw lastError != null ? lastError : new Error("Request failed after retries");
+    });
+  }
+  shouldRetry(status) {
+    return status === 429 || status === 500 || status === 502 || status === 503 || status === 504;
+  }
+  getRetryDelay(response, attempt) {
+    var _a, _b, _c;
+    const retryAfter = (_c = (_a = response == null ? void 0 : response.headers) == null ? void 0 : _a["retry-after"]) != null ? _c : (_b = response == null ? void 0 : response.headers) == null ? void 0 : _b["Retry-After"];
+    if (retryAfter) {
+      const seconds = parseInt(retryAfter, 10);
+      if (!isNaN(seconds))
+        return seconds * 1e3;
+    }
+    const base = 500;
+    const max = 8e3;
+    const expo = Math.min(max, base * Math.pow(2, attempt - 1));
+    const jitter = Math.floor(Math.random() * 250);
+    return expo + jitter;
+  }
+  sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  getContentType(extension2) {
+    var _a;
+    const ext = extension2.toLowerCase();
+    const mimeTypes = {
+      png: "image/png",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      gif: "image/gif",
+      webp: "image/webp",
+      svg: "image/svg+xml",
+      heic: "image/heic",
+      tif: "image/tiff",
+      tiff: "image/tiff",
+      bmp: "image/bmp",
+      pdf: "application/pdf"
+    };
+    return (_a = mimeTypes[ext]) != null ? _a : "application/octet-stream";
+  }
+};
+
+// src/upload/common/AttachmentProcessor.ts
+var IMAGE_EXTENSIONS = /* @__PURE__ */ new Set([
+  "png",
+  "jpg",
+  "jpeg",
+  "gif",
+  "webp",
+  "svg",
+  "heic",
+  "tif",
+  "tiff",
+  "bmp"
+]);
+var SUPPORTED_EXTENSIONS = /* @__PURE__ */ new Set([
+  ...IMAGE_EXTENSIONS,
+  "pdf"
+]);
+var AttachmentProcessor = class {
+  constructor(plugin, dbDetails) {
+    this.plugin = plugin;
+    this.dbDetails = dbDetails;
+    this.uploader = new AttachmentUploader(plugin, dbDetails);
+  }
+  isStandaloneOnLine(input, offset, match) {
+    const lineStart = input.lastIndexOf("\n", Math.max(0, offset - 1)) + 1;
+    const lineEndIdx = input.indexOf("\n", offset + match.length);
+    const lineEnd = lineEndIdx === -1 ? input.length : lineEndIdx;
+    const before = input.slice(lineStart, offset).trim();
+    const after = input.slice(offset + match.length, lineEnd).trim();
+    return before.length === 0 && after.length === 0;
+  }
+  hasInternalAttachments(content3, sourceFile) {
+    const app = this.plugin.app;
+    const contentWithoutCode = content3.replace(/```[\s\S]*?```|`[^`\n]+`/g, "");
+    const embedImageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+    const embedWikilinkRegex = /!\[\[([^\]]+)\]\]/g;
+    const linkMarkdownRegex = new RegExp("(?<!!)\\[([^\\]]+)\\]\\(([^)]+)\\)", "g");
+    const linkWikilinkRegex = new RegExp("(?<!!)\\[\\[([^\\]]+)\\]\\]", "g");
+    let match;
+    while ((match = embedImageRegex.exec(contentWithoutCode)) !== null) {
+      const rawPath = this.parseDestination(match[2]);
+      if (this.shouldSkipLinkDestination(rawPath))
+        continue;
+      const file = this.resolveFile(app, sourceFile, rawPath, { log: false });
+      if (file && this.isSupported(file))
+        return true;
+    }
+    while ((match = embedWikilinkRegex.exec(contentWithoutCode)) !== null) {
+      const linkPath = this.parseWikilink(match[1]);
+      if (this.shouldSkipLinkDestination(linkPath))
+        continue;
+      const file = this.resolveFile(app, sourceFile, linkPath, { log: false });
+      if (file && this.isSupported(file))
+        return true;
+    }
+    while ((match = linkMarkdownRegex.exec(contentWithoutCode)) !== null) {
+      const rawPath = this.parseDestination(match[2]);
+      if (this.shouldSkipLinkDestination(rawPath))
+        continue;
+      const file = this.resolveFile(app, sourceFile, rawPath, { log: false });
+      if (file && this.isSupported(file))
+        return true;
+    }
+    while ((match = linkWikilinkRegex.exec(contentWithoutCode)) !== null) {
+      const linkPath = this.parseWikilink(match[1]);
+      if (this.shouldSkipLinkDestination(linkPath))
+        continue;
+      const file = this.resolveFile(app, sourceFile, linkPath, { log: false });
+      if (file && this.isSupported(file))
+        return true;
+    }
+    return false;
+  }
+  processContent(content3, sourceFile) {
+    return __async(this, null, function* () {
+      console.log(`[AttachmentProcessor] Starting attachment processing for file: ${sourceFile.path}`);
+      const codeBlockPlaceholders = [];
+      const contentWithoutCode = content3.replace(/```[\s\S]*?```|`[^`\n]+`/g, (match) => {
+        const placeholder = `__CODE_BLOCK_${codeBlockPlaceholders.length}__`;
+        codeBlockPlaceholders.push(match);
+        return placeholder;
+      });
+      console.log(`[AttachmentProcessor] Stripped ${codeBlockPlaceholders.length} code blocks`);
+      const { internal, external } = this.collectAttachments(contentWithoutCode, sourceFile);
+      if (external.length > 0) {
+        console.log(`[AttachmentProcessor] Found ${external.length} external reference(s) (will be skipped):`);
+        external.forEach((ref, idx) => {
+          console.log(`  ${idx + 1}. [EXTERNAL] ${ref}`);
+        });
+      }
+      if (internal.length === 0) {
+        console.log(`[AttachmentProcessor] No internal attachments found in ${sourceFile.path}`);
+        return {
+          content: content3,
+          imageUrlToUploadId: {},
+          filePlaceholderToUpload: {}
+        };
+      }
+      console.log(`[AttachmentProcessor] Found ${internal.length} internal attachment(s) to upload:`);
+      internal.forEach((attachment, idx) => {
+        const typeLabel = this.isImage(attachment.file) ? "IMAGE" : "FILE";
+        const sizeKB = (attachment.file.stat.size / 1024).toFixed(2);
+        console.log(`  ${idx + 1}. [${typeLabel}] ${attachment.file.path} (${sizeKB} KB) - Ref: "${attachment.originalRef}"`);
+      });
+      const uploadedMap = /* @__PURE__ */ new Map();
+      for (const attachment of internal) {
+        try {
+          console.log(`[AttachmentProcessor] Uploading: ${attachment.file.path} (${(attachment.file.stat.size / 1024).toFixed(2)} KB)`);
+          const result = yield this.uploader.uploadFile(attachment.file);
+          uploadedMap.set(attachment.file.path, { id: result.id, file: attachment.file });
+          console.log(`[AttachmentProcessor] \u2713 Uploaded successfully: ${attachment.file.name} -> ${result.id}`);
+        } catch (error) {
+          console.error(`[AttachmentProcessor] \u2717 Failed to upload ${attachment.file.path}:`, error);
+        }
+      }
+      console.log(`[AttachmentProcessor] Upload complete: ${uploadedMap.size}/${internal.length} successful`);
+      const rewriteResult = this.rewriteContent(contentWithoutCode, sourceFile, uploadedMap);
+      let restoredContent = rewriteResult.content;
+      codeBlockPlaceholders.forEach((code4, idx) => {
+        restoredContent = restoredContent.replace(`__CODE_BLOCK_${idx}__`, code4);
+      });
+      console.log(`[AttachmentProcessor] Content rewrite complete:`, {
+        imageReplacements: Object.keys(rewriteResult.imageUrlToUploadId).length,
+        fileReplacements: Object.keys(rewriteResult.filePlaceholderToUpload).length
+      });
+      return {
+        content: restoredContent,
+        imageUrlToUploadId: rewriteResult.imageUrlToUploadId,
+        filePlaceholderToUpload: rewriteResult.filePlaceholderToUpload
+      };
+    });
+  }
+  collectAttachments(content3, sourceFile) {
+    const internal = [];
+    const external = [];
+    const seen = /* @__PURE__ */ new Set();
+    const app = this.plugin.app;
+    console.log(`[AttachmentProcessor] Scanning for attachments in content (${content3.length} chars)`);
+    const embedImageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+    const embedWikilinkRegex = /!\[\[([^\]]+)\]\]/g;
+    const linkMarkdownRegex = new RegExp("(?<!!)\\[([^\\]]+)\\]\\(([^)]+)\\)", "g");
+    const linkWikilinkRegex = new RegExp("(?<!!)\\[\\[([^\\]]+)\\]\\]", "g");
+    let match;
+    let embedCount = 0;
+    while ((match = embedImageRegex.exec(content3)) !== null) {
+      embedCount++;
+      const rawPath = this.parseDestination(match[2]);
+      console.log(`[AttachmentProcessor] Found embedded image #${embedCount}: "${match[0]}" -> parsed path: "${rawPath}"`);
+      if (this.shouldSkipLinkDestination(rawPath)) {
+        if (this.isTodoUrl(rawPath)) {
+          console.log(`[AttachmentProcessor]   \u2298 Unsupported URL scheme (TODO, skipped): ${rawPath}`);
+        } else {
+          console.log(`[AttachmentProcessor]   \u2298 External URL (skipped): ${rawPath}`);
+        }
+        external.push(match[0]);
+        continue;
+      }
+      const file = this.resolveFile(app, sourceFile, rawPath);
+      if (!file) {
+        console.log(`[AttachmentProcessor]   \u2717 Could not resolve file for path: "${rawPath}"`);
+      } else if (!this.isSupported(file)) {
+        console.log(`[AttachmentProcessor]   \u2717 Unsupported file type: ${file.extension} (${file.path})`);
+      } else if (seen.has(file.path)) {
+        console.log(`[AttachmentProcessor]   \u229A Duplicate (already added): ${file.path}`);
+      } else {
+        seen.add(file.path);
+        internal.push({ file, originalRef: match[0] });
+        console.log(`[AttachmentProcessor]   \u2713 Added: ${file.path}`);
+      }
+    }
+    let wikiEmbedCount = 0;
+    while ((match = embedWikilinkRegex.exec(content3)) !== null) {
+      wikiEmbedCount++;
+      const linkPath = this.parseWikilink(match[1]);
+      console.log(`[AttachmentProcessor] Found embedded wikilink #${wikiEmbedCount}: "${match[0]}" -> parsed path: "${linkPath}"`);
+      if (this.shouldSkipLinkDestination(linkPath)) {
+        if (this.isTodoUrl(linkPath)) {
+          console.log(`[AttachmentProcessor]   \u2298 Unsupported URL scheme (TODO, skipped): ${linkPath}`);
+        } else {
+          console.log(`[AttachmentProcessor]   \u2298 External URL (skipped): ${linkPath}`);
+        }
+        external.push(match[0]);
+        continue;
+      }
+      const file = this.resolveFile(app, sourceFile, linkPath);
+      if (!file) {
+        console.log(`[AttachmentProcessor]   \u2717 Could not resolve file for path: "${linkPath}"`);
+      } else if (!this.isSupported(file)) {
+        console.log(`[AttachmentProcessor]   \u2717 Unsupported file type: ${file.extension} (${file.path})`);
+      } else if (seen.has(file.path)) {
+        console.log(`[AttachmentProcessor]   \u229A Duplicate (already added): ${file.path}`);
+      } else {
+        seen.add(file.path);
+        internal.push({ file, originalRef: match[0] });
+        console.log(`[AttachmentProcessor]   \u2713 Added: ${file.path}`);
+      }
+    }
+    let linkCount = 0;
+    while ((match = linkMarkdownRegex.exec(content3)) !== null) {
+      linkCount++;
+      const rawPath = this.parseDestination(match[2]);
+      console.log(`[AttachmentProcessor] Found markdown link #${linkCount}: "${match[0]}" -> parsed path: "${rawPath}"`);
+      if (this.shouldSkipLinkDestination(rawPath)) {
+        if (this.isTodoUrl(rawPath)) {
+          console.log(`[AttachmentProcessor]   \u2298 Unsupported URL scheme (TODO, skipped): ${rawPath}`);
+        } else {
+          console.log(`[AttachmentProcessor]   \u2298 External URL (skipped): ${rawPath}`);
+        }
+        external.push(match[0]);
+        continue;
+      }
+      const file = this.resolveFile(app, sourceFile, rawPath);
+      if (!file) {
+        console.log(`[AttachmentProcessor]   \u2717 Could not resolve file for path: "${rawPath}"`);
+      } else if (!this.isSupported(file)) {
+        console.log(`[AttachmentProcessor]   \u2717 Unsupported file type: ${file.extension} (${file.path})`);
+      } else if (seen.has(file.path)) {
+        console.log(`[AttachmentProcessor]   \u229A Duplicate (already added): ${file.path}`);
+      } else {
+        seen.add(file.path);
+        internal.push({ file, originalRef: match[0] });
+        console.log(`[AttachmentProcessor]   \u2713 Added: ${file.path}`);
+      }
+    }
+    let wikilinkCount = 0;
+    while ((match = linkWikilinkRegex.exec(content3)) !== null) {
+      wikilinkCount++;
+      const linkPath = this.parseWikilink(match[1]);
+      console.log(`[AttachmentProcessor] Found wikilink reference #${wikilinkCount}: "${match[0]}" -> parsed path: "${linkPath}"`);
+      if (this.shouldSkipLinkDestination(linkPath)) {
+        if (this.isTodoUrl(linkPath)) {
+          console.log(`[AttachmentProcessor]   \u2298 Unsupported URL scheme (TODO, skipped): ${linkPath}`);
+        } else {
+          console.log(`[AttachmentProcessor]   \u2298 External URL (skipped): ${linkPath}`);
+        }
+        external.push(match[0]);
+        continue;
+      }
+      const file = this.resolveFile(app, sourceFile, linkPath);
+      if (!file) {
+        console.log(`[AttachmentProcessor]   \u2717 Could not resolve file for path: "${linkPath}"`);
+      } else if (!this.isSupported(file)) {
+        console.log(`[AttachmentProcessor]   \u2717 Unsupported file type: ${file.extension} (${file.path})`);
+      } else if (seen.has(file.path)) {
+        console.log(`[AttachmentProcessor]   \u229A Duplicate (already added): ${file.path}`);
+      } else {
+        seen.add(file.path);
+        internal.push({ file, originalRef: match[0] });
+        console.log(`[AttachmentProcessor]   \u2713 Added: ${file.path}`);
+      }
+    }
+    console.log(`[AttachmentProcessor] Scan complete: ${embedCount} embeds, ${wikiEmbedCount} wiki-embeds, ${linkCount} links, ${wikilinkCount} wikilinks -> ${internal.length} internal attachments, ${external.length} external references`);
+    return { internal, external };
+  }
+  rewriteContent(content3, sourceFile, uploadedMap) {
+    const imageUrlToUploadId = {};
+    const filePlaceholderToUpload = {};
+    const app = this.plugin.app;
+    let rewritten = content3;
+    rewritten = rewritten.replace(
+      /!\[([^\]]*)\]\(([^)]+)\)/g,
+      (fullMatch, altText, rawDest, offset, input) => {
+        const path3 = this.parseDestination(rawDest);
+        if (this.shouldSkipLinkDestination(path3))
+          return fullMatch;
+        const file = this.resolveFile(app, sourceFile, path3);
+        if (!file)
+          return fullMatch;
+        const uploaded = uploadedMap.get(file.path);
+        if (!uploaded)
+          return fullMatch;
+        if (this.isImage(file)) {
+          const sentinelUrl = this.buildSentinelUrl(uploaded.id, file, altText);
+          imageUrlToUploadId[sentinelUrl] = uploaded.id;
+          const markdown = `![${altText}](${sentinelUrl})`;
+          return typeof offset === "number" && typeof input === "string" && this.isStandaloneOnLine(input, offset, fullMatch) ? `
+
+${markdown}
+
+` : markdown;
+        } else {
+          const token = `__NOTION_FILE_UPLOAD__:${uploaded.id}`;
+          filePlaceholderToUpload[token] = { id: uploaded.id, name: file.name };
+          return `
+
+\`${token}\`
+
+`;
+        }
+      }
+    );
+    rewritten = rewritten.replace(
+      /!\[\[([^\]]+)\]\]/g,
+      (fullMatch, inner, offset, input) => {
+        const linkPath = this.parseWikilink(inner);
+        if (this.shouldSkipLinkDestination(linkPath))
+          return fullMatch;
+        const file = this.resolveFile(app, sourceFile, linkPath);
+        if (!file)
+          return fullMatch;
+        const uploaded = uploadedMap.get(file.path);
+        if (!uploaded)
+          return fullMatch;
+        if (this.isImage(file)) {
+          const sentinelUrl = this.buildSentinelUrl(uploaded.id, file);
+          imageUrlToUploadId[sentinelUrl] = uploaded.id;
+          const markdown = `![](${sentinelUrl})`;
+          return typeof offset === "number" && typeof input === "string" && this.isStandaloneOnLine(input, offset, fullMatch) ? `
+
+${markdown}
+
+` : markdown;
+        } else {
+          const token = `__NOTION_FILE_UPLOAD__:${uploaded.id}`;
+          filePlaceholderToUpload[token] = { id: uploaded.id, name: file.name };
+          return `
+
+\`${token}\`
+
+`;
+        }
+      }
+    );
+    rewritten = rewritten.replace(
+      new RegExp("(?<!!)\\[([^\\]]+)\\]\\(([^)]+)\\)", "g"),
+      (fullMatch, _linkText, rawDest) => {
+        const path3 = this.parseDestination(rawDest);
+        if (this.shouldSkipLinkDestination(path3))
+          return fullMatch;
+        const file = this.resolveFile(app, sourceFile, path3);
+        if (!file)
+          return fullMatch;
+        const uploaded = uploadedMap.get(file.path);
+        if (!uploaded)
+          return fullMatch;
+        const token = `__NOTION_FILE_UPLOAD__:${uploaded.id}`;
+        filePlaceholderToUpload[token] = { id: uploaded.id, name: file.name };
+        return `
+
+\`${token}\`
+
+`;
+      }
+    );
+    rewritten = rewritten.replace(
+      new RegExp("(?<!!)\\[\\[([^\\]]+)\\]\\]", "g"),
+      (fullMatch, inner) => {
+        const linkPath = this.parseWikilink(inner);
+        if (this.shouldSkipLinkDestination(linkPath))
+          return fullMatch;
+        const file = this.resolveFile(app, sourceFile, linkPath);
+        if (!file)
+          return fullMatch;
+        const uploaded = uploadedMap.get(file.path);
+        if (!uploaded)
+          return fullMatch;
+        const token = `__NOTION_FILE_UPLOAD__:${uploaded.id}`;
+        filePlaceholderToUpload[token] = { id: uploaded.id, name: file.name };
+        return `
+
+\`${token}\`
+
+`;
+      }
+    );
+    return { content: rewritten, imageUrlToUploadId, filePlaceholderToUpload };
+  }
+  parseDestination(rawDest) {
+    const trimmed = rawDest.trim();
+    if (trimmed.startsWith("<") && trimmed.includes(">")) {
+      const end = trimmed.indexOf(">");
+      return this.decodePathOrUrl(trimmed.slice(1, end));
+    }
+    const match = trimmed.match(/^(\S+)/);
+    return this.decodePathOrUrl(match ? match[1] : trimmed);
+  }
+  parseWikilink(inner) {
+    var _a, _b, _c, _d;
+    const trimmed = inner.trim();
+    const beforeAlias = (_b = (_a = trimmed.split("|")[0]) == null ? void 0 : _a.trim()) != null ? _b : trimmed;
+    const beforeHeading = (_d = (_c = beforeAlias.split("#")[0]) == null ? void 0 : _c.trim()) != null ? _d : beforeAlias;
+    return this.decodePathOrUrl(beforeHeading);
+  }
+  decodePathOrUrl(value) {
+    var _a;
+    const stripped = (_a = value.split(/[?#]/)[0]) != null ? _a : value;
+    try {
+      return decodeURIComponent(stripped);
+    } catch (e) {
+      return stripped;
+    }
+  }
+  isExternalUrl(link2) {
+    return link2.startsWith("http://") || link2.startsWith("https://");
+  }
+  isTodoUrl(link2) {
+    return link2.startsWith("obsidian://") || link2.startsWith("app://");
+  }
+  shouldSkipLinkDestination(link2) {
+    return this.isExternalUrl(link2) || this.isTodoUrl(link2);
+  }
+  resolveFile(app, sourceFile, link2, options) {
+    const shouldLog = (options == null ? void 0 : options.log) !== false;
+    const log = (...args) => {
+      if (shouldLog)
+        console.log(...args);
+    };
+    if (!link2.trim()) {
+      log(`[AttachmentProcessor] resolveFile: empty link`);
+      return null;
+    }
+    if (this.isTodoUrl(link2)) {
+      return null;
+    }
+    const cached = app.metadataCache.getFirstLinkpathDest(link2, sourceFile.path);
+    if (cached instanceof import_obsidian6.TFile) {
+      log(`[AttachmentProcessor] resolveFile: \u2713 Resolved via metadata cache: ${link2} -> ${cached.path}`);
+      return cached;
+    }
+    const byPath = app.vault.getAbstractFileByPath((0, import_obsidian6.normalizePath)(link2));
+    if (byPath instanceof import_obsidian6.TFile) {
+      log(`[AttachmentProcessor] resolveFile: \u2713 Resolved via absolute path: ${link2} -> ${byPath.path}`);
+      return byPath;
+    }
+    const sourceDir = sourceFile.path.includes("/") ? sourceFile.path.slice(0, sourceFile.path.lastIndexOf("/")) : "";
+    const relPath = (0, import_obsidian6.normalizePath)(sourceDir ? `${sourceDir}/${link2}` : link2);
+    const byRel = app.vault.getAbstractFileByPath(relPath);
+    if (byRel instanceof import_obsidian6.TFile) {
+      log(`[AttachmentProcessor] resolveFile: \u2713 Resolved via relative path: ${link2} -> ${byRel.path}`);
+      return byRel;
+    }
+    log(`[AttachmentProcessor] resolveFile: \u2717 Failed to resolve: ${link2} (tried cache, absolute, relative)`);
+    return null;
+  }
+  /*
+  	// TODO: Support `obsidian://` URL destinations.
+  	private parseObsidianUrl(url: string): string | null {
+  		try {
+  			const urlObj = new URL(url);
+  			// obsidian://open?vault=VaultName&file=path/to/file.png
+  			const filePath = urlObj.searchParams.get("file");
+  			if (filePath) {
+  				return decodeURIComponent(filePath);
+  			}
+  			return null;
+  		} catch {
+  			return null;
+  		}
+  	}
+  
+  	// TODO: Support `app://` URL destinations.
+  	private parseAppUrl(url: string): string | null {
+  		try {
+  			const urlObj = new URL(url);
+  			const pathname = urlObj.pathname;
+  			if (!pathname || pathname === "/") return null;
+  			return decodeURIComponent(pathname);
+  		} catch {
+  			return null;
+  		}
+  	}
+  
+  	// TODO: Support mapping absolute paths to vault paths for `app://local/...`.
+  	private mapAbsolutePathToVault(app: App, absolutePath: string): string | null {
+  		const adapter: any = app.vault.adapter;
+  		if (typeof adapter?.getBasePath !== "function") {
+  			return null;
+  		}
+  
+  		let normalizedAbsolute = absolutePath.replace(/\\/g, "/");
+  		if (/^\/[A-Za-z]:\//.test(normalizedAbsolute)) {
+  			normalizedAbsolute = normalizedAbsolute.slice(1);
+  		}
+  
+  		let basePath = String(adapter.getBasePath()).replace(/\\/g, "/");
+  		if (basePath.endsWith("/")) {
+  			basePath = basePath.slice(0, -1);
+  		}
+  		if (/^\/[A-Za-z]:\//.test(basePath)) {
+  			basePath = basePath.slice(1);
+  		}
+  
+  		const windowsStyle = /^[A-Za-z]:\//.test(basePath);
+  		const compareAbsolute = windowsStyle ? normalizedAbsolute.toLowerCase() : normalizedAbsolute;
+  		const compareBase = windowsStyle ? basePath.toLowerCase() : basePath;
+  
+  		if (!compareAbsolute.startsWith(compareBase)) {
+  			return null;
+  		}
+  
+  		let relative = normalizedAbsolute.slice(basePath.length);
+  		if (relative.startsWith("/")) {
+  			relative = relative.slice(1);
+  		}
+  		return relative || null;
+  	}
+  	*/
+  isSupported(file) {
+    var _a, _b;
+    const ext = (_b = (_a = file.extension) == null ? void 0 : _a.toLowerCase()) != null ? _b : "";
+    return SUPPORTED_EXTENSIONS.has(ext);
+  }
+  isImage(file) {
+    var _a, _b;
+    const ext = (_b = (_a = file.extension) == null ? void 0 : _a.toLowerCase()) != null ? _b : "";
+    return IMAGE_EXTENSIONS.has(ext);
+  }
+  buildSentinelUrl(uploadId, file, _altText) {
+    var _a, _b;
+    const ext = (_b = (_a = file.extension) == null ? void 0 : _a.toLowerCase()) != null ? _b : "";
+    const suffix = ext ? `.${ext}` : "";
+    return `https://notion-file-upload.local/${uploadId}${suffix}`;
+  }
+};
+function applyBlockRewrites(blocks, rewrites) {
+  transformBlocksInPlace(blocks, rewrites);
+}
+function transformBlocksInPlace(blocks, rewrites) {
+  var _a, _b, _c, _d;
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i];
+    if ((block == null ? void 0 : block.type) === "image" && ((_a = block == null ? void 0 : block.image) == null ? void 0 : _a.type) === "external") {
+      const url = (_c = (_b = block.image) == null ? void 0 : _b.external) == null ? void 0 : _c.url;
+      if (url && rewrites.imageUrlToUploadId[url]) {
+        const caption = (_d = block.image) == null ? void 0 : _d.caption;
+        block.image = __spreadValues({
+          type: "file_upload",
+          file_upload: { id: rewrites.imageUrlToUploadId[url] }
+        }, caption ? { caption } : {});
+      }
+    }
+    if ((block == null ? void 0 : block.type) === "paragraph") {
+      const token = extractParagraphText(block);
+      if (token && rewrites.filePlaceholderToUpload[token]) {
+        const { id, name } = rewrites.filePlaceholderToUpload[token];
+        blocks[i] = buildFileBlock(id, name);
+      }
+    }
+    const inner = block == null ? void 0 : block[block == null ? void 0 : block.type];
+    if ((inner == null ? void 0 : inner.children) && Array.isArray(inner.children)) {
+      transformBlocksInPlace(inner.children, rewrites);
+    }
+  }
+}
+function extractParagraphText(block) {
+  var _a;
+  const richText2 = (_a = block == null ? void 0 : block.paragraph) == null ? void 0 : _a.rich_text;
+  if (!Array.isArray(richText2) || richText2.length === 0)
+    return void 0;
+  return richText2.map((item) => {
+    var _a2, _b, _c;
+    return (_c = (_b = item == null ? void 0 : item.plain_text) != null ? _b : (_a2 = item == null ? void 0 : item.text) == null ? void 0 : _a2.content) != null ? _c : "";
+  }).join("").trim() || void 0;
+}
+function buildFileBlock(uploadId, name) {
+  return {
+    object: "block",
+    type: "file",
+    file: {
+      type: "file_upload",
+      file_upload: { id: uploadId }
+    }
+  };
+}
+
 // src/upload/Upload2Notion.ts
 var Upload2Notion = class extends UploadBase {
   constructor(plugin, dbDetails) {
@@ -14539,6 +15510,7 @@ var Upload2Notion = class extends UploadBase {
   sync(request) {
     return __async(this, null, function* () {
       const startedAt = Date.now();
+      this.isAutoSync = !!request.isAutoSync;
       let response;
       switch (request.dataset) {
         case "general":
@@ -14575,7 +15547,7 @@ var Upload2Notion = class extends UploadBase {
         cover: request.cover,
         tags: request.tags
       });
-      const blocks = this.buildBlocks(request.markdown, {
+      const blocks = yield this.buildBlocks(request.markdown, request.nowFile, {
         notionLimits: { truncate: false }
       });
       const notionId = this.getNotionId(request.app, request.nowFile);
@@ -14600,7 +15572,7 @@ var Upload2Notion = class extends UploadBase {
         slug: request.slug,
         category: request.category
       });
-      const blocks = this.buildBlocks(request.markdown, {
+      const blocks = yield this.buildBlocks(request.markdown, request.nowFile, {
         notionLimits: { truncate: false }
       });
       this.splitRichTextParagraphs(blocks);
@@ -14634,7 +15606,7 @@ var Upload2Notion = class extends UploadBase {
       console.log(`[Upload2Notion] Handling custom dataset`, {
         customKeys: Object.keys(request.customValues || {})
       });
-      const blocks = this.buildBlocks(request.markdown, {
+      const blocks = yield this.buildBlocks(request.markdown, request.nowFile, {
         strictImageUrls: true,
         notionLimits: { truncate: false }
       });
@@ -14652,16 +15624,27 @@ var Upload2Notion = class extends UploadBase {
       });
     });
   }
-  buildBlocks(markdown, options) {
-    const yamlContent = loadFront(markdown);
-    const content3 = yamlContent.__content;
-    const blocks = markdownToBlocks(content3, options);
-    this.debugLog("Upload2Notion", "Converted markdown to blocks", {
-      blockCount: blocks.length,
-      firstBlockTypes: blocks.slice(0, 5).map((block) => block == null ? void 0 : block.type),
-      options
+  buildBlocks(markdown, nowFile, options) {
+    return __async(this, null, function* () {
+      var _a;
+      const yamlContent = loadFront(markdown);
+      let content3 = (_a = yamlContent.__content) != null ? _a : "";
+      const processor = new AttachmentProcessor(this.plugin, this.dbDetails);
+      const result = yield processor.processContent(content3, nowFile);
+      content3 = result.content;
+      const imageUrlToUploadId = result.imageUrlToUploadId;
+      const filePlaceholderToUpload = result.filePlaceholderToUpload;
+      const blocks = markdownToBlocks(content3, options);
+      if (Object.keys(imageUrlToUploadId).length > 0 || Object.keys(filePlaceholderToUpload).length > 0) {
+        applyBlockRewrites(blocks, { imageUrlToUploadId, filePlaceholderToUpload });
+      }
+      this.debugLog("Upload2Notion", "Converted markdown to blocks", {
+        blockCount: blocks.length,
+        firstBlockTypes: blocks.slice(0, 5).map((block) => block == null ? void 0 : block.type),
+        options
+      });
+      return blocks;
     });
-    return blocks;
   }
   getNotionId(app, nowFile) {
     var _a;
@@ -15020,7 +16003,7 @@ var Upload2Notion = class extends UploadBase {
 };
 
 // src/upload/common/getMarkdownNext.ts
-var import_obsidian5 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 function getNowFileMarkdownContentNext(app, settings) {
   return __async(this, null, function* () {
     const nowFile = app.workspace.getActiveFile();
@@ -15050,7 +16033,7 @@ function getNowFileMarkdownContentNext(app, settings) {
       favicon = FileCache.frontmatter.icon;
       datetime = FileCache.frontmatter.date;
     } catch (error) {
-      new import_obsidian5.Notice(i18nConfig["set-tags-fail"]);
+      new import_obsidian7.Notice(i18nConfig["set-tags-fail"]);
     }
     if (nowFile) {
       const markDownData = yield nowFile.vault.read(nowFile);
@@ -15070,14 +16053,14 @@ function getNowFileMarkdownContentNext(app, settings) {
         datetime
       };
     } else {
-      new import_obsidian5.Notice(i18nConfig["open-file"]);
+      new import_obsidian7.Notice(i18nConfig["open-file"]);
       return;
     }
   });
 }
 
 // src/upload/common/getMarkdownGeneral.ts
-var import_obsidian6 = require("obsidian");
+var import_obsidian8 = require("obsidian");
 function getNowFileMarkdownContentGeneral(app, settings) {
   return __async(this, null, function* () {
     const nowFile = app.workspace.getActiveFile();
@@ -15088,7 +16071,7 @@ function getNowFileMarkdownContentGeneral(app, settings) {
       cover = FileCache.frontmatter.coverurl;
       tags = FileCache.frontmatter.tags;
     } catch (error) {
-      new import_obsidian6.Notice(i18nConfig["set-tags-fail"]);
+      new import_obsidian8.Notice(i18nConfig["set-tags-fail"]);
     }
     if (nowFile) {
       const markDownData = yield nowFile.vault.read(nowFile);
@@ -15099,19 +16082,19 @@ function getNowFileMarkdownContentGeneral(app, settings) {
         tags
       };
     } else {
-      new import_obsidian6.Notice(i18nConfig["open-file"]);
+      new import_obsidian8.Notice(i18nConfig["open-file"]);
       return;
     }
   });
 }
 
 // src/upload/common/getMarkdownCustom.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian9 = require("obsidian");
 function getNowFileMarkdownContentCustom(app, dbDetails) {
   return __async(this, null, function* () {
     const nowFile = app.workspace.getActiveFile();
     if (!nowFile) {
-      new import_obsidian7.Notice(i18nConfig["open-file"]);
+      new import_obsidian9.Notice(i18nConfig["open-file"]);
       return;
     }
     let cover = "";
@@ -15133,7 +16116,7 @@ function getNowFileMarkdownContentCustom(app, dbDetails) {
         );
       }
     } catch (error) {
-      new import_obsidian7.Notice(i18nConfig["set-tags-fail"]);
+      new import_obsidian9.Notice(i18nConfig["set-tags-fail"]);
     }
     if (nowFile) {
       const markDownData = yield nowFile.vault.read(nowFile);
@@ -15144,7 +16127,7 @@ function getNowFileMarkdownContentCustom(app, dbDetails) {
         customValues
       };
     } else {
-      new import_obsidian7.Notice(i18nConfig["open-file"]);
+      new import_obsidian9.Notice(i18nConfig["open-file"]);
       return;
     }
   });
@@ -15158,10 +16141,16 @@ function extractErrorMessage(error) {
   }
   return String(error);
 }
+function shouldShowAutoSyncSuccessNotice(plugin, options) {
+  if (!(options == null ? void 0 : options.isAutoSync)) {
+    return true;
+  }
+  return !!plugin.settings.autoSyncSuccessNotice;
+}
 function notifySyncError(prefix, basename2, error) {
   const errorMessage = extractErrorMessage(error);
   console.error(`${prefix} Sync failed`, error);
-  new import_obsidian8.Notice(
+  new import_obsidian10.Notice(
     `${i18nConfig["sync-fail"]} ${basename2}. ${errorMessage}
 ${i18nConfig["CheckConsole"]}`,
     SYNC_ERROR_NOTICE_DURATION
@@ -15174,14 +16163,14 @@ function logCommandDebug(context, message, payload) {
     console.log(`[${context}] ${message}`);
   }
 }
-function uploadCommandNext(plugin, settings, dbDetails, app) {
+function uploadCommandNext(plugin, settings, dbDetails, app, options) {
   return __async(this, null, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
     const { notionAPI, databaseID } = dbDetails;
     console.log(`[uploadCommandNext] ${(/* @__PURE__ */ new Date()).toISOString()} Triggered for file`, (_a = app.workspace.getActiveFile()) == null ? void 0 : _a.path);
     if (notionAPI === "" || databaseID === "") {
       const setAPIMessage = i18nConfig["set-api-id"];
-      new import_obsidian8.Notice(setAPIMessage);
+      new import_obsidian10.Notice(setAPIMessage);
       return;
     }
     const {
@@ -15221,6 +16210,7 @@ function uploadCommandNext(plugin, settings, dbDetails, app) {
       try {
         res = yield upload.sync({
           dataset: "next",
+          isAutoSync: options == null ? void 0 : options.isAutoSync,
           title: basename2,
           emoji: emoji || "",
           cover: cover || "",
@@ -15247,7 +16237,9 @@ function uploadCommandNext(plugin, settings, dbDetails, app) {
       }
       const { response } = res;
       if (response.status === 200) {
-        new import_obsidian8.Notice(`${i18nConfig["sync-preffix"]} ${basename2} ${i18nConfig["sync-success"]}`).noticeEl.style.color = "green";
+        if (shouldShowAutoSyncSuccessNotice(plugin, options)) {
+          new import_obsidian10.Notice(`${i18nConfig["sync-preffix"]} ${basename2} ${i18nConfig["sync-success"]}`).noticeEl.style.color = "green";
+        }
         logCommandDebug("uploadCommandNext", "Sync succeeded", {
           filename: basename2,
           status: response.status,
@@ -15255,7 +16247,7 @@ function uploadCommandNext(plugin, settings, dbDetails, app) {
           pageUrl: (_g = (_f = res.data) == null ? void 0 : _f.url) != null ? _g : null
         });
       } else {
-        new import_obsidian8.Notice(`${i18nConfig["sync-fail"]} ${basename2}`, 5e3);
+        new import_obsidian10.Notice(`${i18nConfig["sync-fail"]} ${basename2}`, 5e3);
         console.log(`${i18nConfig["sync-fail"]} ${basename2}`);
         logCommandDebug("uploadCommandNext", "Sync failed with status", {
           filename: basename2,
@@ -15267,18 +16259,20 @@ function uploadCommandNext(plugin, settings, dbDetails, app) {
     }
   });
 }
-function uploadCommandGeneral(plugin, settings, dbDetails, app) {
+function uploadCommandGeneral(plugin, settings, dbDetails, app, options) {
   return __async(this, null, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
     const { notionAPI, databaseID } = dbDetails;
     console.log(`[uploadCommandGeneral] ${(/* @__PURE__ */ new Date()).toISOString()} Triggered for file`, (_a = app.workspace.getActiveFile()) == null ? void 0 : _a.path);
     if (notionAPI === "" || databaseID === "") {
       const setAPIMessage = i18nConfig["set-api-id"];
-      new import_obsidian8.Notice(setAPIMessage);
+      new import_obsidian10.Notice(setAPIMessage);
       return;
     }
     const { markDownData, nowFile, cover, tags } = yield getNowFileMarkdownContentGeneral(app, settings);
-    new import_obsidian8.Notice(`Start upload ${nowFile.basename}`);
+    if (!(options == null ? void 0 : options.isAutoSync)) {
+      new import_obsidian10.Notice(i18nConfig.StartUpload.replace("{filename}", nowFile.basename));
+    }
     console.log(`Start upload ${nowFile.basename}`);
     if (markDownData) {
       const { basename: basename2 } = nowFile;
@@ -15293,6 +16287,7 @@ function uploadCommandGeneral(plugin, settings, dbDetails, app) {
       try {
         res = yield upload.sync({
           dataset: "general",
+          isAutoSync: options == null ? void 0 : options.isAutoSync,
           title: basename2,
           cover: cover || "",
           tags: tags || [],
@@ -15310,7 +16305,9 @@ function uploadCommandGeneral(plugin, settings, dbDetails, app) {
       }
       const { response } = res;
       if (response.status === 200) {
-        new import_obsidian8.Notice(`${i18nConfig["sync-preffix"]} ${basename2} ${i18nConfig["sync-success"]}`).noticeEl.style.color = "green";
+        if (shouldShowAutoSyncSuccessNotice(plugin, options)) {
+          new import_obsidian10.Notice(`${i18nConfig["sync-preffix"]} ${basename2} ${i18nConfig["sync-success"]}`).noticeEl.style.color = "green";
+        }
         logCommandDebug("uploadCommandGeneral", "Sync succeeded", {
           filename: basename2,
           status: response.status,
@@ -15318,7 +16315,7 @@ function uploadCommandGeneral(plugin, settings, dbDetails, app) {
           pageUrl: (_f = (_e = res.data) == null ? void 0 : _e.url) != null ? _f : null
         });
       } else {
-        new import_obsidian8.Notice(`${i18nConfig["sync-fail"]} ${basename2}`, 5e3);
+        new import_obsidian10.Notice(`${i18nConfig["sync-fail"]} ${basename2}`, 5e3);
         console.log(`${i18nConfig["sync-fail"]} ${basename2}`);
         logCommandDebug("uploadCommandGeneral", "Sync failed with status", {
           filename: basename2,
@@ -15330,18 +16327,20 @@ function uploadCommandGeneral(plugin, settings, dbDetails, app) {
     }
   });
 }
-function uploadCommandCustom(plugin, settings, dbDetails, app) {
+function uploadCommandCustom(plugin, settings, dbDetails, app, options) {
   return __async(this, null, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _i;
     const { notionAPI, databaseID } = dbDetails;
     console.log(`[uploadCommandCustom] ${(/* @__PURE__ */ new Date()).toISOString()} Triggered for file`, (_a = app.workspace.getActiveFile()) == null ? void 0 : _a.path);
     if (notionAPI === "" || databaseID === "") {
       const setAPIMessage = i18nConfig["set-api-id"];
-      new import_obsidian8.Notice(setAPIMessage);
+      new import_obsidian10.Notice(setAPIMessage);
       return;
     }
     const { markDownData, nowFile, cover, customValues } = yield getNowFileMarkdownContentCustom(app, dbDetails);
-    new import_obsidian8.Notice(`Start upload ${nowFile.basename}`);
+    if (!(options == null ? void 0 : options.isAutoSync)) {
+      new import_obsidian10.Notice(i18nConfig.StartUpload.replace("{filename}", nowFile.basename));
+    }
     console.log(`Start upload ${nowFile.basename}`);
     if (markDownData) {
       const { basename: basename2 } = nowFile;
@@ -15356,6 +16355,7 @@ function uploadCommandCustom(plugin, settings, dbDetails, app) {
       try {
         res = yield upload.sync({
           dataset: "custom",
+          isAutoSync: options == null ? void 0 : options.isAutoSync,
           cover: cover || "",
           customValues,
           markdown: markDownData,
@@ -15372,7 +16372,9 @@ function uploadCommandCustom(plugin, settings, dbDetails, app) {
       }
       const { response } = res;
       if (response.status === 200) {
-        new import_obsidian8.Notice(`${i18nConfig["sync-preffix"]} ${basename2} ${i18nConfig["sync-success"]}`).noticeEl.style.color = "green";
+        if (shouldShowAutoSyncSuccessNotice(plugin, options)) {
+          new import_obsidian10.Notice(`${i18nConfig["sync-preffix"]} ${basename2} ${i18nConfig["sync-success"]}`).noticeEl.style.color = "green";
+        }
         logCommandDebug("uploadCommandCustom", "Sync succeeded", {
           filename: basename2,
           status: response.status,
@@ -15380,7 +16382,7 @@ function uploadCommandCustom(plugin, settings, dbDetails, app) {
           pageUrl: (_e = (_d = res.data) == null ? void 0 : _d.url) != null ? _e : null
         });
       } else {
-        new import_obsidian8.Notice(`${i18nConfig["sync-fail"]} ${basename2}`, 5e3);
+        new import_obsidian10.Notice(`${i18nConfig["sync-fail"]} ${basename2}`, 5e3);
         console.log(`${i18nConfig["sync-fail"]} ${basename2}`);
         logCommandDebug("uploadCommandCustom", "Sync failed with status", {
           filename: basename2,
@@ -15471,11 +16473,11 @@ var RibbonCommands = class {
 };
 
 // src/ui/settingTabs.ts
-var import_obsidian13 = require("obsidian");
+var import_obsidian15 = require("obsidian");
 
 // src/ui/settingModal.ts
-var import_obsidian9 = require("obsidian");
-var SettingModal = class extends import_obsidian9.Modal {
+var import_obsidian11 = require("obsidian");
+var SettingModal = class extends import_obsidian11.Modal {
   constructor(app, plugin, settingTab, dbDetails) {
     super(app);
     this.propertyLines = [];
@@ -15513,12 +16515,12 @@ var SettingModal = class extends import_obsidian9.Modal {
   }
   display() {
     this.containerEl.addClass("settings-modal");
-    this.titleEl.setText("Add new database");
+    this.titleEl.setText(i18nConfig.AddNewDatabaseModal);
     let { contentEl } = this;
     contentEl.empty();
     const settingDiv = contentEl.createDiv("setting-div");
     const nextTabs = contentEl.createDiv("next-tabs");
-    new import_obsidian9.Setting(settingDiv).setName(i18nConfig.databaseFormat).setDesc(i18nConfig.databaseFormatDesc).addDropdown((component) => {
+    new import_obsidian11.Setting(settingDiv).setName(i18nConfig.databaseFormat).setDesc(i18nConfig.databaseFormatDesc).addDropdown((component) => {
       component.addOption("none", "").addOption("general", i18nConfig.databaseGeneral).addOption("next", i18nConfig.databaseNext).addOption("custom", i18nConfig.databaseCustom).setValue(this.data.databaseFormat).onChange((value) => __async(this, null, function* () {
         this.data.databaseFormat = value;
         nextTabs.empty();
@@ -15527,7 +16529,7 @@ var SettingModal = class extends import_obsidian9.Modal {
       this.data.saved ? this.updateContentBasedOnSelection(this.data.databaseFormat, nextTabs) : this.updateContentBasedOnSelection(this.plugin.settings.databaseFormat, nextTabs);
     });
     let footerEl = contentEl.createDiv("save-button");
-    let saveButton = new import_obsidian9.Setting(footerEl);
+    let saveButton = new import_obsidian11.Setting(footerEl);
     saveButton.addButton(
       (button) => {
         return button.setTooltip("Save").setIcon("checkmark").onClick(() => __async(this, null, function* () {
@@ -15553,7 +16555,7 @@ var SettingModal = class extends import_obsidian9.Modal {
       this.createSettingEl(nextTabs, i18nConfig.databaseFullName, i18nConfig.databaseFullNameDesc, "text", i18nConfig.databaseFullNameText, this.data.databaseFullName, "data", "databaseFullName");
       this.createSettingEl(nextTabs, i18nConfig.databaseAbbreviateName, i18nConfig.databaseAbbreviateNameDesc, "text", i18nConfig.databaseAbbreviateNameText, this.data.databaseAbbreviateName, "data", "databaseAbbreviateName");
       this.createSettingEl(nextTabs, i18nConfig.NotionTagButton, i18nConfig.NotionTagButtonDesc, "toggle", i18nConfig.NotionCustomTitleText, this.data.tagButton, "data", "tagButton");
-      new import_obsidian9.Setting(nextTabs).setName(i18nConfig.NotionCustomTitle).setDesc(i18nConfig.NotionCustomTitleDesc).addToggle(
+      new import_obsidian11.Setting(nextTabs).setName(i18nConfig.NotionCustomTitle).setDesc(i18nConfig.NotionCustomTitleDesc).addToggle(
         (toggle) => toggle.setValue(this.data.customTitleButton).onChange((value2) => __async(this, null, function* () {
           this.data.customTitleButton = value2;
           this.updateSettingEl(CustomNameEl, value2);
@@ -15575,7 +16577,7 @@ var SettingModal = class extends import_obsidian9.Modal {
       this.createSettingEl(nextTabs, i18nConfig.databaseAbbreviateName, i18nConfig.databaseAbbreviateNameDesc, "text", i18nConfig.databaseAbbreviateNameText, this.data.databaseAbbreviateName, "data", "databaseAbbreviateName");
       this.createSettingEl(nextTabs, i18nConfig.NotionAPI, i18nConfig.NotionAPIDesc, "password", i18nConfig.NotionAPIText, this.data.notionAPI, "data", "notionAPI");
       this.createSettingEl(nextTabs, i18nConfig.DatabaseID, i18nConfig.DatabaseIDDesc, "password", i18nConfig.DatabaseIDText, this.data.databaseID, "data", "databaseID");
-      new import_obsidian9.Setting(nextTabs).setName(i18nConfig.NotionCustomValues).setDesc(i18nConfig.NotionCustomValuesDesc).addButton(
+      new import_obsidian11.Setting(nextTabs).setName(i18nConfig.NotionCustomValues).setDesc(i18nConfig.NotionCustomValuesDesc).addButton(
         (button) => {
           return button.setTooltip("Add one more property").setButtonText("Add New Property").onClick(() => __async(this, null, function* () {
             const customTabs = nextTabs.createDiv("custom-tabs");
@@ -15591,7 +16593,7 @@ var SettingModal = class extends import_obsidian9.Modal {
   createPropertyLine(containerEl, properties) {
     const propertyIndex = properties.length;
     properties.push({ customName: "", customType: "", index: propertyIndex });
-    const propertyLine = new import_obsidian9.Setting(containerEl).setName(propertyIndex === 0 ? i18nConfig.CustomPropertyFirstColumn : `${i18nConfig.CustomProperty} ${propertyIndex}`).setDesc(propertyIndex === 0 ? i18nConfig.CustomPropertyFirstColumnDesc : "");
+    const propertyLine = new import_obsidian11.Setting(containerEl).setName(propertyIndex === 0 ? i18nConfig.CustomPropertyFirstColumn : `${i18nConfig.CustomProperty} ${propertyIndex}`).setDesc(propertyIndex === 0 ? i18nConfig.CustomPropertyFirstColumnDesc : "");
     propertyLine.addText((text5) => {
       text5.setPlaceholder(i18nConfig.CustomPropertyName).setValue("").onChange((value) => {
         let actualIndex = properties.findIndex((p) => p.index === propertyIndex);
@@ -15683,20 +16685,20 @@ var SettingModal = class extends import_obsidian9.Modal {
   // function to add one setting element in the setting tab.
   createSettingEl(contentEl, name, desc, type, placeholder, holderValue, dataRecord, settingsKey) {
     if (type === "password") {
-      return new import_obsidian9.Setting(contentEl).setName(name).setDesc(desc).addText((text5) => {
+      return new import_obsidian11.Setting(contentEl).setName(name).setDesc(desc).addText((text5) => {
         text5.inputEl.type = type;
         return text5.setPlaceholder(placeholder).setValue(holderValue).onChange((value) => __async(this, null, function* () {
           this[dataRecord][settingsKey] = value;
         }));
       });
     } else if (type === "toggle") {
-      return new import_obsidian9.Setting(contentEl).setName(name).setDesc(desc).addToggle(
+      return new import_obsidian11.Setting(contentEl).setName(name).setDesc(desc).addToggle(
         (toggle) => toggle.setValue(holderValue).onChange((value) => __async(this, null, function* () {
           this[dataRecord][settingsKey] = value;
         }))
       );
     } else if (type === "text") {
-      return new import_obsidian9.Setting(contentEl).setName(name).setDesc(desc).addText(
+      return new import_obsidian11.Setting(contentEl).setName(name).setDesc(desc).addText(
         (text5) => text5.setPlaceholder(placeholder).setValue(holderValue).onChange((value) => __async(this, null, function* () {
           this[dataRecord][settingsKey] = value;
         }))
@@ -15706,8 +16708,8 @@ var SettingModal = class extends import_obsidian9.Modal {
 };
 
 // src/ui/PreviewModal.ts
-var import_obsidian10 = require("obsidian");
-var PreviewModal = class extends import_obsidian10.Modal {
+var import_obsidian12 = require("obsidian");
+var PreviewModal = class extends import_obsidian12.Modal {
   constructor(app, plugin, settingTab, dbDetails) {
     super(app);
     this.plugin = plugin;
@@ -15716,46 +16718,46 @@ var PreviewModal = class extends import_obsidian10.Modal {
   }
   display() {
     this.containerEl.addClass("preview-modal");
-    this.titleEl.setText("Preview");
+    this.titleEl.setText(i18nConfig.Preview);
     let { contentEl } = this;
     const previewEl = contentEl.createDiv("preview-content");
-    const dbFormatEl = new import_obsidian10.Setting(previewEl);
-    dbFormatEl.setName("Database Format").addText((text5) => text5.setValue(this.dbDetails.format).setDisabled(true));
-    const dbFullEl = new import_obsidian10.Setting(previewEl);
-    dbFullEl.setName("Database Full Name").addText((text5) => text5.setValue(this.dbDetails.fullName).setDisabled(true));
-    const dbAbbrEl = new import_obsidian10.Setting(previewEl);
-    dbAbbrEl.setName("Database Abbreviate Name").addText((text5) => text5.setValue(this.dbDetails.abName).setDisabled(true));
-    new import_obsidian10.Setting(previewEl).setName("Notion API Key").addExtraButton((button) => {
+    const dbFormatEl = new import_obsidian12.Setting(previewEl);
+    dbFormatEl.setName(i18nConfig.DatabaseFormatLabel).addText((text5) => text5.setValue(this.dbDetails.format).setDisabled(true));
+    const dbFullEl = new import_obsidian12.Setting(previewEl);
+    dbFullEl.setName(i18nConfig.DatabaseFullNameLabel).addText((text5) => text5.setValue(this.dbDetails.fullName).setDisabled(true));
+    const dbAbbrEl = new import_obsidian12.Setting(previewEl);
+    dbAbbrEl.setName(i18nConfig.DatabaseAbbreviateNameLabel).addText((text5) => text5.setValue(this.dbDetails.abName).setDisabled(true));
+    new import_obsidian12.Setting(previewEl).setName(i18nConfig.NotionAPILabel).addExtraButton((button) => {
       let isApiKeyVisible = false;
-      return button.setTooltip("Toggle API Key Visibility").setIcon("eye").onClick(() => {
+      return button.setTooltip(i18nConfig.ToggleAPIKeyVisibility).setIcon("eye").onClick(() => {
         isApiKeyVisible = !isApiKeyVisible;
         button.setIcon(isApiKeyVisible ? "eye-off" : "eye");
         apiKeySetting.settingEl.style.display = isApiKeyVisible ? "" : "none";
       });
     });
-    const apiKeySetting = new import_obsidian10.Setting(previewEl);
+    const apiKeySetting = new import_obsidian12.Setting(previewEl);
     apiKeySetting.infoEl.createEl("p", { text: this.dbDetails.notionAPI });
     apiKeySetting.addExtraButton((button) => {
-      return button.setTooltip("Copy API Key").setIcon("clipboard").onClick(() => {
+      return button.setTooltip(i18nConfig.CopyAPIKey).setIcon("clipboard").onClick(() => {
         navigator.clipboard.writeText(this.dbDetails.notionAPI);
-        new import_obsidian10.Notice("API Key copied to clipboard");
+        new import_obsidian12.Notice(i18nConfig.APIKeyCopied);
       });
     });
     apiKeySetting.settingEl.style.display = "none";
-    new import_obsidian10.Setting(previewEl).setName("Database ID").addExtraButton((button) => {
+    new import_obsidian12.Setting(previewEl).setName(i18nConfig.DatabaseIDLabel).addExtraButton((button) => {
       let isDbIdVisible = false;
-      return button.setTooltip("Toggle Database ID Visibility").setIcon("eye").onClick(() => {
+      return button.setTooltip(i18nConfig.ToggleDatabaseIDVisibility).setIcon("eye").onClick(() => {
         isDbIdVisible = !isDbIdVisible;
         button.setIcon(isDbIdVisible ? "eye-off" : "eye");
         dbIdSetting.settingEl.style.display = isDbIdVisible ? "" : "none";
       });
     });
-    const dbIdSetting = new import_obsidian10.Setting(previewEl);
+    const dbIdSetting = new import_obsidian12.Setting(previewEl);
     dbIdSetting.infoEl.createEl("p", { text: this.dbDetails.databaseID });
     dbIdSetting.addExtraButton((button) => {
-      return button.setTooltip("Copy Database ID").setIcon("clipboard").onClick(() => {
+      return button.setTooltip(i18nConfig.CopyDatabaseID).setIcon("clipboard").onClick(() => {
         navigator.clipboard.writeText(this.dbDetails.databaseID);
-        new import_obsidian10.Notice("Database ID copied to clipboard");
+        new import_obsidian12.Notice(i18nConfig.DatabaseIDCopied);
       });
     });
     dbIdSetting.settingEl.style.display = "none";
@@ -15769,7 +16771,7 @@ var PreviewModal = class extends import_obsidian10.Modal {
   }
   previewPropertyLine(containerEl, properties) {
     properties.forEach((property, index2) => {
-      const propertyLine = new import_obsidian10.Setting(containerEl).setName(index2 === 0 ? i18nConfig.CustomPropertyFirstColumn : `${i18nConfig.CustomProperty} ${index2}`).setDesc(index2 === 0 ? i18nConfig.CustomPropertyFirstColumnDesc : "");
+      const propertyLine = new import_obsidian12.Setting(containerEl).setName(index2 === 0 ? i18nConfig.CustomPropertyFirstColumn : `${i18nConfig.CustomProperty} ${index2}`).setDesc(index2 === 0 ? i18nConfig.CustomPropertyFirstColumnDesc : "");
       propertyLine.addText((text5) => {
         text5.setPlaceholder(i18nConfig.CustomPropertyName).setValue(property.customName).setDisabled(true);
       });
@@ -15798,7 +16800,7 @@ var PreviewModal = class extends import_obsidian10.Modal {
 };
 
 // src/ui/EditModal.ts
-var import_obsidian11 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 var EditModal = class extends SettingModal {
   constructor(app, plugin, settingTab, dbDetails) {
     super(app, plugin, settingTab);
@@ -15875,12 +16877,12 @@ var EditModal = class extends SettingModal {
   }
   display() {
     this.containerEl.addClass("edit-modal");
-    this.titleEl.setText("Edit Database");
+    this.titleEl.setText(i18nConfig.EditDatabase);
     let { contentEl } = this;
     contentEl.empty();
     const editDiv = contentEl.createDiv("edit-div");
     const nextTabs = contentEl.createDiv("next-tabs");
-    new import_obsidian11.Setting(editDiv).setName(i18nConfig.databaseFormat).setDesc(i18nConfig.databaseFormatDesc).addDropdown((component) => {
+    new import_obsidian13.Setting(editDiv).setName(i18nConfig.databaseFormat).setDesc(i18nConfig.databaseFormatDesc).addDropdown((component) => {
       component.addOption("none", "").addOption("general", i18nConfig.databaseGeneral).addOption("next", i18nConfig.databaseNext).addOption("custom", i18nConfig.databaseCustom).setValue(this.dataTemp.databaseFormatTemp).onChange((value) => __async(this, null, function* () {
         this.dataTemp.databaseFormatTemp = value;
         nextTabs.empty();
@@ -15889,7 +16891,7 @@ var EditModal = class extends SettingModal {
       this.updateContentBasedOnSelection(this.dataTemp.databaseFormatTemp, nextTabs);
     });
     let footerEl = contentEl.createDiv("save-button");
-    let saveButton = new import_obsidian11.Setting(footerEl);
+    let saveButton = new import_obsidian13.Setting(footerEl);
     saveButton.addButton(
       (button) => {
         return button.setTooltip("Save").setIcon("checkmark").onClick(() => __async(this, null, function* () {
@@ -15917,7 +16919,7 @@ var EditModal = class extends SettingModal {
       this.createSettingEl(nextTabs, i18nConfig.databaseFullName, i18nConfig.databaseFullNameDesc, "text", i18nConfig.databaseFullNameText, this.dataTemp.databaseFullNameTemp, "dataTemp", "databaseFullNameTemp");
       this.createSettingEl(nextTabs, i18nConfig.databaseAbbreviateName, i18nConfig.databaseAbbreviateNameDesc, "text", i18nConfig.databaseAbbreviateNameText, this.dataTemp.databaseAbbreviateNameTemp, "dataTemp", "databaseAbbreviateNameTemp");
       this.createSettingEl(nextTabs, i18nConfig.NotionTagButton, i18nConfig.NotionTagButtonDesc, "toggle", i18nConfig.NotionCustomTitleText, this.dataTemp.tagButtonTemp, "dataTemp", "tagButtonTemp");
-      new import_obsidian11.Setting(nextTabs).setName(i18nConfig.NotionCustomTitle).setDesc(i18nConfig.NotionCustomTitleDesc).addToggle(
+      new import_obsidian13.Setting(nextTabs).setName(i18nConfig.NotionCustomTitle).setDesc(i18nConfig.NotionCustomTitleDesc).addToggle(
         (toggle) => toggle.setValue(this.dataTemp.customTitleButtonTemp).onChange((value2) => __async(this, null, function* () {
           this.dataTemp.customTitleButtonTemp = value2;
           this.updateSettingEl(CustomNameEl, value2);
@@ -15947,7 +16949,7 @@ var EditModal = class extends SettingModal {
       console.error("Failed to initialize property lines: containerEl is null");
       return;
     }
-    new import_obsidian11.Setting(containerEl).setName("Add New Property").setDesc("Click to add a new property").addButton((button) => {
+    new import_obsidian13.Setting(containerEl).setName(i18nConfig.AddNewProperty).setDesc(i18nConfig.AddNewPropertyDesc).addButton((button) => {
       return button.setButtonText("Add").setTooltip("Add one more property").onClick(() => {
         this.createPropertyLine(containerEl, properties);
       });
@@ -15959,7 +16961,7 @@ var EditModal = class extends SettingModal {
   updatePropertyLine(containerEl, property, properties) {
     let isExistingProperty = property !== null;
     const propertyIndex = isExistingProperty ? property.index : properties.length;
-    const propertyLine = new import_obsidian11.Setting(containerEl).setName(propertyIndex === 0 ? i18nConfig.CustomPropertyFirstColumn : `${i18nConfig.CustomProperty} ${propertyIndex}`).setDesc(propertyIndex === 0 ? i18nConfig.CustomPropertyFirstColumnDesc : "");
+    const propertyLine = new import_obsidian13.Setting(containerEl).setName(propertyIndex === 0 ? i18nConfig.CustomPropertyFirstColumn : `${i18nConfig.CustomProperty} ${propertyIndex}`).setDesc(propertyIndex === 0 ? i18nConfig.CustomPropertyFirstColumnDesc : "");
     propertyLine.addText((text5) => {
       text5.setPlaceholder(i18nConfig.CustomPropertyName).setValue(isExistingProperty ? property.customName : "").onChange((value) => {
         const actualIndex = properties.findIndex((p) => p.index === propertyIndex);
@@ -16024,8 +17026,8 @@ var EditModal = class extends SettingModal {
 };
 
 // src/ui/DeleteModal.ts
-var import_obsidian12 = require("obsidian");
-var DeleteModal = class extends import_obsidian12.Modal {
+var import_obsidian14 = require("obsidian");
+var DeleteModal = class extends import_obsidian14.Modal {
   constructor(app, plugin, settingTab, dbDetails) {
     super(app);
     this.data = {
@@ -16044,7 +17046,7 @@ var DeleteModal = class extends import_obsidian12.Modal {
     deleteDiv.createEl("h4", { text: "Are you sure you want to delete the following database?" });
     deleteDiv.createEl("h2", { text: this.dbDetails.fullName + " (" + this.dbDetails.abName + ", " + this.dbDetails.format + ")" });
     let footerEl = contentEl.createDiv("save-button");
-    let deleteButton = new import_obsidian12.Setting(footerEl);
+    let deleteButton = new import_obsidian14.Setting(footerEl);
     deleteButton.addButton((button) => {
       return button.setTooltip("Delete").setIcon("trash").onClick(() => __async(this, null, function* () {
         this.data.deleted = true;
@@ -16071,6 +17073,11 @@ var DEFAULT_SETTINGS = {
   bannerUrl: "",
   notionUser: "",
   NotionLinkDisplay: true,
+  autoCopyNotionLink: true,
+  autoSync: false,
+  autoSyncDelay: 5,
+  autoSyncSuccessNotice: false,
+  autoSyncFrontmatterKey: DEFAULT_AUTO_SYNC_DATABASE_KEY,
   proxy: "",
   GeneralButton: true,
   tagButton: true,
@@ -16084,9 +17091,10 @@ var DEFAULT_SETTINGS = {
   databaseIDCustom: "",
   databaseDetails: {}
 };
-var ObsidianSettingTab = class extends import_obsidian13.PluginSettingTab {
+var ObsidianSettingTab = class extends import_obsidian15.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
+    this.autoSyncDelayContainer = null;
     this.plugin = plugin;
   }
   display() {
@@ -16096,8 +17104,43 @@ var ObsidianSettingTab = class extends import_obsidian13.PluginSettingTab {
     this.createSettingEl(containerEl, i18nConfig.BannerUrl, i18nConfig.BannerUrlDesc, "text", i18nConfig.BannerUrlText, this.plugin.settings.bannerUrl, "bannerUrl");
     this.createSettingEl(containerEl, i18nConfig.NotionUser, i18nConfig.NotionUserDesc, "text", i18nConfig.NotionUserText, this.plugin.settings.notionUser, "notionUser");
     this.createSettingEl(containerEl, i18nConfig.NotionLinkDisplay, i18nConfig.NotionLinkDisplayDesc, "toggle", i18nConfig.NotionLinkDisplay, this.plugin.settings.NotionLinkDisplay, "NotionLinkDisplay");
-    new import_obsidian13.Setting(containerEl).setName("Add New Database").setDesc("Add New Database").addButton((button) => {
-      return button.setTooltip("Add New Database").setIcon("plus").onClick(() => __async(this, null, function* () {
+    this.createSettingEl(containerEl, i18nConfig.AutoCopyNotionLink, i18nConfig.AutoCopyNotionLinkDesc, "toggle", i18nConfig.AutoCopyNotionLink, this.plugin.settings.autoCopyNotionLink, "autoCopyNotionLink");
+    this.createSettingEl(containerEl, i18nConfig.AutoSync, i18nConfig.AutoSyncDesc, "toggle", i18nConfig.AutoSync, this.plugin.settings.autoSync, "autoSync");
+    this.createSettingEl(
+      containerEl,
+      i18nConfig.AutoSyncSuccessNotice,
+      i18nConfig.AutoSyncSuccessNoticeDesc,
+      "toggle",
+      i18nConfig.AutoSyncSuccessNotice,
+      this.plugin.settings.autoSyncSuccessNotice,
+      "autoSyncSuccessNotice"
+    );
+    new import_obsidian15.Setting(containerEl).setName(i18nConfig.AutoSyncFrontmatterKey).setDesc(i18nConfig.AutoSyncFrontmatterKeyDesc).addText(
+      (text5) => {
+        var _a;
+        return text5.setPlaceholder(DEFAULT_AUTO_SYNC_DATABASE_KEY).setValue((_a = this.plugin.settings.autoSyncFrontmatterKey) != null ? _a : "").onChange((value) => __async(this, null, function* () {
+          this.plugin.settings.autoSyncFrontmatterKey = value;
+          yield this.plugin.saveSettings();
+        }));
+      }
+    );
+    this.autoSyncDelayContainer = containerEl.createDiv();
+    new import_obsidian15.Setting(this.autoSyncDelayContainer).setName(i18nConfig.AutoSyncDelay).setDesc(i18nConfig.AutoSyncDelayDesc).addText(
+      (text5) => text5.setPlaceholder(i18nConfig.AutoSyncDelayText).setValue(String(this.plugin.settings.autoSyncDelay)).onChange((value) => __async(this, null, function* () {
+        const delay = parseFloat(value);
+        if (!isNaN(delay) && delay >= 2) {
+          this.plugin.settings.autoSyncDelay = delay;
+          yield this.plugin.saveSettings();
+        } else if (!isNaN(delay) && delay < 2) {
+          this.plugin.settings.autoSyncDelay = 2;
+          yield this.plugin.saveSettings();
+          text5.setValue("2");
+        }
+      }))
+    );
+    this.updateAutoSyncDelayVisibility();
+    new import_obsidian15.Setting(containerEl).setName(i18nConfig.AddNewDatabase).setDesc(i18nConfig.AddNewDatabaseDesc).addButton((button) => {
+      return button.setTooltip(i18nConfig.AddNewDatabaseTooltip).setIcon("plus").onClick(() => __async(this, null, function* () {
         let modal = new SettingModal(this.app, this.plugin, this);
         modal.onClose = () => {
           if (modal.data.saved) {
@@ -16139,10 +17182,16 @@ var ObsidianSettingTab = class extends import_obsidian13.PluginSettingTab {
     element2.style.display = commandValue ? "block" : "none";
     element2.style.alignItems = "center";
   }
+  // Update visibility of autoSyncDelay setting based on autoSync toggle
+  updateAutoSyncDelayVisibility() {
+    if (this.autoSyncDelayContainer) {
+      this.autoSyncDelayContainer.style.display = this.plugin.settings.autoSync ? "block" : "none";
+    }
+  }
   // function to add one setting element in the setting tab.
   createSettingEl(containerEl, name, desc, type, placeholder, holderValue, settingsKey) {
     if (type === "password") {
-      return new import_obsidian13.Setting(containerEl).setName(name).setDesc(desc).addText((text5) => {
+      return new import_obsidian15.Setting(containerEl).setName(name).setDesc(desc).addText((text5) => {
         text5.inputEl.type = type;
         return text5.setPlaceholder(placeholder).setValue(holderValue).onChange((value) => __async(this, null, function* () {
           this.plugin.settings[settingsKey] = value;
@@ -16150,15 +17199,19 @@ var ObsidianSettingTab = class extends import_obsidian13.PluginSettingTab {
         }));
       });
     } else if (type === "toggle") {
-      return new import_obsidian13.Setting(containerEl).setName(name).setDesc(desc).addToggle(
+      return new import_obsidian15.Setting(containerEl).setName(name).setDesc(desc).addToggle(
         (toggle) => toggle.setValue(holderValue).onChange((value) => __async(this, null, function* () {
           this.plugin.settings[settingsKey] = value;
           yield this.plugin.saveSettings();
           yield this.plugin.commands.updateCommand();
+          if (settingsKey === "autoSync") {
+            this.plugin.setupAutoSync();
+            this.updateAutoSyncDelayVisibility();
+          }
         }))
       );
     } else if (type === "text") {
-      return new import_obsidian13.Setting(containerEl).setName(name).setDesc(desc).addText(
+      return new import_obsidian15.Setting(containerEl).setName(name).setDesc(desc).addText(
         (text5) => text5.setPlaceholder(placeholder).setValue(holderValue).onChange((value) => __async(this, null, function* () {
           this.plugin.settings[settingsKey] = value;
           yield this.plugin.saveSettings();
@@ -16173,7 +17226,7 @@ var ObsidianSettingTab = class extends import_obsidian13.PluginSettingTab {
     for (let key in this.plugin.settings.databaseDetails) {
       let dbDetails = this.plugin.settings.databaseDetails[key];
       const databaseDiv = this.databaseEl.createDiv("database-div");
-      let settingEl = new import_obsidian13.Setting(databaseDiv).setName(`${dbDetails.fullName} (${dbDetails.abName})`).setDesc(dbDetails.format);
+      let settingEl = new import_obsidian15.Setting(databaseDiv).setName(`${dbDetails.fullName} (${dbDetails.abName})`).setDesc(dbDetails.format);
       settingEl.addButton((button) => {
         return button.setTooltip("Preview Database").setIcon("eye").onClick(() => __async(this, null, function* () {
           let modal = new PreviewModal(this.app, this.plugin, this, dbDetails);
@@ -16239,10 +17292,27 @@ var ObsidianSettingTab = class extends import_obsidian13.PluginSettingTab {
 };
 
 // src/main.ts
-var ObsidianSyncNotionPlugin = class extends import_obsidian14.Plugin {
+var ObsidianSyncNotionPlugin = class extends import_obsidian16.Plugin {
+  constructor() {
+    super(...arguments);
+    this.modifyEventRef = null;
+    this.autoSyncTimeout = null;
+    this.syncingFiles = /* @__PURE__ */ new Set();
+    this.lastFrontmatterCache = /* @__PURE__ */ new Map();
+    this.lastContentHashCache = /* @__PURE__ */ new Map();
+    this.autoSyncAttachmentBlocked = /* @__PURE__ */ new Set();
+  }
   onload() {
     return __async(this, null, function* () {
       yield this.loadSettings();
+      console.log("[Plugin] Loaded settings:", {
+        autoSync: this.settings.autoSync,
+        autoSyncDelay: this.settings.autoSyncDelay,
+        NotionLinkDisplay: this.settings.NotionLinkDisplay,
+        bannerUrl: this.settings.bannerUrl ? "set" : "empty",
+        notionUser: this.settings.notionUser ? "set" : "empty",
+        databaseCount: Object.keys(this.settings.databaseDetails || {}).length
+      });
       this.commands = new RibbonCommands(this);
       addIcons();
       this.addRibbonIcon(
@@ -16253,23 +17323,124 @@ var ObsidianSyncNotionPlugin = class extends import_obsidian14.Plugin {
         })
       );
       this.addSettingTab(new ObsidianSettingTab(this.app, this));
+      this.setupAutoSync();
     });
   }
   onunload() {
+    if (this.modifyEventRef) {
+      this.app.vault.offref(this.modifyEventRef);
+    }
+    if (this.autoSyncTimeout) {
+      clearTimeout(this.autoSyncTimeout);
+    }
+    this.lastFrontmatterCache.clear();
+    this.lastContentHashCache.clear();
+    this.autoSyncAttachmentBlocked.clear();
   }
   loadSettings() {
     return __async(this, null, function* () {
+      const loadedData = yield this.loadData();
       this.settings = Object.assign(
         {},
         DEFAULT_SETTINGS,
-        yield this.loadData()
+        loadedData || {}
       );
+      if (typeof this.settings.autoSync !== "boolean") {
+        this.settings.autoSync = DEFAULT_SETTINGS.autoSync;
+      }
+      if (typeof this.settings.autoSyncDelay !== "number" || this.settings.autoSyncDelay < 2) {
+        this.settings.autoSyncDelay = DEFAULT_SETTINGS.autoSyncDelay;
+      }
+      if (typeof this.settings.autoSyncSuccessNotice !== "boolean") {
+        this.settings.autoSyncSuccessNotice = DEFAULT_SETTINGS.autoSyncSuccessNotice;
+      }
+      if (typeof this.settings.NotionLinkDisplay !== "boolean") {
+        this.settings.NotionLinkDisplay = DEFAULT_SETTINGS.NotionLinkDisplay;
+      }
+      if (typeof this.settings.autoCopyNotionLink !== "boolean") {
+        this.settings.autoCopyNotionLink = DEFAULT_SETTINGS.autoCopyNotionLink;
+      }
+      if (typeof this.settings.autoSyncFrontmatterKey !== "string") {
+        this.settings.autoSyncFrontmatterKey = DEFAULT_AUTO_SYNC_DATABASE_KEY;
+      }
+      this.settings.autoSyncFrontmatterKey = resolveAutoSyncKey(this.settings.autoSyncFrontmatterKey);
+      if (!this.settings.databaseDetails || typeof this.settings.databaseDetails !== "object") {
+        this.settings.databaseDetails = {};
+      }
+      const needsSave = !loadedData || loadedData.autoSync === void 0 || loadedData.autoSyncDelay === void 0 || loadedData.autoSyncSuccessNotice === void 0 || loadedData.NotionLinkDisplay === void 0 || loadedData.autoCopyNotionLink === void 0 || loadedData.autoSyncFrontmatterKey === void 0;
+      if (needsSave) {
+        const migratedFields = [];
+        if (!loadedData) {
+          console.log("[Settings] First-time setup, creating default settings");
+        } else {
+          if (loadedData.autoSync === void 0)
+            migratedFields.push("autoSync");
+          if (loadedData.autoSyncDelay === void 0)
+            migratedFields.push("autoSyncDelay");
+          if (loadedData.autoSyncSuccessNotice === void 0)
+            migratedFields.push("autoSyncSuccessNotice");
+          if (loadedData.NotionLinkDisplay === void 0)
+            migratedFields.push("NotionLinkDisplay");
+          if (loadedData.autoCopyNotionLink === void 0)
+            migratedFields.push("autoCopyNotionLink");
+          console.log("[Settings] Migrating settings, adding fields:", migratedFields.join(", "));
+        }
+        yield this.saveSettings();
+        if (loadedData && Object.keys(loadedData).length > 0 && migratedFields.length > 0) {
+          new import_obsidian16.Notice(i18nConfig.SettingsMigrated, 6e3);
+          console.log("[Settings] Migration notice shown to user");
+        }
+      }
     });
   }
   saveSettings() {
     return __async(this, null, function* () {
+      this.validateSettings();
       yield this.saveData(this.settings);
+      console.log("[Settings] Settings saved successfully", {
+        autoSync: this.settings.autoSync,
+        autoSyncDelay: this.settings.autoSyncDelay,
+        autoSyncSuccessNotice: this.settings.autoSyncSuccessNotice,
+        NotionLinkDisplay: this.settings.NotionLinkDisplay,
+        autoSyncFrontmatterKey: this.settings.autoSyncFrontmatterKey,
+        databaseCount: Object.keys(this.settings.databaseDetails || {}).length
+      });
     });
+  }
+  validateSettings() {
+    if (typeof this.settings.autoSync !== "boolean") {
+      console.warn("[Settings] Invalid autoSync value, resetting to default");
+      this.settings.autoSync = DEFAULT_SETTINGS.autoSync;
+    }
+    if (typeof this.settings.autoSyncDelay !== "number" || this.settings.autoSyncDelay < 2) {
+      console.warn("[Settings] Invalid autoSyncDelay value, resetting to default");
+      this.settings.autoSyncDelay = DEFAULT_SETTINGS.autoSyncDelay;
+    }
+    if (typeof this.settings.autoSyncSuccessNotice !== "boolean") {
+      console.warn("[Settings] Invalid autoSyncSuccessNotice value, resetting to default");
+      this.settings.autoSyncSuccessNotice = DEFAULT_SETTINGS.autoSyncSuccessNotice;
+    }
+    if (typeof this.settings.NotionLinkDisplay !== "boolean") {
+      console.warn("[Settings] Invalid NotionLinkDisplay value, resetting to default");
+      this.settings.NotionLinkDisplay = DEFAULT_SETTINGS.NotionLinkDisplay;
+    }
+    if (typeof this.settings.autoCopyNotionLink !== "boolean") {
+      console.warn("[Settings] Invalid autoCopyNotionLink value, resetting to default");
+      this.settings.autoCopyNotionLink = DEFAULT_SETTINGS.autoCopyNotionLink;
+    }
+    if (!this.settings.databaseDetails || typeof this.settings.databaseDetails !== "object") {
+      console.warn("[Settings] Invalid databaseDetails, resetting to empty object");
+      this.settings.databaseDetails = {};
+    }
+    if (typeof this.settings.autoSyncFrontmatterKey !== "string" || this.settings.autoSyncFrontmatterKey.trim().length === 0) {
+      console.warn("[Settings] Invalid autoSyncFrontmatterKey, resetting to default");
+      this.settings.autoSyncFrontmatterKey = DEFAULT_AUTO_SYNC_DATABASE_KEY;
+    } else {
+      this.settings.autoSyncFrontmatterKey = resolveAutoSyncKey(this.settings.autoSyncFrontmatterKey);
+    }
+  }
+  getAutoSyncFrontmatterKey() {
+    return resolveAutoSyncKey(this.settings.autoSyncFrontmatterKey);
   }
   addDatabaseDetails(dbDetails) {
     return __async(this, null, function* () {
@@ -16294,4 +17465,180 @@ var ObsidianSyncNotionPlugin = class extends import_obsidian14.Plugin {
       yield this.saveSettings();
     });
   }
+  setupAutoSync() {
+    if (this.modifyEventRef) {
+      this.app.vault.offref(this.modifyEventRef);
+    }
+    if (!this.settings.autoSync) {
+      return;
+    }
+    this.modifyEventRef = this.app.vault.on("modify", (file) => __async(this, null, function* () {
+      if (!(file instanceof import_obsidian16.TFile) || file.extension !== "md") {
+        return;
+      }
+      if (this.autoSyncTimeout) {
+        clearTimeout(this.autoSyncTimeout);
+      }
+      const delayMs = (this.settings.autoSyncDelay || 2) * 1e3;
+      this.autoSyncTimeout = window.setTimeout(() => __async(this, null, function* () {
+        yield this.autoSyncFile(file);
+      }), delayMs);
+    }));
+  }
+  onlyNotionIDChanged(oldFrontmatter, newFrontmatter) {
+    const oldKeys = Object.keys(oldFrontmatter || {});
+    const newKeys = Object.keys(newFrontmatter || {});
+    const isIgnoredKey = (key) => {
+      return key.startsWith("NotionID-") || key === "NotionID" || key === "position";
+    };
+    const oldNonNotionKeys = oldKeys.filter((k) => !isIgnoredKey(k)).sort();
+    const newNonNotionKeys = newKeys.filter((k) => !isIgnoredKey(k)).sort();
+    if (oldNonNotionKeys.length !== newNonNotionKeys.length) {
+      console.log("[AutoSync] Frontmatter: Key count changed:", oldNonNotionKeys.length, "->", newNonNotionKeys.length);
+      return false;
+    }
+    for (const key of oldNonNotionKeys) {
+      if (!newNonNotionKeys.includes(key)) {
+        console.log("[AutoSync] Frontmatter: Key removed or added:", key);
+        return false;
+      }
+      const oldValue = JSON.stringify(oldFrontmatter[key]);
+      const newValue = JSON.stringify(newFrontmatter[key]);
+      if (oldValue !== newValue) {
+        console.log('[AutoSync] Frontmatter: Value changed for key "' + key + '"');
+        console.log("  Old:", oldValue.substring(0, 100));
+        console.log("  New:", newValue.substring(0, 100));
+        return false;
+      }
+    }
+    for (const key of newNonNotionKeys) {
+      if (!oldNonNotionKeys.includes(key)) {
+        console.log("[AutoSync] Frontmatter: New key added:", key);
+        return false;
+      }
+    }
+    return true;
+  }
+  simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash;
+    }
+    return hash.toString();
+  }
+  autoSyncFile(file) {
+    return __async(this, null, function* () {
+      var _a;
+      if (this.syncingFiles.has(file.path)) {
+        console.log(`[AutoSync] File ${file.path} is already being synced, skipping`);
+        return;
+      }
+      try {
+        this.syncingFiles.add(file.path);
+        const frontMatter = (_a = this.app.metadataCache.getFileCache(file)) == null ? void 0 : _a.frontmatter;
+        if (!frontMatter) {
+          return;
+        }
+        const autoSyncKey = this.getAutoSyncFrontmatterKey();
+        const autoSyncTargets = parseAutoSyncDatabaseList(frontMatter[autoSyncKey]);
+        if (autoSyncTargets.length === 0) {
+          return;
+        }
+        const content3 = yield this.app.vault.read(file);
+        const contentHash = this.simpleHash(content3);
+        const lastContentHash = this.lastContentHashCache.get(file.path);
+        const lastFrontmatter = this.lastFrontmatterCache.get(file.path);
+        if (lastFrontmatter && lastContentHash) {
+          const frontmatterOnlyNotionIDChanged = this.onlyNotionIDChanged(lastFrontmatter, frontMatter);
+          const contentUnchanged = contentHash === lastContentHash;
+          if (frontmatterOnlyNotionIDChanged && contentUnchanged) {
+            this.lastFrontmatterCache.set(file.path, __spreadValues({}, frontMatter));
+            this.lastContentHashCache.set(file.path, contentHash);
+            return;
+          }
+        }
+        const dbByShortName = /* @__PURE__ */ new Map();
+        for (const key in this.settings.databaseDetails) {
+          const dbDetails = this.settings.databaseDetails[key];
+          dbByShortName.set(dbDetails.abName.toLowerCase(), dbDetails);
+        }
+        const foundDatabases = [];
+        const unresolvedTargets = [];
+        for (const target of autoSyncTargets) {
+          const lookupKey = target.toLowerCase();
+          const dbDetails = dbByShortName.get(lookupKey);
+          if (!dbDetails) {
+            unresolvedTargets.push(target);
+            continue;
+          }
+          const notionIDKey = `NotionID-${dbDetails.abName}`;
+          foundDatabases.push({
+            dbDetails,
+            notionId: frontMatter[notionIDKey] ? String(frontMatter[notionIDKey]) : void 0
+          });
+        }
+        if (unresolvedTargets.length > 0) {
+          console.log(`[AutoSync] Frontmatter auto sync targets not found in settings: ${unresolvedTargets.join(", ")}`);
+        }
+        if (foundDatabases.length === 0) {
+          console.log(`[AutoSync] No matching databases found in settings for ${file.path}, skipping auto sync`);
+          return;
+        }
+        const attachmentProcessor = new AttachmentProcessor(this, foundDatabases[0].dbDetails);
+        if (attachmentProcessor.hasInternalAttachments(content3, file)) {
+          if (!this.autoSyncAttachmentBlocked.has(file.path)) {
+            const message = i18nConfig.AutoSyncSkippedAttachments.replace("{filename}", file.basename);
+            new import_obsidian16.Notice(message, 6e3);
+            this.autoSyncAttachmentBlocked.add(file.path);
+          }
+          console.log(`[AutoSync] Internal attachments detected in ${file.path}, auto-sync skipped`);
+          return;
+        }
+        this.autoSyncAttachmentBlocked.delete(file.path);
+        if (foundDatabases.length > 1) {
+          const message = i18nConfig.AutoSyncMultipleSync.replace("{count}", String(foundDatabases.length));
+          new import_obsidian16.Notice(message, 3e3);
+          console.log(`[AutoSync] Found ${foundDatabases.length} database targets in ${file.path}`);
+        }
+        for (const { dbDetails, notionId } of foundDatabases) {
+          const isFirstSync = !notionId;
+          console.log(`[AutoSync] ${(/* @__PURE__ */ new Date()).toISOString()} Auto syncing ${file.basename} to ${dbDetails.fullName} (${dbDetails.abName})${isFirstSync ? " [First Upload]" : ""}`);
+          try {
+            if (dbDetails.format === "next") {
+              yield uploadCommandNext(this, this.settings, dbDetails, this.app, { isAutoSync: true });
+            } else if (dbDetails.format === "general") {
+              yield uploadCommandGeneral(this, this.settings, dbDetails, this.app, { isAutoSync: true });
+            } else if (dbDetails.format === "custom") {
+              yield uploadCommandCustom(this, this.settings, dbDetails, this.app, { isAutoSync: true });
+            }
+          } catch (error) {
+            console.error(`[AutoSync] Error syncing to ${dbDetails.fullName}:`, error);
+            const message = i18nConfig.AutoSyncFailed.replace("{database}", dbDetails.fullName).replace("{error}", error.message);
+            new import_obsidian16.Notice(message, 5e3);
+          }
+        }
+        window.setTimeout(() => __async(this, null, function* () {
+          var _a2;
+          const updatedFrontmatter = (_a2 = this.app.metadataCache.getFileCache(file)) == null ? void 0 : _a2.frontmatter;
+          const updatedContent = yield this.app.vault.read(file);
+          const updatedHash = this.simpleHash(updatedContent);
+          if (updatedFrontmatter) {
+            this.lastFrontmatterCache.set(file.path, __spreadValues({}, updatedFrontmatter));
+            this.lastContentHashCache.set(file.path, updatedHash);
+            console.log(`[AutoSync] Cached updated frontmatter and content hash for ${file.path}`);
+          }
+        }), 500);
+      } catch (error) {
+        console.error(`[AutoSync] Error syncing file ${file.path}:`, error);
+        const message = i18nConfig.AutoSyncError.replace("{filename}", file.basename).replace("{error}", error.message);
+        new import_obsidian16.Notice(message);
+      } finally {
+        this.syncingFiles.delete(file.path);
+      }
+    });
+  }
 };
+
+/* nosourcemap */
