@@ -413,7 +413,8 @@
   "folderColors": {},
   "folderBackgroundColors": {},
   "folderSortOverrides": {
-    "Pages": "created-desc"
+    "Pages": "created-desc",
+    "Thoughts": "created-desc"
   },
   "folderTreeSortOverrides": {},
   "folderAppearances": {},
