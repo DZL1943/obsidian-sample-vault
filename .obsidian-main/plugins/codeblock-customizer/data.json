@@ -690,8 +690,11 @@
       "enableBracketHighlight": true,
       "highlightNonMatchingBrackets": true,
       "enableSelectionMatching": true,
+      "usePrismHighlight": false,
       "unwrapcode": true,
       "hideFenceLines": false,
+      "lineNumberSeparatorStyle": "dashed",
+      "hiddenLinesStyle": "dashed",
       "buttons": {
         "alwaysShowButtons": false,
         "alwaysShowCopyCodeButton": false,
@@ -719,12 +722,14 @@
       "visibleLines": 5,
       "showAdditionalUncollapseButon": false,
       "autoFoldLongCodeblocks": false,
-      "longCodeBlockLines": 30
+      "longCodeBlockLines": 30,
+      "semifoldEffect": "opacity"
     },
     "header": {
       "boldText": false,
       "italicText": false,
       "collapseIconPosition": "hide",
+      "collapseIconStyle": "chevrons",
       "collapsedCodeText": " ",
       "codeblockLangBoldText": true,
       "codeblockLangItalicText": true,
@@ -777,7 +782,8 @@
       },
       "executeCode": {
         "enabled": true,
-        "styleOutput": true
+        "styleOutput": true,
+        "executeCodeSeparatorStyle": "zigzag"
       }
     },
     "enableEditorActiveLineHighlight": true
