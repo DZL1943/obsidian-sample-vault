@@ -11236,6 +11236,100 @@ var GridView = class extends import_obsidian20.ItemView {
       noteContentArea.textContent = "\u7121\u6CD5\u8F09\u5165\u7B46\u8A18\u5167\u5BB9";
       console.error("Error loading note content:", error);
     }
+    if (import_obsidian20.Platform.isMobile && this.noteViewContainer) {
+      let startY = 0;
+      let startX = 0;
+      let currentY = 0;
+      let isPulling = false;
+      let isPullingUp = false;
+      let isDragging = false;
+      let initialScrollTop = 0;
+      let isAtTop = false;
+      let isAtBottom = false;
+      const handleTouchStart = (e) => {
+        const target = e.target;
+        if (target.closest("button") || target.closest("a") || target.closest("input") || target.closest("textarea")) {
+          return;
+        }
+        initialScrollTop = scrollContainer.scrollTop;
+        isAtTop = initialScrollTop <= 0;
+        isAtBottom = initialScrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 1;
+        if (isAtTop || isAtBottom) {
+          startY = e.touches[0].clientY;
+          startX = e.touches[0].clientX;
+          isPulling = true;
+          isDragging = false;
+          isPullingUp = false;
+        }
+      };
+      const handleTouchMove = (e) => {
+        if (!isPulling || !this.noteViewContainer)
+          return;
+        currentY = e.touches[0].clientY;
+        const currentX = e.touches[0].clientX;
+        const deltaY = currentY - startY;
+        const deltaX = currentX - startX;
+        if (!isDragging) {
+          if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            isPulling = false;
+            return;
+          }
+          let canPullDown = isAtTop && deltaY > 5;
+          let canPullUp = isAtBottom && deltaY < -5;
+          if (canPullDown || canPullUp) {
+            isDragging = true;
+            isPullingUp = canPullUp && deltaY < 0;
+            if (this.noteViewContainer) {
+              this.noteViewContainer.style.transition = "none";
+            }
+          } else if (isAtTop && !isAtBottom && deltaY < 0 || isAtBottom && !isAtTop && deltaY > 0) {
+            isPulling = false;
+            return;
+          }
+        }
+        if (isDragging) {
+          if (e.cancelable) {
+            e.preventDefault();
+          }
+          const resistance = 0.5;
+          const translateY = deltaY * resistance;
+          this.noteViewContainer.style.transform = `translateY(${translateY}px)`;
+        }
+      };
+      const handleTouchEnd = () => {
+        if (!isPulling || !this.noteViewContainer)
+          return;
+        isPulling = false;
+        if (!isDragging)
+          return;
+        isDragging = false;
+        const deltaY = currentY - startY;
+        if (!isPullingUp && deltaY > 80 || isPullingUp && deltaY < -80) {
+          const targetY = isPullingUp ? "-100vh" : "100vh";
+          this.noteViewContainer.style.transition = "transform 0.2s ease-out";
+          this.noteViewContainer.style.transform = `translateY(${targetY})`;
+          setTimeout(() => {
+            this.hideNoteInGrid();
+            if (this.noteViewContainer) {
+              this.noteViewContainer.style.transform = "";
+              this.noteViewContainer.style.transition = "";
+            }
+          }, 200);
+        } else {
+          this.noteViewContainer.style.transition = "transform 0.3s ease-out";
+          this.noteViewContainer.style.transform = `translateY(0)`;
+          setTimeout(() => {
+            if (this.noteViewContainer) {
+              this.noteViewContainer.style.transform = "";
+              this.noteViewContainer.style.transition = "";
+            }
+          }, 300);
+        }
+      };
+      this.noteViewContainer.addEventListener("touchstart", handleTouchStart, { passive: true });
+      this.noteViewContainer.addEventListener("touchmove", handleTouchMove, { passive: false });
+      this.noteViewContainer.addEventListener("touchend", handleTouchEnd);
+    }
     this.isShowingNote = true;
     const handleKeyDown2 = (e) => {
       if (e.key === "Escape") {

@@ -18399,6 +18399,20 @@ var WHATS_NEW_V2_0_5 = {
   zh: ["Outliner\uFF1A\u6574\u5757\u8303\u56F4\u9009\u62E9\u540E\uFF0C\u53F3\u952E\u9009\u4E2D block \u4E5F\u80FD\u6253\u5F00\u5706\u70B9\u83DC\u5355\u3002"],
   "zh-TW": ["Outliner\uFF1A\u6574\u584A\u7BC4\u570D\u9078\u53D6\u5F8C\uFF0C\u53F3\u9375\u9078\u4E2D block \u4E5F\u80FD\u958B\u555F\u5713\u9EDE\u9078\u55AE\u3002"]
 };
+var WHATS_NEW_V2_0_6 = {
+  en: [
+    "Outliner: V1 structural undo/redo now covers split, multiline paste, indent/outdent, merge, and drag/drop.",
+    "Outliner: Escape now exits block edit mode and clears block-range selection."
+  ],
+  zh: [
+    "Outliner\uFF1AV1 \u7ED3\u6784\u64A4\u9500/\u91CD\u505A\u73B0\u5DF2\u8986\u76D6 split\u3001\u591A\u884C\u7C98\u8D34\u3001\u7F29\u8FDB/\u53CD\u7F29\u8FDB\u3001merge \u548C drag/drop\u3002",
+    "Outliner\uFF1AEscape \u73B0\u5728\u4F1A\u9000\u51FA\u5F53\u524D block \u7F16\u8F91\uFF0C\u5E76\u6E05\u7A7A block-range selection\u3002"
+  ],
+  "zh-TW": [
+    "Outliner\uFF1AV1 \u7D50\u69CB\u64A4\u92B7/\u91CD\u505A\u73FE\u5DF2\u6DB5\u84CB split\u3001\u591A\u884C\u8CBC\u4E0A\u3001\u7E2E\u6392/\u53CD\u7E2E\u6392\u3001merge \u8207 drag/drop\u3002",
+    "Outliner\uFF1AEscape \u73FE\u5728\u6703\u9000\u51FA\u76EE\u524D block \u7DE8\u8F2F\uFF0C\u4E26\u6E05\u7A7A block-range selection\u3002"
+  ]
+};
 var WhatsNewModal = class extends import_obsidian13.Modal {
   constructor(app, options) {
     super(app);
@@ -18437,27 +18451,30 @@ var WhatsNewModal = class extends import_obsidian13.Modal {
     this.contentEl.empty();
   }
   getWhatsNewItems() {
-    var _a2, _b2, _c2, _d2, _e2, _f2;
+    var _a2, _b2, _c2, _d2, _e2, _f2, _g;
     if (this.currentVersion === "1.8.0") {
       return i18n_default.whatsNew.v1_8_0;
     }
+    if (this.currentVersion === "2.0.6") {
+      return (_a2 = WHATS_NEW_V2_0_6[i18n_default.lang]) != null ? _a2 : WHATS_NEW_V2_0_6.en;
+    }
     if (this.currentVersion === "2.0.5") {
-      return (_a2 = WHATS_NEW_V2_0_5[i18n_default.lang]) != null ? _a2 : WHATS_NEW_V2_0_5.en;
+      return (_b2 = WHATS_NEW_V2_0_5[i18n_default.lang]) != null ? _b2 : WHATS_NEW_V2_0_5.en;
     }
     if (this.currentVersion === "2.0.4") {
-      return (_b2 = WHATS_NEW_V2_0_4[i18n_default.lang]) != null ? _b2 : WHATS_NEW_V2_0_4.en;
+      return (_c2 = WHATS_NEW_V2_0_4[i18n_default.lang]) != null ? _c2 : WHATS_NEW_V2_0_4.en;
     }
     if (this.currentVersion === "2.0.3") {
-      return (_c2 = WHATS_NEW_V2_0_3[i18n_default.lang]) != null ? _c2 : WHATS_NEW_V2_0_3.en;
+      return (_d2 = WHATS_NEW_V2_0_3[i18n_default.lang]) != null ? _d2 : WHATS_NEW_V2_0_3.en;
     }
     if (this.currentVersion === "2.0.2") {
-      return (_d2 = WHATS_NEW_V2_0_2[i18n_default.lang]) != null ? _d2 : WHATS_NEW_V2_0_2.en;
+      return (_e2 = WHATS_NEW_V2_0_2[i18n_default.lang]) != null ? _e2 : WHATS_NEW_V2_0_2.en;
     }
     if (this.currentVersion === "2.0.1") {
-      return (_e2 = WHATS_NEW_V2_0_1[i18n_default.lang]) != null ? _e2 : WHATS_NEW_V2_0_1.en;
+      return (_f2 = WHATS_NEW_V2_0_1[i18n_default.lang]) != null ? _f2 : WHATS_NEW_V2_0_1.en;
     }
     if (this.currentVersion === "2.0.0" || this.currentVersion.startsWith("2.0.")) {
-      return (_f2 = WHATS_NEW_V2[i18n_default.lang]) != null ? _f2 : WHATS_NEW_V2.en;
+      return (_g = WHATS_NEW_V2[i18n_default.lang]) != null ? _g : WHATS_NEW_V2.en;
     }
     return i18n_default.whatsNew.fallback;
   }
@@ -25903,6 +25920,7 @@ function friendlyDateTime(dateTimeish) {
 
 // src/features/file-outliner-view/view.ts
 var import_state7 = require("@codemirror/state");
+var import_commands2 = require("@codemirror/commands");
 var import_view6 = require("@codemirror/view");
 
 // src/features/file-outliner-view/engine.ts
@@ -28202,15 +28220,29 @@ var basicSetup = [
 ];
 
 // src/features/file-outliner-view/editor-shortcuts.ts
+function isModKeyPressed(evt) {
+  return Boolean(evt == null ? void 0 : evt.ctrlKey) || Boolean(evt == null ? void 0 : evt.metaKey);
+}
 function isPlainTextPasteShortcut(evt) {
   var _a2;
   const key = String((_a2 = evt == null ? void 0 : evt.key) != null ? _a2 : "").toLowerCase();
   if (key !== "v")
     return false;
-  const mod = Boolean(evt == null ? void 0 : evt.ctrlKey) || Boolean(evt == null ? void 0 : evt.metaKey);
-  if (!mod)
+  if (!isModKeyPressed(evt))
     return false;
   return Boolean(evt == null ? void 0 : evt.shiftKey) && !Boolean(evt == null ? void 0 : evt.altKey);
+}
+function isUndoShortcut(evt) {
+  var _a2;
+  const key = String((_a2 = evt == null ? void 0 : evt.key) != null ? _a2 : "").toLowerCase();
+  return key === "z" && isModKeyPressed(evt) && !Boolean(evt == null ? void 0 : evt.shiftKey) && !Boolean(evt == null ? void 0 : evt.altKey);
+}
+function isRedoShortcut(evt) {
+  var _a2;
+  const key = String((_a2 = evt == null ? void 0 : evt.key) != null ? _a2 : "").toLowerCase();
+  if (!isModKeyPressed(evt) || Boolean(evt == null ? void 0 : evt.altKey))
+    return false;
+  return key === "y" || key === "z" && Boolean(evt == null ? void 0 : evt.shiftKey);
 }
 
 // src/features/file-outliner-view/editor-state.ts
@@ -28252,12 +28284,28 @@ function createOutlinerEditorState(doc, sel, host) {
             run: (view) => host.onArrowNavigate("down", view)
           },
           {
+            key: "Mod-z",
+            run: (view) => host.onUndo(view)
+          },
+          {
+            key: "Mod-y",
+            run: (view) => host.onRedo(view)
+          },
+          {
+            key: "Mod-Shift-z",
+            run: (view) => host.onRedo(view)
+          },
+          {
             key: "Shift-Enter",
             run: (view) => host.onSoftEnter(view)
           },
           {
             key: "Enter",
             run: () => host.onEnter()
+          },
+          {
+            key: "Escape",
+            run: () => host.onEscape()
           },
           {
             key: "Tab",
@@ -28509,6 +28557,31 @@ function cursorPosAtLastLine(text, goalCh) {
 }
 
 // src/features/file-outliner-view/view.ts
+function cloneOutlinerSelection(sel) {
+  return { id: sel.id, start: sel.start, end: sel.end };
+}
+function cloneOutlinerBlock(block) {
+  var _a2, _b2;
+  return {
+    id: block.id,
+    depth: block.depth,
+    text: block.text,
+    children: ((_a2 = block.children) != null ? _a2 : []).map(cloneOutlinerBlock),
+    system: {
+      date: block.system.date,
+      updated: block.system.updated,
+      extra: { ...(_b2 = block.system.extra) != null ? _b2 : {} }
+    },
+    _systemHasBlpMarker: block._systemHasBlpMarker
+  };
+}
+function cloneParsedOutlinerFile(file) {
+  var _a2;
+  return {
+    frontmatter: file.frontmatter,
+    blocks: ((_a2 = file.blocks) != null ? _a2 : []).map(cloneOutlinerBlock)
+  };
+}
 function formatSystemDate2(dt) {
   return dt.toFormat("yyyy-MM-dd'T'HH:mm:ss");
 }
@@ -28535,9 +28608,13 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.bridgedActiveEditorPrev = null;
     this.suppressEditorSync = false;
     this.editingId = null;
+    this.pendingStructuralExitCommitBypassId = null;
     this.pendingFocus = null;
     this.pendingScrollToId = null;
     this.pendingBlurTimer = null;
+    this.structuralUndoStack = [];
+    this.structuralRedoStack = [];
+    this.structuralHistoryLimit = 100;
     this.lastPlainPasteShortcutAt = 0;
     this.collapsedIds = /* @__PURE__ */ new Set();
     this.zoomStack = [];
@@ -28602,9 +28679,13 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
           this.collapsedIds.delete(drop.targetId);
           this.visibleNavCache = null;
         }
-        this.applyEngineResult(moveBlockSubtree(this.outlinerFile, sourceId, drop.targetId, drop.where), {
-          focus: false
-        });
+        const handled = this.applyStructuralEngineResult(
+          moveBlockSubtree(this.outlinerFile, sourceId, drop.targetId, drop.where),
+          { id: sourceId, start: 0, end: 0 },
+          { focus: false }
+        );
+        if (handled)
+          this.focusOutlinerRoot();
       },
       debugLog: (scope, err) => this.debugLog(scope, err)
     });
@@ -28714,6 +28795,8 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.blockRangeSelectedIds.clear();
     this.pendingFocus = null;
     this.pendingScrollToId = null;
+    this.structuralUndoStack = [];
+    this.structuralRedoStack = [];
     if (this.pendingBlurTimer) {
       window.clearTimeout(this.pendingBlurTimer);
       this.pendingBlurTimer = null;
@@ -28919,6 +29002,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       return;
     this.contentEl.empty();
     const root = this.contentEl.createDiv({ cls: "blp-file-outliner-root" });
+    root.tabIndex = -1;
     this.rootEl = root;
     const clickHost = {
       app: this.app,
@@ -28934,6 +29018,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       (evt) => handleOutlinerRootClickCapture(evt, clickHost),
       true
     );
+    root.addEventListener("keydown", (evt) => this.onOutlinerRootKeyDownCapture(evt), true);
     root.addEventListener("contextmenu", (evt) => this.onOutlinerRootContextMenuCapture(evt), true);
     root.addEventListener("pointerdown", (evt) => this.onOutlinerRootPointerDownCapture(evt), true);
     root.addEventListener("pointermove", (evt) => this.onOutlinerRootPointerMoveCapture(evt), true);
@@ -29024,6 +29109,32 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       this.blockRangeSelectedIds.add(id);
     }
     this.blockRangeSelection = { anchorId, focusId };
+    this.focusOutlinerRoot();
+  }
+  onOutlinerRootKeyDownCapture(evt) {
+    var _a2;
+    if (!this.editingId) {
+      if (isUndoShortcut(evt) && this.tryUndoStructuralHistory()) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        return;
+      }
+      if (isRedoShortcut(evt) && this.tryRedoStructuralHistory()) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        return;
+      }
+    }
+    if (String((_a2 = evt == null ? void 0 : evt.key) != null ? _a2 : "") !== "Escape")
+      return;
+    if (this.editingId)
+      return;
+    if (!this.blockRangeSelection)
+      return;
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.clearBlockRangeSelection();
+    this.focusOutlinerRoot();
   }
   getBlockIdAtClientPoint(x, y) {
     var _a2, _b2, _c2;
@@ -29138,8 +29249,11 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       onToggleTask: () => this.onEditorToggleTask(),
       onToggleTaskMarker: () => this.onEditorToggleTaskMarker(),
       onArrowNavigate: (dir, editor) => this.onEditorArrowNavigate(dir, editor),
+      onUndo: (editor) => this.onEditorUndo(editor),
+      onRedo: (editor) => this.onEditorRedo(editor),
       onEnter: () => this.onEditorEnter(),
       onSoftEnter: (editor) => this.onEditorSoftEnter(editor),
+      onEscape: () => this.onEditorEscape(),
       onTab: (shift) => this.onEditorTab(shift),
       onBackspace: () => this.onEditorBackspace(),
       onDelete: () => this.onEditorDelete()
@@ -29296,7 +29410,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
           }
         }
       }
-      this.applyEngineResult(result);
+      this.applyStructuralEngineResult(result, sel);
       return;
     }
     const r = this.editorView.state.selection.main;
@@ -29344,17 +29458,30 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       }
     );
   }
-  closeEditorSuggests() {
+  getOpenEditorSuggests() {
     var _a2;
     const mgr = (_a2 = this.app.workspace) == null ? void 0 : _a2.editorSuggest;
     const suggests = Array.isArray(mgr == null ? void 0 : mgr.suggests) ? mgr.suggests : [];
-    for (const s2 of suggests) {
-      if (!(s2 == null ? void 0 : s2.isOpen))
-        continue;
+    return suggests.filter((s2) => Boolean(s2 == null ? void 0 : s2.isOpen));
+  }
+  closeEditorSuggests() {
+    for (const s2 of this.getOpenEditorSuggests()) {
       this.tryOrLog("closeEditorSuggests/close", () => {
-        var _a3;
-        return (_a3 = s2.close) == null ? void 0 : _a3.call(s2);
+        var _a2;
+        return (_a2 = s2.close) == null ? void 0 : _a2.call(s2);
       });
+    }
+  }
+  focusOutlinerRoot() {
+    const root = this.rootEl;
+    if (!root)
+      return;
+    try {
+      if (document.activeElement !== root) {
+        root.focus({ preventScroll: true });
+      }
+    } catch (err) {
+      this.debugLog("focusOutlinerRoot", err);
     }
   }
   render(opts) {
@@ -29874,7 +30001,11 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       window.clearTimeout(this.pendingBlurTimer);
       this.pendingBlurTimer = null;
     }
-    if (b) {
+    const bypassStructuralCommit = this.pendingStructuralExitCommitBypassId === id;
+    if (bypassStructuralCommit) {
+      this.pendingStructuralExitCommitBypassId = null;
+    }
+    if (b && !bypassStructuralCommit) {
       const nextText = editor.state.doc.toString();
       if (b.text !== nextText) {
         b.text = nextText;
@@ -29924,13 +30055,74 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       backspaceWithChildren: (_b2 = this.plugin.settings.fileOutlinerBackspaceWithChildren) != null ? _b2 : "merge"
     };
   }
+  pushStructuralHistoryEntry(entry) {
+    this.structuralUndoStack.push(entry);
+    if (this.structuralUndoStack.length > this.structuralHistoryLimit) {
+      this.structuralUndoStack.splice(0, this.structuralUndoStack.length - this.structuralHistoryLimit);
+    }
+    this.structuralRedoStack = [];
+  }
+  applyStructuralEngineResult(result, beforeSelection, opts) {
+    if (!this.outlinerFile || !result.didChange)
+      return false;
+    const beforeFile = cloneParsedOutlinerFile(this.outlinerFile);
+    const beforeSelectionSnapshot = cloneOutlinerSelection(beforeSelection);
+    const afterFile = cloneParsedOutlinerFile(result.file);
+    const afterSelection = cloneOutlinerSelection(result.selection);
+    this.applyEngineResult(result, opts);
+    this.pushStructuralHistoryEntry({
+      beforeFile,
+      beforeSelection: beforeSelectionSnapshot,
+      afterFile,
+      afterSelection
+    });
+    return true;
+  }
+  restoreStructuralHistorySnapshot(file, selection) {
+    this.ensureRoot();
+    this.clearBlockRangeSelection();
+    this.closeEditorSuggests();
+    const editingIdBeforeApply = this.editingId;
+    const nextFile = cloneParsedOutlinerFile(file);
+    const nextSelection = cloneOutlinerSelection(selection);
+    this.outlinerFile = nextFile;
+    this.visibleNavCache = null;
+    this.rebuildIndex();
+    this.pendingStructuralExitCommitBypassId = editingIdBeforeApply && nextSelection.id !== editingIdBeforeApply && this.blockById.has(editingIdBeforeApply) ? editingIdBeforeApply : null;
+    this.pendingFocus = {
+      id: nextSelection.id,
+      cursorStart: nextSelection.start,
+      cursorEnd: nextSelection.end
+    };
+    this.pendingScrollToId = nextSelection.id;
+    this.render();
+    this.markDirtyAndRequestSave();
+  }
+  tryUndoStructuralHistory() {
+    const entry = this.structuralUndoStack.pop();
+    if (!entry)
+      return false;
+    this.structuralRedoStack.push(entry);
+    this.restoreStructuralHistorySnapshot(entry.beforeFile, entry.beforeSelection);
+    return true;
+  }
+  tryRedoStructuralHistory() {
+    const entry = this.structuralRedoStack.pop();
+    if (!entry)
+      return false;
+    this.structuralUndoStack.push(entry);
+    this.restoreStructuralHistorySnapshot(entry.afterFile, entry.afterSelection);
+    return true;
+  }
   applyEngineResult(result, opts) {
     if (!result.didChange)
       return;
     this.ensureRoot();
+    const editingIdBeforeApply = this.editingId;
     this.outlinerFile = result.file;
     this.visibleNavCache = null;
     this.rebuildIndex();
+    this.pendingStructuralExitCommitBypassId = editingIdBeforeApply && result.selection.id !== editingIdBeforeApply && this.blockById.has(editingIdBeforeApply) ? editingIdBeforeApply : null;
     for (const id of Array.from(result.dirtyIds)) {
       this.dirtyBlockIds.add(id);
     }
@@ -30086,6 +30278,28 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     });
     return true;
   }
+  onEditorEscape() {
+    if (this.getOpenEditorSuggests().length > 0) {
+      this.closeEditorSuggests();
+      return true;
+    }
+    const id = this.editingId;
+    if (!id)
+      return false;
+    this.exitEditMode(id);
+    this.focusOutlinerRoot();
+    return true;
+  }
+  onEditorUndo(editor) {
+    if ((0, import_commands2.undo)(editor))
+      return true;
+    return this.tryUndoStructuralHistory();
+  }
+  onEditorRedo(editor) {
+    if ((0, import_commands2.redo)(editor))
+      return true;
+    return this.tryRedoStructuralHistory();
+  }
   findBlockInFile(file, id) {
     var _a2;
     const walk = (list) => {
@@ -30114,8 +30328,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     const activeText = String((_a2 = active == null ? void 0 : active.text) != null ? _a2 : "");
     const isTask = Boolean(getTaskMarkerFromBlockText(activeText));
     if (!isTask) {
-      this.applyEngineResult(splitAtSelection(this.outlinerFile, sel, ctx));
-      return true;
+      return this.applyStructuralEngineResult(splitAtSelection(this.outlinerFile, sel, ctx), sel);
     }
     const markerLen = "[ ] ".length;
     const clamped = {
@@ -30133,8 +30346,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     }
     result.selection.start = markerLen;
     result.selection.end = markerLen;
-    this.applyEngineResult(result);
-    return true;
+    return this.applyStructuralEngineResult(result, sel);
   }
   onEditorTab(shift) {
     if (!this.outlinerFile)
@@ -30142,8 +30354,10 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     const sel = this.getActiveSelection();
     if (!sel)
       return false;
-    this.applyEngineResult(shift ? outdentBlock(this.outlinerFile, sel) : indentBlock(this.outlinerFile, sel));
-    return true;
+    return this.applyStructuralEngineResult(
+      shift ? outdentBlock(this.outlinerFile, sel) : indentBlock(this.outlinerFile, sel),
+      sel
+    );
   }
   onEditorBackspace() {
     if (!this.outlinerFile)
@@ -30154,8 +30368,10 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     if (sel.start !== 0 || sel.end !== 0)
       return false;
     const ctx = this.getEngineContext();
-    this.applyEngineResult(backspaceAtStart(this.outlinerFile, sel, { backspaceWithChildren: ctx.backspaceWithChildren }));
-    return true;
+    return this.applyStructuralEngineResult(
+      backspaceAtStart(this.outlinerFile, sel, { backspaceWithChildren: ctx.backspaceWithChildren }),
+      sel
+    );
   }
   onEditorDelete() {
     if (!this.outlinerFile)
@@ -30168,8 +30384,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     const valueLen = this.editorView.state.doc.length;
     if (sel.start !== valueLen || sel.end !== valueLen)
       return false;
-    this.applyEngineResult(mergeWithNext(this.outlinerFile, sel));
-    return true;
+    return this.applyStructuralEngineResult(mergeWithNext(this.outlinerFile, sel), sel);
   }
   consumePlainTextPasteBypass() {
     const t = this.lastPlainPasteShortcutAt;
@@ -30280,8 +30495,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
         }
       }
     }
-    this.applyEngineResult(result);
-    return true;
+    return this.applyStructuralEngineResult(result, sel);
   }
   scrollToBlockId(id) {
     var _a2;
