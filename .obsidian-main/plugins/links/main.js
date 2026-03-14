@@ -3056,12 +3056,13 @@ var ObsidianLinksSettingTab = class extends import_obsidian6.PluginSettingTab {
       });
     });
     this.setSettingHelpLink(settingCreateLink, this.getFullDocUrl("create-link-from-selection"));
-    let settings1 = new import_obsidian6.Setting(containerEl).setName("Create link from clipboard").setDesc("").addToggle((toggle) => {
+    let settingCreateLinkFromClipboard = new import_obsidian6.Setting(containerEl).setName("Create link from clipboard").setDesc("").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.contexMenu.createLinkFromClipboard).onChange(async (value) => {
         this.plugin.settings.contexMenu.createLinkFromClipboard = value;
         await this.plugin.saveSettings();
       });
     });
+    this.setSettingHelpLink(settingCreateLinkFromClipboard, this.getFullDocUrl("create-link-from-clipboard"));
     const convertAllToMdLinksSettings = new import_obsidian6.Setting(containerEl).setName("Convert all links to Markdown links").setDesc("").addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.contexMenu.convertAllLinksToMdLinks).onChange(async (value) => {
         this.plugin.settings.contexMenu.convertAllLinksToMdLinks = value;
