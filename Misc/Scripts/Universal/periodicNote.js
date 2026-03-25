@@ -24,7 +24,7 @@ async function openPeriodicNote({
     const tp = templaterApi();
     //const period = await tp.system.suggester(Object.keys(config), Object.keys(config), false, "Choose a period type");
     
-    const basepath = "Journals";
+    const basepath = "Private";
     const config = {
         daily: offset => ({
             template: tp.file.find_tfile("daily-template"),

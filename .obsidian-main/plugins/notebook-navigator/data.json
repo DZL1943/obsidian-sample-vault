@@ -23,7 +23,7 @@
       "hiddenFileProperties": [],
       "hiddenFileNames": [],
       "hiddenFileTags": [],
-      "periodicNotesFolder": "Journals",
+      "periodicNotesFolder": "Private",
       "propertyKeys": [],
       "navRainbow": {
         "mode": "none",
@@ -474,7 +474,7 @@
   "lastShownVersion": "2.5.2",
   "rootFolderOrder": [
     "Inbox",
-    "Journals",
+    "Private",
     "Jottings",
     "Pages",
     "Thoughts",

@@ -3,12 +3,15 @@
 .nomedia
 .new
 *.tmp
+*.bak
 *.swap
 *~
+~$*.*
 *.sync-conflict-*
 .stfolder/
 .stversions/
 .zettel-notes/
+.vscode/
 .trash/
 
 # Local
