@@ -987,13 +987,6 @@
       "icon": "help-circle",
       "visible": true,
       "order": 22
-    },
-    {
-      "id": "obsidian-excalidraw-plugin:新建绘图文件",
-      "name": "obsidian-excalidraw-plugin:新建绘图文件",
-      "icon": "help-circle",
-      "visible": true,
-      "order": 23
     }
   ],
   "AUTO_TAKEOVER": false,
