@@ -165,6 +165,7 @@
   "showTagIcons": true,
   "showAllTagsFolder": true,
   "showUntagged": true,
+  "scopeTagsToCurrentContext": false,
   "inheritTagColors": true,
   "keepEmptyTagsProperty": false,
   "showProperties": false,
@@ -172,6 +173,7 @@
   "inheritPropertyColors": true,
   "propertySortOrder": "alpha-asc",
   "showAllPropertiesFolder": true,
+  "scopePropertiesToCurrentContext": false,
   "defaultListMode": "standard",
   "defaultFolderSort": "title-asc",
   "propertySortKey": "",
@@ -471,7 +473,7 @@
     "#404040",
     "#404040"
   ],
-  "lastShownVersion": "2.5.2",
+  "lastShownVersion": "2.5.4",
   "rootFolderOrder": [
     "Inbox",
     "Private",

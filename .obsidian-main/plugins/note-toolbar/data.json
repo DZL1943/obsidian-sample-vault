@@ -40,6 +40,7 @@
   },
   "showToolbarInFileMenu": false,
   "showToolbarInOther": "",
+  "showWhatsNew": true,
   "textToolbar": null,
   "textToolbarOnKeyboard": true,
   "toolbarProp": "notetoolbar",
@@ -2234,5 +2235,6 @@
     }
   ],
   "version": 20260122.1,
-  "whatsnew_version": "1.29"
+  "webviewerToolbar": null,
+  "whatsnew_version": "1.30"
 }
