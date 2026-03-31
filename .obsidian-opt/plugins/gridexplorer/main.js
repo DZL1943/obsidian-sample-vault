@@ -6726,7 +6726,12 @@ var SearchModal = class extends import_obsidian13.Modal {
       this.gridView.searchMediaFiles = false;
     }
     const optionsList = [searchScopeContainer, searchNameContainer, searchMediaFilesContainer];
-    searchInput.addEventListener("input", () => {
+    let isComposing = false;
+    searchInput.addEventListener("compositionstart", () => {
+      isComposing = true;
+    });
+    searchInput.addEventListener("compositionend", () => {
+      isComposing = false;
       if (/\s/.test(searchInput.value)) {
         if (flushInput(false, true)) {
           renderTagButtons();
@@ -6735,7 +6740,18 @@ var SearchModal = class extends import_obsidian13.Modal {
       updateClearButton();
       updateTagSuggestions();
     });
+    searchInput.addEventListener("input", () => {
+      if (!isComposing && /\s/.test(searchInput.value)) {
+        if (flushInput(false, true)) {
+          renderTagButtons();
+        }
+      }
+      updateClearButton();
+      updateTagSuggestions();
+    });
     searchInput.addEventListener("keydown", (e) => {
+      if (isComposing)
+        return;
       if (e.key === "Backspace" && searchInput.value === "") {
         if (currentInputIndex > 0) {
           currentInputIndex--;
