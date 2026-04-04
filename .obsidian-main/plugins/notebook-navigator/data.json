@@ -101,7 +101,7 @@
     "uiScale": "local"
   },
   "createNewNotesInNewTab": false,
-  "autoRevealActiveFile": true,
+  "autoRevealActiveFile": false,
   "autoRevealShortestPath": true,
   "autoRevealIgnoreRightSidebar": true,
   "multiSelectModifier": "optionAlt",
