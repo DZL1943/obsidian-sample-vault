@@ -12796,10 +12796,12 @@ var colorPickerPlugin = import_view8.ViewPlugin.fromClass(
 // src/modals/CssSnippetDeleteConfirmModal.ts
 var import_obsidian5 = require("obsidian");
 var CssSnippetDeleteConfirmModal = class extends import_obsidian5.Modal {
-  constructor(app, plugin, file) {
+  constructor(app, plugin, file, onDone) {
     super(app);
+    this.deleted = false;
     this.plugin = plugin;
     this.file = file;
+    this.onDone = onDone;
   }
   async onOpen() {
     await super.onOpen();
@@ -12837,10 +12839,14 @@ var CssSnippetDeleteConfirmModal = class extends import_obsidian5.Modal {
         await this.plugin.saveSettings();
       }
       await deleteSnippet(this.app, this.file);
+      this.deleted = true;
       this.close();
     } catch (err) {
       handleError(err, "Failed to delete CSS file.");
     }
+  }
+  onClose() {
+    this.onDone(this.deleted);
   }
 };
 
@@ -12870,14 +12876,18 @@ async function detachCssFileLeaves(workspace, file) {
 // src/utils/delete-snippet.ts
 async function tryDeleteSnippet(plugin, file) {
   if (plugin.settings.promptDelete) {
-    const modal = new CssSnippetDeleteConfirmModal(
-      plugin.app,
-      plugin,
-      file
-    );
-    modal.open();
+    return new Promise((resolve) => {
+      const modal = new CssSnippetDeleteConfirmModal(
+        plugin.app,
+        plugin,
+        file,
+        resolve
+      );
+      modal.open();
+    });
   } else {
     await deleteSnippet(plugin.app, file);
+    return true;
   }
 }
 async function deleteSnippet(app, file) {
@@ -13604,8 +13614,10 @@ var CssSnippetFuzzySuggestModal = class extends import_obsidian9.FuzzySuggestMod
           }).catch(handleError);
         }
       } else if (evt.key === "Delete") {
-        tryDeleteSnippet(this.plugin, item).then(() => {
-          new import_obsidian9.Notice(`${item.name} was deleted.`);
+        tryDeleteSnippet(this.plugin, item).then((deleted) => {
+          if (deleted) {
+            new import_obsidian9.Notice(`"${item.name}" was deleted.`);
+          }
         }).catch((err) => {
           handleError(err, "Failed to delete CSS file.");
         });
@@ -13851,8 +13863,10 @@ var CssEditorPlugin = class extends import_obsidian12.Plugin {
         if (!file) return false;
         if (checking) return true;
         const cssFile = new CssFile(file);
-        tryDeleteSnippet(this, cssFile).then(() => {
-          new import_obsidian12.Notice(`"${cssFile.name}" was deleted.`);
+        tryDeleteSnippet(this, cssFile).then((deleted) => {
+          if (deleted) {
+            new import_obsidian12.Notice(`"${cssFile.name}" was deleted.`);
+          }
         }).catch((err) => {
           handleError(err, "Failed to delete CSS file.");
         });
@@ -13913,7 +13927,7 @@ var CssEditorPlugin = class extends import_obsidian12.Plugin {
     var _a, _b;
     const file = await createSnippetFile(this.app, filename, "");
     (_b = (_a = this.app.customCss) == null ? void 0 : _a.setCssEnabledStatus) == null ? void 0 : _b.call(_a, file.basename, true);
-    new import_obsidian12.Notice(`${file.name} was created.`);
+    new import_obsidian12.Notice(`"${file.name}" was created.`);
     await openView(this.app.workspace, VIEW_TYPE_CSS, openInNewTab, {
       file
     });

@@ -509,7 +509,7 @@
             "id": "a9b4616c-d4ed-4a91-8da8-146a39345360",
             "path": "Misc/Scripts/ghproxy.js",
             "settings": {
-              "config": "{\"default\": \"https://gh-proxy.com/\"}",
+              "config": "{\"default\": \"https://ghfast.top/\"}",
               "transform": "prepend"
             }
           }
