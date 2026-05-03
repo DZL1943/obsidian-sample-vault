@@ -84,7 +84,7 @@
             "id": "5f73d48a-967c-44d8-800f-fce5728cc92c",
             "path": "Misc/Scripts/ghproxy.js",
             "settings": {
-              "config": "{\"default\": \"https://ghproxy.vip/\"}",
+              "config": "{\"default\": \"https://ghfast.top/\"}",
               "transform": "prepend"
             }
           }

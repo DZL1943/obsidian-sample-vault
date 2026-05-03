@@ -1294,27 +1294,6 @@
       "delayed": false,
       "time": 0
     },
-    "obsidian-quiet-outline": {
-      "id": "obsidian-quiet-outline",
-      "name": "Quiet Outline",
-      "version": "0.4.3",
-      "minAppVersion": "0.15.6",
-      "description": "Make outline quiet and more powerful, including no-auto-expand, rendering heading as markdown, and search support.",
-      "author": "the_tree",
-      "authorUrl": "",
-      "fundingUrl": "https://www.buymeacoffee.com/thtree",
-      "isDesktopOnly": false,
-      "dir": ".obsidian-opt/plugins/obsidian-quiet-outline",
-      "enabled": false,
-      "switched": 0,
-      "groupInfo": {
-        "hidden": false,
-        "groupIndices": [],
-        "groupWasEnabled": false
-      },
-      "delayed": false,
-      "time": 0
-    },
     "obsidian-shellcommands": {
       "id": "obsidian-shellcommands",
       "name": "Shell commands",
