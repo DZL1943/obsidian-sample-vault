@@ -438,9 +438,12 @@
   "folderBackgroundColors": {},
   "folderSortOverrides": {
     "Pages": "created-desc",
-    "Thoughts": "created-desc"
+    "Thoughts": "created-desc",
+    "Private": "created-desc"
   },
-  "folderTreeSortOverrides": {},
+  "folderTreeSortOverrides": {
+    "Private": "alpha-desc"
+  },
   "folderAppearances": {},
   "tagIcons": {},
   "tagColors": {},
