@@ -1,5 +1,6 @@
 /* Kanban View Container */
 .obk-view-container {
+	container-type: inline-size;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -78,10 +79,169 @@
 	background: var(--background-modifier-border-hover);
 }
 
+/* Swimlane mode: stack lanes vertically. The lane body becomes the
+   horizontal column flex (replacing what .obk-board does in flat mode). */
+.obk-board--with-swimlanes {
+	flex-direction: column;
+	overflow-x: hidden;
+	overflow-y: auto;
+	gap: 12px;
+}
+
+.obk-swimlane {
+	display: flex;
+	flex-direction: column;
+	background: var(--background-secondary-alt);
+	border-radius: 8px;
+	border: 1px solid var(--background-modifier-border);
+	overflow: hidden;
+}
+
+.obk-swimlane-header {
+	padding: 8px 14px;
+	background: var(--background-primary-alt);
+	border-bottom: 1px solid var(--background-modifier-border);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: 600;
+	font-size: 13px;
+	color: var(--text-normal);
+	text-transform: capitalize;
+	flex-shrink: 0;
+}
+
+.obk-swimlane-count {
+	font-size: 12px;
+	color: var(--text-muted);
+	background: var(--background-modifier-border);
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-weight: 500;
+}
+
+.obk-swimlane-body {
+	display: flex;
+	align-items: stretch;
+	gap: 12px;
+	overflow-x: auto;
+	overflow-y: visible;
+	padding: 12px;
+	min-height: 140px;
+}
+
+/* In swimlane mode, each lane grows tall enough to fit the fullest column,
+   and shorter column bodies stretch to that height so their Sortable drop
+   target spans the whole lane row. */
+.obk-board--with-swimlanes .obk-column {
+	min-height: 0;
+	max-height: none;
+	height: auto;
+	overflow: visible;
+	align-self: stretch;
+}
+
+.obk-board--with-swimlanes .obk-column-body {
+	flex: 1 1 auto;
+	max-height: none;
+	overflow-y: visible;
+	min-height: 0;
+}
+
+/* The outer container caps height in flat mode; release it in swimlane mode
+   so the board grows to fit all lanes and the parent scroll-area scrolls. */
+.obk-view-container:has(.obk-board--with-swimlanes) {
+	overflow: visible;
+	height: auto;
+}
+
+/* Collapsed lane: cap the column body at about 30% less than the original
+   420px height and scroll within the
+   column. The lane and column themselves stay flexible — only the card
+   container is capped. */
+.obk-swimlane--collapsed .obk-column-body {
+	max-height: 294px;
+	overflow-y: auto;
+}
+
+.obk-swimlane-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	color: var(--text-muted);
+	background: var(--background-modifier-border);
+	border: 0;
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	--icon-size: var(--icon-xs);
+	transition:
+		background 0.1s ease,
+		color 0.1s ease;
+}
+
+.obk-swimlane-toggle:hover {
+	color: var(--text-normal);
+	background: var(--background-modifier-border-hover);
+}
+
+.obk-swimlane-toggle:focus-visible {
+	outline: 2px solid var(--background-modifier-border-focus);
+	outline-offset: 2px;
+}
+
+.obk-swimlane-drag-handle {
+	cursor: grab;
+	padding: 2px 4px;
+	opacity: 0.5;
+	user-select: none;
+	font-size: 14px;
+	line-height: 1;
+	color: var(--text-muted);
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.obk-swimlane-drag-handle:hover {
+	opacity: 1;
+	color: var(--text-normal);
+}
+
+.obk-swimlane-drag-handle:active {
+	cursor: grabbing;
+}
+
+.obk-swimlane-dragging {
+	opacity: 0.5;
+}
+
+.obk-swimlane-ghost {
+	opacity: 0.3;
+	background: var(--background-modifier-border);
+}
+
+.obk-swimlane-body::-webkit-scrollbar {
+	height: 8px;
+}
+.obk-swimlane-body::-webkit-scrollbar-track {
+	background: transparent;
+}
+.obk-swimlane-body::-webkit-scrollbar-thumb {
+	background: var(--background-modifier-border);
+	border-radius: 4px;
+}
+.obk-swimlane-body::-webkit-scrollbar-thumb:hover {
+	background: var(--background-modifier-border-hover);
+}
+
 /* Kanban Column */
 .obk-column {
 	--obk-column-accent-color: transparent;
-	flex: 0 0 280px;
+	flex: 0 0 clamp(200px, 60cqw, 280px);
 	display: flex;
 	flex-direction: column;
 	background: var(--background-secondary);
@@ -219,6 +379,48 @@
 	border-radius: 12px;
 }
 
+.obk-column-add-btn,
+.obk-column-remove-btn {
+	width: 24px;
+	height: 24px;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-muted);
+	cursor: pointer;
+	flex-shrink: 0;
+	transition:
+		background 0.1s ease,
+		color 0.1s ease,
+		opacity 0.1s ease;
+}
+
+.obk-column-add-btn {
+	opacity: 0.55;
+}
+
+.obk-column:hover .obk-column-add-btn,
+.obk-column-add-btn:focus-visible {
+	opacity: 1;
+}
+
+.obk-column-add-btn:hover,
+.obk-column-remove-btn:hover {
+	color: var(--text-normal);
+	background: var(--background-modifier-hover);
+}
+
+.obk-column-add-btn .svg-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.obk-column-remove-btn {
+	font-size: 18px;
+	line-height: 1;
+}
+
 .obk-column-body {
 	flex: 1;
 	overflow-y: auto;
@@ -256,6 +458,16 @@
 	cursor: pointer;
 	transition: all 0.2s ease;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* targets touch-first devices (tablets, phones) to make the kanban genuinely usable on
+   touch screens — any-pointer: coarse alone would also match hybrid devices (e.g.
+   touchscreen laptops) where the primary pointer is still a mouse */
+@media (any-pointer: coarse) and (hover: none) {
+	.obk-card {
+		user-select: none;
+		-webkit-user-select: none;
+	}
 }
 
 .obk-card--hover {
@@ -352,6 +564,22 @@
 	margin: 0;
 }
 
+.obk-quick-add-form {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.obk-quick-add-input {
+	width: 100%;
+}
+
+.obk-quick-add-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
 /* Drag and Drop States */
 .obk-card-dragging {
 	opacity: 0.5;
@@ -386,11 +614,4 @@
 	background: var(--interactive-accent);
 	border: 2px dashed var(--interactive-accent);
 	border-radius: 6px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-	.obk-column {
-		flex: 0 0 240px;
-	}
 }

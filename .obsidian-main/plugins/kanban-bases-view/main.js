@@ -28,10 +28,107 @@ __export(main_exports, {
   default: () => KanbanBasesViewPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian2 = require("obsidian");
+var import_obsidian3 = require("obsidian");
+
+// src/constants.ts
+var UNCATEGORIZED_LABEL = "Uncategorized";
+var HOVER_LINK_SOURCE_ID = "kanban-bases-view";
+var COLOR_PALETTE = [
+  { name: "red", cssVar: "var(--color-red)" },
+  { name: "orange", cssVar: "var(--color-orange)" },
+  { name: "yellow", cssVar: "var(--color-yellow)" },
+  { name: "green", cssVar: "var(--color-green)" },
+  { name: "cyan", cssVar: "var(--color-cyan)" },
+  { name: "blue", cssVar: "var(--color-blue)" },
+  { name: "purple", cssVar: "var(--color-purple)" },
+  { name: "pink", cssVar: "var(--color-pink)" }
+];
+var SORTABLE_GROUP = "obk-columns";
+var DATA_ATTRIBUTES = {
+  COLUMN_VALUE: "data-column-value",
+  ENTRY_PATH: "data-entry-path",
+  SORTABLE_CONTAINER: "data-sortable-container",
+  COLUMN_POSITION: "data-column-position",
+  COLUMN_COLOR: "data-column-color",
+  SWIMLANE_VALUE: "data-swimlane-value"
+};
+var SWIMLANE_KEY_SEPARATOR = "";
+var CSS_CLASSES = {
+  // Container
+  VIEW_CONTAINER: "obk-view-container",
+  BOARD: "obk-board",
+  BOARD_WITH_SWIMLANES: "obk-board--with-swimlanes",
+  // Swimlane (horizontal grouping band)
+  SWIMLANE: "obk-swimlane",
+  SWIMLANE_COLLAPSED: "obk-swimlane--collapsed",
+  SWIMLANE_HEADER: "obk-swimlane-header",
+  SWIMLANE_TITLE: "obk-swimlane-title",
+  SWIMLANE_COUNT: "obk-swimlane-count",
+  SWIMLANE_BODY: "obk-swimlane-body",
+  SWIMLANE_TOGGLE: "obk-swimlane-toggle",
+  SWIMLANE_DRAG_HANDLE: "obk-swimlane-drag-handle",
+  SWIMLANE_DRAGGING: "obk-swimlane-dragging",
+  SWIMLANE_GHOST: "obk-swimlane-ghost",
+  // Property selector (for future or framework-driven UI)
+  PROPERTY_SELECTOR: "obk-property-selector",
+  PROPERTY_LABEL: "obk-property-label",
+  PROPERTY_SELECT: "obk-property-select",
+  // Column
+  COLUMN: "obk-column",
+  COLUMN_HEADER: "obk-column-header",
+  COLUMN_TITLE: "obk-column-title",
+  COLUMN_COUNT: "obk-column-count",
+  COLUMN_BODY: "obk-column-body",
+  COLUMN_DRAG_HANDLE: "obk-column-drag-handle",
+  COLUMN_DRAGGING: "obk-column-dragging",
+  COLUMN_GHOST: "obk-column-ghost",
+  COLUMN_ADD_BTN: "obk-column-add-btn",
+  // Card
+  CARD: "obk-card",
+  CARD_TITLE: "obk-card-title",
+  CARD_PREVIEW: "obk-card-preview",
+  CARD_COVER: "obk-card-cover",
+  CARD_COVER_FIT_COVER: "obk-card-cover--fit-cover",
+  CARD_COVER_FIT_CONTAIN: "obk-card-cover--fit-contain",
+  CARD_ACTIVE: "obk-card--active",
+  CARD_HOVER: "obk-card--hover",
+  CARD_DRAGGING: "obk-card-dragging",
+  CARD_GHOST: "obk-card-ghost",
+  CARD_CHOSEN: "obk-card-chosen",
+  CARD_PROPERTY: "obk-card-property",
+  CARD_PROPERTY_WRAP: "obk-card-property-wrap",
+  CARD_PROPERTY_LABEL: "obk-card-property-label",
+  CARD_PROPERTY_VALUE: "obk-card-property-value",
+  // Empty state
+  EMPTY_STATE: "obk-empty-state",
+  // Sortable placeholder (fallback / shared ghost style)
+  SORTABLE_GHOST: "obk-sortable-ghost",
+  // Column remove button (shown only when column is empty)
+  COLUMN_REMOVE_BTN: "obk-column-remove-btn",
+  // Quick add modal
+  QUICK_ADD_FORM: "obk-quick-add-form",
+  QUICK_ADD_INPUT: "obk-quick-add-input",
+  QUICK_ADD_ACTIONS: "obk-quick-add-actions",
+  // Color picker
+  COLUMN_COLOR_BTN: "obk-column-color-btn",
+  COLUMN_COLOR_POPOVER: "obk-column-color-popover",
+  COLUMN_COLOR_SWATCH: "obk-column-color-swatch",
+  COLUMN_COLOR_SWATCH_ACTIVE: "obk-column-color-swatch--active",
+  COLUMN_COLOR_NONE: "obk-column-color-none"
+};
+var SORTABLE_CONFIG = {
+  ANIMATION_DURATION: 150,
+  TOUCH_DELAY: 150,
+  TOUCH_START_THRESHOLD: 4
+};
+var DEBOUNCE_DELAY = 50;
+var EMPTY_STATE_MESSAGES = {
+  NO_ENTRIES: "No entries found. Add some notes to your base.",
+  NO_PROPERTIES: "No properties found in entries."
+};
 
 // src/kanbanView.ts
-var import_obsidian = require("obsidian");
+var import_obsidian2 = require("obsidian");
 
 // node_modules/sortablejs/modular/sortable.esm.js
 function ownKeys(object, enumerableOnly) {
@@ -2238,79 +2335,62 @@ Sortable.mount(new AutoScrollPlugin());
 Sortable.mount(Remove, Revert);
 var sortable_esm_default = Sortable;
 
-// src/constants.ts
-var UNCATEGORIZED_LABEL = "Uncategorized";
-var COLOR_PALETTE = [
-  { name: "red", cssVar: "var(--color-red)" },
-  { name: "orange", cssVar: "var(--color-orange)" },
-  { name: "yellow", cssVar: "var(--color-yellow)" },
-  { name: "green", cssVar: "var(--color-green)" },
-  { name: "cyan", cssVar: "var(--color-cyan)" },
-  { name: "blue", cssVar: "var(--color-blue)" },
-  { name: "purple", cssVar: "var(--color-purple)" },
-  { name: "pink", cssVar: "var(--color-pink)" }
-];
-var SORTABLE_GROUP = "obk-columns";
-var DATA_ATTRIBUTES = {
-  COLUMN_VALUE: "data-column-value",
-  ENTRY_PATH: "data-entry-path",
-  SORTABLE_CONTAINER: "data-sortable-container",
-  COLUMN_POSITION: "data-column-position",
-  COLUMN_COLOR: "data-column-color"
-};
-var CSS_CLASSES = {
-  // Container
-  VIEW_CONTAINER: "obk-view-container",
-  BOARD: "obk-board",
-  // Property selector (for future or framework-driven UI)
-  PROPERTY_SELECTOR: "obk-property-selector",
-  PROPERTY_LABEL: "obk-property-label",
-  PROPERTY_SELECT: "obk-property-select",
-  // Column
-  COLUMN: "obk-column",
-  COLUMN_HEADER: "obk-column-header",
-  COLUMN_TITLE: "obk-column-title",
-  COLUMN_COUNT: "obk-column-count",
-  COLUMN_BODY: "obk-column-body",
-  COLUMN_DRAG_HANDLE: "obk-column-drag-handle",
-  COLUMN_DRAGGING: "obk-column-dragging",
-  COLUMN_GHOST: "obk-column-ghost",
-  // Card
-  CARD: "obk-card",
-  CARD_TITLE: "obk-card-title",
-  CARD_PREVIEW: "obk-card-preview",
-  CARD_COVER: "obk-card-cover",
-  CARD_COVER_FIT_COVER: "obk-card-cover--fit-cover",
-  CARD_COVER_FIT_CONTAIN: "obk-card-cover--fit-contain",
-  CARD_ACTIVE: "obk-card--active",
-  CARD_HOVER: "obk-card--hover",
-  CARD_DRAGGING: "obk-card-dragging",
-  CARD_GHOST: "obk-card-ghost",
-  CARD_CHOSEN: "obk-card-chosen",
-  CARD_PROPERTY: "obk-card-property",
-  CARD_PROPERTY_WRAP: "obk-card-property-wrap",
-  CARD_PROPERTY_LABEL: "obk-card-property-label",
-  CARD_PROPERTY_VALUE: "obk-card-property-value",
-  // Empty state
-  EMPTY_STATE: "obk-empty-state",
-  // Sortable placeholder (fallback / shared ghost style)
-  SORTABLE_GHOST: "obk-sortable-ghost",
-  // Column remove button (shown only when column is empty)
-  COLUMN_REMOVE_BTN: "obk-column-remove-btn",
-  // Color picker
-  COLUMN_COLOR_BTN: "obk-column-color-btn",
-  COLUMN_COLOR_POPOVER: "obk-column-color-popover",
-  COLUMN_COLOR_SWATCH: "obk-column-color-swatch",
-  COLUMN_COLOR_SWATCH_ACTIVE: "obk-column-color-swatch--active",
-  COLUMN_COLOR_NONE: "obk-column-color-none"
-};
-var SORTABLE_CONFIG = {
-  ANIMATION_DURATION: 150
-};
-var DEBOUNCE_DELAY = 50;
-var EMPTY_STATE_MESSAGES = {
-  NO_ENTRIES: "No entries found. Add some notes to your base.",
-  NO_PROPERTIES: "No properties found in entries."
+// src/quickAddModal.ts
+var import_obsidian = require("obsidian");
+var QuickAddModal = class extends import_obsidian.Modal {
+  constructor(app, options) {
+    super(app);
+    this.options = options;
+    this.input = null;
+    this.submitting = false;
+  }
+  onOpen() {
+    const { columnValue, swimlaneValue } = this.options;
+    this.setTitle(swimlaneValue ? `Add card to ${swimlaneValue} / ${columnValue}` : `Add card to ${columnValue}`);
+    const formEl = this.contentEl.createEl("form", { cls: CSS_CLASSES.QUICK_ADD_FORM });
+    this.input = new import_obsidian.TextComponent(formEl);
+    this.input.setPlaceholder("Card title");
+    this.input.inputEl.classList.add(CSS_CLASSES.QUICK_ADD_INPUT);
+    const actionsEl = formEl.createDiv({ cls: CSS_CLASSES.QUICK_ADD_ACTIONS });
+    const cancelBtn = actionsEl.createEl("button", {
+      text: "Cancel",
+      attr: { type: "button" }
+    });
+    const submitBtn = actionsEl.createEl("button", {
+      text: "Add",
+      cls: "mod-cta",
+      attr: { type: "submit" }
+    });
+    cancelBtn.addEventListener("click", () => this.close());
+    formEl.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+      void this.submit(submitBtn);
+    });
+    requestAnimationFrame(() => this.input?.inputEl.focus());
+  }
+  onClose() {
+    this.contentEl.empty();
+    this.input = null;
+    this.submitting = false;
+  }
+  async submit(submitBtn) {
+    if (this.submitting) return;
+    const title = this.input?.getValue().trim() ?? "";
+    if (!title) {
+      this.input?.inputEl.focus();
+      return;
+    }
+    this.submitting = true;
+    submitBtn.disabled = true;
+    try {
+      await this.options.onSubmit(title);
+      this.close();
+    } catch (error) {
+      this.submitting = false;
+      submitBtn.disabled = false;
+      throw error;
+    }
+  }
 };
 
 // src/utils/debounce.ts
@@ -2368,18 +2448,27 @@ function normalizePropertyValue(value) {
 function isRecord(value) {
   return typeof value === "object" && value !== null;
 }
+function isStringArray(value) {
+  return Array.isArray(value) && value.every((item) => typeof item === "string");
+}
+function isStringArrayRecord(value) {
+  return isRecord(value) && !Array.isArray(value) && Object.values(value).every(isStringArray);
+}
 function isColumnOrders(value) {
-  return isRecord(value) && Object.values(value).every((v) => Array.isArray(v));
+  return isStringArrayRecord(value);
 }
 function isColumnColors(value) {
   return isRecord(value) && Object.values(value).every((v) => isRecord(v) && Object.values(v).every((c) => typeof c === "string"));
 }
 function isCardOrders(value) {
-  return isRecord(value) && !Array.isArray(value) && Object.values(value).every((v) => isRecord(v) && !Array.isArray(v) && Object.values(v).every((a) => Array.isArray(a)));
+  return isRecord(value) && !Array.isArray(value) && Object.values(value).every((v) => isRecord(v) && !Array.isArray(v) && Object.values(v).every(isStringArray));
+}
+function isCollapsedLanes(value) {
+  return isStringArrayRecord(value);
 }
 async function renderCompactMarkdown(app, markdown, el, sourcePath, component) {
   const span = el.createSpan();
-  await import_obsidian.MarkdownRenderer.render(app, markdown, span, sourcePath, component);
+  await import_obsidian2.MarkdownRenderer.render(app, markdown, span, sourcePath, component);
   const p = span.querySelector(":scope > p");
   if (span.children.length === 1 && p) {
     while (p.firstChild) span.appendChild(p.firstChild);
@@ -2387,14 +2476,14 @@ async function renderCompactMarkdown(app, markdown, el, sourcePath, component) {
   }
 }
 async function renderPropertyValue(app, value, el, sourcePath, component) {
-  if (value instanceof import_obsidian.HTMLValue) {
-    el.appendChild((0, import_obsidian.sanitizeHTMLToDom)(value.toString()));
-  } else if (value instanceof import_obsidian.ListValue) {
+  if (value instanceof import_obsidian2.HTMLValue) {
+    el.appendChild((0, import_obsidian2.sanitizeHTMLToDom)(value.toString()));
+  } else if (value instanceof import_obsidian2.ListValue) {
     const len = value.length();
     for (let i = 0; i < len; i++) {
       if (i > 0) el.appendChild(document.createTextNode(", "));
       const item = value.get(i);
-      if (!(item instanceof import_obsidian.NullValue)) {
+      if (!(item instanceof import_obsidian2.NullValue)) {
         await renderPropertyValue(app, item, el, sourcePath, component);
       }
     }
@@ -2404,16 +2493,20 @@ async function renderPropertyValue(app, value, el, sourcePath, component) {
     el.appendChild(document.createTextNode(value.toString()));
   }
 }
-var KanbanView = class extends import_obsidian.BasesView {
+var KanbanView = class extends import_obsidian2.BasesView {
   constructor(controller, scrollEl2, legacyData = null) {
     super(controller);
     this.type = "kanban-view";
+    this.hoverPopover = null;
     this.groupByPropertyId = null;
+    this.swimlaneByPropertyId = null;
     this.cardTitlePropertyId = null;
     this.imagePropertyId = null;
     this._columnSortables = /* @__PURE__ */ new Map();
     this._entryMap = /* @__PURE__ */ new Map();
     this.columnSortable = null;
+    this.swimlaneSortable = null;
+    this.swimlaneColumnSortables = [];
     this.activeColorPicker = null;
     /**
      * In-memory display preferences — the single source of truth during a session.
@@ -2432,13 +2525,17 @@ var KanbanView = class extends import_obsidian.BasesView {
     this._lastImagePropertyId = void 0;
     this._lastImageFit = void 0;
     this._lastImageAspectRatio = void 0;
+    this._lastSwimlanePropertyId = void 0;
     this._prefs = {
       columnOrder: [],
+      swimlaneOrder: [],
       cardOrders: {},
-      columnColors: {}
+      columnColors: {},
       // columnValue → colorName
+      collapsedLanes: /* @__PURE__ */ new Set()
     };
     this._prefsPropertyId = null;
+    this._prefsSwimlanePropertyId = null;
     /**
      * True while a card or column drag is in flight. When set, patchColumnCards
      * skips DOM reordering so Sortable's live drag preview is not disturbed by
@@ -2455,8 +2552,16 @@ var KanbanView = class extends import_obsidian.BasesView {
       if (href && this.app) {
         const cardEl = linkEl.closest(`[${DATA_ATTRIBUTES.ENTRY_PATH}]`);
         const sourcePath = cardEl instanceof HTMLElement ? cardEl.getAttribute(DATA_ATTRIBUTES.ENTRY_PATH) ?? "" : "";
-        void this.app.workspace.openLinkText(href, sourcePath, import_obsidian.Keymap.isModEvent(evt));
+        void this.app.workspace.openLinkText(href, sourcePath, import_obsidian2.Keymap.isModEvent(evt));
       }
+    });
+    this.containerEl.on("mouseover", "a.internal-link", (evt, linkEl) => {
+      if (!(evt instanceof MouseEvent)) return;
+      const href = linkEl.getAttribute("data-href") || linkEl.getAttribute("href");
+      if (!href) return;
+      const cardEl = linkEl.closest(`[${DATA_ATTRIBUTES.ENTRY_PATH}]`);
+      const sourcePath = cardEl instanceof HTMLElement ? cardEl.getAttribute(DATA_ATTRIBUTES.ENTRY_PATH) ?? "" : "";
+      this.triggerHoverPreview(href, sourcePath, evt, linkEl);
     });
     this._debouncedRender = debounce(() => {
       try {
@@ -2472,15 +2577,39 @@ var KanbanView = class extends import_obsidian.BasesView {
   }
   loadConfig() {
     this.groupByPropertyId = this.config.getAsPropertyId("groupByProperty");
+    this.swimlaneByPropertyId = this.config.getAsPropertyId("swimlaneByProperty");
     this.cardTitlePropertyId = this.config.getAsPropertyId("cardTitleProperty");
     this.imagePropertyId = this.config.getAsPropertyId("imageProperty");
+  }
+  triggerHoverPreview(linktext, sourcePath, event, targetEl) {
+    this.app?.workspace.trigger("hover-link", {
+      event,
+      source: HOVER_LINK_SOURCE_ID,
+      hoverParent: this,
+      targetEl,
+      linktext,
+      sourcePath
+    });
+  }
+  /**
+   * Composite key used by `_prefs.cardOrders` to disambiguate card order across
+   * swimlanes. When swimlanes are inactive, returns the bare column value so
+   * existing flat-mode persistence continues to round-trip unchanged.
+   */
+  cardOrderKey(swimlaneValue, columnValue) {
+    return swimlaneValue === null ? columnValue : `${swimlaneValue}${SWIMLANE_KEY_SEPARATOR}${columnValue}`;
+  }
+  swimlanePrefsKey(groupPropertyId, swimlanePropertyId) {
+    return `${groupPropertyId}${SWIMLANE_KEY_SEPARATOR}${swimlanePropertyId}`;
   }
   /**
    * Load display preferences from config for the given propertyId.
    * Called once when groupByPropertyId changes; subsequent renders reuse _prefs.
    */
-  _loadPrefs(propertyId) {
+  _loadPrefs(propertyId, swimlanePropertyId) {
     this._prefsPropertyId = propertyId;
+    this._prefsSwimlanePropertyId = swimlanePropertyId;
+    const swimlaneScopedKey = swimlanePropertyId ? this.swimlanePrefsKey(propertyId, swimlanePropertyId) : null;
     const rawOrders = this.config?.get("columnOrders");
     const allOrders = isColumnOrders(rawOrders) ? rawOrders : {};
     let columnOrder = allOrders[propertyId] ?? null;
@@ -2492,7 +2621,7 @@ var KanbanView = class extends import_obsidian.BasesView {
     this._prefs.columnOrder = columnOrder ? [...columnOrder] : [];
     const rawCardOrders = this.config?.get("cardOrders");
     const allCardOrders = isCardOrders(rawCardOrders) ? rawCardOrders : {};
-    const savedCardOrders = allCardOrders[propertyId] ?? {};
+    const savedCardOrders = allCardOrders[swimlaneScopedKey ?? propertyId] ?? {};
     this._prefs.cardOrders = Object.fromEntries(Object.entries(savedCardOrders).map(([k, v]) => [k, [...v]]));
     const rawColors = this.config?.get("columnColors");
     const allColors = isColumnColors(rawColors) ? rawColors : {};
@@ -2503,6 +2632,12 @@ var KanbanView = class extends import_obsidian.BasesView {
       this.config?.set("columnColors", { ...allColors, [propertyId]: legacyColors });
     }
     this._prefs.columnColors = columnColors ? { ...columnColors } : {};
+    const rawCollapsed = this.config?.get("collapsedLanes");
+    const allCollapsed = isCollapsedLanes(rawCollapsed) ? rawCollapsed : {};
+    this._prefs.collapsedLanes = new Set(swimlaneScopedKey ? allCollapsed[swimlaneScopedKey] ?? [] : []);
+    const rawSwimlaneOrders = this.config?.get("swimlaneOrders");
+    const allSwimlaneOrders = isColumnOrders(rawSwimlaneOrders) ? rawSwimlaneOrders : {};
+    this._prefs.swimlaneOrder = swimlaneScopedKey && allSwimlaneOrders[swimlaneScopedKey] ? [...allSwimlaneOrders[swimlaneScopedKey]] : [];
   }
   /**
    * Write _prefs back to config. Called only on user actions (drag-drop,
@@ -2511,18 +2646,34 @@ var KanbanView = class extends import_obsidian.BasesView {
    * Change guards skip config.set() when the value hasn't changed, preventing
    * spurious onDataUpdated() triggers.
    */
-  _persistConfigKey(key, guard, newValue) {
-    if (!this._prefsPropertyId) return;
+  _persistConfigKey(key, guard, newValue, storageKey = this._prefsPropertyId) {
+    if (!storageKey) return;
     const raw = this.config?.get(key);
     const all = guard(raw) ? raw : {};
-    if (JSON.stringify(all[this._prefsPropertyId]) !== JSON.stringify(newValue)) {
-      this.config?.set(key, { ...all, [this._prefsPropertyId]: newValue });
+    if (JSON.stringify(all[storageKey]) !== JSON.stringify(newValue)) {
+      this.config?.set(key, { ...all, [storageKey]: newValue });
     }
   }
   _persistPrefs() {
-    this._persistConfigKey("columnOrders", isColumnOrders, this._prefs.columnOrder);
-    this._persistConfigKey("cardOrders", isCardOrders, this._prefs.cardOrders);
-    this._persistConfigKey("columnColors", isColumnColors, this._prefs.columnColors);
+    if (!this._prefsPropertyId) return;
+    const swimlaneScopedKey = this._prefsSwimlanePropertyId ? this.swimlanePrefsKey(this._prefsPropertyId, this._prefsSwimlanePropertyId) : null;
+    this._persistConfigKey("columnOrders", isColumnOrders, this._prefs.columnOrder, this._prefsPropertyId);
+    this._persistConfigKey(
+      "cardOrders",
+      isCardOrders,
+      this._prefs.cardOrders,
+      swimlaneScopedKey ?? this._prefsPropertyId
+    );
+    this._persistConfigKey("columnColors", isColumnColors, this._prefs.columnColors, this._prefsPropertyId);
+    if (swimlaneScopedKey) {
+      this._persistConfigKey("swimlaneOrders", isColumnOrders, this._prefs.swimlaneOrder, swimlaneScopedKey);
+      this._persistConfigKey(
+        "collapsedLanes",
+        isCollapsedLanes,
+        Array.from(this._prefs.collapsedLanes),
+        swimlaneScopedKey
+      );
+    }
   }
   render() {
     try {
@@ -2539,8 +2690,9 @@ var KanbanView = class extends import_obsidian.BasesView {
       if (!this.groupByPropertyId) {
         this.groupByPropertyId = availablePropertyIds[0];
       }
-      if (this.groupByPropertyId !== this._prefsPropertyId) {
-        this._loadPrefs(this.groupByPropertyId);
+      const swimlanePropertyId = this.swimlaneByPropertyId && this.swimlaneByPropertyId !== this.groupByPropertyId ? this.swimlaneByPropertyId : null;
+      if (this.groupByPropertyId !== this._prefsPropertyId || swimlanePropertyId !== this._prefsSwimlanePropertyId) {
+        this._loadPrefs(this.groupByPropertyId, swimlanePropertyId);
       }
       const hasNoEntries = entries.length === 0;
       const hasNoSavedColumns = this._prefs.columnOrder.length === 0;
@@ -2553,18 +2705,40 @@ var KanbanView = class extends import_obsidian.BasesView {
         return;
       }
       this._entryMap = new Map(entries.map((e) => [e.file.path, e]));
-      const groupedEntries = this.groupEntriesByProperty(entries, this.groupByPropertyId);
-      groupedEntries.forEach((columnEntries, value) => {
-        const savedOrder = this._prefs.cardOrders[value];
-        if (savedOrder) {
-          groupedEntries.set(value, this.applyCardOrder(columnEntries, savedOrder));
-        }
-      });
+      const groupedByLane = swimlanePropertyId ? this.groupEntriesBySwimlaneAndColumn(entries, swimlanePropertyId, this.groupByPropertyId) : null;
+      const groupedEntries = groupedByLane ? this.flattenLanes(groupedByLane) : this.groupEntriesByProperty(entries, this.groupByPropertyId);
+      const sortActive = this.hasActiveSort();
+      if (!sortActive && groupedByLane) {
+        groupedByLane.forEach((columns, laneValue) => {
+          columns.forEach((cellEntries, columnValue) => {
+            const savedOrder = this._prefs.cardOrders[this.cardOrderKey(laneValue, columnValue)];
+            if (savedOrder) {
+              columns.set(columnValue, this.applyCardOrder(cellEntries, savedOrder));
+            }
+          });
+        });
+      } else if (!sortActive) {
+        groupedEntries.forEach((columnEntries, value) => {
+          const savedOrder = this._prefs.cardOrders[this.cardOrderKey(null, value)];
+          if (savedOrder) {
+            groupedEntries.set(value, this.applyCardOrder(columnEntries, savedOrder));
+          }
+        });
+      }
       const liveValues = Array.from(groupedEntries.keys());
+      const liveValueSet = new Set(liveValues);
+      let shouldPersistColumnOrder = false;
+      if (this._prefs.columnOrder.includes(UNCATEGORIZED_LABEL) && !liveValueSet.has(UNCATEGORIZED_LABEL)) {
+        this._prefs.columnOrder = this._prefs.columnOrder.filter((value) => value !== UNCATEGORIZED_LABEL);
+        shouldPersistColumnOrder = true;
+      }
       const newValues = liveValues.filter((v) => !this._prefs.columnOrder.includes(v));
       if (newValues.length > 0) {
         const isInitialOrder = this._prefs.columnOrder.length === 0;
         this._prefs.columnOrder = isInitialOrder ? [...newValues].sort() : [...this._prefs.columnOrder, ...newValues];
+        shouldPersistColumnOrder = true;
+      }
+      if (shouldPersistColumnOrder) {
         this._persistPrefs();
       }
       const orderedValues = this.getOrderedColumnValues(liveValues);
@@ -2587,8 +2761,14 @@ var KanbanView = class extends import_obsidian.BasesView {
       const currentImageAspectRatio = Number.isFinite(rawRatio) && rawRatio > 0 ? rawRatio : 0.5;
       const imageAspectRatioChanged = currentImageAspectRatio !== this._lastImageAspectRatio;
       this._lastImageAspectRatio = currentImageAspectRatio;
+      const currentSwimlanePropertyId = swimlanePropertyId;
+      const swimlanePropertyChanged = currentSwimlanePropertyId !== this._lastSwimlanePropertyId;
+      this._lastSwimlanePropertyId = currentSwimlanePropertyId;
       const existingBoard = this.containerEl.querySelector(`.${CSS_CLASSES.BOARD}`);
-      if (!existingBoard || this._prefsPropertyId !== this.groupByPropertyId || orderChanged || wrapChanged || cardTitleChanged || imagePropertyChanged || imageFitChanged || imageAspectRatioChanged) {
+      const optionsChanged = orderChanged || wrapChanged || cardTitleChanged || imagePropertyChanged || imageFitChanged || imageAspectRatioChanged || swimlanePropertyChanged;
+      if (groupedByLane) {
+        this.fullRebuildSwimlanes(orderedValues, groupedByLane);
+      } else if (!existingBoard || this._prefsPropertyId !== this.groupByPropertyId || optionsChanged) {
         this.fullRebuild(orderedValues, groupedEntries);
       } else {
         this.patchBoard(existingBoard, orderedValues, groupedEntries);
@@ -2605,6 +2785,12 @@ var KanbanView = class extends import_obsidian.BasesView {
       this.columnSortable.destroy();
       this.columnSortable = null;
     }
+    if (this.swimlaneSortable) {
+      this.swimlaneSortable.destroy();
+      this.swimlaneSortable = null;
+    }
+    this.swimlaneColumnSortables.forEach((s) => s.destroy());
+    this.swimlaneColumnSortables = [];
   }
   fullReset() {
     this.containerEl.empty();
@@ -2621,6 +2807,134 @@ var KanbanView = class extends import_obsidian.BasesView {
     });
     this.initializeSortable();
     this.initializeColumnSortable();
+  }
+  /**
+   * Build a vertical stack of swimlanes, each containing the same column
+   * sequence. Empty (lane × column) cells render as empty bodies — same
+   * affordance as an empty saved column in flat mode.
+   *
+   * Sortable instances are attached per (lane × column) cell using a unique
+   * key. They share `SORTABLE_GROUP` so cards drag freely across lanes;
+   * `handleCardDrop` reads the destination lane from the closest ancestor
+   * `.obk-swimlane` and updates the swimlane property in addition to the
+   * column property.
+   */
+  fullRebuildSwimlanes(orderedColumnValues, groupedByLane) {
+    this.containerEl.empty();
+    this.destroySortables();
+    const boardEl = this.containerEl.createDiv({ cls: `${CSS_CLASSES.BOARD} ${CSS_CLASSES.BOARD_WITH_SWIMLANES}` });
+    const liveLaneValues = Array.from(groupedByLane.keys());
+    const newLaneValues = liveLaneValues.filter((v) => !this._prefs.swimlaneOrder.includes(v));
+    if (newLaneValues.length > 0) {
+      const isInitialOrder = this._prefs.swimlaneOrder.length === 0;
+      if (isInitialOrder) {
+        this._prefs.swimlaneOrder = [...newLaneValues].sort((a, b) => {
+          if (a === UNCATEGORIZED_LABEL) return 1;
+          if (b === UNCATEGORIZED_LABEL) return -1;
+          return a.localeCompare(b);
+        });
+      } else {
+        this._prefs.swimlaneOrder = [...this._prefs.swimlaneOrder, ...newLaneValues];
+      }
+      this._persistPrefs();
+    }
+    const orderedLanes = this.getOrderedSwimlaneValues(liveLaneValues);
+    orderedLanes.forEach((laneValue) => {
+      const laneEntries = groupedByLane.get(laneValue) ?? /* @__PURE__ */ new Map();
+      const laneEl = boardEl.createDiv({ cls: CSS_CLASSES.SWIMLANE });
+      laneEl.setAttribute(DATA_ATTRIBUTES.SWIMLANE_VALUE, laneValue);
+      const isCollapsed = this._prefs.collapsedLanes.has(laneValue);
+      if (isCollapsed) laneEl.classList.add(CSS_CLASSES.SWIMLANE_COLLAPSED);
+      const headerEl = laneEl.createDiv({ cls: CSS_CLASSES.SWIMLANE_HEADER });
+      const dragHandle = headerEl.createDiv({ cls: CSS_CLASSES.SWIMLANE_DRAG_HANDLE });
+      dragHandle.textContent = "\u22EE\u22EE";
+      dragHandle.setAttribute("aria-label", `Drag to reorder lane: ${laneValue}`);
+      headerEl.createSpan({ text: laneValue, cls: CSS_CLASSES.SWIMLANE_TITLE });
+      const laneCount = orderedColumnValues.reduce((sum, col) => sum + (laneEntries.get(col)?.length ?? 0), 0);
+      headerEl.createSpan({ text: `${laneCount}`, cls: CSS_CLASSES.SWIMLANE_COUNT });
+      const toggleBtn = headerEl.createEl("button", {
+        cls: CSS_CLASSES.SWIMLANE_TOGGLE,
+        attr: { type: "button" }
+      });
+      this.updateSwimlaneToggle(toggleBtn, isCollapsed);
+      toggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.toggleSwimlaneCollapsed(laneValue, laneEl, toggleBtn);
+      });
+      const bodyEl = laneEl.createDiv({ cls: CSS_CLASSES.SWIMLANE_BODY });
+      orderedColumnValues.forEach((columnValue) => {
+        const columnEl = this.createColumn(columnValue, laneEntries.get(columnValue) || [], {
+          showRemoveButton: false,
+          swimlaneValue: laneValue
+        });
+        bodyEl.appendChild(columnEl);
+        const cardBody = columnEl.querySelector(
+          `.${CSS_CLASSES.COLUMN_BODY}[${DATA_ATTRIBUTES.SORTABLE_CONTAINER}]`
+        );
+        if (cardBody) {
+          this.attachCardSortable(cardBody, this.cardOrderKey(laneValue, columnValue));
+        }
+      });
+    });
+    this.initializeSwimlaneSortable(boardEl);
+    this.initializeSwimlaneColumnSortables(boardEl);
+  }
+  initializeSwimlaneSortable(boardEl) {
+    if (this.swimlaneSortable) {
+      this.swimlaneSortable.destroy();
+      this.swimlaneSortable = null;
+    }
+    this.swimlaneSortable = new sortable_esm_default(boardEl, {
+      animation: SORTABLE_CONFIG.ANIMATION_DURATION,
+      handle: `.${CSS_CLASSES.SWIMLANE_DRAG_HANDLE}`,
+      draggable: `.${CSS_CLASSES.SWIMLANE}`,
+      ghostClass: CSS_CLASSES.SWIMLANE_GHOST,
+      dragClass: CSS_CLASSES.SWIMLANE_DRAGGING,
+      onStart: () => {
+        this._dragging = true;
+      },
+      onEnd: () => {
+        this._dragging = false;
+        this.handleSwimlaneDrop(boardEl);
+      }
+    });
+  }
+  handleSwimlaneDrop(boardEl) {
+    const lanes = boardEl.querySelectorAll(`.${CSS_CLASSES.SWIMLANE}`);
+    const order = Array.from(lanes).map((lane) => lane.getAttribute(DATA_ATTRIBUTES.SWIMLANE_VALUE)).filter((v) => v !== null);
+    this._prefs.swimlaneOrder = order;
+    this._persistPrefs();
+  }
+  initializeSwimlaneColumnSortables(boardEl) {
+    this.swimlaneColumnSortables.forEach((s) => s.destroy());
+    this.swimlaneColumnSortables = [];
+    boardEl.querySelectorAll(`.${CSS_CLASSES.SWIMLANE_BODY}`).forEach((bodyEl) => {
+      const sortable = new sortable_esm_default(bodyEl, {
+        animation: SORTABLE_CONFIG.ANIMATION_DURATION,
+        handle: `.${CSS_CLASSES.COLUMN_DRAG_HANDLE}`,
+        draggable: `.${CSS_CLASSES.COLUMN}`,
+        ghostClass: CSS_CLASSES.COLUMN_GHOST,
+        dragClass: CSS_CLASSES.COLUMN_DRAGGING,
+        onStart: () => {
+          this._dragging = true;
+        },
+        onEnd: (evt) => {
+          this._dragging = false;
+          this.handleSwimlaneColumnDrop(evt);
+        }
+      });
+      this.swimlaneColumnSortables.push(sortable);
+    });
+  }
+  handleSwimlaneColumnDrop(evt) {
+    if (!this._prefsPropertyId || !(evt.to instanceof HTMLElement)) return;
+    const order = Array.from(evt.to.children).filter(
+      (child) => child instanceof HTMLElement && child.classList.contains(CSS_CLASSES.COLUMN)
+    ).map((col) => col.getAttribute(DATA_ATTRIBUTES.COLUMN_VALUE)).filter((v) => v !== null);
+    if (order.length === 0) return;
+    this._prefs.columnOrder = order;
+    this._persistPrefs();
+    this.render();
   }
   patchBoard(boardEl, orderedValues, groupedEntries) {
     const existingColumns = /* @__PURE__ */ new Map();
@@ -2727,7 +3041,90 @@ var KanbanView = class extends import_obsidian.BasesView {
     });
     return grouped;
   }
-  createColumn(value, entries) {
+  /**
+   * Two-axis bucketing: swimlane → column → entries. Entries that fail to read
+   * either property fall through to UNCATEGORIZED_LABEL on the offending axis.
+   */
+  groupEntriesBySwimlaneAndColumn(entries, swimlanePropertyId, columnPropertyId) {
+    const grouped = /* @__PURE__ */ new Map();
+    const ensureLane = (laneKey) => {
+      const existing = grouped.get(laneKey);
+      if (existing) return existing;
+      const lane = /* @__PURE__ */ new Map();
+      grouped.set(laneKey, lane);
+      return lane;
+    };
+    entries.forEach((entry) => {
+      let laneKey = UNCATEGORIZED_LABEL;
+      let columnKey = UNCATEGORIZED_LABEL;
+      try {
+        laneKey = normalizePropertyValue(entry.getValue(swimlanePropertyId));
+      } catch (error) {
+        console.warn("Error reading swimlane property for entry:", entry.file.path, error);
+      }
+      try {
+        columnKey = normalizePropertyValue(entry.getValue(columnPropertyId));
+      } catch (error) {
+        console.warn("Error reading column property for entry:", entry.file.path, error);
+      }
+      const lane = ensureLane(laneKey);
+      ensureGroupExists(lane, columnKey).push(entry);
+    });
+    return grouped;
+  }
+  toggleSwimlaneCollapsed(laneValue, laneEl, toggleBtn) {
+    const willCollapse = !this._prefs.collapsedLanes.has(laneValue);
+    if (willCollapse) this._prefs.collapsedLanes.add(laneValue);
+    else this._prefs.collapsedLanes.delete(laneValue);
+    laneEl.classList.toggle(CSS_CLASSES.SWIMLANE_COLLAPSED, willCollapse);
+    this.updateSwimlaneToggle(toggleBtn, willCollapse);
+    this._persistPrefs();
+  }
+  updateSwimlaneToggle(toggleBtn, isCollapsed) {
+    const label = isCollapsed ? "Expand lane" : "Collapse lane";
+    toggleBtn.empty();
+    (0, import_obsidian2.setIcon)(toggleBtn, isCollapsed ? "chevron-right" : "chevron-down");
+    toggleBtn.setAttribute("aria-label", label);
+    toggleBtn.setAttribute("title", label);
+    toggleBtn.setAttribute("aria-expanded", String(!isCollapsed));
+  }
+  /**
+   * Order swimlane values: prefer the saved order if present (drag-reorder
+   * persists into _prefs.swimlaneOrder); otherwise sort alphabetically with
+   * UNCATEGORIZED_LABEL pinned last. New lanes (not yet in saved order) are
+   * appended at the end.
+   */
+  getOrderedSwimlaneValues(liveValues) {
+    if (!this._prefs.swimlaneOrder.length) {
+      return [...liveValues].sort((a, b) => {
+        if (a === UNCATEGORIZED_LABEL) return 1;
+        if (b === UNCATEGORIZED_LABEL) return -1;
+        return a.localeCompare(b);
+      });
+    }
+    const liveSet = new Set(liveValues);
+    const ordered = this._prefs.swimlaneOrder.filter((v) => liveSet.has(v));
+    const orderedSet = new Set(ordered);
+    const newOnes = liveValues.filter((v) => !orderedSet.has(v));
+    return [...ordered, ...newOnes];
+  }
+  /**
+   * Flatten a lane→column→entries map into the column→entries shape the
+   * single-axis render path expects, preserving union of column values across
+   * all lanes so empty cells still render as empty bodies.
+   */
+  flattenLanes(byLane) {
+    const flat = /* @__PURE__ */ new Map();
+    byLane.forEach((columns) => {
+      columns.forEach((entries, columnValue) => {
+        const existing = flat.get(columnValue);
+        if (existing) existing.push(...entries);
+        else flat.set(columnValue, [...entries]);
+      });
+    });
+    return flat;
+  }
+  createColumn(value, entries, options = {}) {
     const columnEl = document.createElement("div");
     columnEl.className = CSS_CLASSES.COLUMN;
     columnEl.setAttribute(DATA_ATTRIBUTES.COLUMN_VALUE, value);
@@ -2745,7 +3142,8 @@ var KanbanView = class extends import_obsidian.BasesView {
     });
     headerEl.createSpan({ text: value, cls: CSS_CLASSES.COLUMN_TITLE });
     headerEl.createSpan({ text: `${entries.length}`, cls: CSS_CLASSES.COLUMN_COUNT });
-    if (entries.length === 0) {
+    headerEl.appendChild(this.createAddButton(value, options.swimlaneValue ?? null));
+    if (entries.length === 0 && options.showRemoveButton !== false) {
       headerEl.appendChild(this.createRemoveButton(value, columnEl));
     }
     const bodyEl = columnEl.createDiv({ cls: CSS_CLASSES.COLUMN_BODY });
@@ -2762,7 +3160,7 @@ var KanbanView = class extends import_obsidian.BasesView {
       return;
     }
     const titleValue = entry.getValue(this.cardTitlePropertyId);
-    if (titleValue === null || titleValue instanceof import_obsidian.NullValue) {
+    if (titleValue === null || titleValue instanceof import_obsidian2.NullValue) {
       titleEl.textContent = entry.file.basename;
       return;
     }
@@ -2777,7 +3175,7 @@ var KanbanView = class extends import_obsidian.BasesView {
   renderCardCover(coverEl, entry, filePath) {
     if (!this.imagePropertyId) return false;
     const value = entry.getValue(this.imagePropertyId);
-    if (value === null || value instanceof import_obsidian.NullValue) return false;
+    if (value === null || value instanceof import_obsidian2.NullValue) return false;
     const raw = value.toString().trim();
     if (!raw || raw === "null") return false;
     if (/^https?:\/\//i.test(raw)) {
@@ -2832,11 +3230,16 @@ var KanbanView = class extends import_obsidian.BasesView {
     }
     cardEl.addEventListener("mouseenter", () => cardEl.classList.add(CSS_CLASSES.CARD_HOVER));
     cardEl.addEventListener("mouseleave", () => cardEl.classList.remove(CSS_CLASSES.CARD_HOVER));
+    cardEl.addEventListener("mouseover", (e) => {
+      if (e.target instanceof Element && e.target.closest("a")) return;
+      if (e.relatedTarget instanceof Element && cardEl.contains(e.relatedTarget)) return;
+      this.triggerHoverPreview(filePath, "", e, cardEl);
+    });
     const clickHandler = (e) => {
       if (e.target instanceof Element && e.target.closest("a")) return;
       this.setActiveCard(filePath);
       if (this.app?.workspace) {
-        void this.app.workspace.openLinkText(filePath, "", import_obsidian.Keymap.isModEvent(e));
+        void this.app.workspace.openLinkText(filePath, "", import_obsidian2.Keymap.isModEvent(e));
       }
     };
     cardEl.addEventListener("click", clickHandler);
@@ -2904,6 +3307,147 @@ var KanbanView = class extends import_obsidian.BasesView {
     };
     document.addEventListener("click", dismiss);
   }
+  createAddButton(columnValue, swimlaneValue) {
+    const btn = document.createElement("div");
+    btn.className = CSS_CLASSES.COLUMN_ADD_BTN;
+    btn.setAttribute(
+      "aria-label",
+      swimlaneValue ? `Add card to column: ${columnValue} in lane: ${swimlaneValue}` : `Add card to column: ${columnValue}`
+    );
+    btn.setAttribute("role", "button");
+    btn.setAttribute("tabindex", "0");
+    (0, import_obsidian2.setIcon)(btn, "plus");
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.openQuickAdd(columnValue, swimlaneValue);
+    });
+    btn.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      e.stopPropagation();
+      this.openQuickAdd(columnValue, swimlaneValue);
+    });
+    return btn;
+  }
+  openQuickAdd(columnValue, swimlaneValue) {
+    if (!this.app) return;
+    new QuickAddModal(this.app, {
+      columnValue,
+      swimlaneValue,
+      onSubmit: (title) => this.createQuickAddCard(title, columnValue, swimlaneValue)
+    }).open();
+  }
+  getWritableFrontmatterPropertyName(propertyId) {
+    if (!propertyId) return null;
+    const parsed = (0, import_obsidian2.parsePropertyId)(propertyId);
+    if (parsed.type !== "note") return null;
+    return parsed.name || null;
+  }
+  getQuickAddFolder() {
+    const rawFolder = this.config?.get("quickAddFolder");
+    if (typeof rawFolder !== "string") return null;
+    const folder = (0, import_obsidian2.normalizePath)(rawFolder.trim());
+    return folder ? folder : null;
+  }
+  sanitizeBaseFileName(title) {
+    return title.trim().replace(/\.md$/i, "").replace(/[\\/:*?"<>|]/g, "-").replace(/\s+/g, " ").replace(/[.\s]+$/g, "").trim();
+  }
+  async createQuickAddCard(title, columnValue, swimlaneValue) {
+    const baseFileName = this.sanitizeBaseFileName(title);
+    if (!baseFileName) {
+      new import_obsidian2.Notice("Enter a card title.");
+      return;
+    }
+    const columnPropertyName = this.getWritableFrontmatterPropertyName(this._prefsPropertyId);
+    if (!columnPropertyName) {
+      new import_obsidian2.Notice("Quick add needs a writable note property for columns.");
+      return;
+    }
+    const swimlanePropertyName = swimlaneValue ? this.getWritableFrontmatterPropertyName(this._prefsSwimlanePropertyId) : null;
+    if (swimlaneValue && !swimlanePropertyName) {
+      new import_obsidian2.Notice("Quick add needs a writable note property for swimlanes.");
+      return;
+    }
+    const quickAddFolder = this.getQuickAddFolder();
+    if (quickAddFolder && !this.app?.vault.getFolderByPath(quickAddFolder)) {
+      new import_obsidian2.Notice(`Quick add folder not found: ${quickAddFolder}`);
+      return;
+    }
+    const createdFilePaths = quickAddFolder && this.app?.vault ? new Set(this.app.vault.getMarkdownFiles().map((file) => file.path)) : null;
+    const setFrontmatter = (frontmatter) => {
+      if (columnValue === UNCATEGORIZED_LABEL) {
+        delete frontmatter[columnPropertyName];
+      } else {
+        frontmatter[columnPropertyName] = columnValue;
+      }
+      if (!swimlaneValue || !swimlanePropertyName) return;
+      if (swimlaneValue === UNCATEGORIZED_LABEL) {
+        delete frontmatter[swimlanePropertyName];
+      } else {
+        frontmatter[swimlanePropertyName] = swimlaneValue;
+      }
+    };
+    try {
+      await this.createFileForView(baseFileName, setFrontmatter);
+      if (quickAddFolder && createdFilePaths) {
+        await this.moveCreatedCardToFolder(createdFilePaths, baseFileName, quickAddFolder);
+      }
+      this.closeNativeNewItemPopover();
+    } catch (error) {
+      console.error("Error creating kanban card:", error);
+      new import_obsidian2.Notice("Could not create card.");
+    }
+  }
+  closeNativeNewItemPopover() {
+    const closePopovers = () => {
+      const popovers = Array.from(document.querySelectorAll(".bases-new-item-popover"));
+      if (popovers.length === 0) return;
+      document.body.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+      document.body.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+      popovers.forEach((popover) => {
+        popover.remove();
+      });
+    };
+    closePopovers();
+    globalThis.requestAnimationFrame(closePopovers);
+    for (const delay of [50, 250, 1e3]) {
+      globalThis.setTimeout(closePopovers, delay);
+    }
+  }
+  getCreatedMarkdownFile(previousPaths, baseFileName) {
+    if (!this.app?.vault) return null;
+    const createdFiles = this.app.vault.getMarkdownFiles().filter((file) => !previousPaths.has(file.path));
+    if (createdFiles.length === 0) return null;
+    const preferredBasename = baseFileName.split("/").pop() ?? baseFileName;
+    return createdFiles.find((file) => file.basename === preferredBasename) ?? createdFiles[0] ?? null;
+  }
+  getAvailablePath(folder, fileName) {
+    const extension = fileName.toLowerCase().endsWith(".md") ? ".md" : "";
+    const basename = extension ? fileName.slice(0, -extension.length) : fileName;
+    let candidate = (0, import_obsidian2.normalizePath)(`${folder}/${extension ? fileName : `${fileName}.md`}`);
+    let counter = 1;
+    while (this.app?.vault.getAbstractFileByPath(candidate)) {
+      candidate = (0, import_obsidian2.normalizePath)(`${folder}/${basename} ${counter}.md`);
+      counter++;
+    }
+    return candidate;
+  }
+  async moveCreatedCardToFolder(previousPaths, baseFileName, folder) {
+    if (!this.app?.vault || !this.app.fileManager) return;
+    const targetFolder = this.app.vault.getFolderByPath(folder);
+    if (!targetFolder) {
+      new import_obsidian2.Notice(`Quick add folder not found: ${folder}`);
+      return;
+    }
+    const createdFile = this.getCreatedMarkdownFile(previousPaths, baseFileName);
+    if (!createdFile) {
+      new import_obsidian2.Notice(`Created card, but could not move it to ${folder}.`);
+      return;
+    }
+    const targetPath = this.getAvailablePath(folder, createdFile.name);
+    if (targetPath === createdFile.path) return;
+    await this.app.fileManager.renameFile(createdFile, targetPath);
+  }
   createRemoveButton(value, columnEl) {
     const btn = document.createElement("div");
     btn.className = CSS_CLASSES.COLUMN_REMOVE_BTN;
@@ -2934,6 +3478,11 @@ var KanbanView = class extends import_obsidian.BasesView {
     const sortable = new sortable_esm_default(body, {
       group: SORTABLE_GROUP,
       animation: SORTABLE_CONFIG.ANIMATION_DURATION,
+      // require a press-and-hold before drag begins on touch so that
+      // swiping to scroll a column isn't mistaken for a card drag
+      delay: SORTABLE_CONFIG.TOUCH_DELAY,
+      delayOnTouchOnly: true,
+      touchStartThreshold: SORTABLE_CONFIG.TOUCH_START_THRESHOLD,
       dragClass: CSS_CLASSES.CARD_DRAGGING,
       ghostClass: CSS_CLASSES.CARD_GHOST,
       chosenClass: CSS_CLASSES.CARD_CHOSEN,
@@ -2987,18 +3536,33 @@ var KanbanView = class extends import_obsidian.BasesView {
       console.warn("No group by property ID set");
       return;
     }
+    const swimlaneSelector = `.${CSS_CLASSES.SWIMLANE}`;
+    const oldLaneEl = evt.from.closest(swimlaneSelector);
+    const newLaneEl = evt.to.closest(swimlaneSelector);
+    const swimlaneActive = newLaneEl instanceof HTMLElement;
+    const oldLaneValue = oldLaneEl instanceof HTMLElement ? oldLaneEl.getAttribute(DATA_ATTRIBUTES.SWIMLANE_VALUE) : null;
+    const newLaneValue = swimlaneActive ? newLaneEl.getAttribute(DATA_ATTRIBUTES.SWIMLANE_VALUE) : null;
     const getColumnPaths = (bodyEl) => Array.from(bodyEl.querySelectorAll(`.${CSS_CLASSES.CARD}`)).map((c) => c instanceof HTMLElement ? c.getAttribute(DATA_ATTRIBUTES.ENTRY_PATH) : null).filter((p) => p !== null);
-    if (oldColumnValue === newColumnValue) {
-      this._prefs.cardOrders[newColumnValue] = getColumnPaths(evt.to);
+    const oldKey = this.cardOrderKey(oldLaneValue, oldColumnValue ?? "");
+    const newKey = this.cardOrderKey(newLaneValue, newColumnValue);
+    const sortActive = this.hasActiveSort();
+    if (oldLaneValue === newLaneValue && oldColumnValue === newColumnValue) {
+      if (sortActive) {
+        this.render();
+        return;
+      }
+      this._prefs.cardOrders[newKey] = getColumnPaths(evt.to);
       this._persistPrefs();
       return;
     }
-    if (oldColumnEl instanceof HTMLElement && oldColumnValue) {
-      const oldBody = oldColumnEl.querySelector(`.${CSS_CLASSES.COLUMN_BODY}`);
-      if (oldBody) this._prefs.cardOrders[oldColumnValue] = getColumnPaths(oldBody);
+    if (!sortActive) {
+      if (oldColumnEl instanceof HTMLElement && oldColumnValue) {
+        const oldBody = oldColumnEl.querySelector(`.${CSS_CLASSES.COLUMN_BODY}`);
+        if (oldBody) this._prefs.cardOrders[oldKey] = getColumnPaths(oldBody);
+      }
+      this._prefs.cardOrders[newKey] = getColumnPaths(evt.to);
+      this._persistPrefs();
     }
-    this._prefs.cardOrders[newColumnValue] = getColumnPaths(evt.to);
-    this._persistPrefs();
     const entry = this._entryMap.get(entryPath);
     if (!entry) {
       console.warn("Entry not found for path:", entryPath);
@@ -3009,14 +3573,24 @@ var KanbanView = class extends import_obsidian.BasesView {
       return;
     }
     try {
-      const valueToSet = newColumnValue === UNCATEGORIZED_LABEL ? "" : newColumnValue;
-      const parsedProperty = (0, import_obsidian.parsePropertyId)(this._prefsPropertyId);
-      const propertyName = parsedProperty.name;
+      const columnValueToSet = newColumnValue === UNCATEGORIZED_LABEL ? "" : newColumnValue;
+      const columnPropertyName = (0, import_obsidian2.parsePropertyId)(this._prefsPropertyId).name;
+      const swimlanePropertyId = swimlaneActive ? this._prefsSwimlanePropertyId : null;
+      const swimlaneCrossed = swimlaneActive && swimlanePropertyId !== null && newLaneValue !== null && oldLaneValue !== newLaneValue;
+      const swimlanePropertyName = swimlaneCrossed ? (0, import_obsidian2.parsePropertyId)(swimlanePropertyId).name : null;
+      const swimlaneValueToSet = swimlaneCrossed && newLaneValue !== UNCATEGORIZED_LABEL ? newLaneValue : "";
       await this.app.fileManager.processFrontMatter(entry.file, (frontmatter) => {
-        if (valueToSet === "") {
-          delete frontmatter[propertyName];
+        if (columnValueToSet === "") {
+          delete frontmatter[columnPropertyName];
         } else {
-          frontmatter[propertyName] = valueToSet;
+          frontmatter[columnPropertyName] = columnValueToSet;
+        }
+        if (swimlanePropertyName) {
+          if (swimlaneValueToSet === "") {
+            delete frontmatter[swimlanePropertyName];
+          } else {
+            frontmatter[swimlanePropertyName] = swimlaneValueToSet;
+          }
         }
       });
     } catch (error) {
@@ -3041,6 +3615,12 @@ var KanbanView = class extends import_obsidian.BasesView {
   reapplyActiveCard() {
     if (!this._activeCardPath) return;
     this.findCardEl(this._activeCardPath)?.classList.add(CSS_CLASSES.CARD_ACTIVE);
+  }
+  hasActiveSort() {
+    const sortConfig = this.config?.getSort();
+    if (Array.isArray(sortConfig)) return sortConfig.length > 0;
+    if (!sortConfig || typeof sortConfig !== "object") return Boolean(sortConfig);
+    return Object.keys(sortConfig).length > 0;
   }
   getOrderedColumnValues(liveValues) {
     if (!this._prefs.columnOrder.length) return liveValues.sort();
@@ -3119,6 +3699,19 @@ var KanbanView = class extends import_obsidian.BasesView {
         placeholder: "Select property"
       },
       {
+        displayName: "Swimlane by",
+        type: "property",
+        key: "swimlaneByProperty",
+        filter: (prop) => !prop.startsWith("file."),
+        placeholder: "Optional: horizontal grouping"
+      },
+      {
+        displayName: "New card folder",
+        type: "folder",
+        key: "quickAddFolder",
+        placeholder: "Default: base file folder"
+      },
+      {
         displayName: "Card title property",
         type: "property",
         key: "cardTitleProperty",
@@ -3173,10 +3766,14 @@ function parseLegacyData(data) {
   }
   return null;
 }
-var KanbanBasesViewPlugin = class extends import_obsidian2.Plugin {
+var KanbanBasesViewPlugin = class extends import_obsidian3.Plugin {
   async onload() {
     const raw = await this.loadData();
     const legacyData = parseLegacyData(raw);
+    this.registerHoverLinkSource(HOVER_LINK_SOURCE_ID, {
+      display: "Kanban",
+      defaultMod: true
+    });
     this.registerBasesView(KANBAN_VIEW_TYPE, {
       name: "Kanban",
       icon: "columns",

@@ -115,10 +115,12 @@
   "showInfoButtons": true,
   "homepage": {
     "source": "none",
-    "file": null
+    "file": null,
+    "createMissingPeriodicNote": true
   },
   "showTooltips": true,
   "showTooltipPath": true,
+  "showTooltipWordCount": false,
   "desktopBackground": "secondary",
   "mobileScale": 1,
   "useFloatingToolbars": true,
@@ -189,7 +191,6 @@
   "filterPinnedByFolder": false,
   "showPinnedGroupHeader": true,
   "showPinnedIcon": false,
-  "optimizeNoteHeight": true,
   "showQuickActions": true,
   "quickActionRevealInFolder": false,
   "quickActionAddTag": false,
@@ -478,7 +479,7 @@
     "#404040",
     "#404040"
   ],
-  "lastShownVersion": "2.5.8",
+  "lastShownVersion": "2.6.3",
   "rootFolderOrder": [
     "Inbox",
     "Private",
