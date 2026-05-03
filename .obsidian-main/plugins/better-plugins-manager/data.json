@@ -876,6 +876,16 @@
       "enabled": false,
       "delay": "",
       "note": ""
+    },
+    {
+      "id": "obsidian-markmind",
+      "name": "Markmind",
+      "desc": "This is a mindmap , outline tool for obsidian.",
+      "group": "",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
     }
   ],
   "HIDES": [],
