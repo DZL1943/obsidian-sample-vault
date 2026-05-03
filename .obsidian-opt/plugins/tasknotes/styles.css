@@ -2916,6 +2916,37 @@
     white-space: nowrap;
 }
 
+.tasknotes-plugin .task-card__metadata-property {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.tasknotes-plugin .task-card__metadata-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.tasknotes-plugin .task-card__metadata-property:has(.tag),
+.tasknotes-plugin .task-card__metadata-value:has(.tag) {
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.tasknotes-plugin .task-card__metadata-property .tag {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
 .tasknotes-plugin .task-card__metadata-pill {
     display: inline-flex;
     align-items: center;
@@ -11114,6 +11145,75 @@ body.is-mobile .tasknotes-plugin.minimalist-task-modal.expanded .modal-button-co
     font-family: var(--font-text);
 }
 
+/* Description editor – Setting row must stack so the editor gets full width */
+.time-entry-editor-modal__time-container .setting-item:has(.time-entry-editor-modal__description-editor-container) {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.time-entry-editor-modal__time-container .setting-item:has(.time-entry-editor-modal__description-editor-container) .setting-item-control {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.time-entry-editor-modal__description-editor-container {
+    width: 100%;
+}
+
+.time-entry-editor-modal__description-editor,
+.time-entry-editor-modal__description-editor-fallback {
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: var(--radius-s);
+    width: 100%;
+    min-height: 80px;
+    max-height: 200px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.time-entry-editor-modal__description-editor .cm-editor {
+    height: 100%;
+    min-height: 80px;
+    max-height: 200px;
+}
+
+.time-entry-editor-modal__description-editor .cm-scroller {
+    overflow: auto;
+    max-height: 200px;
+    padding-top: var(--size-4-2);
+    padding-bottom: var(--size-4-2);
+}
+
+.time-entry-editor-modal__description-editor .cm-content {
+    padding-left: var(--size-4-2) !important;
+    padding-right: var(--size-4-2) !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    font-family: var(--font-text);
+    font-size: var(--font-ui-medium);
+    line-height: var(--line-height-normal);
+}
+
+.time-entry-editor-modal__description-editor .cm-placeholder {
+    color: var(--text-faint);
+    font-style: italic;
+}
+
+.time-entry-editor-modal__description-editor-fallback {
+    padding: var(--size-4-1) var(--size-4-2);
+    font-family: var(--font-text);
+    resize: vertical;
+    min-height: 80px;
+    max-height: 200px;
+}
+
+/* Focus ring on the description editor */
+.time-entry-editor-modal__description-editor:focus-within {
+    border-color: var(--interactive-accent);
+}
+
 .time-entry-editor-modal__duration-info {
     margin-top: var(--size-4-1);
     padding: var(--size-4-1) var(--size-4-2);
@@ -11438,6 +11538,28 @@ body.is-mobile .tasknotes-plugin.minimalist-task-modal.expanded .modal-button-co
 .tasknotes-plugin .task-subgroup.is-collapsed .task-subgroup-toggle svg { transform: rotate(0deg); }
 .tasknotes-plugin .task-subgroup.is-collapsed .task-cards { display: none; }
 .tasknotes-plugin .task-group.is-collapsed .task-subgroups-container { display: none; }
+
+/* Sub-header indentation for data-level attribute */
+.tasknotes-plugin .task-group[data-level="sub"] {
+    padding-left: 16px;
+    margin-bottom: var(--tn-spacing-sm);
+}
+
+.tasknotes-plugin .task-group[data-level="sub"] .task-group-header {
+    font-size: 0.95em;
+    font-weight: 500;
+    color: var(--tn-text-muted);
+    padding: var(--tn-spacing-xs) var(--tn-spacing-sm);
+}
+
+.tasknotes-plugin .task-group[data-level="sub"] .task-group-toggle {
+    opacity: 0.8;
+}
+
+.tasknotes-plugin .task-group[data-level="sub"] .task-group-toggle svg {
+    width: 14px;
+    height: 14px;
+}
 
 /* Per-group subgroup actions */
 .tasknotes-plugin .task-subgroup-actions { display:flex; align-items:center; gap: 4px; margin-left: 0; }
@@ -19275,23 +19397,23 @@ select.tasknotes-settings__card-input {
 }
 
 /* Sub-group header styling */
-.tn-tasknoteTaskList .task-group[data-level="sub"] {
+.tn-tasknotesTaskList .task-group[data-level="sub"] {
     padding-left: 16px; /* Subtle indentation */
     margin-bottom: var(--tn-spacing-sm);
 }
 
-.tn-tasknoteTaskList .task-group[data-level="sub"] .task-group-header {
+.tn-tasknotesTaskList .task-group[data-level="sub"] .task-group-header {
     font-size: 0.95em;
     font-weight: 500; /* Less bold than primary */
     color: var(--tn-text-muted);
     padding: var(--tn-spacing-xs) var(--tn-spacing-sm);
 }
 
-.tn-tasknoteTaskList .task-group[data-level="sub"] .task-group-toggle {
+.tn-tasknotesTaskList .task-group[data-level="sub"] .task-group-toggle {
     opacity: 0.8; /* Slightly more subtle chevron */
 }
 
-.tn-tasknoteTaskList .task-group[data-level="sub"] .task-group-toggle svg {
+.tn-tasknotesTaskList .task-group[data-level="sub"] .task-group-toggle svg {
     width: 14px;
     height: 14px;
 }
@@ -19302,6 +19424,17 @@ select.tasknotes-settings__card-input {
     flex-direction: column;
     gap: var(--tn-spacing-xs);
     padding-left: var(--tn-spacing-md);
+}
+
+/* Reset indentation for task cards after a primary group header */
+.tn-tasknotesTaskList .task-group[data-level="primary"] ~ .task-card {
+    margin-left: 0;
+}
+
+/* Indent task cards under subgroups to align chevrons with subgroup header chevron.
+   This rule comes after the primary reset so it wins for cards following a subgroup. */
+.tn-tasknotesTaskList .task-group[data-level="sub"] ~ .task-card {
+    margin-left: 16px;
 }
 
 /* Empty state */

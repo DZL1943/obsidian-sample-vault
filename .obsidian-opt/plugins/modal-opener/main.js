@@ -409,12 +409,7 @@ var _ModalWindow = class extends import_obsidian2.Modal {
           this.link = event2.url;
           this.createWebview(contentEl, containerEl);
         });
-        if (this.plugin.settings.enableWebAutoDarkMode) {
-          await this.registerWebAutoDarkMode(webContents);
-        }
-        if (this.plugin.settings.enableImmersiveTranslation) {
-          await this.registerImmersiveTranslation(webContents);
-        }
+        await this.registerWebAutoDarkMode(webContents);
       });
       webviewEl.addEventListener("destroyed", () => {
         if (doc !== this.contentEl.doc) {
@@ -647,7 +642,7 @@ var _ModalWindow = class extends import_obsidian2.Modal {
       default:
         mode = ((_a = this.prevActiveLeaf) == null ? void 0 : _a.view) instanceof import_obsidian2.MarkdownView && this.prevActiveLeaf.view.getMode() === "source" ? "source" : "preview";
     }
-    const previewTypes = ["excel-view", "tldraw-view", "mindmapview", "smm", "dataloom"];
+    const previewTypes = ["excel-view", "tldraw-view", "mindmapview", "smm"];
     if (this.modalLeafRef) {
       await this.modalLeafRef.openFile(file, { state: { mode } });
       fileContainer.appendChild(this.modalLeafRef.view.containerEl);
@@ -716,7 +711,7 @@ var _ModalWindow = class extends import_obsidian2.Modal {
   }
   findClosestEmbedElement(element) {
     var _a;
-    if (element.classList.contains("canvas-minimap") || element.classList.contains("file-embed-title") || element.classList.contains("markdown-embed-link") || element.closest('.ptl-tldraw-image-container, .dataloom-padding, .dataloom-bottom-bar, [data-viewport-type="element"], svg')) {
+    if (element.classList.contains("canvas-minimap") || element.classList.contains("file-embed-title") || element.classList.contains("markdown-embed-link") || element.closest('.ptl-tldraw-image-container, [data-viewport-type="element"], svg')) {
       while (element) {
         if ((_a = element.classList) == null ? void 0 : _a.contains("internal-embed")) {
           return element;
@@ -970,12 +965,7 @@ var _ModalWindow = class extends import_obsidian2.Modal {
             action: "allow"
           };
         });
-        if (this.plugin.settings.enableWebAutoDarkMode) {
-          await this.registerWebAutoDarkMode(webContents);
-        }
-        if (this.plugin.settings.enableImmersiveTranslation) {
-          await this.registerImmersiveTranslation(webContents);
-        }
+        await this.registerWebAutoDarkMode(webContents);
       });
     }
   }
@@ -1429,30 +1419,30 @@ var _ModalWindow = class extends import_obsidian2.Modal {
 			});
 		`);
   }
-  async registerImmersiveTranslation(webContents) {
-    await webContents.executeJavaScript(`
-            // 1. \u8BBE\u7F6E\u521D\u59CB\u5316\u53C2\u6570
-            window.immersiveTranslateConfig = {
-                isAutoTranslate: false,
-                pageRule: {
-                    // \u667A\u80FD\u9009\u62E9\u9700\u8981\u7FFB\u8BD1\u7684\u5185\u5BB9
-                    selectors: ["body"],
-                    // \u6392\u9664\u4E0D\u9700\u8981\u7FFB\u8BD1\u7684\u5143\u7D20
-                    excludeSelectors: ["pre", "code", ".code", "script", "style"],
-                    // \u5C06\u8BD1\u6587\u4F5C\u4E3A block \u7684\u6700\u5C0F\u5B57\u7B26\u6570
-                    blockMinTextCount: 0,
-                    // \u539F\u6587\u6BB5\u843D\u7684\u6700\u5C0F\u5B57\u7B26\u6570
-                    paragraphMinTextCount: 1
-                }
-            };
-
-            // 2. \u52A0\u8F7D\u6C89\u6D78\u5F0F\u7FFB\u8BD1 SDK
-            const script = document.createElement('script');
-            script.async = true;
-            script.src = 'https://download.immersivetranslate.com/immersive-translate-sdk-latest.js';
-            document.head.appendChild(script);
-        `);
-  }
+  // async registerImmersiveTranslation(webContents: any) {
+  //     // 注入沉浸式翻译 SDK
+  //     await webContents.executeJavaScript(`
+  //         // 1. 设置初始化参数
+  //         window.immersiveTranslateConfig = {
+  //             isAutoTranslate: false,
+  //             pageRule: {
+  //                 // 智能选择需要翻译的内容
+  //                 selectors: ["body"],
+  //                 // 排除不需要翻译的元素
+  //                 excludeSelectors: ["pre", "code", ".code", "script", "style"],
+  //                 // 将译文作为 block 的最小字符数
+  //                 blockMinTextCount: 0,
+  //                 // 原文段落的最小字符数
+  //                 paragraphMinTextCount: 1
+  //             }
+  //         };
+  //         // 2. 加载沉浸式翻译 SDK
+  //         const script = document.createElement('script');
+  //         script.async = true;
+  //         script.src = 'https://download.immersivetranslate.com/immersive-translate-sdk-lite-latest.js';
+  //         document.head.appendChild(script);
+  //     `);
+  // }
 };
 var ModalWindow = _ModalWindow;
 ModalWindow.instances = [];
@@ -1482,8 +1472,8 @@ var DEFAULT_SETTINGS = {
   onlyCloseButton: false,
   doubleClickToEdit: true,
   disableExcalidrawEsc: true,
-  enableWebAutoDarkMode: true,
-  enableImmersiveTranslation: true,
+  // enableWebAutoDarkMode: true,
+  // enableImmersiveTranslation: true,
   customCommands: [],
   showFileViewHeader: false,
   showLinkViewHeader: false,
@@ -1506,8 +1496,7 @@ var DEFAULT_SETTINGS = {
     sheetPlus: true,
     vscode: true,
     markmind: true,
-    simplemindmap: true,
-    dataloom: true
+    simplemindmap: true
   },
   showCommandsContainer: true,
   showDeleteCommands: true
@@ -1676,17 +1665,6 @@ var ModalOpenerSettingTab = class extends import_obsidian3.PluginSettingTab {
         await this.plugin.saveSettings();
       }));
     }
-    if (!import_obsidian3.Platform.isMobile) {
-      new import_obsidian3.Setting(containerEl).setName(t("Extend")).setHeading();
-      new import_obsidian3.Setting(containerEl).setName(t("Automatically switch to dark mode")).setDesc(t("Automatically switch to dark mode in web view")).addToggle((toggle) => toggle.setValue(this.plugin.settings.enableWebAutoDarkMode).onChange(async (value) => {
-        this.plugin.settings.enableWebAutoDarkMode = value;
-        await this.plugin.saveSettings();
-      }));
-      new import_obsidian3.Setting(containerEl).setName(t("Enable immersive translation")).setDesc(t("Load immersive translation plugin in web view")).addToggle((toggle) => toggle.setValue(this.plugin.settings.enableImmersiveTranslation).onChange(async (value) => {
-        this.plugin.settings.enableImmersiveTranslation = value;
-        await this.plugin.saveSettings();
-      }));
-    }
   }
   displayStyleSettings(containerEl) {
     new import_obsidian3.Setting(containerEl).setName(t("Styles")).setHeading();
@@ -1825,12 +1803,6 @@ var ModalOpenerSettingTab = class extends import_obsidian3.PluginSettingTab {
         "Simple Mind Map",
         "simplemindmap"
       );
-      this.createPluginSetting(
-        commandsContainer,
-        "notion-like-tables",
-        "Dataloom",
-        "dataloom"
-      );
     }
   }
   displayCommandsSettings(containerEl) {
@@ -1953,6 +1925,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
     this.registerOpenHandler();
     this.registerContextMenuHandler();
     this.registerCustomCommands();
+    this.registerCreateFileCommands();
     this.registerEvent(this.app.workspace.on("active-leaf-change", this.onActiveLeafChange.bind(this)));
     let openExternal;
     const webviewPlugin = this.app.internalPlugins.getEnabledPluginById("webviewer");
@@ -2113,12 +2086,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
             action: "allow"
           };
         });
-        if (this.settings.enableWebAutoDarkMode) {
-          await this.registerWebAutoDarkMode(webContents);
-        }
-        if (this.settings.enableImmersiveTranslation) {
-          await this.registerImmersiveTranslation(webContents);
-        }
+        await this.registerWebAutoDarkMode(webContents);
       });
     }
   }
@@ -2153,6 +2121,347 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
         name: command.name,
         callback: () => this.executeCustomCommand(command.command)
       });
+    });
+  }
+  registerCreateFileCommands() {
+    this.addCommand({
+      id: "create-markdown-in-modal",
+      name: "Create and edit Markdown in modal",
+      callback: () => {
+        if (this.settings.enabledCommands.markdown) {
+          this.createFileAndEditInModal("md", true);
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-bases-in-modal",
+      name: "Create and edit Bases in modal",
+      callback: () => {
+        const basesPlugin = this.app.internalPlugins.getEnabledPluginById("bases");
+        if (basesPlugin && this.settings.enabledCommands.bases) {
+          this.createFileAndEditInModal("base", false);
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-canvas-in-modal",
+      name: "Create and edit Canvas in modal",
+      callback: () => {
+        const canvasPlugin = this.app.internalPlugins.getEnabledPluginById("canvas");
+        if (canvasPlugin && this.settings.enabledCommands.canvas) {
+          this.createFileAndEditInModal("canvas", false);
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-excalidraw-in-modal",
+      name: "Create and edit Excalidraw in modal",
+      callback: async () => {
+        const pluginOriginal = this.getPlugin("obsidian-excalidraw-plugin");
+        const pluginYMJR = this.getPlugin("obsidian-excalidraw-plugin-ymjr");
+        const excalidrawPlugin = pluginOriginal || pluginYMJR;
+        if (!excalidrawPlugin || !this.settings.enabledCommands.excalidraw)
+          return;
+        const defaultNameWithExt = this.getDrawingFilename(excalidrawPlugin.settings);
+        const useExcalidrawExtension = excalidrawPlugin.settings.useExcalidrawExtension;
+        const result = await this.getNewFileName("", defaultNameWithExt);
+        if (!result)
+          return;
+        const { fileName, isEmbed } = result;
+        if (excalidrawPlugin && excalidrawPlugin.settings) {
+          const hasCustomName = fileName != defaultNameWithExt;
+          const excalidrawFileName = hasCustomName ? fileName + (useExcalidrawExtension ? ".excalidraw.md" : ".md") : defaultNameWithExt;
+          try {
+            const file = await excalidrawPlugin.createDrawing(excalidrawFileName);
+            const fileDirWithoutExt = file.path.replace(/\.excalidraw\.md$/, "").replace(/\.md$/, "");
+            await this.insertLinkToPreviousView(useExcalidrawExtension ? fileDirWithoutExt + ".excalidraw" : fileDirWithoutExt + ".md");
+            new ModalWindow(this, "", file, "").open();
+          } catch (e) {
+            console.error("createExcalidrawFile failed:", e);
+            new import_obsidian4.Notice(t("Failed to create file: ") + e.message);
+          }
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-diagrams-in-modal",
+      name: "Create and edit Diagrams in modal",
+      callback: () => {
+        const diagramsPlugin = this.getPlugin("obsidian-diagrams-net");
+        if (diagramsPlugin && this.settings.enabledCommands.diagrams) {
+          diagramsPlugin.attemptNewDiagram();
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-tldraw-in-modal",
+      name: "Create and edit Tldraw in modal",
+      callback: async () => {
+        var _a;
+        const tldrawPlugin = this.getPlugin("tldraw");
+        if (!tldrawPlugin || !this.settings.enabledCommands.tldraw)
+          return;
+        const defaultName = tldrawPlugin.createDefaultFilename();
+        const result = await this.getNewFileName("", defaultName + ".md");
+        if (!result)
+          return;
+        const { fileName, isEmbed } = result;
+        const hasCustomName = fileName + ".md" != defaultName;
+        const tldrawFileName = hasCustomName ? fileName : defaultName;
+        if (tldrawPlugin && tldrawPlugin.settings) {
+          const fileDestinations = tldrawPlugin.settings.fileDestinations;
+          const destinationMethod = fileDestinations.destinationMethod;
+          let folderName;
+          switch (destinationMethod) {
+            case "attachments-folder": {
+              folderName = (_a = this.app.vault.config.attachmentFolderPath) != null ? _a : "/";
+              break;
+            }
+            case "colocate": {
+              folderName = tldrawPlugin.settings.fileDestinations.colocationSubfolder;
+              break;
+            }
+            case "default-folder": {
+              folderName = tldrawPlugin.settings.fileDestinations.defaultFolder;
+              break;
+            }
+            default: {
+              folderName = "";
+              break;
+            }
+          }
+          try {
+            const file = await tldrawPlugin.createTldrFile(tldrawFileName, {
+              foldername: folderName,
+              inMarkdown: true,
+              tlStore: void 0
+            });
+            await this.insertLinkToPreviousView(file.path);
+            new ModalWindow(this, "", file, "", "tldraw-view").open();
+          } catch (e) {
+            console.error("createTldrFile failed:", e);
+            new import_obsidian4.Notice(t("Failed to create file: ") + e.message);
+          }
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-excel-in-modal",
+      name: "Create and edit Excel in modal",
+      callback: async () => {
+        const excelPlugin = this.getPlugin("excel");
+        if (!excelPlugin || !this.settings.enabledCommands.excel)
+          return;
+        const defaultName = this.getExcelFilename(excelPlugin.settings);
+        const result = await this.getNewFileName("", defaultName);
+        if (!result)
+          return;
+        const { fileName, isEmbed } = result;
+        if (excelPlugin && excelPlugin.settings) {
+          const hasCustomName = fileName !== defaultName;
+          const excelFileName = hasCustomName ? fileName + ".sheet.md" : fileName;
+          try {
+            const file = await excelPlugin.createExcel(excelFileName);
+            await this.insertLinkToPreviousView(file.path);
+            new ModalWindow(this, "", file, "", "excel-view").open();
+          } catch (e) {
+            console.error("createExcelFile failed:", e);
+            new import_obsidian4.Notice(t("Failed to create file: ") + e.message);
+          }
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-sheet-plus-in-modal",
+      name: "Create and edit Sheet Plus in modal",
+      callback: async () => {
+        const sheetPlugin = this.getPlugin("sheet-plus");
+        if (!sheetPlugin || !this.settings.enabledCommands.sheetPlus)
+          return;
+        const defaultName = this.getExcelProFilename(sheetPlugin.settings);
+        const result = await this.getNewFileName("", defaultName);
+        if (!result)
+          return;
+        const { fileName, isEmbed } = result;
+        if (sheetPlugin && sheetPlugin.settings) {
+          const hasCustomName = fileName !== defaultName;
+          const excelFileName = hasCustomName ? fileName + ".univer.md" : fileName;
+          try {
+            const file = await sheetPlugin.createExcel(excelFileName);
+            await this.insertLinkToPreviousView(file.path);
+            new ModalWindow(this, "", file, "", "excel-pro-view").open();
+          } catch (e) {
+            console.error("createExcelFile failed:", e);
+            new import_obsidian4.Notice(t("Failed to create file: ") + e.message);
+          }
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-code-file-in-modal",
+      name: "Create and edit Code File in modal",
+      callback: async () => {
+        const vscodePlugin = this.getPlugin("vscode-editor");
+        if (!vscodePlugin || !this.settings.enabledCommands.vscode)
+          return;
+        if (vscodePlugin && vscodePlugin.settings) {
+          const defaultLocation = vscodePlugin.settings.defaultLocation;
+          let tFolder = this.app.vault.getRoot();
+          switch (defaultLocation) {
+            case "root": {
+              tFolder = this.app.vault.getRoot();
+              break;
+            }
+            case "default": {
+              const folderPath = this.app.vault.getConfig("attachmentFolderPath");
+              const folder = this.app.vault.getAbstractFileByPath(folderPath);
+              if (folder instanceof import_obsidian4.TFolder) {
+                tFolder = folder;
+              }
+              break;
+            }
+            case "custom": {
+              const customPath = vscodePlugin.settings.customPath.replace(/\/$/, "");
+              const customFolder = this.app.vault.getAbstractFileByPath(customPath);
+              if (customFolder instanceof import_obsidian4.TFolder) {
+                tFolder = customFolder;
+              }
+              break;
+            }
+            case "current": {
+              const activeFile = this.app.workspace.getActiveFile();
+              if ((activeFile == null ? void 0 : activeFile.parent) instanceof import_obsidian4.TFolder) {
+                tFolder = activeFile.parent;
+              }
+              break;
+            }
+          }
+          await this.getNewCodeFileNameAndCreate(vscodePlugin.settings, tFolder);
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-markmind-in-modal",
+      name: "Create and edit MarkMind in modal",
+      callback: async () => {
+        var _a, _b;
+        const markmindPlugin = this.getPlugin("obsidian-markmind");
+        if (!markmindPlugin || !this.settings.enabledCommands.markmind)
+          return;
+        try {
+          const activeFile = this.app.workspace.getActiveFile();
+          const filePath = (activeFile == null ? void 0 : activeFile.path) || "";
+          const parentFolder = this.app.fileManager.getNewFileParent(filePath);
+          const lang = (0, import_obsidian4.getLanguage)();
+          const baseName = lang.startsWith("zh") ? "\u672A\u547D\u540D\u601D\u7EF4\u5BFC\u56FE" : "untitled mindmap";
+          const sourcePath = ((_a = this.app.workspace.getActiveFile()) == null ? void 0 : _a.path) || "";
+          const folder = this.app.fileManager.getNewFileParent(sourcePath, `${baseName}.md`);
+          const availableFileName = await this.getAvailableFileName(baseName, "md", folder.path);
+          const result = await this.getNewFileName("", availableFileName);
+          if (!result)
+            return;
+          const { fileName, isEmbed } = result;
+          if (parentFolder) {
+            const targetFolder = parentFolder || this.app.fileManager.getNewFileParent(
+              ((_b = this.app.workspace.getActiveFile()) == null ? void 0 : _b.path) || ""
+            );
+            const folderPath = targetFolder.path;
+            const hasCustomName = fileName !== availableFileName;
+            const markmindFileName = hasCustomName ? fileName + ".md" : fileName;
+            const fullPath = `${folderPath}/${markmindFileName}`;
+            const file = await this.app.vault.create(fullPath, "");
+            await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
+              if (markmindPlugin.settings.mindmapmode === "basic") {
+                frontmatter["mindmap-plugin"] = "basic";
+              } else {
+                frontmatter["mindmap-plugin"] = "rich";
+              }
+            });
+            await this.insertLinkToPreviousView(file.path);
+            new ModalWindow(this, "", file, "", "mindmapview").open();
+          }
+        } catch (e) {
+          console.error("createMarkmindFile failed:", e);
+          new import_obsidian4.Notice(t("Failed to create file: ") + e.message);
+        }
+      }
+    });
+    this.addCommand({
+      id: "create-simple-mind-map-in-modal",
+      name: "Create and edit Simple Mind Map in modal",
+      callback: async () => {
+        const simpleMindMapPlugin = this.getPlugin("simple-mind-map");
+        if (!simpleMindMapPlugin || !this.settings.enabledCommands.simplemindmap)
+          return;
+        await this.app.commands.executeCommandById("simple-mind-map:create-smm-mindmap-insert-markdown");
+        setTimeout(() => {
+          var _a;
+          const editor = (_a = this.app.workspace.activeEditor) == null ? void 0 : _a.editor;
+          if (!editor)
+            return;
+          const line = editor.getLine(editor.getCursor().line);
+          const match = line.match(/\[\[([^\]]+)\]\]/);
+          if (!match)
+            return;
+          const filename = match[1];
+          const file = this.app.metadataCache.getFirstLinkpathDest(filename, "");
+          if (file) {
+            new ModalWindow(this, "", file, "", "smm").open();
+          }
+        }, 100);
+      }
+    });
+    this.addCommand({
+      id: "delete-linked-attachment",
+      name: "Delete linked attachment",
+      callback: () => {
+        if (!this.settings.showDeleteCommands)
+          return;
+        const activeView = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
+        if (!activeView)
+          return;
+        const editor = activeView.editor;
+        const cursor = editor.getCursor();
+        const line = editor.getLine(cursor.line);
+        const linkMatch = this.findLinkAtPosition(line, cursor.ch);
+        if (linkMatch) {
+          const [filePath] = linkMatch.split("|");
+          const [filePathWithoutAnchor] = filePath.split("#");
+          const file = this.app.metadataCache.getFirstLinkpathDest(filePathWithoutAnchor, "");
+          if (file && file instanceof import_obsidian4.TFile) {
+            const modal = new import_obsidian4.Modal(this.app);
+            modal.titleEl.setText(t("Confirm deletion?"));
+            const content = modal.contentEl.createDiv();
+            content.setText(file.path);
+            const buttonContainer = content.createDiv({ cls: "modal-button-container" });
+            buttonContainer.createEl("button", { text: t("Cancel") }).onclick = () => modal.close();
+            buttonContainer.createEl(
+              "button",
+              { text: t("Delete"), cls: "mod-warning" }
+            ).onclick = async () => {
+              try {
+                await this.app.fileManager.trashFile(file);
+                const startIndex = line.indexOf("![[");
+                const isEmbed = startIndex !== -1;
+                const from = {
+                  line: cursor.line,
+                  ch: isEmbed ? startIndex : line.indexOf("[[")
+                };
+                const to = {
+                  line: cursor.line,
+                  ch: line.indexOf("]]") + 2
+                };
+                editor.replaceRange("", from, to);
+                new import_obsidian4.Notice(t("File moved to trash"));
+                modal.close();
+              } catch (error) {
+                new import_obsidian4.Notice(t("Failed to delete file"));
+              }
+            };
+            modal.open();
+          }
+        }
+      }
     });
   }
   executeCustomCommand(command) {
@@ -2383,6 +2692,9 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
     if (element.tagName === "A" && (element.classList.contains("external-link") || element.classList.contains("internal-link"))) {
       return true;
     }
+    if (element.tagName === "SPAN" && element.classList.contains("internal-link")) {
+      return true;
+    }
     if (element.closest(".search-result-file-title .tree-item-inner")) {
       return true;
     }
@@ -2610,7 +2922,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
   }
   findClosestEmbedElement(element) {
     var _a;
-    if (element.classList.contains("canvas-minimap") || element.classList.contains("file-embed-title") || element.classList.contains("markdown-embed-link") || element.closest('.ptl-tldraw-image-container, .dataloom-padding, .dataloom-bottom-bar, [data-viewport-type="element"], svg')) {
+    if (element.classList.contains("canvas-minimap") || element.classList.contains("file-embed-title") || element.classList.contains("markdown-embed-link") || element.closest('.ptl-tldraw-image-container, [data-viewport-type="element"], svg')) {
       while (element) {
         if ((_a = element.classList) == null ? void 0 : _a.contains("internal-embed")) {
           return element;
@@ -3033,29 +3345,6 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
           })
         );
       }
-      const dataloomPlugin = this.getPlugin("notion-like-tables");
-      if (dataloomPlugin && this.settings.enabledCommands.dataloom) {
-        subMenu.addItem(
-          (subItem) => subItem.setTitle("Dataloom").setIcon("container").onClick(async () => {
-            await this.app.commands.executeCommandById("notion-like-tables:create-and-embed");
-            setTimeout(() => {
-              var _a;
-              const editor = (_a = this.app.workspace.activeEditor) == null ? void 0 : _a.editor;
-              if (!editor)
-                return;
-              const line = editor.getLine(editor.getCursor().line);
-              const match = line.match(/\[\[([^\]]+)\]\]/);
-              if (!match)
-                return;
-              const filename = match[1];
-              const file = this.app.metadataCache.getFirstLinkpathDest(filename, "");
-              if (file) {
-                new ModalWindow(this, "", file, "", "dataloom").open();
-              }
-            }, 100);
-          })
-        );
-      }
     });
   }
   addDeleteAttachmentMenuItem(menu, editor) {
@@ -3320,21 +3609,13 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
   // no dupe leaf
   async onActiveLeafChange(activeLeaf) {
     var _a;
-    if (this.activeLeafChangeTimeout) {
-      clearTimeout(this.activeLeafChangeTimeout);
-    }
     if (((_a = activeLeaf == null ? void 0 : activeLeaf.view) == null ? void 0 : _a.getViewType()) === "webviewer") {
       const activeLeafEl = document.querySelector(".workspace-leaf.mod-active");
       if (activeLeafEl) {
         const webviewEl = activeLeafEl.querySelector("webview");
         if (webviewEl) {
           webviewEl.addEventListener("dom-ready", () => {
-            if (this.settings.enableWebAutoDarkMode) {
-              this.registerWebAutoDarkMode(webviewEl);
-            }
-            if (this.settings.enableImmersiveTranslation) {
-              this.registerImmersiveTranslation(webviewEl);
-            }
+            this.registerWebAutoDarkMode(webviewEl);
           });
         }
       }
@@ -3468,24 +3749,24 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
 			});
 		`);
   }
-  async registerImmersiveTranslation(webContents) {
-    await webContents.executeJavaScript(`
-            // 1. \u8BBE\u7F6E\u521D\u59CB\u5316\u53C2\u6570
-            window.immersiveTranslateConfig = {
-                isAutoTranslate: false,
-                pageRule: {
-                    // \u6392\u9664\u4E0D\u9700\u8981\u7FFB\u8BD1\u7684\u5143\u7D20
-                    excludeSelectors: ["pre", "code", "nav", "footer"],
-                }
-            };
-
-            // 2. \u52A0\u8F7D\u6C89\u6D78\u5F0F\u7FFB\u8BD1 SDK
-            const script = document.createElement('script');
-            script.async = true;
-            script.src = 'https://download.immersivetranslate.com/immersive-translate-sdk-latest.js';
-            document.head.appendChild(script);
-        `);
-  }
+  // async registerImmersiveTranslation(webContents: any) {
+  //     // 注入沉浸式翻译 SDK
+  //     await webContents.executeJavaScript(`
+  //         // 1. 设置初始化参数
+  //         window.immersiveTranslateConfig = {
+  //             isAutoTranslate: false,
+  //             pageRule: {
+  //                 // 排除不需要翻译的元素
+  //                 excludeSelectors: ["pre", "code", "nav", "footer"],
+  //             }
+  //         };
+  //         // 2. 加载沉浸式翻译 SDK
+  //         const script = document.createElement('script');
+  //         script.async = true;
+  //         script.src = 'https://download.immersivetranslate.com/immersive-translate-sdk-lite-latest.js';
+  //         document.head.appendChild(script);
+  //     `);
+  // }
   getPlugin(pluginId) {
     const app = this.app;
     return app.plugins.plugins[pluginId];
@@ -3493,3 +3774,5 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
 };
 var ModalOpenerPlugin = _ModalOpenerPlugin;
 ModalOpenerPlugin.activeModalWindow = null;
+
+/* nosourcemap */
