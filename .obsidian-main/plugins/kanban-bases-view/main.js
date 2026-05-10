@@ -2555,6 +2555,16 @@ var KanbanView = class extends import_obsidian2.BasesView {
         void this.app.workspace.openLinkText(href, sourcePath, import_obsidian2.Keymap.isModEvent(evt));
       }
     });
+    this.containerEl.on("auxclick", "a.internal-link", (evt, linkEl) => {
+      if (!(evt instanceof MouseEvent) || evt.button !== 1) return;
+      evt.preventDefault();
+      const href = linkEl.getAttribute("data-href") || linkEl.getAttribute("href");
+      if (!href || !this.app) return;
+      const cardEl = linkEl.closest(`[${DATA_ATTRIBUTES.ENTRY_PATH}]`);
+      const sourcePath = cardEl instanceof HTMLElement ? cardEl.getAttribute(DATA_ATTRIBUTES.ENTRY_PATH) ?? "" : "";
+      const file = this.app.metadataCache.getFirstLinkpathDest(href, sourcePath);
+      if (file) this.openInBackgroundTab(file);
+    });
     this.containerEl.on("mouseover", "a.internal-link", (evt, linkEl) => {
       if (!(evt instanceof MouseEvent)) return;
       const href = linkEl.getAttribute("data-href") || linkEl.getAttribute("href");
@@ -3237,12 +3247,22 @@ var KanbanView = class extends import_obsidian2.BasesView {
     });
     const clickHandler = (e) => {
       if (e.target instanceof Element && e.target.closest("a")) return;
+      if (e.type === "auxclick" && e.button !== 1) return;
       this.setActiveCard(filePath);
-      if (this.app?.workspace) {
-        void this.app.workspace.openLinkText(filePath, "", import_obsidian2.Keymap.isModEvent(e));
+      if (!this.app?.workspace) return;
+      if (e.button === 1) {
+        this.openInBackgroundTab(entry.file);
+        return;
       }
+      void this.app.workspace.openLinkText(filePath, "", import_obsidian2.Keymap.isModEvent(e));
     };
     cardEl.addEventListener("click", clickHandler);
+    cardEl.addEventListener("auxclick", clickHandler);
+    cardEl.addEventListener("mousedown", (e) => {
+      if (e.button !== 1) return;
+      if (e.target instanceof Element && e.target.closest("a")) return;
+      e.preventDefault();
+    });
     return cardEl;
   }
   applyColumnColor(columnEl, colorName) {
@@ -3602,6 +3622,48 @@ var KanbanView = class extends import_obsidian2.BasesView {
     return Array.from(this.containerEl.querySelectorAll(`.${CSS_CLASSES.CARD}`)).find(
       (el) => el.getAttribute(DATA_ATTRIBUTES.ENTRY_PATH) === path
     ) ?? null;
+  }
+  /**
+   * Open a file in a new background tab, keeping the kanban as the active leaf.
+   *
+   * Obsidian's getLeaf('tab') makes the new tab the visible one in its group,
+   * so we capture the kanban's leaf, kick off openFile (fire-and-forget), and
+   * switch the active leaf back synchronously — before the browser repaints —
+   * so the new tab is never visible to the user. { focus: false } avoids an
+   * extra focus-driven scroll-into-view; the kanban still becomes the active
+   * (visible) leaf.
+   *
+   * During the leaf swap a transient layout pass clamps column scrollTop on
+   * image-backed cards (their <img> hasn't decoded, so scrollHeight briefly
+   * shrinks). We capture column scroll positions and restore them aggressively —
+   * synchronously plus over several animation frames — so no paint shows the
+   * clamped state.
+   */
+  openInBackgroundTab(file) {
+    if (!this.app?.workspace) return;
+    const scrollPositions = [];
+    this.containerEl.querySelectorAll(`.${CSS_CLASSES.COLUMN_BODY}`).forEach((body) => {
+      if (body.scrollTop > 0) scrollPositions.push([body, body.scrollTop]);
+    });
+    const previousLeaf = this.app.workspace.getMostRecentLeaf();
+    const newLeaf = this.app.workspace.getLeaf("tab");
+    void newLeaf.openFile(file, { active: false });
+    if (previousLeaf && previousLeaf !== newLeaf) {
+      this.app.workspace.setActiveLeaf(previousLeaf, { focus: false });
+    }
+    if (scrollPositions.length === 0) return;
+    const restore = () => {
+      scrollPositions.forEach(([body, top]) => {
+        if (body.scrollTop !== top) body.scrollTop = top;
+      });
+    };
+    restore();
+    let frames = 4;
+    const tick = () => {
+      restore();
+      if (--frames > 0) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   }
   setActiveCard(path) {
     if (this._activeCardPath) {
