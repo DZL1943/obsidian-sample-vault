@@ -1,33 +1,55 @@
 {
-  "PERSISTENCE": true,
-  "FILTER_SEARCH": "",
-  "FILTER_TAG": "",
-  "FILTER_GROUP": "",
-  "FILTER_DELAY": "",
   "LANGUAGE": "zh-cn",
   "LANGUAGE_INITIALIZED": true,
-  "MIGRATION_VERSION": "0.4.3",
+  "MIGRATION_VERSION": "1.0.8",
   "DEBUG": false,
+  "PERSISTENCE": true,
   "CENTER": true,
-  "ITEM_STYLE": "clickExpand",
-  "GROUP_STYLE": "a",
-  "TAG_STYLE": "a",
   "DELAY": true,
-  "FADE_OUT_DISABLED_PLUGINS": true,
+  "HIDE_BPM_TAG": false,
+  "RIBBON_MANAGER_ENABLED": false,
+  "MAIN_PAGE_ACTION_PLACEMENT": {
+    "checkUpdate": "menu",
+    "downloadUpdate": "item",
+    "singleStart": "menu",
+    "restart": "menu",
+    "enableIgnored": "menu",
+    "hide": "menu",
+    "note": "menu",
+    "hotkeys": "menu",
+    "copyId": "menu",
+    "openRepo": "item",
+    "openSettings": "item",
+    "openDir": "item",
+    "clearConfig": "menu",
+    "delete": "item"
+  },
+  "AUTO_TAKEOVER": false,
+  "SELF_CHECK_IGNORED": true,
   "COMMAND_ITEM": false,
   "COMMAND_GROUP": true,
   "STARTUP_CHECK_UPDATES": false,
-  "REPO_MAP": {
-    "obsidian-admonition": "javalent/admonitions",
-    "calendar-bases": "edrickleong/obsidian-calendar-bases",
-    "better-export-pdf": "l1xnan/obsidian-better-export-pdf",
-    "dataview": "blacksmithgu/obsidian-dataview"
-  },
-  "BPM_INSTALLED": [],
-  "HIDE_BPM_TAG": false,
-  "EXPORT_DIR": "",
+  "SOURCE_STARTUP_CHECK_UPDATES": false,
+  "SOURCE_AUTO_UPDATE": true,
   "GITHUB_TOKEN": "",
-  "SELF_CHECK_IGNORED": true,
+  "FILTER_SEARCH": "",
+  "FILTER_STATUS": "all",
+  "FILTER_STATUS_VALUES": [],
+  "FILTER_STATUS_OPERATOR": "contains",
+  "FILTER_GROUP": "",
+  "FILTER_GROUP_VALUES": [],
+  "FILTER_GROUP_OPERATOR": "contains",
+  "FILTER_TAG": "",
+  "FILTER_TAG_VALUES": [],
+  "FILTER_TAG_OPERATOR": "contains",
+  "FILTER_DELAY": "",
+  "FILTER_DELAY_VALUES": [],
+  "FILTER_DELAY_OPERATOR": "contains",
+  "PLUGIN_OVERVIEW_LAYOUT": "list",
+  "ITEM_STYLE": "clickExpand",
+  "GROUP_STYLE": "a",
+  "TAG_STYLE": "a",
+  "FADE_OUT_DISABLED_PLUGINS": true,
   "GROUPS": [
     {
       "id": "main",
@@ -123,13 +145,18 @@
     },
     {
       "id": "bpm-install",
-      "name": "bpm install",
+      "name": "BPM 安装",
       "color": "#409EFF"
     },
     {
       "id": "bpm-ignore",
       "name": "BPM 忽略",
       "color": "#6c757d"
+    },
+    {
+      "id": "bpm-eondr-plugin",
+      "name": "Eondr 出品",
+      "color": "#B36BFF"
     }
   ],
   "DELAYS": [
@@ -889,6 +916,16 @@
     }
   ],
   "HIDES": [],
+  "PLUGIN_LAYOUT": [],
+  "REPO_MAP": {
+    "obsidian-admonition": "javalent/admonitions",
+    "calendar-bases": "edrickleong/obsidian-calendar-bases",
+    "better-export-pdf": "l1xnan/obsidian-better-export-pdf",
+    "dataview": "blacksmithgu/obsidian-dataview"
+  },
+  "BPM_INSTALLED": [],
+  "BETA_SOURCES": [],
+  "INSTALL_HISTORY": [],
   "RIBBON_SETTINGS": [
     {
       "id": "bases:新建数据库",
@@ -1052,6 +1089,8 @@
       "order": 22
     }
   ],
-  "AUTO_TAKEOVER": false,
+  "SHARED_VAULT_MAIN_PATH": "",
+  "SHARED_VAULTS": [],
+  "EXPORT_DIR": "",
   "USE_NATIVE_RIBBON_CONFIG": true
 }
