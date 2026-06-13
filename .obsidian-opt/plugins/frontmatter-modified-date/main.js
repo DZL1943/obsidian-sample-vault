@@ -7,6 +7,7 @@ var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -20,6 +21,7 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
 // src/main.ts
 var main_exports = {};
@@ -51,29 +53,30 @@ var DEFAULT_SETTINGS = {
 var FrontmatterModifiedSettingTab = class extends import_obsidian.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
+    __publicField(this, "plugin");
     this.plugin = plugin;
   }
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    new import_obsidian.Setting(containerEl).setName("Modified date property").setDesc("The name of the YAML/frontmatter property to update when your note is modified").addText((text) => text.setPlaceholder("modified").setValue(this.plugin.settings.frontmatterProperty).onChange(async (value) => {
+    new import_obsidian.Setting(containerEl).setName("Modified date property").setDesc("The name of the YAML/frontmatter property to update when your note is modified").addText((text) => text.setPlaceholder("Modified").setValue(this.plugin.settings.frontmatterProperty).onChange(async (value) => {
       this.plugin.settings.frontmatterProperty = value;
       await this.plugin.saveSettings();
     }));
-    new import_obsidian.Setting(containerEl).setName("Created date property (optional)").setDesc("Optional. Add a created property name, and the plugin will also update the note creation date.").addText((text) => text.setPlaceholder("created").setValue(this.plugin.settings.createdDateProperty).onChange(async (value) => {
+    new import_obsidian.Setting(containerEl).setName("Created date property (optional)").setDesc("Optional. Add a created property name, and the plugin will also update the note creation date.").addText((text) => text.setPlaceholder("Created").setValue(this.plugin.settings.createdDateProperty).onChange(async (value) => {
       this.plugin.settings.createdDateProperty = value;
       await this.plugin.saveSettings();
     }));
-    new import_obsidian.Setting(containerEl).setName("Date format").setDesc("This is in MomentJS format. Leave blank for the default ATOM format.").addText((text) => text.setPlaceholder("ATOM format").setValue(this.plugin.settings.momentFormat).onChange(async (value) => {
+    new import_obsidian.Setting(containerEl).setName("Date format").setDesc("This is in momentjs format. Leave blank for the default atom format.").addText((text) => text.setPlaceholder("Atom format").setValue(this.plugin.settings.momentFormat).onChange(async (value) => {
       this.plugin.settings.momentFormat = value;
       await this.plugin.saveSettings();
     }));
-    new import_obsidian.Setting(containerEl).setName("Date locale").setDesc("Specify a locale format for MomentJS to use. Available locales are here: ").addText((text) => text.setPlaceholder("en").setValue(this.plugin.settings.momentLocale).onChange(async (value) => {
+    new import_obsidian.Setting(containerEl).setName("Date locale").setDesc("Specify a locale format for momentjs to use. Available locales are here: ").addText((text) => text.setPlaceholder("En").setValue(this.plugin.settings.momentLocale).onChange(async (value) => {
       this.plugin.settings.momentLocale = value;
       await this.plugin.saveSettings();
       this.plugin.setLocale();
     })).descEl.appendChild(createEl("a", {
-      text: "MomentJS locales",
+      text: "Momentjs locales",
       href: "https://github.com/moment/moment/tree/develop/locale"
     }));
     new import_obsidian.Setting(containerEl).setName("Store history of all updates").setDesc(`Instead of storing only the last modified time, this will turn your "${this.plugin.settings.frontmatterProperty}" frontmatter property into a list of all of the dates/times you've edited this note.`).addToggle((toggle) => {
@@ -85,7 +88,9 @@ var FrontmatterModifiedSettingTab = class extends import_obsidian.PluginSettingT
     });
     if (this.plugin.settings.storeHistoryLog) {
       new import_obsidian.Setting(containerEl).setName("Frequency of updates").setDesc("The plugin will store a maximum of 1 history entry per minute, hour, day, etc. If there are multiple edits in the specified period, the last edit entry will be updated instead.").addDropdown((dropdown) => {
-        ["minute", "hour", "day", "week", "month", "quarter", "year"].forEach((unit) => dropdown.addOption(unit, unit));
+        ["minute", "hour", "day", "week", "month", "quarter", "year"].forEach((unit) => {
+          dropdown.addOption(unit, unit);
+        });
         dropdown.setValue(this.plugin.settings.appendMaximumFrequency || "").onChange(async (value) => {
           this.plugin.settings.appendMaximumFrequency = value;
           await this.plugin.saveSettings();
@@ -105,7 +110,6 @@ var FrontmatterModifiedSettingTab = class extends import_obsidian.PluginSettingT
         await this.plugin.saveSettings();
       }));
     }
-    new import_obsidian.Setting(containerEl).setName("Vault options").setHeading();
     new import_obsidian.Setting(containerEl).setName("Exclude folders").setDesc("Add a list of folders to exclude, one folder per line. All subfolders will be also excluded.").addTextArea((text) => text.setValue(this.plugin.settings.excludedFolders.join("\n")).onChange(async (value) => {
       this.plugin.settings.excludedFolders = value.split("\n").map((x) => x.trim()).filter((x) => !!x);
       await this.plugin.saveSettings();
@@ -126,7 +130,7 @@ or properties using your mouse will not cause the modified field to update.`).ad
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian.Setting(containerEl).setName("Timeout (seconds)").setDesc('How many seconds to wait after the last edit before updating the modified field. You can increase this value if you are experiencing too many "Merging changes" popups.').addText((text) => text.setPlaceholder("10").setValue(this.plugin.settings.timeout.toString()).onChange(async (value) => {
+    new import_obsidian.Setting(containerEl).setName("Timeout (seconds)").setDesc('How many seconds to wait after the last edit before updating the modified field. You can increase this value if you are experiencing too many "merging changes" popups.').addText((text) => text.setPlaceholder("10").setValue(this.plugin.settings.timeout.toString()).onChange(async (value) => {
       this.plugin.settings.timeout = parseInt(value, 10) || DEFAULT_SETTINGS.timeout;
       await this.plugin.saveSettings();
     }));
@@ -141,6 +145,8 @@ var userChangeListenerExtension = (plugin) => import_view.ViewPlugin.define((vie
 });
 var UserChangeListener = class {
   constructor(plugin, view) {
+    __publicField(this, "plugin");
+    __publicField(this, "file");
     this.plugin = plugin;
     this.file = view.state.field(import_obsidian2.editorInfoField).file;
   }
@@ -149,7 +155,7 @@ var UserChangeListener = class {
       return;
     }
     if (isUserChange(update)) {
-      this.plugin.updateFrontmatter(this.file).then();
+      void this.plugin.updateFrontmatter(this.file);
     }
   }
 };
@@ -166,7 +172,8 @@ function isUserChange(update) {
 var FrontmatterModified = class extends import_obsidian3.Plugin {
   constructor() {
     super(...arguments);
-    this.timer = {};
+    __publicField(this, "settings");
+    __publicField(this, "timer", {});
   }
   async onload() {
     await this.loadSettings();
@@ -175,7 +182,7 @@ var FrontmatterModified = class extends import_obsidian3.Plugin {
     if (!this.settings.useKeyupEvents) {
       this.registerEvent(this.app.workspace.on("editor-change", (_editor, info) => {
         if (info.file instanceof import_obsidian3.TFile) {
-          this.updateFrontmatter(info.file);
+          void this.updateFrontmatter(info.file);
         }
       }));
     }
@@ -197,11 +204,11 @@ var FrontmatterModified = class extends import_obsidian3.Plugin {
    * @param {TFile} file
    */
   async updateFrontmatter(file) {
-    clearTimeout(this.timer[file.path]);
+    window.clearTimeout(this.timer[file.path]);
     this.timer[file.path] = window.setTimeout(() => {
       var _a, _b, _c, _d, _e, _f;
       const cache = this.app.metadataCache.getFileCache(file);
-      if (this.settings.onlyUpdateExisting && !((_a = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _a.hasOwnProperty(this.settings.frontmatterProperty))) {
+      if (this.settings.onlyUpdateExisting && !Object.hasOwn((_a = cache == null ? void 0 : cache.frontmatter) != null ? _a : {}, this.settings.frontmatterProperty)) {
       } else if ((_b = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _b[this.settings.excludeField]) {
       } else if (this.settings.excludedFolders.some((folder) => file.path.startsWith(folder + "/"))) {
       } else {
@@ -224,8 +231,7 @@ var FrontmatterModified = class extends import_obsidian3.Plugin {
           let newEntry = this.formatFrontmatterDate(now);
           if (isAppendArray) {
             let entries = ((_f = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _f[this.settings.frontmatterProperty]) || [];
-            if (!Array.isArray(entries))
-              entries = [entries];
+            if (!Array.isArray(entries)) entries = [entries];
             if (entries.length) {
               if (previousEntryMoment && now.isSame(previousEntryMoment, this.settings.appendMaximumFrequency)) {
                 entries[desc ? 0 : entries.length - 1] = newEntry;
@@ -240,7 +246,7 @@ var FrontmatterModified = class extends import_obsidian3.Plugin {
             }
             newEntry = entries;
           }
-          this.app.fileManager.processFrontMatter(file, (frontmatter) => {
+          void this.app.fileManager.processFrontMatter(file, (frontmatter) => {
             frontmatter[this.settings.frontmatterProperty] = newEntry;
             if (!this.settings.onlyUpdateExisting && this.settings.createdDateProperty && !frontmatter[this.settings.createdDateProperty]) {
               frontmatter[this.settings.createdDateProperty] = this.formatFrontmatterDate((0, import_obsidian3.moment)(file.stat.ctime || now));
@@ -275,3 +281,5 @@ var FrontmatterModified = class extends import_obsidian3.Plugin {
     }
   }
 };
+
+/* nosourcemap */

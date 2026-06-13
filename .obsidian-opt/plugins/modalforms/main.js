@@ -15250,6 +15250,18 @@ var ResultValue = class {
     return this.map((v) => deepMap(v, (it) => typeof it === "string" ? it.trim() : it));
   }
   /**
+   * getter that returns the value with the first character uppercased.
+   * Strings nested in arrays/objects are capitalized individually; non-string
+   * values are returned unchanged. Empty strings stay empty.
+   */
+  get capitalized() {
+    const cap = (s) => s.length === 0 ? s : s.charAt(0).toLocaleUpperCase() + s.slice(1);
+    if (this.value instanceof FileProxy) {
+      return new ResultValue(cap(this.value.name), this.name, this.notify);
+    }
+    return this.map((v) => deepMap(v, (it) => typeof it === "string" ? cap(it) : it));
+  }
+  /**
    * renders the value as a markdown link.
    * If the value is a string, it will be rendered as a markdown link.
    * If the value is a FileProxy (right now just used for images), it will be rendered as an embedded link.
@@ -15353,6 +15365,9 @@ var FormResult = class {
    */
   asFrontmatterString(options) {
     const data = objectSelect(this.data, options);
+    if (Object.keys(data).length === 0) {
+      return "";
+    }
     return (0, import_obsidian12.stringifyYaml)(data);
   }
   /**
@@ -16031,7 +16046,8 @@ var transformations = union4([
   upper,
   literal("lower"),
   literal("trim"),
-  literal("stringify")
+  literal("stringify"),
+  literal("capitalize")
 ]);
 var TemplateVariableSchema = object({
   _tag: literal("variable"),
@@ -17474,7 +17490,9 @@ function asFrontmatterString(data) {
       return pick.includes(key) ? Option_exports.some(value) : Option_exports.none;
     }),
     filterMapWithIndex3((key, value) => !omit.includes(key) ? Option_exports.some(value) : Option_exports.none),
-    import_obsidian16.stringifyYaml
+    // stringifyYaml renders an empty object as the literal "{}",
+    // which is invalid when embedded inside a frontmatter block
+    (selected) => Object.keys(selected).length === 0 ? "" : (0, import_obsidian16.stringifyYaml)(selected)
   );
 }
 function executeTransformation(transformation2) {
@@ -17491,6 +17509,11 @@ function executeTransformation(transformation2) {
         return JSON.stringify(value);
       case "trim":
         return String(value).trim();
+      case "capitalize": {
+        const str = String(value);
+        const first2 = str.charAt(0).toUpperCase();
+        return first2 + str.slice(1);
+      }
       default:
         return absurd(transformation2);
     }

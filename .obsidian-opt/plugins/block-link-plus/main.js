@@ -11588,7 +11588,7 @@ __export(main_exports, {
   default: () => BlockLinkPlus
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian23 = require("obsidian");
+var import_obsidian27 = require("obsidian");
 
 // src/types/index.ts
 var DEFAULT_SETTINGS = {
@@ -11800,7 +11800,8 @@ var smartDelete = import_state.EditorState.transactionFilter.of(
           tr.startState,
           betterFacet
         );
-        if (tr.changes.touchesRange(0, posRange.from - 1)) {
+        const safeFromBefore = Math.max(0, posRange.from - 1);
+        if (tr.changes.touchesRange(0, safeFromBefore)) {
           const minFrom = Math.max(posRange.from, initialSelections[0].from);
           const minTo = Math.min(posRange.to, initialSelections[0].to);
           return [{
@@ -11844,7 +11845,8 @@ var preventModifyTargetRanges = import_state.EditorState.transactionFilter.of(
             tr.startState,
             selectiveLines
           );
-          if (tr.changes.touchesRange(0, posRange.from - 1)) {
+          const safeFromBefore = Math.max(0, posRange.from - 1);
+          if (tr.changes.touchesRange(0, safeFromBefore)) {
             const newAnnotations = [];
             if (editableLines[0] !== void 0 && editableLines[1] !== void 0) {
               newAnnotations.push(editableRange.of([
@@ -11861,7 +11863,7 @@ var preventModifyTargetRanges = import_state.EditorState.transactionFilter.of(
             newTrans.push({
               annotations: newAnnotations
             });
-          } else if (tr.changes.touchesRange(posRange.from - 1, posRange.to)) {
+          } else if (tr.changes.touchesRange(safeFromBefore, posRange.to)) {
             const newAnnotations = [];
             if (editableLines[0] !== void 0 && editableLines[1] !== void 0) {
               newAnnotations.push(editableRange.of([
@@ -12728,8 +12730,10 @@ var FocusTracker = class {
     this.focused = null;
   }
   getFocused() {
-    if (this.focused && !this.focused.containerEl.isConnected) {
+    const focused = this.focused;
+    if ((focused == null ? void 0 : focused.containerEl) && !focused.containerEl.isConnected) {
       this.focused = null;
+      return null;
     }
     return this.focused;
   }
@@ -18413,6 +18417,34 @@ var WHATS_NEW_V2_0_6 = {
     "Outliner\uFF1AEscape \u73FE\u5728\u6703\u9000\u51FA\u76EE\u524D block \u7DE8\u8F2F\uFF0C\u4E26\u6E05\u7A7A block-range selection\u3002"
   ]
 };
+var WHATS_NEW_V2_0_13 = {
+  en: [
+    "Outliner: fixed focus/scroll stability when editing blocks and clicking tabs or working near the bottom of a long outline.",
+    "Outliner: `Tab` / `Shift+Tab` now preserve visible block order whenever possible instead of moving blocks to the target parent's tail."
+  ],
+  zh: [
+    "Outliner\uFF1A\u4FEE\u590D\u4E86\u7F16\u8F91 block \u65F6\u70B9\u51FB\u9009\u9879\u5361\u3001\u4EE5\u53CA\u957F\u5927\u7EB2\u5E95\u90E8\u533A\u57DF\u7684\u7126\u70B9/\u6EDA\u52A8\u7A33\u5B9A\u6027\u95EE\u9898\u3002",
+    "Outliner\uFF1A`Tab` / `Shift+Tab` \u73B0\u5728\u4F1A\u5C3D\u91CF\u4FDD\u6301\u53EF\u89C1 block \u987A\u5E8F\uFF0C\u4E0D\u518D\u9ED8\u8BA4\u628A block \u79FB\u5230\u76EE\u6807\u7236\u8282\u70B9\u5C3E\u90E8\u3002"
+  ],
+  "zh-TW": [
+    "Outliner\uFF1A\u4FEE\u6B63\u4E86\u7DE8\u8F2F block \u6642\u9EDE\u64CA\u5206\u9801\u3001\u4EE5\u53CA\u9577\u5927\u7DB1\u5E95\u90E8\u5340\u57DF\u7684\u7126\u9EDE/\u6372\u52D5\u7A69\u5B9A\u6027\u554F\u984C\u3002",
+    "Outliner\uFF1A`Tab` / `Shift+Tab` \u73FE\u5728\u6703\u76E1\u91CF\u4FDD\u6301\u53EF\u898B block \u9806\u5E8F\uFF0C\u4E0D\u518D\u9810\u8A2D\u628A block \u79FB\u5230\u76EE\u6A19\u7236\u7BC0\u9EDE\u5C3E\u7AEF\u3002"
+  ]
+};
+var WHATS_NEW_V2_0_15 = {
+  en: [
+    "Outliner: structural edits (`Enter`, `Tab`, `Shift+Tab`) now preserve viewport position instead of jumping back to the top of the file.",
+    "Outliner: focus restoration after structural edits is now stable near the bottom of long outlines."
+  ],
+  zh: [
+    "Outliner\uFF1A\u7ED3\u6784\u7F16\u8F91\uFF08`Enter`\u3001`Tab`\u3001`Shift+Tab`\uFF09\u73B0\u5728\u4F1A\u4FDD\u6301\u5F53\u524D\u89C6\u53E3\u4F4D\u7F6E\uFF0C\u4E0D\u518D\u8DF3\u56DE\u6587\u4EF6\u5F00\u5934\u3002",
+    "Outliner\uFF1A\u7ED3\u6784\u7F16\u8F91\u540E\u7684\u7126\u70B9\u6062\u590D\u66F4\u7A33\u5B9A\uFF0C\u957F\u5927\u7EB2\u5E95\u90E8\u7F16\u8F91\u65F6\u4E0D\u518D\u7A81\u7136\u56DE\u9876\u3002"
+  ],
+  "zh-TW": [
+    "Outliner\uFF1A\u7D50\u69CB\u7DE8\u8F2F\uFF08`Enter`\u3001`Tab`\u3001`Shift+Tab`\uFF09\u73FE\u5728\u6703\u4FDD\u6301\u76EE\u524D\u8996\u53E3\u4F4D\u7F6E\uFF0C\u4E0D\u518D\u8DF3\u56DE\u6A94\u6848\u958B\u982D\u3002",
+    "Outliner\uFF1A\u7D50\u69CB\u7DE8\u8F2F\u5F8C\u7684\u7126\u9EDE\u6062\u5FA9\u66F4\u7A69\u5B9A\uFF0C\u9577\u5927\u7DB1\u5E95\u90E8\u7DE8\u8F2F\u6642\u4E0D\u518D\u7A81\u7136\u8DF3\u56DE\u9802\u7AEF\u3002"
+  ]
+};
 var WhatsNewModal = class extends import_obsidian13.Modal {
   constructor(app, options) {
     super(app);
@@ -18451,30 +18483,36 @@ var WhatsNewModal = class extends import_obsidian13.Modal {
     this.contentEl.empty();
   }
   getWhatsNewItems() {
-    var _a2, _b2, _c2, _d2, _e2, _f2, _g;
+    var _a2, _b2, _c2, _d2, _e2, _f2, _g, _h, _i;
     if (this.currentVersion === "1.8.0") {
       return i18n_default.whatsNew.v1_8_0;
     }
+    if (this.currentVersion === "2.0.15") {
+      return (_a2 = WHATS_NEW_V2_0_15[i18n_default.lang]) != null ? _a2 : WHATS_NEW_V2_0_15.en;
+    }
+    if (this.currentVersion === "2.0.13") {
+      return (_b2 = WHATS_NEW_V2_0_13[i18n_default.lang]) != null ? _b2 : WHATS_NEW_V2_0_13.en;
+    }
     if (this.currentVersion === "2.0.6") {
-      return (_a2 = WHATS_NEW_V2_0_6[i18n_default.lang]) != null ? _a2 : WHATS_NEW_V2_0_6.en;
+      return (_c2 = WHATS_NEW_V2_0_6[i18n_default.lang]) != null ? _c2 : WHATS_NEW_V2_0_6.en;
     }
     if (this.currentVersion === "2.0.5") {
-      return (_b2 = WHATS_NEW_V2_0_5[i18n_default.lang]) != null ? _b2 : WHATS_NEW_V2_0_5.en;
+      return (_d2 = WHATS_NEW_V2_0_5[i18n_default.lang]) != null ? _d2 : WHATS_NEW_V2_0_5.en;
     }
     if (this.currentVersion === "2.0.4") {
-      return (_c2 = WHATS_NEW_V2_0_4[i18n_default.lang]) != null ? _c2 : WHATS_NEW_V2_0_4.en;
+      return (_e2 = WHATS_NEW_V2_0_4[i18n_default.lang]) != null ? _e2 : WHATS_NEW_V2_0_4.en;
     }
     if (this.currentVersion === "2.0.3") {
-      return (_d2 = WHATS_NEW_V2_0_3[i18n_default.lang]) != null ? _d2 : WHATS_NEW_V2_0_3.en;
+      return (_f2 = WHATS_NEW_V2_0_3[i18n_default.lang]) != null ? _f2 : WHATS_NEW_V2_0_3.en;
     }
     if (this.currentVersion === "2.0.2") {
-      return (_e2 = WHATS_NEW_V2_0_2[i18n_default.lang]) != null ? _e2 : WHATS_NEW_V2_0_2.en;
+      return (_g = WHATS_NEW_V2_0_2[i18n_default.lang]) != null ? _g : WHATS_NEW_V2_0_2.en;
     }
     if (this.currentVersion === "2.0.1") {
-      return (_f2 = WHATS_NEW_V2_0_1[i18n_default.lang]) != null ? _f2 : WHATS_NEW_V2_0_1.en;
+      return (_h = WHATS_NEW_V2_0_1[i18n_default.lang]) != null ? _h : WHATS_NEW_V2_0_1.en;
     }
     if (this.currentVersion === "2.0.0" || this.currentVersion.startsWith("2.0.")) {
-      return (_g = WHATS_NEW_V2[i18n_default.lang]) != null ? _g : WHATS_NEW_V2.en;
+      return (_i = WHATS_NEW_V2[i18n_default.lang]) != null ? _i : WHATS_NEW_V2.en;
     }
     return i18n_default.whatsNew.fallback;
   }
@@ -25970,6 +26008,86 @@ function collectIds(list, out) {
     collectIds(b.children, out);
   }
 }
+function cloneBlockShallow(b) {
+  var _a2;
+  return {
+    id: b.id,
+    depth: b.depth,
+    text: b.text,
+    children: [],
+    system: {
+      date: b.system.date,
+      updated: b.system.updated,
+      extra: { ...(_a2 = b.system.extra) != null ? _a2 : {} }
+    },
+    _systemHasBlpMarker: b._systemHasBlpMarker
+  };
+}
+function linearizeBlocks(list, out = []) {
+  for (const b of list) {
+    out.push(cloneBlockShallow(b));
+    linearizeBlocks(b.children, out);
+  }
+  return out;
+}
+function rebuildTreeFromLinear(linear) {
+  const roots = [];
+  const stack = [];
+  for (const block of linear) {
+    block.children = [];
+    while (stack.length > block.depth)
+      stack.pop();
+    if (block.depth <= 0) {
+      block.depth = 0;
+      roots.push(block);
+    } else {
+      const parent = stack[block.depth - 1];
+      if (!parent)
+        throw new Error(`Invalid linear outliner depth sequence at block ${block.id}`);
+      parent.children.push(block);
+    }
+    stack[block.depth] = block;
+    stack.length = block.depth + 1;
+  }
+  return roots;
+}
+function findLinearIndexById(linear, id) {
+  return linear.findIndex((b) => b.id === id);
+}
+function findLinearParentId(linear, index) {
+  var _a2, _b2, _c2, _d2, _e2, _f2;
+  const depth = Math.max(0, Math.floor((_b2 = (_a2 = linear[index]) == null ? void 0 : _a2.depth) != null ? _b2 : 0));
+  if (depth <= 0)
+    return null;
+  for (let i = index - 1; i >= 0; i--) {
+    if (((_d2 = (_c2 = linear[i]) == null ? void 0 : _c2.depth) != null ? _d2 : -1) === depth - 1)
+      return (_f2 = (_e2 = linear[i]) == null ? void 0 : _e2.id) != null ? _f2 : null;
+  }
+  return null;
+}
+function findLinearDescendantEnd(linear, index) {
+  var _a2, _b2, _c2, _d2;
+  const depth = Math.max(0, Math.floor((_b2 = (_a2 = linear[index]) == null ? void 0 : _a2.depth) != null ? _b2 : 0));
+  let end = index + 1;
+  while (end < linear.length && ((_d2 = (_c2 = linear[end]) == null ? void 0 : _c2.depth) != null ? _d2 : -1) > depth)
+    end += 1;
+  return end;
+}
+function isValidLinearDepthSequence(linear) {
+  var _a2, _b2, _c2, _d2;
+  for (let i = 0; i < linear.length; i++) {
+    const depth = Math.max(0, Math.floor((_b2 = (_a2 = linear[i]) == null ? void 0 : _a2.depth) != null ? _b2 : 0));
+    if (i === 0) {
+      if (depth !== 0)
+        return false;
+      continue;
+    }
+    const prevDepth = Math.max(0, Math.floor((_d2 = (_c2 = linear[i - 1]) == null ? void 0 : _c2.depth) != null ? _d2 : 0));
+    if (depth > prevDepth + 1)
+      return false;
+  }
+  return true;
+}
 function ensureUniqueGeneratedId(ctx, existing) {
   for (let i = 0; i < 100; i++) {
     const id = ctx.generateId();
@@ -26085,23 +26203,39 @@ function splitAtSelection(file, sel, ctx) {
     didChange: true
   };
 }
-function indentBlock(file, sel) {
-  const next = cloneFile(file);
+function indentBlockPreservingOrder(file, sel) {
+  var _a2, _b2, _c2, _d2;
+  const linear = linearizeBlocks((_a2 = file.blocks) != null ? _a2 : []);
   const dirtyIds = /* @__PURE__ */ new Set();
-  const loc = findBlockLocation(next.blocks, sel.id, null);
-  if (!loc)
+  const index = findLinearIndexById(linear, sel.id);
+  if (index <= 0)
     return { file, selection: sel, dirtyIds, didChange: false };
-  if (loc.index <= 0)
+  const current = linear[index];
+  if (!current)
     return { file, selection: sel, dirtyIds, didChange: false };
-  const prev = loc.siblings[loc.index - 1];
-  if (!prev)
+  const previous = linear[index - 1];
+  if (!previous)
     return { file, selection: sel, dirtyIds, didChange: false };
-  loc.siblings.splice(loc.index, 1);
-  prev.children.push(loc.block);
-  dirtyIds.add(loc.block.id);
-  dirtyIds.add(prev.id);
-  rebuildDepths(next.blocks, 0);
-  return { file: next, selection: sel, dirtyIds, didChange: true };
+  if (((_b2 = previous.depth) != null ? _b2 : 0) < ((_c2 = current.depth) != null ? _c2 : 0)) {
+    return { file, selection: sel, dirtyIds, didChange: false };
+  }
+  const oldParentId = findLinearParentId(linear, index);
+  current.depth = Math.max(0, ((_d2 = current.depth) != null ? _d2 : 0) + 1);
+  if (!isValidLinearDepthSequence(linear)) {
+    return { file, selection: sel, dirtyIds: /* @__PURE__ */ new Set(), didChange: false };
+  }
+  const newParentId = findLinearParentId(linear, index);
+  dirtyIds.add(current.id);
+  if (oldParentId)
+    dirtyIds.add(oldParentId);
+  if (newParentId)
+    dirtyIds.add(newParentId);
+  return {
+    file: { frontmatter: file.frontmatter, blocks: rebuildTreeFromLinear(linear) },
+    selection: sel,
+    dirtyIds,
+    didChange: true
+  };
 }
 function outdentBlock(file, sel) {
   const next = cloneFile(file);
@@ -26118,6 +26252,44 @@ function outdentBlock(file, sel) {
   dirtyIds.add(loc.parent.id);
   rebuildDepths(next.blocks, 0);
   return { file: next, selection: sel, dirtyIds, didChange: true };
+}
+function outdentBlockPreservingOrder(file, sel) {
+  var _a2, _b2, _c2, _d2;
+  const linear = linearizeBlocks((_a2 = file.blocks) != null ? _a2 : []);
+  const dirtyIds = /* @__PURE__ */ new Set();
+  const index = findLinearIndexById(linear, sel.id);
+  if (index < 0)
+    return { file, selection: sel, dirtyIds, didChange: false };
+  const current = linear[index];
+  if (!current)
+    return { file, selection: sel, dirtyIds, didChange: false };
+  if (((_b2 = current.depth) != null ? _b2 : 0) <= 0)
+    return { file, selection: sel, dirtyIds, didChange: false };
+  const oldParentId = findLinearParentId(linear, index);
+  const descendantEnd = findLinearDescendantEnd(linear, index);
+  current.depth = Math.max(0, ((_c2 = current.depth) != null ? _c2 : 0) - 1);
+  dirtyIds.add(current.id);
+  for (let i = index + 1; i < descendantEnd; i++) {
+    const descendant = linear[i];
+    if (!descendant)
+      continue;
+    descendant.depth = Math.max(0, ((_d2 = descendant.depth) != null ? _d2 : 0) - 1);
+    dirtyIds.add(descendant.id);
+  }
+  if (!isValidLinearDepthSequence(linear)) {
+    return { file, selection: sel, dirtyIds: /* @__PURE__ */ new Set(), didChange: false };
+  }
+  const newParentId = findLinearParentId(linear, index);
+  if (oldParentId)
+    dirtyIds.add(oldParentId);
+  if (newParentId)
+    dirtyIds.add(newParentId);
+  return {
+    file: { frontmatter: file.frontmatter, blocks: rebuildTreeFromLinear(linear) },
+    selection: sel,
+    dirtyIds,
+    didChange: true
+  };
 }
 function moveBlockSubtree(file, sourceId, targetId, where) {
   if (!sourceId || !targetId) {
@@ -28611,7 +28783,10 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.pendingStructuralExitCommitBypassId = null;
     this.pendingFocus = null;
     this.pendingScrollToId = null;
+    this.pendingViewportRestore = null;
     this.pendingBlurTimer = null;
+    this.pendingEditorFocusRestore = false;
+    this.pendingEditorFocusTimer = null;
     this.structuralUndoStack = [];
     this.structuralRedoStack = [];
     this.structuralHistoryLimit = 100;
@@ -28692,7 +28867,60 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.contentEl.addClass("blp-file-outliner-view");
     this.syncFeatureToggles();
     this.registerDomEvent(this.contentEl, "scroll", () => this.display.scheduleVisibleBlockRefresh());
-    this.registerEvent(this.app.workspace.on("active-leaf-change", () => this.updateActiveEditorBridge()));
+    this.registerEvent(
+      this.app.workspace.on("active-leaf-change", () => {
+        this.updateActiveEditorBridge();
+        this.queueEditorFocusRestore();
+      })
+    );
+    this.registerDomEvent(this.contentEl, "focusin", (event) => {
+      var _a2;
+      this.updateActiveEditorBridge();
+      const target = event.target;
+      if (target instanceof HTMLElement && ((_a2 = this.editorHostEl) == null ? void 0 : _a2.contains(target))) {
+        this.clearPendingEditorFocusRestore();
+        return;
+      }
+      this.queueEditorFocusRestore();
+    });
+    this.registerDomEvent(this.contentEl, "focusout", (event) => {
+      const next = event.relatedTarget;
+      if (next instanceof HTMLElement && this.contentEl.contains(next)) {
+        return;
+      }
+      window.setTimeout(() => {
+        this.updateActiveEditorBridge();
+        this.queueEditorFocusRestore();
+      }, 0);
+    });
+  }
+  /**
+   * Embedded/detached leaves (e.g. Journal Feed) can construct this view while its DOM is not yet
+   * connected to the document, which makes initial `getBoundingClientRect()` checks report 0 and
+   * prevents the lazy display renderer from running. Call this after the view is reparented into
+   * a real container to kick the visibility-driven renderer.
+   */
+  notifyHostMounted() {
+    const schedule = () => {
+      try {
+        this.display.scheduleVisibleBlockRefresh();
+      } catch (err) {
+        this.debugLog("notifyHostMounted", err);
+      }
+    };
+    schedule();
+    try {
+      window.requestAnimationFrame(() => schedule());
+    } catch (e) {
+    }
+  }
+  /**
+   * Compatibility surface for Obsidian editor commands and BLP's own command routing.
+   * When editing, expose the Suggest Editor adapter as a view-level `editor`.
+   */
+  get editor() {
+    var _a2;
+    return (_a2 = this.suggestEditor) != null ? _a2 : void 0;
   }
   toggleActiveTaskStatus() {
     if (!this.editingId)
@@ -28795,8 +29023,10 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.blockRangeSelectedIds.clear();
     this.pendingFocus = null;
     this.pendingScrollToId = null;
+    this.pendingViewportRestore = null;
     this.structuralUndoStack = [];
     this.structuralRedoStack = [];
+    this.clearPendingEditorFocusRestore();
     if (this.pendingBlurTimer) {
       window.clearTimeout(this.pendingBlurTimer);
       this.pendingBlurTimer = null;
@@ -28825,13 +29055,22 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       return false;
     if (!this.editorHostEl || this.editorHostEl.style.display === "none")
       return false;
-    try {
-      if (this.leaf !== this.app.workspace.activeLeaf)
-        return false;
-    } catch (err) {
-      this.debugLog("activeEditorBridge/activeLeaf", err);
-    }
+    if (!this.isLeafActiveOrFocused())
+      return false;
     return true;
+  }
+  isLeafActiveOrFocused() {
+    try {
+      if (this.leaf === this.app.workspace.activeLeaf)
+        return true;
+    } catch (err) {
+      this.debugLog("isLeafActiveOrFocused/activeLeaf", err);
+    }
+    try {
+      return this.contentEl.matches(":focus-within");
+    } catch (e) {
+      return false;
+    }
   }
   installActiveEditorBridge() {
     var _a2, _b2;
@@ -28889,6 +29128,97 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       this.installActiveEditorBridge();
     else
       this.uninstallActiveEditorBridge();
+  }
+  clearPendingEditorFocusRestore() {
+    if (this.pendingEditorFocusTimer) {
+      window.clearTimeout(this.pendingEditorFocusTimer);
+      this.pendingEditorFocusTimer = null;
+    }
+    this.pendingEditorFocusRestore = false;
+  }
+  isEditorRefocusTarget(active) {
+    if (!active)
+      return true;
+    if (active === document.body)
+      return true;
+    if (active === this.rootEl)
+      return true;
+    if (active === this.contentEl)
+      return true;
+    return false;
+  }
+  queueEditorFocusRestore() {
+    if (!this.pendingEditorFocusRestore)
+      return;
+    if (this.pendingEditorFocusTimer) {
+      window.clearTimeout(this.pendingEditorFocusTimer);
+    }
+    this.pendingEditorFocusTimer = window.setTimeout(() => {
+      this.pendingEditorFocusTimer = null;
+      this.restoreEditorFocusIfNeeded();
+    }, 0);
+  }
+  restoreEditorFocusIfNeeded() {
+    if (!this.pendingEditorFocusRestore)
+      return;
+    const editor = this.editorView;
+    const editorHost = this.editorHostEl;
+    if (!this.editingId || !editor || !editorHost || editorHost.style.display === "none") {
+      this.clearPendingEditorFocusRestore();
+      return;
+    }
+    if (this.leaf !== this.app.workspace.activeLeaf)
+      return;
+    const active = document.activeElement;
+    if (active && editorHost.contains(active)) {
+      this.clearPendingEditorFocusRestore();
+      return;
+    }
+    if (!this.isEditorRefocusTarget(active))
+      return;
+    this.pendingEditorFocusRestore = false;
+    this.focusEditorWithoutContainerScroll();
+    this.updateActiveEditorBridge();
+  }
+  captureViewportRestore(focusId) {
+    this.pendingViewportRestore = {
+      scrollTop: this.contentEl.scrollTop,
+      scrollLeft: this.contentEl.scrollLeft,
+      focusId
+    };
+  }
+  clearPendingViewportRestore() {
+    this.pendingViewportRestore = null;
+  }
+  focusEditorWithoutContainerScroll() {
+    const editor = this.editorView;
+    if (!editor)
+      return;
+    const prevTop = this.contentEl.scrollTop;
+    const prevLeft = this.contentEl.scrollLeft;
+    editor.focus();
+    if (this.contentEl.scrollTop !== prevTop)
+      this.contentEl.scrollTop = prevTop;
+    if (this.contentEl.scrollLeft !== prevLeft)
+      this.contentEl.scrollLeft = prevLeft;
+  }
+  restoreViewportAfterStructuralFocus() {
+    const pending = this.pendingViewportRestore;
+    if (!pending)
+      return;
+    this.pendingViewportRestore = null;
+    this.contentEl.scrollTop = pending.scrollTop;
+    this.contentEl.scrollLeft = pending.scrollLeft;
+    const row = this.dom.getBlockEl(pending.focusId);
+    if (!row)
+      return;
+    const hostRect = this.contentEl.getBoundingClientRect();
+    const rowRect = row.getBoundingClientRect();
+    if (rowRect.top < hostRect.top) {
+      this.contentEl.scrollTop += rowRect.top - hostRect.top;
+    } else if (rowRect.bottom > hostRect.bottom) {
+      this.contentEl.scrollTop += rowRect.bottom - hostRect.bottom;
+    }
   }
   setEphemeralState(state) {
     super.setEphemeralState(state);
@@ -29055,15 +29385,9 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       logicalHasFocus: () => {
         if (!this.editingId)
           return false;
-        try {
-          if (this.leaf !== this.app.workspace.activeLeaf)
-            return false;
-        } catch (err) {
-          this.debugLog("suggest/logicalHasFocus/activeLeaf", err);
-        }
         if (!this.editorHostEl || this.editorHostEl.style.display === "none")
           return false;
-        return true;
+        return this.isLeafActiveOrFocused();
       }
     });
     this.editorView.contentDOM.addEventListener("focusout", () => this.onEditorBlur());
@@ -29507,11 +29831,14 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.syncBlockList(root, renderBlocks);
     this.pruneDom();
     if (this.pendingFocus) {
-      const { id, cursorStart, cursorEnd } = this.pendingFocus;
+      const { id, cursorStart, cursorEnd, scroll } = this.pendingFocus;
       this.pendingFocus = null;
-      this.enterEditMode(id, { cursorStart, cursorEnd, scroll: true });
+      this.enterEditMode(id, { cursorStart, cursorEnd, scroll });
     } else if (this.editingId) {
       this.enterEditMode(this.editingId, { cursorStart: 0, cursorEnd: 0, scroll: false, reuseExisting: true });
+    }
+    if (this.pendingViewportRestore) {
+      this.restoreViewportAfterStructuralFocus();
     }
     if (this.pendingScrollToId) {
       this.scrollToBlockId(this.pendingScrollToId);
@@ -29610,7 +29937,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
         this.visibleNavCache = null;
         if (focusId && this.blockById.has(focusId)) {
           const end = String((_b3 = (_a3 = this.blockById.get(focusId)) == null ? void 0 : _a3.text) != null ? _b3 : "").length;
-          this.pendingFocus = { id: focusId, cursorStart: end, cursorEnd: end };
+          this.pendingFocus = { id: focusId, cursorStart: end, cursorEnd: end, scroll: false };
           this.pendingScrollToId = focusId;
         }
         this.render({ forceRebuild: true });
@@ -29636,7 +29963,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
           const focusId = this.getZoomRootId();
           if (focusId && this.blockById.has(focusId)) {
             const end = String((_b3 = (_a3 = this.blockById.get(focusId)) == null ? void 0 : _a3.text) != null ? _b3 : "").length;
-            this.pendingFocus = { id: focusId, cursorStart: end, cursorEnd: end };
+            this.pendingFocus = { id: focusId, cursorStart: end, cursorEnd: end, scroll: false };
             this.pendingScrollToId = focusId;
           }
           this.render({ forceRebuild: true });
@@ -29703,7 +30030,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.zoomStack = nextStack;
     this.visibleNavCache = null;
     const end = String((_c2 = (_b2 = this.blockById.get(id)) == null ? void 0 : _b2.text) != null ? _c2 : "").length;
-    this.pendingFocus = { id, cursorStart: end, cursorEnd: end };
+    this.pendingFocus = { id, cursorStart: end, cursorEnd: end, scroll: false };
     this.render({ forceRebuild: true });
   }
   zoomOut() {
@@ -29718,7 +30045,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     const focusId = (_b2 = (_a2 = this.getZoomRootId()) != null ? _a2 : popped) != null ? _b2 : null;
     if (focusId) {
       const end = String((_d2 = (_c2 = this.blockById.get(focusId)) == null ? void 0 : _c2.text) != null ? _d2 : "").length;
-      this.pendingFocus = { id: focusId, cursorStart: end, cursorEnd: end };
+      this.pendingFocus = { id: focusId, cursorStart: end, cursorEnd: end, scroll: false };
       this.pendingScrollToId = focusId;
     }
     this.render({ forceRebuild: true });
@@ -29963,6 +30290,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       this.exitEditMode(this.editingId);
     }
     this.editingId = id;
+    this.clearPendingEditorFocusRestore();
     if (this.pendingBlurTimer) {
       window.clearTimeout(this.pendingBlurTimer);
       this.pendingBlurTimer = null;
@@ -29983,7 +30311,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
         this.suppressEditorSync = false;
       }
     }
-    this.editorView.focus();
+    this.focusEditorWithoutContainerScroll();
     this.updateActiveEditorBridge();
     if (opts.scroll) {
       this.editorHostEl.scrollIntoView({ block: "nearest" });
@@ -30013,6 +30341,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       }
     }
     this.editingId = null;
+    this.clearPendingEditorFocusRestore();
     this.updateActiveEditorBridge();
     this.closeEditorSuggests();
     (_a2 = this.dom.getBlockEl(id)) == null ? void 0 : _a2.classList.remove("is-blp-outliner-active");
@@ -30092,9 +30421,11 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     this.pendingFocus = {
       id: nextSelection.id,
       cursorStart: nextSelection.start,
-      cursorEnd: nextSelection.end
+      cursorEnd: nextSelection.end,
+      scroll: false
     };
-    this.pendingScrollToId = nextSelection.id;
+    this.captureViewportRestore(nextSelection.id);
+    this.pendingScrollToId = null;
     this.render();
     this.markDirtyAndRequestSave();
   }
@@ -30131,10 +30462,17 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       this.pendingFocus = {
         id: result.selection.id,
         cursorStart: result.selection.start,
-        cursorEnd: result.selection.end
+        cursorEnd: result.selection.end,
+        scroll: (opts == null ? void 0 : opts.scroll) === true
       };
+      if ((opts == null ? void 0 : opts.scroll) === true)
+        this.clearPendingViewportRestore();
+      else
+        this.captureViewportRestore(result.selection.id);
+      this.pendingScrollToId = null;
     } else {
       this.pendingFocus = null;
+      this.clearPendingViewportRestore();
       this.pendingScrollToId = result.selection.id;
     }
     this.render();
@@ -30165,6 +30503,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     const editorHost = this.editorHostEl;
     if (!id || !editor || !editorHost)
       return;
+    this.pendingEditorFocusRestore = true;
     if (this.pendingBlurTimer)
       window.clearTimeout(this.pendingBlurTimer);
     this.pendingBlurTimer = window.setTimeout(() => {
@@ -30172,11 +30511,16 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
       if (this.editingId !== id)
         return;
       const active = document.activeElement;
-      if (active && editorHost.contains(active))
+      if (active && editorHost.contains(active)) {
+        this.clearPendingEditorFocusRestore();
         return;
-      if (active && this.contentEl.contains(active))
+      }
+      this.updateActiveEditorBridge();
+      if (this.leaf !== this.app.workspace.activeLeaf)
         return;
-      this.exitEditMode(id);
+      if (!this.isEditorRefocusTarget(active))
+        return;
+      this.queueEditorFocusRestore();
     }, 32);
   }
   resetArrowNavGoalColumn() {
@@ -30355,7 +30699,7 @@ var FileOutlinerView = class extends import_obsidian19.TextFileView {
     if (!sel)
       return false;
     return this.applyStructuralEngineResult(
-      shift ? outdentBlock(this.outlinerFile, sel) : indentBlock(this.outlinerFile, sel),
+      shift ? outdentBlockPreservingOrder(this.outlinerFile, sel) : indentBlockPreservingOrder(this.outlinerFile, sel),
       sel
     );
   }
@@ -34254,6 +34598,878 @@ function registerFileOutlinerView(plugin) {
   registerFileOutlinerEditorCommandBridge(plugin);
 }
 
+// src/features/journal-feed-view/constants.ts
+var JOURNAL_FEED_VIEW_TYPE = "blp-journal-feed-view";
+
+// src/features/journal-feed-view/view.ts
+var import_obsidian25 = require("obsidian");
+var import_moment3 = __toESM(require_moment());
+var import_state8 = require("@codemirror/state");
+
+// src/features/journal-feed-view/anchor.ts
+var JOURNAL_FEED_FRONTMATTER_KEY = "blp_journal_view";
+function parseFrontmatterBool2(raw) {
+  return raw === true || raw === "true" || raw === 1;
+}
+function parseFrontmatterFromText(text) {
+  const raw = String(text != null ? text : "").replace(/^\uFEFF/, "");
+  if (!raw.startsWith("---"))
+    return null;
+  const head = raw.slice(0, 24e3);
+  const match2 = head.match(/^---\s*\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)\s*(?:\r?\n|$)/);
+  if (!match2)
+    return null;
+  const fm = {};
+  const lines = match2[1].split(/\r?\n/);
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed)
+      continue;
+    if (trimmed.startsWith("#"))
+      continue;
+    const colon = trimmed.indexOf(":");
+    if (colon <= 0)
+      continue;
+    const key = trimmed.slice(0, colon).trim();
+    if (!key)
+      continue;
+    const rawValue = trimmed.slice(colon + 1).trim();
+    if (!rawValue) {
+      fm[key] = "";
+      continue;
+    }
+    const lower = rawValue.toLowerCase();
+    if (lower === "true") {
+      fm[key] = true;
+      continue;
+    }
+    if (lower === "false") {
+      fm[key] = false;
+      continue;
+    }
+    if (/^[+-]?\d+(?:\.\d+)?$/.test(rawValue)) {
+      const n2 = Number(rawValue);
+      fm[key] = Number.isFinite(n2) ? n2 : rawValue;
+      continue;
+    }
+    if (rawValue.startsWith('"') && rawValue.endsWith('"') && rawValue.length >= 2 || rawValue.startsWith("'") && rawValue.endsWith("'") && rawValue.length >= 2) {
+      fm[key] = rawValue.slice(1, -1);
+      continue;
+    }
+    fm[key] = rawValue;
+  }
+  return fm;
+}
+async function isJournalFeedAnchorFileMaybeRead(plugin, file) {
+  var _a2, _b2;
+  const ext = String((_a2 = file == null ? void 0 : file.extension) != null ? _a2 : "").toLowerCase();
+  const path = String((_b2 = file == null ? void 0 : file.path) != null ? _b2 : "");
+  if (ext && ext !== "md" || !ext && !path.toLowerCase().endsWith(".md"))
+    return false;
+  const cache = plugin.app.metadataCache.getFileCache(file);
+  const fm = cache == null ? void 0 : cache.frontmatter;
+  if (fm) {
+    if (!Object.prototype.hasOwnProperty.call(fm, JOURNAL_FEED_FRONTMATTER_KEY))
+      return false;
+    return parseFrontmatterBool2(fm[JOURNAL_FEED_FRONTMATTER_KEY]);
+  }
+  try {
+    const text = await plugin.app.vault.cachedRead(file);
+    const parsed = parseFrontmatterFromText(text);
+    if (!parsed)
+      return false;
+    if (!Object.prototype.hasOwnProperty.call(parsed, JOURNAL_FEED_FRONTMATTER_KEY))
+      return false;
+    return parseFrontmatterBool2(parsed[JOURNAL_FEED_FRONTMATTER_KEY]);
+  } catch (e) {
+    return false;
+  }
+}
+var DEFAULT_INITIAL_DAYS = 3;
+var DEFAULT_PAGE_SIZE = 7;
+function parsePositiveInt(raw, fallback) {
+  const n2 = typeof raw === "number" ? raw : Number(String(raw != null ? raw : ""));
+  if (!Number.isFinite(n2))
+    return fallback;
+  const i = Math.floor(n2);
+  return i > 0 ? i : fallback;
+}
+function getJournalFeedConfigFromText(text) {
+  const fm = text ? parseFrontmatterFromText(String(text)) : null;
+  const initialDays = parsePositiveInt(fm == null ? void 0 : fm.blp_journal_initial_days, DEFAULT_INITIAL_DAYS);
+  const pageSize = parsePositiveInt(fm == null ? void 0 : fm.blp_journal_page_size, DEFAULT_PAGE_SIZE);
+  return { initialDays, pageSize };
+}
+
+// src/features/journal-feed-view/daily-sources.ts
+var import_obsidian23 = require("obsidian");
+var import_moment2 = __toESM(require_moment());
+function normalizeFolderPath(input) {
+  return (0, import_obsidian23.normalizePath)(String(input != null ? input : "").trim()).replace(/^\/+/, "").replace(/\/+$/, "");
+}
+function scanDailyNotesByFolderAndFormat(app, opts) {
+  var _a2, _b2, _c2, _d2, _e2, _f2, _g;
+  const vault = app == null ? void 0 : app.vault;
+  if (!(vault == null ? void 0 : vault.getFiles))
+    return [];
+  const normalizedFolder = normalizeFolderPath(opts.folderPath);
+  const out = [];
+  const basenameFormat = String((_a2 = opts.format) != null ? _a2 : "").split(/[\\/]/).pop() || String((_b2 = opts.format) != null ? _b2 : "");
+  let files = [];
+  try {
+    files = (_d2 = (_c2 = vault.getFiles) == null ? void 0 : _c2.call(vault)) != null ? _d2 : [];
+  } catch (e) {
+    return [];
+  }
+  for (const f2 of files) {
+    if (!(f2 instanceof import_obsidian23.TFile))
+      continue;
+    if (((_e2 = f2.extension) == null ? void 0 : _e2.toLowerCase()) !== "md")
+      continue;
+    const filePath = (0, import_obsidian23.normalizePath)(String((_f2 = f2.path) != null ? _f2 : ""));
+    if (normalizedFolder && !filePath.startsWith(normalizedFolder + "/"))
+      continue;
+    const rel = normalizedFolder ? filePath.slice(normalizedFolder.length + 1) : filePath;
+    if (!rel.toLowerCase().endsWith(".md"))
+      continue;
+    const relNoExt = rel.slice(0, -3);
+    const basenameNoExt = String((_g = f2.basename) != null ? _g : "").trim();
+    let parsed = (0, import_moment2.default)(relNoExt, opts.format, true);
+    if (!parsed.isValid()) {
+      parsed = (0, import_moment2.default)(basenameNoExt, basenameFormat, true);
+    }
+    if (!parsed.isValid())
+      continue;
+    const ts = parsed.startOf("day").valueOf();
+    if (!Number.isFinite(ts))
+      continue;
+    out.push({ file: f2, ts });
+  }
+  return out;
+}
+function getDailyNotesInternal(app) {
+  var _a2, _b2, _c2;
+  try {
+    const p = (_b2 = (_a2 = app == null ? void 0 : app.internalPlugins) == null ? void 0 : _a2.getPluginById) == null ? void 0 : _b2.call(_a2, "daily-notes");
+    return { enabled: (p == null ? void 0 : p.enabled) === true, instance: (_c2 = p == null ? void 0 : p.instance) != null ? _c2 : null };
+  } catch (e) {
+    return { enabled: false, instance: null };
+  }
+}
+function resolveDailySources(app) {
+  var _a2, _b2, _c2, _d2;
+  const daily = getDailyNotesInternal(app);
+  if (!daily.enabled || !daily.instance) {
+    return { ok: false, reason: "Daily Notes is disabled or unavailable." };
+  }
+  const inst = daily.instance;
+  let folderPath = "/";
+  try {
+    const folderObj = (_a2 = inst.getFolder) == null ? void 0 : _a2.call(inst);
+    folderPath = (_b2 = folderObj == null ? void 0 : folderObj.path) != null ? _b2 : typeof folderObj === "string" ? folderObj : "/";
+  } catch (e) {
+  }
+  let format = "YYYY-MM-DD";
+  try {
+    const f2 = (_c2 = inst.getFormat) == null ? void 0 : _c2.call(inst);
+    if (typeof f2 === "string" && f2.trim())
+      format = f2.trim();
+  } catch (e) {
+  }
+  const sources = [];
+  try {
+    (_d2 = inst.iterateDailyNotes) == null ? void 0 : _d2.call(inst, (file, ts) => {
+      var _a3;
+      if (!(file instanceof import_obsidian23.TFile))
+        return;
+      if (((_a3 = file.extension) == null ? void 0 : _a3.toLowerCase()) !== "md")
+        return;
+      const n2 = Number(ts);
+      if (!Number.isFinite(n2))
+        return;
+      sources.push({ file, ts: n2 });
+    });
+  } catch (e) {
+  }
+  const scanned = scanDailyNotesByFolderAndFormat(app, { folderPath, format });
+  if (scanned.length > 0) {
+    const existing = new Set(sources.map((s2) => (0, import_obsidian23.normalizePath)(s2.file.path)));
+    for (const s2 of scanned) {
+      const p = (0, import_obsidian23.normalizePath)(s2.file.path);
+      if (existing.has(p))
+        continue;
+      existing.add(p);
+      sources.push(s2);
+    }
+  }
+  sources.sort((a, b) => b.ts - a.ts);
+  return { ok: true, folderPath, format, sources };
+}
+function chooseStartIndex(sources, opts) {
+  var _a2;
+  if (sources.length === 0)
+    return 0;
+  const todayTs = (_a2 = opts == null ? void 0 : opts.todayTs) != null ? _a2 : (0, import_moment2.default)().startOf("day").valueOf();
+  const idxToday = sources.findIndex((s2) => s2.ts === todayTs);
+  if (idxToday >= 0)
+    return idxToday;
+  const idxLeToday = sources.findIndex((s2) => s2.ts <= todayTs);
+  if (idxLeToday >= 0)
+    return idxLeToday;
+  return 0;
+}
+
+// src/features/journal-feed-view/OutlinerEmbedLeafManager.ts
+var import_obsidian24 = require("obsidian");
+var OutlinerEmbedLeafManager = class {
+  constructor(plugin) {
+    this.embedRegistry = /* @__PURE__ */ new WeakMap();
+    this.activeEmbeds = /* @__PURE__ */ new Set();
+    this.plugin = plugin;
+  }
+  getActiveEmbeds() {
+    return Array.from(this.activeEmbeds);
+  }
+  cleanup() {
+    const embeds = Array.from(this.activeEmbeds);
+    for (const embed of embeds) {
+      this.detach(embed);
+    }
+  }
+  async createEmbedLeaf(args) {
+    const leaf = new import_obsidian24.WorkspaceLeaf(this.plugin.app);
+    markLeafAsDetached(leaf);
+    const embed = {
+      containerEl: args.containerEl,
+      file: args.file,
+      sourcePath: args.sourcePath,
+      component: void 0,
+      leaf,
+      view: void 0
+    };
+    const component = new import_obsidian24.MarkdownRenderChild(args.containerEl);
+    component.load();
+    component.register(() => {
+      this.detachLeafFromComponentUnload(embed);
+    });
+    embed.component = component;
+    try {
+      await leaf.setViewState({
+        type: FILE_OUTLINER_VIEW_TYPE,
+        state: { file: args.file.path },
+        active: false
+      });
+    } catch (error) {
+      component.unload();
+      leaf.detach();
+      throw error;
+    }
+    const view = leaf.view;
+    if (!view || typeof view.getViewType !== "function" || view.getViewType() !== FILE_OUTLINER_VIEW_TYPE) {
+      component.unload();
+      leaf.detach();
+      throw new Error("JournalFeed: failed to load FileOutlinerView");
+    }
+    embed.view = view;
+    this.embedRegistry.set(args.containerEl, embed);
+    this.activeEmbeds.add(embed);
+    return embed;
+  }
+  reparent(embeddingContainerEl, viewContainerEl) {
+    embeddingContainerEl.replaceChildren(viewContainerEl);
+  }
+  detachLeafFromComponentUnload(embed) {
+    var _a2;
+    this.embedRegistry.delete(embed.containerEl);
+    this.activeEmbeds.delete(embed);
+    try {
+      (_a2 = embed.restore) == null ? void 0 : _a2.call(embed);
+    } catch (e) {
+    }
+    try {
+      embed.leaf.detach();
+    } catch (e) {
+    }
+  }
+  detach(embed) {
+    try {
+      embed.component.unload();
+    } catch (e) {
+    }
+  }
+};
+
+// src/features/journal-feed-view/view.ts
+function formatDay(ts, format) {
+  try {
+    return (0, import_moment3.default)(ts).format(format);
+  } catch (e) {
+    return String(ts);
+  }
+}
+var JournalFeedView = class extends import_obsidian25.TextFileView {
+  constructor(leaf, plugin) {
+    super(leaf);
+    this.config = { initialDays: 3, pageSize: 7 };
+    this.folderPath = "/";
+    this.dateFormat = "YYYY-MM-DD";
+    this.sources = [];
+    this.nextIndex = 0;
+    this.rootEl = null;
+    this.feedHeaderEl = null;
+    this.feedEl = null;
+    this.loadMoreEl = null;
+    this.sections = [];
+    this.sectionByHost = /* @__PURE__ */ new WeakMap();
+    this.lifecycleVersion = 0;
+    this.editorObserver = null;
+    this.loadMoreObserver = null;
+    this.rebuildTimer = null;
+    this.plugin = plugin;
+    this.embeds = new EmbedLeafManager(plugin);
+    this.outlinerEmbeds = new OutlinerEmbedLeafManager(plugin);
+    this.contentEl.addClass("blp-journal-feed-view");
+    this.installFocusBridge();
+  }
+  getViewType() {
+    return JOURNAL_FEED_VIEW_TYPE;
+  }
+  getDisplayText() {
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.file) == null ? void 0 : _a2.basename) != null ? _b2 : "Journal Feed";
+  }
+  setViewData(data, clear) {
+    if (clear)
+      this.clear();
+    this.data = data != null ? data : "";
+    this.scheduleRebuild();
+  }
+  getViewData() {
+    var _a2;
+    return (_a2 = this.data) != null ? _a2 : "";
+  }
+  clear() {
+    this.detachAllSections();
+    this.contentEl.empty();
+    this.rootEl = null;
+    this.feedHeaderEl = null;
+    this.feedEl = null;
+    this.loadMoreEl = null;
+  }
+  onunload() {
+    super.onunload();
+    this.detachAllSections();
+  }
+  scheduleRebuild(delayMs = 30) {
+    if (this.rebuildTimer !== null)
+      return;
+    this.rebuildTimer = window.setTimeout(() => {
+      this.rebuildTimer = null;
+      void this.rebuild();
+    }, delayMs);
+  }
+  renderShell() {
+    this.contentEl.empty();
+    this.rootEl = this.contentEl.createDiv("blp-journal-feed-root");
+    this.feedHeaderEl = this.rootEl.createDiv("blp-journal-feed-header");
+    this.feedEl = this.rootEl.createDiv("blp-journal-feed-scroll");
+    this.loadMoreEl = this.feedEl.createDiv("blp-journal-feed-load-more");
+    this.loadMoreEl.setText("Load more\u2026");
+  }
+  async rebuild() {
+    this.detachAllSections();
+    this.renderShell();
+    this.config = getJournalFeedConfigFromText(this.data);
+    const resolved = resolveDailySources(this.app);
+    if (!resolved.ok) {
+      this.renderError(resolved.reason);
+      return;
+    }
+    this.folderPath = resolved.folderPath;
+    this.dateFormat = resolved.format;
+    this.sources = resolved.sources;
+    if (this.sources.length === 0) {
+      this.renderError("No Daily Notes files found.");
+      return;
+    }
+    const startIndex = chooseStartIndex(this.sources);
+    this.nextIndex = startIndex;
+    this.renderHeader();
+    this.installObservers();
+    this.appendMore({ count: this.config.initialDays });
+  }
+  renderHeader() {
+    if (!this.feedHeaderEl)
+      return;
+    this.feedHeaderEl.empty();
+    const titleRow = this.feedHeaderEl.createDiv("blp-journal-feed-title-row");
+    titleRow.createDiv({ cls: "blp-journal-feed-title", text: "Journal Feed" });
+    const meta = this.feedHeaderEl.createDiv("blp-journal-feed-meta");
+    meta.setText(`Daily Notes: folder=${this.folderPath || "/"} format=${this.dateFormat}`);
+    const actions = this.feedHeaderEl.createDiv("blp-journal-feed-actions");
+    const refreshBtn = actions.createEl("button", { text: "Refresh" });
+    refreshBtn.addEventListener("click", () => this.scheduleRebuild(0));
+    const openAnchorBtn = actions.createEl("button", { text: "Open Anchor" });
+    openAnchorBtn.addEventListener("click", () => this.openAnchorInMarkdown());
+  }
+  renderError(message) {
+    if (!this.feedEl)
+      return;
+    this.feedEl.empty();
+    const box = this.feedEl.createDiv("blp-journal-feed-error");
+    box.createEl("div", { text: message });
+    const actions = box.createDiv("blp-journal-feed-actions");
+    const openAnchorBtn = actions.createEl("button", { text: "Open Anchor" });
+    openAnchorBtn.addEventListener("click", () => this.openAnchorInMarkdown());
+  }
+  openAnchorInMarkdown() {
+    const file = this.file instanceof import_obsidian25.TFile ? this.file : null;
+    if (!file)
+      return;
+    try {
+      const leaf = this.app.workspace.getLeaf(true);
+      void leaf.setViewState({
+        type: "markdown",
+        state: { file: file.path, mode: "source" },
+        active: true
+      });
+    } catch (e) {
+    }
+  }
+  installObservers() {
+    var _a2, _b2, _c2;
+    (_a2 = this.editorObserver) == null ? void 0 : _a2.disconnect();
+    (_b2 = this.loadMoreObserver) == null ? void 0 : _b2.disconnect();
+    const root = (_c2 = this.feedEl) != null ? _c2 : this.contentEl;
+    this.editorObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const section = this.sectionByHost.get(entry.target);
+          if (!section)
+            continue;
+          section.isIntersecting = entry.isIntersecting;
+          if (entry.isIntersecting) {
+            void this.mountSectionEditor(section, { focus: false, bridge: false });
+          } else {
+            this.scheduleSectionUnload(section);
+          }
+        }
+      },
+      { root, rootMargin: "600px 0px 600px 0px", threshold: 0.01 }
+    );
+    if (this.loadMoreEl) {
+      this.loadMoreObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            this.appendMore({ count: this.config.pageSize });
+          }
+        },
+        { root, rootMargin: "800px 0px 800px 0px", threshold: 0.01 }
+      );
+      this.loadMoreObserver.observe(this.loadMoreEl);
+    }
+  }
+  appendMore(opts) {
+    var _a2;
+    if (!this.feedEl)
+      return;
+    if (this.sources.length === 0)
+      return;
+    if (opts.count <= 0)
+      return;
+    const start = this.nextIndex;
+    const end = Math.min(this.sources.length, start + opts.count);
+    if (start >= end) {
+      (_a2 = this.loadMoreEl) == null ? void 0 : _a2.setText("No more days.");
+      return;
+    }
+    for (let i = start; i < end; i++) {
+      const src = this.sources[i];
+      const section = this.createDaySection(src);
+      this.sections.push(section);
+    }
+    this.nextIndex = end;
+    if (this.loadMoreEl) {
+      this.feedEl.appendChild(this.loadMoreEl);
+    }
+  }
+  createDaySection(src) {
+    var _a2;
+    if (!this.feedEl) {
+      throw new Error("JournalFeedView: feedEl missing");
+    }
+    const wantsOutliner = this.plugin.settings.fileOutlinerViewEnabled !== false && isFileOutlinerEnabledFile(this.plugin, src.file);
+    const renderMode = wantsOutliner ? "outliner" : "markdown";
+    const sectionEl = this.feedEl.createDiv("blp-journal-feed-day");
+    const headerEl = sectionEl.createDiv("blp-journal-feed-day-header");
+    const dateText = formatDay(src.ts, this.dateFormat);
+    headerEl.createDiv({ cls: "blp-journal-feed-day-title", text: dateText });
+    const openBtn = headerEl.createEl("button", { text: "Open" });
+    openBtn.addEventListener("click", () => {
+      try {
+        void this.app.workspace.getLeaf(true).openFile(src.file);
+      } catch (e) {
+      }
+    });
+    const editorHostEl = sectionEl.createDiv("blp-journal-feed-day-editor");
+    editorHostEl.dataset.blpJournalEditor = "1";
+    editorHostEl.dataset.path = src.file.path;
+    editorHostEl.dataset.blpJournalRenderMode = renderMode;
+    const placeholderEl = editorHostEl.createDiv("blp-journal-feed-placeholder");
+    placeholderEl.setText("Scroll to load\u2026");
+    const section = {
+      file: src.file,
+      ts: src.ts,
+      isIntersecting: false,
+      renderMode,
+      sectionEl,
+      headerEl,
+      editorHostEl,
+      placeholderEl,
+      embed: null,
+      mountPromise: null,
+      unloadTimer: null,
+      lastHeight: 160
+    };
+    this.sectionByHost.set(editorHostEl, section);
+    (_a2 = this.editorObserver) == null ? void 0 : _a2.observe(editorHostEl);
+    editorHostEl.addEventListener("pointerdown", () => {
+      void this.mountSectionEditor(section, { focus: true, bridge: true });
+    });
+    return section;
+  }
+  async mountSectionEditor(section, opts) {
+    var _a2, _b2, _c2;
+    if (section.unloadTimer !== null) {
+      try {
+        window.clearTimeout(section.unloadTimer);
+      } catch (e) {
+      }
+      section.unloadTimer = null;
+    }
+    const shouldBridge = opts.bridge || opts.focus;
+    if (section.embed) {
+      const embed2 = section.embed;
+      if (shouldBridge)
+        this.bridgeFocus(embed2);
+      if (opts.focus && section.renderMode === "markdown")
+        (_a2 = embed2.view.editor) == null ? void 0 : _a2.focus();
+      if (opts.focus && section.renderMode === "outliner")
+        this.focusOutlinerEmbed(embed2);
+      return;
+    }
+    if (section.mountPromise) {
+      try {
+        await section.mountPromise;
+      } catch (e) {
+      }
+      const embed2 = section.embed;
+      if (embed2) {
+        if (shouldBridge)
+          this.bridgeFocus(embed2);
+        if (opts.focus && section.renderMode === "markdown")
+          (_b2 = embed2.view.editor) == null ? void 0 : _b2.focus();
+        if (opts.focus && section.renderMode === "outliner")
+          this.focusOutlinerEmbed(embed2);
+      }
+      return;
+    }
+    if (!section.editorHostEl.isConnected)
+      return;
+    const version = this.lifecycleVersion;
+    try {
+      section.editorHostEl.style.minHeight = `${Math.max(section.lastHeight, 160)}px`;
+    } catch (e) {
+    }
+    section.editorHostEl.empty();
+    section.mountPromise = (async () => {
+      var _a3, _b3, _c3, _d2, _e2, _f2;
+      let embed2;
+      try {
+        if (section.renderMode === "outliner") {
+          embed2 = await this.outlinerEmbeds.createEmbedLeaf({
+            containerEl: section.editorHostEl,
+            file: section.file,
+            sourcePath: (_b3 = (_a3 = this.file) == null ? void 0 : _a3.path) != null ? _b3 : section.file.path
+          });
+        } else {
+          embed2 = await this.embeds.createEmbedLeaf({
+            containerEl: section.editorHostEl,
+            file: section.file,
+            sourcePath: (_d2 = (_c3 = this.file) == null ? void 0 : _c3.path) != null ? _d2 : section.file.path
+          });
+        }
+      } catch (e) {
+        section.editorHostEl.empty();
+        section.placeholderEl = section.editorHostEl.createDiv("blp-journal-feed-placeholder");
+        section.placeholderEl.setText("Failed to load.");
+        return;
+      }
+      if (version !== this.lifecycleVersion || !section.editorHostEl.isConnected) {
+        try {
+          this.embeds.detach(embed2);
+        } catch (e) {
+        }
+        return;
+      }
+      if (section.renderMode === "outliner") {
+        this.outlinerEmbeds.reparent(section.editorHostEl, embed2.view.containerEl);
+        section.embed = embed2;
+        try {
+          (_f2 = (_e2 = embed2.view) == null ? void 0 : _e2.notifyHostMounted) == null ? void 0 : _f2.call(_e2);
+        } catch (e) {
+        }
+      } else {
+        this.embeds.reparent(section.editorHostEl, embed2.view.containerEl);
+        section.embed = embed2;
+        this.ensureJournalFeedEditorExtensions(embed2);
+        this.ensureJournalFeedSystemLineHidden(embed2);
+      }
+    })();
+    try {
+      await section.mountPromise;
+    } catch (e) {
+    } finally {
+      section.mountPromise = null;
+    }
+    const embed = section.embed;
+    if (!embed)
+      return;
+    if (shouldBridge)
+      this.bridgeFocus(embed);
+    if (opts.focus) {
+      try {
+        if (section.renderMode === "markdown") {
+          (_c2 = embed.view.editor) == null ? void 0 : _c2.focus();
+        } else {
+          this.focusOutlinerEmbed(embed);
+        }
+      } catch (e) {
+      }
+    }
+    if (!section.isIntersecting && !opts.focus) {
+      this.scheduleSectionUnload(section);
+    }
+  }
+  ensureJournalFeedEditorExtensions(embed) {
+    var _a2, _b2;
+    const cm = (_b2 = (_a2 = embed == null ? void 0 : embed.view) == null ? void 0 : _a2.editor) == null ? void 0 : _b2.cm;
+    if (!(cm == null ? void 0 : cm.state) || typeof cm.dispatch !== "function")
+      return;
+    let hasHideLine = false;
+    try {
+      hasHideLine = cm.state.field(hideLine, false) !== void 0;
+    } catch (e) {
+      hasHideLine = false;
+    }
+    if (hasHideLine)
+      return;
+    try {
+      cm.dispatch({ filter: false, effects: import_state8.StateEffect.appendConfig.of(editBlockExtensions()) });
+    } catch (e) {
+    }
+  }
+  ensureJournalFeedSystemLineHidden(embed) {
+    var _a2, _b2;
+    if (this.plugin.settings.fileOutlinerHideSystemLine === false)
+      return;
+    const cm = (_b2 = (_a2 = embed == null ? void 0 : embed.view) == null ? void 0 : _a2.editor) == null ? void 0 : _b2.cm;
+    if (!(cm == null ? void 0 : cm.state) || typeof cm.dispatch !== "function")
+      return;
+    try {
+      const lines = cm.state.doc.lines;
+      cm.dispatch({
+        annotations: [contentRange.of([1, lines]), editableRange.of([1, lines])]
+      });
+    } catch (e) {
+    }
+  }
+  focusOutlinerEmbed(embed) {
+    var _a2, _b2, _c2, _d2;
+    try {
+      const root = (_c2 = (_b2 = (_a2 = embed.view) == null ? void 0 : _a2.containerEl) == null ? void 0 : _b2.querySelector) == null ? void 0 : _c2.call(_b2, ".blp-file-outliner-root");
+      (_d2 = root == null ? void 0 : root.focus) == null ? void 0 : _d2.call(root, { preventScroll: true });
+    } catch (e) {
+    }
+  }
+  scheduleSectionUnload(section) {
+    if (section.unloadTimer !== null)
+      return;
+    section.unloadTimer = window.setTimeout(() => {
+      section.unloadTimer = null;
+      void this.unmountSectionEditor(section);
+    }, 1200);
+  }
+  async unmountSectionEditor(section) {
+    var _a2, _b2, _c2;
+    const embed = section.embed;
+    if (!embed)
+      return;
+    try {
+      const h = section.editorHostEl.getBoundingClientRect().height;
+      if (Number.isFinite(h) && h > 0)
+        section.lastHeight = Math.round(h);
+      section.editorHostEl.style.minHeight = `${Math.max(section.lastHeight, 160)}px`;
+    } catch (e) {
+    }
+    try {
+      await embed.view.save();
+    } catch (e) {
+    }
+    try {
+      const focused = (_c2 = (_b2 = (_a2 = this.plugin.inlineEditEngine) == null ? void 0 : _a2.focus) == null ? void 0 : _b2.getFocused) == null ? void 0 : _c2.call(_b2);
+      if (focused === embed) {
+        this.plugin.inlineEditEngine.focus.setFocused(null);
+      }
+    } catch (e) {
+    }
+    try {
+      if (section.renderMode === "outliner") {
+        this.outlinerEmbeds.detach(embed);
+      } else {
+        this.embeds.detach(embed);
+      }
+    } catch (e) {
+    } finally {
+      section.embed = null;
+    }
+    section.editorHostEl.empty();
+    section.placeholderEl = section.editorHostEl.createDiv("blp-journal-feed-placeholder");
+    section.placeholderEl.setText("Scroll to load\u2026");
+  }
+  detachAllSections() {
+    var _a2, _b2, _c2, _d2, _e2, _f2, _g;
+    this.lifecycleVersion += 1;
+    try {
+      const focused = (_c2 = (_b2 = (_a2 = this.plugin.inlineEditEngine) == null ? void 0 : _a2.focus) == null ? void 0 : _b2.getFocused) == null ? void 0 : _c2.call(_b2);
+      if (focused && ((_e2 = (_d2 = focused.containerEl) == null ? void 0 : _d2.closest) == null ? void 0 : _e2.call(_d2, ".blp-journal-feed-view"))) {
+        this.plugin.inlineEditEngine.focus.setFocused(null);
+      }
+    } catch (e) {
+    }
+    (_f2 = this.editorObserver) == null ? void 0 : _f2.disconnect();
+    (_g = this.loadMoreObserver) == null ? void 0 : _g.disconnect();
+    this.editorObserver = null;
+    this.loadMoreObserver = null;
+    for (const section of this.sections) {
+      if (section.unloadTimer !== null) {
+        try {
+          window.clearTimeout(section.unloadTimer);
+        } catch (e) {
+        }
+        section.unloadTimer = null;
+      }
+      if (section.embed) {
+        try {
+          if (section.renderMode === "outliner") {
+            this.outlinerEmbeds.detach(section.embed);
+          } else {
+            this.embeds.detach(section.embed);
+          }
+        } catch (e) {
+        }
+        section.embed = null;
+      }
+      section.mountPromise = null;
+    }
+    this.sections = [];
+    this.sectionByHost = /* @__PURE__ */ new WeakMap();
+    this.embeds.cleanup();
+    this.outlinerEmbeds.cleanup();
+    if (this.rebuildTimer !== null) {
+      try {
+        window.clearTimeout(this.rebuildTimer);
+      } catch (e) {
+      }
+      this.rebuildTimer = null;
+    }
+  }
+  bridgeFocus(embed) {
+    var _a2, _b2, _c2;
+    try {
+      (_c2 = (_b2 = (_a2 = this.plugin.inlineEditEngine) == null ? void 0 : _a2.focus) == null ? void 0 : _b2.setFocused) == null ? void 0 : _c2.call(_b2, embed);
+    } catch (e) {
+    }
+  }
+  installFocusBridge() {
+    this.registerDomEvent(this.contentEl, "focusin", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement))
+        return;
+      const host = target.closest("[data-blp-journal-editor]");
+      if (!host)
+        return;
+      const section = this.sectionByHost.get(host);
+      if (!section)
+        return;
+      void this.mountSectionEditor(section, { focus: false, bridge: true });
+    });
+    this.registerDomEvent(this.contentEl, "focusout", (event) => {
+      var _a2, _b2, _c2, _d2, _e2;
+      const next = event.relatedTarget;
+      if (next instanceof HTMLElement) {
+        const nextHost = next.closest("[data-blp-journal-editor]");
+        if (nextHost) {
+          const nextSection = this.sectionByHost.get(nextHost);
+          if (nextSection == null ? void 0 : nextSection.embed) {
+            this.bridgeFocus(nextSection.embed);
+            return;
+          }
+        }
+      }
+      try {
+        const focused = (_c2 = (_b2 = (_a2 = this.plugin.inlineEditEngine) == null ? void 0 : _a2.focus) == null ? void 0 : _b2.getFocused) == null ? void 0 : _c2.call(_b2);
+        if (focused && ((_e2 = (_d2 = focused.containerEl) == null ? void 0 : _d2.closest) == null ? void 0 : _e2.call(_d2, ".blp-journal-feed-view"))) {
+          this.plugin.inlineEditEngine.focus.setFocused(null);
+        }
+      } catch (e) {
+      }
+    });
+  }
+};
+
+// src/features/journal-feed-view/routing.ts
+var import_obsidian26 = require("obsidian");
+function registerJournalFeedRouting(plugin) {
+  plugin.register(
+    around(import_obsidian26.WorkspaceLeaf.prototype, {
+      openFile(old) {
+        return async function(file, openState) {
+          const leafAny = this;
+          if (isDetachedLeaf(this) || (leafAny == null ? void 0 : leafAny.parent) == null) {
+            return old.call(this, file, openState);
+          }
+          try {
+            if (await isJournalFeedAnchorFileMaybeRead(plugin, file)) {
+              const viewState = {
+                type: JOURNAL_FEED_VIEW_TYPE,
+                state: { file: file.path },
+                active: openState == null ? void 0 : openState.active
+              };
+              await this.setViewState(viewState, openState == null ? void 0 : openState.eState);
+              if ((openState == null ? void 0 : openState.active) !== false) {
+                try {
+                  plugin.app.workspace.setActiveLeaf(this, { focus: true });
+                } catch (e) {
+                }
+              }
+              return;
+            }
+          } catch (e) {
+          }
+          return old.call(this, file, openState);
+        };
+      }
+    })
+  );
+}
+
+// src/features/journal-feed-view/index.ts
+function registerJournalFeedView(plugin) {
+  plugin.registerView(JOURNAL_FEED_VIEW_TYPE, (leaf) => new JournalFeedView(leaf, plugin));
+  registerJournalFeedRouting(plugin);
+}
+
 // src/utils/debug.ts
 var DebugUtils = class {
   /**
@@ -34420,7 +35636,7 @@ var DebugUtils = class {
 };
 
 // src/main.ts
-var BlockLinkPlus = class extends import_obsidian23.Plugin {
+var BlockLinkPlus = class extends import_obsidian27.Plugin {
   constructor() {
     super(...arguments);
     this.appName = "Block Link Plus";
@@ -34467,6 +35683,7 @@ var BlockLinkPlus = class extends import_obsidian23.Plugin {
     await this.loadSettings();
     this.addSettingTab(new BlockLinkPlusSettingsTab(this.app, this));
     registerFileOutlinerView(this);
+    registerJournalFeedView(this);
     await this.maybeShowWhatsNew();
     this.registerEvent(
       this.app.workspace.on(

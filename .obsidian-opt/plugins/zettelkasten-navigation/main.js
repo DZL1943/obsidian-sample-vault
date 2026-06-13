@@ -1302,10 +1302,13 @@ __export(main_exports, {
   default: () => ZKNavigationPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian17 = require("obsidian");
+var import_obsidian18 = require("obsidian");
 
-// src/lang/locale/zh.ts
-var zh_default = {
+// src/lang/helper.ts
+var import_obsidian = require("obsidian");
+
+// src/lang/locale/zh-cn.ts
+var zh_cn_default = {
   "Zettelkasten Navigation": "\u5361\u7247\u76D2\u5BFC\u822A",
   "ZK main notes": "\u4E3B\u7B14\u8BB0",
   "Main notes folder location": "\u4E3B\u7B14\u8BB0\u6587\u4EF6\u5B58\u653E\u4F4D\u7F6E",
@@ -1652,17 +1655,19 @@ var en_default = {
 // src/lang/helper.ts
 var localeMap = {
   en: en_default,
-  zh: zh_default
+  "zh-cn": zh_cn_default
 };
-var lang = window.localStorage.getItem("language");
-var locale = localeMap[lang || "en"];
-function t(text) {
-  return locale && locale[text] || en_default[text];
+var locale = localeMap[import_obsidian.moment.locale()];
+function t(str) {
+  if (typeof str !== "string" || str.length === 0) {
+    return "";
+  }
+  return locale && locale[str] || en_default[str] || str;
 }
 
 // src/modal/indexModal.ts
-var import_obsidian = require("obsidian");
-var indexModal = class extends import_obsidian.SuggestModal {
+var import_obsidian2 = require("obsidian");
+var indexModal = class extends import_obsidian2.SuggestModal {
   constructor(app, plugin, MainNotes, onSubmit) {
     super(app);
     this.onSubmit = onSubmit;
@@ -1676,11 +1681,11 @@ var indexModal = class extends import_obsidian.SuggestModal {
     this.query = query;
     const indexPath = this.plugin.settings.FolderOfIndexes;
     if (indexPath == "") {
-      new import_obsidian.Notice(t("Index folder not set!"));
+      new import_obsidian2.Notice(t("Index folder not set!"));
     } else {
       const indexFiles = this.app.vault.getMarkdownFiles().filter((f) => f.path.startsWith(indexPath + "/"));
       if (indexFiles.length == 0) {
-        new import_obsidian.Notice(`${t("No index can be found by path")} "${indexPath}"`);
+        new import_obsidian2.Notice(`${t("No index can be found by path")} "${indexPath}"`);
       }
       const resolvedLinks = this.app.metadataCache.resolvedLinks;
       for (let file of indexFiles) {
@@ -1710,14 +1715,14 @@ var indexModal = class extends import_obsidian.SuggestModal {
     return this.ALL_ZKIndex;
   }
   renderSuggestion(index, el) {
-    (0, import_obsidian.renderMatches)(el, index.display, [[0, this.query.length + 1]]);
+    (0, import_obsidian2.renderMatches)(el, index.display, [[0, this.query.length + 1]]);
   }
   onChooseSuggestion(index, evt) {
     this.index = index;
     this.onSubmit(this.index);
   }
 };
-var indexFuzzyModal = class extends import_obsidian.FuzzySuggestModal {
+var indexFuzzyModal = class extends import_obsidian2.FuzzySuggestModal {
   constructor(app, plugin, MainNotes, onSubmit) {
     super(app);
     this.onSubmit = onSubmit;
@@ -1730,11 +1735,11 @@ var indexFuzzyModal = class extends import_obsidian.FuzzySuggestModal {
     this.ALL_ZKIndex = [];
     const indexPath = this.plugin.settings.FolderOfIndexes;
     if (indexPath == "") {
-      new import_obsidian.Notice(t("Index folder not set!"));
+      new import_obsidian2.Notice(t("Index folder not set!"));
     } else {
       const indexFiles = this.app.vault.getMarkdownFiles().filter((f) => f.path.startsWith(indexPath + "/"));
       if (indexFiles.length == 0) {
-        new import_obsidian.Notice(`${t("No index can be found by path")} "${indexPath}"`);
+        new import_obsidian2.Notice(`${t("No index can be found by path")} "${indexPath}"`);
       }
       const resolvedLinks = this.app.metadataCache.resolvedLinks;
       for (let file of indexFiles) {
@@ -1774,8 +1779,8 @@ var indexFuzzyModal = class extends import_obsidian.FuzzySuggestModal {
 };
 
 // src/modal/mainNoteModal.ts
-var import_obsidian2 = require("obsidian");
-var mainNoteModal = class extends import_obsidian2.SuggestModal {
+var import_obsidian3 = require("obsidian");
+var mainNoteModal = class extends import_obsidian3.SuggestModal {
   constructor(app, plugin, MainNotes, onSubmit) {
     super(app);
     this.onSubmit = onSubmit;
@@ -1792,7 +1797,7 @@ var mainNoteModal = class extends import_obsidian2.SuggestModal {
   }
   renderSuggestion(node, el) {
     let displayText = `${node.ID}: ${node.title}`;
-    (0, import_obsidian2.renderMatches)(el, displayText, [[0, this.query.length]], this.getPosition(node));
+    (0, import_obsidian3.renderMatches)(el, displayText, [[0, this.query.length]], this.getPosition(node));
   }
   onChooseSuggestion(node, evt) {
     this.selectZKNode = node;
@@ -1808,7 +1813,7 @@ var mainNoteModal = class extends import_obsidian2.SuggestModal {
     return position;
   }
 };
-var mainNoteFuzzyModal = class extends import_obsidian2.FuzzySuggestModal {
+var mainNoteFuzzyModal = class extends import_obsidian3.FuzzySuggestModal {
   constructor(app, plugin, MainNotes, onSubmit) {
     super(app);
     this.onSubmit = onSubmit;
@@ -1830,11 +1835,11 @@ var mainNoteFuzzyModal = class extends import_obsidian2.FuzzySuggestModal {
 };
 
 // src/settings/settings.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 
 // src/suggester/FolderSuggester.ts
-var import_obsidian3 = require("obsidian");
-var FolderSuggest = class extends import_obsidian3.AbstractInputSuggest {
+var import_obsidian4 = require("obsidian");
+var FolderSuggest = class extends import_obsidian4.AbstractInputSuggest {
   constructor(app, inputEl) {
     super(app, inputEl);
     this.inputEl = inputEl;
@@ -1844,7 +1849,7 @@ var FolderSuggest = class extends import_obsidian3.AbstractInputSuggest {
     let folders = [];
     const lowerCaseInputStr = inputStr.toLowerCase();
     abstractFiles.forEach((folder) => {
-      if (folder instanceof import_obsidian3.TFolder && folder.path.toLowerCase().contains(lowerCaseInputStr)) {
+      if (folder instanceof import_obsidian4.TFolder && folder.path.toLowerCase().contains(lowerCaseInputStr)) {
         folders.push(folder);
       }
     });
@@ -1861,8 +1866,8 @@ var FolderSuggest = class extends import_obsidian3.AbstractInputSuggest {
 };
 
 // src/suggester/TagSuggester.ts
-var import_obsidian4 = require("obsidian");
-var TagSuggest = class extends import_obsidian4.AbstractInputSuggest {
+var import_obsidian5 = require("obsidian");
+var TagSuggest = class extends import_obsidian5.AbstractInputSuggest {
   constructor(app, inputEl) {
     super(app, inputEl);
     this.inputEl = inputEl;
@@ -1889,8 +1894,8 @@ var TagSuggest = class extends import_obsidian4.AbstractInputSuggest {
 };
 
 // src/suggester/FileSuggester.ts
-var import_obsidian5 = require("obsidian");
-var FileSuggest = class extends import_obsidian5.AbstractInputSuggest {
+var import_obsidian6 = require("obsidian");
+var FileSuggest = class extends import_obsidian6.AbstractInputSuggest {
   constructor(app, inputEl) {
     super(app, inputEl);
     this.inputEl = inputEl;
@@ -1900,7 +1905,7 @@ var FileSuggest = class extends import_obsidian5.AbstractInputSuggest {
     const files = [];
     const lowerCaseInputStr = inputStr.toLowerCase();
     abstractFiles.forEach((file) => {
-      if (file instanceof import_obsidian5.TFile && file.path.toLowerCase().contains(lowerCaseInputStr)) {
+      if (file instanceof import_obsidian6.TFile && file.path.toLowerCase().contains(lowerCaseInputStr)) {
         files.push(file);
       }
     });
@@ -1917,8 +1922,8 @@ var FileSuggest = class extends import_obsidian5.AbstractInputSuggest {
 };
 
 // src/modal/addCommandModal.ts
-var import_obsidian6 = require("obsidian");
-var addCommandModal = class extends import_obsidian6.FuzzySuggestModal {
+var import_obsidian7 = require("obsidian");
+var addCommandModal = class extends import_obsidian7.FuzzySuggestModal {
   constructor(app, plugin) {
     super(app);
     this.plugin = plugin;
@@ -1952,7 +1957,7 @@ var addCommandModal = class extends import_obsidian6.FuzzySuggestModal {
     content.createDiv({ cls: "suggestion-title" }).setText(item.item.name);
     if (item.item.icon) {
       const aux = el.createDiv({ cls: "suggestion-aux" });
-      (0, import_obsidian6.setIcon)(aux.createSpan({ cls: "suggestion-flair" }), item.item.icon);
+      (0, import_obsidian7.setIcon)(aux.createSpan({ cls: "suggestion-flair" }), item.item.icon);
     }
   }
   getItems() {
@@ -1966,8 +1971,8 @@ var addCommandModal = class extends import_obsidian6.FuzzySuggestModal {
 };
 
 // src/modal/chooseIconModal.ts
-var import_obsidian7 = require("obsidian");
-var ChooseIconModal = class extends import_obsidian7.FuzzySuggestModal {
+var import_obsidian8 = require("obsidian");
+var ChooseIconModal = class extends import_obsidian8.FuzzySuggestModal {
   constructor(app, plugin) {
     super(app);
     this.plugin = plugin;
@@ -1999,10 +2004,10 @@ var ChooseIconModal = class extends import_obsidian7.FuzzySuggestModal {
     const content = el.createDiv({ cls: "suggestion-content" });
     content.createDiv({ cls: "suggestion-title" }).setText(item.item.replace(/-/g, " ").replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase()));
     const aux = el.createDiv({ cls: "suggestion-aux" });
-    (0, import_obsidian7.setIcon)(aux.createSpan({ cls: "suggestion-flair" }), item.item);
+    (0, import_obsidian8.setIcon)(aux.createSpan({ cls: "suggestion-flair" }), item.item);
   }
   getItems() {
-    let iconIds = (0, import_obsidian7.getIconIds)().map((iconId) => iconId.replace(/^lucide-/, ""));
+    let iconIds = (0, import_obsidian8.getIconIds)().map((iconId) => iconId.replace(/^lucide-/, ""));
     return iconIds;
   }
   getItemText(item) {
@@ -2013,8 +2018,8 @@ var ChooseIconModal = class extends import_obsidian7.FuzzySuggestModal {
 };
 
 // src/modal/chooseCustomNameModal.ts
-var import_obsidian8 = require("obsidian");
-var chooseCustomNameModal = class extends import_obsidian8.SuggestModal {
+var import_obsidian9 = require("obsidian");
+var chooseCustomNameModal = class extends import_obsidian9.SuggestModal {
   constructor(app, defaultName) {
     super(app);
     this.defaultName = defaultName;
@@ -2064,7 +2069,7 @@ var chooseCustomNameModal = class extends import_obsidian8.SuggestModal {
 };
 
 // src/settings/settings.ts
-var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
+var ZKNavigationSettngTab = class extends import_obsidian10.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -2075,32 +2080,32 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
     containerEl.createEl("h1", { text: t("Zettelkasten Navigation") });
     const settingTabDiv = containerEl.createDiv("zk-setting-tab");
     const topButtonsDiv = settingTabDiv.createDiv("top-buttons-div");
-    const mainNoteButton = new import_obsidian9.ButtonComponent(topButtonsDiv);
+    const mainNoteButton = new import_obsidian10.ButtonComponent(topButtonsDiv);
     mainNoteButton.setButtonText(t("ZK main notes")).setClass("vertical-tab-nav-item").onClick(() => {
       this.openTabSection(0, topButtonsDiv);
     });
-    const retrievalButton = new import_obsidian9.ButtonComponent(topButtonsDiv);
+    const retrievalButton = new import_obsidian10.ButtonComponent(topButtonsDiv);
     retrievalButton.setButtonText(t("Retrieval")).setClass("vertical-tab-nav-item").onClick(() => {
       this.openTabSection(1, topButtonsDiv);
     });
-    const indexGraphButton = new import_obsidian9.ButtonComponent(topButtonsDiv);
+    const indexGraphButton = new import_obsidian10.ButtonComponent(topButtonsDiv);
     indexGraphButton.setButtonText(t("zk-index-graph-view")).setClass("vertical-tab-nav-item").onClick(() => {
       this.openTabSection(2, topButtonsDiv);
     });
-    const localGraphButton = new import_obsidian9.ButtonComponent(topButtonsDiv);
+    const localGraphButton = new import_obsidian10.ButtonComponent(topButtonsDiv);
     localGraphButton.setButtonText(t("zk-local-graph-view")).setClass("vertical-tab-nav-item").onClick(() => {
       this.openTabSection(3, topButtonsDiv);
     });
-    const experimentalButton = new import_obsidian9.ButtonComponent(topButtonsDiv);
+    const experimentalButton = new import_obsidian10.ButtonComponent(topButtonsDiv);
     experimentalButton.setButtonText(t("experimental")).setClass("vertical-tab-nav-item").onClick(() => {
       this.openTabSection(4, topButtonsDiv);
     });
     const mainNotesDiv = settingTabDiv.createDiv("zk-setting-section");
-    new import_obsidian9.Setting(mainNotesDiv).setName(t("Detect file extensions")).addDropdown((options) => options.addOption("all", t("all file extension")).addOption("md", t(".md only")).setValue(this.plugin.settings.MainNoteExt).onChange((value) => {
+    new import_obsidian10.Setting(mainNotesDiv).setName(t("Detect file extensions")).addDropdown((options) => options.addOption("all", t("all file extension")).addOption("md", t(".md only")).setValue(this.plugin.settings.MainNoteExt).onChange((value) => {
       this.plugin.settings.MainNoteExt = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(mainNotesDiv).setName(t("Main notes folder location")).setDesc(t("Main notes folder des")).addExtraButton((cb) => {
+    new import_obsidian10.Setting(mainNotesDiv).setName(t("Main notes folder location")).setDesc(t("Main notes folder des")).addExtraButton((cb) => {
       cb.setIcon("settings").onClick(() => {
         this.hideDiv(foldersDiv);
       });
@@ -2109,38 +2114,38 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
     const folderListDiv = foldersDiv.createDiv();
     this.udpateFolderList(folderListDiv);
     const addFolderBtnDiv = foldersDiv.createDiv("zk-center-button");
-    const addFolderBtn = new import_obsidian9.ButtonComponent(addFolderBtnDiv);
+    const addFolderBtn = new import_obsidian10.ButtonComponent(addFolderBtnDiv);
     addFolderBtn.setButtonText(t("Add folder")).setCta().onClick(async () => {
       this.plugin.settings.FolderList.push("");
       this.udpateFolderList(folderListDiv);
     });
-    new import_obsidian9.Setting(mainNotesDiv).setName(t("Main notes tag")).setDesc(t("Main notes tag des")).addSearch((cb) => {
+    new import_obsidian10.Setting(mainNotesDiv).setName(t("Main notes tag")).setDesc(t("Main notes tag des")).addSearch((cb) => {
       new TagSuggest(this.app, cb.inputEl);
       cb.setValue(this.plugin.settings.TagOfMainNotes).onChange((value) => {
         this.plugin.settings.TagOfMainNotes = value;
         this.plugin.RefreshIndexViewFlag = true;
       });
     });
-    const IDOption = new import_obsidian9.Setting(mainNotesDiv).setName(t("Note ID field options")).addDropdown((options) => options.addOption("1", t("Option 1: Filename is note ID")).addOption("2", t("Option 2: Metadata is note ID")).addOption("3", t("Option 3: Prefix of filename is note ID")).setValue(this.plugin.settings.IDFieldOption).onChange((value) => {
+    const IDOption = new import_obsidian10.Setting(mainNotesDiv).setName(t("Note ID field options")).addDropdown((options) => options.addOption("1", t("Option 1: Filename is note ID")).addOption("2", t("Option 2: Metadata is note ID")).addOption("3", t("Option 3: Prefix of filename is note ID")).setValue(this.plugin.settings.IDFieldOption).onChange((value) => {
       this.plugin.settings.IDFieldOption = value;
       this.plugin.RefreshIndexViewFlag = true;
       this.display();
     }));
     switch (this.plugin.settings.IDFieldOption) {
       case "1":
-        new import_obsidian9.Setting(mainNotesDiv).setName(t("Specify a frontmatter field for note's title")).addText((cb) => cb.setValue(this.plugin.settings.TitleField).onChange((value) => {
+        new import_obsidian10.Setting(mainNotesDiv).setName(t("Specify a frontmatter field for note's title")).addText((cb) => cb.setValue(this.plugin.settings.TitleField).onChange((value) => {
           this.plugin.settings.TitleField = value;
           this.plugin.RefreshIndexViewFlag = true;
         }));
         break;
       case "2":
-        new import_obsidian9.Setting(mainNotesDiv).setName(t("Specify a frontmatter field for note's ID")).addText((cb) => cb.setValue(this.plugin.settings.IDField).onChange((value) => {
+        new import_obsidian10.Setting(mainNotesDiv).setName(t("Specify a frontmatter field for note's ID")).addText((cb) => cb.setValue(this.plugin.settings.IDField).onChange((value) => {
           this.plugin.settings.IDField = value;
           this.plugin.RefreshIndexViewFlag = true;
         }));
         break;
       case "3":
-        new import_obsidian9.Setting(mainNotesDiv).setName(t("Specify a separator between ID and title")).addDropdown((options) => options.addOption(" ", t('" "(blank)')).addOption("-", t('"-"(hyphen)')).addOption("_", t('"_"(underscore)')).addOption("other", t("other")).setValue(this.plugin.settings.Separator).onChange((value) => {
+        new import_obsidian10.Setting(mainNotesDiv).setName(t("Specify a separator between ID and title")).addDropdown((options) => options.addOption(" ", t('" "(blank)')).addOption("-", t('"-"(hyphen)')).addOption("_", t('"_"(underscore)')).addOption("other", t("other")).setValue(this.plugin.settings.Separator).onChange((value) => {
           this.plugin.settings.Separator = value;
           this.plugin.RefreshIndexViewFlag = true;
           this.display();
@@ -2149,18 +2154,18 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       default:
     }
     if (this.plugin.settings.IDFieldOption === "3" && this.plugin.settings.Separator === "other") {
-      new import_obsidian9.Setting(mainNotesDiv).setName(t("enter your separator")).addText((cb) => cb.setValue(this.plugin.settings.OtherSeparator).onChange((value) => {
+      new import_obsidian10.Setting(mainNotesDiv).setName(t("enter your separator")).addText((cb) => cb.setValue(this.plugin.settings.OtherSeparator).onChange((value) => {
         this.plugin.settings.OtherSeparator = value;
         this.plugin.RefreshIndexViewFlag = true;
         this.display();
       }));
     }
-    new import_obsidian9.Setting(mainNotesDiv).setName(t("Custom created time(optional)")).setDesc(t("Specify a frontmatter field for time of note created time")).addText((cb) => cb.setValue(this.plugin.settings.CustomCreatedTime).onChange((value) => {
+    new import_obsidian10.Setting(mainNotesDiv).setName(t("Custom created time(optional)")).setDesc(t("Specify a frontmatter field for time of note created time")).addText((cb) => cb.setValue(this.plugin.settings.CustomCreatedTime).onChange((value) => {
       this.plugin.settings.CustomCreatedTime = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
     const retrievalDiv = settingTabDiv.createDiv("zk-setting-section");
-    new import_obsidian9.Setting(retrievalDiv).setName(t("Main Notes button")).addToggle((toggle) => toggle.setValue(this.plugin.settings.MainNoteButton).onChange((value) => {
+    new import_obsidian10.Setting(retrievalDiv).setName(t("Main Notes button")).addToggle((toggle) => toggle.setValue(this.plugin.settings.MainNoteButton).onChange((value) => {
       this.plugin.settings.MainNoteButton = value;
       this.plugin.RefreshIndexViewFlag = true;
       this.display();
@@ -2170,14 +2175,14 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const MainNoteButtonDiv = retrievalDiv.createDiv("zk-local-section zk-hidden");
-    new import_obsidian9.Setting(MainNoteButtonDiv).setName(t("Name of main note button")).addText((cb) => cb.setValue(this.plugin.settings.MainNoteButtonText).onChange((value) => {
+    new import_obsidian10.Setting(MainNoteButtonDiv).setName(t("Name of main note button")).addText((cb) => cb.setValue(this.plugin.settings.MainNoteButtonText).onChange((value) => {
       this.plugin.settings.MainNoteButtonText = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(MainNoteButtonDiv).setName(t("Suggest mode of main note modal")).addDropdown((options) => options.addOption("IDOrder", t("ID Order")).addOption("fuzzySuggest", t("Fuzzy Suggest")).setValue(this.plugin.settings.MainNoteSuggestMode).onChange((value) => {
+    new import_obsidian10.Setting(MainNoteButtonDiv).setName(t("Suggest mode of main note modal")).addDropdown((options) => options.addOption("IDOrder", t("ID Order")).addOption("fuzzySuggest", t("Fuzzy Suggest")).setValue(this.plugin.settings.MainNoteSuggestMode).onChange((value) => {
       this.plugin.settings.MainNoteSuggestMode = value;
     }));
-    new import_obsidian9.Setting(MainNoteButtonDiv).setName(t("List length")).setDesc(t("Maximum number of notes showing in Modal.")).addText((cb) => {
+    new import_obsidian10.Setting(MainNoteButtonDiv).setName(t("List length")).setDesc(t("Maximum number of notes showing in Modal.")).addText((cb) => {
       cb.inputEl.placeholder = "100(defaulf)";
       cb.setValue(this.plugin.settings.maxLenMainModel.toString()).onChange((value) => {
         if (/^[1-9]\d*$/.test(value)) {
@@ -2187,7 +2192,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
         }
       });
     });
-    new import_obsidian9.Setting(retrievalDiv).setName(t("Index button")).addToggle((toggle) => toggle.setValue(this.plugin.settings.IndexButton).onChange((value) => {
+    new import_obsidian10.Setting(retrievalDiv).setName(t("Index button")).addToggle((toggle) => toggle.setValue(this.plugin.settings.IndexButton).onChange((value) => {
       this.plugin.settings.IndexButton = value;
       this.plugin.RefreshIndexViewFlag = true;
       this.display();
@@ -2197,21 +2202,21 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const indexButtonDiv = retrievalDiv.createDiv("zk-local-section zk-hidden");
-    new import_obsidian9.Setting(indexButtonDiv).setName(t("Indexes folder location")).setDesc(t("index_description")).addSearch((cb) => {
+    new import_obsidian10.Setting(indexButtonDiv).setName(t("Indexes folder location")).setDesc(t("index_description")).addSearch((cb) => {
       new FolderSuggest(this.app, cb.inputEl);
       cb.setPlaceholder(t("Example: folder1/folder2")).setValue(this.plugin.settings.FolderOfIndexes).onChange((value) => {
         this.plugin.settings.FolderOfIndexes = value;
         this.plugin.RefreshIndexViewFlag = true;
       });
     });
-    new import_obsidian9.Setting(indexButtonDiv).setName(t("Name of index button")).addText((cb) => cb.setValue(this.plugin.settings.IndexButtonText).onChange((value) => {
+    new import_obsidian10.Setting(indexButtonDiv).setName(t("Name of index button")).addText((cb) => cb.setValue(this.plugin.settings.IndexButtonText).onChange((value) => {
       this.plugin.settings.IndexButtonText = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(indexButtonDiv).setName(t("Suggest mode of index modal")).addDropdown((options) => options.addOption("keywordOrder", t("Keyword Order")).addOption("fuzzySuggest", t("Fuzzy Suggest")).setValue(this.plugin.settings.SuggestMode).onChange((value) => {
+    new import_obsidian10.Setting(indexButtonDiv).setName(t("Suggest mode of index modal")).addDropdown((options) => options.addOption("keywordOrder", t("Keyword Order")).addOption("fuzzySuggest", t("Fuzzy Suggest")).setValue(this.plugin.settings.SuggestMode).onChange((value) => {
       this.plugin.settings.SuggestMode = value;
     }));
-    new import_obsidian9.Setting(indexButtonDiv).setName(t("List length")).setDesc(t("Maximum number of notes showing in Modal.")).addText((cb) => {
+    new import_obsidian10.Setting(indexButtonDiv).setName(t("List length")).setDesc(t("Maximum number of notes showing in Modal.")).addText((cb) => {
       cb.inputEl.placeholder = "100(defaulf)";
       cb.setValue(this.plugin.settings.maxLenIndexModel.toString()).onChange((value) => {
         if (/^[1-9]\d*$/.test(value)) {
@@ -2222,7 +2227,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const indexGraphView = settingTabDiv.createDiv("zk-setting-section");
-    new import_obsidian9.Setting(indexGraphView).setName(t("Index graph styles")).addDropdown((options) => options.addOption("structure", t("structure")).addOption("roadmap", t("roadmap")).setValue(this.plugin.settings.graphType).onChange((value) => {
+    new import_obsidian10.Setting(indexGraphView).setName(t("Index graph styles")).addDropdown((options) => options.addOption("structure", t("structure")).addOption("roadmap", t("roadmap")).setValue(this.plugin.settings.graphType).onChange((value) => {
       this.plugin.settings.graphType = value;
       this.plugin.RefreshIndexViewFlag = true;
       structureSettingDiv.addClass("zk-hidden");
@@ -2237,17 +2242,17 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const roadmapSettingDiv = indexGraphView.createDiv("zk-local-section zk-hidden");
-    new import_obsidian9.Setting(roadmapSettingDiv).setName(t("Shorten the distance between adjacent nodes")).setDesc(t("\u26A0Required restart to take effect")).addToggle((toggle) => toggle.setValue(this.plugin.settings.nodeClose).onChange((value) => {
+    new import_obsidian10.Setting(roadmapSettingDiv).setName(t("Shorten the distance between adjacent nodes")).setDesc(t("\u26A0Required restart to take effect")).addToggle((toggle) => toggle.setValue(this.plugin.settings.nodeClose).onChange((value) => {
       this.plugin.settings.nodeClose = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(roadmapSettingDiv).setName(t("Branches uncrossing")).addToggle((toggle) => toggle.setValue(this.plugin.settings.gitUncrossing).onChange((value) => {
+    new import_obsidian10.Setting(roadmapSettingDiv).setName(t("Branches uncrossing")).addToggle((toggle) => toggle.setValue(this.plugin.settings.gitUncrossing).onChange((value) => {
       this.plugin.settings.gitUncrossing = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
     const structureSettingDiv = indexGraphView.createDiv("zk-local-section zk-hidden");
     await this.updateSructureSettings(structureSettingDiv);
-    new import_obsidian9.Setting(indexGraphView).setName(t("Toolbar")).setDesc(t("Open the icons(commands) in the branch graph.")).addToggle((toggle) => toggle.setValue(this.plugin.settings.BranchToolbra).onChange((value) => {
+    new import_obsidian10.Setting(indexGraphView).setName(t("Toolbar")).setDesc(t("Open the icons(commands) in the branch graph.")).addToggle((toggle) => toggle.setValue(this.plugin.settings.BranchToolbra).onChange((value) => {
       this.plugin.settings.BranchToolbra = value;
       this.plugin.RefreshIndexViewFlag = true;
     })).addExtraButton((cb) => {
@@ -2256,26 +2261,26 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const branchToolbarDiv = indexGraphView.createDiv("zk-local-section zk-hidden");
-    new import_obsidian9.Setting(branchToolbarDiv).setName(t("settings")).then((setting) => {
+    new import_obsidian10.Setting(branchToolbarDiv).setName(t("settings")).then((setting) => {
       const parentEl = setting.settingEl.parentElement;
       if (parentEl) {
         parentEl.insertBefore(createDiv(), setting.settingEl);
       }
       const iconEl = createDiv();
       setting.settingEl.prepend(iconEl);
-      (0, import_obsidian9.setIcon)(iconEl, "settings");
+      (0, import_obsidian10.setIcon)(iconEl, "settings");
     }).addToggle((toggle) => toggle.setValue(this.plugin.settings.settingIcon).onChange((value) => {
       this.plugin.settings.settingIcon = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(branchToolbarDiv).setName(t("export to canvas")).then((setting) => {
+    new import_obsidian10.Setting(branchToolbarDiv).setName(t("export to canvas")).then((setting) => {
       const parentEl = setting.settingEl.parentElement;
       if (parentEl) {
         parentEl.insertBefore(createDiv(), setting.settingEl);
       }
       const iconEl = createDiv();
       setting.settingEl.prepend(iconEl);
-      (0, import_obsidian9.setIcon)(iconEl, "layout-dashboard");
+      (0, import_obsidian10.setIcon)(iconEl, "layout-dashboard");
     }).addExtraButton((cb) => {
       cb.setIcon("settings").onClick(() => {
         this.hideDiv(canvasAdditionSection);
@@ -2287,77 +2292,77 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
     const canvasAdditionSection = branchToolbarDiv.createDiv("zk-local-section zk-hidden");
     await this.updateCanvasAddSettings(canvasAdditionSection);
     if (this.plugin.settings.MainNoteButton == true) {
-      new import_obsidian9.Setting(branchToolbarDiv).setName(t("random main note")).then((setting) => {
+      new import_obsidian10.Setting(branchToolbarDiv).setName(t("random main note")).then((setting) => {
         const parentEl = setting.settingEl.parentElement;
         if (parentEl) {
           parentEl.insertBefore(createDiv(), setting.settingEl);
         }
         const iconEl = createDiv();
         setting.settingEl.prepend(iconEl);
-        (0, import_obsidian9.setIcon)(iconEl, "dice-3");
+        (0, import_obsidian10.setIcon)(iconEl, "dice-3");
       }).addToggle((toggle) => toggle.setValue(this.plugin.settings.RandomMainNote).onChange((value) => {
         this.plugin.settings.RandomMainNote = value;
         this.plugin.RefreshIndexViewFlag = true;
       }));
     }
     if (this.plugin.settings.IndexButton == true) {
-      new import_obsidian9.Setting(branchToolbarDiv).setName(t("random index")).then((setting) => {
+      new import_obsidian10.Setting(branchToolbarDiv).setName(t("random index")).then((setting) => {
         const parentEl = setting.settingEl.parentElement;
         if (parentEl) {
           parentEl.insertBefore(createDiv(), setting.settingEl);
         }
         const iconEl = createDiv();
         setting.settingEl.prepend(iconEl);
-        (0, import_obsidian9.setIcon)(iconEl, "dices");
+        (0, import_obsidian10.setIcon)(iconEl, "dices");
       }).addToggle((toggle) => toggle.setValue(this.plugin.settings.RandomIndex).onChange((value) => {
         this.plugin.settings.RandomIndex = value;
         this.plugin.RefreshIndexViewFlag = true;
       }));
     }
-    new import_obsidian9.Setting(branchToolbarDiv).setName(t("all trees")).then((setting) => {
+    new import_obsidian10.Setting(branchToolbarDiv).setName(t("all trees")).then((setting) => {
       const parentEl = setting.settingEl.parentElement;
       if (parentEl) {
         parentEl.insertBefore(createDiv(), setting.settingEl);
       }
       const iconEl = createDiv();
       setting.settingEl.prepend(iconEl);
-      (0, import_obsidian9.setIcon)(iconEl, "trees");
+      (0, import_obsidian10.setIcon)(iconEl, "trees");
     }).addToggle((toggle) => toggle.setValue(this.plugin.settings.showAllToggle).onChange((value) => {
       this.plugin.settings.showAllToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(branchToolbarDiv).setName(t("table view")).then((setting) => {
+    new import_obsidian10.Setting(branchToolbarDiv).setName(t("table view")).then((setting) => {
       const parentEl = setting.settingEl.parentElement;
       if (parentEl) {
         parentEl.insertBefore(createDiv(), setting.settingEl);
       }
       const iconEl = createDiv();
       setting.settingEl.prepend(iconEl);
-      (0, import_obsidian9.setIcon)(iconEl, "table");
+      (0, import_obsidian10.setIcon)(iconEl, "table");
     }).addToggle((toggle) => toggle.setValue(this.plugin.settings.TableView).onChange((value) => {
       this.plugin.settings.TableView = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(branchToolbarDiv).setName(t("list tree")).then((setting) => {
+    new import_obsidian10.Setting(branchToolbarDiv).setName(t("list tree")).then((setting) => {
       const parentEl = setting.settingEl.parentElement;
       if (parentEl) {
         parentEl.insertBefore(createDiv(), setting.settingEl);
       }
       const iconEl = createDiv();
       setting.settingEl.prepend(iconEl);
-      (0, import_obsidian9.setIcon)(iconEl, "list-tree");
+      (0, import_obsidian10.setIcon)(iconEl, "list-tree");
     }).addToggle((toggle) => toggle.setValue(this.plugin.settings.ListTree).onChange((value) => {
       this.plugin.settings.ListTree = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(branchToolbarDiv).setName(t("History List")).then((setting) => {
+    new import_obsidian10.Setting(branchToolbarDiv).setName(t("History List")).then((setting) => {
       const parentEl = setting.settingEl.parentElement;
       if (parentEl) {
         parentEl.insertBefore(createDiv(), setting.settingEl);
       }
       const iconEl = createDiv();
       setting.settingEl.prepend(iconEl);
-      (0, import_obsidian9.setIcon)(iconEl, "history");
+      (0, import_obsidian10.setIcon)(iconEl, "history");
     }).setDesc(t("And set the list length")).addSlider((cb) => {
       cb.setLimits(10, 50, 5).setValue(this.plugin.settings.HistoryMaxCount).setDynamicTooltip().onChange(async (value) => {
         this.plugin.settings.HistoryMaxCount = value;
@@ -2366,11 +2371,11 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       this.plugin.settings.HistoryToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(indexGraphView).setName(t("play controller")).setDesc(t("play_des")).addToggle((toggle) => toggle.setValue(this.plugin.settings.playControllerToggle).onChange((value) => {
+    new import_obsidian10.Setting(indexGraphView).setName(t("play controller")).setDesc(t("play_des")).addToggle((toggle) => toggle.setValue(this.plugin.settings.playControllerToggle).onChange((value) => {
       this.plugin.settings.playControllerToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(indexGraphView).setName(t("Node menu")).setDesc(t("node_menu_des")).addExtraButton((cb) => {
+    new import_obsidian10.Setting(indexGraphView).setName(t("Node menu")).setDesc(t("node_menu_des")).addExtraButton((cb) => {
       cb.setIcon("settings").onClick(() => {
         this.hideDiv(nodeMenuDiv);
       });
@@ -2379,7 +2384,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
     const commandsDiv = nodeMenuDiv.createDiv();
     this.updateNodeMenu(commandsDiv);
     const addCommandBtnDiv = nodeMenuDiv.createDiv("zk-center-button setting-item");
-    const addCommandBtn = new import_obsidian9.ButtonComponent(addCommandBtnDiv);
+    const addCommandBtn = new import_obsidian10.ButtonComponent(addCommandBtnDiv);
     addCommandBtn.setButtonText(t("Add command")).setCta().onClick(async () => {
       let command = await new addCommandModal(this.app, this.plugin).awaitSelection();
       let icon;
@@ -2398,7 +2403,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       this.updateNodeMenu(commandsDiv);
     });
     const localGraphView = settingTabDiv.createDiv("zk-setting-section");
-    new import_obsidian9.Setting(localGraphView).setName(t("Open close-relative graph")).setDesc(t("Mermaid graph to display parent, siblings and sons")).addToggle((toggle) => toggle.setValue(this.plugin.settings.FamilyGraphToggle).onChange((value) => {
+    new import_obsidian10.Setting(localGraphView).setName(t("Open close-relative graph")).setDesc(t("Mermaid graph to display parent, siblings and sons")).addToggle((toggle) => toggle.setValue(this.plugin.settings.FamilyGraphToggle).onChange((value) => {
       this.plugin.settings.FamilyGraphToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     })).addExtraButton((cb) => {
@@ -2407,11 +2412,11 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const familySectionDiv = localGraphView.createDiv("zk-local-section zk-hidden");
-    new import_obsidian9.Setting(familySectionDiv).setName(t("direction of graph")).addDropdown((options) => options.addOption("LR", t('"LR": feft to right')).addOption("RL", t('"RL": right to left')).addOption("TB", t('"TB": top to bottom')).addOption("BT", t('"BT": bottom to top')).setValue(this.plugin.settings.DirectionOfFamilyGraph).onChange((value) => {
+    new import_obsidian10.Setting(familySectionDiv).setName(t("direction of graph")).addDropdown((options) => options.addOption("LR", t('"LR": feft to right')).addOption("RL", t('"RL": right to left')).addOption("TB", t('"TB": top to bottom')).addOption("BT", t('"BT": bottom to top')).setValue(this.plugin.settings.DirectionOfFamilyGraph).onChange((value) => {
       this.plugin.settings.DirectionOfFamilyGraph = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(localGraphView).setName(t("Open inlinks graph")).setDesc(t("Mermaid graph to display inlinks")).addToggle((toggle) => toggle.setValue(this.plugin.settings.InlinksGraphToggle).onChange((value) => {
+    new import_obsidian10.Setting(localGraphView).setName(t("Open inlinks graph")).setDesc(t("Mermaid graph to display inlinks")).addToggle((toggle) => toggle.setValue(this.plugin.settings.InlinksGraphToggle).onChange((value) => {
       this.plugin.settings.InlinksGraphToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     })).addExtraButton((cb) => {
@@ -2420,11 +2425,11 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const inlinksSectionDiv = localGraphView.createDiv("zk-local-section zk-hidden");
-    new import_obsidian9.Setting(inlinksSectionDiv).setName(t("direction of graph")).addDropdown((options) => options.addOption("LR", t('"LR": feft to right')).addOption("RL", t('"RL": right to left')).addOption("TB", t('"TB": top to bottom')).addOption("BT", t('"BT": bottom to top')).setValue(this.plugin.settings.DirectionOfInlinksGraph).onChange((value) => {
+    new import_obsidian10.Setting(inlinksSectionDiv).setName(t("direction of graph")).addDropdown((options) => options.addOption("LR", t('"LR": feft to right')).addOption("RL", t('"RL": right to left')).addOption("TB", t('"TB": top to bottom')).addOption("BT", t('"BT": bottom to top')).setValue(this.plugin.settings.DirectionOfInlinksGraph).onChange((value) => {
       this.plugin.settings.DirectionOfInlinksGraph = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(localGraphView).setName(t("Open outlinks graph")).setDesc(t("Mermaid graph to display outlinks")).addToggle((toggle) => toggle.setValue(this.plugin.settings.OutlinksGraphToggle).onChange((value) => {
+    new import_obsidian10.Setting(localGraphView).setName(t("Open outlinks graph")).setDesc(t("Mermaid graph to display outlinks")).addToggle((toggle) => toggle.setValue(this.plugin.settings.OutlinksGraphToggle).onChange((value) => {
       this.plugin.settings.OutlinksGraphToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     })).addExtraButton((cb) => {
@@ -2433,16 +2438,16 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const outlinksSectionDiv = localGraphView.createDiv("zk-local-section zk-hidden");
-    new import_obsidian9.Setting(outlinksSectionDiv).setName(t("direction of graph")).addDropdown((options) => options.addOption("LR", t('"LR": feft to right')).addOption("RL", t('"RL": right to left')).addOption("TB", t('"TB": top to bottom')).addOption("BT", t('"BT": bottom to top')).setValue(this.plugin.settings.DirectionOfOutlinksGraph).onChange((value) => {
+    new import_obsidian10.Setting(outlinksSectionDiv).setName(t("direction of graph")).addDropdown((options) => options.addOption("LR", t('"LR": feft to right')).addOption("RL", t('"RL": right to left')).addOption("TB", t('"TB": top to bottom')).addOption("BT", t('"BT": bottom to top')).setValue(this.plugin.settings.DirectionOfOutlinksGraph).onChange((value) => {
       this.plugin.settings.DirectionOfOutlinksGraph = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(outlinksSectionDiv).setName(t("Detect file extensions")).addDropdown((options) => options.addOption("all", t("all file extension")).addOption("md", t(".md only")).setValue(this.plugin.settings.FileExtension).onChange((value) => {
+    new import_obsidian10.Setting(outlinksSectionDiv).setName(t("Detect file extensions")).addDropdown((options) => options.addOption("all", t("all file extension")).addOption("md", t(".md only")).setValue(this.plugin.settings.FileExtension).onChange((value) => {
       this.plugin.settings.FileExtension = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
     const experimentalDiv = settingTabDiv.createDiv("zk-setting-section");
-    new import_obsidian9.Setting(experimentalDiv).setName(t("multiple IDs for main notes")).setDesc(t("multiple IDs description")).addToggle((toggle) => toggle.setValue(this.plugin.settings.multiIDToggle).onChange((value) => {
+    new import_obsidian10.Setting(experimentalDiv).setName(t("multiple IDs for main notes")).setDesc(t("multiple IDs description")).addToggle((toggle) => toggle.setValue(this.plugin.settings.multiIDToggle).onChange((value) => {
       this.plugin.settings.multiIDToggle = value;
     })).addExtraButton((cb) => {
       cb.setIcon("settings").onClick(() => {
@@ -2450,7 +2455,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       });
     });
     const multiIDDiv = experimentalDiv.createDiv("zk-local-section zk-hidden");
-    new import_obsidian9.Setting(multiIDDiv).setName(t("Specify a frontmatter field(list) for multiple IDs")).addText((cb) => cb.setValue(this.plugin.settings.multiIDField).onChange((value) => {
+    new import_obsidian10.Setting(multiIDDiv).setName(t("Specify a frontmatter field(list) for multiple IDs")).addText((cb) => cb.setValue(this.plugin.settings.multiIDField).onChange((value) => {
       this.plugin.settings.multiIDField = value;
     }));
     this.initDiv(topButtonsDiv);
@@ -2482,7 +2487,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
     for (let i = 0; i < commandsLen; i++) {
       let command = this.plugin.settings.NodeCommands[i];
       let commandDiv = nodeMenuDiv.createEl("div", { cls: "setting-item" });
-      new import_obsidian9.ExtraButtonComponent(commandDiv.createEl("div")).setIcon(command.icon).onClick(async () => {
+      new import_obsidian10.ExtraButtonComponent(commandDiv.createEl("div")).setIcon(command.icon).onClick(async () => {
         let icon = await new ChooseIconModal(this.app, this.plugin).awaitSelection();
         command.icon = icon;
         this.updateNodeMenu(nodeMenuDiv);
@@ -2508,23 +2513,23 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
           copyText = t("none");
           break;
       }
-      new import_obsidian9.ExtraButtonComponent(commandDiv.createEl("div")).setIcon(copyIcon).setTooltip(t("auto-copy: ") + copyText).onClick(async () => {
+      new import_obsidian10.ExtraButtonComponent(commandDiv.createEl("div")).setIcon(copyIcon).setTooltip(t("auto-copy: ") + copyText).onClick(async () => {
         command.copyType = (command.copyType + 1) % 4;
         this.updateNodeMenu(nodeMenuDiv);
       });
-      new import_obsidian9.ExtraButtonComponent(commandDiv.createEl("div")).setIcon("arrow-down").onClick(async () => {
+      new import_obsidian10.ExtraButtonComponent(commandDiv.createEl("div")).setIcon("arrow-down").onClick(async () => {
         if (commandsLen > 1) {
           [this.plugin.settings.NodeCommands[i], this.plugin.settings.NodeCommands[(i + 1) % commandsLen]] = [this.plugin.settings.NodeCommands[(i + 1) % commandsLen], this.plugin.settings.NodeCommands[i]];
         }
         this.updateNodeMenu(nodeMenuDiv);
       });
-      new import_obsidian9.ExtraButtonComponent(commandDiv.createEl("div")).setIcon("arrow-up").onClick(async () => {
+      new import_obsidian10.ExtraButtonComponent(commandDiv.createEl("div")).setIcon("arrow-up").onClick(async () => {
         if (commandsLen > 1) {
           [this.plugin.settings.NodeCommands[i], this.plugin.settings.NodeCommands[(i - 1 + commandsLen) % commandsLen]] = [this.plugin.settings.NodeCommands[(i - 1 + commandsLen) % commandsLen], this.plugin.settings.NodeCommands[i]];
         }
         this.updateNodeMenu(nodeMenuDiv);
       });
-      new import_obsidian9.ButtonComponent(commandDiv).setIcon("trash").setCta().setClass("mod-warning").onClick(() => {
+      new import_obsidian10.ButtonComponent(commandDiv).setIcon("trash").setCta().setClass("mod-warning").onClick(() => {
         this.plugin.settings.NodeCommands.splice(i, 1);
         this.updateNodeMenu(nodeMenuDiv);
       });
@@ -2535,7 +2540,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
     for (let i = 0; i < this.plugin.settings.FolderList.length; i++) {
       let folder = this.plugin.settings.FolderList[i];
       let folderDiv = folderListDiv.createEl("div");
-      new import_obsidian9.Setting(folderDiv).addSearch((cb) => {
+      new import_obsidian10.Setting(folderDiv).addSearch((cb) => {
         new FolderSuggest(this.app, cb.inputEl);
         cb.setPlaceholder(t("Example: folder1/folder2")).setValue(folder).onChange((value) => {
           this.plugin.settings.FolderList[i] = value;
@@ -2552,7 +2557,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
   }
   async updateCanvasAddSettings(canvasAdditionSection) {
     canvasAdditionSection.empty();
-    new import_obsidian9.Setting(canvasAdditionSection).setName(t("set the fixed path for exported canvas file")).setDesc(t("if empty, it will create a new canvas file every time")).addSearch((cb) => {
+    new import_obsidian10.Setting(canvasAdditionSection).setName(t("set the fixed path for exported canvas file")).setDesc(t("if empty, it will create a new canvas file every time")).addSearch((cb) => {
       new FileSuggest(this.app, cb.inputEl);
       cb.setPlaceholder(t("Example: folder/filename.canvas")).setValue(this.plugin.settings.canvasFilePath).onChange((value) => {
         if (value.endsWith(".canvas")) {
@@ -2562,7 +2567,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
         }
       });
     });
-    new import_obsidian9.Setting(canvasAdditionSection).setName(t("set default width and height for cards")).addText((cb) => {
+    new import_obsidian10.Setting(canvasAdditionSection).setName(t("set default width and height for cards")).addText((cb) => {
       cb.inputEl.placeholder = t("card width");
       cb.setValue(this.plugin.settings.cardWidth.toString()).onChange((value) => {
         if (/^[1-9]\d*$/.test(value)) {
@@ -2581,14 +2586,14 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
         }
       });
     });
-    new import_obsidian9.Setting(canvasAdditionSection).setName(t("Narrow to heading")).addText((cb) => {
+    new import_obsidian10.Setting(canvasAdditionSection).setName(t("Narrow to heading")).addText((cb) => {
       cb.setValue(this.plugin.settings.canvasSubpath.toString()).onChange((value) => {
         this.plugin.settings.canvasSubpath = value;
       });
     }).addDropdown((options) => options.addOption("string", t("string match")).addOption("regex", t("regex match")).setValue(this.plugin.settings.headingMatchMode).onChange((value) => {
       this.plugin.settings.headingMatchMode = value;
     }));
-    new import_obsidian9.Setting(canvasAdditionSection).setName(t("Set color for cards")).addExtraButton((cb) => {
+    new import_obsidian10.Setting(canvasAdditionSection).setName(t("Set color for cards")).addExtraButton((cb) => {
       cb.setIcon("rotate-ccw").onClick(async () => {
         this.plugin.settings.canvasCardColor = "#C0C0C0";
         await this.updateCanvasAddSettings(canvasAdditionSection);
@@ -2596,7 +2601,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
     }).addColorPicker((color) => color.setValue(this.plugin.settings.canvasCardColor).onChange((value) => {
       this.plugin.settings.canvasCardColor = value;
     }));
-    new import_obsidian9.Setting(canvasAdditionSection).setName(t("Set color for arrow")).addExtraButton((cb) => {
+    new import_obsidian10.Setting(canvasAdditionSection).setName(t("Set color for arrow")).addExtraButton((cb) => {
       cb.setIcon("rotate-ccw").onClick(async () => {
         this.plugin.settings.canvasArrowColor = "#C0C0C0";
         await this.updateCanvasAddSettings(canvasAdditionSection);
@@ -2607,23 +2612,23 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
   }
   async updateSructureSettings(structureSettingDiv) {
     structureSettingDiv.empty();
-    new import_obsidian9.Setting(structureSettingDiv).setName(t("direction of graph")).addDropdown((options) => options.addOption("LR", t('"LR": feft to right')).addOption("RL", t('"RL": right to left')).addOption("TB", t('"TB": top to bottom')).addOption("BT", t('"BT": bottom to top')).setValue(this.plugin.settings.DirectionOfBranchGraph).onChange((value) => {
+    new import_obsidian10.Setting(structureSettingDiv).setName(t("direction of graph")).addDropdown((options) => options.addOption("LR", t('"LR": feft to right')).addOption("RL", t('"RL": right to left')).addOption("TB", t('"TB": top to bottom')).addOption("BT", t('"BT": bottom to top')).setValue(this.plugin.settings.DirectionOfBranchGraph).onChange((value) => {
       this.plugin.settings.DirectionOfBranchGraph = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(structureSettingDiv).setName(t("siblings order")).setDesc(t("siblings order description")).addDropdown((options) => options.addOption("number", t("number first")).addOption("letter", t("letter first")).setValue(this.plugin.settings.siblingsOrder).onChange((value) => {
+    new import_obsidian10.Setting(structureSettingDiv).setName(t("siblings order")).setDesc(t("siblings order description")).addDropdown((options) => options.addOption("number", t("number first")).addOption("letter", t("letter first")).setValue(this.plugin.settings.siblingsOrder).onChange((value) => {
       this.plugin.settings.siblingsOrder = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(structureSettingDiv).setName(t("same width for siblings")).addToggle((toggle) => toggle.setValue(this.plugin.settings.siblingLenToggle).onChange((value) => {
+    new import_obsidian10.Setting(structureSettingDiv).setName(t("same width for siblings")).addToggle((toggle) => toggle.setValue(this.plugin.settings.siblingLenToggle).onChange((value) => {
       this.plugin.settings.siblingLenToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(structureSettingDiv).setName(t("Set red dash line for nodes with ID ends with letter")).setDesc(t("In order to distinguish nodes which ID ends with letter and number")).addToggle((toggle) => toggle.setValue(this.plugin.settings.RedDashLine).onChange((value) => {
+    new import_obsidian10.Setting(structureSettingDiv).setName(t("Set red dash line for nodes with ID ends with letter")).setDesc(t("In order to distinguish nodes which ID ends with letter and number")).addToggle((toggle) => toggle.setValue(this.plugin.settings.RedDashLine).onChange((value) => {
       this.plugin.settings.RedDashLine = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(structureSettingDiv).setName(t("display created time")).setDesc(t("Set datetime format")).addText((cb) => {
+    new import_obsidian10.Setting(structureSettingDiv).setName(t("display created time")).setDesc(t("Set datetime format")).addText((cb) => {
       cb.inputEl.placeholder = "yyyy-MM-DD HH:mm";
       cb.setValue(this.plugin.settings.datetimeFormat).onChange((value) => {
         if (value === "") {
@@ -2637,11 +2642,11 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
       this.plugin.settings.displayTimeToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(structureSettingDiv).setName(t("Fold node toggle")).setDesc(t("Open the fold icon(\u{1F7E1}\u{1F7E2})")).addToggle((toggle) => toggle.setValue(this.plugin.settings.FoldToggle).onChange((value) => {
+    new import_obsidian10.Setting(structureSettingDiv).setName(t("Fold node toggle")).setDesc(t("Open the fold icon(\u{1F7E1}\u{1F7E2})")).addToggle((toggle) => toggle.setValue(this.plugin.settings.FoldToggle).onChange((value) => {
       this.plugin.settings.FoldToggle = value;
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    new import_obsidian9.Setting(structureSettingDiv).setName(t("Set color for nodes")).addExtraButton((cb) => {
+    new import_obsidian10.Setting(structureSettingDiv).setName(t("Set color for nodes")).addExtraButton((cb) => {
       cb.setIcon("rotate-ccw").onClick(async () => {
         this.plugin.settings.nodeColor = "#FFFFAA";
         await this.updateSructureSettings(structureSettingDiv);
@@ -2660,7 +2665,7 @@ var ZKNavigationSettngTab = class extends import_obsidian9.PluginSettingTab {
 };
 
 // src/utils/utils.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 async function ID_formatting(id, arr, siblingsOrder) {
   if (/^[0-9]$/.test(id[0])) {
     let numStr = id.match(/\d+/g);
@@ -2815,7 +2820,7 @@ async function mainNoteInit(plugin) {
     if (plugin.settings.CustomCreatedTime.length > 0 && node.file.extension == "md") {
       let ctime = (_b = nodeCache == null ? void 0 : nodeCache.frontmatter) == null ? void 0 : _b[plugin.settings.CustomCreatedTime];
       if (ctime) {
-        let time = (0, import_obsidian10.moment)(ctime);
+        let time = (0, import_obsidian11.moment)(ctime);
         if (time.isValid()) {
           node.ctime = time.valueOf();
         }
@@ -2928,7 +2933,7 @@ function displayWidth(str) {
   return length;
 }
 async function addSvgPanZoom(zkGraph, indexMermaidDiv, i, plugin, mermaidStr, height) {
-  const mermaid = await (0, import_obsidian10.loadMermaid)();
+  const mermaid = await (0, import_obsidian11.loadMermaid)();
   let { svg } = await mermaid.render(`${zkGraph.id}-svg`, mermaidStr);
   zkGraph.insertAdjacentHTML("beforeend", svg);
   if (plugin.settings.graphType === "roadmap") {
@@ -3033,14 +3038,14 @@ function splitNestedTags(nestTag, arr) {
 }
 
 // src/view/graphView.ts
-var import_obsidian13 = require("obsidian");
+var import_obsidian14 = require("obsidian");
 
 // src/view/indexView.ts
-var import_obsidian11 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 var ZK_INDEX_TYPE = "zk-index-type";
 var ZK_INDEX_VIEW = t("zk-index-graph");
 var ZK_NAVIGATION = "zk-navigation";
-var ZKIndexView = class extends import_obsidian11.ItemView {
+var ZKIndexView = class extends import_obsidian12.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.playStatus = {
@@ -3081,7 +3086,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     indexMermaidDiv.empty();
     if (this.plugin.settings.MainNoteButton == true) {
       const mainNoteButtonDiv = toolbarDiv.createDiv("zk-index-toolbar-block");
-      const mainNoteButton = new import_obsidian11.ButtonComponent(mainNoteButtonDiv).setClass("zk-index-toolbar-button");
+      const mainNoteButton = new import_obsidian12.ButtonComponent(mainNoteButtonDiv).setClass("zk-index-toolbar-button");
       mainNoteButton.setButtonText(this.plugin.settings.MainNoteButtonText);
       mainNoteButton.setCta();
       mainNoteButton.onClick(() => {
@@ -3092,7 +3097,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
               ID: selectZKNode.ID,
               displayText: selectZKNode.displayText,
               filePath: selectZKNode.file.path,
-              openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+              openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
             };
             this.plugin.clearShowingSettings();
             this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -3104,7 +3109,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
               ID: selectZKNode.ID,
               displayText: selectZKNode.displayText,
               filePath: selectZKNode.file.path,
-              openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+              openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
             };
             this.plugin.clearShowingSettings();
             this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -3114,7 +3119,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     }
     if (this.plugin.settings.IndexButton == true) {
       const indexButtonDiv = toolbarDiv.createDiv("zk-index-toolbar-block");
-      const indexButton = new import_obsidian11.ButtonComponent(indexButtonDiv).setClass("zk-index-toolbar-button");
+      const indexButton = new import_obsidian12.ButtonComponent(indexButtonDiv).setClass("zk-index-toolbar-button");
       indexButton.setButtonText(this.plugin.settings.IndexButtonText);
       indexButton.setCta();
       indexButton.onClick(() => {
@@ -3125,7 +3130,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
               ID: "",
               displayText: index.keyword,
               filePath: index.path,
-              openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+              openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
             };
             this.plugin.clearShowingSettings();
             this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -3137,7 +3142,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
               ID: "",
               displayText: index.keyword,
               filePath: index.path,
-              openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+              openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
             };
             this.plugin.clearShowingSettings();
             this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -3147,7 +3152,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     }
     const startingDiv = toolbarDiv.createDiv("zk-index-toolbar-block");
     startingDiv.createEl("b", { text: t("Display from : ") });
-    const startPoint = new import_obsidian11.DropdownComponent(startingDiv);
+    const startPoint = new import_obsidian12.DropdownComponent(startingDiv);
     startPoint.addOption("index", t("index")).addOption("parent", t("parent")).addOption("root", t("root")).setValue(this.plugin.settings.StartingPoint).onChange((StartPoint) => {
       this.plugin.settings.StartingPoint = StartPoint;
       this.plugin.clearShowingSettings(this.plugin.settings.BranchTab);
@@ -3155,7 +3160,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     });
     const displayLevelDiv = toolbarDiv.createDiv("zk-index-toolbar-block");
     displayLevelDiv.createEl("b", { text: t("To : ") });
-    const displayLevel = new import_obsidian11.DropdownComponent(displayLevelDiv);
+    const displayLevel = new import_obsidian12.DropdownComponent(displayLevelDiv);
     displayLevel.addOption("next", t("next")).addOption("end", t("end")).setValue(this.plugin.settings.DisplayLevel).onChange((DisplayLevel) => {
       this.plugin.settings.DisplayLevel = DisplayLevel;
       this.plugin.clearShowingSettings(this.plugin.settings.BranchTab);
@@ -3163,7 +3168,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     });
     const nodeTextDiv = toolbarDiv.createDiv("zk-index-toolbar-block");
     nodeTextDiv.createEl("b", { text: t("Text : ") });
-    const nodeText = new import_obsidian11.DropdownComponent(nodeTextDiv);
+    const nodeText = new import_obsidian12.DropdownComponent(nodeTextDiv);
     nodeText.addOption("id", t("id")).addOption("title", t("title")).addOption("both", t("both")).setValue(this.plugin.settings.NodeText).onChange((NodeText) => {
       this.plugin.settings.NodeText = NodeText;
       this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -3171,7 +3176,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     });
     const graphTypeDiv = toolbarDiv.createDiv("zk-index-toolbar-block");
     graphTypeDiv.createEl("b", { text: t("style : ") });
-    const graphType = new import_obsidian11.DropdownComponent(graphTypeDiv);
+    const graphType = new import_obsidian12.DropdownComponent(graphTypeDiv);
     graphType.addOption("structure", t("structure")).addOption("roadmap", t("roadmap")).setValue(this.plugin.settings.graphType).onChange((graphType2) => {
       this.plugin.settings.graphType = graphType2;
       this.plugin.clearShowingSettings(this.plugin.settings.BranchTab);
@@ -3203,7 +3208,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     this.registerEvent(this.app.metadataCache.on("deleted", async () => {
       this.plugin.RefreshIndexViewFlag = true;
     }));
-    const refresh = (0, import_obsidian11.debounce)(this.refreshIndexLayout, 300, true);
+    const refresh = (0, import_obsidian12.debounce)(this.refreshIndexLayout, 300, true);
     this.registerEvent(this.app.workspace.on("zk-navigation:refresh-index-graph", refresh));
   }
   async onOpen() {
@@ -3231,7 +3236,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
       const toolButtonsDiv = graphTopContainer.createDiv("zk-tool-buttons");
       toolButtonsDiv.empty();
       if (this.plugin.settings.settingIcon == true) {
-        const settingBtn = new import_obsidian11.ExtraButtonComponent(toolButtonsDiv);
+        const settingBtn = new import_obsidian12.ExtraButtonComponent(toolButtonsDiv);
         settingBtn.setIcon("settings").setTooltip(t("settings"));
         settingBtn.onClick(() => {
           this.app.setting.open();
@@ -3239,7 +3244,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         });
       }
       if (this.plugin.settings.exportCanvas == true) {
-        const canvasBtn = new import_obsidian11.ExtraButtonComponent(toolButtonsDiv);
+        const canvasBtn = new import_obsidian12.ExtraButtonComponent(toolButtonsDiv);
         canvasBtn.setIcon("layout-dashboard").setTooltip(t("export to canvas"));
         canvasBtn.onClick(async () => {
           if (this.plugin.settings.graphType === "structure") {
@@ -3251,7 +3256,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         });
       }
       if (this.plugin.settings.RandomMainNote == true && this.plugin.settings.MainNoteButton) {
-        const randomBtn = new import_obsidian11.ExtraButtonComponent(toolButtonsDiv);
+        const randomBtn = new import_obsidian12.ExtraButtonComponent(toolButtonsDiv);
         randomBtn.setIcon("dice-3").setTooltip(t("random main note"));
         randomBtn.onClick(async () => {
           let randomMainNoteNode = this.plugin.MainNotes[Math.floor(Math.random() * this.plugin.MainNotes.length)];
@@ -3260,14 +3265,14 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             ID: randomMainNoteNode.ID,
             displayText: randomMainNoteNode.displayText,
             filePath: randomMainNoteNode.file.path,
-            openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+            openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
           };
           await this.plugin.clearShowingSettings();
           await this.IndexViewInterfaceInit();
         });
       }
       if (this.plugin.settings.RandomIndex == true && this.plugin.settings.IndexButton) {
-        const randomBtn = new import_obsidian11.ExtraButtonComponent(toolButtonsDiv);
+        const randomBtn = new import_obsidian12.ExtraButtonComponent(toolButtonsDiv);
         randomBtn.setIcon("dices").setTooltip(t("random index"));
         randomBtn.onClick(async () => {
           const indexFiles = this.app.vault.getMarkdownFiles().filter((f) => f.path.startsWith(this.plugin.settings.FolderOfIndexes + "/"));
@@ -3277,14 +3282,14 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             ID: "",
             displayText: randomIndex.name,
             filePath: randomIndex.path,
-            openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+            openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
           };
           await this.plugin.clearShowingSettings();
           await this.IndexViewInterfaceInit();
         });
       }
       if (this.plugin.settings.showAllToggle == true) {
-        const showAllBtn = new import_obsidian11.ExtraButtonComponent(toolButtonsDiv);
+        const showAllBtn = new import_obsidian12.ExtraButtonComponent(toolButtonsDiv);
         showAllBtn.setIcon("trees").setTooltip(t("all trees"));
         showAllBtn.onClick(async () => {
           this.plugin.settings.lastRetrival = {
@@ -3292,7 +3297,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             ID: "",
             displayText: "all trees",
             filePath: "",
-            openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+            openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
           };
           this.plugin.settings.showAll = true;
           this.plugin.settings.DisplayLevel = "end";
@@ -3302,7 +3307,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
       }
       if (this.plugin.settings.playControllerToggle === true) {
         const playControllerDiv = indexMermaidDiv.createDiv("zk-play-controller");
-        const previousBtn = new import_obsidian11.ExtraButtonComponent(playControllerDiv);
+        const previousBtn = new import_obsidian12.ExtraButtonComponent(playControllerDiv);
         previousBtn.setIcon("arrow-left").setTooltip(t("playPrevious")).onClick(async () => {
           this.playStatus.current = (this.playStatus.current - 1 + this.playStatus.total) % this.playStatus.total;
           if (this.plugin.settings.graphType === "structure") {
@@ -3311,7 +3316,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             await this.branchPlayingGit();
           }
         });
-        const nextBtn = new import_obsidian11.ExtraButtonComponent(playControllerDiv);
+        const nextBtn = new import_obsidian12.ExtraButtonComponent(playControllerDiv);
         nextBtn.setIcon("arrow-right").setTooltip(t("playNext")).onClick(async () => {
           this.playStatus.current = (this.playStatus.current + 1) % this.playStatus.total;
           if (this.plugin.settings.graphType === "structure") {
@@ -3320,7 +3325,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             await this.branchPlayingGit();
           }
         });
-        const fullScreenBtn = new import_obsidian11.ExtraButtonComponent(playControllerDiv);
+        const fullScreenBtn = new import_obsidian12.ExtraButtonComponent(playControllerDiv);
         fullScreenBtn.setIcon("fullscreen").setTooltip(t("fullscreen")).onClick(() => {
           let toggleClassList = [
             ".workspace-ribbon.side-dock-ribbon.mod-left",
@@ -3343,7 +3348,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             }
           });
         });
-        const playBtn = new import_obsidian11.ExtraButtonComponent(playControllerDiv);
+        const playBtn = new import_obsidian12.ExtraButtonComponent(playControllerDiv);
         playBtn.setIcon("wand-2").setTooltip(t("growing animation"));
         playBtn.onClick(async () => {
           if (this.plugin.settings.graphType === "structure") {
@@ -3355,7 +3360,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         });
       }
       if (this.plugin.settings.TableView == true) {
-        const tableBtn = new import_obsidian11.ExtraButtonComponent(toolButtonsDiv);
+        const tableBtn = new import_obsidian12.ExtraButtonComponent(toolButtonsDiv);
         tableBtn.setIcon("table").setTooltip(t("table view"));
         tableBtn.onClick(async () => {
           this.plugin.tableArr = this.branchAllNodes[this.plugin.settings.BranchTab].branchNodes.sort((a, b) => a.IDStr.localeCompare(b.IDStr));
@@ -3364,7 +3369,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         });
       }
       if (this.plugin.settings.ListTree == true) {
-        const listBtn = new import_obsidian11.ExtraButtonComponent(toolButtonsDiv);
+        const listBtn = new import_obsidian12.ExtraButtonComponent(toolButtonsDiv);
         listBtn.setIcon("list-tree").setTooltip(t("list tree"));
         listBtn.onClick(async () => {
           this.plugin.tableArr = this.branchAllNodes[this.plugin.settings.BranchTab].branchNodes.sort((a, b) => a.IDStr.localeCompare(b.IDStr));
@@ -3372,7 +3377,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         });
       }
       if (this.plugin.settings.HistoryToggle == true) {
-        const historyBtn = new import_obsidian11.ExtraButtonComponent(toolButtonsDiv);
+        const historyBtn = new import_obsidian12.ExtraButtonComponent(toolButtonsDiv);
         historyBtn.setIcon("history").setTooltip(t("History List"));
         historyBtn.onClick(async () => {
           this.plugin.openRecentView();
@@ -3394,7 +3399,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
           }
         }
         if (selectZKNodes.length == 0) {
-          new import_obsidian11.Notice(`Invalid main note: ${this.plugin.settings.lastRetrival.filePath}`);
+          new import_obsidian12.Notice(`Invalid main note: ${this.plugin.settings.lastRetrival.filePath}`);
           return;
         }
         branchEntranceNodeArr.push(...selectZKNodes);
@@ -3440,7 +3445,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         indexFile = this.app.vault.getFileByPath(this.plugin.settings.lastRetrival.filePath);
         break;
     }
-    if (indexFile instanceof import_obsidian11.TFile) {
+    if (indexFile instanceof import_obsidian12.TFile) {
       let link = indexLinkDiv.createEl("a", { text: `\u3010${this.plugin.settings.lastRetrival.displayText}\u3011` });
       link.addEventListener("click", (event) => {
         if (event.ctrlKey) {
@@ -3493,9 +3498,8 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     if (branchEntranceNodeArr.length > 1) {
       indexLinkDiv.createEl("small", { text: ` >> ` });
       for (let i = 0; i < branchEntranceNodeArr.length; i++) {
-        let branchTab = indexLinkDiv.createEl("span").createEl("a", { text: `\u{1F33F}${i + 1} `, cls: "zk-branch-tab" });
         let node = branchEntranceNodeArr[i];
-        (0, import_obsidian11.setTooltip)(branchTab, `${node.displayText} (${this.plugin.MainNotes.filter((n) => n.IDStr.startsWith(node.IDStr)).length})`);
+        let branchTab = indexLinkDiv.createEl("span").createEl("a", { text: `\u{1F33F}${node.ID} (${this.plugin.MainNotes.filter((n) => n.IDStr.startsWith(node.IDStr)).length}) `, cls: "zk-branch-tab" });
         branchTab.addEventListener("click", async () => {
           await this.openBranchTab(i);
           this.resetController();
@@ -3528,7 +3532,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             nodeArr[i2].textContent = "";
             nodeArr[i2].appendChild(link);
             nodeGArr[i2].addEventListener("contextmenu", (event) => {
-              const menu = new import_obsidian11.Menu();
+              const menu = new import_obsidian12.Menu();
               for (let command of this.plugin.settings.NodeCommands) {
                 menu.addItem((item) => item.setTitle(command.name).setIcon(command.icon).onClick(async () => {
                   let copyStr = "";
@@ -3540,7 +3544,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
                       copyStr = node.file.path;
                       break;
                     case 3:
-                      copyStr = (0, import_obsidian11.moment)(node.ctime).format(this.plugin.settings.datetimeFormat);
+                      copyStr = (0, import_obsidian12.moment)(node.ctime).format(this.plugin.settings.datetimeFormat);
                       break;
                     default:
                       break;
@@ -3556,7 +3560,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             if (this.plugin.settings.displayTimeToggle === true) {
               let nodeParent = nodeArr[i2].parentElement;
               if (nodeParent !== null) {
-                (0, import_obsidian11.setTooltip)(nodeParent, `${t("created")}: ${(0, import_obsidian11.moment)(node.ctime).format(this.plugin.settings.datetimeFormat)}`);
+                (0, import_obsidian12.setTooltip)(nodeParent, `${t("created")}: ${(0, import_obsidian12.moment)(node.ctime).format(this.plugin.settings.datetimeFormat)}`);
               }
             }
             nodeArr[i2].addEventListener("click", async (event) => {
@@ -3568,14 +3572,14 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
             nodeGArr[i2].addEventListener("click", async (event) => {
               if (event.ctrlKey) {
                 navigator.clipboard.writeText(node.ID);
-                new import_obsidian11.Notice(node.ID + " copied");
+                new import_obsidian12.Notice(node.ID + " copied");
               } else if (event.shiftKey) {
                 this.plugin.settings.lastRetrival = {
                   type: "main",
                   ID: node.ID,
                   displayText: node.displayText,
                   filePath: node.file.path,
-                  openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+                  openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
                 };
                 await this.plugin.clearShowingSettings();
                 await this.IndexViewInterfaceInit();
@@ -3662,7 +3666,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
                   ID: node.ID,
                   displayText: node.displayText,
                   filePath: node.file.path,
-                  openTime: (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss")
+                  openTime: (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss")
                 };
                 await this.plugin.clearShowingSettings();
                 await this.IndexViewInterfaceInit();
@@ -3681,7 +3685,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
               this.app.workspace.openLinkText("", node.file.path);
             });
             circleNodes[j].addEventListener("contextmenu", (event) => {
-              const menu = new import_obsidian11.Menu();
+              const menu = new import_obsidian12.Menu();
               for (let command of this.plugin.settings.NodeCommands) {
                 menu.addItem((item) => item.setTitle(command.name).setIcon(command.icon).onClick(async () => {
                   let copyStr = "";
@@ -3693,7 +3697,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
                       copyStr = node.file.path;
                       break;
                     case 3:
-                      copyStr = (0, import_obsidian11.moment)(node.ctime).format(this.plugin.settings.datetimeFormat);
+                      copyStr = (0, import_obsidian12.moment)(node.ctime).format(this.plugin.settings.datetimeFormat);
                       break;
                     default:
                       break;
@@ -3820,7 +3824,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         }
       }
       if (this.plugin.settings.lastRetrival.type !== "index" && branchNodeArr.length == 0) {
-        new import_obsidian11.Notice(`${t("Index: ")}\u3010${indexFile.basename}\u3011${t("has no valid main note outlinks")}`);
+        new import_obsidian12.Notice(`${t("Index: ")}\u3010${indexFile.basename}\u3011${t("has no valid main note outlinks")}`);
       }
     }
     return branchNodeArr;
@@ -3834,7 +3838,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         if (frontNodes.length > 0) {
           startNode = frontNodes[0];
         } else {
-          new import_obsidian11.Notice("Can't find the root of the branch!");
+          new import_obsidian12.Notice("Can't find the root of the branch!");
         }
         branchNodes = this.plugin.MainNotes.filter((n) => n.IDStr.startsWith(startNode.IDStr));
         break;
@@ -4051,7 +4055,7 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
         this.plugin.settings.HistoryList.splice(index, 1);
       }
     }
-    lastRetrival.openTime = (0, import_obsidian11.moment)().format("YYYY-MM-DD HH:mm:ss");
+    lastRetrival.openTime = (0, import_obsidian12.moment)().format("YYYY-MM-DD HH:mm:ss");
     this.plugin.settings.HistoryList.unshift(lastRetrival);
     if (this.plugin.settings.HistoryList.length > this.plugin.settings.HistoryMaxCount) {
       this.plugin.settings.HistoryList = this.plugin.settings.HistoryList.slice(0, this.plugin.settings.HistoryMaxCount);
@@ -4309,18 +4313,18 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
     if (this.plugin.settings.canvasFilePath.endsWith(".canvas")) {
       filePath = this.plugin.settings.canvasFilePath;
       targetfile = this.app.vault.getAbstractFileByPath(filePath);
-      if (targetfile && targetfile instanceof import_obsidian11.TFile) {
+      if (targetfile && targetfile instanceof import_obsidian12.TFile) {
         await this.app.vault.modify(targetfile, this.fileContent);
       }
     }
-    if (!(targetfile instanceof import_obsidian11.TFile)) {
+    if (!(targetfile instanceof import_obsidian12.TFile)) {
       if (filePath == "") {
-        filePath = `${(0, import_obsidian11.moment)().format("YYYY-MM-DD HH.mm.ss")}.canvas`;
+        filePath = `${(0, import_obsidian12.moment)().format("YYYY-MM-DD HH.mm.ss")}.canvas`;
       }
-      new import_obsidian11.Notice("create new canvas file: " + filePath);
+      new import_obsidian12.Notice("create new canvas file: " + filePath);
       targetfile = await this.app.vault.create(filePath, this.fileContent);
     }
-    if (targetfile instanceof import_obsidian11.TFile) {
+    if (targetfile instanceof import_obsidian12.TFile) {
       let leaf = this.app.workspace.getLeavesOfType("canvas").filter((l) => l.getDisplayText() == targetfile.basename);
       if (leaf.length > 0) {
         this.app.workspace.revealLeaf(leaf[0]);
@@ -4555,8 +4559,8 @@ var ZKIndexView = class extends import_obsidian11.ItemView {
 };
 
 // src/modal/expandGraphModal.ts
-var import_obsidian12 = require("obsidian");
-var expandGraphModal = class extends import_obsidian12.Modal {
+var import_obsidian13 = require("obsidian");
+var expandGraphModal = class extends import_obsidian13.Modal {
   constructor(app, plugin, mainNotes, files, mermaidStr, graphType = "flowchart") {
     super(app);
     this.plugin = plugin;
@@ -4569,7 +4573,7 @@ var expandGraphModal = class extends import_obsidian12.Modal {
     let { contentEl } = this;
     this.containerEl.addClass("zk-modal-container");
     this.modalEl.addClass("zk-expand-modal");
-    const mermaid = await (0, import_obsidian12.loadMermaid)();
+    const mermaid = await (0, import_obsidian13.loadMermaid)();
     const svgGraph = contentEl.createEl("div", { cls: "zk-expand-graph" });
     svgGraph.id = "zk-expand-graph";
     let { svg } = await mermaid.render(`zk-expand-graph-svg`, `${this.mermaidStr}`);
@@ -4667,7 +4671,7 @@ var expandGraphModal = class extends import_obsidian12.Modal {
 // src/view/graphView.ts
 var ZK_GRAPH_TYPE = "zk-graph-type";
 var ZK_GRAPH_VIEW = t("zk-local-graph");
-var ZKGraphView = class extends import_obsidian13.ItemView {
+var ZKGraphView = class extends import_obsidian14.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.familyNodeArr = [];
@@ -4704,7 +4708,7 @@ var ZKGraphView = class extends import_obsidian13.ItemView {
       }
       graphMermaidDiv.empty();
       if (this.currentFile !== null) {
-        const mermaid = await (0, import_obsidian13.loadMermaid)();
+        const mermaid = await (0, import_obsidian14.loadMermaid)();
         const svgPanZoom = require_browserify();
         if (this.plugin.settings.FamilyGraphToggle == true) {
           await this.getFamilyNodes(this.currentFile);
@@ -4717,7 +4721,7 @@ var ZKGraphView = class extends import_obsidian13.ItemView {
               familyGraphTextDiv.createEl("span", { text: t("close relative") });
               let graphIconDiv = familyGraphContainer.createDiv("zk-graph-icon");
               graphIconDiv.empty();
-              let expandBtn = new import_obsidian13.ExtraButtonComponent(graphIconDiv);
+              let expandBtn = new import_obsidian14.ExtraButtonComponent(graphIconDiv);
               expandBtn.setIcon("expand").setTooltip(t("expand graph"));
               expandBtn.onClick(() => {
                 new expandGraphModal(this.app, this.plugin, this.familyNodeArr, [], familyMermaidStr).open();
@@ -4806,7 +4810,7 @@ var ZKGraphView = class extends import_obsidian13.ItemView {
               familyGraphTextDiv.createEl("span", { text: t("close relative") });
               let graphIconDiv = familyGraphContainer.createDiv("zk-graph-icon");
               graphIconDiv.empty();
-              let expandBtn = new import_obsidian13.ExtraButtonComponent(graphIconDiv);
+              let expandBtn = new import_obsidian14.ExtraButtonComponent(graphIconDiv);
               expandBtn.setIcon("expand").setTooltip(t("expand graph"));
               expandBtn.onClick(() => {
                 new expandGraphModal(this.app, this.plugin, this.familyNodeArr, [], familyMermaidStr, "gitGraph").open();
@@ -4901,7 +4905,7 @@ var ZKGraphView = class extends import_obsidian13.ItemView {
           inlinksGraphTextDiv.createEl("span", { text: t("inlinks") });
           let graphIconDiv = inlinksGraphContainer.createDiv("zk-graph-icon");
           graphIconDiv.empty();
-          let expandBtn = new import_obsidian13.ExtraButtonComponent(graphIconDiv);
+          let expandBtn = new import_obsidian14.ExtraButtonComponent(graphIconDiv);
           expandBtn.setIcon("expand").setTooltip(t("expand graph"));
           expandBtn.onClick(() => {
             new expandGraphModal(this.app, this.plugin, [], inlinkArr, inlinkMermaidStr).open();
@@ -5012,7 +5016,7 @@ var ZKGraphView = class extends import_obsidian13.ItemView {
           outlinksGraphTextDiv.createEl("span", { text: t("outlinks") });
           let graphIconDiv = outlinksGraphContainer.createDiv("zk-graph-icon");
           graphIconDiv.empty();
-          let expandBtn = new import_obsidian13.ExtraButtonComponent(graphIconDiv);
+          let expandBtn = new import_obsidian14.ExtraButtonComponent(graphIconDiv);
           expandBtn.setIcon("expand").setTooltip(t("expand graph"));
           expandBtn.onClick(() => {
             new expandGraphModal(this.app, this.plugin, [], outlinkArr, outlinkMermaidStr).open();
@@ -5133,7 +5137,7 @@ var ZKGraphView = class extends import_obsidian13.ItemView {
     this.refreshLocalGraph();
   }
   onload() {
-    const refresh = (0, import_obsidian13.debounce)(this.refreshLocalGraph, 300, true);
+    const refresh = (0, import_obsidian14.debounce)(this.refreshLocalGraph, 300, true);
     this.registerEvent(this.app.vault.on("rename", () => {
       refresh();
     }));
@@ -5151,7 +5155,7 @@ var ZKGraphView = class extends import_obsidian13.ItemView {
     }));
     this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
       if (this.app.workspace.getLeavesOfType(ZK_GRAPH_TYPE).length > 0) {
-        if (this.app.workspace.getActiveViewOfType(import_obsidian13.FileView)) {
+        if (this.app.workspace.getActiveViewOfType(import_obsidian14.FileView)) {
           this.plugin.retrivalforLocaLgraph.type = "2";
           refresh();
         }
@@ -5448,10 +5452,10 @@ var ZKGraphView = class extends import_obsidian13.ItemView {
 };
 
 // src/view/outlineView.ts
-var import_obsidian14 = require("obsidian");
+var import_obsidian15 = require("obsidian");
 var ZK_OUTLINE_TYPE = "zk-outline-type";
 var ZK_OUTLINE_VIEW = t("list tree");
-var ZKOutlineView = class extends import_obsidian14.ItemView {
+var ZKOutlineView = class extends import_obsidian15.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.maxLength = 0;
@@ -5464,7 +5468,7 @@ var ZKOutlineView = class extends import_obsidian14.ItemView {
       this.maxLength = Math.max(...this.plugin.tableArr.map((n) => n.IDArr.length));
       this.minLength = Math.min(...this.plugin.tableArr.map((n) => n.IDArr.length));
       this.defautLength = this.plugin.settings.outlineLayer;
-      const slider = new import_obsidian14.SliderComponent(headerDiv);
+      const slider = new import_obsidian15.SliderComponent(headerDiv);
       let maxLayer = this.maxLength - this.minLength + 1;
       if (this.defautLength > maxLayer) {
         this.defautLength = maxLayer;
@@ -5490,7 +5494,7 @@ var ZKOutlineView = class extends import_obsidian14.ItemView {
     return "list-tree";
   }
   onload() {
-    const refresh = (0, import_obsidian14.debounce)(this.refreshOutlineView, 300, true);
+    const refresh = (0, import_obsidian15.debounce)(this.refreshOutlineView, 300, true);
     this.registerEvent(this.app.workspace.on("zk-navigation:refresh-outline-view", refresh));
   }
   async onOpen() {
@@ -5513,7 +5517,7 @@ var ZKOutlineView = class extends import_obsidian14.ItemView {
     treeItemSelf.addEventListener("click", async (event) => {
       if (event.ctrlKey) {
         navigator.clipboard.writeText(item.ID);
-        new import_obsidian14.Notice(item.ID + " copied");
+        new import_obsidian15.Notice(item.ID + " copied");
       } else if (event.shiftKey) {
         this.plugin.settings.lastRetrival = {
           type: "main",
@@ -5541,7 +5545,7 @@ var ZKOutlineView = class extends import_obsidian14.ItemView {
     treeIteminner.setText(`${item.displayText}`);
     if (children.length > 0) {
       let treeItemIcon = treeItemSelf.createDiv("tree-item-icon collapse-icon");
-      let icon = new import_obsidian14.ExtraButtonComponent(treeItemIcon);
+      let icon = new import_obsidian15.ExtraButtonComponent(treeItemIcon);
       icon.setIcon("right-triangle");
       treeItemIcon.addEventListener("click", (event) => {
         if (treeItemIcon.hasClass("is-collapsed")) {
@@ -5565,10 +5569,10 @@ var ZKOutlineView = class extends import_obsidian14.ItemView {
 };
 
 // src/view/recentView.ts
-var import_obsidian15 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 var ZK_RECENT_TYPE = "zk-recent-type";
 var ZK_RECENT_VIEW = t("History List");
-var ZKRecentView = class extends import_obsidian15.ItemView {
+var ZKRecentView = class extends import_obsidian16.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.refreshRecentView = async () => {
@@ -5590,7 +5594,7 @@ var ZKRecentView = class extends import_obsidian15.ItemView {
         });
         line.addEventListener("click", async () => {
           this.plugin.settings.lastRetrival = item;
-          this.plugin.settings.lastRetrival.openTime = (0, import_obsidian15.moment)().format("YYYY-MM-DD HH:mm:ss");
+          this.plugin.settings.lastRetrival.openTime = (0, import_obsidian16.moment)().format("YYYY-MM-DD HH:mm:ss");
           this.plugin.settings.HistoryList.splice(i, 1);
           this.plugin.settings.HistoryList.unshift(this.plugin.settings.lastRetrival);
           this.plugin.settings.zoomPanScaleArr = [];
@@ -5601,7 +5605,7 @@ var ZKRecentView = class extends import_obsidian15.ItemView {
           this.plugin.openIndexView();
         });
         const closeBtnDiv = line.createDiv("recent-close-button zk-hidden");
-        const closeBtn = new import_obsidian15.ExtraButtonComponent(closeBtnDiv);
+        const closeBtn = new import_obsidian16.ExtraButtonComponent(closeBtnDiv);
         closeBtn.setIcon("x");
         closeBtnDiv.addEventListener("click", (event) => {
           this.plugin.settings.HistoryList.splice(i, 1);
@@ -5628,7 +5632,7 @@ var ZKRecentView = class extends import_obsidian15.ItemView {
     return "history";
   }
   onload() {
-    const refresh = (0, import_obsidian15.debounce)(this.refreshRecentView, 300, true);
+    const refresh = (0, import_obsidian16.debounce)(this.refreshRecentView, 300, true);
     this.registerEvent(this.app.workspace.on("zk-navigation:refresh-recent-view", refresh));
   }
   async onOpen() {
@@ -5637,10 +5641,10 @@ var ZKRecentView = class extends import_obsidian15.ItemView {
 };
 
 // src/view/tableView.ts
-var import_obsidian16 = require("obsidian");
+var import_obsidian17 = require("obsidian");
 var ZK_TABLE_TYPE = "zk-table-type";
 var ZK_TABLE_VIEW = t("table view");
-var ZKTableView = class extends import_obsidian16.ItemView {
+var ZKTableView = class extends import_obsidian17.ItemView {
   constructor(leaf, plugin, tableArr) {
     super(leaf);
     this.headerStr = `|${t("note's ID")}|${t("note's title")}|${t("inlinks")}|${t("outlinks")}|${t("Time of creation")}|
@@ -5653,7 +5657,7 @@ var ZKTableView = class extends import_obsidian16.ItemView {
       const contentDiv = contentEl.createDiv("zk-table-view");
       contentDiv.id = "zk-table-view";
       this.appendTableLine();
-      import_obsidian16.MarkdownRenderer.render(this.app, this.tableStr, contentDiv, "", this.plugin);
+      import_obsidian17.MarkdownRenderer.render(this.app, this.tableStr, contentDiv, "", this.plugin);
       this.addLinkAndPreview();
     };
     this.plugin = plugin;
@@ -5671,7 +5675,7 @@ var ZKTableView = class extends import_obsidian16.ItemView {
     this.refreshTableView();
   }
   onload() {
-    const refresh = (0, import_obsidian16.debounce)(this.refreshTableView, 300, true);
+    const refresh = (0, import_obsidian17.debounce)(this.refreshTableView, 300, true);
     this.registerEvent(this.app.workspace.on("zk-navigation:refresh-table-view", refresh));
   }
   appendTableLine() {
@@ -5696,7 +5700,7 @@ var ZKTableView = class extends import_obsidian16.ItemView {
       if (outlinkStr !== "") {
         outlinkStr = `<ul>${outlinkStr}</ul>`;
       }
-      this.tableStr = this.tableStr + `|[[${node.ID}]]|${node.title.replace(`|`, `\\|`)}|${inlinksStr}|${outlinkStr}|${(0, import_obsidian16.moment)(node.ctime).format(this.plugin.settings.datetimeFormat)}|
+      this.tableStr = this.tableStr + `|[[${node.ID}]]|${node.title.replace(`|`, `\\|`)}|${inlinksStr}|${outlinkStr}|${(0, import_obsidian17.moment)(node.ctime).format(this.plugin.settings.datetimeFormat)}|
 `;
     }
   }
@@ -5841,7 +5845,7 @@ var DEFAULT_SETTINGS = {
   canvasArrowColor: "#C0C0C0",
   headingMatchMode: "string"
 };
-var ZKNavigationPlugin = class extends import_obsidian17.Plugin {
+var ZKNavigationPlugin = class extends import_obsidian18.Plugin {
   constructor() {
     super(...arguments);
     this.MainNotes = [];
@@ -5866,7 +5870,7 @@ var ZKNavigationPlugin = class extends import_obsidian17.Plugin {
       if (para.file) {
         let file = this.app.vault.getFileByPath(para.file);
         if (!file) {
-          new import_obsidian17.Notice(`zk-navigation: file "${para.file}" can't be found!`);
+          new import_obsidian18.Notice(`zk-navigation: file "${para.file}" can't be found!`);
           return;
         }
         if (para.from && ["root", "parent", "index"].includes(para.from)) {
@@ -5914,14 +5918,14 @@ var ZKNavigationPlugin = class extends import_obsidian17.Plugin {
           await this.openIndexView();
         }
       } else {
-        new import_obsidian17.Notice(`zk-navigation: invalid uri`);
+        new import_obsidian18.Notice(`zk-navigation: invalid uri`);
       }
     });
     this.registerEvent(this.app.workspace.on("file-menu", (menu, file, source) => {
       if (!(source === "more-options" || source === "tab-header" || source == "file-explorer-context-menu")) {
         return;
       }
-      if (!(file instanceof import_obsidian17.TFile)) {
+      if (!(file instanceof import_obsidian18.TFile)) {
         return;
       }
       menu.addItem((item) => {
@@ -6002,7 +6006,7 @@ var ZKNavigationPlugin = class extends import_obsidian17.Plugin {
             ID: selectZKNode.ID,
             displayText: selectZKNode.displayText,
             filePath: selectZKNode.file.path,
-            openTime: (0, import_obsidian17.moment)().format("YYYY-MM-DD HH:mm:ss")
+            openTime: (0, import_obsidian18.moment)().format("YYYY-MM-DD HH:mm:ss")
           };
           this.clearShowingSettings();
           this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -6014,7 +6018,7 @@ var ZKNavigationPlugin = class extends import_obsidian17.Plugin {
             ID: selectZKNode.ID,
             displayText: selectZKNode.displayText,
             filePath: selectZKNode.file.path,
-            openTime: (0, import_obsidian17.moment)().format("YYYY-MM-DD HH:mm:ss")
+            openTime: (0, import_obsidian18.moment)().format("YYYY-MM-DD HH:mm:ss")
           };
           this.clearShowingSettings();
           this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -6030,7 +6034,7 @@ var ZKNavigationPlugin = class extends import_obsidian17.Plugin {
             ID: "",
             displayText: index.keyword,
             filePath: index.path,
-            openTime: (0, import_obsidian17.moment)().format("YYYY-MM-DD HH:mm:ss")
+            openTime: (0, import_obsidian18.moment)().format("YYYY-MM-DD HH:mm:ss")
           };
           this.clearShowingSettings();
           this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -6042,7 +6046,7 @@ var ZKNavigationPlugin = class extends import_obsidian17.Plugin {
             ID: "",
             displayText: index.keyword,
             filePath: index.path,
-            openTime: (0, import_obsidian17.moment)().format("YYYY-MM-DD HH:mm:ss")
+            openTime: (0, import_obsidian18.moment)().format("YYYY-MM-DD HH:mm:ss")
           };
           this.clearShowingSettings();
           this.app.workspace.trigger("zk-navigation:refresh-index-graph");
@@ -6102,7 +6106,7 @@ var ZKNavigationPlugin = class extends import_obsidian17.Plugin {
   }
   async revealFileInIndexView() {
     var _a, _b;
-    let filePath = (_b = (_a = this.app.workspace.getActiveViewOfType(import_obsidian17.FileView)) == null ? void 0 : _a.file) == null ? void 0 : _b.path;
+    let filePath = (_b = (_a = this.app.workspace.getActiveViewOfType(import_obsidian18.FileView)) == null ? void 0 : _a.file) == null ? void 0 : _b.path;
     if (filePath) {
       let indexFlag = false;
       if (this.settings.FolderOfIndexes !== "" && filePath.endsWith(".md")) {

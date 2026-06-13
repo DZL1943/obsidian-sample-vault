@@ -44,10 +44,10 @@ var require_ace = __commonJS({
   "node_modules/ace-builds/src-noconflict/ace.js"(exports, module2) {
     (function() {
       var ACE_NAMESPACE = "ace";
-      var global2 = /* @__PURE__ */ function() {
+      var global = /* @__PURE__ */ function() {
         return this;
       }();
-      if (!global2 && typeof window != "undefined") global2 = window;
+      if (!global && typeof window != "undefined") global = window;
       if (!ACE_NAMESPACE && typeof requirejs !== "undefined")
         return;
       var define2 = function(module3, deps, payload) {
@@ -134,11 +134,11 @@ var require_ace = __commonJS({
         return module3;
       };
       function exportAce(ns2) {
-        var root = global2;
+        var root = global;
         if (ns2) {
-          if (!global2[ns2])
-            global2[ns2] = {};
-          root = global2[ns2];
+          if (!global[ns2])
+            global[ns2] = {};
+          root = global[ns2];
         }
         if (!root.define || !root.define.packaged) {
           define2.original = root.define;
@@ -732,29 +732,8 @@ var require_ace = __commonJS({
     ace.define("ace/lib/net", ["require", "exports", "module", "ace/lib/dom"], function(require3, exports2, module3) {
       "use strict";
       var dom = require3("./dom");
-      exports2.get = function(url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4) {
-            callback(xhr.responseText);
-          }
-        };
-        xhr.send(null);
-      };
-      exports2.loadScript = function(path2, callback) {
-        var head = dom.getDocumentHead();
-        var s = document.createElement("script");
-        s.src = path2;
-        head.appendChild(s);
-        s.onload = s.onreadystatechange = function(_2, isAbort) {
-          if (isAbort || !s.readyState || s.readyState == "loaded" || s.readyState == "complete") {
-            s = s.onload = s.onreadystatechange = null;
-            if (!isAbort)
-              callback();
-          }
-        };
-      };
+      exports2.get = function(url, callback) { /* disabled: use bundled resources */ };
+      exports2.loadScript = function(path2, callback) { /* disabled for security */ };
       exports2.qualifyURL = function(url) {
         var a = document.createElement("a");
         a.href = url;
@@ -1268,7 +1247,7 @@ var require_ace = __commonJS({
           cb(null, module4);
         });
       });
-      var global2 = /* @__PURE__ */ function() {
+      var global = /* @__PURE__ */ function() {
         return this || typeof window != "undefined" && window;
       }();
       module3.exports = function(ace4) {
@@ -1280,9 +1259,9 @@ var require_ace = __commonJS({
       };
       init(true);
       function init(packaged) {
-        if (!global2 || !global2.document)
+        if (!global || !global.document)
           return;
-        config.set("packaged", packaged || require3.packaged || module3.packaged || global2.define && define.packaged);
+        config.set("packaged", packaged || require3.packaged || module3.packaged || global.define && define.packaged);
         var scriptOptions = {};
         var scriptUrl = "";
         var currentScript = document.currentScript || document._currentScript;
@@ -1865,11 +1844,11 @@ var require_ace = __commonJS({
               return;
           }
           if (keyCode === 18 || keyCode === 17) {
-            var location2 = e.location;
-            if (keyCode === 17 && location2 === 1) {
+            var location = e.location;
+            if (keyCode === 17 && location === 1) {
               if (pressedKeys[keyCode] == 1)
                 ts2 = e.timeStamp;
-            } else if (keyCode === 18 && hashId === 3 && location2 === 2) {
+            } else if (keyCode === 18 && hashId === 3 && location === 2) {
               var dt2 = e.timeStamp - ts2;
               if (dt2 < 50)
                 pressedKeys.altGr = true;
@@ -3634,10 +3613,10 @@ var require_ace = __commonJS({
       "use strict";
       var event = require3("../lib/event");
       var useragent = require3("../lib/useragent");
-      var MouseEvent2 = (
+      var MouseEvent = (
         /** @class */
         function() {
-          function MouseEvent3(domEvent, editor) {
+          function MouseEvent2(domEvent, editor) {
             this.speed;
             this.wheelX;
             this.wheelY;
@@ -3650,31 +3629,31 @@ var require_ace = __commonJS({
             this.propagationStopped = false;
             this.defaultPrevented = false;
           }
-          MouseEvent3.prototype.stopPropagation = function() {
+          MouseEvent2.prototype.stopPropagation = function() {
             event.stopPropagation(this.domEvent);
             this.propagationStopped = true;
           };
-          MouseEvent3.prototype.preventDefault = function() {
+          MouseEvent2.prototype.preventDefault = function() {
             event.preventDefault(this.domEvent);
             this.defaultPrevented = true;
           };
-          MouseEvent3.prototype.stop = function() {
+          MouseEvent2.prototype.stop = function() {
             this.stopPropagation();
             this.preventDefault();
           };
-          MouseEvent3.prototype.getDocumentPosition = function() {
+          MouseEvent2.prototype.getDocumentPosition = function() {
             if (this.$pos)
               return this.$pos;
             this.$pos = this.editor.renderer.screenToTextCoordinates(this.clientX, this.clientY);
             return this.$pos;
           };
-          MouseEvent3.prototype.getGutterRow = function() {
+          MouseEvent2.prototype.getGutterRow = function() {
             var documentRow = this.getDocumentPosition().row;
             var screenRow = this.editor.session.documentToScreenRow(documentRow, 0);
             var screenTopRow = this.editor.session.documentToScreenRow(this.editor.renderer.$gutterLayer.$lines.get(0).row, 0);
             return screenRow - screenTopRow;
           };
-          MouseEvent3.prototype.inSelection = function() {
+          MouseEvent2.prototype.inSelection = function() {
             if (this.$inSelection !== null)
               return this.$inSelection;
             var editor = this.editor;
@@ -3687,19 +3666,19 @@ var require_ace = __commonJS({
             }
             return this.$inSelection;
           };
-          MouseEvent3.prototype.getButton = function() {
+          MouseEvent2.prototype.getButton = function() {
             return event.getButton(this.domEvent);
           };
-          MouseEvent3.prototype.getShiftKey = function() {
+          MouseEvent2.prototype.getShiftKey = function() {
             return this.domEvent.shiftKey;
           };
-          MouseEvent3.prototype.getAccelKey = function() {
+          MouseEvent2.prototype.getAccelKey = function() {
             return useragent.isMac ? this.domEvent.metaKey : this.domEvent.ctrlKey;
           };
-          return MouseEvent3;
+          return MouseEvent2;
         }()
       );
-      exports2.MouseEvent = MouseEvent2;
+      exports2.MouseEvent = MouseEvent;
     });
     ace.define("ace/mouse/dragdrop_handler", ["require", "exports", "module", "ace/lib/dom", "ace/lib/event", "ace/lib/useragent"], function(require3, exports2, module3) {
       "use strict";
@@ -4035,7 +4014,7 @@ var require_ace = __commonJS({
     });
     ace.define("ace/mouse/touch_handler", ["require", "exports", "module", "ace/mouse/mouse_event", "ace/lib/event", "ace/lib/dom"], function(require3, exports2, module3) {
       "use strict";
-      var MouseEvent2 = require3("./mouse_event").MouseEvent;
+      var MouseEvent = require3("./mouse_event").MouseEvent;
       var event = require3("../lib/event");
       var dom = require3("../lib/dom");
       exports2.addTouchListeners = function(el, editor) {
@@ -4201,7 +4180,7 @@ var require_ace = __commonJS({
           startX = e.clientX = x;
           startY = e.clientY = y2;
           vX = vY = 0;
-          var ev = new MouseEvent2(e, editor);
+          var ev = new MouseEvent(e, editor);
           pos = ev.getDocumentPosition();
           if (t - touchStartT < 500 && touches.length == 1 && !animationSteps) {
             clickCount++;
@@ -4285,7 +4264,7 @@ var require_ace = __commonJS({
           var dt2 = t - lastT;
           lastT = t;
           if (mode == "scroll") {
-            var mouseEvent = new MouseEvent2(e, editor);
+            var mouseEvent = new MouseEvent(e, editor);
             mouseEvent.speed = 1;
             mouseEvent.wheelX = wheelX;
             mouseEvent.wheelY = wheelY;
@@ -4302,7 +4281,7 @@ var require_ace = __commonJS({
               vX = vY = 0;
             }
           } else {
-            var ev = new MouseEvent2(e, editor);
+            var ev = new MouseEvent(e, editor);
             var pos2 = ev.getDocumentPosition();
             if (mode == "cursor")
               editor.selection.moveCursorToPosition(pos2);
@@ -4341,7 +4320,7 @@ var require_ace = __commonJS({
       var useragent = require3("../lib/useragent");
       var DefaultHandlers = require3("./default_handlers").DefaultHandlers;
       var DefaultGutterHandler = require3("./default_gutter_handler").GutterHandler;
-      var MouseEvent2 = require3("./mouse_event").MouseEvent;
+      var MouseEvent = require3("./mouse_event").MouseEvent;
       var DragdropHandler = require3("./dragdrop_handler").DragdropHandler;
       var addTouchListeners = require3("./touch_handler").addTouchListeners;
       var config = require3("../config");
@@ -4412,16 +4391,16 @@ var require_ace = __commonJS({
           MouseHandler2.prototype.onMouseEvent = function(name, e) {
             if (!this.editor.session)
               return;
-            this.editor._emit(name, new MouseEvent2(e, this.editor));
+            this.editor._emit(name, new MouseEvent(e, this.editor));
           };
           MouseHandler2.prototype.onMouseMove = function(name, e) {
             var listeners = this.editor._eventRegistry && this.editor._eventRegistry.mousemove;
             if (!listeners || !listeners.length)
               return;
-            this.editor._emit(name, new MouseEvent2(e, this.editor));
+            this.editor._emit(name, new MouseEvent(e, this.editor));
           };
           MouseHandler2.prototype.onMouseWheel = function(name, e) {
-            var mouseEvent = new MouseEvent2(e, this.editor);
+            var mouseEvent = new MouseEvent(e, this.editor);
             mouseEvent.speed = this.$scrollSpeed * 2;
             mouseEvent.wheelX = e.wheelX;
             mouseEvent.wheelY = e.wheelY;
@@ -4447,7 +4426,7 @@ var require_ace = __commonJS({
               self2.x = e.clientX;
               self2.y = e.clientY;
               mouseMoveHandler && mouseMoveHandler(e);
-              self2.mouseEvent = new MouseEvent2(e, self2.editor);
+              self2.mouseEvent = new MouseEvent(e, self2.editor);
               self2.$mouseMoved = true;
             };
             var onCaptureEnd = function(e) {
@@ -9423,7 +9402,7 @@ var require_ace = __commonJS({
       var FoldLine = require3("./fold_line").FoldLine;
       var Fold = require3("./fold").Fold;
       var TokenIterator = require3("../token_iterator").TokenIterator;
-      var MouseEvent2 = require3("../mouse/mouse_event").MouseEvent;
+      var MouseEvent = require3("../mouse/mouse_event").MouseEvent;
       function Folding() {
         this.getFoldAt = function(row, column, side) {
           var foldLine = this.getFoldLine(row);
@@ -9709,24 +9688,24 @@ var require_ace = __commonJS({
             this.expandFold(fold);
           }, this);
         };
-        this.unfold = function(location2, expandInner) {
+        this.unfold = function(location, expandInner) {
           var range, folds;
-          if (location2 == null) {
+          if (location == null) {
             range = new Range(0, 0, this.getLength(), 0);
             if (expandInner == null)
               expandInner = true;
-          } else if (typeof location2 == "number") {
-            range = new Range(location2, 0, location2, this.getLine(location2).length);
-          } else if ("row" in location2) {
-            range = Range.fromPoints(location2, location2);
-          } else if (Array.isArray(location2)) {
+          } else if (typeof location == "number") {
+            range = new Range(location, 0, location, this.getLine(location).length);
+          } else if ("row" in location) {
+            range = Range.fromPoints(location, location);
+          } else if (Array.isArray(location)) {
             folds = [];
-            location2.forEach(function(range2) {
+            location.forEach(function(range2) {
               folds = folds.concat(this.unfold(range2));
             }, this);
             return folds;
           } else {
-            range = location2;
+            range = location;
           }
           folds = this.getFoldsInRangeList(range);
           var outermostFolds = folds;
@@ -10002,7 +9981,7 @@ var require_ace = __commonJS({
           };
         };
         this.onFoldWidgetClick = function(row, e) {
-          if (e instanceof MouseEvent2)
+          if (e instanceof MouseEvent)
             e = e.domEvent;
           var options = {
             children: e.shiftKey,
@@ -22722,18 +22701,18 @@ var require_ace = __commonJS({
           a.config.init(true);
           a.define = ace.define;
         }
-        var global2 = /* @__PURE__ */ function() {
+        var global = /* @__PURE__ */ function() {
           return this;
         }();
-        if (!global2 && typeof window != "undefined") global2 = window;
-        if (!global2 && typeof self != "undefined") global2 = self;
-        if (!global2.ace)
-          global2.ace = a;
+        if (!global && typeof window != "undefined") global = window;
+        if (!global && typeof self != "undefined") global = self;
+        if (!global.ace)
+          global.ace = a;
         for (var key in a) if (a.hasOwnProperty(key))
-          global2.ace[key] = a[key];
-        global2.ace["default"] = global2.ace;
+          global.ace[key] = a[key];
+        global.ace["default"] = global.ace;
         if (typeof module2 == "object" && typeof exports == "object" && module2) {
-          module2.exports = global2.ace;
+          module2.exports = global.ace;
         }
       });
     })();
@@ -23994,13 +23973,13 @@ var require_ext_elastic_tabstops_lite = __commonJS({
             var rowTabs = this.$tabsForRow(row);
             if (rowTabs.length == 0)
               return;
-            var bias = 0, location2 = -1;
+            var bias = 0, location = -1;
             var expandedSet = this.$izip(widths, rowTabs);
             for (var i = 0, l = expandedSet.length; i < l; i++) {
               var w2 = expandedSet[i][0], it3 = expandedSet[i][1];
-              location2 += 1 + w2;
+              location += 1 + w2;
               it3 += bias;
-              var difference = location2 - it3;
+              var difference = location - it3;
               if (difference == 0)
                 continue;
               var partialLine = this.$editor.session.getLine(row).substr(0, it3);
@@ -44826,7 +44805,7 @@ var require_keybinding_vim = __commonJS({
           var tokens = argString ? splitBySeparator(argString, argString[0]) : [];
           var regexPart, replacePart = "", trailing, flagsPart, count;
           var confirm2 = false;
-          var global2 = false;
+          var global = false;
           if (tokens.length) {
             regexPart = tokens[0];
             if (getOption("pcre") && regexPart !== "") {
@@ -44856,7 +44835,7 @@ var require_keybinding_vim = __commonJS({
                 confirm2 = true;
               }
               if (flagsPart.indexOf("g") != -1) {
-                global2 = true;
+                global = true;
               }
               if (getOption("pcre")) {
                 regexPart = regexPart + "/" + flagsPart;
@@ -44897,7 +44876,7 @@ var require_keybinding_vim = __commonJS({
           }
           var startPos = clipCursorToContent(cm, new Pos(lineStart, 0));
           var cursor = cm.getSearchCursor(query, startPos);
-          doReplace(cm, confirm2, global2, lineStart, lineEnd, cursor, query, replacePart, params.callback);
+          doReplace(cm, confirm2, global, lineStart, lineEnd, cursor, query, replacePart, params.callback);
         },
         startinsert: function(cm, params) {
           doKeyToKey(cm, params.argString == "!" ? "A" : "i", {});
@@ -44980,7 +44959,7 @@ var require_keybinding_vim = __commonJS({
         }
       };
       var exCommandDispatcher = new ExCommandDispatcher();
-      function doReplace(cm, confirm2, global2, lineStart, lineEnd, searchCursor, query, replaceWith, callback) {
+      function doReplace(cm, confirm2, global, lineStart, lineEnd, searchCursor, query, replaceWith, callback) {
         cm.state.vim.exMode = true;
         var done = false;
         var lastPos, modifiedLineNumber, joined;
@@ -45012,7 +44991,7 @@ var require_keybinding_vim = __commonJS({
         }
         function next() {
           while (findNextValidMatch() && isInRange(searchCursor.from(), lineStart, lineEnd)) {
-            if (!global2 && searchCursor.from().line == modifiedLineNumber && !joined) {
+            if (!global && searchCursor.from().line == modifiedLineNumber && !joined) {
               continue;
             }
             cm.scrollIntoView(searchCursor.from(), 30);
@@ -46059,8 +46038,8 @@ var require_keybinding_vscode = __commonJS({
 // src/lib/ace-colorpicker.js
 var require_ace_colorpicker = __commonJS({
   "src/lib/ace-colorpicker.js"(exports, module2) {
-    (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? module2.exports = factory() : typeof define === "function" && define.amd ? define(factory) : global2["ace-colorpicker"] = factory();
+    (function(global, factory) {
+      typeof exports === "object" && typeof module2 !== "undefined" ? module2.exports = factory() : typeof define === "function" && define.amd ? define(factory) : global["ace-colorpicker"] = factory();
     })(exports, function() {
       "use strict";
       function format(obj, type) {
@@ -49431,7 +49410,7 @@ var require_ace_colorpicker = __commonJS({
           }
         }, {
           key: "location",
-          value: function location2(key) {
+          value: function location(key) {
             var type = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "attribute";
             if (type === "attribute") {
               this.locations[key] = this.gl.getAttribLocation(this.program, key);
@@ -53445,7 +53424,7 @@ var require_ace_colorpicker = __commonJS({
         VSCodePicker,
         MiniVerticalColorPicker: MiniColorPicker$2
       };
-      function debounce8(callback, delay) {
+      function debounce9(callback, delay) {
         var t = void 0;
         return function($1, $2, $3, $4, $5) {
           if (t) {
@@ -53493,7 +53472,7 @@ var require_ace_colorpicker = __commonJS({
           value: function init_mouse_event() {
             var renderer = this.editor.renderer;
             var content = renderer.content;
-            this.openDebouncedColorPicker = debounce8(this.open_color_picker.bind(this), this.opt.showDelay);
+            this.openDebouncedColorPicker = debounce9(this.open_color_picker.bind(this), this.opt.showDelay);
             this.onMouseOver = this.mouse_over.bind(this);
             content.addEventListener("mousemove", this.onMouseOver);
           }
@@ -53631,14 +53610,25 @@ var init_confirmModal = __esm({
         super(app);
         this.buttonContainerEl = this.modalEl.createDiv("modal-button-container");
         this.resolve = null;
+        this.openPromise = null;
         this.containerEl.addClass("mod-confirmation");
         this.containerEl.addClass("snippet-import-confirmation");
         this.addCancelButton();
-        this.addButton("", "OK", () => this.resolve && this.resolve(true));
+        this.addButton("", "OK", () => {
+          if (this.resolve) {
+            this.resolve(true);
+          }
+        });
       }
       open() {
         super.open();
-        return new Promise((resolve) => this.resolve = resolve);
+        this.openPromise = new Promise((resolve) => {
+          this.resolve = resolve;
+        });
+      }
+      waitForResult() {
+        var _a2;
+        return (_a2 = this.openPromise) != null ? _a2 : Promise.resolve(false);
       }
       addButton(cls, text, callback) {
         this.buttonContainerEl.createEl(
@@ -53650,23 +53640,29 @@ var init_confirmModal = __esm({
               "tabindex": 0
             }
           }
-        ).addEventListener("click", async (evt) => {
-          callback && await callback(evt);
-          this.close();
+        ).addEventListener("click", (evt) => {
+          if (callback) {
+            void Promise.resolve(callback(evt)).then(() => this.close());
+          } else {
+            this.close();
+          }
         });
         return this;
       }
       onClose() {
-        this.resolve && this.resolve(false);
+        if (this.resolve) {
+          this.resolve(false);
+        }
       }
       addCancelButton() {
-        this.addButton("confirm-modal-cancel-button", "Cancel", this.close.bind(this));
+        this.addButton("confirm-modal-cancel-button", "Cancel", () => this.close());
       }
     };
     confirm = (message, app) => {
       const modal = new ConfirmModal(app);
       modal.contentEl.setText(message);
-      return modal.open();
+      modal.open();
+      return modal.waitForResult();
     };
   }
 });
@@ -55103,93 +55099,16 @@ var require_theme_vibrant_ink = __commonJS({
   }
 });
 
-// node_modules/file-saver/dist/FileSaver.min.js
-var require_FileSaver_min = __commonJS({
-  "node_modules/file-saver/dist/FileSaver.min.js"(exports, module2) {
-    (function(a, b2) {
-      if ("function" == typeof define && define.amd) define([], b2);
-      else if ("undefined" != typeof exports) b2();
-      else {
-        b2(), a.FileSaver = { exports: {} }.exports;
-      }
-    })(exports, function() {
-      "use strict";
-      function b2(a2, b3) {
-        return "undefined" == typeof b3 ? b3 = { autoBom: false } : "object" != typeof b3 && (console.warn("Deprecated: Expected third argument to be a object"), b3 = { autoBom: !b3 }), b3.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
-      }
-      function c(a2, b3, c2) {
-        var d2 = new XMLHttpRequest();
-        d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
-          g3(d2.response, b3, c2);
-        }, d2.onerror = function() {
-          console.error("could not download file");
-        }, d2.send();
-      }
-      function d(a2) {
-        var b3 = new XMLHttpRequest();
-        b3.open("HEAD", a2, false);
-        try {
-          b3.send();
-        } catch (a3) {
-        }
-        return 200 <= b3.status && 299 >= b3.status;
-      }
-      function e(a2) {
-        try {
-          a2.dispatchEvent(new MouseEvent("click"));
-        } catch (c2) {
-          var b3 = document.createEvent("MouseEvents");
-          b3.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b3);
-        }
-      }
-      var f = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof global && global.global === global ? global : void 0, a = f.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g3 = f.saveAs || ("object" != typeof window || window !== f ? function() {
-      } : "download" in HTMLAnchorElement.prototype && !a ? function(b3, g4, h) {
-        var i = f.URL || f.webkitURL, j3 = document.createElement("a");
-        g4 = g4 || b3.name || "download", j3.download = g4, j3.rel = "noopener", "string" == typeof b3 ? (j3.href = b3, j3.origin === location.origin ? e(j3) : d(j3.href) ? c(b3, g4, h) : e(j3, j3.target = "_blank")) : (j3.href = i.createObjectURL(b3), setTimeout(function() {
-          i.revokeObjectURL(j3.href);
-        }, 4e4), setTimeout(function() {
-          e(j3);
-        }, 0));
-      } : "msSaveOrOpenBlob" in navigator ? function(f2, g4, h) {
-        if (g4 = g4 || f2.name || "download", "string" != typeof f2) navigator.msSaveOrOpenBlob(b2(f2, h), g4);
-        else if (d(f2)) c(f2, g4, h);
-        else {
-          var i = document.createElement("a");
-          i.href = f2, i.target = "_blank", setTimeout(function() {
-            e(i);
-          });
-        }
-      } : function(b3, d2, e2, g4) {
-        if (g4 = g4 || open("", "_blank"), g4 && (g4.document.title = g4.document.body.innerText = "downloading..."), "string" == typeof b3) return c(b3, d2, e2);
-        var h = "application/octet-stream" === b3.type, i = /constructor/i.test(f.HTMLElement) || f.safari, j3 = /CriOS\/[\d]+/.test(navigator.userAgent);
-        if ((j3 || h && i || a) && "undefined" != typeof FileReader) {
-          var k2 = new FileReader();
-          k2.onloadend = function() {
-            var a2 = k2.result;
-            a2 = j3 ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g4 ? g4.location.href = a2 : location = a2, g4 = null;
-          }, k2.readAsDataURL(b3);
-        } else {
-          var l = f.URL || f.webkitURL, m = l.createObjectURL(b3);
-          g4 ? g4.location = m : location.href = m, g4 = null, setTimeout(function() {
-            l.revokeObjectURL(m);
-          }, 4e4);
-        }
-      });
-      f.saveAs = g3.saveAs = g3, "undefined" != typeof module2 && (module2.exports = g3);
-    });
-  }
-});
-
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
   default: () => CustomThemeStudioPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian20 = require("obsidian");
+var import_obsidian21 = require("obsidian");
 
 // src/views/customThemeStudioView.ts
-var import_obsidian17 = require("obsidian");
+var import_obsidian18 = require("obsidian");
 
 // src/managers/element/ElementSelectorManager.ts
 var import_obsidian3 = require("obsidian");
@@ -55251,9 +55170,9 @@ var Logger = class _Logger {
   /**
    * Format the log message with timestamp and location
    */
-  static formatMessage(level, message, location2) {
+  static formatMessage(level, message, location) {
     const timestamp = (/* @__PURE__ */ new Date()).toISOString().replace("T", " ").substring(0, 19);
-    const locationStr = location2 ? ` [${location2}]` : "";
+    const locationStr = location ? ` [${location}]` : "";
     return `[CTS:${level}] ${timestamp}${locationStr} ${message}`;
   }
   /**
@@ -55282,12 +55201,12 @@ var Logger = class _Logger {
    */
   static debug(message, data) {
     if (!_Logger.shouldLog("debug")) return;
-    const location2 = _Logger.getLocation();
-    const formattedMessage = _Logger.formatMessage("Debug", message, location2);
+    const location = _Logger.getLocation();
+    const formattedMessage = _Logger.formatMessage("Debug", message, location);
     if (data !== void 0) {
-      console.log(formattedMessage, data);
+      console.debug(formattedMessage, data);
     } else {
-      console.log(formattedMessage);
+      console.debug(formattedMessage);
     }
   }
   /**
@@ -55295,12 +55214,12 @@ var Logger = class _Logger {
    */
   static info(message, data) {
     if (!_Logger.shouldLog("info")) return;
-    const location2 = _Logger.getLocation();
-    const formattedMessage = _Logger.formatMessage("Info", message, location2);
+    const location = _Logger.getLocation();
+    const formattedMessage = _Logger.formatMessage("Info", message, location);
     if (data !== void 0) {
-      console.info(formattedMessage, data);
+      console.debug(formattedMessage, data);
     } else {
-      console.info(formattedMessage);
+      console.debug(formattedMessage);
     }
   }
   /**
@@ -55308,8 +55227,8 @@ var Logger = class _Logger {
    */
   static warn(message, data) {
     if (!_Logger.shouldLog("warn")) return;
-    const location2 = _Logger.getLocation();
-    const formattedMessage = _Logger.formatMessage("Warn", message, location2);
+    const location = _Logger.getLocation();
+    const formattedMessage = _Logger.formatMessage("Warn", message, location);
     if (data !== void 0) {
       console.warn(formattedMessage, data);
     } else {
@@ -55321,8 +55240,8 @@ var Logger = class _Logger {
    */
   static error(message, data) {
     if (!_Logger.shouldLog("error")) return;
-    const location2 = _Logger.getLocation();
-    const formattedMessage = _Logger.formatMessage("Error", message, location2);
+    const location = _Logger.getLocation();
+    const formattedMessage = _Logger.formatMessage("Error", message, location);
     if (data !== void 0) {
       console.error(formattedMessage, data);
     } else {
@@ -55341,7 +55260,7 @@ async function copyStringToClipboard(text, topic = void 0) {
   }
 }
 function showNotice(message, duration = 4e3, type) {
-  const fragment = document.createDocumentFragment();
+  const fragment = createFragment();
   let wrapper = fragment.createDiv({
     attr: {
       style: `display: flex; gap: .75em;`
@@ -55714,7 +55633,7 @@ var SelectorGenerator = class {
    */
   copySelectorToClipboard(element) {
     const selector = this.generateSelector(element, true, true);
-    copyStringToClipboard(selector, selector);
+    void copyStringToClipboard(selector, selector);
   }
   /**
    * Format an attribute for display (used in tooltips)
@@ -55855,7 +55774,7 @@ var ElementHighlighter = class {
    * Initialize the tooltip element
    */
   createTooltip() {
-    this.tooltip = document.body.appendChild(
+    this.tooltip = activeDocument.body.appendChild(
       createDiv("cts-element-selector-tooltip hide")
     );
     return this.tooltip;
@@ -55907,7 +55826,7 @@ var ElementHighlighter = class {
       this.tooltip.createDiv("attribute-highlight aria-label-highlight").createEl(
         "strong",
         {
-          text: "aria-label: "
+          text: "Aria-label: "
         }
       ).createSpan(
         {
@@ -56092,7 +56011,6 @@ var ElementSelectorManager = class {
     this.handleMouseOver = (e) => {
       if (!this.isSelecting) return;
       const target = e.target;
-      const tooltip = this.highlighter.getHighlightedElement();
       if (target.closest(".cts-element-selector-tooltip") || target.closest(".cts-element-selector-cancel")) {
         return;
       }
@@ -56141,7 +56059,6 @@ var ElementSelectorManager = class {
     };
     this.plugin = plugin;
     this.view = view;
-    this.cancelButton = this.cancelButton;
     this.selectorGenerator = new SelectorGenerator(this.plugin);
     this.highlighter = new ElementHighlighter(this.selectorGenerator);
   }
@@ -56150,12 +56067,12 @@ var ElementSelectorManager = class {
       return;
     }
     this.isSelecting = true;
-    document.body.classList.add("cts-element-selector-active");
+    activeDocument.body.classList.add("cts-element-selector-active");
     this.highlighter.createTooltip();
-    document.addEventListener("mouseover", this.handleMouseOver);
-    document.addEventListener("mouseout", this.handleMouseOut);
-    document.addEventListener("click", this.handleClick, true);
-    document.addEventListener("keydown", this.handleKeyDown);
+    activeDocument.addEventListener("mouseover", this.handleMouseOver);
+    activeDocument.addEventListener("mouseout", this.handleMouseOut);
+    activeDocument.addEventListener("click", this.handleClick, true);
+    activeDocument.addEventListener("keydown", this.handleKeyDown);
     this.noticeElement = this.noticeWithCancel({
       message: "Element selection mode active. Click on an element to select it, or press Escape to cancel.",
       cancelText: "Cancel",
@@ -56167,6 +56084,7 @@ var ElementSelectorManager = class {
     cancelText = "Cancel",
     timeout
   }) {
+    var _a2, _b;
     const notice = new import_obsidian3.Notice(
       createFragment((e) => {
         e.createDiv(
@@ -56181,7 +56099,7 @@ var ElementSelectorManager = class {
           },
           (div) => {
             this.cancelButton = new import_obsidian3.ButtonComponent(div).setButtonText(cancelText).setClass("cts-element-selector-cancel").setTooltip("Stop element selection");
-            this.cancelButton.onClick((e2) => {
+            this.cancelButton.onClick(() => {
               new import_obsidian3.Notice("Element selection cancelled");
             });
           }
@@ -56189,7 +56107,7 @@ var ElementSelectorManager = class {
       }),
       timeout
     );
-    notice.containerEl.setAttr("data-notice-element", "cts-element-selector-notice");
+    (_b = (_a2 = notice.containerEl) == null ? void 0 : _a2.setAttr) == null ? void 0 : _b.call(_a2, "data-notice-element", "cts-element-selector-notice");
     return notice;
   }
   stopElementSelection() {
@@ -56197,15 +56115,15 @@ var ElementSelectorManager = class {
       return;
     }
     this.isSelecting = false;
-    document.body.classList.remove("cts-element-selector-active");
+    activeDocument.body.classList.remove("cts-element-selector-active");
     this.highlighter.destroy();
-    document.querySelectorAll(".cts-element-selector-hover").forEach((el) => {
+    activeDocument.querySelectorAll(".cts-element-selector-hover").forEach((el) => {
       el.classList.remove("cts-element-selector-hover");
     });
-    document.removeEventListener("mouseover", this.handleMouseOver);
-    document.removeEventListener("mouseout", this.handleMouseOut);
-    document.removeEventListener("click", this.handleClick, true);
-    document.removeEventListener("keydown", this.handleKeyDown);
+    activeDocument.removeEventListener("mouseover", this.handleMouseOver);
+    activeDocument.removeEventListener("mouseout", this.handleMouseOut);
+    activeDocument.removeEventListener("click", this.handleClick, true);
+    activeDocument.removeEventListener("keydown", this.handleKeyDown);
     this.noticeElement.hide();
   }
   selectElement(element, evt) {
@@ -56222,7 +56140,6 @@ var ElementSelectorManager = class {
       selector = this.selectorGenerator.generateSelector(element, false);
     }
     const uuid = generateUniqueId();
-    const ruleList = this.view.containerEl.querySelector(".css-rule");
     const leaves = this.plugin.app.workspace.getLeavesOfType("cts-view");
     if (leaves.length > 0) {
       const view = leaves[0].view;
@@ -56296,10 +56213,10 @@ var AceService = class {
     this.editor = ace2.edit(element);
     return this.editor;
   }
-  async configureEditor(config, fileExtension) {
+  async configureEditor(_config, _fileExtension) {
     if (!this.editor) return;
     const languageMode = "css";
-    const settings = this.getEditorSettings(languageMode, config, this.plugin);
+    const settings = this.getEditorSettings(languageMode, _config, this.plugin);
     this.editor.setOptions(settings);
     this.editor.getSession().setMode(`ace/mode/${languageMode}`, () => {
       if (this.plugin.settings.enableAceColorPicker) {
@@ -56316,12 +56233,12 @@ var AceService = class {
     } else {
       this.editor.setKeyboardHandler(`ace/keyboard/${this.plugin.settings.editorKeyboard}`);
     }
-    this.updateTheme();
+    void this.updateTheme();
   }
-  async updateTheme() {
+  updateTheme() {
     if (!this.editor) return;
     let themeName = this.plugin.settings.editorDarkTheme;
-    let isObsidianThemeDark = () => document.body.classList.contains("theme-dark");
+    const isObsidianThemeDark = () => activeDocument.body.classList.contains("theme-dark");
     if (this.plugin.settings.editorTheme === "Auto") {
       themeName = isObsidianThemeDark() ? this.plugin.settings.editorDarkTheme : this.plugin.settings.editorLightTheme;
     } else {
@@ -56359,7 +56276,7 @@ var AceService = class {
     if (!this.editor) return;
     this.editor.setKeyboardHandler(handler);
   }
-  getEditorSettings(languageMode, config, plugin) {
+  getEditorSettings(languageMode, _config, _plugin) {
     return {
       showLineNumbers: this.plugin.settings.editorLineNumbers,
       fontSize: this.plugin.settings.editorFontSize,
@@ -56403,6 +56320,7 @@ var obsidianCSSVariables_default = {
     "--bases-embed-border-color": "var(--background-modifier-border)",
     "--bases-embed-border-radius": "var(--radius-s)",
     "--bases-filter-menu-width": "520px",
+    "--bases-filter-input-background": "var(--background-modifier-form-field)",
     "--bases-group-heading-property-size": "var(--font-ui-smaller)",
     "--bases-group-heading-property-weight": "var(--font-normal)",
     "--bases-group-heading-property-color": "var(--text-muted)",
@@ -56487,30 +56405,30 @@ var obsidianCSSVariables_default = {
     "--callout-title-weight": "calc(var(--font-weight) + var(--bold-modifier))",
     "--callout-content-padding": "0",
     "--callout-content-background": "transparent",
-    "--callout-bug": "var(--color-red-rgb)",
-    "--callout-default": "var(--color-blue-rgb)",
-    "--callout-error": "var(--color-red-rgb)",
-    "--callout-example": "var(--color-purple-rgb)",
-    "--callout-fail": "var(--color-red-rgb)",
-    "--callout-important": "var(--color-cyan-rgb)",
-    "--callout-info": "var(--color-blue-rgb)",
-    "--callout-question": "var(--color-orange-rgb)",
-    "--callout-success": "var(--color-green-rgb)",
-    "--callout-summary": "var(--color-cyan-rgb)",
-    "--callout-tip": "var(--color-cyan-rgb)",
-    "--callout-todo": "var(--color-blue-rgb)",
-    "--callout-warning": "var(--color-orange-rgb)",
-    "--callout-quote": "158, 158, 158"
+    "--callout-bug": "var(--color-red)",
+    "--callout-default": "var(--color-blue)",
+    "--callout-error": "var(--color-red)",
+    "--callout-example": "var(--color-purple)",
+    "--callout-fail": "var(--color-red)",
+    "--callout-important": "var(--color-cyan)",
+    "--callout-info": "var(--color-blue)",
+    "--callout-question": "var(--color-orange)",
+    "--callout-success": "var(--color-green)",
+    "--callout-summary": "var(--color-cyan)",
+    "--callout-tip": "var(--color-cyan)",
+    "--callout-todo": "var(--color-blue)",
+    "--callout-warning": "var(--color-orange)",
+    "--callout-quote": "#9e9e9e"
   },
   canvas: {
     "--canvas-background": "var(--background-primary)",
     "--canvas-card-label-color": "var(--text-faint)",
-    "--canvas-color-1": "var(--color-red-rgb)",
-    "--canvas-color-2": "var(--color-orange-rgb)",
-    "--canvas-color-3": "var(--color-yellow-rgb)",
-    "--canvas-color-4": "var(--color-green-rgb)",
-    "--canvas-color-5": "var(--color-cyan-rgb)",
-    "--canvas-color-6": "var(--color-purple-rgb)",
+    "--canvas-color-1": "var(--color-red)",
+    "--canvas-color-2": "var(--color-orange)",
+    "--canvas-color-3": "var(--color-yellow)",
+    "--canvas-color-4": "var(--color-green)",
+    "--canvas-color-5": "var(--color-cyan)",
+    "--canvas-color-6": "var(--color-purple)",
     "--canvas-dot-pattern": "var(--color-base-30)",
     "--canvas-controls-radius": "var(--radius-s)",
     "--canvas-controls-icon-size": "var(--icon-s)",
@@ -56552,7 +56470,7 @@ var obsidianCSSVariables_default = {
     "--swatch-radius": "14px",
     "--swatch-height": "22px",
     "--swatch-width": "22px",
-    "--swatch-shadow": "inset 0 0 0 1px rgba(var(--mono-rgb-100), 0.15)"
+    "--swatch-shadow": "inset 0 0 0 1px color-mix(in oklch, var(--mono-100) 15%, transparent)"
   },
   colors: {
     "--accent-h": "258",
@@ -56561,22 +56479,21 @@ var obsidianCSSVariables_default = {
     "--background-primary": "var(--color-base-00)",
     "--background-primary-alt": "var(--color-base-10)",
     "--background-secondary": "var(--color-base-20)",
-    "--background-modifier-hover": "rgba(var(--mono-rgb-100), 0.067)",
-    "--background-modifier-active-hover": "hsla(var(--interactive-accent-hsl), 0.1)",
+    "--background-modifier-hover": "color-mix(in oklch, var(--mono-100) 6.7%, transparent)",
+    "--background-modifier-active-hover": "color-mix(in oklch, var(--interactive-accent) 10%, transparent)",
     "--background-modifier-border": "var(--color-base-30)",
     "--background-modifier-border-hover": "var(--color-base-35)",
     "--background-modifier-border-focus": "var(--color-base-40)",
-    "--background-modifier-error-rgb": "var(--color-red-rgb)",
     "--background-modifier-error": "var(--color-red)",
+    "--background-modifier-warning": "var(--color-orange)",
     "--background-modifier-error-hover": "var(--color-red)",
-    "--background-modifier-success-rgb": "var(--color-green-rgb)",
+    "--background-modifier-warning-hover": "var(--color-orange)",
     "--background-modifier-success": "var(--color-green)",
-    "--background-modifier-message": "rgba(0, 0, 0, 0.9)",
+    "--background-modifier-message": "color-mix(in oklch, black 90%, transparent)",
     "--background-modifier-form-field": "var(--color-base-00)",
     "--background-modifier-form-field-hover": "var(--background-modifier-form-field)",
     "--interactive-normal": "var(--color-base-00)",
     "--interactive-hover": "var(--color-base-10)",
-    "--interactive-accent-hsl": "var(--color-accent-hsl)",
     "--interactive-accent": "var(--color-accent-1)",
     "--interactive-accent-hover": "var(--color-accent-2)",
     "--text-normal": "var(--color-base-100)",
@@ -56587,16 +56504,15 @@ var obsidianCSSVariables_default = {
     "--text-error": "var(--color-red)",
     "--text-warning": "var(--color-orange)",
     "--text-success": "var(--color-green)",
-    "--text-selection": "hsla(var(--color-accent-hsl), 0.2)",
-    "--text-highlight-bg-rgb": "255, 208, 0",
-    "--text-highlight-bg": "rgba(var(--text-highlight-bg-rgb), 0.4)",
+    "--text-selection": "color-mix(in oklch, var(--interactive-accent) 20%, transparent)",
+    "--text-highlight-bg": "rgba(255, 208, 0, 0.4)",
     "--text-accent": "var(--color-accent)",
     "--text-accent-hover": "var(--color-accent-2)",
     "--caret-color": "var(--text-normal)"
   },
   cts: {
     "--element-selector-highlight-outline": "1px dashed var(--interactive-accent)",
-    "--element-selector-highlight-background-color": "hsla(var(--interactive-accent-hsl), .1)",
+    "--element-selector-highlight-background-color": "color-mix(in oklch, var(--interactive-accent) 10%, transparent)",
     "--element-selector-tooltip-background-color": "var(--background-primary)",
     "--element-selector-tooltip-border": "1px solid var(--background-modifier-border)",
     "--element-selector-tooltip-border-radius": "var(--size-4-2)",
@@ -56622,17 +56538,21 @@ var obsidianCSSVariables_default = {
   },
   dragging: {
     "--drag-ghost-background": "rgba(0, 0, 0, 0.85)",
-    "--drag-ghost-text-color": "#ffffff"
+    "--drag-ghost-text-color": "#ffffff",
+    "--drag-item-background": "var(--background-primary)",
+    "--drag-item-shadow": "0 2px 8px var(--background-modifier-box-shadow)"
   },
   dropdowns: {
-    "--dropdown-background-blend-mode": "hard-light",
-    "--dropdown-background-position": "var(--inset-end) var(--dropdown-icon-inset) top 50%, 0 0",
-    "--dropdown-background-size": "var(--dropdown-icon-width) auto, 100%",
+    "--dropdown-background-blend-mode": "hard-light, normal",
+    "--dropdown-background-position": "var(--inset-end) var(--dropdown-icon-inset) top 50%, var(--inset-end) 0.15em top 50%, 0 0",
+    "--dropdown-background-size": "var(--dropdown-icon-width) auto, 2em 2em, 100%",
+    "--dropdown-icon-background": "transparent",
     "--dropdown-icon-width": "1em",
-    "--dropdown-icon-inset": "0.5em",
+    "--dropdown-icon-inset": "0.65em",
     "--dropdown-padding": "0 var(--dropdown-padding-end) 0 var(--dropdown-padding-start)",
     "--dropdown-padding-start": "0.8em",
-    "--dropdown-padding-end": "1.9em"
+    "--dropdown-padding-end": "2.4em",
+    "--dropdown-text-align": "start"
   },
   embed: {
     "--embed-max-height": "4000px",
@@ -56768,8 +56688,8 @@ var obsidianCSSVariables_default = {
     "--indent-unit": "0.5625em",
     "--indentation-guide-width": "var(--border-width)",
     "--indentation-guide-width-active": "var(--border-width)",
-    "--indentation-guide-color": "rgba(var(--mono-rgb-100), 0.12)",
-    "--indentation-guide-color-active": "rgba(var(--mono-rgb-100), 0.3)",
+    "--indentation-guide-color": "color-mix(in oklch, var(--mono-100) 12%, transparent)",
+    "--indentation-guide-color-active": "color-mix(in oklch, var(--mono-100) 30%, transparent)",
     "--indentation-guide-editing-indent": "0.85em",
     "--indentation-guide-reading-indent": "-0.85em",
     "--indentation-guide-source-indent": "0.25em"
@@ -56812,7 +56732,7 @@ var obsidianCSSVariables_default = {
     "--link-unresolved-opacity": "0.7",
     "--link-unresolved-filter": "none",
     "--link-unresolved-decoration-style": "solid",
-    "--link-unresolved-decoration-color": "hsla(var(--interactive-accent-hsl), 0.3)"
+    "--link-unresolved-decoration-color": "color-mix(in oklch, var(--interactive-accent) 30%, transparent)"
   },
   list: {
     "--list-indent": "calc(var(--indent-unit) * var(--indent-size))",
@@ -56842,6 +56762,7 @@ var obsidianCSSVariables_default = {
   },
   modal: {
     "--modal-background": "var(--background-primary)",
+    "--modal-sidebar-background": "var(--modal-background)",
     "--modal-header-height": "auto",
     "--modal-width": "90vw",
     "--modal-height": "85vh",
@@ -56880,13 +56801,13 @@ var obsidianCSSVariables_default = {
     "--nav-item-color-highlighted": "var(--text-accent)",
     "--nav-item-background-hover": "var(--background-modifier-hover)",
     "--nav-item-background-active": "var(--background-modifier-hover)",
-    "--nav-item-background-selected": "hsla(var(--color-accent-hsl), 0.15)",
+    "--nav-item-background-selected": "color-mix(in oklch, var(--color-accent) 15%, transparent)",
     "--nav-item-padding": "var(--size-4-1) var(--size-4-2) var(--size-4-1) var(--size-4-6)",
     "--nav-item-parent-padding": "var(--nav-item-padding)",
     "--nav-item-children-padding-start": "var(--size-2-2)",
     "--nav-item-children-margin-start": "var(--size-4-3)",
     "--nav-item-margin-bottom": "var(--size-2-1)",
-    "--nav-item-radius": "var(--radius-s);",
+    "--nav-item-radius": "var(--radius-s)",
     "--nav-item-weight": "inherit",
     "--nav-item-weight-hover": "inherit",
     "--nav-item-weight-active": "inherit",
@@ -56901,7 +56822,7 @@ var obsidianCSSVariables_default = {
     "--nav-heading-color-collapsed-hover": "var(--text-muted)",
     "--nav-heading-weight": "var(--font-medium)",
     "--nav-heading-weight-hover": "var(--font-medium)",
-    "--nav-tag-background": "transparent;",
+    "--nav-tag-background": "transparent",
     "--nav-tag-radius": "var(--radius-s)",
     "--nav-tag-color": "var(--text-faint)",
     "--nav-tag-color-hover": "var(--text-muted)",
@@ -56988,7 +56909,7 @@ var obsidianCSSVariables_default = {
     "--radius-s": "4px",
     "--radius-m": "8px",
     "--radius-l": "12px",
-    "--radius-xl": "16px"
+    "--radius-xl": "24px"
   },
   ribbon: {
     "--ribbon-background": "var(--background-secondary)",
@@ -57001,26 +56922,31 @@ var obsidianCSSVariables_default = {
     "--scrollbar-height": "12px",
     "--scrollbar-border-width": "3px 3px 3px 2px",
     "--scrollbar-radius": "var(--radius-l)",
-    "--scrollbar-active-thumb-bg": "rgba(var(--mono-rgb-100), 0.2)",
-    "--scrollbar-bg": "rgba(var(--mono-rgb-100), 0.05)",
-    "--scrollbar-thumb-bg": "rgba(var(--mono-rgb-100), 0.1)"
+    "--scrollbar-active-thumb-bg": "color-mix(in oklch, var(--mono-100) 20%, transparent)",
+    "--scrollbar-bg": "color-mix(in oklch, var(--mono-100) 5%, transparent)",
+    "--scrollbar-thumb-bg": "color-mix(in oklch, var(--mono-100) 10%, transparent)"
   },
   search: {
     "--search-clear-button-color": "var(--text-muted)",
     "--search-clear-button-size": "13px",
     "--search-icon-color": "var(--text-muted)",
     "--search-icon-size": "18px",
+    "--search-input-corner-shape": "var(--input-corner-shape)",
+    "--search-input-radius": "var(--input-radius)",
     "--search-result-background": "var(--background-primary)"
   },
   settinggroup: {
     "--setting-group-heading-color": "var(--text-normal)",
     "--setting-group-heading-size": "var(--font-ui-medium)",
     "--setting-group-heading-weight": "var(--font-semibold)",
+    "--setting-group-max-width": "700px",
     "--setting-items-background": "var(--background-primary-alt)",
-    "--setting-items-padding": "var(--size-4-5)",
+    "--setting-items-padding-x": "var(--size-4-5)",
+    "--setting-items-padding-y": "var(--size-4-5)",
     "--setting-items-radius": "var(--radius-l)",
     "--setting-items-border-width": "0",
-    "--setting-items-border-color": "var(--background-modifier-border)"
+    "--setting-items-border-color": "var(--background-modifier-border)",
+    "--setting-items-divider-width": "var(--border-width)"
   },
   sidebar: {
     "--sidebar-markdown-font-size": "calc(var(--font-text-size) * 0.9)",
@@ -57039,8 +56965,8 @@ var obsidianCSSVariables_default = {
     "--slider-thumb-radius": "var(--slider-thumb-height)",
     "--slider-s-thumb-size": "15px",
     "--slider-s-thumb-position": "-5px",
-    "--slider-track-background": "var(--background-modifier-border)",
-    "--slider-track-height": "3px"
+    "--slider-track-background": "var(--background-modifier-border-hover)",
+    "--slider-track-height": "4px"
   },
   spacing: {
     "--size-2-1": "2px",
@@ -57108,7 +57034,7 @@ var obsidianCSSVariables_default = {
     "--table-row-alt-background": "var(--table-background)",
     "--table-row-alt-background-hover": "var(--table-background)",
     "--table-row-last-border-width": "var(--table-border-width)",
-    "--table-selection": "hsla(var(--color-accent-hsl), 0.1)",
+    "--table-selection": "color-mix(in oklch, var(--color-accent) 10%, transparent)",
     "--table-selection-blend-mode": "var(--highlight-mix-blend-mode)",
     "--table-selection-border-color": "var(--interactive-accent)",
     "--table-selection-border-width": "2px",
@@ -57156,7 +57082,7 @@ var obsidianCSSVariables_default = {
     "--tab-switcher-background": "var(--background-secondary)",
     "--tab-switcher-preview-radius": "var(--radius-xl)",
     "--tab-switcher-preview-background-shadow": "0 4px 30px 2px rgba(0, 0, 0, 0.2)",
-    "--tab-switcher-preview-shadow": "0 0 0 1px rgba(var(--mono-rgb-100), 0.05)",
+    "--tab-switcher-preview-shadow": "0 0 0 1px color-mix(in oklch, var(--mono-100) 5%, transparent)",
     "--tab-switcher-preview-shadow-active": "0 0 0 2px var(--color-accent)"
   },
   tag: {
@@ -57165,10 +57091,10 @@ var obsidianCSSVariables_default = {
     "--tag-color-hover": "var(--text-accent)",
     "--tag-decoration": "none",
     "--tag-decoration-hover": "none",
-    "--tag-background": "hsla(var(--interactive-accent-hsl), 0.1)",
-    "--tag-background-hover": "hsla(var(--interactive-accent-hsl), 0.2)",
-    "--tag-border-color": "hsla(var(--interactive-accent-hsl), 0.15)",
-    "--tag-border-color-hover": "hsla(var(--interactive-accent-hsl), 0.15)",
+    "--tag-background": "color-mix(in oklch, var(--interactive-accent) 10%, transparent)",
+    "--tag-background-hover": "color-mix(in oklch, var(--interactive-accent) 20%, transparent)",
+    "--tag-border-color": "color-mix(in oklch, var(--interactive-accent) 15%, transparent)",
+    "--tag-border-color-hover": "color-mix(in oklch, var(--interactive-accent) 15%, transparent)",
     "--tag-border-width": "0px",
     "--tag-padding-x": "0.65em",
     "--tag-padding-y": "0.25em",
@@ -57217,45 +57143,36 @@ var obsidianCSSVariables_default = {
   },
   themelight: {
     "--highlight-mix-blend-mode": "darken",
-    "--mono-rgb-0": "255, 255, 255",
-    "--mono-rgb-100": "0, 0, 0",
-    "--color-red-rgb": "233, 49, 71",
+    "--mono-0": "white",
+    "--mono-100": "black",
     "--color-red": "#e93147",
-    "--color-orange-rgb": "236, 117, 0",
     "--color-orange": "#ec7500",
-    "--color-yellow-rgb": "224, 172, 0",
     "--color-yellow": "#e0ac00",
-    "--color-green-rgb": "8, 185, 78",
     "--color-green": "#08b94e",
-    "--color-cyan-rgb": "0, 191, 188",
     "--color-cyan": "#00bfbc",
-    "--color-blue-rgb": "8, 109, 221",
     "--color-blue": "#086ddd",
-    "--color-purple-rgb": "120, 82, 238",
     "--color-purple": "#7852ee",
-    "--color-pink-rgb": "213, 57, 132",
     "--color-pink": "#d53984",
     "--color-base-00": "#ffffff",
     "--color-base-05": "#fcfcfc",
     "--color-base-10": "#fafafa",
     "--color-base-20": "#f6f6f6",
-    "--color-base-25": "#e3e3e3",
-    "--color-base-30": "#e0e0e0",
-    "--color-base-35": "#d4d4d4",
+    "--color-base-25": "#efefef",
+    "--color-base-30": "#e4e4e4",
+    "--color-base-35": "#dadada",
     "--color-base-40": "#bdbdbd",
     "--color-base-50": "#ababab",
     "--color-base-60": "#707070",
     "--color-base-70": "#5c5c5c",
     "--color-base-100": "#222222",
-    "--color-accent-hsl": "var(--accent-h), var(--accent-s), var(--accent-l)",
     "--color-accent": "hsl(var(--accent-h), var(--accent-s), var(--accent-l))",
     "--color-accent-1": "hsl(calc(var(--accent-h) - 1), calc(var(--accent-s) * 1.01), calc(var(--accent-l) * 1.075))",
     "--color-accent-2": "hsl(calc(var(--accent-h) - 3), calc(var(--accent-s) * 1.02), calc(var(--accent-l) * 1.15))",
     "--background-secondary-alt": "var(--color-base-05)",
     "--background-modifier-box-shadow": "rgba(0, 0, 0, 0.1)",
     "--background-modifier-cover": "rgba(220, 220, 220, 0.4)",
-    "--input-shadow": "inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 1.5px 0 rgba(0, 0, 0, 0.03), 0 1px 2px 0 rgba(0, 0, 0, 0.04), 0 0 0 0 transparent",
-    "--input-shadow-hover": "inset 0 0 0 1px rgba(0, 0, 0, 0.17), 0 2px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 1.5px 0 rgba(0, 0, 0, 0.03), 0 1px 2px 0 rgba(0, 0, 0, 0.04), 0 0 0 0 transparent",
+    "--input-shadow": "inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.065), 0 0 0 0 transparent",
+    "--input-shadow-hover": "inset 0 0 0 1px rgba(0, 0, 0, 0.17), 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 0 0 0 transparent",
     "--shadow-edges": "0 0 transparent",
     "--shadow-xs": "0 1px 6px rgba(0, 0, 0, 0.015), 0 4px 24px rgba(0, 0, 0, 0.065), var(--shadow-edges)",
     "--shadow-s": "0px 1px 2px rgba(0, 0, 0, 0.028), 0px 3.4px 6.7px rgba(0, 0, 0, 0.042), 0px 15px 30px rgba(0, 0, 0, 0.07)",
@@ -57263,37 +57180,28 @@ var obsidianCSSVariables_default = {
   },
   themedark: {
     "--highlight-mix-blend-mode": "lighten",
-    "--mono-rgb-0": "0, 0, 0",
-    "--mono-rgb-100": "255, 255, 255",
-    "--color-red-rgb": "251, 70, 76",
+    "--mono-0": "black",
+    "--mono-100": "white",
     "--color-red": "#fb464c",
-    "--color-orange-rgb": "233, 151, 63",
     "--color-orange": "#e9973f",
-    "--color-yellow-rgb": "224, 222, 113",
     "--color-yellow": "#e0de71",
-    "--color-green-rgb": "68, 207, 110",
     "--color-green": "#44cf6e",
-    "--color-cyan-rgb": "83, 223, 221",
     "--color-cyan": "#53dfdd",
-    "--color-blue-rgb": "2, 122, 255",
     "--color-blue": "#027aff",
-    "--color-purple-rgb": "168, 130, 255",
     "--color-purple": "#a882ff",
-    "--color-pink-rgb": "250, 153, 205",
     "--color-pink": "#fa99cd",
-    "--color-base-00": "#1e1e1e",
+    "--color-base-00": "#1C1C1C",
     "--color-base-05": "#212121",
-    "--color-base-10": "#242424",
-    "--color-base-20": "#262626",
-    "--color-base-25": "#2a2a2a",
-    "--color-base-30": "#363636",
+    "--color-base-10": "#232323",
+    "--color-base-20": "#282828",
+    "--color-base-25": "#2e2e2e",
+    "--color-base-30": "#333333",
     "--color-base-35": "#3f3f3f",
     "--color-base-40": "#555555",
     "--color-base-50": "#666666",
     "--color-base-60": "#999999",
     "--color-base-70": "#b3b3b3",
     "--color-base-100": "#dadada",
-    "--color-accent-hsl": "var(--accent-h), var(--accent-s), var(--accent-l)",
     "--color-accent": "hsl(var(--accent-h), var(--accent-s), var(--accent-l))",
     "--color-accent-1": "hsl(calc(var(--accent-h) - 3), calc(var(--accent-s) * 1.02), calc(var(--accent-l) * 1.15))",
     "--color-accent-2": "hsl(calc(var(--accent-h) - 5), calc(var(--accent-s) * 1.05), calc(var(--accent-l) * 1.29))",
@@ -57308,7 +57216,7 @@ var obsidianCSSVariables_default = {
     "--background-modifier-box-shadow": "rgba(0, 0, 0, 0.3)",
     "--background-modifier-cover": "rgba(10, 10, 10, 0.4)",
     "--raised-mask-background": "transparent",
-    "--text-selection": "hsla(var(--interactive-accent-hsl), 0.33)",
+    "--text-selection": "color-mix(in oklch, var(--interactive-accent) 33%, transparent)",
     "--input-shadow": "inset 0 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.09), 0 2px 4px 0 rgba(0, 0, 0, 0.15), 0 1px 1.5px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 0 0 0 transparent",
     "--input-shadow-hover": "inset 0 0.5px 1px 0.5px rgba(255, 255, 255, 0.16), 0 2px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 1.5px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.4), 0 0 0 0 transparent",
     "--shadow-xs": "0 1px 6px rgba(0, 0, 0, 0.045), 0 4px 24px rgba(0, 0, 0, 0.195), var(--shadow-edges)",
@@ -57368,7 +57276,8 @@ var obsidianCSSVariables_default = {
     "--vault-profile-font-size": "var(--font-ui-small)",
     "--vault-profile-font-weight": "var(--font-medium)",
     "--vault-profile-color": "var(--text-normal)",
-    "--vault-profile-color-hover": "var(--vault-profile-color)"
+    "--vault-profile-color-hover": "var(--vault-profile-color)",
+    "--vault-profile-radius": "var(--radius-s)"
   },
   view: {
     "--view-top-fade-opacity": "0.25",
@@ -57389,13 +57298,30 @@ var obsidianCSSVariables_default = {
     "--header-height": "40px"
   },
   workspace: {
-    "--workspace-background-translucent": "rgba(var(--mono-rgb-0), 0.6)"
+    "--workspace-background-translucent": "color-mix(in oklch, var(--mono-0) 60%, transparent)"
+  },
+  deprecated: {
+    "--interactive-accent-hsl": "var(--color-accent-hsl)",
+    "--background-modifier-error-rgb": "var(--color-red-rgb)",
+    "--background-modifier-success-rgb": "var(--color-green-rgb)",
+    "--text-highlight-bg-rgb": "255, 208, 0",
+    "--mono-rgb-0": "255, 255, 255",
+    "--mono-rgb-100": "0, 0, 0",
+    "--color-accent-hsl": "var(--accent-h), var(--accent-s), var(--accent-l)",
+    "--color-red-rgb": "233, 49, 71",
+    "--color-orange-rgb": "236, 117, 0",
+    "--color-yellow-rgb": "224, 172, 0",
+    "--color-green-rgb": "8, 185, 78",
+    "--color-cyan-rgb": "0, 191, 188",
+    "--color-blue-rgb": "8, 109, 221",
+    "--color-purple-rgb": "120, 82, 238",
+    "--color-pink-rgb": "213, 57, 132"
   }
 };
 
 // src/managers/cssVariabManager.ts
 function createHelpFragment(text, parent = "", category = "") {
-  const helpFragment = document.createDocumentFragment();
+  const helpFragment = activeDocument.createDocumentFragment();
   if (text !== "") {
     helpFragment.append(text);
     return helpFragment;
@@ -57542,7 +57468,7 @@ var CSSVariableManager = class {
         customVars.push(obj);
       }
     }
-    this.plugin.saveSettings();
+    void this.plugin.saveSettings();
   }
   snippetManagerVars() {
     let snippetContent = "";
@@ -57613,19 +57539,21 @@ var CSSRuleItemRenderer = class {
     editButton.setAttr("data-tooltip-position", "top");
     editButton.setAttr("tabindex", "0");
     (0, import_obsidian5.setIcon)(editButton, "edit");
-    editButton.addEventListener("click", async () => {
-      const editorSection = this.config.view.containerEl.querySelector(".css-editor-section");
-      const isEditorVisible = editorSection && getComputedStyle(editorSection).display !== "none";
-      if (isEditorVisible && this.config.plugin.settings.showConfirmation) {
-        if (!await confirm("You have an unsaved CSS rule form open. Editing another rule will discard your changes. Continue?", this.config.plugin.app)) {
-          return;
+    editButton.addEventListener("click", () => {
+      void (async () => {
+        const editorSection = this.config.view.containerEl.querySelector(".css-editor-section");
+        const isEditorVisible = editorSection && getComputedStyle(editorSection).display !== "none";
+        if (isEditorVisible && this.config.plugin.settings.showConfirmation) {
+          if (!await confirm("You have an unsaved CSS rule form open. Editing another rule will discard your changes. Continue?", this.config.plugin.app)) {
+            return;
+          }
         }
-      }
-      const uuid = item.getAttribute("data-cts-uuid");
-      const freshRule = this.config.plugin.settings.cssRules.find((r) => r.uuid === uuid);
-      if (freshRule) {
-        this.config.onEdit(freshRule, item);
-      }
+        const uuid = item.getAttribute("data-cts-uuid");
+        const freshRule = this.config.plugin.settings.cssRules.find((r) => r.uuid === uuid);
+        if (freshRule) {
+          this.config.onEdit(freshRule, item);
+        }
+      })();
     });
   }
   createEnabledButton(actionsEl, rule, item) {
@@ -57639,12 +57567,14 @@ var CSSRuleItemRenderer = class {
       (0, import_obsidian5.setIcon)(enabledButton, "eye-off");
       enabledButton.setAttr("aria-label", "Enable this rule");
     }
-    enabledButton.addEventListener("click", async () => {
-      const uuid = item.getAttribute("data-cts-uuid");
-      const freshRule = this.config.plugin.settings.cssRules.find((r) => r.uuid === uuid);
-      if (freshRule) {
-        await this.config.onToggle(freshRule, enabledButton);
-      }
+    enabledButton.addEventListener("click", () => {
+      void (async () => {
+        const uuid = item.getAttribute("data-cts-uuid");
+        const freshRule = this.config.plugin.settings.cssRules.find((r) => r.uuid === uuid);
+        if (freshRule) {
+          await this.config.onToggle(freshRule, enabledButton);
+        }
+      })();
     });
   }
   createDeleteButton(actionsEl, rule, item) {
@@ -57655,15 +57585,17 @@ var CSSRuleItemRenderer = class {
     deleteButton.setAttr("data-tooltip-position", "top");
     deleteButton.setAttr("tabindex", "0");
     (0, import_obsidian5.setIcon)(deleteButton, "trash");
-    deleteButton.addEventListener("click", async () => {
-      deleteButton.addClass("mod-loading");
-      const uuid = item.getAttribute("data-cts-uuid");
-      const freshRule = this.config.plugin.settings.cssRules.find((r) => r.uuid === uuid);
-      if (freshRule && await confirm(`Are you sure you want to delete the rule "${freshRule.rule}"?`, this.config.plugin.app)) {
-        await this.config.onDelete(freshRule, item);
-        showNotice("CSS rule deleted", NOTICE_DURATIONS.STANDARD, "success");
-      }
-      deleteButton.removeClass("mod-loading");
+    deleteButton.addEventListener("click", () => {
+      void (async () => {
+        deleteButton.addClass("mod-loading");
+        const uuid = item.getAttribute("data-cts-uuid");
+        const freshRule = this.config.plugin.settings.cssRules.find((r) => r.uuid === uuid);
+        if (freshRule && await confirm(`Are you sure you want to delete the rule "${freshRule.rule}"?`, this.config.plugin.app)) {
+          await this.config.onDelete(freshRule, item);
+          showNotice("CSS rule deleted", NOTICE_DURATIONS.STANDARD, "success");
+        }
+        deleteButton.removeClass("mod-loading");
+      })();
     });
   }
 };
@@ -57748,12 +57680,11 @@ var CSSRuleListManager = class {
     if (!item) return;
     const enabledButton = item.querySelector(".rule-item-actions button:nth-child(2)");
     if (!enabledButton) return;
-    const { setIcon: setIcon10 } = require("obsidian");
     if (enabled) {
-      setIcon10(enabledButton, "eye");
+      (0, import_obsidian6.setIcon)(enabledButton, "eye");
       enabledButton.setAttr("aria-label", "Disable this rule");
     } else {
-      setIcon10(enabledButton, "eye-off");
+      (0, import_obsidian6.setIcon)(enabledButton, "eye-off");
       enabledButton.setAttr("aria-label", "Enable this rule");
     }
   }
@@ -65383,14 +65314,13 @@ var CSSEditorManager = class {
     // Timer tracking for cleanup
     this.timers = [];
     // Auto-apply changes when typing (with debounce)
-    this.changeListener = (delta) => {
+    this.changeListener = (_delta) => {
       const timeout = window.setTimeout(() => {
-        let css = this.aceService.getValue();
         if (this.plugin.settings.autoApplyChanges) {
           const timer = window.setTimeout(() => {
-            const css2 = this.aceService.getValue();
-            if (css2 !== "") {
-              this.applyChanges(css2);
+            const css = this.aceService.getValue();
+            if (css !== "") {
+              this.applyChanges(css);
             }
           }, this.plugin.settings.cssEditorDebounceDelay);
           this.timers.push(timer);
@@ -65410,7 +65340,9 @@ var CSSEditorManager = class {
       plugin: this.plugin,
       view: this.view,
       aceService: this.aceService,
-      onEdit: (rule, item) => this.handleEditRule(rule, item),
+      onEdit: (rule, item) => {
+        void this.handleEditRule(rule, item);
+      },
       onToggle: (rule, button) => this.handleToggleRule(rule, button),
       onDelete: (rule, item) => this.handleDeleteRule(rule, item)
     });
@@ -65476,7 +65408,7 @@ var CSSEditorManager = class {
       }
     );
     this.editor = this.aceService.createEditor(this.editorEl);
-    this.aceService.configureEditor(this.config, "css");
+    void this.aceService.configureEditor(this.config, "css");
     if (this.plugin.settings.enableAceSnippets) {
       this.editor.setOption("enableSnippets", true);
       const snippetManager = ace3.require("ace/snippets").snippetManager;
@@ -65588,36 +65520,38 @@ var CSSEditorManager = class {
       {
         cls: "clickable-icon",
         attr: {
-          "aria-label": "Format CSS with Prettier",
+          "aria-label": "Format CSS with prettier",
           "data-tooltip-position": "top"
         }
       }
     );
     (0, import_obsidian7.setIcon)(formatButton, "wand-sparkles");
-    formatButton.addEventListener("click", async () => {
-      const currentCSS = this.aceService.getValue();
-      if (!currentCSS || currentCSS.trim() === "") {
-        showNotice("No CSS to format", 2e3, "info");
-        return;
-      }
-      const cursorPosition = this.editor.getCursorPosition();
-      const formatted = await this.validationService.formatCSS(currentCSS);
-      if (formatted) {
-        const Range = ace3.require("ace/range").Range;
-        const fullRange = new Range(
-          0,
-          0,
-          this.editor.session.getLength(),
-          this.editor.session.getLine(this.editor.session.getLength() - 1).length
-        );
-        this.editor.session.replace(fullRange, formatted);
-        try {
-          this.editor.moveCursorToPosition(cursorPosition);
-        } catch (e) {
-          this.editor.navigateFileStart();
+    formatButton.addEventListener("click", () => {
+      void (async () => {
+        const currentCSS = this.aceService.getValue();
+        if (!currentCSS || currentCSS.trim() === "") {
+          showNotice("No CSS to format", 2e3, "info");
+          return;
         }
-        showNotice("CSS formatted successfully", 2e3, "success");
-      }
+        const cursorPosition = this.editor.getCursorPosition();
+        const formatted = await this.validationService.formatCSS(currentCSS);
+        if (formatted) {
+          const Range = ace3.require("ace/range").Range;
+          const fullRange = new Range(
+            0,
+            0,
+            this.editor.session.getLength(),
+            this.editor.session.getLine(this.editor.session.getLength() - 1).length
+          );
+          this.editor.session.replace(fullRange, formatted);
+          try {
+            this.editor.moveCursorToPosition(cursorPosition);
+          } catch (e) {
+            this.editor.navigateFileStart();
+          }
+          showNotice("CSS formatted successfully", 2e3, "success");
+        }
+      })();
     });
     const settingsButton = buttonContainer.createEl(
       "button",
@@ -65651,17 +65585,19 @@ var CSSEditorManager = class {
         }
       }
     });
-    saveButton.addEventListener("click", async () => {
-      if (await this.saveElement()) {
-        if (!this.isEditingExisting) {
-          this.showEditorSection(false);
-        } else {
-          this.removeInlineEditor();
+    saveButton.addEventListener("click", () => {
+      void (async () => {
+        if (await this.saveElement()) {
+          if (!this.isEditingExisting) {
+            this.showEditorSection(false);
+          } else {
+            this.removeInlineEditor();
+          }
         }
-      }
-      if (this.view.ruleSearch) {
-        await this.view.filterCSSRules(this.view.ruleSearch);
-      }
+        if (this.view.ruleSearch) {
+          await this.view.filterCSSRules(this.view.ruleSearch);
+        }
+      })();
     });
     cancelButton.addEventListener("click", () => {
       if (this.isEditingExisting) {
@@ -65673,12 +65609,12 @@ var CSSEditorManager = class {
       this.clearAppliedChanges();
     });
     this.plugin.registerEvent(
-      this.workspace.on("css-change", async () => {
+      this.workspace.on("css-change", () => {
         this.aceService.updateTheme();
       })
     );
   }
-  setRule(uuid, rule, isEditingExisting) {
+  setRule(uuid, rule, _isEditingExisting) {
     if (!this.ruleInputEl || !this.editorUUID) return;
     const existingRule = this.plugin.settings.cssRules.find((el) => el.uuid === uuid);
     if (existingRule) {
@@ -65771,7 +65707,7 @@ var CSSEditorManager = class {
       }
     }
     try {
-      return document.querySelector(selector);
+      return activeDocument.querySelector(selector);
     } catch (error) {
       Logger.error(`Invalid CSS selector: ${selector}`, error);
       showNotice("Invalid CSS selector syntax", NOTICE_DURATIONS.SHORT, "error");
@@ -65794,11 +65730,11 @@ var CSSEditorManager = class {
     if (!uuid) {
       return;
     }
-    this.validationService.updateCustomCSS(uuid, rule, css);
+    void this.validationService.updateCustomCSS(uuid, rule, css);
     this.validationService.applyTheme();
   }
   clearAppliedChanges() {
-    this.validationService.updateCustomCSS(generateUniqueId(), "", "");
+    void this.validationService.updateCustomCSS(generateUniqueId(), "", "");
     this.validationService.applyTheme();
   }
   async saveElement() {
@@ -65831,7 +65767,7 @@ var CSSEditorManager = class {
         enabled: true
       });
     }
-    this.plugin.saveSettings();
+    void this.plugin.saveSettings();
     await this.validationService.updateCustomCSS(uuid, rule, css);
     this.validationService.applyTheme();
     this.editorEl.value = "";
@@ -65906,8 +65842,12 @@ var CSSEditorManager = class {
   }
   removeInlineEditor() {
     this.editor.session.off("change", this.changeListener);
-    const inlineEditors = document.querySelectorAll(".inline-rule-editor");
-    inlineEditors.forEach((editor) => editor.remove());
+    const inlineEditors = activeDocument.querySelectorAll(".inline-rule-editor");
+    inlineEditors.forEach((editor) => {
+      var _a2;
+      (_a2 = editor.parentElement) == null ? void 0 : _a2.removeClass("editing");
+      editor.remove();
+    });
     this.isEditingExisting = false;
     this.currentEditingElement = null;
     this.showEditorSection(false);
@@ -65930,6 +65870,7 @@ var CSSEditorManager = class {
     this.clearAppliedChanges();
     this.isEditingExisting = true;
     this.currentEditingElement = item;
+    item.addClass("editing");
     const inlineEditor = item.createDiv("inline-rule-editor");
     if (this.editorSection) {
       this.setRule(rule.uuid, rule.rule, true);
@@ -65946,7 +65887,7 @@ var CSSEditorManager = class {
       focusEditor();
     }
   }
-  async handleToggleRule(rule, button) {
+  async handleToggleRule(rule, _button) {
     const getCurrentlyEditedIndex = () => {
       const ruleList = this.view.containerEl.querySelector(".css-rule");
       const existingRules = ruleList.querySelectorAll(".rule-item");
@@ -65974,9 +65915,9 @@ var CSSEditorManager = class {
     this.plugin.settings.cssRules.forEach((cssRule, index) => {
       if (cssRule.enabled) {
         if (index === currentlyEditedIndex) {
-          let css = this.aceService.getValue();
+          const currentCss = this.aceService.getValue();
           fullCSS += `/* ${cssRule.rule} */
-${css}
+${currentCss}
 
 `;
         } else {
@@ -65988,10 +65929,10 @@ ${cssRule.css}
       }
     });
     this.plugin.settings.customCSS = fullCSS;
-    this.plugin.saveSettings();
+    void this.plugin.saveSettings();
     this.validationService.applyTheme();
   }
-  async handleDeleteRule(rule, item) {
+  async handleDeleteRule(rule, _item) {
     var _a2;
     this.plugin.settings.cssRules = this.plugin.settings.cssRules.filter(
       (el) => el.uuid !== rule.uuid
@@ -66004,8 +65945,6 @@ ${cssRule.css}
     }
     if (this.ruleListManager) {
       this.ruleListManager.removeRuleItem(rule.uuid);
-    } else {
-      item.remove();
     }
     if (this.view.ruleSearch !== "") {
       await this.view.filterCSSRules(this.view.ruleSearch);
@@ -66253,13 +66192,13 @@ var HeaderSection = class extends UIComponent {
     this.renderLightDarkToggle(toggleContainer);
   }
   renderThemeEnabledToggle(container) {
-    const { toggle, label } = createToggleSwitch(
+    createToggleSwitch(
       container,
       "theme-toggle-switch",
       "Enable theme",
       this.plugin.settings.themeEnabled,
-      async () => {
-        this.plugin.themeManager.toggleCustomTheme();
+      () => {
+        void this.plugin.themeManager.toggleCustomTheme();
       }
     );
   }
@@ -66271,8 +66210,8 @@ var HeaderSection = class extends UIComponent {
     toggleThemeButton.setAttr("aria-label", "Toggle light/dark mode");
     toggleThemeButton.setAttr("data-tooltip-position", "top");
     (0, import_obsidian8.setIcon)(toggleThemeButton, getCurrentTheme(this.app) === "obsidian" ? "sun" : "moon");
-    toggleThemeButton.addEventListener("click", async () => {
-      this.handleThemeToggle(toggleThemeButton);
+    toggleThemeButton.addEventListener("click", () => {
+      void this.handleThemeToggle(toggleThemeButton);
     });
   }
   async handleThemeToggle(toggleButton) {
@@ -66286,7 +66225,7 @@ var HeaderSection = class extends UIComponent {
 };
 
 // src/views/components/CSSVariablesSection.ts
-var import_obsidian12 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 
 // src/utils/Debouncer.ts
 var import_obsidian9 = require("obsidian");
@@ -66366,7 +66305,7 @@ var AddVariableModal = class extends import_obsidian10.Modal {
           variable,
           value
         });
-        this.plugin.saveSettings();
+        void this.plugin.saveSettings();
         this.plugin.themeManager.applyIfEnabled();
         this.close();
         let leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_CTS).first();
@@ -66692,7 +66631,7 @@ var VariableItem = class {
       label: `Copy default value "${this.config.data.defaultValue}" to clipboard`,
       classes: ["copy-default-value"],
       onClick: () => {
-        copyStringToClipboard(this.config.data.defaultValue, this.config.data.defaultValue);
+        void copyStringToClipboard(this.config.data.defaultValue, this.config.data.defaultValue);
       }
     });
   }
@@ -66701,8 +66640,8 @@ var VariableItem = class {
       icon: "trash",
       label: "Delete this variable",
       classes: ["delete-variable-button", "mod-destructive"],
-      onClick: async () => {
-        await this.handleDelete(deleteButton);
+      onClick: () => {
+        void this.handleDelete(deleteButton);
       }
     });
   }
@@ -66849,7 +66788,7 @@ var VariableItem = class {
   // Event Handler Methods
   handleVariableNameCopy() {
     const varReference = `var(${this.config.data.name})`;
-    copyStringToClipboard(varReference, varReference);
+    void copyStringToClipboard(varReference, varReference);
   }
   destroy() {
     var _a2, _b;
@@ -66861,6 +66800,7 @@ var VariableItem = class {
 };
 
 // src/utils/EventManager.ts
+var import_obsidian12 = require("obsidian");
 var EventManager = class {
   constructor() {
     this.listeners = /* @__PURE__ */ new Map();
@@ -67090,7 +67030,7 @@ var CSSVariablesSection = class extends UIComponent {
           section: "variables",
           expanded
         });
-        this.saveSettings();
+        void this.saveSettings();
       }
     });
     this.domEventManager = new DOMEventManager(section, this.eventManager);
@@ -67156,7 +67096,7 @@ var CSSVariablesSection = class extends UIComponent {
     const filterTag = event.currentTarget.getAttr("data-tag-filter");
     this.activeTag = filterTag;
     this.plugin.settings.activeVariableTagFilter = filterTag;
-    this.saveSettings();
+    void this.saveSettings();
     tags.forEach((tag) => {
       const tagButton = filterContainer.querySelector(`[data-tag-filter="${tag.toLowerCase()}"]`);
       tagButton == null ? void 0 : tagButton.removeClass("tag-filter-active");
@@ -67176,16 +67116,16 @@ var CSSVariablesSection = class extends UIComponent {
   }
   renderSearch(container) {
     const searchContainer = container.querySelector(".search-container");
-    const { searchInput } = createSearchInput(searchContainer || container, {
+    createSearchInput(searchContainer || container, {
       placeholder: "Search CSS variables\u2026",
       onInput: (searchTerm) => {
         this.variableSearch = searchTerm;
-        this.filterVariables(searchTerm);
-        this.updateVariableListVisibility();
+        void this.filterVariables(searchTerm);
+        void this.updateVariableListVisibility();
       },
       onClear: () => {
         this.variableSearch = "";
-        this.filterVariables("");
+        void this.filterVariables("");
         this.resetVariableListVisibility();
       }
     });
@@ -67221,7 +67161,7 @@ var CSSVariablesSection = class extends UIComponent {
     const showCategory = this.activeTag === "all" || category.tag === this.activeTag;
     categoryEl.toggleClass("show", showCategory);
     categoryEl.toggleClass("hide", !showCategory);
-    const { header, content: variableListEl } = this.createCategoryHeader(categoryEl, category);
+    const { content: variableListEl } = this.createCategoryHeader(categoryEl, category);
     if (category.help) {
       this.addCategoryHelp(variableListEl, category.help);
     }
@@ -67244,7 +67184,7 @@ var CSSVariablesSection = class extends UIComponent {
         "data-tooltip-position": "top"
       }
     });
-    (0, import_obsidian12.setIcon)(catToggleIcon, "chevron-right");
+    (0, import_obsidian13.setIcon)(catToggleIcon, "chevron-right");
     const variableListEl = container.createDiv({
       cls: "variable-list",
       attr: {
@@ -67258,7 +67198,8 @@ var CSSVariablesSection = class extends UIComponent {
     if (shouldBeExpanded) {
       variableListEl.removeClass("hide");
       variableListEl.addClass("show");
-      (0, import_obsidian12.setIcon)(catToggleIcon, "chevron-down");
+      container.addClass("expanded");
+      (0, import_obsidian13.setIcon)(catToggleIcon, "chevron-down");
       catToggleIcon.setAttr("aria-label", "Collapse category");
     }
     header.addEventListener("click", () => {
@@ -67269,7 +67210,7 @@ var CSSVariablesSection = class extends UIComponent {
   addCategoryHelp(container, help) {
     const helpContainer = container.createDiv("variable-category-help-container");
     const helpIcon = helpContainer.createSpan("variable-category-help-icon");
-    (0, import_obsidian12.setIcon)(helpIcon, "info");
+    (0, import_obsidian13.setIcon)(helpIcon, "info");
     const helpSpan = helpContainer.createSpan({
       cls: "variable-category-help"
     });
@@ -67407,7 +67348,7 @@ ${rule.css}
       }
     });
     this.plugin.settings.customCSS = fullCSS;
-    this.saveSettings();
+    void this.saveSettings();
     this.plugin.themeManager.applyIfEnabled();
     this.variableItems.delete(uuid);
     this.eventManager.emit("variable:deleted", {
@@ -67416,7 +67357,7 @@ ${rule.css}
     });
     this.updateCategoryItemCount("custom");
     if (this.variableSearch !== "") {
-      this.filterVariables(this.variableSearch);
+      void this.filterVariables(this.variableSearch);
     }
   }
   handleVariableDeleted(uuid) {
@@ -67476,7 +67417,7 @@ ${rule.css}
     if (variableListIcon) {
       const iconName = shouldExpand ? "chevron-down" : "chevron-right";
       const ariaLabel = shouldExpand ? "Collapse category" : "Expand category";
-      (0, import_obsidian12.setIcon)(variableListIcon, iconName);
+      (0, import_obsidian13.setIcon)(variableListIcon, iconName);
       variableListIcon.setAttr("aria-label", ariaLabel);
       variableListIcon.setAttr("data-tooltip-position", "top");
     }
@@ -67509,7 +67450,7 @@ ${rule.css}
       return;
     }
     const colorPickerEl = wrapper.createDiv("variable-color-picker");
-    const colorPicker = new import_obsidian12.ColorComponent(colorPickerEl).setValue((_a2 = variable.value) != null ? _a2 : "#000000").onChange((value) => {
+    const colorPicker = new import_obsidian13.ColorComponent(colorPickerEl).setValue((_a2 = variable.value) != null ? _a2 : "#000000").onChange((value) => {
       if (variable.value !== value) {
         input.value = value;
         input.classList.add("clear-variable-input--touched");
@@ -67543,12 +67484,12 @@ ${rule.css}
     });
   }
   addCopyDefaultButton(container, defaultValue) {
-    const copyButton = createIconButton(container, {
+    createIconButton(container, {
       icon: "copy",
       label: 'Copy default value "' + defaultValue + '" to clipboard',
       classes: ["copy-default-value"],
       onClick: () => {
-        copyStringToClipboard(defaultValue, defaultValue);
+        void copyStringToClipboard(defaultValue, defaultValue);
       }
     });
   }
@@ -67591,11 +67532,11 @@ ${rule.css}
         variableList.addClass("show");
       }
       if (icon) {
-        (0, import_obsidian12.setIcon)(icon, "chevron-down");
+        (0, import_obsidian13.setIcon)(icon, "chevron-down");
         icon.setAttr("aria-label", "Collapse category");
       }
       if (this.plugin.settings.viewScrollToTop) {
-        const scrollDelayed = (0, import_obsidian12.debounce)(() => {
+        const scrollDelayed = (0, import_obsidian13.debounce)(() => {
           const top = customVarCategory.offsetTop - UI_CONSTANTS.SCROLL_OFFSET;
           this.container.scrollTo({
             top,
@@ -67657,7 +67598,7 @@ ${rule.css}
       (_c2 = el.parentElement) == null ? void 0 : _c2.toggleClass("hide", !shouldExpand);
       const iconName = shouldExpand ? "chevron-down" : "chevron-right";
       const ariaLabel = shouldExpand ? "Collapse category" : "Expand category";
-      (0, import_obsidian12.setIcon)(variableListIcon, iconName);
+      (0, import_obsidian13.setIcon)(variableListIcon, iconName);
       variableListIcon == null ? void 0 : variableListIcon.setAttr("aria-label", ariaLabel);
       variableListIcon == null ? void 0 : variableListIcon.setAttr("data-tooltip-position", "top");
     });
@@ -67675,7 +67616,7 @@ ${rule.css}
       el.removeClass("show");
       (_b = el.parentElement) == null ? void 0 : _b.toggleClass("show", shouldShowCategory);
       (_c2 = el.parentElement) == null ? void 0 : _c2.toggleClass("hide", !shouldShowCategory);
-      (0, import_obsidian12.setIcon)(variableListIcon, "chevron-right");
+      (0, import_obsidian13.setIcon)(variableListIcon, "chevron-right");
       variableListIcon == null ? void 0 : variableListIcon.setAttr("aria-label", "Expand category");
       variableListIcon == null ? void 0 : variableListIcon.setAttr("data-tooltip-position", "top");
     });
@@ -67709,10 +67650,11 @@ ${rule.css}
     } else {
       this.plugin.settings.expandedVariableCategories = this.plugin.settings.expandedVariableCategories.filter((id) => id !== categoryId);
     }
-    this.saveSettings();
+    void this.saveSettings();
     variableListEl.toggleClass("show", shouldExpand);
     variableListEl.toggleClass("hide", !shouldExpand);
-    (0, import_obsidian12.setIcon)(catToggleIcon, shouldExpand ? "chevron-down" : "chevron-right");
+    container.toggleClass("expanded", shouldExpand);
+    (0, import_obsidian13.setIcon)(catToggleIcon, shouldExpand ? "chevron-down" : "chevron-right");
     catToggleIcon.setAttr("aria-label", shouldExpand ? "Collapse category" : "Expand category");
     if (shouldExpand && this.plugin.settings.viewScrollToTop) {
       window.setTimeout(() => {
@@ -67746,14 +67688,14 @@ ${rule.css}
 };
 
 // src/views/components/CSSRulesSection.ts
-var import_obsidian14 = require("obsidian");
+var import_obsidian15 = require("obsidian");
 
 // src/modals/fontImportModal.ts
-var import_obsidian13 = require("obsidian");
+var import_obsidian14 = require("obsidian");
 init_confirmModal();
 var import_fs = __toESM(require("fs"));
 var import_path = __toESM(require("path"));
-var FontImportModal = class extends import_obsidian13.Modal {
+var FontImportModal = class extends import_obsidian14.Modal {
   constructor(app, plugin) {
     super(app);
     this.fontName = "";
@@ -67767,7 +67709,7 @@ var FontImportModal = class extends import_obsidian13.Modal {
     if (contentEl.parentElement) {
       contentEl.parentElement.addClass("cts-font-import-modal");
     }
-    new import_obsidian13.Setting(contentEl).setName("Import font").setHeading();
+    new import_obsidian14.Setting(contentEl).setName("Import font").setHeading();
     contentEl.createDiv(
       {
         text: "Embedding assets increases the file size of your theme, which may lead to poor performance in the following situations:"
@@ -67794,20 +67736,20 @@ var FontImportModal = class extends import_obsidian13.Modal {
       {
         cls: "external-link",
         href: "https://docs.obsidian.md/Themes/App+themes/Embed+fonts+and+images+in+your+theme#Consider+file+size",
-        text: "Embed fonts and images in your theme - Developer Documentation",
+        text: "Embed fonts and images in your theme - developer documentation",
         attr: {
-          "aria-label": "https://docs.obsidian.md/Themes/App+themes/Embed+fonts+and+images+in+your+theme#Consider+file+size",
+          "aria-label": "Obsidian developer documentation: embed fonts and images",
           "data-tooltip-position": "top",
           tabindex: "0"
         }
       }
     );
-    const fontNameInput = new import_obsidian13.Setting(contentEl).setName("Font name").setDesc("Enter a font name which is used to identify this font in your CSS rules/variables.").addText(
+    const fontNameInput = new import_obsidian14.Setting(contentEl).setName("Font name").setDesc("Enter a font name which is used to identify this font in your CSS rules/variables.").addText(
       (text) => text.setValue("").setPlaceholder("Enter font name").onChange(async (value) => {
         this.fontName = value;
       })
     );
-    new import_obsidian13.Setting(contentEl).setDesc("Choose a font file to create a new @font-face rule").addButton((button) => {
+    new import_obsidian14.Setting(contentEl).setDesc("Choose a font file to create a new @font-face rule").addButton((button) => {
       button.setButtonText("Choose");
       button.onClick(async () => {
         const nameInput = fontNameInput.settingEl.querySelector("input");
@@ -67833,7 +67775,7 @@ var FontImportModal = class extends import_obsidian13.Modal {
             css,
             enabled: false
           });
-          this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.close();
           let leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_CTS).first();
           if (leaf) {
@@ -67864,7 +67806,7 @@ var FontImportModal = class extends import_obsidian13.Modal {
         }
       });
     });
-    let debounceFocus = (0, import_obsidian13.debounce)(
+    let debounceFocus = (0, import_obsidian14.debounce)(
       () => {
         const nameInput = fontNameInput.settingEl.querySelector("input");
         if (nameInput) {
@@ -67907,19 +67849,23 @@ var FontImportModal = class extends import_obsidian13.Modal {
   }
   async importFontFile() {
     const windowWithRequire = window;
-    const electron = windowWithRequire.require ? windowWithRequire.require("electron") : null;
-    const remote = electron ? electron.remote : null;
+    if (!windowWithRequire.require) {
+      Logger.error("Electron require not available");
+      return null;
+    }
+    const electron = windowWithRequire.require("electron");
+    const remote = electron.remote;
     const { canceled, filePaths } = await remote.dialog.showOpenDialog({
-      title: "Import CFG Settings",
+      title: "Import font file",
       filters: [{ name: "Font files", extensions: this.fontExtensions }],
       properties: ["openFile"]
     });
-    if (canceled || !filePaths || filePaths.length === 0) {
+    if (canceled || filePaths.length === 0) {
       return null;
     }
     this.fontFilePath = filePaths[0];
     const fileContent = import_fs.default.readFileSync(this.fontFilePath);
-    return (0, import_obsidian13.arrayBufferToBase64)(fileContent);
+    return (0, import_obsidian14.arrayBufferToBase64)(fileContent);
   }
 };
 
@@ -67936,7 +67882,7 @@ var CSSRulesSection = class extends UIComponent {
       expanded: this.plugin.settings.expandCSSRules,
       onToggle: (expanded) => {
         this.plugin.settings.expandCSSRules = expanded;
-        this.saveSettings();
+        void this.saveSettings();
       }
     });
     this.renderButtons(content);
@@ -67951,16 +67897,16 @@ var CSSRulesSection = class extends UIComponent {
       icon: "square-pen",
       label: "Add CSS rule",
       classes: ["add-rule-button"],
-      onClick: async () => {
-        await this.handleAddRule();
+      onClick: () => {
+        void this.handleAddRule();
       }
     });
     createIconButton(buttonContainer, {
       icon: "mouse-pointer-square-dashed",
       label: "Select an element",
       classes: ["select-element-button"],
-      onClick: async () => {
-        await this.handleSelectElement();
+      onClick: () => {
+        void this.handleSelectElement();
       }
     });
     if (this.plugin.settings.enableFontImport) {
@@ -67993,7 +67939,7 @@ var CSSRulesSection = class extends UIComponent {
         this.scrollToElement(editorSection);
       }, 100);
     }
-    const focusRuleInput = (0, import_obsidian14.debounce)(() => {
+    const focusRuleInput = (0, import_obsidian15.debounce)(() => {
       this.cssEditorManager.focusRuleInput();
     }, 250, false);
     focusRuleInput();
@@ -68014,7 +67960,7 @@ var CSSRulesSection = class extends UIComponent {
     this.elementSelectorManager.startElementSelection();
   }
   removeInlineEditors() {
-    const inlineEditors = document.querySelectorAll(".inline-rule-editor");
+    const inlineEditors = activeDocument.querySelectorAll(".inline-rule-editor");
     inlineEditors.forEach((editor) => editor.remove());
   }
   positionEditorSection(editorSection) {
@@ -68034,7 +67980,7 @@ var CSSRulesSection = class extends UIComponent {
       placeholder: "Search CSS rules\u2026",
       onInput: (searchTerm) => {
         this.ruleSearch = searchTerm;
-        this.filterCSSRules(searchTerm);
+        void this.filterCSSRules(searchTerm);
         this.updateSearchInputState(searchInput, searchTerm);
       },
       onClear: () => {
@@ -68117,7 +68063,7 @@ var CSSRulesSection = class extends UIComponent {
 };
 
 // src/settings/index.ts
-var import_obsidian16 = require("obsidian");
+var import_obsidian17 = require("obsidian");
 
 // src/ace/AceThemes.ts
 var import_ace = __toESM(require_ace());
@@ -68232,7 +68178,7 @@ var AceKeyboardList = ["default", "vscode", "sublime", "emacs", "vim"];
 init_confirmModal();
 
 // src/settings/settingsIO.ts
-var import_obsidian15 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 var SettingsIO = class _SettingsIO {
   constructor() {
   }
@@ -68261,7 +68207,7 @@ var SettingsIO = class _SettingsIO {
       return this.exportToVault(settingsData, app);
     } catch (error) {
       Logger.error("Failed to export settings:", error);
-      new import_obsidian15.Notice("Failed to export settings");
+      new import_obsidian16.Notice("Failed to export settings");
       return false;
     }
   }
@@ -68276,18 +68222,18 @@ var SettingsIO = class _SettingsIO {
     try {
       const filename = "CTS_settings.json";
       const existingFile = app.vault.getAbstractFileByPath(filename);
-      if (existingFile instanceof import_obsidian15.TFile) {
+      if (existingFile instanceof import_obsidian16.TFile) {
         const backupName = `CTS_settings_backup_${Date.now()}.json`;
         await app.vault.copy(existingFile, backupName);
         await app.vault.modify(existingFile, settingsData);
       } else {
         await app.vault.create(filename, settingsData);
       }
-      new import_obsidian15.Notice(`Settings exported to vault: ${filename}`);
+      new import_obsidian16.Notice(`Settings exported to vault: ${filename}`);
       return true;
     } catch (error) {
       Logger.error("Failed to export to vault:", error);
-      new import_obsidian15.Notice("Failed to export settings to vault");
+      new import_obsidian16.Notice("Failed to export settings to vault");
       return false;
     }
   }
@@ -68305,7 +68251,7 @@ var SettingsIO = class _SettingsIO {
       return this.importFromVault(app);
     } catch (error) {
       Logger.error("Failed to import settings:", error);
-      new import_obsidian15.Notice("Failed to import settings");
+      new import_obsidian16.Notice("Failed to import settings");
       return null;
     }
   }
@@ -68319,21 +68265,21 @@ var SettingsIO = class _SettingsIO {
     try {
       const filename = "CTS_settings.json";
       const file = app.vault.getAbstractFileByPath(filename);
-      if (!file || !(file instanceof import_obsidian15.TFile)) {
-        new import_obsidian15.Notice(`Could not find ${filename} in vault`);
+      if (!file || !(file instanceof import_obsidian16.TFile)) {
+        new import_obsidian16.Notice(`Could not find ${filename} in vault`);
         return null;
       }
       const fileContent = await app.vault.read(file);
       const importedSettings = JSON.parse(fileContent);
       if (!this.validateSettings(importedSettings)) {
-        new import_obsidian15.Notice("Invalid settings file format");
+        new import_obsidian16.Notice("Invalid settings file format");
         return null;
       }
-      new import_obsidian15.Notice("Settings imported from vault successfully");
+      new import_obsidian16.Notice("Settings imported from vault successfully");
       return importedSettings;
     } catch (error) {
       Logger.error("Failed to import from vault:", error);
-      new import_obsidian15.Notice("Failed to import settings from vault");
+      new import_obsidian16.Notice("Failed to import settings from vault");
       return null;
     }
   }
@@ -68460,7 +68406,7 @@ var THEME_COLOR = {
   Light: "Light",
   Dark: "Dark"
 };
-var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingTab {
+var CustomThemeStudioSettingTab = class extends import_obsidian17.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -68469,7 +68415,7 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
     const { containerEl } = this;
     containerEl.empty();
     containerEl.addClass("cts-settings-tab");
-    new import_obsidian16.Setting(containerEl).setName("Enable custom theme").setDesc("Toggle your custom theme on or off.").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Enable custom theme").setDesc("Toggle your custom theme on or off.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.themeEnabled).onChange(async (value) => {
         this.plugin.settings.themeEnabled = value;
         if (value) {
@@ -68488,8 +68434,8 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         }
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("CSS variables").setHeading();
-    new import_obsidian16.Setting(containerEl).setName("Variable update trigger").setDesc('When to update CSS after changing variable values. Choose "Input" for live updates (every keystroke) or "Change" to update only when you finish editing (clicking away from the field).').addDropdown((dropdown) => {
+    new import_obsidian17.Setting(containerEl).setName("CSS variables").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Variable update trigger").setDesc('When to update CSS after changing variable values. Choose "input" for live updates (every keystroke) or "change" to update only when you finish editing (clicking away from the field).').addDropdown((dropdown) => {
       dropdown.addOptions({
         "input": "input",
         "change": "change"
@@ -68498,46 +68444,46 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian16.Setting(containerEl).setName("Variable color picker").setDesc("Enable a color picker for CSS variables that have a default HEX color value.").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Variable color picker").setDesc("Enable a color picker for CSS variables that have a default hex color value.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.enableColorPicker).onChange(async (value) => {
         this.plugin.settings.enableColorPicker = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("CSS rules").setHeading();
-    new import_obsidian16.Setting(containerEl).setName("Font import").setDesc("Enable font imports to create @font-face CSS rules.").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("CSS rules").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Font import").setDesc("Enable font imports to create @font-face CSS rules.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.enableFontImport).onChange(async (value) => {
         this.plugin.settings.enableFontImport = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Warn before discarding changes").setDesc("Warn before discarding unsaved changes when closing or switching between CSS editors.").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Warn before discarding changes").setDesc("Warn before discarding unsaved changes when closing or switching between CSS editors.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.showConfirmation).onChange(async (value) => {
         this.plugin.settings.showConfirmation = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Element selector").setHeading();
-    new import_obsidian16.Setting(containerEl).setName("Selector style preset").setDesc('Choose the style of CSS selectors generated when picking elements. "Minimal" creates short selectors, "Balanced" includes the tag name, and "Specific" includes all attributes.').addDropdown(
+    new import_obsidian17.Setting(containerEl).setName("Element selector").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Selector style preset").setDesc('Choose the style of CSS selectors generated when picking elements. "minimal" creates short selectors, "balanced" includes the tag name, and "specific" includes all attributes.').addDropdown(
       (dropdown) => dropdown.addOption("minimal", "Minimal (clean & short)").addOption("balanced", "Balanced (moderate specificity)").addOption("specific", "Specific (maximum detail)").setValue(this.plugin.settings.selectorStyle).onChange(async (value) => {
         this.plugin.settings.selectorStyle = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Prefer classes over attributes").setDesc("When enabled, prioritize class selectors (e.g., .my-class) over data attributes.").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Prefer classes over attributes").setDesc("When enabled, prioritize class selectors (e.g., .my-class) over data attributes.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.selectorPreferClasses).onChange(async (value) => {
         this.plugin.settings.selectorPreferClasses = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Always include tag names").setDesc("When enabled, always include the HTML tag (e.g., div[data-foo] instead of [data-foo]).").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Always include tag names").setDesc("When enabled, always include the HTML tag (e.g., div[data-foo] instead of [data-foo]).").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.selectorAlwaysIncludeTag).onChange(async (value) => {
         this.plugin.settings.selectorAlwaysIncludeTag = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Excluded attribute patterns").setDesc('Attributes matching these patterns will be excluded from Minimal and Balanced selectors (one per line). Supports wildcards like "data-tooltip-*". Specific mode includes all attributes.').addTextArea(
-      (text) => text.setPlaceholder("data-tooltip-*\ndata-delay\naria-expanded").setValue(this.plugin.settings.selectorExcludedAttributes).onChange(async (value) => {
+    new import_obsidian17.Setting(containerEl).setName("Excluded attribute patterns").setDesc('Attributes matching these patterns will be excluded from minimal and balanced selectors (one per line). Supports wildcards like "data-tooltip-*". Specific mode includes all attributes.').addTextArea(
+      (text) => text.setPlaceholder("Data-tooltip-*").setValue(this.plugin.settings.selectorExcludedAttributes).onChange(async (value) => {
         this.plugin.settings.selectorExcludedAttributes = value;
         await this.plugin.saveSettings();
       })
@@ -68545,14 +68491,14 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
       var _a2;
       (_a2 = setting.controlEl.querySelector("textarea")) == null ? void 0 : _a2.setAttribute("rows", "5");
     });
-    new import_obsidian16.Setting(containerEl).setName("Generate CSS").setDesc("Automatically populate the CSS editor with common properties (color, background, font, etc.) when selecting an element.").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Generate CSS").setDesc("Automatically populate the CSS editor with common properties (color, background, font, etc.) when selecting an element.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.generateComputedCSS).onChange(async (value) => {
         this.plugin.settings.generateComputedCSS = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("CSS editor").setHeading();
-    new import_obsidian16.Setting(containerEl).setName("Auto-apply changes").setDesc('Automatically preview changes "live" as you make them. Changes become permanent once the CSS is saved.').addToggle(
+    new import_obsidian17.Setting(containerEl).setName("CSS editor").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Auto-apply changes").setDesc('Automatically preview changes "live" as you make them. Changes become permanent once the CSS is saved.').addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.autoApplyChanges).onChange(async (value) => {
         this.plugin.settings.autoApplyChanges = value;
         await this.plugin.saveSettings();
@@ -68564,10 +68510,10 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
     noticeIcon.setAttribute("data-tooltip-position", "top");
     let noticeText = noticeDiv.createDiv("cts-auto-apply-changes-notice-text");
     noticeText.textContent = 'When enabled, every keystroke triggers a "live" refresh of your theme. This can lead to unwanted styling and possibly make Obsidian unusable.';
-    (0, import_obsidian16.setIcon)(noticeIcon, "alert-triangle");
+    (0, import_obsidian17.setIcon)(noticeIcon, "alert-triangle");
     this.containerEl.appendChild(noticeDiv);
     let debounceDelaySlider;
-    new import_obsidian16.Setting(containerEl).setName("Auto-apply change delay").setDesc("Delay before live-previewing CSS changes while typing (requires auto-apply). Lower values = faster feedback but may cause performance issues.").addSlider((slider) => {
+    new import_obsidian17.Setting(containerEl).setName("Auto-apply change delay").setDesc("Delay before live-previewing CSS changes while typing (requires auto-apply). Lower values = faster feedback but may cause performance issues.").addSlider((slider) => {
       debounceDelaySlider = slider;
       slider.setLimits(0, 2e3, 100).setValue(this.plugin.settings.cssEditorDebounceDelay).onChange(async (value) => {
         slider.sliderEl.setAttribute("aria-label", value.toString() + "ms");
@@ -68585,33 +68531,33 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
       })
     );
-    const editorSettingsHeading = new import_obsidian16.Setting(containerEl).setName("CSS editor preferences").setHeading().setTooltip("Click to expand/collapse CSS editor preferences");
+    const editorSettingsHeading = new import_obsidian17.Setting(containerEl).setName("CSS editor preferences").setHeading().setTooltip("Click to expand/collapse CSS editor preferences");
     editorSettingsHeading.settingEl.addClass("cts-collapsible-heading");
     const chevronIcon = editorSettingsHeading.nameEl.createDiv("cts-chevron-icon");
-    (0, import_obsidian16.setIcon)(chevronIcon, this.plugin.settings.expandEditorSettings ? "chevron-down" : "chevron-right");
+    (0, import_obsidian17.setIcon)(chevronIcon, this.plugin.settings.expandEditorSettings ? "chevron-down" : "chevron-right");
     const editorSettingsContainer = containerEl.createDiv("cts-editor-settings-container");
     if (!this.plugin.settings.expandEditorSettings) {
-      editorSettingsContainer.style.display = "none";
+      editorSettingsContainer.addClass("cts-hidden");
     }
-    editorSettingsHeading.settingEl.addEventListener("click", async () => {
+    editorSettingsHeading.settingEl.addEventListener("click", () => {
       this.plugin.settings.expandEditorSettings = !this.plugin.settings.expandEditorSettings;
-      editorSettingsContainer.style.display = this.plugin.settings.expandEditorSettings ? "block" : "none";
+      editorSettingsContainer.toggleClass("cts-hidden", !this.plugin.settings.expandEditorSettings);
       chevronIcon.empty();
-      (0, import_obsidian16.setIcon)(chevronIcon, this.plugin.settings.expandEditorSettings ? "chevron-down" : "chevron-right");
-      await this.plugin.saveSettings();
+      (0, import_obsidian17.setIcon)(chevronIcon, this.plugin.settings.expandEditorSettings ? "chevron-down" : "chevron-right");
+      void this.plugin.saveSettings();
     });
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Editor color picker").setDesc("Show inline color picker for hex/rgb values.").addToggle(
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Editor color picker").setDesc("Show inline color picker for hex/rgb values.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.enableAceColorPicker).onChange(async (value) => {
         this.plugin.settings.enableAceColorPicker = value;
         await this.plugin.saveSettings();
       })
     );
-    let liveAutoCompletiongsToggle = new import_obsidian16.Setting(editorSettingsContainer).setName("Live auto completion").setDesc("Show auto-completion suggestions while typing CSS properties and values.").addToggle(
+    let liveAutoCompletiongsToggle = new import_obsidian17.Setting(editorSettingsContainer).setName("Live auto completion").setDesc("Show auto-completion suggestions while typing CSS properties and values.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.enableAceAutoCompletion).onChange(async (value) => {
         var _a2;
         if (!value) {
           if ((_a2 = snippetsToggle.settingEl.querySelector(".checkbox-container")) == null ? void 0 : _a2.hasClass("is-enabled")) {
-            new import_obsidian16.Notice('Snippets are enabled and require that "Live auto completion" be enabled. Please disable the below "Snippets" toggle before disabling this setting.', 1e4);
+            new import_obsidian17.Notice('Snippets are enabled and require that "live auto completion" be enabled. Please disable the below "snippets" toggle before disabling this setting.', 1e4);
             toggle.setValue(true);
             return;
           }
@@ -68620,23 +68566,23 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
       })
     );
-    let snippetsToggle = new import_obsidian16.Setting(editorSettingsContainer).setName("Snippets").setDesc("Show Obsidian CSS variables in auto-completion (requires live auto-completion).").addToggle(
+    let snippetsToggle = new import_obsidian17.Setting(editorSettingsContainer).setName("Snippets").setDesc("Show Obsidian CSS variables in auto-completion (requires live auto-completion).").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.enableAceSnippets).onChange(async (value) => {
         var _a2;
         this.plugin.settings.enableAceSnippets = value;
         if (value) {
           if (!((_a2 = liveAutoCompletiongsToggle.settingEl.querySelector(".checkbox-container")) == null ? void 0 : _a2.hasClass("is-enabled"))) {
-            new import_obsidian16.Notice('Please enable the above "Live auto completion" toggle before enabling this setting.', 1e4);
+            new import_obsidian17.Notice('Please enable the above "live auto completion" toggle before enabling this setting.', 1e4);
             toggle.setValue(false);
             this.plugin.settings.enableAceSnippets = false;
           }
         } else {
-          new import_obsidian16.Notice('Disabling this setting requires a reload of the Obsidian window. From the command palette, run the command "Reload app without saving." \u2026 Click this message to dismiss.', 0);
+          new import_obsidian17.Notice('Disabling this setting requires a reload of the Obsidian window. From the command palette, run the command "reload app without saving." \u2026 click this message to dismiss.', 0);
         }
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Editor theme").setDesc('CSS editor color theme. "Auto" matches your Obsidian theme.').addDropdown(async (dropdown) => {
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Editor theme").setDesc('CSS editor color theme. "auto" matches your Obsidian theme.').addDropdown(async (dropdown) => {
       for (const key in THEME_COLOR) {
         dropdown.addOption(key, key);
       }
@@ -68646,7 +68592,7 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Light mode theme").setDesc("Syntax highlighting theme when Obsidian is in light mode.").addDropdown((dropdown) => {
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Light mode theme").setDesc("Syntax highlighting theme when Obsidian is in light mode.").addDropdown((dropdown) => {
       AceLightThemesList.forEach((theme) => {
         dropdown.addOption(theme.value, theme.name);
       });
@@ -68655,7 +68601,7 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Dark mode theme").setDesc("Syntax highlighting theme when Obsidian is in dark mode.").addDropdown((dropdown) => {
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Dark mode theme").setDesc("Syntax highlighting theme when Obsidian is in dark mode.").addDropdown((dropdown) => {
       AceDarkThemesList.forEach((theme) => {
         dropdown.addOption(theme.value, theme.name);
       });
@@ -68664,7 +68610,7 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Keyboard shortcuts").setDesc("Keyboard shortcut scheme for the CSS editor.").addDropdown((dropdown) => {
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Keyboard shortcuts").setDesc("Keyboard shortcut scheme for the CSS editor.").addDropdown((dropdown) => {
       AceKeyboardList.forEach((binding) => {
         dropdown.addOption(binding, binding);
       });
@@ -68674,12 +68620,12 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
       });
     });
     let fontSizeSlider;
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Font size").setDesc("Set the font size of the CSS editor.").addSlider((slider) => {
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Font size").setDesc("Set the font size of the CSS editor.").addSlider((slider) => {
       fontSizeSlider = slider;
       slider.setLimits(5, 30, 1).setValue(this.plugin.settings.editorFontSize).onChange(async (value) => {
         slider.sliderEl.setAttribute("aria-label", value.toString());
         this.plugin.settings.editorFontSize = value;
-        this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
       slider.sliderEl.setAttribute("aria-label", this.plugin.settings.editorFontSize.toString());
       slider.sliderEl.setAttribute("data-tooltip-position", "top");
@@ -68692,14 +68638,14 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Font family").setDesc('Font family for the CSS editor (e.g., "Fira Code", "Monaco"). Leave empty for default.').addText(
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Font family").setDesc('Font family for the CSS editor (e.g., "fira code", "monaco"). Leave empty for default.').addText(
       (text) => text.setValue(this.plugin.settings.editorFontFamily).onChange(async (value) => {
         this.plugin.settings.editorFontFamily = value;
         await this.plugin.saveSettings();
       })
     );
     let tabWidthDropdown;
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Tab width").setDesc("Indentation width (spaces per tab level). Standard is 2 or 4.").addDropdown((dropdown) => {
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Tab width").setDesc("Indentation width (spaces per tab level). Standard is 2 or 4.").addDropdown((dropdown) => {
       tabWidthDropdown = dropdown;
       dropdown.addOptions({
         "2": "2",
@@ -68715,24 +68661,24 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Word wrap").setDesc("Wrap long lines instead of scrolling horizontally.").addToggle((toggle) => toggle.setValue(this.plugin.settings.editorWordWrap).onChange(async (value) => {
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Word wrap").setDesc("Wrap long lines instead of scrolling horizontally.").addToggle((toggle) => toggle.setValue(this.plugin.settings.editorWordWrap).onChange(async (value) => {
       this.plugin.settings.editorWordWrap = value;
       await this.plugin.saveSettings();
     }));
-    new import_obsidian16.Setting(editorSettingsContainer).setName("Line numbers").setDesc("Show line numbers in the CSS editor.").addToggle(
+    new import_obsidian17.Setting(editorSettingsContainer).setName("Line numbers").setDesc("Show line numbers in the CSS editor.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.editorLineNumbers).onChange(async (value) => {
         this.plugin.settings.editorLineNumbers = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Theme export").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Theme export").setHeading();
     containerEl.createDiv(
       {
         cls: "cts-theme-export-description",
         text: "These settings can also be changed at time of export."
       }
     );
-    new import_obsidian16.Setting(containerEl).setName("Theme name").setDesc("The name or title for your exported theme. ").addText((text) => text.setValue(this.plugin.settings.exportThemeName).onChange(async (value) => {
+    new import_obsidian17.Setting(containerEl).setName("Theme name").setDesc("The name or title for your exported theme. ").addText((text) => text.setValue(this.plugin.settings.exportThemeName).onChange(async (value) => {
       this.plugin.settings.exportThemeName = value;
       await this.plugin.saveSettings();
       let varInput = window.document.querySelector(".cts-view .export-form-theme-name");
@@ -68740,7 +68686,7 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         varInput.value = value;
       }
     }));
-    new import_obsidian16.Setting(containerEl).setName("Author name").setDesc("Your name as the theme author. ").addText((text) => text.setValue(this.plugin.settings.exportThemeAuthor).onChange(async (value) => {
+    new import_obsidian17.Setting(containerEl).setName("Author name").setDesc("Your name as the theme author. ").addText((text) => text.setValue(this.plugin.settings.exportThemeAuthor).onChange(async (value) => {
       this.plugin.settings.exportThemeAuthor = value;
       await this.plugin.saveSettings();
       let varInput = window.document.querySelector(".cts-view .export-form-theme-author");
@@ -68748,7 +68694,7 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         varInput.value = value;
       }
     }));
-    new import_obsidian16.Setting(containerEl).setName("Author URL").setDesc("URL to your Github profile page (e.g. https://github.com/username). ").addText((text) => text.setValue(this.plugin.settings.exportThemeURL).onChange(async (value) => {
+    new import_obsidian17.Setting(containerEl).setName("Author URL").setDesc("URL to your GitHub profile page (e.g. https://github.com/username). ").addText((text) => text.setValue(this.plugin.settings.exportThemeURL).onChange(async (value) => {
       this.plugin.settings.exportThemeURL = value;
       await this.plugin.saveSettings();
       let varInput = window.document.querySelector(".cts-view .export-form-theme-url");
@@ -68756,7 +68702,7 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         varInput.value = value;
       }
     }));
-    new import_obsidian16.Setting(containerEl).setName("Include disabled CSS rules when exporting").setDesc('Include disabled rules in exported themes (useful for sharing themes with optional features)."').addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Include disabled CSS rules when exporting").setDesc('Include disabled rules in exported themes (useful for sharing themes with optional features)."').addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.exportThemeIncludeDisabled).onChange(async (value) => {
         this.plugin.settings.exportThemeIncludeDisabled = value;
         await this.plugin.saveSettings();
@@ -68770,7 +68716,7 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         }
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Prettier formatting").setDesc("Automatically format CSS using Prettier formatter.").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Prettier formatting").setDesc("Automatically format CSS using prettier formatter.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.exportPrettierFormat).onChange(async (value) => {
         this.plugin.settings.exportPrettierFormat = value;
         await this.plugin.saveSettings();
@@ -68784,18 +68730,18 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         }
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Scroll helper").setHeading();
-    new import_obsidian16.Setting(containerEl).setName("Scroll to top").setDesc("Auto-scroll to expanded sections or active editors for easier navigation.").addToggle(
+    new import_obsidian17.Setting(containerEl).setName("Scroll helper").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Scroll to top").setDesc("Auto-scroll to expanded sections or active editors for easier navigation.").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.viewScrollToTop).onChange(async (value) => {
         this.plugin.settings.viewScrollToTop = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Settings backup").setHeading();
-    new import_obsidian16.Setting(containerEl).setName("Export & import settings").setDesc("Export or import all plugin settings. Import will overwrite current settings. File saved to vault root as CTS_settings.json.").addButton((button) => {
+    new import_obsidian17.Setting(containerEl).setName("Backup").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Export & import settings").setDesc("Export or import all plugin settings. Import will overwrite current settings. File saved to vault root as cts_settings.json.").addButton((button) => {
       button.setButtonText("Export");
-      button.onClick(async () => {
-        settingsIO_default.exportSettings(this.plugin.settings, this.app);
+      button.onClick(() => {
+        void settingsIO_default.exportSettings(this.plugin.settings, this.app);
       });
     }).addButton((button) => {
       button.setButtonText("Import");
@@ -68805,32 +68751,36 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
           if (await confirm("This will overwrite your current settings and cannot be undone. Continue?", this.plugin.app)) {
             this.plugin.settings = importedSettings;
             await this.plugin.saveData(this.plugin.settings);
-            new import_obsidian16.Notice("Settings imported successfully. The plugin will now be reloaded.");
-            this.reload();
+            const leaves = this.app.workspace.getLeavesOfType("cts-view");
+            if (leaves.length > 0) {
+              void this.plugin.reloadView();
+            }
+            this.display();
+            new import_obsidian17.Notice("Settings imported successfully");
           }
         }
       });
     });
-    new import_obsidian16.Setting(containerEl).setName("Troubleshooting").setHeading();
-    new import_obsidian16.Setting(containerEl).setName("Reload view").setDesc("Most settings under CSS variables & CSS rules require the plugin's view to be reloaded to take effect.").addButton(
+    new import_obsidian17.Setting(containerEl).setName("Troubleshooting").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Reload view").setDesc("Most settings under CSS variables & CSS rules require the plugin's view to be reloaded to take effect.").addButton(
       (button) => button.setButtonText("Reload").setClass("mod-destructive").onClick(async () => {
         if (await confirm("You may have unsaved changes. Reloading the view will reload all forms. Continue?", this.plugin.app)) {
           try {
             await this.plugin.reloadView();
-            new import_obsidian16.Notice("The Custom Theme Studio view has been reloaded");
+            new import_obsidian17.Notice("The custom theme studio view has been reloaded");
           } catch (error) {
-            Logger.error(error);
-            new import_obsidian16.Notice("Failed to reload view. Check developer console for details.", 1e4);
+            Logger.error(error instanceof Error ? error.message : String(error));
+            new import_obsidian17.Notice("Failed to reload view. Check developer console for details.", 1e4);
           }
         }
       })
     );
-    new import_obsidian16.Setting(containerEl).setName("Debug level").setDesc("Control console logging verbosity for debugging").addDropdown((dropdown) => dropdown.addOption("none", "None (No logs)").addOption("error", "Errors only").addOption("warn", "Warnings and errors").addOption("info", "Info, warnings, and errors").addOption("debug", "Debug (All logs)").setValue(this.plugin.settings.debugLevel).onChange(async (value) => {
+    new import_obsidian17.Setting(containerEl).setName("Debug level").setDesc("Control console logging verbosity for debugging").addDropdown((dropdown) => dropdown.addOption("none", "None (no logs)").addOption("error", "Errors only").addOption("warn", "Warnings and errors").addOption("info", "Info, warnings, and errors").addOption("debug", "Debug (all logs)").setValue(this.plugin.settings.debugLevel).onChange(async (value) => {
       this.plugin.settings.debugLevel = value;
       await this.plugin.saveSettings();
     }));
-    new import_obsidian16.Setting(containerEl).setName("Reset").setClass("reset-options-heading").setHeading();
-    new import_obsidian16.Setting(containerEl).setName("Reset theme").setDesc("Reset all theme customizations.").addButton((button) => button.setButtonText("Reset").setClass("mod-destructive").onClick(async () => {
+    new import_obsidian17.Setting(containerEl).setName("Reset").setClass("reset-options-heading").setHeading();
+    new import_obsidian17.Setting(containerEl).setName("Reset theme").setDesc("Reset all theme customizations.").addButton((button) => button.setButtonText("Reset").setClass("mod-destructive").onClick(async () => {
       if (await confirm("Are you sure you want to reset all theme customizations? This cannot be undone.", this.plugin.app)) {
         this.plugin.settings.customCSS = "";
         this.plugin.settings.cssVariables = [];
@@ -68841,18 +68791,12 @@ var CustomThemeStudioSettingTab = class extends import_obsidian16.PluginSettingT
         await this.plugin.saveSettings();
         const leaves = this.app.workspace.getLeavesOfType("cts-view");
         if (leaves.length > 0) {
-          this.plugin.reloadView();
+          void this.plugin.reloadView();
         }
         this.display();
-        new import_obsidian16.Notice("Theme has been reset");
+        new import_obsidian17.Notice("Theme has been reset");
       }
     }));
-  }
-  /** Reloads the plugin */
-  async reload() {
-    await this.app.plugins.disablePlugin("custom-theme-studio");
-    await this.app.plugins.enablePlugin("custom-theme-studio");
-    this.app.setting.openTabById("custom-theme-studio").display();
   }
 };
 
@@ -68870,7 +68814,7 @@ var ExportSection = class extends UIComponent {
       expanded: this.plugin.settings.expandExportTheme,
       onToggle: (expanded) => {
         this.plugin.settings.expandExportTheme = expanded;
-        this.saveSettings();
+        void this.saveSettings();
       }
     });
     this.renderDescription(content);
@@ -68936,27 +68880,27 @@ var ExportSection = class extends UIComponent {
   }
   renderIncludeDisabledToggle(container) {
     const includeDisabledContainer = container.createDiv("export-form-item include-disabled-toggle");
-    const { toggle } = createToggleSwitch(
+    createToggleSwitch(
       includeDisabledContainer,
       "include-disabled-switch",
       "Include disabled CSS rules when exporting",
       this.plugin.settings.exportThemeIncludeDisabled,
-      async (checked) => {
+      (checked) => {
         this.plugin.settings.exportThemeIncludeDisabled = checked;
-        await this.saveSettings();
+        void this.saveSettings();
       }
     );
   }
   renderPrettierToggle(container) {
     const enablePrettierContainer = container.createDiv("export-form-item enable-prettier-toggle");
-    const { toggle } = createToggleSwitch(
+    createToggleSwitch(
       enablePrettierContainer,
       "enable-prettier-switch",
-      "Format CSS with Prettier formatter",
+      "Format CSS with prettier formatter",
       this.plugin.settings.exportPrettierFormat,
-      async (checked) => {
+      (checked) => {
         this.plugin.settings.exportPrettierFormat = checked;
-        await this.saveSettings();
+        void this.saveSettings();
       }
     );
   }
@@ -68971,8 +68915,8 @@ var ExportSection = class extends UIComponent {
     createIconButton(exportCSSButtons, {
       icon: "download",
       label: "Export CSS",
-      onClick: async () => {
-        this.plugin.themeManager.exportThemeCSS();
+      onClick: () => {
+        void this.plugin.themeManager.exportThemeCSS();
       }
     });
     createIconButton(exportCSSButtons, {
@@ -68980,7 +68924,7 @@ var ExportSection = class extends UIComponent {
       label: "Copy CSS to clipboard",
       classes: ["copy-css-button"],
       onClick: () => {
-        this.plugin.themeManager.copyThemeToClipboard();
+        void this.plugin.themeManager.copyThemeToClipboard();
       }
     });
   }
@@ -68990,8 +68934,8 @@ var ExportSection = class extends UIComponent {
     createIconButton(exportManifestButtons, {
       icon: "download",
       label: "Export manifest JSON",
-      onClick: async () => {
-        this.plugin.themeManager.exportThemeManifest();
+      onClick: () => {
+        void this.plugin.themeManager.exportThemeManifest();
       }
     });
     createIconButton(exportManifestButtons, {
@@ -68999,19 +68943,19 @@ var ExportSection = class extends UIComponent {
       label: "Copy manifest JSON to clipboard",
       classes: ["copy-manifest-button"],
       onClick: () => {
-        this.plugin.themeManager.copyManifestToClipboard();
+        void this.plugin.themeManager.copyManifestToClipboard();
       }
     });
   }
   // Event Handler Methods
   handleNameInputChange(value) {
-    this.settingsManager.update("exportThemeName", value);
+    void this.settingsManager.update("exportThemeName", value);
   }
   handleAuthorInputChange(value) {
-    this.settingsManager.update("exportThemeAuthor", value);
+    void this.settingsManager.update("exportThemeAuthor", value);
   }
   handleURLInputChange(value) {
-    this.settingsManager.update("exportThemeURL", value);
+    void this.settingsManager.update("exportThemeURL", value);
   }
   setupReactiveListeners() {
     this.settingsUnsubscribers.push(
@@ -69042,7 +68986,7 @@ var ExportSection = class extends UIComponent {
 
 // src/views/customThemeStudioView.ts
 var VIEW_TYPE_CTS = "cts-view";
-var CustomThemeStudioView = class extends import_obsidian17.ItemView {
+var CustomThemeStudioView = class extends import_obsidian18.ItemView {
   constructor(settings, leaf, plugin, config) {
     super(leaf);
     this.config = config;
@@ -69053,7 +68997,7 @@ var CustomThemeStudioView = class extends import_obsidian17.ItemView {
     this.cssEditorManager = new CSSEditorManager(this.app.workspace, this.plugin, this, this.config);
     this.workspace = this.app.workspace;
     this.settings = settings;
-    this.editorScope = new import_obsidian17.Scope();
+    this.editorScope = new import_obsidian18.Scope();
     this.context = {
       app: this.app,
       plugin: this.plugin,
@@ -69068,7 +69012,7 @@ var CustomThemeStudioView = class extends import_obsidian17.ItemView {
     return VIEW_TYPE_CTS;
   }
   getDisplayText() {
-    return "Custom Theme Studio";
+    return "Custom theme studio";
   }
   getIcon() {
     return "paintbrush";
@@ -69100,8 +69044,8 @@ var CustomThemeStudioView = class extends import_obsidian17.ItemView {
       const target = e.target;
       if ((target == null ? void 0 : target.getAttribute("role")) === "button" && target.tagName === "A") {
         const key = e.key;
-        const isEnter = key === "Enter" || e.keyCode === 13;
-        const isSpace = key === " " || key === "Spacebar" || e.keyCode === 32;
+        const isEnter = key === "Enter";
+        const isSpace = key === " " || key === "Spacebar";
         if (isEnter || isSpace) {
           e.preventDefault();
           target.click();
@@ -69163,8 +69107,15 @@ var CustomThemeStudioView = class extends import_obsidian17.ItemView {
 };
 
 // src/managers/themeManager.ts
-var import_obsidian18 = require("obsidian");
-var import_file_saver = __toESM(require_FileSaver_min());
+var import_obsidian19 = require("obsidian");
+function saveAs(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = activeDocument.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 var ThemeManager = class {
   constructor(plugin) {
     this.styleEl = null;
@@ -69220,8 +69171,8 @@ var ThemeManager = class {
       this.removeCustomTheme();
       showNotice("Custom theme disabled", NOTICE_DURATIONS.STANDARD, "error");
     }
-    this.plugin.saveSettings();
-    let themeToggle = window.document.querySelector('.cts-view [id="theme-toggle-switch"]');
+    void this.plugin.saveSettings();
+    const themeToggle = activeDocument.querySelector('.cts-view [id="theme-toggle-switch"]');
     if (themeToggle) {
       if (this.plugin.settings.themeEnabled) {
         themeToggle.checked = true;
@@ -69274,7 +69225,7 @@ ${section.vars}}
         const content = section == null ? void 0 : section.querySelector(".collapsible-content");
         if (content && icon) {
           content.classList.replace("hide", "show");
-          (0, import_obsidian18.setIcon)(icon, "chevron-down");
+          (0, import_obsidian19.setIcon)(icon, "chevron-down");
           icon.setAttr("aria-label", "Collapse section");
           icon.setAttr("data-tooltip-position", "top");
         }
@@ -69292,7 +69243,7 @@ ${section.vars}}
             const content = section == null ? void 0 : section.querySelector(".collapsible-content");
             if (content && icon) {
               content.classList.replace("hide", "show");
-              (0, import_obsidian18.setIcon)(icon, "chevron-down");
+              (0, import_obsidian19.setIcon)(icon, "chevron-down");
               icon.setAttr("aria-label", "Collapse section");
               icon.setAttr("data-tooltip-position", "top");
             }
@@ -69321,9 +69272,9 @@ ${rule.css}
 ${variablesCSS}
 
 ${rulesCSS}`;
-      new import_obsidian18.Notice("Exporting theme CSS file\u2026", 5e3);
+      new import_obsidian19.Notice("Exporting theme CSS file\u2026", 5e3);
       let prettierCSS = this.plugin.settings.exportPrettierFormat ? await this.formatCSS(themeCSS) : themeCSS;
-      (0, import_file_saver.saveAs)(new Blob([prettierCSS], { type: "text/css" }), "theme.css");
+      saveAs(new Blob([prettierCSS], { type: "text/css" }), "theme.css");
     } catch (error) {
       Logger.error("Failed to export theme", error);
       showNotice("Failed to export theme. Check the developer console for details", 1e4, "error");
@@ -69340,8 +69291,8 @@ ${rulesCSS}`;
         authorUrl: this.plugin.settings.exportThemeURL || DEFAULT_SETTINGS.exportThemeURL
       };
       const manifestJSON = JSON.stringify(manifest, null, 2);
-      new import_obsidian18.Notice("Exporting theme manifest file\u2026", 5e3);
-      (0, import_file_saver.saveAs)(new Blob([manifestJSON], { type: "application/json" }), "manifest.json");
+      new import_obsidian19.Notice("Exporting theme manifest file\u2026", 5e3);
+      saveAs(new Blob([manifestJSON], { type: "application/json" }), "manifest.json");
     } catch (error) {
       Logger.error("Failed to export manifest:", error);
       showNotice("Failed to export manifest. Check the developer console for details", 1e4, "error");
@@ -69624,9 +69575,9 @@ var SettingsManager = class {
 };
 
 // src/modals/CssSnippetFuzzySuggestModal.ts
-var import_obsidian19 = require("obsidian");
+var import_obsidian20 = require("obsidian");
 init_confirmModal();
-var CssSnippetFuzzySuggestModal = class extends import_obsidian19.FuzzySuggestModal {
+var CssSnippetFuzzySuggestModal = class extends import_obsidian20.FuzzySuggestModal {
   constructor(app, plugin, config) {
     super(app);
     this.config = config;
@@ -69657,59 +69608,64 @@ var CssSnippetFuzzySuggestModal = class extends import_obsidian19.FuzzySuggestMo
   getItemText(item) {
     return item.basename;
   }
-  async onChooseItem(item, _evt) {
-    let css = await this.readSnippetFile(this.app, item);
-    let uuid = generateUniqueId();
-    let rule = "Snippet: " + item.name;
-    this.plugin.settings.cssRules.push({
-      uuid,
-      rule,
-      css,
-      enabled: false
-    });
-    this.plugin.saveSettings();
-    let leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_CTS).first();
-    if (leaf) {
-      if (!await confirm('The snippet has been saved as a new CSS rule. Click "OK" to reload the "Custom Theme Studio" view or if you have unsaved changes, click "Cancel" to reload the view manually at a later time.', this.plugin.app)) {
-        return;
-      }
-      await this.app.workspace.revealLeaf(leaf);
-      if (leaf.view instanceof CustomThemeStudioView) {
-        let view = leaf.view;
-        const ruleList = view.containerEl.querySelector(".css-rule");
-        if (ruleList) {
-          ruleList.empty();
-          this.plugin.settings.cssRules.sort((a, b2) => a.rule.localeCompare(b2.rule));
-          this.plugin.settings.cssRules.forEach((rule2) => {
-            view.cssEditorManager.createRuleItem(ruleList, rule2);
-          });
-          const rulesSection = view.containerEl.querySelector(".rules-section");
-          const ruleSection = rulesSection.querySelector(".collapsible-content");
-          const toggleIcon = rulesSection.querySelector(".collapse-icon");
-          if (ruleSection && toggleIcon) {
-            ruleSection.classList.replace("hide", "show");
-            (0, import_obsidian19.setIcon)(toggleIcon, "chevron-down");
-            toggleIcon.setAttr("aria-label", "Collapse section");
-            toggleIcon.setAttr("data-tooltip-position", "top");
-          }
-          if (this.plugin.settings.viewScrollToTop) {
-            window.setTimeout(() => {
-              const ruleDiv = view.containerEl.querySelector(`[data-cts-uuid="${uuid}"]`);
-              view.scrollToDiv(ruleDiv);
-            }, 100);
+  onChooseItem(item, _evt) {
+    void (async () => {
+      var _a2;
+      const css = await this.readSnippetFile(this.app, item);
+      const uuid = generateUniqueId();
+      const rule = "Snippet: " + item.name;
+      this.plugin.settings.cssRules.push({
+        uuid,
+        rule,
+        css,
+        enabled: false
+      });
+      void this.plugin.saveSettings();
+      const leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_CTS).first();
+      if (leaf) {
+        if (!await confirm('The snippet has been saved as a new CSS rule. Click "OK" to reload the "Custom Theme Studio" view or if you have unsaved changes, click "Cancel" to reload the view manually at a later time.', this.plugin.app)) {
+          return;
+        }
+        await this.app.workspace.revealLeaf(leaf);
+        if (leaf.view instanceof CustomThemeStudioView) {
+          const view = leaf.view;
+          const ruleList = view.containerEl.querySelector(".css-rule");
+          if (ruleList) {
+            ruleList.empty();
+            this.plugin.settings.cssRules.sort((a, b2) => a.rule.localeCompare(b2.rule));
+            this.plugin.settings.cssRules.forEach((r) => {
+              view.cssEditorManager.createRuleItem(ruleList, r);
+            });
+            const rulesSection = view.containerEl.querySelector(".rules-section");
+            const ruleSection = rulesSection == null ? void 0 : rulesSection.querySelector(".collapsible-content");
+            const toggleIcon = (_a2 = rulesSection == null ? void 0 : rulesSection.querySelector(".collapse-icon")) != null ? _a2 : null;
+            if (ruleSection && toggleIcon) {
+              ruleSection.classList.replace("hide", "show");
+              (0, import_obsidian20.setIcon)(toggleIcon, "chevron-down");
+              toggleIcon.setAttr("aria-label", "Collapse section");
+              toggleIcon.setAttr("data-tooltip-position", "top");
+            }
+            if (this.plugin.settings.viewScrollToTop) {
+              window.setTimeout(() => {
+                const ruleDiv = view.containerEl.querySelector(`[data-cts-uuid="${uuid}"]`);
+                if (ruleDiv) {
+                  view.scrollToDiv(ruleDiv);
+                }
+              }, 100);
+            }
           }
         }
+      } else {
+        showNotice("The snippet has been saved as a new CSS rule", NOTICE_DURATIONS.STANDARD, "success");
       }
-    } else {
-      showNotice("The snippet has been saved as a new CSS rule", NOTICE_DURATIONS.STANDARD, "success");
-    }
+    })();
   }
   getSnippetDirectory(app) {
     return `${app.vault.configDir}/snippets/`;
   }
   async readSnippetFile(app, file) {
     const data = await app.vault.adapter.read(
-      (0, import_obsidian19.normalizePath)(`${this.getSnippetDirectory(app)}${file.name}`)
+      (0, import_obsidian20.normalizePath)(`${this.getSnippetDirectory(app)}${file.name}`)
     );
     return data;
   }
@@ -69729,7 +69685,7 @@ var CssFile = class {
 };
 
 // src/main.ts
-var CustomThemeStudioPlugin = class extends import_obsidian20.Plugin {
+var CustomThemeStudioPlugin = class extends import_obsidian21.Plugin {
   constructor() {
     super(...arguments);
     this.freezeDelaySecs = 5;
@@ -69743,28 +69699,28 @@ var CustomThemeStudioPlugin = class extends import_obsidian20.Plugin {
       VIEW_TYPE_CTS,
       (leaf) => new CustomThemeStudioView(this.settings, leaf, this, this.config)
     );
-    this.addRibbonIcon("paintbrush", "Custom Theme Studio", () => {
-      this.activateView();
+    this.addRibbonIcon("paintbrush", "Custom theme studio", () => {
+      void this.activateView();
     });
     this.addCommand({
       id: "open-theme-studio",
       name: "Open view",
       callback: () => {
-        this.activateView();
+        void this.activateView();
       }
     });
     this.addCommand({
       id: "toggle-custom-theme",
       name: "Toggle custom theme",
       callback: () => {
-        this.themeManager.toggleCustomTheme();
+        void this.themeManager.toggleCustomTheme();
       }
     });
     this.addCommand({
       id: "select-element-for-css-rule",
       name: "Select an element for new CSS rule",
       callback: () => {
-        this.themeManager.startElementSelection();
+        void this.themeManager.startElementSelection();
       }
     });
     this.addCommand({
@@ -69815,7 +69771,7 @@ ${rule.css}
       }
       await leaf.setViewState({ type: VIEW_TYPE_CTS, active: true });
     }
-    workspace.revealLeaf(leaf);
+    void workspace.revealLeaf(leaf);
   }
   onunload() {
     var _a2;
@@ -69828,7 +69784,7 @@ ${rule.css}
    */
   async loadSettings() {
     const loadedData = await this.loadData();
-    const migratedData = this.migrateSettings(loadedData || {});
+    const migratedData = this.migrateSettings(loadedData != null ? loadedData : {});
     this.settings = Object.assign({}, DEFAULT_SETTINGS, migratedData);
     if (!this.settings.version) {
       this.settings.version = SETTINGS_VERSION;
@@ -69859,11 +69815,11 @@ ${rule.css}
    */
   async reloadView() {
     const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_CTS);
-    leaves.forEach((leaf) => {
+    for (const leaf of leaves) {
       if (leaf.view instanceof CustomThemeStudioView) {
-        leaf.view.onOpen();
+        void leaf.view.onOpen();
       }
-    });
+    }
   }
 };
 /*! Bundled license information:

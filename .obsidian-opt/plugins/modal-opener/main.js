@@ -1862,17 +1862,13 @@ var ModalOpenerSettingTab = class extends import_obsidian3.PluginSettingTab {
   }
   deleteCustomCommand(index) {
     this.plugin.settings.customCommands.splice(index, 1);
-    this.plugin.saveSettings();
     this.reloadPlugin();
     this.display();
     new import_obsidian3.Notice(t("Command deleted successfully."));
   }
   async reloadPlugin() {
     await this.plugin.saveSettings();
-    const app = this.plugin.app;
-    await app.plugins.disablePlugin("modal-opener");
-    await app.plugins.enablePlugin("modal-opener");
-    app.setting.openTabById("modal-opener").display();
+    await this.plugin.reloadHandlers();
   }
   // 添加一个通用的创建插件设置的函数
   createPluginSetting(container, pluginId, displayName, settingKey) {
@@ -2044,6 +2040,13 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
   }
   async saveSettings() {
     await this.saveData(this.settings);
+    this.updateExcludeData();
+    this.registerOpenHandler();
+    this.registerCustomCommands();
+  }
+  async reloadHandlers() {
+    await this.loadSettings();
+    this.applyStyles();
     this.updateExcludeData();
     this.registerOpenHandler();
     this.registerCustomCommands();
@@ -2612,7 +2615,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       } */
   registerAltClickHandler() {
     this.altClickHandler = (evt) => {
-      var _a, _b, _c, _d, _e;
+      var _a, _b, _c, _d, _e, _f, _g, _h;
       const target = evt.target;
       const activeView = (_a = this.app.workspace.getMostRecentLeaf()) == null ? void 0 : _a.view;
       const editor = (_b = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView)) == null ? void 0 : _b.editor;
@@ -2627,10 +2630,20 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
         return;
       if (editor && editor.somethingSelected())
         return;
-      if ((_c = target.getAttribute("alt")) == null ? void 0 : _c.endsWith(".svg"))
+      if (((_c = target.getAttribute("alt")) == null ? void 0 : _c.endsWith(".svg")) && !target.closest(".image-wrapper"))
         return;
+      if (target.closest(".image-wrapper")) {
+        const imgSrc = target.src || "";
+        console.log("image-wrapper imgSrc:", imgSrc);
+        if (imgSrc.includes(".svg")) {
+          const diagramsManifest = (_e = (_d = this.app.plugins) == null ? void 0 : _d.manifests) == null ? void 0 : _e["obsidian-diagrams-net"];
+          if (diagramsManifest && ((_f = diagramsManifest.author) == null ? void 0 : _f.includes("Muuxi"))) {
+            return;
+          }
+        }
+      }
       if (!isAltClick && isSingleClick && singleClickType !== "external" && target.closest('.workspace-leaf-content[data-type="markdown"]')) {
-        const currentFilePath = (_d = this.app.workspace.getActiveFile()) == null ? void 0 : _d.path;
+        const currentFilePath = (_g = this.app.workspace.getActiveFile()) == null ? void 0 : _g.path;
         if (currentFilePath && this.excludeFiles.length > 0) {
           const isExcluded = this.excludeFiles.includes(currentFilePath);
           if (isExcluded)
@@ -2638,7 +2651,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
         }
       }
       if (target.matches(".multi-select-pill-content > span")) {
-        const spanValue = (_e = target.textContent) == null ? void 0 : _e.trim();
+        const spanValue = (_h = target.textContent) == null ? void 0 : _h.trim();
         const activeFile = this.app.workspace.getActiveFile();
         if (!spanValue || !activeFile) {
           return;
@@ -2729,8 +2742,11 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       }
       return false;
     }
+    if (element.tagName === "IMG" && element.closest(".image-wrapper")) {
+      return true;
+    }
     let current = element;
-    const selectorList = ["rect", "img", "svg"];
+    const selectorList = ["rect", "img", "svg", "video"];
     if (selectorList.some((selector) => target.matches(selector))) {
       while (current) {
         if (current instanceof HTMLElement && current.classList.contains("internal-embed")) {
@@ -2870,6 +2886,18 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
     }
     if (target.tagName === "IMG" && target.hasAttribute("data-smm-file")) {
       return target.getAttribute("data-smm-file") || "";
+    }
+    if (target.tagName === "IMG" && target.closest(".image-wrapper")) {
+      const internalEmbed = target.closest(".internal-embed");
+      if (internalEmbed) {
+        return internalEmbed.getAttribute("src") || "";
+      }
+    }
+    if (target.tagName === "VIDEO") {
+      const internalEmbed = target.closest(".internal-embed");
+      if (internalEmbed) {
+        return internalEmbed.getAttribute("src") || "";
+      }
     }
     return container.getAttribute("data-file-path") || container.getAttribute("filesource") || container.getAttribute("data-path") || container.getAttribute("data-href") || container.getAttribute("href") || container.getAttribute("src") || ((_d = container.textContent) == null ? void 0 : _d.trim()) || "";
   }
@@ -3458,10 +3486,15 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
       input.focus();
       input.select();
       let select;
-      if (fileType == "md") {
+      const showEmbedSelect = fileType === "md" || fileType === "canvas" || fileType === "base";
+      const isEmbedByDefault = fileType === "canvas" || fileType === "base";
+      if (showEmbedSelect) {
         select = inputContainer.createEl("select", { cls: "new-file-select" });
         select.createEl("option", { text: t("Wiki link"), value: "wikilink" });
-        select.createEl("option", { text: t("Embed link"), value: "embed" });
+        const embedOption = select.createEl("option", { text: t("Embed link"), value: "embed" });
+        if (isEmbedByDefault) {
+          embedOption.selected = true;
+        }
       }
       const buttonContainer = container.createDiv({ cls: "new-file-button-container" });
       const confirmButton = buttonContainer.createEl("button", {
@@ -3477,7 +3510,7 @@ var _ModalOpenerPlugin = class extends import_obsidian4.Plugin {
         if (fileName) {
           resolve({
             fileName,
-            isEmbed: select ? select.value === "embed" : true
+            isEmbed: select ? select.value === "embed" : isEmbedByDefault
           });
           modal.close();
         }
