@@ -4695,17 +4695,17 @@ var require_katex = __commonJS({
             return SourceLocation2;
           }();
           var Token_Token = /* @__PURE__ */ function() {
-            function Token2(text4, loc) {
+            function Token2(text5, loc) {
               this.text = void 0;
               this.loc = void 0;
               this.noexpand = void 0;
               this.treatAsRelax = void 0;
-              this.text = text4;
+              this.text = text5;
               this.loc = loc;
             }
             var _proto = Token2.prototype;
-            _proto.range = function range(endToken, text4) {
-              return new Token2(text4, SourceLocation.range(this, endToken));
+            _proto.range = function range(endToken, text5) {
+              return new Token2(text5, SourceLocation.range(this, endToken));
             };
             return Token2;
           }();
@@ -4764,8 +4764,8 @@ var require_katex = __commonJS({
             "'": "&#x27;"
           };
           var ESCAPE_REGEX = /[&><"']/g;
-          function utils_escape(text4) {
-            return String(text4).replace(ESCAPE_REGEX, function(match3) {
+          function utils_escape(text5) {
+            return String(text5).replace(ESCAPE_REGEX, function(match3) {
               return ESCAPE_LOOKUP[match3];
             });
           }
@@ -4914,7 +4914,7 @@ var require_katex = __commonJS({
             _proto.cramp = function cramp() {
               return Style_styles[_cramp[this.id]];
             };
-            _proto.text = function text4() {
+            _proto.text = function text5() {
               return Style_styles[_text[this.id]];
             };
             _proto.isTight = function isTight() {
@@ -5314,7 +5314,7 @@ var require_katex = __commonJS({
             "\xEC": "\u0131\u0300"
           };
           var domTree_SymbolNode = /* @__PURE__ */ function() {
-            function SymbolNode(text4, height, depth, italic, skew2, width, classes, style) {
+            function SymbolNode(text5, height, depth, italic, skew2, width, classes, style) {
               this.text = void 0;
               this.height = void 0;
               this.depth = void 0;
@@ -5324,7 +5324,7 @@ var require_katex = __commonJS({
               this.maxFontSize = void 0;
               this.classes = void 0;
               this.style = void 0;
-              this.text = text4;
+              this.text = text5;
               this.height = height || 0;
               this.depth = depth || 0;
               this.italic = italic || 0;
@@ -8841,18 +8841,18 @@ var require_katex = __commonJS({
           };
           var buildCommon_makeOrd = function makeOrd(group, options, type) {
             var mode = group.mode;
-            var text4 = group.text;
+            var text5 = group.text;
             var classes = ["mord"];
             var isFont = mode === "math" || mode === "text" && options.font;
             var fontOrFamily = isFont ? options.font : options.fontFamily;
-            if (text4.charCodeAt(0) === 55349) {
-              var _wideCharacterFont = wide_character_wideCharacterFont(text4, mode), wideFontName = _wideCharacterFont[0], wideFontClass = _wideCharacterFont[1];
-              return buildCommon_makeSymbol(text4, wideFontName, mode, options, classes.concat(wideFontClass));
+            if (text5.charCodeAt(0) === 55349) {
+              var _wideCharacterFont = wide_character_wideCharacterFont(text5, mode), wideFontName = _wideCharacterFont[0], wideFontClass = _wideCharacterFont[1];
+              return buildCommon_makeSymbol(text5, wideFontName, mode, options, classes.concat(wideFontClass));
             } else if (fontOrFamily) {
               var fontName;
               var fontClasses;
               if (fontOrFamily === "boldsymbol") {
-                var fontData = boldsymbol(text4, mode, options, classes, type);
+                var fontData = boldsymbol(text5, mode, options, classes, type);
                 fontName = fontData.fontName;
                 fontClasses = [fontData.fontClass];
               } else if (isFont) {
@@ -8862,29 +8862,29 @@ var require_katex = __commonJS({
                 fontName = retrieveTextFontName(fontOrFamily, options.fontWeight, options.fontShape);
                 fontClasses = [fontOrFamily, options.fontWeight, options.fontShape];
               }
-              if (buildCommon_lookupSymbol(text4, fontName, mode).metrics) {
-                return buildCommon_makeSymbol(text4, fontName, mode, options, classes.concat(fontClasses));
-              } else if (ligatures.hasOwnProperty(text4) && fontName.substr(0, 10) === "Typewriter") {
+              if (buildCommon_lookupSymbol(text5, fontName, mode).metrics) {
+                return buildCommon_makeSymbol(text5, fontName, mode, options, classes.concat(fontClasses));
+              } else if (ligatures.hasOwnProperty(text5) && fontName.substr(0, 10) === "Typewriter") {
                 var parts = [];
-                for (var i = 0; i < text4.length; i++) {
-                  parts.push(buildCommon_makeSymbol(text4[i], fontName, mode, options, classes.concat(fontClasses)));
+                for (var i = 0; i < text5.length; i++) {
+                  parts.push(buildCommon_makeSymbol(text5[i], fontName, mode, options, classes.concat(fontClasses)));
                 }
                 return buildCommon_makeFragment(parts);
               }
             }
             if (type === "mathord") {
-              return buildCommon_makeSymbol(text4, "Math-Italic", mode, options, classes.concat(["mathnormal"]));
+              return buildCommon_makeSymbol(text5, "Math-Italic", mode, options, classes.concat(["mathnormal"]));
             } else if (type === "textord") {
-              var font = src_symbols[mode][text4] && src_symbols[mode][text4].font;
+              var font = src_symbols[mode][text5] && src_symbols[mode][text5].font;
               if (font === "ams") {
                 var _fontName = retrieveTextFontName("amsrm", options.fontWeight, options.fontShape);
-                return buildCommon_makeSymbol(text4, _fontName, mode, options, classes.concat("amsrm", options.fontWeight, options.fontShape));
+                return buildCommon_makeSymbol(text5, _fontName, mode, options, classes.concat("amsrm", options.fontWeight, options.fontShape));
               } else if (font === "main" || !font) {
                 var _fontName2 = retrieveTextFontName("textrm", options.fontWeight, options.fontShape);
-                return buildCommon_makeSymbol(text4, _fontName2, mode, options, classes.concat(options.fontWeight, options.fontShape));
+                return buildCommon_makeSymbol(text5, _fontName2, mode, options, classes.concat(options.fontWeight, options.fontShape));
               } else {
                 var _fontName3 = retrieveTextFontName(font, options.fontWeight, options.fontShape);
-                return buildCommon_makeSymbol(text4, _fontName3, mode, options, classes.concat(_fontName3, options.fontWeight, options.fontShape));
+                return buildCommon_makeSymbol(text5, _fontName3, mode, options, classes.concat(_fontName3, options.fontWeight, options.fontShape));
               }
             } else {
               throw new Error("unexpected type: " + type + " in makeOrd");
@@ -9289,8 +9289,8 @@ var require_katex = __commonJS({
           var _functions = {};
           var _htmlGroupBuilders = {};
           var _mathmlGroupBuilders = {};
-          function defineFunction(_ref) {
-            var type = _ref.type, names = _ref.names, props = _ref.props, handler = _ref.handler, htmlBuilder = _ref.htmlBuilder, mathmlBuilder = _ref.mathmlBuilder;
+          function defineFunction(_ref2) {
+            var type = _ref2.type, names = _ref2.names, props = _ref2.props, handler = _ref2.handler, htmlBuilder = _ref2.htmlBuilder, mathmlBuilder = _ref2.mathmlBuilder;
             var data2 = {
               type,
               numArgs: props.numArgs,
@@ -9607,9 +9607,9 @@ var require_katex = __commonJS({
             return MathNode;
           }();
           var mathMLTree_TextNode = /* @__PURE__ */ function() {
-            function TextNode(text4) {
+            function TextNode(text5) {
               this.text = void 0;
-              this.text = text4;
+              this.text = text5;
             }
             var _proto2 = TextNode.prototype;
             _proto2.toNode = function toNode() {
@@ -9680,11 +9680,11 @@ var require_katex = __commonJS({
             SpaceNode,
             newDocumentFragment
           };
-          var buildMathML_makeText = function makeText(text4, mode, options) {
-            if (src_symbols[mode][text4] && src_symbols[mode][text4].replace && text4.charCodeAt(0) !== 55349 && !(ligatures.hasOwnProperty(text4) && options && (options.fontFamily && options.fontFamily.substr(4, 2) === "tt" || options.font && options.font.substr(4, 2) === "tt"))) {
-              text4 = src_symbols[mode][text4].replace;
+          var buildMathML_makeText = function makeText(text5, mode, options) {
+            if (src_symbols[mode][text5] && src_symbols[mode][text5].replace && text5.charCodeAt(0) !== 55349 && !(ligatures.hasOwnProperty(text5) && options && (options.fontFamily && options.fontFamily.substr(4, 2) === "tt" || options.font && options.font.substr(4, 2) === "tt"))) {
+              text5 = src_symbols[mode][text5].replace;
             }
-            return new mathMLTree.TextNode(text4);
+            return new mathMLTree.TextNode(text5);
           };
           var buildMathML_makeRow = function makeRow(body) {
             if (body.length === 1) {
@@ -9735,15 +9735,15 @@ var require_katex = __commonJS({
             } else if (font === "mathtt") {
               return "monospace";
             }
-            var text4 = group.text;
-            if (utils.contains(["\\imath", "\\jmath"], text4)) {
+            var text5 = group.text;
+            if (utils.contains(["\\imath", "\\jmath"], text5)) {
               return null;
             }
-            if (src_symbols[mode][text4] && src_symbols[mode][text4].replace) {
-              text4 = src_symbols[mode][text4].replace;
+            if (src_symbols[mode][text5] && src_symbols[mode][text5].replace) {
+              text5 = src_symbols[mode][text5].replace;
             }
             var fontName = buildCommon.fontMap[font].fontName;
-            if (getCharacterMetrics(text4, fontName, mode)) {
+            if (getCharacterMetrics(text5, fontName, mode)) {
               return buildCommon.fontMap[font].variant;
             }
             return null;
@@ -10282,8 +10282,8 @@ var require_katex = __commonJS({
             props: {
               numArgs: 1
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var base2 = args[0];
               return {
                 type: "accentUnder",
@@ -10356,8 +10356,8 @@ var require_katex = __commonJS({
               numArgs: 1,
               numOptionalArgs: 1
             },
-            handler: function handler(_ref, args, optArgs) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args, optArgs) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               return {
                 type: "xArrow",
                 mode: parser.mode,
@@ -10447,8 +10447,8 @@ var require_katex = __commonJS({
               numArgs: 1,
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               var arg = assertNodeType(args[0], "ordgroup");
               var group = arg.body;
               var number = "";
@@ -10486,8 +10486,8 @@ var require_katex = __commonJS({
               greediness: 3,
               argTypes: ["color", "original"]
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               var color = assertNodeType(args[0], "color-token").color;
               var body = args[1];
               return {
@@ -10533,8 +10533,8 @@ var require_katex = __commonJS({
               argTypes: ["size"],
               allowedInText: true
             },
-            handler: function handler(_ref, args, optArgs) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args, optArgs) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var size = optArgs[0];
               var newRow = funcName === "\\cr";
               var newLine = false;
@@ -10624,8 +10624,8 @@ var require_katex = __commonJS({
               numArgs: 0,
               allowedInText: true
             },
-            handler: function handler(_ref) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               parser.consumeSpaces();
               var token = parser.fetch();
               if (globalMap[token.text]) {
@@ -10747,8 +10747,8 @@ var require_katex = __commonJS({
             span.depth += shift;
           };
           var delimiter_makeSmallDelim = function makeSmallDelim(delim, style, center, options, mode, classes) {
-            var text4 = buildCommon.makeSymbol(delim, "Main-Regular", mode, options);
-            var span = delimiter_styleWrap(text4, style, options, classes);
+            var text5 = buildCommon.makeSymbol(delim, "Main-Regular", mode, options);
+            var span = delimiter_styleWrap(text5, style, options, classes);
             if (center) {
               centerSpan(span, options, style);
             }
@@ -10959,13 +10959,13 @@ var require_katex = __commonJS({
           var delimiter_sqrtSvg = function sqrtSvg(sqrtName, height, viewBoxHeight, extraViniculum, options) {
             var path = sqrtPath(sqrtName, extraViniculum, viewBoxHeight);
             var pathNode = new domTree_PathNode(sqrtName, path);
-            var svg = new SvgNode([pathNode], {
+            var svg2 = new SvgNode([pathNode], {
               "width": "400em",
               "height": height + "em",
               "viewBox": "0 0 400000 " + viewBoxHeight,
               "preserveAspectRatio": "xMinYMin slice"
             });
-            return buildCommon.makeSvgSpan(["hide-tail"], [svg], options);
+            return buildCommon.makeSvgSpan(["hide-tail"], [svg2], options);
           };
           var makeSqrtImage = function makeSqrtImage2(height, options) {
             var newOptions = options.havingBaseSizing();
@@ -11555,8 +11555,8 @@ var require_katex = __commonJS({
               greediness: 3,
               argTypes: ["color", "text"]
             },
-            handler: function handler(_ref, args, optArgs) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args, optArgs) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var color = assertNodeType(args[0], "color-token").color;
               var body = args[1];
               return {
@@ -11634,8 +11634,8 @@ var require_katex = __commonJS({
             mathmlBuilder: enclose_mathmlBuilder
           });
           var _environments = {};
-          function defineEnvironment(_ref) {
-            var type = _ref.type, names = _ref.names, props = _ref.props, handler = _ref.handler, htmlBuilder = _ref.htmlBuilder, mathmlBuilder = _ref.mathmlBuilder;
+          function defineEnvironment(_ref2) {
+            var type = _ref2.type, names = _ref2.names, props = _ref2.props, handler = _ref2.handler, htmlBuilder = _ref2.htmlBuilder, mathmlBuilder = _ref2.mathmlBuilder;
             var data2 = {
               type,
               numArgs: props.numArgs || 0,
@@ -11666,8 +11666,8 @@ var require_katex = __commonJS({
             }
             return hlineInfo;
           }
-          function parseArray(parser, _ref, style) {
-            var hskipBeforeAndAfter = _ref.hskipBeforeAndAfter, addJot = _ref.addJot, cols = _ref.cols, arraystretch = _ref.arraystretch, colSeparationType = _ref.colSeparationType;
+          function parseArray(parser, _ref2, style) {
+            var hskipBeforeAndAfter = _ref2.hskipBeforeAndAfter, addJot = _ref2.addJot, cols = _ref2.cols, arraystretch = _ref2.arraystretch, colSeparationType = _ref2.colSeparationType;
             parser.gullet.beginGroup();
             parser.gullet.macros.set("\\\\", "\\cr");
             if (!arraystretch) {
@@ -12287,8 +12287,8 @@ var require_katex = __commonJS({
               numArgs: 1,
               argTypes: ["text"]
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var nameGroup = args[0];
               if (nameGroup.type !== "ordgroup") {
                 throw new src_ParseError("Invalid environment name", nameGroup);
@@ -12368,8 +12368,8 @@ var require_katex = __commonJS({
             props: {
               numArgs: 1
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var body = args[0];
               return {
                 type: "mclass",
@@ -12488,8 +12488,8 @@ var require_katex = __commonJS({
               numArgs: 1,
               greediness: 2
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var body = args[0];
               var func = funcName;
               if (func in fontAliases) {
@@ -12742,8 +12742,8 @@ var require_katex = __commonJS({
               numArgs: 2,
               greediness: 2
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var numer = args[0];
               var denom = args[1];
               var hasBarLine;
@@ -13041,8 +13041,8 @@ var require_katex = __commonJS({
             props: {
               numArgs: 1
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               return {
                 type: "horizBrace",
                 mode: parser.mode,
@@ -13062,8 +13062,8 @@ var require_katex = __commonJS({
               argTypes: ["url", "original"],
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               var body = args[1];
               var href = assertNodeType(args[0], "url").url;
               if (!parser.settings.isTrusted({
@@ -13143,8 +13143,8 @@ var require_katex = __commonJS({
               argTypes: ["raw", "original"],
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName, token = _ref.token;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName, token = _ref2.token;
               var value = assertNodeType(args[0], "raw").string;
               var body = args[1];
               if (parser.settings.strict) {
@@ -13227,8 +13227,8 @@ var require_katex = __commonJS({
               numArgs: 2,
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               return {
                 type: "htmlmathml",
                 mode: parser.mode,
@@ -13274,8 +13274,8 @@ var require_katex = __commonJS({
               argTypes: ["raw", "url"],
               allowedInText: false
             },
-            handler: function handler(_ref, args, optArgs) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args, optArgs) {
+              var parser = _ref2.parser;
               var width = {
                 number: 0,
                 unit: "em"
@@ -13389,8 +13389,8 @@ var require_katex = __commonJS({
               argTypes: ["size"],
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var size = assertNodeType(args[0], "size");
               if (parser.settings.strict) {
                 var mathFunction = funcName[1] === "m";
@@ -13429,8 +13429,8 @@ var require_katex = __commonJS({
               numArgs: 1,
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var body = args[0];
               return {
                 type: "lap",
@@ -13474,8 +13474,8 @@ var require_katex = __commonJS({
               allowedInText: true,
               allowedInMath: false
             },
-            handler: function handler(_ref, args) {
-              var funcName = _ref.funcName, parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var funcName = _ref2.funcName, parser = _ref2.parser;
               var outerMode = parser.mode;
               parser.switchMode("math");
               var close = funcName === "\\(" ? "\\)" : "$";
@@ -13522,8 +13522,8 @@ var require_katex = __commonJS({
             props: {
               numArgs: 4
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               return {
                 type: "mathchoice",
                 mode: parser.mode,
@@ -13755,8 +13755,8 @@ var require_katex = __commonJS({
             props: {
               numArgs: 0
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var fName = funcName;
               if (fName.length === 1) {
                 fName = singleCharBigOps[fName];
@@ -13961,8 +13961,8 @@ var require_katex = __commonJS({
             props: {
               numArgs: 1
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var body = args[0];
               return {
                 type: "operatorname",
@@ -13994,8 +13994,8 @@ var require_katex = __commonJS({
             props: {
               numArgs: 1
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               var body = args[0];
               return {
                 type: "overline",
@@ -14040,8 +14040,8 @@ var require_katex = __commonJS({
               numArgs: 1,
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               var body = args[0];
               return {
                 type: "phantom",
@@ -14139,8 +14139,8 @@ var require_katex = __commonJS({
               argTypes: ["size", "hbox"],
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               var amount = assertNodeType(args[0], "size").value;
               var body = args[1];
               return {
@@ -14177,8 +14177,8 @@ var require_katex = __commonJS({
               numOptionalArgs: 1,
               argTypes: ["size", "size", "size"]
             },
-            handler: function handler(_ref, args, optArgs) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args, optArgs) {
+              var parser = _ref2.parser;
               var shift = optArgs[0];
               var width = assertNodeType(args[0], "size");
               var height = assertNodeType(args[1], "size");
@@ -14251,8 +14251,8 @@ var require_katex = __commonJS({
               numArgs: 0,
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var breakOnTokenText = _ref.breakOnTokenText, funcName = _ref.funcName, parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var breakOnTokenText = _ref2.breakOnTokenText, funcName = _ref2.funcName, parser = _ref2.parser;
               var body = parser.parseExpression(false, breakOnTokenText);
               return {
                 type: "sizing",
@@ -14278,8 +14278,8 @@ var require_katex = __commonJS({
               numOptionalArgs: 1,
               allowedInText: true
             },
-            handler: function handler(_ref, args, optArgs) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args, optArgs) {
+              var parser = _ref2.parser;
               var smashHeight = false;
               var smashDepth = false;
               var tbArg = optArgs[0] && assertNodeType(optArgs[0], "ordgroup");
@@ -14359,8 +14359,8 @@ var require_katex = __commonJS({
               numArgs: 1,
               numOptionalArgs: 1
             },
-            handler: function handler(_ref, args, optArgs) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args, optArgs) {
+              var parser = _ref2.parser;
               var index2 = optArgs[0];
               var body = args[0];
               return {
@@ -14444,8 +14444,8 @@ var require_katex = __commonJS({
               numArgs: 0,
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var breakOnTokenText = _ref.breakOnTokenText, funcName = _ref.funcName, parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var breakOnTokenText = _ref2.breakOnTokenText, funcName = _ref2.funcName, parser = _ref2.parser;
               var body = parser.parseExpression(true, breakOnTokenText);
               var style = funcName.slice(1, funcName.length - 5);
               return {
@@ -14703,17 +14703,17 @@ var require_katex = __commonJS({
               return buildCommon.makeOrd(group, options, "textord");
             },
             mathmlBuilder: function mathmlBuilder(group, options) {
-              var text4 = buildMathML_makeText(group.text, group.mode, options);
+              var text5 = buildMathML_makeText(group.text, group.mode, options);
               var variant = buildMathML_getVariant(group, options) || "normal";
               var node;
               if (group.mode === "text") {
-                node = new mathMLTree.MathNode("mtext", [text4]);
+                node = new mathMLTree.MathNode("mtext", [text5]);
               } else if (/[0-9]/.test(group.text)) {
-                node = new mathMLTree.MathNode("mn", [text4]);
+                node = new mathMLTree.MathNode("mn", [text5]);
               } else if (group.text === "\\prime") {
-                node = new mathMLTree.MathNode("mo", [text4]);
+                node = new mathMLTree.MathNode("mo", [text5]);
               } else {
-                node = new mathMLTree.MathNode("mi", [text4]);
+                node = new mathMLTree.MathNode("mi", [text5]);
               }
               if (variant !== defaultVariant[node.type]) {
                 node.setAttribute("mathvariant", variant);
@@ -14825,8 +14825,8 @@ var require_katex = __commonJS({
               greediness: 2,
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser, funcName = _ref.funcName;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser, funcName = _ref2.funcName;
               var body = args[0];
               return {
                 type: "text",
@@ -14852,8 +14852,8 @@ var require_katex = __commonJS({
               numArgs: 1,
               allowedInText: true
             },
-            handler: function handler(_ref, args) {
-              var parser = _ref.parser;
+            handler: function handler(_ref2, args) {
+              var parser = _ref2.parser;
               return {
                 type: "underline",
                 mode: parser.mode,
@@ -14902,11 +14902,11 @@ var require_katex = __commonJS({
               throw new src_ParseError("\\verb ended by end of line instead of matching delimiter");
             },
             htmlBuilder: function htmlBuilder(group, options) {
-              var text4 = makeVerb(group);
+              var text5 = makeVerb(group);
               var body = [];
               var newOptions = options.havingStyle(options.style.text());
-              for (var i = 0; i < text4.length; i++) {
-                var c = text4[i];
+              for (var i = 0; i < text5.length; i++) {
+                var c = text5[i];
                 if (c === "~") {
                   c = "\\textasciitilde";
                 }
@@ -14915,8 +14915,8 @@ var require_katex = __commonJS({
               return buildCommon.makeSpan(["mord", "text"].concat(newOptions.sizingClasses(options)), buildCommon.tryCombineChars(body), newOptions);
             },
             mathmlBuilder: function mathmlBuilder(group, options) {
-              var text4 = new mathMLTree.TextNode(makeVerb(group));
-              var node = new mathMLTree.MathNode("mtext", [text4]);
+              var text5 = new mathMLTree.TextNode(makeVerb(group));
+              var node = new mathMLTree.MathNode("mtext", [text5]);
               node.setAttribute("mathvariant", "monospace");
               return node;
             }
@@ -14961,8 +14961,8 @@ var require_katex = __commonJS({
               if (match3 === null || match3.index !== pos) {
                 throw new src_ParseError("Unexpected character: '" + input[pos] + "'", new Token_Token(input[pos], new SourceLocation(this, pos, pos + 1)));
               }
-              var text4 = match3[2] || " ";
-              if (this.catcodes[text4] === 14) {
+              var text5 = match3[2] || " ";
+              if (this.catcodes[text5] === 14) {
                 var nlIndex = input.indexOf("\n", this.tokenRegex.lastIndex);
                 if (nlIndex === -1) {
                   this.tokenRegex.lastIndex = input.length;
@@ -14972,11 +14972,11 @@ var require_katex = __commonJS({
                 }
                 return this.lex();
               }
-              var controlMatch = text4.match(controlWordWhitespaceRegex);
+              var controlMatch = text5.match(controlWordWhitespaceRegex);
               if (controlMatch) {
-                text4 = controlMatch[1];
+                text5 = controlMatch[1];
               }
-              return new Token_Token(text4, new SourceLocation(this, pos, this.tokenRegex.lastIndex));
+              return new Token_Token(text5, new SourceLocation(this, pos, this.tokenRegex.lastIndex));
             };
             return Lexer2;
           }();
@@ -16247,12 +16247,12 @@ var require_katex = __commonJS({
               this.leftrightDepth = 0;
             }
             var _proto = Parser4.prototype;
-            _proto.expect = function expect(text4, consume) {
+            _proto.expect = function expect(text5, consume) {
               if (consume === void 0) {
                 consume = true;
               }
-              if (this.fetch().text !== text4) {
-                throw new src_ParseError("Expected '" + text4 + "', got '" + this.fetch().text + "'", this.fetch());
+              if (this.fetch().text !== text5) {
+                throw new src_ParseError("Expected '" + text5 + "', got '" + this.fetch().text + "'", this.fetch());
               }
               if (consume) {
                 this.consume();
@@ -16370,13 +16370,13 @@ var require_katex = __commonJS({
               }
               return group;
             };
-            _proto.formatUnsupportedCmd = function formatUnsupportedCmd(text4) {
+            _proto.formatUnsupportedCmd = function formatUnsupportedCmd(text5) {
               var textordArray = [];
-              for (var i = 0; i < text4.length; i++) {
+              for (var i = 0; i < text5.length; i++) {
                 textordArray.push({
                   type: "textord",
                   mode: "text",
-                  text: text4[i]
+                  text: text5[i]
                 });
               }
               var textNode = {
@@ -16718,11 +16718,11 @@ var require_katex = __commonJS({
                 this.consumeSpaces();
               }
               var firstToken = this.fetch();
-              var text4 = firstToken.text;
+              var text5 = firstToken.text;
               var result;
-              if (optional ? text4 === "[" : text4 === "{" || text4 === "\\begingroup") {
+              if (optional ? text5 === "[" : text5 === "{" || text5 === "\\begingroup") {
                 this.consume();
-                var groupEnd = Parser4.endOfGroup[text4];
+                var groupEnd = Parser4.endOfGroup[text5];
                 this.gullet.beginGroup();
                 var expression = this.parseExpression(false, groupEnd);
                 var lastToken = this.fetch();
@@ -16733,17 +16733,17 @@ var require_katex = __commonJS({
                   mode: this.mode,
                   loc: SourceLocation.range(firstToken, lastToken),
                   body: expression,
-                  semisimple: text4 === "\\begingroup" || void 0
+                  semisimple: text5 === "\\begingroup" || void 0
                 };
               } else if (optional) {
                 result = null;
               } else {
                 result = this.parseFunction(breakOnTokenText, name2, greediness) || this.parseSymbol();
-                if (result == null && text4[0] === "\\" && !implicitCommands.hasOwnProperty(text4)) {
+                if (result == null && text5[0] === "\\" && !implicitCommands.hasOwnProperty(text5)) {
                   if (this.settings.throwOnError) {
-                    throw new src_ParseError("Undefined control sequence: " + text4, firstToken);
+                    throw new src_ParseError("Undefined control sequence: " + text5, firstToken);
                   }
-                  result = this.formatUnsupportedCmd(text4);
+                  result = this.formatUnsupportedCmd(text5);
                   this.consume();
                 }
               }
@@ -16789,10 +16789,10 @@ var require_katex = __commonJS({
             };
             _proto.parseSymbol = function parseSymbol() {
               var nucleus = this.fetch();
-              var text4 = nucleus.text;
-              if (/^\\verb[^a-zA-Z]/.test(text4)) {
+              var text5 = nucleus.text;
+              if (/^\\verb[^a-zA-Z]/.test(text5)) {
                 this.consume();
-                var arg = text4.slice(5);
+                var arg = text5.slice(5);
                 var star = arg.charAt(0) === "*";
                 if (star) {
                   arg = arg.slice(1);
@@ -16808,27 +16808,27 @@ var require_katex = __commonJS({
                   star
                 };
               }
-              if (unicodeSymbols.hasOwnProperty(text4[0]) && !src_symbols[this.mode][text4[0]]) {
+              if (unicodeSymbols.hasOwnProperty(text5[0]) && !src_symbols[this.mode][text5[0]]) {
                 if (this.settings.strict && this.mode === "math") {
-                  this.settings.reportNonstrict("unicodeTextInMathMode", 'Accented Unicode text character "' + text4[0] + '" used in math mode', nucleus);
+                  this.settings.reportNonstrict("unicodeTextInMathMode", 'Accented Unicode text character "' + text5[0] + '" used in math mode', nucleus);
                 }
-                text4 = unicodeSymbols[text4[0]] + text4.substr(1);
+                text5 = unicodeSymbols[text5[0]] + text5.substr(1);
               }
-              var match3 = combiningDiacriticalMarksEndRegex.exec(text4);
+              var match3 = combiningDiacriticalMarksEndRegex.exec(text5);
               if (match3) {
-                text4 = text4.substring(0, match3.index);
-                if (text4 === "i") {
-                  text4 = "\u0131";
-                } else if (text4 === "j") {
-                  text4 = "\u0237";
+                text5 = text5.substring(0, match3.index);
+                if (text5 === "i") {
+                  text5 = "\u0131";
+                } else if (text5 === "j") {
+                  text5 = "\u0237";
                 }
               }
               var symbol;
-              if (src_symbols[this.mode][text4]) {
-                if (this.settings.strict && this.mode === "math" && extraLatin.indexOf(text4) >= 0) {
-                  this.settings.reportNonstrict("unicodeTextInMathMode", 'Latin-1/Unicode text character "' + text4[0] + '" used in math mode', nucleus);
+              if (src_symbols[this.mode][text5]) {
+                if (this.settings.strict && this.mode === "math" && extraLatin.indexOf(text5) >= 0) {
+                  this.settings.reportNonstrict("unicodeTextInMathMode", 'Latin-1/Unicode text character "' + text5[0] + '" used in math mode', nucleus);
                 }
-                var group = src_symbols[this.mode][text4].group;
+                var group = src_symbols[this.mode][text5].group;
                 var loc = SourceLocation.range(nucleus);
                 var s2;
                 if (ATOMS.hasOwnProperty(group)) {
@@ -16838,30 +16838,30 @@ var require_katex = __commonJS({
                     mode: this.mode,
                     family,
                     loc,
-                    text: text4
+                    text: text5
                   };
                 } else {
                   s2 = {
                     type: group,
                     mode: this.mode,
                     loc,
-                    text: text4
+                    text: text5
                   };
                 }
                 symbol = s2;
-              } else if (text4.charCodeAt(0) >= 128) {
+              } else if (text5.charCodeAt(0) >= 128) {
                 if (this.settings.strict) {
-                  if (!supportedCodepoint(text4.charCodeAt(0))) {
-                    this.settings.reportNonstrict("unknownSymbol", 'Unrecognized Unicode character "' + text4[0] + '"' + (" (" + text4.charCodeAt(0) + ")"), nucleus);
+                  if (!supportedCodepoint(text5.charCodeAt(0))) {
+                    this.settings.reportNonstrict("unknownSymbol", 'Unrecognized Unicode character "' + text5[0] + '"' + (" (" + text5.charCodeAt(0) + ")"), nucleus);
                   } else if (this.mode === "math") {
-                    this.settings.reportNonstrict("unicodeTextInMathMode", 'Unicode text character "' + text4[0] + '" used in math mode', nucleus);
+                    this.settings.reportNonstrict("unicodeTextInMathMode", 'Unicode text character "' + text5[0] + '" used in math mode', nucleus);
                   }
                 }
                 symbol = {
                   type: "textord",
                   mode: "text",
                   loc: SourceLocation.range(nucleus),
-                  text: text4
+                  text: text5
                 };
               } else {
                 return null;
@@ -19005,7 +19005,7 @@ __export(main_exports, {
   default: () => AnyBlockPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian9 = require("obsidian");
+var import_obsidian8 = require("obsidian");
 
 // ../ABConverter/converter/ABConvert.ts
 var ABConvert = class {
@@ -19067,13 +19067,18 @@ var ABCSetting = {
   obsidian: {
     global_app: null,
     global_ctx: null,
-    mermaid: void 0
+    mermaid: void 0,
+    markmap_event: void 0
   },
   pro: {
     disable: false,
     enable_callout_selector: true,
+    enable_alias_override: true,
     editableblock_defaultRender: "readmode",
     create_decorations: void 0
+  },
+  state: {
+    language: "en"
   }
 };
 var ABReg = {
@@ -19119,11 +19124,11 @@ function autoABAlias(header, selectorName, content) {
   } else if (selectorName == "table" || ABReg.reg_table_noprefix.test(content.trimStart())) {
     header = "|table_140lne" + header;
   }
-  for (const item of ABAlias_json) {
+  for (const item of get_ABAlias_iter()) {
     header = header.replace(item.regex, item.replacement);
   }
   for (const item of ABAlias_json_withSub) {
-    header = header.replace(item.regex, (match3, ...groups) => {
+    header = header.replace(item.regex, (_match, ...groups) => {
       return item.replacement.replace(/\$(\d+)/g, (_, number) => {
         var _a3;
         return (_a3 = groups[number - 1]) != null ? _a3 : "";
@@ -19140,15 +19145,25 @@ var ABAlias_json_withSub = [
   { regex: /\|(callout|alert) ([^+-\s]+)([+-]?)\s?(.*)\|/, replacement: "|add([!$2]$3 $4)|addQuote|" }
 ];
 var ABAlias_json_mdit = [
-  { regex: /\|:::_140lne\|(2?tabs?|标签页?)\|/, replacement: "|mditTabs|" },
+  { regex: /\|:::_140lne\|((?:mdit2|2)?tabs?|标签页?)\|/, replacement: "|mditTabs|" },
   { regex: "|:::_140lne|demo|", replacement: "|mditDemo|" },
   { regex: "|:::_140lne|abDemo|", replacement: "|mditABDemo|" },
-  { regex: /\|:::_140lne\|(2?col|分栏)\|/, replacement: "|mditCol|" },
-  { regex: /\|:::_140lne\|(2?card|卡片)\|/, replacement: "|mditCard|" },
-  { regex: /\|:::_140lne\|(2?chat|聊天)\|/, replacement: "|mditChat|code(chat)|" }
+  { regex: /\|:::_140lne\|((?:mdit2|2)?col|分栏)\|/, replacement: "|mditCol|" },
+  { regex: /\|:::_140lne\|((?:mdit2|2)?card|卡片)\|/, replacement: "|mditCard|" },
+  { regex: /\|:::_140lne\|((?:mdit2|2)?chat|聊天)\|/, replacement: "|mditChat|code(chat)|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(mermaid|flow|流程图)\|/, replacement: "|mdit2list|list2mermaid|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(mehrmaid|mdmermaid)\|/, replacement: "|mdit2list|list2mehrmaidText|code(mehrmaid)|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(puml)?(plantuml|mindmap|脑图|思维导图)\|/, replacement: "|mdit2list|list2pumlMindmap|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(markmap|mdMindmap|md脑图|md思维导图)\|/, replacement: "|mdit2list|list2markmap|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(wbs|(工作)?分解(图|结构))\|/, replacement: "|mdit2list|list2pumlWBS|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(table|multiWayTable|multiCrossTable|表格?|多叉表格?|跨行表格?)\|/, replacement: "|mdit2list|list2table|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(lt|listTable|treeTable|listGrid|treeGrid|列表格|树形表格?)\|/, replacement: "|mdit2list|list2lt|" },
+  { regex: /\|:::_140lne\|2?(list|列表)\|/, replacement: "|mdit2list|list2lt|addClass(ab-listtable-likelist)|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(dir|dirTree|目录树?|目录结构)\|/, replacement: "|mdit2list|list2dt|" },
+  { regex: /\|:::_140lne\|(fakeList|仿列表)\|/, replacement: "|mdit2list|list2table|addClass(ab-table-fc)|addClass(ab-table-likelist)|" },
+  { regex: "|mdit2list|", replacement: "|mdit2listdata|listdata2strict|listdata2list|" }
 ];
 var ABAlias_json_title = [
-  { regex: "|title2list|", replacement: "|title2listdata|listdata2strict|listdata2list|" },
   { regex: /\|heading_140lne\|2?(timeline|时间线)\|/, replacement: "|title2timeline|" },
   { regex: /\|heading_140lne\|2?(tabs?|标签页?)\||\|title2tabs?\|/, replacement: "|title2c2listdata|c2listdata2tab|" },
   { regex: /\|heading_140lne\|2?(col|分栏)\||\|title2col\|/, replacement: "|title2c2listdata|c2listdata2items|addClass(ab-col)|" },
@@ -19163,7 +19178,8 @@ var ABAlias_json_title = [
   { regex: /\|heading_140lne\|2?(lt|listTable|treeTable|listGrid|treeGrid|列表格|树形表格?)\|/, replacement: "|title2list|list2lt|" },
   { regex: /\|heading_140lne\|2?(list|列表)\|/, replacement: "|title2list|list2lt|addClass(ab-listtable-likelist)|" },
   { regex: /\|heading_140lne\|2?(dir|dirTree|目录树?|目录结构)\|/, replacement: "|title2list|list2dt|" },
-  { regex: /\|heading_140lne\|(fakeList|仿列表)\|/, replacement: "|title2list|list2table|addClass(ab-table-fc)|addClass(ab-table-likelist)|" }
+  { regex: /\|heading_140lne\|(fakeList|仿列表)\|/, replacement: "|title2list|list2table|addClass(ab-table-fc)|addClass(ab-table-likelist)|" },
+  { regex: "|title2list|", replacement: "|title2listdata|listdata2strict|listdata2list|" }
 ];
 var ABAlias_json_list = [
   { regex: "|listXinline|", replacement: "|list2listdata|listdata2strict|listdata2list|" },
@@ -19236,7 +19252,9 @@ var ABAlias_json_general = [
   { regex: "|\u8D85\u8D85\u5C0F\u5B57|", replacement: "|addClass(ab-custom-font-smallxx)|" },
   { regex: "|\u52A0\u7C97|", replacement: "|addClass(ab-custom-font-bold)|" }
 ];
-var ABAlias_json_default = [
+var ABAlias_user = [];
+var ABAlias_pro = [];
+var ABAlias_default = [
   ...ABAlias_json_mdit,
   ...ABAlias_json_title,
   ...ABAlias_json_list,
@@ -19245,9 +19263,11 @@ var ABAlias_json_default = [
   ...ABAlias_json_table,
   ...ABAlias_json_general
 ];
-var ABAlias_json = [
-  ...ABAlias_json_default
-];
+function* get_ABAlias_iter() {
+  yield* ABAlias_user;
+  yield* ABAlias_pro;
+  yield* ABAlias_default;
+}
 var ABAlias_json_end = [
   { regex: "|:::_140lne", replacement: "" },
   { regex: "|heading_140lne", replacement: "" },
@@ -19288,22 +19308,18 @@ var ABConvertManager = class {
     this.m_renderMarkdownFn = callback;
   }
   static autoABConvert(el, header, content, selectorName = "", ctx) {
-    let prev_result = content;
-    let prev_type = "string";
-    let prev_type2 = "string" /* text */;
-    let prev_processor;
     let prev2 = {
-      prev_result,
-      prev_type,
-      prev_type2,
-      prev_processor
+      prev_result: content,
+      prev_type: "string",
+      prev_type2: "string" /* text */,
+      prev_processor: void 0
     };
     if (false)
       ABConvertManager.startTime = performance.now();
     {
-      header = autoABAlias(header, selectorName, prev_result);
+      header = autoABAlias(header, selectorName, prev2.prev_result);
       let list_header = header.split("|");
-      prev_result = this.autoABConvert_runConvert(el, list_header, prev2, ctx);
+      this.autoABConvert_runConvert(el, list_header, prev2, ctx);
       this.autoABConvert_last(el, header, selectorName, prev2, ctx);
     }
     if (false) {
@@ -19364,7 +19380,12 @@ var ABConvertManager = class {
               break;
             }
           }
-          prev2.prev_result = abReplaceProcessor.process(el, item_header, prev2.prev_result, ctx);
+          try {
+            prev2.prev_result = abReplaceProcessor.process(el, item_header, prev2.prev_result, ctx);
+          } catch (e) {
+            console.error(`\u5904\u7406\u5668\u6267\u884C\u9519\u8BEF, id:${abReplaceProcessor.id}, header:${item_header}, error:`, e);
+            break;
+          }
           prev2.prev_type = typeof prev2.prev_result;
           prev2.prev_type2 = abReplaceProcessor.process_return;
           prev2.prev_processor = abReplaceProcessor.process;
@@ -19375,7 +19396,7 @@ var ABConvertManager = class {
     }
     return prev2;
   }
-  static autoABConvert_last(el, header, selectorName, prev2, ctx) {
+  static autoABConvert_last(el, _header, _selectorName, prev2, _ctx) {
     if (prev2.prev_type == "string" && prev2.prev_type2 == "string" /* text */) {
       const subEl = document.createElement("div");
       el.appendChild(subEl);
@@ -19383,7 +19404,7 @@ var ABConvertManager = class {
       prev2.prev_result = el;
       prev2.prev_type = "object";
       prev2.prev_type2 = "HTMLElement" /* el */;
-      prev2.process = "md";
+      prev2.prev_processor = "md";
     } else if (prev2.prev_type == "string" && prev2.prev_type2 == "json_string" /* json */) {
       const code_str = "```json\n" + prev2.prev_result + "\n```\n";
       const subEl = document.createElement("div");
@@ -19392,7 +19413,7 @@ var ABConvertManager = class {
       prev2.prev_result = el;
       prev2.prev_type = "object";
       prev2.prev_type2 = "HTMLElement" /* el */;
-      prev2.process = "show_json";
+      prev2.prev_processor = "show_json";
     } else if (prev2.prev_type == "object" && (prev2.prev_type2 == "array" /* list_stream */ || prev2.prev_type2 == "array2" /* c2list_stream */ || prev2.prev_type2 == "json_string" /* json */)) {
       const code_str = "```json\n" + JSON.stringify(prev2.prev_result, null, 2) + "\n```\n";
       const subEl = document.createElement("div");
@@ -19401,7 +19422,7 @@ var ABConvertManager = class {
       prev2.prev_result = el;
       prev2.prev_type = "object";
       prev2.prev_type2 = "HTMLElement" /* el */;
-      prev2.process = "show_listStream";
+      prev2.prev_processor = "show_listStream";
     } else if (prev2.prev_type == "object" && prev2.prev_type2 == "HTMLElement" /* el */) {
       return prev2;
     } else {
@@ -19412,7 +19433,7 @@ var ABConvertManager = class {
 };
 
 // ../ABConverter/converter/abc_text.ts
-var abc_addQuote = ABConvert.factory({
+var _abc_addQuote = ABConvert.factory({
   id: "addQuote",
   name: "\u589E\u52A0\u5F15\u7528\u5757",
   match: "addQuote",
@@ -19425,7 +19446,7 @@ var abc_addQuote = ABConvert.factory({
     }).join("\n");
   }
 });
-var abc_addCode = ABConvert.factory({
+var _abc_addCode = ABConvert.factory({
   id: "addCode",
   name: "\u589E\u52A0\u4EE3\u7801\u5757",
   match: /^(addCode|code)(\((.*)\))?$/,
@@ -19501,7 +19522,7 @@ var abc_xCode = ABConvert.factory({
     return content;
   }
 });
-var abc_x = ABConvert.factory({
+var _abc_x = ABConvert.factory({
   id: "x",
   name: "\u53BB\u9664\u4EE3\u7801\u6216\u5F15\u7528\u5757",
   match: /^(x|X)$/,
@@ -19525,7 +19546,7 @@ var abc_x = ABConvert.factory({
     return content;
   }
 });
-var abc_slice = ABConvert.factory({
+var _abc_slice = ABConvert.factory({
   id: "slice",
   name: "\u5207\u7247",
   match: /^slice\((\s*\d+\s*)(,\s*-?\d+\s*)?\)$/,
@@ -19548,7 +19569,7 @@ var abc_slice = ABConvert.factory({
       return content.split("\n").slice(arg1, arg2).join("\n");
   }
 });
-var abc_add = ABConvert.factory({
+var _abc_add = ABConvert.factory({
   id: "add",
   name: "\u589E\u6DFB\u5185\u5BB9",
   match: /^add\((.*?)(,\s*-?\d+\s*)?\)$/,
@@ -19583,7 +19604,7 @@ var abc_add = ABConvert.factory({
     return list_content.join("\n");
   }
 });
-var abc_listroot = ABConvert.factory({
+var _abc_listroot = ABConvert.factory({
   id: "listroot",
   name: "\u589E\u52A0\u5217\u8868\u6839",
   match: /^listroot\((.*)\)$/,
@@ -19603,7 +19624,7 @@ var abc_listroot = ABConvert.factory({
     return content;
   }
 });
-var abc_addList = ABConvert.factory({
+var _abc_addList = ABConvert.factory({
   id: "addList",
   name: "\u7F29\u8FDB\u8F6C\u5217\u8868",
   detail: "\u7F29\u8FDB\u8F6C\u5217\u8868",
@@ -19625,7 +19646,7 @@ var abc_addList = ABConvert.factory({
     return newContent;
   }
 });
-var abc_xList = ABConvert.factory({
+var _abc_xList = ABConvert.factory({
   id: "xList",
   name: "\u5217\u8868\u8F6C\u7F29\u8FDB",
   match: /^(xList|Xlist)$/,
@@ -19649,7 +19670,7 @@ var abc_xList = ABConvert.factory({
 });
 
 // ../ABConverter/converter/abc_code.ts
-var abc_region2indent = ABConvert.factory({
+var _abc_region2indent = ABConvert.factory({
   id: "region2indent",
   name: "\u4EE3\u7801\u6CE8\u91CA\u8F6C\u7F29\u8FDB",
   detail: "\u4EE3\u7801\u5757\u6CE8\u91CA\u8F6C\u7F29\u8FDB (\u8BC6\u522B `//` \u548C `#` \u7684region\u6CE8\u91CA\u5BF9)\uFF0C\u901A\u5E38\u914D\u5408code2list\u4F7F\u7528\u3002\u9ED8\u8BA4\u8865\u5145\u4E24\u7F29\u8FDB",
@@ -19678,7 +19699,7 @@ var abc_region2indent = ABConvert.factory({
     return newContent.slice(1);
   }
 });
-var abc_mdit2code = ABConvert.factory({
+var _abc_mdit2code = ABConvert.factory({
   id: "mdit2code",
   name: "mdit\u8F6C\u4EE3\u7801\u5757",
   detail: "mdit\u8F6C\u4EE3\u7801\u5757 (\u5141\u8BB8\u5D4C\u5957)\u3002\u6CE8\u610F `:*n` \u4F1A\u8F6C\u5316\u4E3A `~*(n+3)`, `@aaa bbb` \u4F1A\u8F6C\u6362\u4E3A `# bbb` (h1\u6807\u9898)",
@@ -19711,7 +19732,7 @@ var abc_mdit2code = ABConvert.factory({
 
 // ../ABConverter/converter/abc_list.ts
 var ListProcess = class {
-  static list2data(text4, modeG = true) {
+  static list2data(text5, modeG = true) {
     let list_inline_comp = [];
     function update_inline_comp(level, inline_comp) {
       if (list_inline_comp.length == 0 && inline_comp == 0)
@@ -19735,7 +19756,7 @@ var ListProcess = class {
     }
     let list_itemInfo = [];
     let m_line_cache = null;
-    const list_text = text4.split("\n");
+    const list_text = text5.split("\n");
     for (let line of list_text) {
       const m_line = line.match(ABReg.reg_list_noprefix);
       if (m_line) {
@@ -19766,8 +19787,8 @@ var ListProcess = class {
     }
     return list_itemInfo;
   }
-  static list2listnode(text4) {
-    let data2 = ListProcess.list2data(text4, false);
+  static list2listnode(text5) {
+    let data2 = ListProcess.list2data(text5, false);
     data2 = ListProcess.data2strict(data2);
     let nodes = [];
     let prev_nodes = [];
@@ -19790,8 +19811,8 @@ var ListProcess = class {
     }
     return nodes;
   }
-  static list2json(text4) {
-    let data2 = ListProcess.list2data(text4, false);
+  static list2json(text5) {
+    let data2 = ListProcess.list2data(text5, false);
     data2 = ListProcess.data2strict(data2);
     let nodes = {};
     let prev_nodes = [];
@@ -19858,23 +19879,31 @@ var ListProcess = class {
       }
     }
   }
-  static title2data(text4) {
+  static title2data(text5) {
     let list_itemInfo = [];
-    const list_text = text4.split("\n");
+    const list_text = text5.split("\n");
     let mul_mode = "";
     let codeBlockFlag = "";
     for (let line of list_text) {
       if (codeBlockFlag == "") {
         const match3 = line.match(ABReg.reg_code);
         if (match3 && match3[3]) {
-          codeBlockFlag = match3[1] + match3[3];
-          list_itemInfo[list_itemInfo.length - 1].content = list_itemInfo[list_itemInfo.length - 1].content + "\n" + line;
+          if (mul_mode === "heading" || mul_mode === "") {
+            list_itemInfo.push({
+              content: line,
+              level: 0
+            });
+            mul_mode = "para";
+          } else {
+            codeBlockFlag = match3[1] + match3[3];
+            list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+          }
           continue;
         }
       } else {
         if (line.indexOf(codeBlockFlag) == 0)
           codeBlockFlag = "";
-        list_itemInfo[list_itemInfo.length - 1].content = list_itemInfo[list_itemInfo.length - 1].content + "\n" + line;
+        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
         continue;
       }
       const match_heading = line.match(ABReg.reg_heading_noprefix);
@@ -19894,10 +19923,10 @@ var ListProcess = class {
         });
         mul_mode = "list";
       } else if (/^\S/.test(line) && mul_mode == "list") {
-        list_itemInfo[list_itemInfo.length - 1].content = list_itemInfo[list_itemInfo.length - 1].content + "\n" + line;
+        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
       } else {
         if (mul_mode == "para") {
-          list_itemInfo[list_itemInfo.length - 1].content = list_itemInfo[list_itemInfo.length - 1].content + "\n" + line;
+          list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
         } else if (/^\s*$/.test(line)) {
           continue;
         } else {
@@ -19917,11 +19946,78 @@ var ListProcess = class {
       }
     }
   }
-  static old_ulist2data(text4) {
+  static mdit2data(text5) {
+    let list_itemInfo = [];
+    const list_text = text5.split("\n");
+    let mul_mode = "";
+    let codeBlockFlag = "";
+    for (let line of list_text) {
+      if (codeBlockFlag == "") {
+        const match3 = line.match(ABReg.reg_code);
+        if (match3 && match3[3]) {
+          if (mul_mode === "mdit" || mul_mode === "") {
+            list_itemInfo.push({
+              content: line,
+              level: 0
+            });
+            mul_mode = "para";
+          } else {
+            codeBlockFlag = match3[1] + match3[3];
+            list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+          }
+          continue;
+        }
+      } else {
+        if (line.indexOf(codeBlockFlag) == 0)
+          codeBlockFlag = "";
+        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+        continue;
+      }
+      const match_mdit = line.match(/^(\s*)@(\d+)\s+(.*)$/);
+      const match_list = line.match(ABReg.reg_list_noprefix);
+      if (match_mdit && !match_mdit[1]) {
+        removeTailBlank();
+        list_itemInfo.push({
+          content: match_mdit[3],
+          level: Number(match_mdit[2]) - 100
+        });
+        mul_mode = "mdit";
+      } else if (match_list) {
+        removeTailBlank();
+        list_itemInfo.push({
+          content: match_list[4],
+          level: match_list[1].length + 1
+        });
+        mul_mode = "list";
+      } else if (/^\S/.test(line) && mul_mode == "list") {
+        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+      } else {
+        if (mul_mode == "para") {
+          list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+        } else if (/^\s*$/.test(line)) {
+          continue;
+        } else {
+          list_itemInfo.push({
+            content: line,
+            level: 0
+          });
+          mul_mode = "para";
+        }
+      }
+    }
+    removeTailBlank();
+    return list_itemInfo;
+    function removeTailBlank() {
+      if (mul_mode == "para" || mul_mode == "list") {
+        list_itemInfo[list_itemInfo.length - 1].content = list_itemInfo[list_itemInfo.length - 1].content.replace(/\s*$/, "");
+      }
+    }
+  }
+  static old_ulist2data(text5) {
     let list_itemInfo = [];
     let level1 = -1;
     let level2 = -1;
-    const list_text = text4.split("\n");
+    const list_text = text5.split("\n");
     for (let line of list_text) {
       const m_line = line.match(ABReg.reg_list_noprefix);
       if (m_line) {
@@ -20108,7 +20204,17 @@ var abc_title2listdata = ABConvert.factory({
     return ListProcess.title2data(content);
   }
 });
-var abc_listdata2list = ABConvert.factory({
+var abc_mdit2listdata = ABConvert.factory({
+  id: "mdit2listdata",
+  name: "mdit\u5230listdata",
+  process_param: "string" /* text */,
+  process_return: "array" /* list_stream */,
+  detail: "mdit\u5230listdata",
+  process: (el, header, content) => {
+    return ListProcess.mdit2data(content);
+  }
+});
+var _abc_listdata2list = ABConvert.factory({
   id: "listdata2list",
   name: "listdata\u5230\u5217\u8868",
   process_param: "array" /* list_stream */,
@@ -20118,7 +20224,7 @@ var abc_listdata2list = ABConvert.factory({
     return ListProcess.data2list(content);
   }
 });
-var abc_listdata2nodes = ABConvert.factory({
+var _abc_listdata2nodes = ABConvert.factory({
   id: "listdata2nodes",
   name: "listdata\u5230\u8282\u70B9\u56FE",
   process_param: "array" /* list_stream */,
@@ -20128,7 +20234,7 @@ var abc_listdata2nodes = ABConvert.factory({
     return ListProcess.data2nodes(content, el);
   }
 });
-var abc_listdata2strict = ABConvert.factory({
+var _abc_listdata2strict = ABConvert.factory({
   id: "listdata2strict",
   name: "listdata\u4E25\u683C\u5316",
   process_param: "array" /* list_stream */,
@@ -20138,7 +20244,7 @@ var abc_listdata2strict = ABConvert.factory({
     return ListProcess.data2strict(content);
   }
 });
-var abc_listdata2task = ABConvert.factory({
+var _abc_listdata2task = ABConvert.factory({
   id: "listdata2task",
   name: "listdata\u652F\u6301\u4EFB\u52A1\u5217\u8868",
   process_param: "array" /* list_stream */,
@@ -20250,9 +20356,9 @@ var C2ListProcess = class {
     }
     return list_itemInfo2;
   }
-  static list2c2data(text4, modeG = true) {
+  static list2c2data(text5, modeG = true) {
     const list_itemInfo = [];
-    const list_text = text4.trimStart().split("\n");
+    const list_text = text5.trimStart().split("\n");
     const first_match = list_text[0].match(ABReg.reg_list_noprefix);
     if (!first_match || first_match[1]) {
       console.error("\u4E0D\u662F\u5217\u8868\u5185\u5BB9:", list_text[0]);
@@ -20306,9 +20412,9 @@ var C2ListProcess = class {
       current_content = "";
     }
   }
-  static title2c2data(text4) {
+  static title2c2data(text5) {
     const list_itemInfo = [];
-    const list_text = text4.trimStart().split("\n");
+    const list_text = text5.trimStart().split("\n");
     const first_match = list_text[0].match(ABReg.reg_heading_noprefix);
     if (!first_match || first_match[1]) {
       console.error("\u4E0D\u662F\u6807\u9898\u5185\u5BB9:", list_text[0]);
@@ -20453,7 +20559,7 @@ var C2ListProcess = class {
     return el;
   }
 };
-var abc_list2c2listdata = ABConvert.factory({
+var _abc_list2c2listdata = ABConvert.factory({
   id: "list2c2listdata",
   name: "\u5217\u8868\u8F6Cc2listdata",
   match: "list2c2listdata",
@@ -20464,7 +20570,7 @@ var abc_list2c2listdata = ABConvert.factory({
     return C2ListProcess.list2c2data(content);
   }
 });
-var abc_title2c2listdata = ABConvert.factory({
+var _abc_title2c2listdata = ABConvert.factory({
   id: "title2c2listdata",
   name: "\u6807\u9898\u8F6Cc2listdata",
   match: "title2c2listdata",
@@ -20475,7 +20581,7 @@ var abc_title2c2listdata = ABConvert.factory({
     return C2ListProcess.title2c2data(content);
   }
 });
-var abc_c2listdata2tab = ABConvert.factory({
+var _abc_c2listdata2tab = ABConvert.factory({
   id: "c2listdata2tab",
   name: "c2listdata\u8F6C\u6807\u7B7E",
   match: "c2listdata2tab",
@@ -20486,7 +20592,7 @@ var abc_c2listdata2tab = ABConvert.factory({
     return C2ListProcess.c2data2tab(content, el, false);
   }
 });
-var abc_c2listdata2items = ABConvert.factory({
+var _abc_c2listdata2items = ABConvert.factory({
   id: "c2listdata2items",
   name: "c2listdata\u8F6C\u5BB9\u5668\u7ED3\u6784",
   match: "c2listdata2items",
@@ -20497,7 +20603,7 @@ var abc_c2listdata2items = ABConvert.factory({
     return C2ListProcess.c2data2items(content, el);
   }
 });
-var abc_c2listdata2easytimeline = ABConvert.factory({
+var _abc_c2listdata2easytimeline = ABConvert.factory({
   id: "c2listdata2easytimeline",
   name: "\u9002\u914D\u5230easy_timeline",
   match: "c2listdata2easytimeline",
@@ -20526,23 +20632,23 @@ var abc_c2listdata2easytimeline = ABConvert.factory({
 
 // ../ABConverter/converter/abc_table.ts
 var TableProcess = class {
-  static list2ut(text4, div, modeT = false) {
-    let data2 = ListProcess.list2data(text4);
+  static list2ut(text5, div, modeT = false) {
+    let data2 = ListProcess.list2data(text5);
     data2 = ListProcess.data2strict(data2);
     data2 = C2ListProcess.data_mL_2_2L(data2);
     data2 = ListProcess.data_2L_2_mL1B(data2);
     return TableProcess.data2table(data2, div, modeT);
   }
-  static list2timeline(text4, div, modeT = false) {
-    let data2 = C2ListProcess.list2c2data(text4);
+  static list2timeline(text5, div, modeT = false) {
+    let data2 = C2ListProcess.list2c2data(text5);
     div = TableProcess.data2table(data2, div, modeT);
     const table2 = div.querySelector("table");
     if (table2)
       table2.classList.add("ab-table-timeline", "ab-table-fc");
     return div;
   }
-  static title2timeline(text4, div, modeT = false) {
-    let data2 = C2ListProcess.title2c2data(text4);
+  static title2timeline(text5, div, modeT = false) {
+    let data2 = C2ListProcess.title2c2data(text5);
     div = TableProcess.data2table(data2, div, modeT);
     const table2 = div.querySelector("table");
     if (table2)
@@ -20617,7 +20723,7 @@ var TableProcess = class {
     return div;
   }
 };
-var abc_title2table = ABConvert.factory({
+var _abc_title2table = ABConvert.factory({
   id: "title2table",
   name: "\u6807\u9898\u5230\u8868\u683C",
   process_param: "string" /* text */,
@@ -20627,7 +20733,7 @@ var abc_title2table = ABConvert.factory({
     return el = TableProcess.data2table(data2, el, false);
   }
 });
-var abc_list2table = ABConvert.factory({
+var _abc_list2table = ABConvert.factory({
   id: "list2table",
   name: "\u5217\u8868\u8F6C\u8868\u683C",
   match: /list2(md)?table(T)?/,
@@ -20642,7 +20748,7 @@ var abc_list2table = ABConvert.factory({
     return el = TableProcess.data2table(data2, el, matchs[2] == "T");
   }
 });
-var abc_list2c2table = ABConvert.factory({
+var _abc_list2c2table = ABConvert.factory({
   id: "list2c2t",
   name: "\u5217\u8868\u8F6C\u4E8C\u5217\u8868\u683C",
   match: "list2c2t",
@@ -20654,7 +20760,7 @@ var abc_list2c2table = ABConvert.factory({
     return el;
   }
 });
-var abc_list2ut = ABConvert.factory({
+var _abc_list2ut = ABConvert.factory({
   id: "list2ut",
   name: "\u5217\u8868\u8F6C\u4E8C\u7EF4\u8868\u683C",
   match: /list2(md)?ut(T)?/,
@@ -20669,7 +20775,7 @@ var abc_list2ut = ABConvert.factory({
     return el;
   }
 });
-var abc_list2timeline = ABConvert.factory({
+var _abc_list2timeline = ABConvert.factory({
   id: "list2timeline",
   name: "\u5217\u8868\u8F6C\u65F6\u95F4\u7EBF",
   match: /list2(md)?timeline(T)?/,
@@ -20684,7 +20790,7 @@ var abc_list2timeline = ABConvert.factory({
     return el;
   }
 });
-var abc_title2timeline = ABConvert.factory({
+var _abc_title2timeline = ABConvert.factory({
   id: "title2timeline",
   name: "\u6807\u9898\u8F6C\u65F6\u95F4\u7EBF",
   match: /title2(md)?timeline(T)?/,
@@ -20702,8 +20808,8 @@ var abc_title2timeline = ABConvert.factory({
 
 // ../ABConverter/converter/abc_dir_tree.ts
 var DirProcess = class {
-  static list2lt(text4, div, modeT = false) {
-    let list_itemInfo = DirProcess.list2dtdata(text4);
+  static list2lt(text5, div, modeT = false) {
+    let list_itemInfo = DirProcess.list2dtdata(text5);
     list_itemInfo = ListProcess.data2strict(list_itemInfo).map((item, index2) => {
       return {
         content: list_itemInfo[index2].content,
@@ -20716,8 +20822,8 @@ var DirProcess = class {
     });
     return DirProcess.dtdata2dt(list_itemInfo, div, modeT);
   }
-  static list2dt(text4, div, modeT = false) {
-    let list_itemInfo = DirProcess.list2dtdata(text4);
+  static list2dt(text5, div, modeT = false) {
+    let list_itemInfo = DirProcess.list2dtdata(text5);
     list_itemInfo = ListProcess.data2strict(list_itemInfo).map((item, index2) => {
       return {
         content: list_itemInfo[index2].content,
@@ -20730,9 +20836,9 @@ var DirProcess = class {
     });
     return DirProcess.dtdata2dt(list_itemInfo, div, modeT, true);
   }
-  static list2dtdata(text4) {
+  static list2dtdata(text5) {
     const list_itemInfo = [];
-    const list_text = text4.split("\n");
+    const list_text = text5.split("\n");
     let row_index = -1;
     for (const line of list_text) {
       const m_line = line.match(ABReg.reg_list_noprefix);
@@ -20968,7 +21074,7 @@ var DirProcess = class {
     return div;
   }
 };
-var abc_list2lt = ABConvert.factory({
+var _abc_list2lt = ABConvert.factory({
   id: "list2lt",
   name: "\u5217\u8868\u8F6C\u5217\u8868\u8868\u683C",
   match: /list2(md)?lt(T)?/,
@@ -20983,7 +21089,7 @@ var abc_list2lt = ABConvert.factory({
     return el;
   }
 });
-var abc_list2dt = ABConvert.factory({
+var _abc_list2dt = ABConvert.factory({
   id: "list2dt",
   name: "\u5217\u8868\u8F6C\u6811\u72B6\u76EE\u5F55",
   match: /list2(md)?dt(T)?/,
@@ -21047,7 +21153,7 @@ function listdata2dirdata(list2) {
   }
   return newlist;
 }
-var abc_list2astreeH = ABConvert.factory({
+var _abc_list2astreeH = ABConvert.factory({
   id: "list2astreeH",
   name: "\u5217\u8868\u5230sacii\u76EE\u5F55\u6811",
   process_param: "string" /* text */,
@@ -21069,8 +21175,1101 @@ var abc_list2astreeH = ABConvert.factory({
   }
 });
 
+// ../../node_modules/.pnpm/dompurify@3.4.3/node_modules/dompurify/dist/purify.es.mjs
+function _arrayLikeToArray(r, a) {
+  (null == a || a > r.length) && (a = r.length);
+  for (var e = 0, n2 = Array(a); e < a; e++)
+    n2[e] = r[e];
+  return n2;
+}
+function _arrayWithHoles(r) {
+  if (Array.isArray(r))
+    return r;
+}
+function _iterableToArrayLimit(r, l2) {
+  var t2 = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+  if (null != t2) {
+    var e, n2, i, u, a = [], f = true, o = false;
+    try {
+      if (i = (t2 = t2.call(r)).next, 0 === l2)
+        ;
+      else
+        for (; !(f = (e = i.call(t2)).done) && (a.push(e.value), a.length !== l2); f = true)
+          ;
+    } catch (r2) {
+      o = true, n2 = r2;
+    } finally {
+      try {
+        if (!f && null != t2.return && (u = t2.return(), Object(u) !== u))
+          return;
+      } finally {
+        if (o)
+          throw n2;
+      }
+    }
+    return a;
+  }
+}
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _slicedToArray(r, e) {
+  return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
+}
+function _unsupportedIterableToArray(r, a) {
+  if (r) {
+    if ("string" == typeof r)
+      return _arrayLikeToArray(r, a);
+    var t2 = {}.toString.call(r).slice(8, -1);
+    return "Object" === t2 && r.constructor && (t2 = r.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray(r, a) : void 0;
+  }
+}
+var entries = Object.entries;
+var setPrototypeOf = Object.setPrototypeOf;
+var isFrozen = Object.isFrozen;
+var getPrototypeOf = Object.getPrototypeOf;
+var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+var freeze = Object.freeze;
+var seal = Object.seal;
+var create = Object.create;
+var _ref = typeof Reflect !== "undefined" && Reflect;
+var apply = _ref.apply;
+var construct = _ref.construct;
+if (!freeze) {
+  freeze = function freeze2(x) {
+    return x;
+  };
+}
+if (!seal) {
+  seal = function seal2(x) {
+    return x;
+  };
+}
+if (!apply) {
+  apply = function apply2(func, thisArg) {
+    for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+      args[_key - 2] = arguments[_key];
+    }
+    return func.apply(thisArg, args);
+  };
+}
+if (!construct) {
+  construct = function construct2(Func) {
+    for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+      args[_key2 - 1] = arguments[_key2];
+    }
+    return new Func(...args);
+  };
+}
+var arrayForEach = unapply(Array.prototype.forEach);
+var arrayLastIndexOf = unapply(Array.prototype.lastIndexOf);
+var arrayPop = unapply(Array.prototype.pop);
+var arrayPush = unapply(Array.prototype.push);
+var arraySplice = unapply(Array.prototype.splice);
+var arrayIsArray = Array.isArray;
+var stringToLowerCase = unapply(String.prototype.toLowerCase);
+var stringToString = unapply(String.prototype.toString);
+var stringMatch = unapply(String.prototype.match);
+var stringReplace = unapply(String.prototype.replace);
+var stringIndexOf = unapply(String.prototype.indexOf);
+var stringTrim = unapply(String.prototype.trim);
+var numberToString = unapply(Number.prototype.toString);
+var booleanToString = unapply(Boolean.prototype.toString);
+var bigintToString = typeof BigInt === "undefined" ? null : unapply(BigInt.prototype.toString);
+var symbolToString = typeof Symbol === "undefined" ? null : unapply(Symbol.prototype.toString);
+var objectHasOwnProperty = unapply(Object.prototype.hasOwnProperty);
+var objectToString = unapply(Object.prototype.toString);
+var regExpTest = unapply(RegExp.prototype.test);
+var typeErrorCreate = unconstruct(TypeError);
+function unapply(func) {
+  return function(thisArg) {
+    if (thisArg instanceof RegExp) {
+      thisArg.lastIndex = 0;
+    }
+    for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+      args[_key3 - 1] = arguments[_key3];
+    }
+    return apply(func, thisArg, args);
+  };
+}
+function unconstruct(Func) {
+  return function() {
+    for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+      args[_key4] = arguments[_key4];
+    }
+    return construct(Func, args);
+  };
+}
+function addToSet(set3, array) {
+  let transformCaseFunc = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : stringToLowerCase;
+  if (setPrototypeOf) {
+    setPrototypeOf(set3, null);
+  }
+  if (!arrayIsArray(array)) {
+    return set3;
+  }
+  let l2 = array.length;
+  while (l2--) {
+    let element = array[l2];
+    if (typeof element === "string") {
+      const lcElement = transformCaseFunc(element);
+      if (lcElement !== element) {
+        if (!isFrozen(array)) {
+          array[l2] = lcElement;
+        }
+        element = lcElement;
+      }
+    }
+    set3[element] = true;
+  }
+  return set3;
+}
+function cleanArray(array) {
+  for (let index2 = 0; index2 < array.length; index2++) {
+    const isPropertyExist = objectHasOwnProperty(array, index2);
+    if (!isPropertyExist) {
+      array[index2] = null;
+    }
+  }
+  return array;
+}
+function clone(object) {
+  const newObject = create(null);
+  for (const _ref2 of entries(object)) {
+    var _ref3 = _slicedToArray(_ref2, 2);
+    const property = _ref3[0];
+    const value = _ref3[1];
+    const isPropertyExist = objectHasOwnProperty(object, property);
+    if (isPropertyExist) {
+      if (arrayIsArray(value)) {
+        newObject[property] = cleanArray(value);
+      } else if (value && typeof value === "object" && value.constructor === Object) {
+        newObject[property] = clone(value);
+      } else {
+        newObject[property] = value;
+      }
+    }
+  }
+  return newObject;
+}
+function stringifyValue(value) {
+  switch (typeof value) {
+    case "string": {
+      return value;
+    }
+    case "number": {
+      return numberToString(value);
+    }
+    case "boolean": {
+      return booleanToString(value);
+    }
+    case "bigint": {
+      return bigintToString ? bigintToString(value) : "0";
+    }
+    case "symbol": {
+      return symbolToString ? symbolToString(value) : "Symbol()";
+    }
+    case "undefined": {
+      return objectToString(value);
+    }
+    case "function":
+    case "object": {
+      if (value === null) {
+        return objectToString(value);
+      }
+      const valueAsRecord = value;
+      const valueToString = lookupGetter(valueAsRecord, "toString");
+      if (typeof valueToString === "function") {
+        const stringified = valueToString(valueAsRecord);
+        return typeof stringified === "string" ? stringified : objectToString(stringified);
+      }
+      return objectToString(value);
+    }
+    default: {
+      return objectToString(value);
+    }
+  }
+}
+function lookupGetter(object, prop2) {
+  while (object !== null) {
+    const desc = getOwnPropertyDescriptor(object, prop2);
+    if (desc) {
+      if (desc.get) {
+        return unapply(desc.get);
+      }
+      if (typeof desc.value === "function") {
+        return unapply(desc.value);
+      }
+    }
+    object = getPrototypeOf(object);
+  }
+  function fallbackValue() {
+    return null;
+  }
+  return fallbackValue;
+}
+function isRegex(value) {
+  try {
+    regExpTest(value, "");
+    return true;
+  } catch (_unused) {
+    return false;
+  }
+}
+var html$1 = freeze(["a", "abbr", "acronym", "address", "area", "article", "aside", "audio", "b", "bdi", "bdo", "big", "blink", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite", "code", "col", "colgroup", "content", "data", "datalist", "dd", "decorator", "del", "details", "dfn", "dialog", "dir", "div", "dl", "dt", "element", "em", "fieldset", "figcaption", "figure", "font", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "map", "mark", "marquee", "menu", "menuitem", "meter", "nav", "nobr", "ol", "optgroup", "option", "output", "p", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "search", "section", "select", "shadow", "slot", "small", "source", "spacer", "span", "strike", "strong", "style", "sub", "summary", "sup", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "tr", "track", "tt", "u", "ul", "var", "video", "wbr"]);
+var svg$1 = freeze(["svg", "a", "altglyph", "altglyphdef", "altglyphitem", "animatecolor", "animatemotion", "animatetransform", "circle", "clippath", "defs", "desc", "ellipse", "enterkeyhint", "exportparts", "filter", "font", "g", "glyph", "glyphref", "hkern", "image", "inputmode", "line", "lineargradient", "marker", "mask", "metadata", "mpath", "part", "path", "pattern", "polygon", "polyline", "radialgradient", "rect", "stop", "style", "switch", "symbol", "text", "textpath", "title", "tref", "tspan", "view", "vkern"]);
+var svgFilters = freeze(["feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feDistantLight", "feDropShadow", "feFlood", "feFuncA", "feFuncB", "feFuncG", "feFuncR", "feGaussianBlur", "feImage", "feMerge", "feMergeNode", "feMorphology", "feOffset", "fePointLight", "feSpecularLighting", "feSpotLight", "feTile", "feTurbulence"]);
+var svgDisallowed = freeze(["animate", "color-profile", "cursor", "discard", "font-face", "font-face-format", "font-face-name", "font-face-src", "font-face-uri", "foreignobject", "hatch", "hatchpath", "mesh", "meshgradient", "meshpatch", "meshrow", "missing-glyph", "script", "set", "solidcolor", "unknown", "use"]);
+var mathMl$1 = freeze(["math", "menclose", "merror", "mfenced", "mfrac", "mglyph", "mi", "mlabeledtr", "mmultiscripts", "mn", "mo", "mover", "mpadded", "mphantom", "mroot", "mrow", "ms", "mspace", "msqrt", "mstyle", "msub", "msup", "msubsup", "mtable", "mtd", "mtext", "mtr", "munder", "munderover", "mprescripts"]);
+var mathMlDisallowed = freeze(["maction", "maligngroup", "malignmark", "mlongdiv", "mscarries", "mscarry", "msgroup", "mstack", "msline", "msrow", "semantics", "annotation", "annotation-xml", "mprescripts", "none"]);
+var text = freeze(["#text"]);
+var html = freeze(["accept", "action", "align", "alt", "autocapitalize", "autocomplete", "autopictureinpicture", "autoplay", "background", "bgcolor", "border", "capture", "cellpadding", "cellspacing", "checked", "cite", "class", "clear", "color", "cols", "colspan", "controls", "controlslist", "coords", "crossorigin", "datetime", "decoding", "default", "dir", "disabled", "disablepictureinpicture", "disableremoteplayback", "download", "draggable", "enctype", "enterkeyhint", "exportparts", "face", "for", "headers", "height", "hidden", "high", "href", "hreflang", "id", "inert", "inputmode", "integrity", "ismap", "kind", "label", "lang", "list", "loading", "loop", "low", "max", "maxlength", "media", "method", "min", "minlength", "multiple", "muted", "name", "nonce", "noshade", "novalidate", "nowrap", "open", "optimum", "part", "pattern", "placeholder", "playsinline", "popover", "popovertarget", "popovertargetaction", "poster", "preload", "pubdate", "radiogroup", "readonly", "rel", "required", "rev", "reversed", "role", "rows", "rowspan", "spellcheck", "scope", "selected", "shape", "size", "sizes", "slot", "span", "srclang", "start", "src", "srcset", "step", "style", "summary", "tabindex", "title", "translate", "type", "usemap", "valign", "value", "width", "wrap", "xmlns"]);
+var svg = freeze(["accent-height", "accumulate", "additive", "alignment-baseline", "amplitude", "ascent", "attributename", "attributetype", "azimuth", "basefrequency", "baseline-shift", "begin", "bias", "by", "class", "clip", "clippathunits", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "cx", "cy", "d", "dx", "dy", "diffuseconstant", "direction", "display", "divisor", "dur", "edgemode", "elevation", "end", "exponent", "fill", "fill-opacity", "fill-rule", "filter", "filterunits", "flood-color", "flood-opacity", "font-family", "font-size", "font-size-adjust", "font-stretch", "font-style", "font-variant", "font-weight", "fx", "fy", "g1", "g2", "glyph-name", "glyphref", "gradientunits", "gradienttransform", "height", "href", "id", "image-rendering", "in", "in2", "intercept", "k", "k1", "k2", "k3", "k4", "kerning", "keypoints", "keysplines", "keytimes", "lang", "lengthadjust", "letter-spacing", "kernelmatrix", "kernelunitlength", "lighting-color", "local", "marker-end", "marker-mid", "marker-start", "markerheight", "markerunits", "markerwidth", "maskcontentunits", "maskunits", "max", "mask", "mask-type", "media", "method", "mode", "min", "name", "numoctaves", "offset", "operator", "opacity", "order", "orient", "orientation", "origin", "overflow", "paint-order", "path", "pathlength", "patterncontentunits", "patterntransform", "patternunits", "points", "preservealpha", "preserveaspectratio", "primitiveunits", "r", "rx", "ry", "radius", "refx", "refy", "repeatcount", "repeatdur", "restart", "result", "rotate", "scale", "seed", "shape-rendering", "slope", "specularconstant", "specularexponent", "spreadmethod", "startoffset", "stddeviation", "stitchtiles", "stop-color", "stop-opacity", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke", "stroke-width", "style", "surfacescale", "systemlanguage", "tabindex", "tablevalues", "targetx", "targety", "transform", "transform-origin", "text-anchor", "text-decoration", "text-rendering", "textlength", "type", "u1", "u2", "unicode", "values", "viewbox", "visibility", "version", "vert-adv-y", "vert-origin-x", "vert-origin-y", "width", "word-spacing", "wrap", "writing-mode", "xchannelselector", "ychannelselector", "x", "x1", "x2", "xmlns", "y", "y1", "y2", "z", "zoomandpan"]);
+var mathMl = freeze(["accent", "accentunder", "align", "bevelled", "close", "columnalign", "columnlines", "columnspacing", "columnspan", "denomalign", "depth", "dir", "display", "displaystyle", "encoding", "fence", "frame", "height", "href", "id", "largeop", "length", "linethickness", "lquote", "lspace", "mathbackground", "mathcolor", "mathsize", "mathvariant", "maxsize", "minsize", "movablelimits", "notation", "numalign", "open", "rowalign", "rowlines", "rowspacing", "rowspan", "rspace", "rquote", "scriptlevel", "scriptminsize", "scriptsizemultiplier", "selection", "separator", "separators", "stretchy", "subscriptshift", "supscriptshift", "symmetric", "voffset", "width", "xmlns"]);
+var xml = freeze(["xlink:href", "xml:id", "xlink:title", "xml:space", "xmlns:xlink"]);
+var MUSTACHE_EXPR = seal(/{{[\w\W]*|^[\w\W]*}}/g);
+var ERB_EXPR = seal(/<%[\w\W]*|^[\w\W]*%>/g);
+var TMPLIT_EXPR = seal(/\${[\w\W]*/g);
+var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]+$/);
+var ARIA_ATTR = seal(/^aria-[\-\w]+$/);
+var IS_ALLOWED_URI = seal(
+  /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp|matrix):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
+);
+var IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
+var ATTR_WHITESPACE = seal(
+  /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g
+);
+var DOCTYPE_NAME = seal(/^html$/i);
+var CUSTOM_ELEMENT = seal(/^[a-z][.\w]*(-[.\w]+)+$/i);
+var NODE_TYPE = {
+  element: 1,
+  text: 3,
+  progressingInstruction: 7,
+  comment: 8,
+  document: 9
+};
+var getGlobal = function getGlobal2() {
+  return typeof window === "undefined" ? null : window;
+};
+var _createTrustedTypesPolicy = function _createTrustedTypesPolicy2(trustedTypes, purifyHostElement) {
+  if (typeof trustedTypes !== "object" || typeof trustedTypes.createPolicy !== "function") {
+    return null;
+  }
+  let suffix = null;
+  const ATTR_NAME = "data-tt-policy-suffix";
+  if (purifyHostElement && purifyHostElement.hasAttribute(ATTR_NAME)) {
+    suffix = purifyHostElement.getAttribute(ATTR_NAME);
+  }
+  const policyName = "dompurify" + (suffix ? "#" + suffix : "");
+  try {
+    return trustedTypes.createPolicy(policyName, {
+      createHTML(html4) {
+        return html4;
+      },
+      createScriptURL(scriptUrl) {
+        return scriptUrl;
+      }
+    });
+  } catch (_) {
+    console.warn("TrustedTypes policy " + policyName + " could not be created.");
+    return null;
+  }
+};
+var _createHooksMap = function _createHooksMap2() {
+  return {
+    afterSanitizeAttributes: [],
+    afterSanitizeElements: [],
+    afterSanitizeShadowDOM: [],
+    beforeSanitizeAttributes: [],
+    beforeSanitizeElements: [],
+    beforeSanitizeShadowDOM: [],
+    uponSanitizeAttribute: [],
+    uponSanitizeElement: [],
+    uponSanitizeShadowNode: []
+  };
+};
+function createDOMPurify() {
+  let window2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getGlobal();
+  const DOMPurify = (root3) => createDOMPurify(root3);
+  DOMPurify.version = "3.4.3";
+  DOMPurify.removed = [];
+  if (!window2 || !window2.document || window2.document.nodeType !== NODE_TYPE.document || !window2.Element) {
+    DOMPurify.isSupported = false;
+    return DOMPurify;
+  }
+  let document2 = window2.document;
+  const originalDocument = document2;
+  const currentScript = originalDocument.currentScript;
+  const DocumentFragment = window2.DocumentFragment, HTMLTemplateElement = window2.HTMLTemplateElement, Node3 = window2.Node, Element2 = window2.Element, NodeFilter = window2.NodeFilter, _window$NamedNodeMap = window2.NamedNodeMap, NamedNodeMap = _window$NamedNodeMap === void 0 ? window2.NamedNodeMap || window2.MozNamedAttrMap : _window$NamedNodeMap, HTMLFormElement = window2.HTMLFormElement, DOMParser = window2.DOMParser, trustedTypes = window2.trustedTypes;
+  const ElementPrototype = Element2.prototype;
+  const cloneNode2 = lookupGetter(ElementPrototype, "cloneNode");
+  const remove2 = lookupGetter(ElementPrototype, "remove");
+  const getNextSibling = lookupGetter(ElementPrototype, "nextSibling");
+  const getChildNodes = lookupGetter(ElementPrototype, "childNodes");
+  const getParentNode = lookupGetter(ElementPrototype, "parentNode");
+  if (typeof HTMLTemplateElement === "function") {
+    const template = document2.createElement("template");
+    if (template.content && template.content.ownerDocument) {
+      document2 = template.content.ownerDocument;
+    }
+  }
+  let trustedTypesPolicy;
+  let emptyHTML = "";
+  const _document = document2, implementation = _document.implementation, createNodeIterator = _document.createNodeIterator, createDocumentFragment = _document.createDocumentFragment, getElementsByTagName2 = _document.getElementsByTagName;
+  const importNode = originalDocument.importNode;
+  let hooks = _createHooksMap();
+  DOMPurify.isSupported = typeof entries === "function" && typeof getParentNode === "function" && implementation && implementation.createHTMLDocument !== void 0;
+  const MUSTACHE_EXPR$1 = MUSTACHE_EXPR, ERB_EXPR$1 = ERB_EXPR, TMPLIT_EXPR$1 = TMPLIT_EXPR, DATA_ATTR$1 = DATA_ATTR, ARIA_ATTR$1 = ARIA_ATTR, IS_SCRIPT_OR_DATA$1 = IS_SCRIPT_OR_DATA, ATTR_WHITESPACE$1 = ATTR_WHITESPACE, CUSTOM_ELEMENT$1 = CUSTOM_ELEMENT;
+  let IS_ALLOWED_URI$1 = IS_ALLOWED_URI;
+  let ALLOWED_TAGS = null;
+  const DEFAULT_ALLOWED_TAGS = addToSet({}, [...html$1, ...svg$1, ...svgFilters, ...mathMl$1, ...text]);
+  let ALLOWED_ATTR = null;
+  const DEFAULT_ALLOWED_ATTR = addToSet({}, [...html, ...svg, ...mathMl, ...xml]);
+  let CUSTOM_ELEMENT_HANDLING = Object.seal(create(null, {
+    tagNameCheck: {
+      writable: true,
+      configurable: false,
+      enumerable: true,
+      value: null
+    },
+    attributeNameCheck: {
+      writable: true,
+      configurable: false,
+      enumerable: true,
+      value: null
+    },
+    allowCustomizedBuiltInElements: {
+      writable: true,
+      configurable: false,
+      enumerable: true,
+      value: false
+    }
+  }));
+  let FORBID_TAGS = null;
+  let FORBID_ATTR = null;
+  const EXTRA_ELEMENT_HANDLING = Object.seal(create(null, {
+    tagCheck: {
+      writable: true,
+      configurable: false,
+      enumerable: true,
+      value: null
+    },
+    attributeCheck: {
+      writable: true,
+      configurable: false,
+      enumerable: true,
+      value: null
+    }
+  }));
+  let ALLOW_ARIA_ATTR = true;
+  let ALLOW_DATA_ATTR = true;
+  let ALLOW_UNKNOWN_PROTOCOLS = false;
+  let ALLOW_SELF_CLOSE_IN_ATTR = true;
+  let SAFE_FOR_TEMPLATES = false;
+  let SAFE_FOR_XML = true;
+  let WHOLE_DOCUMENT = false;
+  let SET_CONFIG = false;
+  let FORCE_BODY = false;
+  let RETURN_DOM = false;
+  let RETURN_DOM_FRAGMENT = false;
+  let RETURN_TRUSTED_TYPE = false;
+  let SANITIZE_DOM = true;
+  let SANITIZE_NAMED_PROPS = false;
+  const SANITIZE_NAMED_PROPS_PREFIX = "user-content-";
+  let KEEP_CONTENT = true;
+  let IN_PLACE = false;
+  let USE_PROFILES = {};
+  let FORBID_CONTENTS = null;
+  const DEFAULT_FORBID_CONTENTS = addToSet({}, ["annotation-xml", "audio", "colgroup", "desc", "foreignobject", "head", "iframe", "math", "mi", "mn", "mo", "ms", "mtext", "noembed", "noframes", "noscript", "plaintext", "script", "style", "svg", "template", "thead", "title", "video", "xmp"]);
+  let DATA_URI_TAGS = null;
+  const DEFAULT_DATA_URI_TAGS = addToSet({}, ["audio", "video", "img", "source", "image", "track"]);
+  let URI_SAFE_ATTRIBUTES = null;
+  const DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, ["alt", "class", "for", "id", "label", "name", "pattern", "placeholder", "role", "summary", "title", "value", "style", "xmlns"]);
+  const MATHML_NAMESPACE = "http://www.w3.org/1998/Math/MathML";
+  const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+  const HTML_NAMESPACE = "http://www.w3.org/1999/xhtml";
+  let NAMESPACE = HTML_NAMESPACE;
+  let IS_EMPTY_INPUT = false;
+  let ALLOWED_NAMESPACES = null;
+  const DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [MATHML_NAMESPACE, SVG_NAMESPACE, HTML_NAMESPACE], stringToString);
+  let MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ["mi", "mo", "mn", "ms", "mtext"]);
+  let HTML_INTEGRATION_POINTS = addToSet({}, ["annotation-xml"]);
+  const COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, ["title", "style", "font", "a", "script"]);
+  let PARSER_MEDIA_TYPE = null;
+  const SUPPORTED_PARSER_MEDIA_TYPES = ["application/xhtml+xml", "text/html"];
+  const DEFAULT_PARSER_MEDIA_TYPE = "text/html";
+  let transformCaseFunc = null;
+  let CONFIG = null;
+  const formElement = document2.createElement("form");
+  const isRegexOrFunction = function isRegexOrFunction2(testValue) {
+    return testValue instanceof RegExp || testValue instanceof Function;
+  };
+  const _parseConfig = function _parseConfig2() {
+    let cfg = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+    if (CONFIG && CONFIG === cfg) {
+      return;
+    }
+    if (!cfg || typeof cfg !== "object") {
+      cfg = {};
+    }
+    cfg = clone(cfg);
+    PARSER_MEDIA_TYPE = SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? DEFAULT_PARSER_MEDIA_TYPE : cfg.PARSER_MEDIA_TYPE;
+    transformCaseFunc = PARSER_MEDIA_TYPE === "application/xhtml+xml" ? stringToString : stringToLowerCase;
+    ALLOWED_TAGS = objectHasOwnProperty(cfg, "ALLOWED_TAGS") && arrayIsArray(cfg.ALLOWED_TAGS) ? addToSet({}, cfg.ALLOWED_TAGS, transformCaseFunc) : DEFAULT_ALLOWED_TAGS;
+    ALLOWED_ATTR = objectHasOwnProperty(cfg, "ALLOWED_ATTR") && arrayIsArray(cfg.ALLOWED_ATTR) ? addToSet({}, cfg.ALLOWED_ATTR, transformCaseFunc) : DEFAULT_ALLOWED_ATTR;
+    ALLOWED_NAMESPACES = objectHasOwnProperty(cfg, "ALLOWED_NAMESPACES") && arrayIsArray(cfg.ALLOWED_NAMESPACES) ? addToSet({}, cfg.ALLOWED_NAMESPACES, stringToString) : DEFAULT_ALLOWED_NAMESPACES;
+    URI_SAFE_ATTRIBUTES = objectHasOwnProperty(cfg, "ADD_URI_SAFE_ATTR") && arrayIsArray(cfg.ADD_URI_SAFE_ATTR) ? addToSet(clone(DEFAULT_URI_SAFE_ATTRIBUTES), cfg.ADD_URI_SAFE_ATTR, transformCaseFunc) : DEFAULT_URI_SAFE_ATTRIBUTES;
+    DATA_URI_TAGS = objectHasOwnProperty(cfg, "ADD_DATA_URI_TAGS") && arrayIsArray(cfg.ADD_DATA_URI_TAGS) ? addToSet(clone(DEFAULT_DATA_URI_TAGS), cfg.ADD_DATA_URI_TAGS, transformCaseFunc) : DEFAULT_DATA_URI_TAGS;
+    FORBID_CONTENTS = objectHasOwnProperty(cfg, "FORBID_CONTENTS") && arrayIsArray(cfg.FORBID_CONTENTS) ? addToSet({}, cfg.FORBID_CONTENTS, transformCaseFunc) : DEFAULT_FORBID_CONTENTS;
+    FORBID_TAGS = objectHasOwnProperty(cfg, "FORBID_TAGS") && arrayIsArray(cfg.FORBID_TAGS) ? addToSet({}, cfg.FORBID_TAGS, transformCaseFunc) : clone({});
+    FORBID_ATTR = objectHasOwnProperty(cfg, "FORBID_ATTR") && arrayIsArray(cfg.FORBID_ATTR) ? addToSet({}, cfg.FORBID_ATTR, transformCaseFunc) : clone({});
+    USE_PROFILES = objectHasOwnProperty(cfg, "USE_PROFILES") ? cfg.USE_PROFILES && typeof cfg.USE_PROFILES === "object" ? clone(cfg.USE_PROFILES) : cfg.USE_PROFILES : false;
+    ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false;
+    ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false;
+    ALLOW_UNKNOWN_PROTOCOLS = cfg.ALLOW_UNKNOWN_PROTOCOLS || false;
+    ALLOW_SELF_CLOSE_IN_ATTR = cfg.ALLOW_SELF_CLOSE_IN_ATTR !== false;
+    SAFE_FOR_TEMPLATES = cfg.SAFE_FOR_TEMPLATES || false;
+    SAFE_FOR_XML = cfg.SAFE_FOR_XML !== false;
+    WHOLE_DOCUMENT = cfg.WHOLE_DOCUMENT || false;
+    RETURN_DOM = cfg.RETURN_DOM || false;
+    RETURN_DOM_FRAGMENT = cfg.RETURN_DOM_FRAGMENT || false;
+    RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false;
+    FORCE_BODY = cfg.FORCE_BODY || false;
+    SANITIZE_DOM = cfg.SANITIZE_DOM !== false;
+    SANITIZE_NAMED_PROPS = cfg.SANITIZE_NAMED_PROPS || false;
+    KEEP_CONTENT = cfg.KEEP_CONTENT !== false;
+    IN_PLACE = cfg.IN_PLACE || false;
+    IS_ALLOWED_URI$1 = isRegex(cfg.ALLOWED_URI_REGEXP) ? cfg.ALLOWED_URI_REGEXP : IS_ALLOWED_URI;
+    NAMESPACE = typeof cfg.NAMESPACE === "string" ? cfg.NAMESPACE : HTML_NAMESPACE;
+    MATHML_TEXT_INTEGRATION_POINTS = objectHasOwnProperty(cfg, "MATHML_TEXT_INTEGRATION_POINTS") && cfg.MATHML_TEXT_INTEGRATION_POINTS && typeof cfg.MATHML_TEXT_INTEGRATION_POINTS === "object" ? clone(cfg.MATHML_TEXT_INTEGRATION_POINTS) : addToSet({}, ["mi", "mo", "mn", "ms", "mtext"]);
+    HTML_INTEGRATION_POINTS = objectHasOwnProperty(cfg, "HTML_INTEGRATION_POINTS") && cfg.HTML_INTEGRATION_POINTS && typeof cfg.HTML_INTEGRATION_POINTS === "object" ? clone(cfg.HTML_INTEGRATION_POINTS) : addToSet({}, ["annotation-xml"]);
+    const customElementHandling = objectHasOwnProperty(cfg, "CUSTOM_ELEMENT_HANDLING") && cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING === "object" ? clone(cfg.CUSTOM_ELEMENT_HANDLING) : create(null);
+    CUSTOM_ELEMENT_HANDLING = create(null);
+    if (objectHasOwnProperty(customElementHandling, "tagNameCheck") && isRegexOrFunction(customElementHandling.tagNameCheck)) {
+      CUSTOM_ELEMENT_HANDLING.tagNameCheck = customElementHandling.tagNameCheck;
+    }
+    if (objectHasOwnProperty(customElementHandling, "attributeNameCheck") && isRegexOrFunction(customElementHandling.attributeNameCheck)) {
+      CUSTOM_ELEMENT_HANDLING.attributeNameCheck = customElementHandling.attributeNameCheck;
+    }
+    if (objectHasOwnProperty(customElementHandling, "allowCustomizedBuiltInElements") && typeof customElementHandling.allowCustomizedBuiltInElements === "boolean") {
+      CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = customElementHandling.allowCustomizedBuiltInElements;
+    }
+    if (SAFE_FOR_TEMPLATES) {
+      ALLOW_DATA_ATTR = false;
+    }
+    if (RETURN_DOM_FRAGMENT) {
+      RETURN_DOM = true;
+    }
+    if (USE_PROFILES) {
+      ALLOWED_TAGS = addToSet({}, text);
+      ALLOWED_ATTR = create(null);
+      if (USE_PROFILES.html === true) {
+        addToSet(ALLOWED_TAGS, html$1);
+        addToSet(ALLOWED_ATTR, html);
+      }
+      if (USE_PROFILES.svg === true) {
+        addToSet(ALLOWED_TAGS, svg$1);
+        addToSet(ALLOWED_ATTR, svg);
+        addToSet(ALLOWED_ATTR, xml);
+      }
+      if (USE_PROFILES.svgFilters === true) {
+        addToSet(ALLOWED_TAGS, svgFilters);
+        addToSet(ALLOWED_ATTR, svg);
+        addToSet(ALLOWED_ATTR, xml);
+      }
+      if (USE_PROFILES.mathMl === true) {
+        addToSet(ALLOWED_TAGS, mathMl$1);
+        addToSet(ALLOWED_ATTR, mathMl);
+        addToSet(ALLOWED_ATTR, xml);
+      }
+    }
+    EXTRA_ELEMENT_HANDLING.tagCheck = null;
+    EXTRA_ELEMENT_HANDLING.attributeCheck = null;
+    if (objectHasOwnProperty(cfg, "ADD_TAGS")) {
+      if (typeof cfg.ADD_TAGS === "function") {
+        EXTRA_ELEMENT_HANDLING.tagCheck = cfg.ADD_TAGS;
+      } else if (arrayIsArray(cfg.ADD_TAGS)) {
+        if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
+          ALLOWED_TAGS = clone(ALLOWED_TAGS);
+        }
+        addToSet(ALLOWED_TAGS, cfg.ADD_TAGS, transformCaseFunc);
+      }
+    }
+    if (objectHasOwnProperty(cfg, "ADD_ATTR")) {
+      if (typeof cfg.ADD_ATTR === "function") {
+        EXTRA_ELEMENT_HANDLING.attributeCheck = cfg.ADD_ATTR;
+      } else if (arrayIsArray(cfg.ADD_ATTR)) {
+        if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
+          ALLOWED_ATTR = clone(ALLOWED_ATTR);
+        }
+        addToSet(ALLOWED_ATTR, cfg.ADD_ATTR, transformCaseFunc);
+      }
+    }
+    if (objectHasOwnProperty(cfg, "ADD_URI_SAFE_ATTR") && arrayIsArray(cfg.ADD_URI_SAFE_ATTR)) {
+      addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR, transformCaseFunc);
+    }
+    if (objectHasOwnProperty(cfg, "FORBID_CONTENTS") && arrayIsArray(cfg.FORBID_CONTENTS)) {
+      if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
+        FORBID_CONTENTS = clone(FORBID_CONTENTS);
+      }
+      addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS, transformCaseFunc);
+    }
+    if (objectHasOwnProperty(cfg, "ADD_FORBID_CONTENTS") && arrayIsArray(cfg.ADD_FORBID_CONTENTS)) {
+      if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
+        FORBID_CONTENTS = clone(FORBID_CONTENTS);
+      }
+      addToSet(FORBID_CONTENTS, cfg.ADD_FORBID_CONTENTS, transformCaseFunc);
+    }
+    if (KEEP_CONTENT) {
+      ALLOWED_TAGS["#text"] = true;
+    }
+    if (WHOLE_DOCUMENT) {
+      addToSet(ALLOWED_TAGS, ["html", "head", "body"]);
+    }
+    if (ALLOWED_TAGS.table) {
+      addToSet(ALLOWED_TAGS, ["tbody"]);
+      delete FORBID_TAGS.tbody;
+    }
+    if (cfg.TRUSTED_TYPES_POLICY) {
+      if (typeof cfg.TRUSTED_TYPES_POLICY.createHTML !== "function") {
+        throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createHTML" hook.');
+      }
+      if (typeof cfg.TRUSTED_TYPES_POLICY.createScriptURL !== "function") {
+        throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createScriptURL" hook.');
+      }
+      trustedTypesPolicy = cfg.TRUSTED_TYPES_POLICY;
+      emptyHTML = trustedTypesPolicy.createHTML("");
+    } else {
+      if (trustedTypesPolicy === void 0) {
+        trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, currentScript);
+      }
+      if (trustedTypesPolicy !== null && typeof emptyHTML === "string") {
+        emptyHTML = trustedTypesPolicy.createHTML("");
+      }
+    }
+    if (freeze) {
+      freeze(cfg);
+    }
+    CONFIG = cfg;
+  };
+  const ALL_SVG_TAGS = addToSet({}, [...svg$1, ...svgFilters, ...svgDisallowed]);
+  const ALL_MATHML_TAGS = addToSet({}, [...mathMl$1, ...mathMlDisallowed]);
+  const _checkValidNamespace = function _checkValidNamespace2(element) {
+    let parent2 = getParentNode(element);
+    if (!parent2 || !parent2.tagName) {
+      parent2 = {
+        namespaceURI: NAMESPACE,
+        tagName: "template"
+      };
+    }
+    const tagName = stringToLowerCase(element.tagName);
+    const parentTagName = stringToLowerCase(parent2.tagName);
+    if (!ALLOWED_NAMESPACES[element.namespaceURI]) {
+      return false;
+    }
+    if (element.namespaceURI === SVG_NAMESPACE) {
+      if (parent2.namespaceURI === HTML_NAMESPACE) {
+        return tagName === "svg";
+      }
+      if (parent2.namespaceURI === MATHML_NAMESPACE) {
+        return tagName === "svg" && (parentTagName === "annotation-xml" || MATHML_TEXT_INTEGRATION_POINTS[parentTagName]);
+      }
+      return Boolean(ALL_SVG_TAGS[tagName]);
+    }
+    if (element.namespaceURI === MATHML_NAMESPACE) {
+      if (parent2.namespaceURI === HTML_NAMESPACE) {
+        return tagName === "math";
+      }
+      if (parent2.namespaceURI === SVG_NAMESPACE) {
+        return tagName === "math" && HTML_INTEGRATION_POINTS[parentTagName];
+      }
+      return Boolean(ALL_MATHML_TAGS[tagName]);
+    }
+    if (element.namespaceURI === HTML_NAMESPACE) {
+      if (parent2.namespaceURI === SVG_NAMESPACE && !HTML_INTEGRATION_POINTS[parentTagName]) {
+        return false;
+      }
+      if (parent2.namespaceURI === MATHML_NAMESPACE && !MATHML_TEXT_INTEGRATION_POINTS[parentTagName]) {
+        return false;
+      }
+      return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
+    }
+    if (PARSER_MEDIA_TYPE === "application/xhtml+xml" && ALLOWED_NAMESPACES[element.namespaceURI]) {
+      return true;
+    }
+    return false;
+  };
+  const _forceRemove = function _forceRemove2(node) {
+    arrayPush(DOMPurify.removed, {
+      element: node
+    });
+    try {
+      getParentNode(node).removeChild(node);
+    } catch (_) {
+      remove2(node);
+    }
+  };
+  const _removeAttribute = function _removeAttribute2(name2, element) {
+    try {
+      arrayPush(DOMPurify.removed, {
+        attribute: element.getAttributeNode(name2),
+        from: element
+      });
+    } catch (_) {
+      arrayPush(DOMPurify.removed, {
+        attribute: null,
+        from: element
+      });
+    }
+    element.removeAttribute(name2);
+    if (name2 === "is") {
+      if (RETURN_DOM || RETURN_DOM_FRAGMENT) {
+        try {
+          _forceRemove(element);
+        } catch (_) {
+        }
+      } else {
+        try {
+          element.setAttribute(name2, "");
+        } catch (_) {
+        }
+      }
+    }
+  };
+  const _initDocument = function _initDocument2(dirty) {
+    let doc = null;
+    let leadingWhitespace = null;
+    if (FORCE_BODY) {
+      dirty = "<remove></remove>" + dirty;
+    } else {
+      const matches = stringMatch(dirty, /^[\r\n\t ]+/);
+      leadingWhitespace = matches && matches[0];
+    }
+    if (PARSER_MEDIA_TYPE === "application/xhtml+xml" && NAMESPACE === HTML_NAMESPACE) {
+      dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + "</body></html>";
+    }
+    const dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
+    if (NAMESPACE === HTML_NAMESPACE) {
+      try {
+        doc = new DOMParser().parseFromString(dirtyPayload, PARSER_MEDIA_TYPE);
+      } catch (_) {
+      }
+    }
+    if (!doc || !doc.documentElement) {
+      doc = implementation.createDocument(NAMESPACE, "template", null);
+      try {
+        doc.documentElement.innerHTML = IS_EMPTY_INPUT ? emptyHTML : dirtyPayload;
+      } catch (_) {
+      }
+    }
+    const body = doc.body || doc.documentElement;
+    if (dirty && leadingWhitespace) {
+      body.insertBefore(document2.createTextNode(leadingWhitespace), body.childNodes[0] || null);
+    }
+    if (NAMESPACE === HTML_NAMESPACE) {
+      return getElementsByTagName2.call(doc, WHOLE_DOCUMENT ? "html" : "body")[0];
+    }
+    return WHOLE_DOCUMENT ? doc.documentElement : body;
+  };
+  const _createNodeIterator = function _createNodeIterator2(root3) {
+    return createNodeIterator.call(
+      root3.ownerDocument || root3,
+      root3,
+      NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT | NodeFilter.SHOW_PROCESSING_INSTRUCTION | NodeFilter.SHOW_CDATA_SECTION,
+      null
+    );
+  };
+  const _isClobbered = function _isClobbered2(element) {
+    return element instanceof HTMLFormElement && (typeof element.nodeName !== "string" || typeof element.textContent !== "string" || typeof element.removeChild !== "function" || !(element.attributes instanceof NamedNodeMap) || typeof element.removeAttribute !== "function" || typeof element.setAttribute !== "function" || typeof element.namespaceURI !== "string" || typeof element.insertBefore !== "function" || typeof element.hasChildNodes !== "function");
+  };
+  const _isNode = function _isNode2(value) {
+    return typeof Node3 === "function" && value instanceof Node3;
+  };
+  function _executeHooks(hooks2, currentNode, data2) {
+    arrayForEach(hooks2, (hook) => {
+      hook.call(DOMPurify, currentNode, data2, CONFIG);
+    });
+  }
+  const _sanitizeElements = function _sanitizeElements2(currentNode) {
+    let content = null;
+    _executeHooks(hooks.beforeSanitizeElements, currentNode, null);
+    if (_isClobbered(currentNode)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    const tagName = transformCaseFunc(currentNode.nodeName);
+    _executeHooks(hooks.uponSanitizeElement, currentNode, {
+      tagName,
+      allowedTags: ALLOWED_TAGS
+    });
+    if (SAFE_FOR_XML && currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && regExpTest(/<[/\w!]/g, currentNode.innerHTML) && regExpTest(/<[/\w!]/g, currentNode.textContent)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (SAFE_FOR_XML && currentNode.namespaceURI === HTML_NAMESPACE && tagName === "style" && _isNode(currentNode.firstElementChild)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (currentNode.nodeType === NODE_TYPE.progressingInstruction) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (SAFE_FOR_XML && currentNode.nodeType === NODE_TYPE.comment && regExpTest(/<[/\w]/g, currentNode.data)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (FORBID_TAGS[tagName] || !(EXTRA_ELEMENT_HANDLING.tagCheck instanceof Function && EXTRA_ELEMENT_HANDLING.tagCheck(tagName)) && !ALLOWED_TAGS[tagName]) {
+      if (!FORBID_TAGS[tagName] && _isBasicCustomElement(tagName)) {
+        if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName)) {
+          return false;
+        }
+        if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(tagName)) {
+          return false;
+        }
+      }
+      if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
+        const parentNode = getParentNode(currentNode) || currentNode.parentNode;
+        const childNodes = getChildNodes(currentNode) || currentNode.childNodes;
+        if (childNodes && parentNode) {
+          const childCount = childNodes.length;
+          for (let i = childCount - 1; i >= 0; --i) {
+            const childClone = cloneNode2(childNodes[i], true);
+            parentNode.insertBefore(childClone, getNextSibling(currentNode));
+          }
+        }
+      }
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (currentNode instanceof Element2 && !_checkValidNamespace(currentNode)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if ((tagName === "noscript" || tagName === "noembed" || tagName === "noframes") && regExpTest(/<\/no(script|embed|frames)/i, currentNode.innerHTML)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+    if (SAFE_FOR_TEMPLATES && currentNode.nodeType === NODE_TYPE.text) {
+      content = currentNode.textContent;
+      arrayForEach([MUSTACHE_EXPR$1, ERB_EXPR$1, TMPLIT_EXPR$1], (expr) => {
+        content = stringReplace(content, expr, " ");
+      });
+      if (currentNode.textContent !== content) {
+        arrayPush(DOMPurify.removed, {
+          element: currentNode.cloneNode()
+        });
+        currentNode.textContent = content;
+      }
+    }
+    _executeHooks(hooks.afterSanitizeElements, currentNode, null);
+    return false;
+  };
+  const _isValidAttribute = function _isValidAttribute2(lcTag, lcName, value) {
+    if (FORBID_ATTR[lcName]) {
+      return false;
+    }
+    if (SANITIZE_DOM && (lcName === "id" || lcName === "name") && (value in document2 || value in formElement)) {
+      return false;
+    }
+    const nameIsPermitted = ALLOWED_ATTR[lcName] || EXTRA_ELEMENT_HANDLING.attributeCheck instanceof Function && EXTRA_ELEMENT_HANDLING.attributeCheck(lcName, lcTag);
+    if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR$1, lcName))
+      ;
+    else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR$1, lcName))
+      ;
+    else if (!nameIsPermitted || FORBID_ATTR[lcName]) {
+      if (_isBasicCustomElement(lcTag) && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, lcTag) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(lcTag)) && (CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.attributeNameCheck, lcName) || CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.attributeNameCheck(lcName, lcTag)) || lcName === "is" && CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, value) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(value)))
+        ;
+      else {
+        return false;
+      }
+    } else if (URI_SAFE_ATTRIBUTES[lcName])
+      ;
+    else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE$1, "")))
+      ;
+    else if ((lcName === "src" || lcName === "xlink:href" || lcName === "href") && lcTag !== "script" && stringIndexOf(value, "data:") === 0 && DATA_URI_TAGS[lcTag])
+      ;
+    else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA$1, stringReplace(value, ATTR_WHITESPACE$1, "")))
+      ;
+    else if (value) {
+      return false;
+    } else
+      ;
+    return true;
+  };
+  const RESERVED_CUSTOM_ELEMENT_NAMES = addToSet({}, ["annotation-xml", "color-profile", "font-face", "font-face-format", "font-face-name", "font-face-src", "font-face-uri", "missing-glyph"]);
+  const _isBasicCustomElement = function _isBasicCustomElement2(tagName) {
+    return !RESERVED_CUSTOM_ELEMENT_NAMES[stringToLowerCase(tagName)] && regExpTest(CUSTOM_ELEMENT$1, tagName);
+  };
+  const _sanitizeAttributes = function _sanitizeAttributes2(currentNode) {
+    _executeHooks(hooks.beforeSanitizeAttributes, currentNode, null);
+    const attributes2 = currentNode.attributes;
+    if (!attributes2 || _isClobbered(currentNode)) {
+      return;
+    }
+    const hookEvent = {
+      attrName: "",
+      attrValue: "",
+      keepAttr: true,
+      allowedAttributes: ALLOWED_ATTR,
+      forceKeepAttr: void 0
+    };
+    let l2 = attributes2.length;
+    while (l2--) {
+      const attr2 = attributes2[l2];
+      const name2 = attr2.name, namespaceURI = attr2.namespaceURI, attrValue = attr2.value;
+      const lcName = transformCaseFunc(name2);
+      const initValue = attrValue;
+      let value = name2 === "value" ? initValue : stringTrim(initValue);
+      hookEvent.attrName = lcName;
+      hookEvent.attrValue = value;
+      hookEvent.keepAttr = true;
+      hookEvent.forceKeepAttr = void 0;
+      _executeHooks(hooks.uponSanitizeAttribute, currentNode, hookEvent);
+      value = hookEvent.attrValue;
+      if (SANITIZE_NAMED_PROPS && (lcName === "id" || lcName === "name") && stringIndexOf(value, SANITIZE_NAMED_PROPS_PREFIX) !== 0) {
+        _removeAttribute(name2, currentNode);
+        value = SANITIZE_NAMED_PROPS_PREFIX + value;
+      }
+      if (SAFE_FOR_XML && regExpTest(/((--!?|])>)|<\/(style|script|title|xmp|textarea|noscript|iframe|noembed|noframes)/i, value)) {
+        _removeAttribute(name2, currentNode);
+        continue;
+      }
+      if (lcName === "attributename" && stringMatch(value, "href")) {
+        _removeAttribute(name2, currentNode);
+        continue;
+      }
+      if (hookEvent.forceKeepAttr) {
+        continue;
+      }
+      if (!hookEvent.keepAttr) {
+        _removeAttribute(name2, currentNode);
+        continue;
+      }
+      if (!ALLOW_SELF_CLOSE_IN_ATTR && regExpTest(/\/>/i, value)) {
+        _removeAttribute(name2, currentNode);
+        continue;
+      }
+      if (SAFE_FOR_TEMPLATES) {
+        arrayForEach([MUSTACHE_EXPR$1, ERB_EXPR$1, TMPLIT_EXPR$1], (expr) => {
+          value = stringReplace(value, expr, " ");
+        });
+      }
+      const lcTag = transformCaseFunc(currentNode.nodeName);
+      if (!_isValidAttribute(lcTag, lcName, value)) {
+        _removeAttribute(name2, currentNode);
+        continue;
+      }
+      if (trustedTypesPolicy && typeof trustedTypes === "object" && typeof trustedTypes.getAttributeType === "function") {
+        if (namespaceURI)
+          ;
+        else {
+          switch (trustedTypes.getAttributeType(lcTag, lcName)) {
+            case "TrustedHTML": {
+              value = trustedTypesPolicy.createHTML(value);
+              break;
+            }
+            case "TrustedScriptURL": {
+              value = trustedTypesPolicy.createScriptURL(value);
+              break;
+            }
+          }
+        }
+      }
+      if (value !== initValue) {
+        try {
+          if (namespaceURI) {
+            currentNode.setAttributeNS(namespaceURI, name2, value);
+          } else {
+            currentNode.setAttribute(name2, value);
+          }
+          if (_isClobbered(currentNode)) {
+            _forceRemove(currentNode);
+          } else {
+            arrayPop(DOMPurify.removed);
+          }
+        } catch (_) {
+          _removeAttribute(name2, currentNode);
+        }
+      }
+    }
+    _executeHooks(hooks.afterSanitizeAttributes, currentNode, null);
+  };
+  const _sanitizeShadowDOM2 = function _sanitizeShadowDOM(fragment) {
+    let shadowNode = null;
+    const shadowIterator = _createNodeIterator(fragment);
+    _executeHooks(hooks.beforeSanitizeShadowDOM, fragment, null);
+    while (shadowNode = shadowIterator.nextNode()) {
+      _executeHooks(hooks.uponSanitizeShadowNode, shadowNode, null);
+      _sanitizeElements(shadowNode);
+      _sanitizeAttributes(shadowNode);
+      if (shadowNode.content instanceof DocumentFragment) {
+        _sanitizeShadowDOM2(shadowNode.content);
+      }
+    }
+    _executeHooks(hooks.afterSanitizeShadowDOM, fragment, null);
+  };
+  const _sanitizeAttachedShadowRoots2 = function _sanitizeAttachedShadowRoots(root3) {
+    if (root3.nodeType === NODE_TYPE.element && root3.shadowRoot instanceof DocumentFragment) {
+      const sr = root3.shadowRoot;
+      _sanitizeAttachedShadowRoots2(sr);
+      _sanitizeShadowDOM2(sr);
+    }
+    const childNodes = root3.childNodes;
+    if (!childNodes) {
+      return;
+    }
+    const snapshot = [];
+    arrayForEach(childNodes, (child) => {
+      arrayPush(snapshot, child);
+    });
+    for (const child of snapshot) {
+      _sanitizeAttachedShadowRoots2(child);
+    }
+  };
+  DOMPurify.sanitize = function(dirty) {
+    let cfg = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+    let body = null;
+    let importedNode = null;
+    let currentNode = null;
+    let returnNode = null;
+    IS_EMPTY_INPUT = !dirty;
+    if (IS_EMPTY_INPUT) {
+      dirty = "<!-->";
+    }
+    if (typeof dirty !== "string" && !_isNode(dirty)) {
+      dirty = stringifyValue(dirty);
+      if (typeof dirty !== "string") {
+        throw typeErrorCreate("dirty is not a string, aborting");
+      }
+    }
+    if (!DOMPurify.isSupported) {
+      return dirty;
+    }
+    if (!SET_CONFIG) {
+      _parseConfig(cfg);
+    }
+    DOMPurify.removed = [];
+    if (typeof dirty === "string") {
+      IN_PLACE = false;
+    }
+    if (IN_PLACE) {
+      const nn = dirty.nodeName;
+      if (typeof nn === "string") {
+        const tagName = transformCaseFunc(nn);
+        if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+          throw typeErrorCreate("root node is forbidden and cannot be sanitized in-place");
+        }
+      }
+      _sanitizeAttachedShadowRoots2(dirty);
+    } else if (dirty instanceof Node3) {
+      body = _initDocument("<!---->");
+      importedNode = body.ownerDocument.importNode(dirty, true);
+      if (importedNode.nodeType === NODE_TYPE.element && importedNode.nodeName === "BODY") {
+        body = importedNode;
+      } else if (importedNode.nodeName === "HTML") {
+        body = importedNode;
+      } else {
+        body.appendChild(importedNode);
+      }
+      _sanitizeAttachedShadowRoots2(importedNode);
+    } else {
+      if (!RETURN_DOM && !SAFE_FOR_TEMPLATES && !WHOLE_DOCUMENT && dirty.indexOf("<") === -1) {
+        return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(dirty) : dirty;
+      }
+      body = _initDocument(dirty);
+      if (!body) {
+        return RETURN_DOM ? null : RETURN_TRUSTED_TYPE ? emptyHTML : "";
+      }
+    }
+    if (body && FORCE_BODY) {
+      _forceRemove(body.firstChild);
+    }
+    const nodeIterator = _createNodeIterator(IN_PLACE ? dirty : body);
+    while (currentNode = nodeIterator.nextNode()) {
+      _sanitizeElements(currentNode);
+      _sanitizeAttributes(currentNode);
+      if (currentNode.content instanceof DocumentFragment) {
+        _sanitizeShadowDOM2(currentNode.content);
+      }
+    }
+    if (IN_PLACE) {
+      return dirty;
+    }
+    if (RETURN_DOM) {
+      if (SAFE_FOR_TEMPLATES) {
+        body.normalize();
+        let html4 = body.innerHTML;
+        arrayForEach([MUSTACHE_EXPR$1, ERB_EXPR$1, TMPLIT_EXPR$1], (expr) => {
+          html4 = stringReplace(html4, expr, " ");
+        });
+        body.innerHTML = html4;
+      }
+      if (RETURN_DOM_FRAGMENT) {
+        returnNode = createDocumentFragment.call(body.ownerDocument);
+        while (body.firstChild) {
+          returnNode.appendChild(body.firstChild);
+        }
+      } else {
+        returnNode = body;
+      }
+      if (ALLOWED_ATTR.shadowroot || ALLOWED_ATTR.shadowrootmode) {
+        returnNode = importNode.call(originalDocument, returnNode, true);
+      }
+      return returnNode;
+    }
+    let serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
+    if (WHOLE_DOCUMENT && ALLOWED_TAGS["!doctype"] && body.ownerDocument && body.ownerDocument.doctype && body.ownerDocument.doctype.name && regExpTest(DOCTYPE_NAME, body.ownerDocument.doctype.name)) {
+      serializedHTML = "<!DOCTYPE " + body.ownerDocument.doctype.name + ">\n" + serializedHTML;
+    }
+    if (SAFE_FOR_TEMPLATES) {
+      arrayForEach([MUSTACHE_EXPR$1, ERB_EXPR$1, TMPLIT_EXPR$1], (expr) => {
+        serializedHTML = stringReplace(serializedHTML, expr, " ");
+      });
+    }
+    return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
+  };
+  DOMPurify.setConfig = function() {
+    let cfg = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+    _parseConfig(cfg);
+    SET_CONFIG = true;
+  };
+  DOMPurify.clearConfig = function() {
+    CONFIG = null;
+    SET_CONFIG = false;
+  };
+  DOMPurify.isValidAttribute = function(tag, attr2, value) {
+    if (!CONFIG) {
+      _parseConfig({});
+    }
+    const lcTag = transformCaseFunc(tag);
+    const lcName = transformCaseFunc(attr2);
+    return _isValidAttribute(lcTag, lcName, value);
+  };
+  DOMPurify.addHook = function(entryPoint, hookFunction) {
+    if (typeof hookFunction !== "function") {
+      return;
+    }
+    arrayPush(hooks[entryPoint], hookFunction);
+  };
+  DOMPurify.removeHook = function(entryPoint, hookFunction) {
+    if (hookFunction !== void 0) {
+      const index2 = arrayLastIndexOf(hooks[entryPoint], hookFunction);
+      return index2 === -1 ? void 0 : arraySplice(hooks[entryPoint], index2, 1)[0];
+    }
+    return arrayPop(hooks[entryPoint]);
+  };
+  DOMPurify.removeHooks = function(entryPoint) {
+    hooks[entryPoint] = [];
+  };
+  DOMPurify.removeAllHooks = function() {
+    hooks = _createHooksMap();
+  };
+  return DOMPurify;
+}
+var purify = createDOMPurify();
+
 // ../ABConverter/converter/abc_deco.ts
-var abc_md = ABConvert.factory({
+var _abc_md = ABConvert.factory({
   id: "md",
   name: "md",
   process_param: "string" /* text */,
@@ -21082,18 +22281,18 @@ var abc_md = ABConvert.factory({
     return el;
   }
 });
-var abc_text = ABConvert.factory({
+var _abc_text = ABConvert.factory({
   id: "text",
   name: "\u7EAF\u6587\u672C",
   detail: "\u5176\u5B9E\u4E00\u822C\u4F1A\u66F4\u63A8\u8350\u7528code()\u4EE3\u66FF\uFF0C\u90A3\u4E2A\u66F4\u7CBE\u786E",
   process_param: "string" /* text */,
   process_return: "HTMLElement" /* el */,
   process: (el, header, content) => {
-    el.innerHTML = `<p>${content.replace(/ /g, "&nbsp;").split("\n").join("<br/>")}</p>`;
+    el.innerHTML = purify.sanitize(`<p>${content.replace(/ /g, "&nbsp;").split("\n").join("<br/>")}</p>`);
     return el;
   }
 });
-var abc_fold = ABConvert.factory({
+var _abc_fold = ABConvert.factory({
   id: "fold",
   name: "\u6298\u53E0",
   process_param: "HTMLElement" /* el */,
@@ -21169,7 +22368,7 @@ var abc_fold = ABConvert.factory({
     return content;
   }
 });
-var abc_scroll = ABConvert.factory({
+var _abc_scroll = ABConvert.factory({
   id: "scroll",
   name: "\u6EDA\u52A8",
   match: /^scroll(X)?(\((\d+)\))?$/,
@@ -21205,7 +22404,7 @@ var abc_scroll = ABConvert.factory({
     return content;
   }
 });
-var abc_overfold = ABConvert.factory({
+var _abc_overfold = ABConvert.factory({
   id: "overfold",
   name: "\u8D85\u51FA\u6298\u53E0",
   match: /^overfold(\((\d+)\))?$/,
@@ -21259,7 +22458,7 @@ var abc_overfold = ABConvert.factory({
     return content;
   }
 });
-var abc_width = ABConvert.factory({
+var _abc_width = ABConvert.factory({
   id: "width",
   name: "\u5BBD\u5EA6\u63A7\u5236",
   match: /^width\(((?:\d*\.?\d+(?:%|px|rem)?,\s*)*\d*\.?\d+(?:%|px|rem)?)\)$/,
@@ -21303,7 +22502,7 @@ var abc_width = ABConvert.factory({
     return content;
   }
 });
-var abc_addClass = ABConvert.factory({
+var _abc_addClass = ABConvert.factory({
   id: "addClass",
   name: "\u589E\u52A0class",
   detail: "\u7ED9\u5F53\u524D\u5757\u589E\u52A0\u4E00\u4E2A\u7C7B\u540D\u3002\u652F\u6301\u6B63\u5E38\u4F7F\u7528\u7A7A\u683C\u6765\u6DFB\u52A0\u591A\u4E2Aclass, \u4E0D\u9700\u8981\u52A0dot\u7B26, \u5C31\u50CF\u5728class=''\u91CC\u5199\u7684\u90A3\u6837",
@@ -21324,7 +22523,7 @@ var abc_addClass = ABConvert.factory({
     return content;
   }
 });
-var abc_addStyle = ABConvert.factory({
+var _abc_addStyle = ABConvert.factory({
   id: "addStyle",
   name: "\u589E\u52A0style",
   detail: "\u7ED9\u5F53\u524D\u5757\u589E\u52A0\u4E00\u4E2A\u6837\u5F0F, \u6CE8\u610F\u6700\u5916\u7684\u62EC\u53F7\u5F80\u5185\u8981\u7559\u4E00\u4E2A\u7A7A\u683C, \u907F\u514Drotate\u8FD9\u79CD\u7528\u62EC\u53F7\u65F6\u51B2\u7A81\u3002\u6DFB\u52A0\u591A\u4E2A\u5219\u6B63\u5E38\u4F7F\u7528\u5206\u53F7",
@@ -21342,7 +22541,7 @@ var abc_addStyle = ABConvert.factory({
     return content;
   }
 });
-var abc_addDiv = ABConvert.factory({
+var _abc_addDiv = ABConvert.factory({
   id: "addDiv",
   name: "\u589E\u52A0div\u548Cclass",
   detail: "\u7ED9\u5F53\u524D\u5757\u589E\u52A0\u4E00\u4E2A\u7236\u7C7B\uFF0C\u9700\u8981\u7ED9\u8FD9\u4E2A\u7236\u7C7B\u4E00\u4E2A\u7C7B\u540D",
@@ -21367,7 +22566,7 @@ var abc_addDiv = ABConvert.factory({
     return content;
   }
 });
-var abc_title = ABConvert.factory({
+var _abc_title = ABConvert.factory({
   id: "title",
   name: "\u6807\u9898",
   match: /^#(.*)/,
@@ -21426,7 +22625,7 @@ var abc_title = ABConvert.factory({
     return content;
   }
 });
-var abc_transposition = ABConvert.factory({
+var _abc_transposition = ABConvert.factory({
   id: "transposition",
   name: "\u8868\u683C\u8F6C\u7F6E",
   match: "transposition",
@@ -21461,7 +22660,7 @@ var abc_transposition = ABConvert.factory({
     return content;
   }
 });
-var abc_transpose = ABConvert.factory({
+var _abc_transpose = ABConvert.factory({
   id: "transpose",
   name: "\u8868\u683C\u8F6C\u7F6E",
   match: "trs",
@@ -21511,7 +22710,7 @@ var abc_transpose = ABConvert.factory({
     return content;
   }
 });
-var abc_exTable = ABConvert.factory({
+var _abc_exTable = ABConvert.factory({
   id: "exTable",
   name: "\u8868\u683C\u6269\u5C55",
   match: "exTable",
@@ -21533,7 +22732,7 @@ var abc_exTable = ABConvert.factory({
     return content;
   }
 });
-var abc_strictTable = ABConvert.factory({
+var _abc_strictTable = ABConvert.factory({
   id: "strictTable",
   name: "\u6B63\u89C4\u5316\u8868\u683C",
   match: "strictTable",
@@ -21706,7 +22905,7 @@ function tableMap2table(tableMap, origi_rowCount, origi_colCount) {
 }
 
 // ../ABConverter/converter/abc_ex.ts
-var abc_faq = ABConvert.factory({
+var _abc_faq = ABConvert.factory({
   id: "faq",
   name: "FAQ",
   match: "FAQ",
@@ -21759,7 +22958,7 @@ var abc_faq = ABConvert.factory({
     return el;
   }
 });
-var abc_info_converter = ABConvert.factory({
+var _abc_info_converter = ABConvert.factory({
   id: "info_converter",
   name: "INFO",
   detail: "\u67E5\u770B\u5F53\u524D\u8F6F\u4EF6\u7248\u672C\u4E0B\u7684\u6CE8\u518C\u5904\u7406\u5668\u8868",
@@ -21844,7 +23043,7 @@ var abc_info_converter = ABConvert.factory({
     return el;
   }
 });
-var abc_info_alias = ABConvert.factory({
+var _abc_info_alias = ABConvert.factory({
   id: "info_alias",
   name: "INFO_Alias",
   match: "info_alias",
@@ -21853,12 +23052,10 @@ var abc_info_alias = ABConvert.factory({
   process_return: "json_string" /* json */,
   process: (el, header, content) => {
     return JSON.stringify(
-      ABAlias_json.map((item) => {
-        return {
-          regex: item.regex.toString(),
-          replacement: item.replacement
-        };
-      }),
+      Array.from(get_ABAlias_iter(), (item) => ({
+        regex: item.regex.toString(),
+        replacement: item.replacement
+      })),
       null,
       2
     );
@@ -21907,7 +23104,7 @@ var abc_mditTabs = ABConvert.factory({
     return el;
   }
 });
-var abc_mditDemo = ABConvert.factory({
+var _abc_mditDemo = ABConvert.factory({
   id: "mditDemo",
   name: "mdit\u5C55\u793A\u5BF9\u6BD4",
   process_param: "string" /* text */,
@@ -21923,7 +23120,7 @@ ${content}
     return el;
   }
 });
-var abc_mditABDemo = ABConvert.factory({
+var _abc_mditABDemo = ABConvert.factory({
   id: "mditABDemo",
   name: "AnyBlock\u4E13\u7528\u5C55\u793A\u5BF9\u6BD4",
   process_param: "string" /* text */,
@@ -21962,7 +23159,7 @@ ${content}
     }
   }
 });
-var abc_midt_col = ABConvert.factory({
+var _abc_midt_col = ABConvert.factory({
   id: "mditCol",
   name: "mdit\u5206\u680F",
   process_param: "string" /* text */,
@@ -21975,7 +23172,7 @@ var abc_midt_col = ABConvert.factory({
     return el;
   }
 });
-var abc_midt_card = ABConvert.factory({
+var _abc_midt_card = ABConvert.factory({
   id: "mditCard",
   name: "mdit\u5361\u7247",
   process_param: "string" /* text */,
@@ -21989,7 +23186,7 @@ var abc_midt_card = ABConvert.factory({
     return el;
   }
 });
-var abc_midt_chat = ABConvert.factory({
+var _abc_midt_chat = ABConvert.factory({
   id: "mditChat",
   name: "mdit\u5BF9\u8BDD",
   detail: "\u663E\u793A\u6E32\u67D3\u5BF9\u8BDD\uFF0C\u9700\u8981\u914D\u5408 obsidian-view-chat-qq \u63D2\u4EF6\u4F7F\u7528",
@@ -24304,20 +25501,20 @@ var Duration = class {
       );
     }
   }
-  static fromISO(text4, opts) {
-    const [parsed] = parseISODuration(text4);
+  static fromISO(text5, opts) {
+    const [parsed] = parseISODuration(text5);
     if (parsed) {
       return Duration.fromObject(parsed, opts);
     } else {
-      return Duration.invalid("unparsable", `the input "${text4}" can't be parsed as ISO 8601`);
+      return Duration.invalid("unparsable", `the input "${text5}" can't be parsed as ISO 8601`);
     }
   }
-  static fromISOTime(text4, opts) {
-    const [parsed] = parseISOTimeOnly(text4);
+  static fromISOTime(text5, opts) {
+    const [parsed] = parseISOTimeOnly(text5);
     if (parsed) {
       return Duration.fromObject(parsed, opts);
     } else {
-      return Duration.invalid("unparsable", `the input "${text4}" can't be parsed as ISO 8601`);
+      return Duration.invalid("unparsable", `the input "${text5}" can't be parsed as ISO 8601`);
     }
   }
   static invalid(reason, explanation = null) {
@@ -24681,8 +25878,8 @@ var Interval = class {
     const dur = Duration.fromDurationLike(duration), dt = friendlyDateTime(end2);
     return Interval.fromDateTimes(dt.minus(dur), dt);
   }
-  static fromISO(text4, opts) {
-    const [s2, e] = (text4 || "").split("/", 2);
+  static fromISO(text5, opts) {
+    const [s2, e] = (text5 || "").split("/", 2);
     if (s2 && e) {
       let start, startIsValid;
       try {
@@ -24713,7 +25910,7 @@ var Interval = class {
         }
       }
     }
-    return Interval.invalid("unparsable", `the input "${text4}" can't be parsed as ISO 8601`);
+    return Interval.invalid("unparsable", `the input "${text5}" can't be parsed as ISO 8601`);
   }
   static isInterval(o) {
     return o && o.isLuxonInterval || false;
@@ -25460,7 +26657,7 @@ function possiblyCachedLocalWeekData(dt) {
   }
   return dt.localWeekData;
 }
-function clone(inst, alts) {
+function clone2(inst, alts) {
   const current = {
     ts: inst.ts,
     zone: inst.zone,
@@ -25524,7 +26721,7 @@ function adjustTime(inst, dur) {
   }
   return { ts, o };
 }
-function parseDataToDateTime(parsed, parsedZone, opts, format2, text4, specificOffset) {
+function parseDataToDateTime(parsed, parsedZone, opts, format2, text5, specificOffset) {
   const { setZone, zone } = opts;
   if (parsed && Object.keys(parsed).length !== 0 || parsedZone) {
     const interpretationZone = parsedZone || zone, inst = DateTime.fromObject(parsed, {
@@ -25535,7 +26732,7 @@ function parseDataToDateTime(parsed, parsedZone, opts, format2, text4, specificO
     return setZone ? inst : inst.setZone(zone);
   } else {
     return DateTime.invalid(
-      new Invalid("unparsable", `the input "${text4}" can't be parsed as ${format2}`)
+      new Invalid("unparsable", `the input "${text5}" can't be parsed as ${format2}`)
     );
   }
 }
@@ -25923,39 +27120,39 @@ var DateTime = class {
     }
     return inst;
   }
-  static fromISO(text4, opts = {}) {
-    const [vals, parsedZone] = parseISODate(text4);
-    return parseDataToDateTime(vals, parsedZone, opts, "ISO 8601", text4);
+  static fromISO(text5, opts = {}) {
+    const [vals, parsedZone] = parseISODate(text5);
+    return parseDataToDateTime(vals, parsedZone, opts, "ISO 8601", text5);
   }
-  static fromRFC2822(text4, opts = {}) {
-    const [vals, parsedZone] = parseRFC2822Date(text4);
-    return parseDataToDateTime(vals, parsedZone, opts, "RFC 2822", text4);
+  static fromRFC2822(text5, opts = {}) {
+    const [vals, parsedZone] = parseRFC2822Date(text5);
+    return parseDataToDateTime(vals, parsedZone, opts, "RFC 2822", text5);
   }
-  static fromHTTP(text4, opts = {}) {
-    const [vals, parsedZone] = parseHTTPDate(text4);
+  static fromHTTP(text5, opts = {}) {
+    const [vals, parsedZone] = parseHTTPDate(text5);
     return parseDataToDateTime(vals, parsedZone, opts, "HTTP", opts);
   }
-  static fromFormat(text4, fmt, opts = {}) {
-    if (isUndefined(text4) || isUndefined(fmt)) {
+  static fromFormat(text5, fmt, opts = {}) {
+    if (isUndefined(text5) || isUndefined(fmt)) {
       throw new InvalidArgumentError("fromFormat requires an input string and a format");
     }
     const { locale: locale2 = null, numberingSystem = null } = opts, localeToUse = Locale.fromOpts({
       locale: locale2,
       numberingSystem,
       defaultToEN: true
-    }), [vals, parsedZone, specificOffset, invalid] = parseFromTokens(localeToUse, text4, fmt);
+    }), [vals, parsedZone, specificOffset, invalid] = parseFromTokens(localeToUse, text5, fmt);
     if (invalid) {
       return DateTime.invalid(invalid);
     } else {
-      return parseDataToDateTime(vals, parsedZone, opts, `format ${fmt}`, text4, specificOffset);
+      return parseDataToDateTime(vals, parsedZone, opts, `format ${fmt}`, text5, specificOffset);
     }
   }
-  static fromString(text4, fmt, opts = {}) {
-    return DateTime.fromFormat(text4, fmt, opts);
+  static fromString(text5, fmt, opts = {}) {
+    return DateTime.fromFormat(text5, fmt, opts);
   }
-  static fromSQL(text4, opts = {}) {
-    const [vals, parsedZone] = parseSQL(text4);
-    return parseDataToDateTime(vals, parsedZone, opts, "SQL", text4);
+  static fromSQL(text5, opts = {}) {
+    const [vals, parsedZone] = parseSQL(text5);
+    return parseDataToDateTime(vals, parsedZone, opts, "SQL", text5);
   }
   static invalid(reason, explanation = null) {
     if (!reason) {
@@ -26122,7 +27319,7 @@ var DateTime = class {
     const c1 = tsToObj(ts1, o1);
     const c2 = tsToObj(ts2, o2);
     if (c1.hour === c2.hour && c1.minute === c2.minute && c1.second === c2.second && c1.millisecond === c2.millisecond) {
-      return [clone(this, { ts: ts1 }), clone(this, { ts: ts2 })];
+      return [clone2(this, { ts: ts1 }), clone2(this, { ts: ts2 })];
     }
     return [this];
   }
@@ -26171,12 +27368,12 @@ var DateTime = class {
         const asObj = this.toObject();
         [newTS] = objToTS(asObj, offsetGuess, zone);
       }
-      return clone(this, { ts: newTS, zone });
+      return clone2(this, { ts: newTS, zone });
     }
   }
   reconfigure({ locale: locale2, numberingSystem, outputCalendar } = {}) {
     const loc = this.loc.clone({ locale: locale2, numberingSystem, outputCalendar });
-    return clone(this, { loc });
+    return clone2(this, { loc });
   }
   setLocale(locale2) {
     return this.reconfigure({ locale: locale2 });
@@ -26211,19 +27408,19 @@ var DateTime = class {
       }
     }
     const [ts, o] = objToTS(mixed, this.o, this.zone);
-    return clone(this, { ts, o });
+    return clone2(this, { ts, o });
   }
   plus(duration) {
     if (!this.isValid)
       return this;
     const dur = Duration.fromDurationLike(duration);
-    return clone(this, adjustTime(this, dur));
+    return clone2(this, adjustTime(this, dur));
   }
   minus(duration) {
     if (!this.isValid)
       return this;
     const dur = Duration.fromDurationLike(duration).negate();
-    return clone(this, adjustTime(this, dur));
+    return clone2(this, adjustTime(this, dur));
   }
   startOf(unit, { useLocaleWeeks = false } = {}) {
     if (!this.isValid)
@@ -26473,16 +27670,16 @@ var DateTime = class {
     }
     return bestBy(dateTimes, (i) => i.valueOf(), Math.max);
   }
-  static fromFormatExplain(text4, fmt, options = {}) {
+  static fromFormatExplain(text5, fmt, options = {}) {
     const { locale: locale2 = null, numberingSystem = null } = options, localeToUse = Locale.fromOpts({
       locale: locale2,
       numberingSystem,
       defaultToEN: true
     });
-    return explainFromTokens(localeToUse, text4, fmt);
+    return explainFromTokens(localeToUse, text5, fmt);
   }
-  static fromStringExplain(text4, fmt, options = {}) {
-    return DateTime.fromFormatExplain(text4, fmt, options);
+  static fromStringExplain(text5, fmt, options = {}) {
+    return DateTime.fromFormatExplain(text5, fmt, options);
   }
   static buildFormatParser(fmt, options = {}) {
     const { locale: locale2 = null, numberingSystem = null } = options, localeToUse = Locale.fromOpts({
@@ -26492,8 +27689,8 @@ var DateTime = class {
     });
     return new TokenParser(localeToUse, fmt);
   }
-  static fromFormatParser(text4, formatParser, opts = {}) {
-    if (isUndefined(text4) || isUndefined(formatParser)) {
+  static fromFormatParser(text5, formatParser, opts = {}) {
+    if (isUndefined(text5) || isUndefined(formatParser)) {
       throw new InvalidArgumentError(
         "fromFormatParser requires an input string and a format parser"
       );
@@ -26508,7 +27705,7 @@ var DateTime = class {
         `fromFormatParser called with a locale of ${localeToUse}, but the format parser was created for ${formatParser.locale}`
       );
     }
-    const { result, zone, specificOffset, invalidReason } = formatParser.explainFromTokens(text4);
+    const { result, zone, specificOffset, invalidReason } = formatParser.explainFromTokens(text5);
     if (invalidReason) {
       return DateTime.invalid(invalidReason);
     } else {
@@ -26517,7 +27714,7 @@ var DateTime = class {
         zone,
         opts,
         `format ${formatParser.format}`,
-        text4,
+        text5,
         specificOffset
       );
     }
@@ -26604,7 +27801,7 @@ function friendlyDateTime(dateTimeish) {
 }
 
 // ../ABConverter/converter/abc_echarts.ts
-var abc_list2echarts_tree = ABConvert.factory({
+var _abc_list2echarts_tree = ABConvert.factory({
   id: "list2echarts_tree",
   name: "ECharts\u6811\u56FE",
   match: /list2echarts_tree(.*)/,
@@ -26678,7 +27875,7 @@ const option = {
     return script_str;
   }
 });
-var abc_list2echarts_sunburst = ABConvert.factory({
+var _abc_list2echarts_sunburst = ABConvert.factory({
   id: "list2echarts_sunburst",
   name: "ECharts\u65ED\u65E5\u56FE",
   match: "list2echarts_sunburst",
@@ -26707,7 +27904,7 @@ const option = {
     return script_str;
   }
 });
-var abc_list2echarts_gantt = ABConvert.factory({
+var _abc_list2echarts_gantt = ABConvert.factory({
   id: "list2echarts_gantt",
   name: "ECharts\u7518\u7279\u56FE",
   match: "list2echarts_gantt",
@@ -27232,7 +28429,7 @@ function list2ActivityDiagramText(listdata) {
 }
 
 // ../ABConverter/converter/abc_plantuml.ts
-var abc_list2jsontext = ABConvert.factory({
+var _abc_list2jsontext = ABConvert.factory({
   id: "json2pumlJson",
   name: "json\u5230\u53EF\u89C6\u5316",
   process_param: "string" /* text */,
@@ -27243,7 +28440,7 @@ var abc_list2jsontext = ABConvert.factory({
     return el;
   }
 });
-var abc_list2pumlWBS = ABConvert.factory({
+var _abc_list2pumlWBS = ABConvert.factory({
   id: "list2pumlWBS",
   name: "\u5217\u8868\u5230puml\u5DE5\u4F5C\u5206\u89E3\u7ED3\u6784",
   process_param: "string" /* text */,
@@ -27263,7 +28460,7 @@ var abc_list2pumlWBS = ABConvert.factory({
     return el;
   }
 });
-var abc_list2pumlMindmap = ABConvert.factory({
+var _abc_list2pumlMindmap = ABConvert.factory({
   id: "list2pumlMindmap",
   name: "\u5217\u8868\u5230puml\u601D\u7EF4\u5BFC\u56FE",
   process_param: "string" /* text */,
@@ -27280,7 +28477,7 @@ var abc_list2pumlMindmap = ABConvert.factory({
     return el;
   }
 });
-var abc_list2ActivityDiagramText = ABConvert.factory({
+var _abc_list2ActivityDiagramText = ABConvert.factory({
   id: "list2pumlActivityDiagramText",
   name: "\u5217\u8868\u5230puml\u6D3B\u52A8\u56FE\u6587\u672C",
   process_param: "string" /* text */,
@@ -27289,7 +28486,7 @@ var abc_list2ActivityDiagramText = ABConvert.factory({
     return list2ActivityDiagramText(ListProcess.data2strict(ListProcess.list2data(content)));
   }
 });
-var abc_list2ActivityDiagram = ABConvert.factory({
+var _abc_list2ActivityDiagram = ABConvert.factory({
   id: "list2pumlActivityDiagram",
   name: "\u5217\u8868\u5230puml\u6D3B\u52A8\u56FE",
   process_param: "string" /* text */,
@@ -27300,10 +28497,10 @@ var abc_list2ActivityDiagram = ABConvert.factory({
     return el;
   }
 });
-async function render_pumlText(text4, div) {
-  var encoded = import_plantuml_encoder.default.encode(text4);
+async function render_pumlText(text5, div) {
+  var encoded = import_plantuml_encoder.default.encode(text5);
   let url = "http://www.plantuml.com/plantuml/img/" + encoded;
-  div.innerHTML = `<img src="${url}">`;
+  div.innerHTML = purify.sanitize(`<img src="${url}">`);
   return div;
 }
 
@@ -27311,7 +28508,7 @@ async function render_pumlText(text4, div) {
 function getID(length = 16) {
   return Number(Math.random().toString().substr(3, length) + Date.now()).toString(36);
 }
-var abc_title2mindmap = ABConvert.factory({
+var _abc_title2mindmap = ABConvert.factory({
   id: "title2mindmap",
   name: "\u6807\u9898\u5230\u8111\u56FE",
   process_param: "string" /* text */,
@@ -27322,7 +28519,7 @@ var abc_title2mindmap = ABConvert.factory({
     return el2;
   }
 });
-var abc_list2mindmap = ABConvert.factory({
+var _abc_list2mindmap = ABConvert.factory({
   id: "list2mindmap",
   name: "\u5217\u8868\u8F6Cmermaid\u601D\u7EF4\u5BFC\u56FE",
   process_param: "string" /* text */,
@@ -27333,7 +28530,7 @@ var abc_list2mindmap = ABConvert.factory({
     return el2;
   }
 });
-var abc_list2mermaid = ABConvert.factory({
+var _abc_list2mermaid = ABConvert.factory({
   id: "list2mermaid",
   name: "\u5217\u8868\u8F6Cmermaid\u6D41\u7A0B\u56FE",
   match: /^list2mermaid(\((.*)\))?$/,
@@ -27354,7 +28551,7 @@ var abc_list2mermaid = ABConvert.factory({
     return el;
   }
 });
-var abc_list2mermaidText = ABConvert.factory({
+var _abc_list2mermaidText = ABConvert.factory({
   id: "list2mermaidText",
   name: "\u5217\u8868\u8F6Cmermaid\u6587\u672C",
   match: /^list2mermaidText(\((.*)\))?$/,
@@ -27375,7 +28572,7 @@ var abc_list2mermaidText = ABConvert.factory({
     return mermaidText;
   }
 });
-var abc_list2mehrmaid = ABConvert.factory({
+var _abc_list2mehrmaid = ABConvert.factory({
   id: "list2mehrmaidText",
   name: "\u5217\u8868\u8F6Cmehrmaid\u6587\u672C",
   match: /^list2mehrmaidText(\((.*)\))?$/,
@@ -27396,7 +28593,7 @@ var abc_list2mehrmaid = ABConvert.factory({
     return mermaidText;
   }
 });
-var abc_mermaid = ABConvert.factory({
+var _abc_mermaid = ABConvert.factory({
   id: "mermaid-with",
   name: "\u65B0mermaid",
   match: /^mermaid(\((.*)\))?$/,
@@ -27438,8 +28635,8 @@ function data2mermaidText(list_itemInfo) {
     prev_level = list_itemInfo[i].level;
   }
   list_line_content.push(prev_line_content);
-  let text4 = list_line_content.join("\n");
-  return text4;
+  let text5 = list_line_content.join("\n");
+  return text5;
 }
 function data2mehrmaidText(list_itemInfo) {
   const mehrmaidMap = [];
@@ -27470,13 +28667,13 @@ function data2mehrmaidText(list_itemInfo) {
     prev_level = list_itemInfo[i].level;
   }
   list_line_content.push(prev_line_content);
-  let text4 = list_line_content.join("\n");
-  text4 += "\n\n";
+  let text5 = list_line_content.join("\n");
+  text5 += "\n\n";
   for (let i = 0; i < mehrmaidMap.length; i++) {
-    text4 += `${i}(("${mehrmaidMap[i]}"))
+    text5 += `${i}(("${mehrmaidMap[i]}"))
 `;
   }
-  return text4;
+  return text5;
 }
 async function data2mindmap(list_itemInfo, div) {
   let list_newcontent = [];
@@ -27492,217 +28689,19 @@ async function data2mindmap(list_itemInfo, div) {
 async function render_mermaidText(mermaidText, div) {
   if (ABCSetting.env.startsWith("obsidian") && ABCSetting.obsidian.mermaid) {
     ABCSetting.obsidian.mermaid.then(async (mermaid) => {
-      const { svg } = await mermaid.render("ab-mermaid-" + getID(), mermaidText);
+      const { svg: svg2 } = await mermaid.render("ab-mermaid-" + getID(), mermaidText);
       const div_mermaid = document.createElement("div");
       div.appendChild(div_mermaid);
       div_mermaid.classList.add("mermaid");
-      div_mermaid.innerHTML = svg;
+      div_mermaid.innerHTML = svg2;
     });
   } else {
     div.classList.add("ab-raw");
-    div.innerHTML = `<div class="ab-raw-data" type-data="mermaid" content-data='${mermaidText}'></div>`;
+    div.innerHTML = purify.sanitize(`<div class="ab-raw-data" type-data="mermaid" content-data='${mermaidText}'></div>`);
   }
   {
   }
   return div;
-}
-
-// ../ABConverter/ABConvertEvent.ts
-function abConvertEvent(d, isCycle = false) {
-  var _a3;
-  if (d.querySelector(".ab-super-width")) {
-    const els_note = d.querySelectorAll(".ab-note");
-    for (const el_note of els_note) {
-      if (el_note.classList.contains("ab-super-width") || el_note.querySelector(".ab-super-width")) {
-        const el_replace = el_note.parentNode;
-        if (el_replace && el_replace.classList.contains("ab-replace")) {
-          el_replace.classList.add("ab-super-width-p");
-        }
-      }
-    }
-    const els_view = document.querySelectorAll(".app-container .workspace-leaf");
-    for (const el_view of els_view) {
-      el_view.style.setProperty("--ab-width-outer", (el_view.offsetWidth - 40).toString() + "px");
-    }
-  }
-  if (d.querySelector(".ab-nodes-node")) {
-    const els_min = document.querySelectorAll(".ab-nodes.min .ab-nodes-node");
-    const list_children = d.querySelectorAll(".ab-nodes-node");
-    for (const children2 of list_children) {
-      const el_content = children2.querySelector(".ab-nodes-content");
-      if (!el_content)
-        continue;
-      const el_child = children2.querySelector(".ab-nodes-children");
-      if (!el_child)
-        continue;
-      const el_bracket = el_child.querySelector(".ab-nodes-bracket");
-      if (!el_bracket)
-        continue;
-      const el_bracket2 = el_child.querySelector(".ab-nodes-bracket2");
-      if (!el_bracket2)
-        continue;
-      const els_child = el_child.childNodes;
-      if (els_child.length < 3) {
-        el_bracket.style.setProperty("display", "none");
-        el_bracket2.style.setProperty("display", "none");
-        continue;
-      }
-      const el_child_first = els_child[2];
-      const el_child_last = els_child[els_child.length - 1];
-      const el_child_first_content = el_child_first.querySelector(".ab-nodes-content");
-      const el_child_last_content = el_child_last.querySelector(".ab-nodes-content");
-      let height = 0;
-      let heightToReduce = (el_child_first.offsetHeight + el_child_last.offsetHeight) / 2;
-      if (els_child.length == 3) {
-        height = el_child_first_content.offsetHeight - 20 > 20 ? el_child_first_content.offsetHeight - 20 : 20;
-        el_bracket2.style.cssText = `
-          height: ${height}px;
-          top: calc(50% - ${height / 2}px);
-        `;
-      } else {
-        el_bracket2.style.cssText = `
-          height: calc(100% - ${heightToReduce}px);
-          top: ${el_child_first.offsetHeight / 2}px;
-        `;
-      }
-      if (Array.prototype.includes.call(els_min, children2)) {
-        if (els_child.length == 3) {
-          el_bracket.style.cssText = `
-            display: block;
-            top: calc(50% + ${el_content.offsetHeight / 2}px - 3px);
-            clip-path: circle(40% at 50% 40%);
-          `;
-        } else {
-          el_bracket.setAttribute("display", "none");
-        }
-        if (els_child.length == 3 && el_content.offsetHeight == el_child_first_content.offsetHeight) {
-          el_bracket2.style.cssText = `
-            height: 1px;
-            top: calc(50% + ${el_content.offsetHeight / 2}px - 1px);
-            width: 18px; /* \u53EF\u4EE5\u6EA2\u51FA\u70B9 */
-            border-radius: 0;
-            border: none;
-            border-bottom: 1px solid var(--node-color);
-          `;
-        } else {
-          if (els_child.length == 3) {
-            height = el_child_last_content.offsetHeight / 2 - el_content.offsetHeight / 2;
-            el_bracket2.style.setProperty("height", `${height}px`);
-            el_bracket2.style.setProperty("top", `calc(50% + ${el_content.offsetHeight / 2}px)`);
-            el_bracket2.style.setProperty("border-radius", `0 0 0 10px`);
-            el_bracket2.style.setProperty("border-top", `0`);
-          } else {
-            heightToReduce = el_child_first.offsetHeight / 2 + el_child_first_content.offsetHeight / 2 + el_child_last.offsetHeight / 2 - el_child_last_content.offsetHeight / 2;
-            el_bracket2.style.setProperty("height", `calc(100% - ${heightToReduce}px + 1px)`);
-            el_bracket2.style.setProperty("top", `${el_child_first.offsetHeight / 2 + el_child_first_content.offsetHeight / 2 - 1}px`);
-          }
-          el_bracket2.style.setProperty("width", "20px");
-        }
-      }
-    }
-  }
-  if (d.querySelector(".ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-lay-hfall):not(.ab-lay-grid)")) {
-    const root_el_list = d.querySelectorAll(".ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-lay-hfall):not(.ab-lay-grid)");
-    for (const root_el of root_el_list) {
-      root_el.classList.add("js-waterfall");
-      const list_children = root_el.querySelectorAll(".ab-items-item");
-      const columnCountTmp = parseInt(window.getComputedStyle(root_el).getPropertyValue("column-count"));
-      let columnCount;
-      if (columnCountTmp && !isNaN(columnCountTmp) && columnCountTmp > 0) {
-        columnCount = columnCountTmp;
-      } else if (root_el.classList.contains("ab-col-auto") && list_children.length <= 4) {
-        columnCount = list_children.length;
-        root_el.classList.add("ab-col" + columnCount);
-      } else {
-        columnCount = 4;
-        root_el.classList.add("ab-col" + columnCount);
-      }
-      const height_cache = [];
-      const el_cache = [];
-      for (let i = 0; i < columnCount; i++) {
-        height_cache.push(0);
-        el_cache.push([]);
-      }
-      for (const children2 of list_children) {
-        const minValue = Math.min.apply(null, height_cache);
-        const minIndex = height_cache.indexOf(minValue);
-        const heightTmp = parseInt(window.getComputedStyle(children2).getPropertyValue("height"));
-        height_cache[minIndex] += heightTmp && !isNaN(heightTmp) && heightTmp > 0 ? heightTmp : 10;
-        el_cache[minIndex].push(children2);
-      }
-      const fillNumber = columnCount - list_children.length % columnCount;
-      if (fillNumber != 4) {
-        for (let i = 0; i < fillNumber; i++) {
-          const children2 = document.createElement("div");
-          children2.classList.add(".ab-items-item.placeholder");
-          children2.setAttribute("style", "height: 20px");
-          const minValue = Math.min.apply(null, height_cache);
-          const minIndex = height_cache.indexOf(minValue);
-          height_cache[minIndex] += 20;
-          el_cache[minIndex].push(children2);
-        }
-      }
-      root_el.innerHTML = "";
-      for (let i = 0; i < columnCount; i++) {
-        for (const j of el_cache[i]) {
-          root_el.appendChild(j);
-        }
-      }
-    }
-  }
-  if (!isCycle && d.querySelector(".ab-markmap-div")) {
-    const divEl = d;
-    let markmapId = "";
-    if (divEl.tagName === "DIV") {
-      markmapId = ((_a3 = divEl.querySelector(".ab-markmap-div")) == null ? void 0 : _a3.id) || "";
-    }
-    let mindmaps;
-    if (markmapId) {
-      mindmaps = document.querySelectorAll("#" + markmapId);
-    } else {
-      mindmaps = document.querySelectorAll(".ab-markmap-div");
-    }
-    for (const el_div of mindmaps) {
-      const el_svg = el_div.querySelector("svg");
-      const el_g = el_svg == null ? void 0 : el_svg.querySelector("g");
-      if (el_svg && el_g) {
-        const scale_new = el_g.getBBox().height / el_div.offsetWidth;
-        el_svg.setAttribute("style", `height:${el_g.getBBox().height * scale_new + 40}px`);
-        markmap_event(d);
-      }
-    }
-  }
-}
-function markmap_event(d) {
-  var _a3;
-  if (d.querySelector(".ab-markmap-svg")) {
-    console.log("  - markmap_event");
-    let script_el = document.querySelector('script[script-id="ab-markmap-script"]');
-    if (script_el)
-      script_el.remove();
-    const divEl = d;
-    let markmapId = "";
-    if (divEl.tagName === "DIV") {
-      markmapId = ((_a3 = divEl.querySelector(".ab-markmap-svg")) == null ? void 0 : _a3.id) || "";
-    }
-    script_el = document.createElement("script");
-    document.head.appendChild(script_el);
-    script_el.type = "module";
-    script_el.setAttribute("script-id", "ab-markmap-script");
-    script_el.textContent = `
-    import { Markmap, } from 'https://jspm.dev/markmap-view';
-    const markmapId = "${markmapId || ""}";
-    let mindmaps;
-    if (markmapId) {
-      mindmaps = document.querySelectorAll('#' + markmapId);
-    } else {
-      mindmaps = document.querySelectorAll('.ab-markmap-svg'); // \u6CE8\u610F\u4E00\u4E0B\u8FD9\u91CC\u7684\u9009\u62E9\u5668
-    }
-    for(const mindmap of mindmaps) {
-      mindmap.innerHTML = "";
-      Markmap.create(mindmap,null,JSON.parse(mindmap.getAttribute('data-json')));
-    }`;
-  }
 }
 
 // ../../node_modules/.pnpm/markmap-common@0.18.9/node_modules/markmap-common/dist/index.mjs
@@ -28075,12 +29074,12 @@ function flatten2(options) {
 var static_exports = {};
 __export(static_exports, {
   contains: () => contains,
-  html: () => html,
+  html: () => html2,
   merge: () => merge,
   parseHTML: () => parseHTML,
   root: () => root,
-  text: () => text,
-  xml: () => xml
+  text: () => text2,
+  xml: () => xml2
 });
 
 // ../../node_modules/.pnpm/domutils@3.2.2/node_modules/domutils/lib/esm/index.js
@@ -28335,31 +29334,31 @@ function cloneNode(node, recursive = false) {
     result = new Comment2(node.data);
   } else if (isTag2(node)) {
     const children2 = recursive ? cloneChildren(node.children) : [];
-    const clone3 = new Element(node.name, { ...node.attribs }, children2);
-    children2.forEach((child) => child.parent = clone3);
+    const clone4 = new Element(node.name, { ...node.attribs }, children2);
+    children2.forEach((child) => child.parent = clone4);
     if (node.namespace != null) {
-      clone3.namespace = node.namespace;
+      clone4.namespace = node.namespace;
     }
     if (node["x-attribsNamespace"]) {
-      clone3["x-attribsNamespace"] = { ...node["x-attribsNamespace"] };
+      clone4["x-attribsNamespace"] = { ...node["x-attribsNamespace"] };
     }
     if (node["x-attribsPrefix"]) {
-      clone3["x-attribsPrefix"] = { ...node["x-attribsPrefix"] };
+      clone4["x-attribsPrefix"] = { ...node["x-attribsPrefix"] };
     }
-    result = clone3;
+    result = clone4;
   } else if (isCDATA(node)) {
     const children2 = recursive ? cloneChildren(node.children) : [];
-    const clone3 = new CDATA2(children2);
-    children2.forEach((child) => child.parent = clone3);
-    result = clone3;
+    const clone4 = new CDATA2(children2);
+    children2.forEach((child) => child.parent = clone4);
+    result = clone4;
   } else if (isDocument(node)) {
     const children2 = recursive ? cloneChildren(node.children) : [];
-    const clone3 = new Document(children2);
-    children2.forEach((child) => child.parent = clone3);
+    const clone4 = new Document(children2);
+    children2.forEach((child) => child.parent = clone4);
     if (node["x-mode"]) {
-      clone3["x-mode"] = node["x-mode"];
+      clone4["x-mode"] = node["x-mode"];
     }
-    result = clone3;
+    result = clone4;
   } else if (isDirective(node)) {
     const instruction = new ProcessingInstruction(node.name, node.data);
     if (node["x-name"] != null) {
@@ -28475,11 +29474,11 @@ var DomHandler = class {
     this.lastNode = null;
   }
   oncdatastart() {
-    const text4 = new Text2("");
-    const node = new CDATA2([text4]);
+    const text5 = new Text2("");
+    const node = new CDATA2([text5]);
     this.addNode(node);
-    text4.parent = node;
-    this.lastNode = text4;
+    text5.parent = node;
+    this.lastNode = text5;
   }
   oncdataend() {
     this.lastNode = null;
@@ -29699,7 +30698,7 @@ function render2(that, dom, options) {
 function isOptions(dom, options) {
   return !options && typeof dom === "object" && dom != null && !("length" in dom) && !("type" in dom);
 }
-function html(dom, options) {
+function html2(dom, options) {
   const toRender = isOptions(dom) ? (options = dom, void 0) : dom;
   const opts = {
     ...options_default,
@@ -29708,11 +30707,11 @@ function html(dom, options) {
   };
   return render2(this, toRender, opts);
 }
-function xml(dom) {
+function xml2(dom) {
   const options = { ...this._options, xmlMode: true };
   return render2(this, dom, options);
 }
-function text(elements) {
+function text2(elements) {
   const elems = elements ? elements : this ? this.root() : [];
   let ret = "";
   for (let i = 0; i < elems.length; i++) {
@@ -29807,12 +30806,12 @@ function domEach(array, fn) {
   return array;
 }
 function cloneDom(dom) {
-  const clone3 = "length" in dom ? Array.prototype.map.call(dom, (el) => cloneNode(el, true)) : [cloneNode(dom, true)];
-  const root3 = new Document(clone3);
-  clone3.forEach((node) => {
+  const clone4 = "length" in dom ? Array.prototype.map.call(dom, (el) => cloneNode(el, true)) : [cloneNode(dom, true)];
+  const root3 = new Document(clone4);
+  clone4.forEach((node) => {
     node.parent = root3;
   });
-  return clone3;
+  return clone4;
 }
 var CharacterCodes;
 (function(CharacterCodes2) {
@@ -29853,7 +30852,7 @@ function getAttr(elem, name2, xmlMode) {
     return !xmlMode && rboolean.test(name2) ? name2 : elem.attribs[name2];
   }
   if (elem.name === "option" && name2 === "value") {
-    return text(elem.children);
+    return text2(elem.children);
   }
   if (elem.name === "input" && (elem.attribs["type"] === "radio" || elem.attribs["type"] === "checkbox") && name2 === "value") {
     return "on";
@@ -30061,7 +31060,7 @@ function val(value) {
         }
         return this;
       }
-      return this.attr("multiple") ? option.toArray().map((el) => text(el.children)) : option.attr("value");
+      return this.attr("multiple") ? option.toArray().map((el) => text2(el.children)) : option.attr("value");
     }
     case "input":
     case "option":
@@ -30933,13 +31932,13 @@ function getChildFunc(next2, adapter2) {
   };
 }
 var filters = {
-  contains(next2, text4, { adapter: adapter2 }) {
+  contains(next2, text5, { adapter: adapter2 }) {
     return function contains3(elem) {
-      return next2(elem) && adapter2.getText(elem).includes(text4);
+      return next2(elem) && adapter2.getText(elem).includes(text5);
     };
   },
-  icontains(next2, text4, { adapter: adapter2 }) {
-    const itext = text4.toLowerCase();
+  icontains(next2, text5, { adapter: adapter2 }) {
+    const itext = text5.toLowerCase();
     return function icontains(elem) {
       return next2(elem) && adapter2.getText(elem).toLowerCase().includes(itext);
     };
@@ -31986,16 +32985,16 @@ __export(manipulation_exports, {
   append: () => append2,
   appendTo: () => appendTo,
   before: () => before,
-  clone: () => clone2,
+  clone: () => clone3,
   empty: () => empty,
-  html: () => html2,
+  html: () => html3,
   insertAfter: () => insertAfter,
   insertBefore: () => insertBefore,
   prepend: () => prepend2,
   prependTo: () => prependTo,
   remove: () => remove,
   replaceWith: () => replaceWith,
-  text: () => text2,
+  text: () => text3,
   toString: () => toString,
   unwrap: () => unwrap,
   wrap: () => wrap,
@@ -32045,20 +33044,20 @@ function update(newChilds, parent2) {
 }
 
 // ../../node_modules/.pnpm/cheerio@1.0.0-rc.12/node_modules/cheerio/lib/esm/api/manipulation.js
-function _makeDomArray(elem, clone3) {
+function _makeDomArray(elem, clone4) {
   if (elem == null) {
     return [];
   }
   if (isCheerio(elem)) {
-    return clone3 ? cloneDom(elem.get()) : elem.get();
+    return clone4 ? cloneDom(elem.get()) : elem.get();
   }
   if (Array.isArray(elem)) {
-    return elem.reduce((newElems, el) => newElems.concat(this._makeDomArray(el, clone3)), []);
+    return elem.reduce((newElems, el) => newElems.concat(this._makeDomArray(el, clone4)), []);
   }
   if (typeof elem === "string") {
     return this._parse(elem, this.options, false, null).children;
   }
-  return clone3 ? cloneDom([elem]) : [elem];
+  return clone4 ? cloneDom([elem]) : [elem];
 }
 function _insert(concatenator) {
   return function(...elems) {
@@ -32306,7 +33305,7 @@ function empty() {
     el.children.length = 0;
   });
 }
-function html2(str) {
+function html3(str) {
   if (str === void 0) {
     const el = this[0];
     if (!el || !hasChildren(el))
@@ -32326,12 +33325,12 @@ function html2(str) {
 function toString() {
   return this._render(this);
 }
-function text2(str) {
+function text3(str) {
   if (str === void 0) {
-    return text(this);
+    return text2(this);
   }
   if (typeof str === "function") {
-    return domEach(this, (el, i) => this._make(el).text(str.call(el, i, text([el]))));
+    return domEach(this, (el, i) => this._make(el).text(str.call(el, i, text2([el]))));
   }
   return domEach(this, (el) => {
     if (!hasChildren(el))
@@ -32343,7 +33342,7 @@ function text2(str) {
     update(textNode, el);
   });
 }
-function clone2() {
+function clone3() {
   return this._make(cloneDom(this.get()));
 }
 
@@ -36659,22 +37658,22 @@ var defaultTreeAdapter = {
       node.parentNode = null;
     }
   },
-  insertText(parentNode, text4) {
+  insertText(parentNode, text5) {
     if (parentNode.childNodes.length > 0) {
       const prevNode = parentNode.childNodes[parentNode.childNodes.length - 1];
       if (defaultTreeAdapter.isTextNode(prevNode)) {
-        prevNode.value += text4;
+        prevNode.value += text5;
         return;
       }
     }
-    defaultTreeAdapter.appendChild(parentNode, defaultTreeAdapter.createTextNode(text4));
+    defaultTreeAdapter.appendChild(parentNode, defaultTreeAdapter.createTextNode(text5));
   },
-  insertTextBefore(parentNode, text4, referenceNode) {
+  insertTextBefore(parentNode, text5, referenceNode) {
     const prevNode = parentNode.childNodes[parentNode.childNodes.indexOf(referenceNode) - 1];
     if (prevNode && defaultTreeAdapter.isTextNode(prevNode)) {
-      prevNode.value += text4;
+      prevNode.value += text5;
     } else {
-      defaultTreeAdapter.insertBefore(parentNode, defaultTreeAdapter.createTextNode(text4), referenceNode);
+      defaultTreeAdapter.insertBefore(parentNode, defaultTreeAdapter.createTextNode(text5), referenceNode);
     }
   },
   adoptAttributes(recipient, attrs) {
@@ -37158,9 +38157,9 @@ var Parser = class {
     this._setContextModes(fragmentContext !== null && fragmentContext !== void 0 ? fragmentContext : this.document, this.fragmentContextID);
     this.openElements = new OpenElementStack(this.document, this.treeAdapter, this);
   }
-  static parse(html3, options) {
+  static parse(html4, options) {
     const parser = new this(options);
-    parser.tokenizer.write(html3, true);
+    parser.tokenizer.write(html4, true);
     return parser.document;
   }
   static getFragmentParser(fragmentContext, options) {
@@ -40087,15 +41086,15 @@ function serializeOuter(node, options) {
   return serializeNode(node, opts);
 }
 function serializeChildNodes(parentNode, options) {
-  let html3 = "";
+  let html4 = "";
   const container = options.treeAdapter.isElementNode(parentNode) && options.treeAdapter.getTagName(parentNode) === TAG_NAMES.TEMPLATE && options.treeAdapter.getNamespaceURI(parentNode) === NS.HTML ? options.treeAdapter.getTemplateContent(parentNode) : parentNode;
   const childNodes = options.treeAdapter.getChildNodes(container);
   if (childNodes) {
     for (const currentNode of childNodes) {
-      html3 += serializeNode(currentNode, options);
+      html4 += serializeNode(currentNode, options);
     }
   }
-  return html3;
+  return html4;
 }
 function serializeNode(node, options) {
   if (options.treeAdapter.isElementNode(node)) {
@@ -40117,36 +41116,36 @@ function serializeElement(node, options) {
   return `<${tn}${serializeAttributes(node, options)}>${isVoidElement(node, options) ? "" : `${serializeChildNodes(node, options)}</${tn}>`}`;
 }
 function serializeAttributes(node, { treeAdapter }) {
-  let html3 = "";
+  let html4 = "";
   for (const attr2 of treeAdapter.getAttrList(node)) {
-    html3 += " ";
+    html4 += " ";
     if (attr2.namespace) {
       switch (attr2.namespace) {
         case NS.XML: {
-          html3 += `xml:${attr2.name}`;
+          html4 += `xml:${attr2.name}`;
           break;
         }
         case NS.XMLNS: {
           if (attr2.name !== "xmlns") {
-            html3 += "xmlns:";
+            html4 += "xmlns:";
           }
-          html3 += attr2.name;
+          html4 += attr2.name;
           break;
         }
         case NS.XLINK: {
-          html3 += `xlink:${attr2.name}`;
+          html4 += `xlink:${attr2.name}`;
           break;
         }
         default: {
-          html3 += `${attr2.prefix}:${attr2.name}`;
+          html4 += `${attr2.prefix}:${attr2.name}`;
         }
       }
     } else {
-      html3 += attr2.name;
+      html4 += attr2.name;
     }
-    html3 += `="${escapeAttribute2(attr2.value)}"`;
+    html4 += `="${escapeAttribute2(attr2.value)}"`;
   }
-  return html3;
+  return html4;
 }
 function serializeTextNode(node, options) {
   const { treeAdapter } = options;
@@ -40163,17 +41162,17 @@ function serializeDocumentTypeNode(node, { treeAdapter }) {
 }
 
 // ../../node_modules/.pnpm/parse5@7.3.0/node_modules/parse5/dist/index.js
-function parse5(html3, options) {
-  return Parser.parse(html3, options);
+function parse5(html4, options) {
+  return Parser.parse(html4, options);
 }
-function parseFragment(fragmentContext, html3, options) {
+function parseFragment(fragmentContext, html4, options) {
   if (typeof fragmentContext === "string") {
-    options = html3;
-    html3 = fragmentContext;
+    options = html4;
+    html4 = fragmentContext;
     fragmentContext = null;
   }
   const parser = Parser.getFragmentParser(fragmentContext, options);
-  parser.tokenizer.write(html3, true);
+  parser.tokenizer.write(html4, true);
   return parser.getFragment();
 }
 
@@ -40293,20 +41292,20 @@ var adapter = {
       node.parent = null;
     }
   },
-  insertText(parentNode, text4) {
+  insertText(parentNode, text5) {
     const lastChild = parentNode.children[parentNode.children.length - 1];
     if (lastChild && isText(lastChild)) {
-      lastChild.data += text4;
+      lastChild.data += text5;
     } else {
-      adapter.appendChild(parentNode, adapter.createTextNode(text4));
+      adapter.appendChild(parentNode, adapter.createTextNode(text5));
     }
   },
-  insertTextBefore(parentNode, text4, referenceNode) {
+  insertTextBefore(parentNode, text5, referenceNode) {
     const prevNode = parentNode.children[parentNode.children.indexOf(referenceNode) - 1];
     if (prevNode && isText(prevNode)) {
-      prevNode.data += text4;
+      prevNode.data += text5;
     } else {
-      adapter.insertBefore(parentNode, adapter.createTextNode(text4), referenceNode);
+      adapter.insertBefore(parentNode, adapter.createTextNode(text5), referenceNode);
     }
   },
   adoptAttributes(recipient, attrs) {
@@ -41611,12 +42610,12 @@ function getLevel(tagName) {
     return 9;
   return 7;
 }
-function parseHtml(html3, opts) {
+function parseHtml(html4, opts) {
   const options = {
     ...defaultOptions2,
     ...opts
   };
-  const $2 = load(html3);
+  const $2 = load(html4);
   const $root = $2("body");
   let id = 0;
   const rootNode = {
@@ -41757,8 +42756,8 @@ function convertNode(htmlRoot) {
     return node;
   });
 }
-function buildTree(html3, opts) {
-  const htmlRoot = parseHtml(html3, opts);
+function buildTree(html4, opts) {
+  const htmlRoot = parseHtml(html4, opts);
   return convertNode(htmlRoot);
 }
 
@@ -42990,8 +43989,8 @@ function linkify(state) {
         continue;
       }
       if (currentToken.type === "text" && state.md.linkify.test(currentToken.content)) {
-        const text4 = currentToken.content;
-        let links = state.md.linkify.match(text4);
+        const text5 = currentToken.content;
+        let links = state.md.linkify.match(text5);
         const nodes = [];
         let level = currentToken.level;
         let lastPos = 0;
@@ -43015,7 +44014,7 @@ function linkify(state) {
           const pos = links[ln].index;
           if (pos > lastPos) {
             const token = new state.Token("text", "", 0);
-            token.content = text4.slice(lastPos, pos);
+            token.content = text5.slice(lastPos, pos);
             token.level = level;
             nodes.push(token);
           }
@@ -43036,9 +44035,9 @@ function linkify(state) {
           nodes.push(token_c);
           lastPos = links[ln].lastIndex;
         }
-        if (lastPos < text4.length) {
+        if (lastPos < text5.length) {
           const token = new state.Token("text", "", 0);
-          token.content = text4.slice(lastPos);
+          token.content = text5.slice(lastPos);
           token.level = level;
           nodes.push(token);
         }
@@ -43132,13 +44131,13 @@ function process_inlines(tokens, state) {
     if (token.type !== "text") {
       continue;
     }
-    let text4 = token.content;
+    let text5 = token.content;
     let pos = 0;
-    let max = text4.length;
+    let max = text5.length;
     OUTER:
       while (pos < max) {
         QUOTE_RE.lastIndex = pos;
-        const t2 = QUOTE_RE.exec(text4);
+        const t2 = QUOTE_RE.exec(text5);
         if (!t2) {
           break;
         }
@@ -43148,7 +44147,7 @@ function process_inlines(tokens, state) {
         const isSingle = t2[0] === "'";
         let lastChar = 32;
         if (t2.index - 1 >= 0) {
-          lastChar = text4.charCodeAt(t2.index - 1);
+          lastChar = text5.charCodeAt(t2.index - 1);
         } else {
           for (j = i - 1; j >= 0; j--) {
             if (tokens[j].type === "softbreak" || tokens[j].type === "hardbreak")
@@ -43161,7 +44160,7 @@ function process_inlines(tokens, state) {
         }
         let nextChar = 32;
         if (pos < max) {
-          nextChar = text4.charCodeAt(pos);
+          nextChar = text5.charCodeAt(pos);
         } else {
           for (j = i + 1; j < tokens.length; j++) {
             if (tokens[j].type === "softbreak" || tokens[j].type === "hardbreak")
@@ -43232,8 +44231,8 @@ function process_inlines(tokens, state) {
               if (item.token === i) {
                 pos += openQuote.length - 1;
               }
-              text4 = token.content;
-              max = text4.length;
+              text5 = token.content;
+              max = text5.length;
               stack.length = j;
               continue OUTER;
             }
@@ -44786,7 +45785,7 @@ function isTerminatorChar(ch) {
       return false;
   }
 }
-function text3(state, silent) {
+function text4(state, silent) {
   let pos = state.pos;
   while (pos < state.posMax && !isTerminatorChar(state.src.charCodeAt(pos))) {
     pos++;
@@ -45609,7 +46608,7 @@ function fragments_join(state) {
 
 // ../../node_modules/.pnpm/markdown-it@14.1.0/node_modules/markdown-it/lib/parser_inline.mjs
 var _rules3 = [
-  ["text", text3],
+  ["text", text4],
   ["linkify", linkify2],
   ["newline", newline],
   ["escape", escape2],
@@ -45791,8 +46790,8 @@ function isOptionsObj(obj) {
 }
 var defaultSchemas = {
   "http:": {
-    validate: function(text4, pos, self2) {
-      const tail = text4.slice(pos);
+    validate: function(text5, pos, self2) {
+      const tail = text5.slice(pos);
       if (!self2.re.http) {
         self2.re.http = new RegExp(
           "^\\/\\/" + self2.re.src_auth + self2.re.src_host_port_strict + self2.re.src_path,
@@ -45808,8 +46807,8 @@ var defaultSchemas = {
   "https:": "http:",
   "ftp:": "http:",
   "//": {
-    validate: function(text4, pos, self2) {
-      const tail = text4.slice(pos);
+    validate: function(text5, pos, self2) {
+      const tail = text5.slice(pos);
       if (!self2.re.no_http) {
         self2.re.no_http = new RegExp(
           "^" + self2.re.src_auth + "(?:localhost|(?:(?:" + self2.re.src_domain + ")\\.)+" + self2.re.src_domain_root + ")" + self2.re.src_port + self2.re.src_host_terminator + self2.re.src_path,
@@ -45817,10 +46816,10 @@ var defaultSchemas = {
         );
       }
       if (self2.re.no_http.test(tail)) {
-        if (pos >= 3 && text4[pos - 3] === ":") {
+        if (pos >= 3 && text5[pos - 3] === ":") {
           return 0;
         }
-        if (pos >= 3 && text4[pos - 3] === "/") {
+        if (pos >= 3 && text5[pos - 3] === "/") {
           return 0;
         }
         return tail.match(self2.re.no_http)[0].length;
@@ -45829,8 +46828,8 @@ var defaultSchemas = {
     }
   },
   "mailto:": {
-    validate: function(text4, pos, self2) {
-      const tail = text4.slice(pos);
+    validate: function(text5, pos, self2) {
+      const tail = text5.slice(pos);
       if (!self2.re.mailto) {
         self2.re.mailto = new RegExp(
           "^" + self2.re.src_email_name + "@" + self2.re.src_host_strict,
@@ -45851,8 +46850,8 @@ function resetScanCache(self2) {
   self2.__text_cache__ = "";
 }
 function createValidator(re) {
-  return function(text4, pos) {
-    const tail = text4.slice(pos);
+  return function(text5, pos) {
+    const tail = text5.slice(pos);
     if (re.test(tail)) {
       return tail.match(re)[0].length;
     }
@@ -45938,13 +46937,13 @@ function compile4(self2) {
 function Match(self2, shift) {
   const start = self2.__index__;
   const end2 = self2.__last_index__;
-  const text4 = self2.__text_cache__.slice(start, end2);
+  const text5 = self2.__text_cache__.slice(start, end2);
   this.schema = self2.__schema__.toLowerCase();
   this.index = start + shift;
   this.lastIndex = end2 + shift;
-  this.raw = text4;
-  this.text = text4;
-  this.url = text4;
+  this.raw = text5;
+  this.text = text5;
+  this.url = text5;
 }
 function createMatch(self2, shift) {
   const match3 = new Match(self2, shift);
@@ -45982,18 +46981,18 @@ LinkifyIt.prototype.set = function set(options) {
   this.__opts__ = assign2(this.__opts__, options);
   return this;
 };
-LinkifyIt.prototype.test = function test(text4) {
-  this.__text_cache__ = text4;
+LinkifyIt.prototype.test = function test(text5) {
+  this.__text_cache__ = text5;
   this.__index__ = -1;
-  if (!text4.length) {
+  if (!text5.length) {
     return false;
   }
   let m, ml, me, len, shift, next2, re, tld_pos, at_pos;
-  if (this.re.schema_test.test(text4)) {
+  if (this.re.schema_test.test(text5)) {
     re = this.re.schema_search;
     re.lastIndex = 0;
-    while ((m = re.exec(text4)) !== null) {
-      len = this.testSchemaAt(text4, m[2], re.lastIndex);
+    while ((m = re.exec(text5)) !== null) {
+      len = this.testSchemaAt(text5, m[2], re.lastIndex);
       if (len) {
         this.__schema__ = m[2];
         this.__index__ = m.index + m[1].length;
@@ -46003,10 +47002,10 @@ LinkifyIt.prototype.test = function test(text4) {
     }
   }
   if (this.__opts__.fuzzyLink && this.__compiled__["http:"]) {
-    tld_pos = text4.search(this.re.host_fuzzy_test);
+    tld_pos = text5.search(this.re.host_fuzzy_test);
     if (tld_pos >= 0) {
       if (this.__index__ < 0 || tld_pos < this.__index__) {
-        if ((ml = text4.match(this.__opts__.fuzzyIP ? this.re.link_fuzzy : this.re.link_no_ip_fuzzy)) !== null) {
+        if ((ml = text5.match(this.__opts__.fuzzyIP ? this.re.link_fuzzy : this.re.link_no_ip_fuzzy)) !== null) {
           shift = ml.index + ml[1].length;
           if (this.__index__ < 0 || shift < this.__index__) {
             this.__schema__ = "";
@@ -46018,9 +47017,9 @@ LinkifyIt.prototype.test = function test(text4) {
     }
   }
   if (this.__opts__.fuzzyEmail && this.__compiled__["mailto:"]) {
-    at_pos = text4.indexOf("@");
+    at_pos = text5.indexOf("@");
     if (at_pos >= 0) {
-      if ((me = text4.match(this.re.email_fuzzy)) !== null) {
+      if ((me = text5.match(this.re.email_fuzzy)) !== null) {
         shift = me.index + me[1].length;
         next2 = me.index + me[0].length;
         if (this.__index__ < 0 || shift < this.__index__ || shift === this.__index__ && next2 > this.__last_index__) {
@@ -46033,23 +47032,23 @@ LinkifyIt.prototype.test = function test(text4) {
   }
   return this.__index__ >= 0;
 };
-LinkifyIt.prototype.pretest = function pretest(text4) {
-  return this.re.pretest.test(text4);
+LinkifyIt.prototype.pretest = function pretest(text5) {
+  return this.re.pretest.test(text5);
 };
-LinkifyIt.prototype.testSchemaAt = function testSchemaAt(text4, schema4, pos) {
+LinkifyIt.prototype.testSchemaAt = function testSchemaAt(text5, schema4, pos) {
   if (!this.__compiled__[schema4.toLowerCase()]) {
     return 0;
   }
-  return this.__compiled__[schema4.toLowerCase()].validate(text4, pos, this);
+  return this.__compiled__[schema4.toLowerCase()].validate(text5, pos, this);
 };
-LinkifyIt.prototype.match = function match2(text4) {
+LinkifyIt.prototype.match = function match2(text5) {
   const result = [];
   let shift = 0;
-  if (this.__index__ >= 0 && this.__text_cache__ === text4) {
+  if (this.__index__ >= 0 && this.__text_cache__ === text5) {
     result.push(createMatch(this, shift));
     shift = this.__last_index__;
   }
-  let tail = shift ? text4.slice(shift) : text4;
+  let tail = shift ? text5.slice(shift) : text5;
   while (this.test(tail)) {
     result.push(createMatch(this, shift));
     tail = tail.slice(this.__last_index__);
@@ -46060,15 +47059,15 @@ LinkifyIt.prototype.match = function match2(text4) {
   }
   return null;
 };
-LinkifyIt.prototype.matchAtStart = function matchAtStart(text4) {
-  this.__text_cache__ = text4;
+LinkifyIt.prototype.matchAtStart = function matchAtStart(text5) {
+  this.__text_cache__ = text5;
   this.__index__ = -1;
-  if (!text4.length)
+  if (!text5.length)
     return null;
-  const m = this.re.schema_at_start.exec(text4);
+  const m = this.re.schema_at_start.exec(text5);
   if (!m)
     return null;
-  const len = this.testSchemaAt(text4, m[2], m[0].length);
+  const len = this.testSchemaAt(text5, m[2], m[0].length);
   if (!len)
     return null;
   this.__schema__ = m[2];
@@ -46895,16 +47894,16 @@ var MAP = Symbol.for("yaml.map");
 var PAIR = Symbol.for("yaml.pair");
 var SCALAR = Symbol.for("yaml.scalar");
 var SEQ = Symbol.for("yaml.seq");
-var NODE_TYPE = Symbol.for("yaml.node.type");
-var isAlias = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === ALIAS;
-var isDocument2 = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === DOC;
-var isMap = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === MAP;
-var isPair = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === PAIR;
-var isScalar = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === SCALAR;
-var isSeq = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === SEQ;
+var NODE_TYPE2 = Symbol.for("yaml.node.type");
+var isAlias = (node) => !!node && typeof node === "object" && node[NODE_TYPE2] === ALIAS;
+var isDocument2 = (node) => !!node && typeof node === "object" && node[NODE_TYPE2] === DOC;
+var isMap = (node) => !!node && typeof node === "object" && node[NODE_TYPE2] === MAP;
+var isPair = (node) => !!node && typeof node === "object" && node[NODE_TYPE2] === PAIR;
+var isScalar = (node) => !!node && typeof node === "object" && node[NODE_TYPE2] === SCALAR;
+var isSeq = (node) => !!node && typeof node === "object" && node[NODE_TYPE2] === SEQ;
 function isCollection(node) {
   if (node && typeof node === "object")
-    switch (node[NODE_TYPE]) {
+    switch (node[NODE_TYPE2]) {
       case MAP:
       case SEQ:
         return true;
@@ -46913,7 +47912,7 @@ function isCollection(node) {
 }
 function isNode2(node) {
   if (node && typeof node === "object")
-    switch (node[NODE_TYPE]) {
+    switch (node[NODE_TYPE2]) {
       case ALIAS:
       case MAP:
       case SCALAR:
@@ -47345,7 +48344,7 @@ function toJS(value, arg, ctx) {
 // ../../node_modules/.pnpm/yaml@2.7.1/node_modules/yaml/browser/dist/nodes/Node.js
 var NodeBase = class {
   constructor(type) {
-    Object.defineProperty(this, NODE_TYPE, { value: type });
+    Object.defineProperty(this, NODE_TYPE2, { value: type });
   }
   clone() {
     const copy = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
@@ -47670,14 +48669,14 @@ var lineComment = (str, indent, comment2) => str.endsWith("\n") ? indentComment(
 var FOLD_FLOW = "flow";
 var FOLD_BLOCK = "block";
 var FOLD_QUOTED = "quoted";
-function foldFlowLines(text4, indent, mode = "flow", { indentAtStart, lineWidth = 80, minContentWidth = 20, onFold, onOverflow } = {}) {
+function foldFlowLines(text5, indent, mode = "flow", { indentAtStart, lineWidth = 80, minContentWidth = 20, onFold, onOverflow } = {}) {
   if (!lineWidth || lineWidth < 0)
-    return text4;
+    return text5;
   if (lineWidth < minContentWidth)
     minContentWidth = 0;
   const endStep = Math.max(1 + minContentWidth, 1 + lineWidth - indent.length);
-  if (text4.length <= endStep)
-    return text4;
+  if (text5.length <= endStep)
+    return text5;
   const folds = [];
   const escapedFolds = {};
   let end2 = lineWidth - indent.length;
@@ -47694,14 +48693,14 @@ function foldFlowLines(text4, indent, mode = "flow", { indentAtStart, lineWidth 
   let escStart = -1;
   let escEnd = -1;
   if (mode === FOLD_BLOCK) {
-    i = consumeMoreIndentedLines(text4, i, indent.length);
+    i = consumeMoreIndentedLines(text5, i, indent.length);
     if (i !== -1)
       end2 = i + endStep;
   }
-  for (let ch; ch = text4[i += 1]; ) {
+  for (let ch; ch = text5[i += 1]; ) {
     if (mode === FOLD_QUOTED && ch === "\\") {
       escStart = i;
-      switch (text4[i + 1]) {
+      switch (text5[i + 1]) {
         case "x":
           i += 3;
           break;
@@ -47718,12 +48717,12 @@ function foldFlowLines(text4, indent, mode = "flow", { indentAtStart, lineWidth 
     }
     if (ch === "\n") {
       if (mode === FOLD_BLOCK)
-        i = consumeMoreIndentedLines(text4, i, indent.length);
+        i = consumeMoreIndentedLines(text5, i, indent.length);
       end2 = i + indent.length + endStep;
       split = void 0;
     } else {
       if (ch === " " && prev2 && prev2 !== " " && prev2 !== "\n" && prev2 !== "	") {
-        const next2 = text4[i + 1];
+        const next2 = text5[i + 1];
         if (next2 && next2 !== " " && next2 !== "\n" && next2 !== "	")
           split = i;
       }
@@ -47735,12 +48734,12 @@ function foldFlowLines(text4, indent, mode = "flow", { indentAtStart, lineWidth 
         } else if (mode === FOLD_QUOTED) {
           while (prev2 === " " || prev2 === "	") {
             prev2 = ch;
-            ch = text4[i += 1];
+            ch = text5[i += 1];
             overflow = true;
           }
           const j = i > escEnd + 1 ? i - 2 : escStart - 1;
           if (escapedFolds[j])
-            return text4;
+            return text5;
           folds.push(j);
           escapedFolds[j] = true;
           end2 = j + endStep;
@@ -47755,39 +48754,39 @@ function foldFlowLines(text4, indent, mode = "flow", { indentAtStart, lineWidth 
   if (overflow && onOverflow)
     onOverflow();
   if (folds.length === 0)
-    return text4;
+    return text5;
   if (onFold)
     onFold();
-  let res = text4.slice(0, folds[0]);
+  let res = text5.slice(0, folds[0]);
   for (let i2 = 0; i2 < folds.length; ++i2) {
     const fold = folds[i2];
-    const end3 = folds[i2 + 1] || text4.length;
+    const end3 = folds[i2 + 1] || text5.length;
     if (fold === 0)
       res = `
-${indent}${text4.slice(0, end3)}`;
+${indent}${text5.slice(0, end3)}`;
     else {
       if (mode === FOLD_QUOTED && escapedFolds[fold])
-        res += `${text4[fold]}\\`;
+        res += `${text5[fold]}\\`;
       res += `
-${indent}${text4.slice(fold + 1, end3)}`;
+${indent}${text5.slice(fold + 1, end3)}`;
     }
   }
   return res;
 }
-function consumeMoreIndentedLines(text4, i, indent) {
+function consumeMoreIndentedLines(text5, i, indent) {
   let end2 = i;
   let start = i + 1;
-  let ch = text4[start];
+  let ch = text5[start];
   while (ch === " " || ch === "	") {
     if (i < start + indent) {
-      ch = text4[++i];
+      ch = text5[++i];
     } else {
       do {
-        ch = text4[++i];
+        ch = text5[++i];
       } while (ch && ch !== "\n");
       end2 = i;
       start = i + 1;
-      ch = text4[start];
+      ch = text5[start];
     }
   }
   return end2;
@@ -48428,7 +49427,7 @@ function createPair(key, value, ctx) {
 }
 var Pair = class {
   constructor(key, value = null) {
-    Object.defineProperty(this, NODE_TYPE, { value: PAIR });
+    Object.defineProperty(this, NODE_TYPE2, { value: PAIR });
     this.key = key;
     this.value = value;
   }
@@ -49676,7 +50675,7 @@ var Document2 = class {
     this.comment = null;
     this.errors = [];
     this.warnings = [];
-    Object.defineProperty(this, NODE_TYPE, { value: DOC });
+    Object.defineProperty(this, NODE_TYPE2, { value: DOC });
     let _replacer = null;
     if (typeof replacer === "function" || Array.isArray(replacer)) {
       _replacer = replacer;
@@ -49707,7 +50706,7 @@ var Document2 = class {
   }
   clone() {
     const copy = Object.create(Document2.prototype, {
-      [NODE_TYPE]: { value: DOC }
+      [NODE_TYPE2]: { value: DOC }
     });
     copy.commentBefore = this.commentBefore;
     copy.comment = this.comment;
@@ -53334,9 +54333,9 @@ var Transformer = class {
       parserOptions: fallbackParserOptions
     };
     this.hooks.beforeParse.call(this.md, context);
-    const html3 = this.md.render(context.content, {});
+    const html4 = this.md.render(context.content, {});
     this.hooks.afterParse.call(this.md, context);
-    const root3 = cleanNode(buildTree(html3, context.parserOptions));
+    const root3 = cleanNode(buildTree(html4, context.parserOptions));
     root3.content || (root3.content = `${((_a3 = context.frontmatter) == null ? void 0 : _a3.title) || ""}`);
     return { ...context, root: root3 };
   }
@@ -53365,14 +54364,15 @@ var Transformer = class {
 
 // ../ABConverter/converter/abc_markmap.ts
 var transformer = new Transformer();
-var abc_list2mindmap2 = ABConvert.factory({
+var _abc_list2mindmap2 = ABConvert.factory({
   id: "list2markmap",
   name: "\u5217\u8868\u5230\u8111\u56FE (markmap)",
   process_param: "string" /* text */,
   process_return: "HTMLElement" /* el */,
   process: (el, header, content) => {
+    var _a3, _b;
     list2markmap(content, el);
-    markmap_event(el);
+    (_b = (_a3 = ABCSetting.obsidian).markmap_event) == null ? void 0 : _b.call(_a3, el);
     return el;
   }
 });
@@ -53389,10 +54389,12 @@ function list2markmap(markdown, div) {
     svg_div.classList.add("ab-markmap-div");
     svg_div.id = "ab-markmap-div-" + id;
     const html_str = `<svg class="ab-markmap-svg" id="ab-markmap-${id}" data-json='${JSON.stringify(root3)}' style="height:${height_adapt}px"></svg>`;
-    svg_div.innerHTML = html_str;
+    svg_div.innerHTML = purify.sanitize(html_str, {
+      USE_PROFILES: { svg: true }
+    });
   } else {
     div.classList.add("ab-raw");
-    div.innerHTML = `<div class="ab-raw-data" type-data="markmap" content-data='${markdown}'></div>`;
+    div.innerHTML = purify.sanitize(`<div class="ab-raw-data" type-data="markmap" content-data='${markdown}'></div>`);
   }
   {
   }
@@ -53402,12 +54404,213 @@ function list2markmap(markdown, div) {
   }
   return div;
 }
+async function markmap_event(d) {
+  var _a3;
+  if (ABCSetting.env == "obsidian-min")
+    return;
+  if (d.querySelector(".ab-markmap-svg")) {
+    console.log("  - markmap_event");
+    let script_el = document.querySelector('script[script-id="ab-markmap-script"]');
+    if (script_el)
+      script_el.remove();
+    const divEl = d;
+    let markmapId = "";
+    if (divEl.tagName === "DIV") {
+      markmapId = ((_a3 = divEl.querySelector(".ab-markmap-svg")) == null ? void 0 : _a3.id) || "";
+    }
+    script_el = document.createElement("script");
+    document.head.appendChild(script_el);
+    script_el.type = "module";
+    script_el.setAttribute("script-id", "ab-markmap-script");
+    script_el.textContent = `
+    import { Markmap, } from 'https://jspm.dev/markmap-view';
+    const markmapId = "${markmapId || ""}";
+    let mindmaps;
+    if (markmapId) {
+      mindmaps = document.querySelectorAll('#' + markmapId);
+    } else {
+      mindmaps = document.querySelectorAll('.ab-markmap-svg'); // \u6CE8\u610F\u4E00\u4E0B\u8FD9\u91CC\u7684\u9009\u62E9\u5668
+    }
+    for(const mindmap of mindmaps) {
+      mindmap.innerHTML = "";
+      Markmap.create(mindmap,null,JSON.parse(mindmap.getAttribute('data-json')));
+    }`;
+  }
+}
+ABCSetting.obsidian.markmap_event = markmap_event;
 
 // ../ABConverter/index.ts
 ABCSetting.env = "obsidian";
 
 // ab_manager/abm_code/ABReplacer_CodeBlock.ts
 var import_obsidian2 = require("obsidian");
+
+// ../ABConverter/ABConvertEvent.ts
+function abConvertEvent(d, isCycle = false) {
+  var _a3, _b, _c;
+  if (d.querySelector(".ab-super-width")) {
+    const els_note = d.querySelectorAll(".ab-note");
+    for (const el_note of els_note) {
+      if (el_note.classList.contains("ab-super-width") || el_note.querySelector(".ab-super-width")) {
+        const el_replace = el_note.parentNode;
+        if (el_replace && el_replace.classList.contains("ab-replace")) {
+          el_replace.classList.add("ab-super-width-p");
+        }
+      }
+    }
+    const els_view = document.querySelectorAll(".app-container .workspace-leaf");
+    for (const el_view of els_view) {
+      el_view.style.setProperty("--ab-width-outer", (el_view.offsetWidth - 40).toString() + "px");
+    }
+  }
+  if (d.querySelector(".ab-nodes-node")) {
+    const els_min = document.querySelectorAll(".ab-nodes.min .ab-nodes-node");
+    const list_children = d.querySelectorAll(".ab-nodes-node");
+    for (const children2 of list_children) {
+      const el_content = children2.querySelector(".ab-nodes-content");
+      if (!el_content)
+        continue;
+      const el_child = children2.querySelector(".ab-nodes-children");
+      if (!el_child)
+        continue;
+      const el_bracket = el_child.querySelector(".ab-nodes-bracket");
+      if (!el_bracket)
+        continue;
+      const el_bracket2 = el_child.querySelector(".ab-nodes-bracket2");
+      if (!el_bracket2)
+        continue;
+      const els_child = el_child.childNodes;
+      if (els_child.length < 3) {
+        el_bracket.style.setProperty("display", "none");
+        el_bracket2.style.setProperty("display", "none");
+        continue;
+      }
+      const el_child_first = els_child[2];
+      const el_child_last = els_child[els_child.length - 1];
+      const el_child_first_content = el_child_first.querySelector(".ab-nodes-content");
+      const el_child_last_content = el_child_last.querySelector(".ab-nodes-content");
+      let height = 0;
+      let heightToReduce = (el_child_first.offsetHeight + el_child_last.offsetHeight) / 2;
+      if (els_child.length == 3) {
+        height = el_child_first_content.offsetHeight - 20 > 20 ? el_child_first_content.offsetHeight - 20 : 20;
+        el_bracket2.style.cssText = `
+          height: ${height}px;
+          top: calc(50% - ${height / 2}px);
+        `;
+      } else {
+        el_bracket2.style.cssText = `
+          height: calc(100% - ${heightToReduce}px);
+          top: ${el_child_first.offsetHeight / 2}px;
+        `;
+      }
+      if (Array.prototype.includes.call(els_min, children2)) {
+        if (els_child.length == 3) {
+          el_bracket.style.cssText = `
+            display: block;
+            top: calc(50% + ${el_content.offsetHeight / 2}px - 3px);
+            clip-path: circle(40% at 50% 40%);
+          `;
+        } else {
+          el_bracket.setAttribute("display", "none");
+        }
+        if (els_child.length == 3 && el_content.offsetHeight == el_child_first_content.offsetHeight) {
+          el_bracket2.style.cssText = `
+            height: 1px;
+            top: calc(50% + ${el_content.offsetHeight / 2}px - 1px);
+            width: 18px; /* \u53EF\u4EE5\u6EA2\u51FA\u70B9 */
+            border-radius: 0;
+            border: none;
+            border-bottom: 1px solid var(--node-color);
+          `;
+        } else {
+          if (els_child.length == 3) {
+            height = el_child_last_content.offsetHeight / 2 - el_content.offsetHeight / 2;
+            el_bracket2.style.setProperty("height", `${height}px`);
+            el_bracket2.style.setProperty("top", `calc(50% + ${el_content.offsetHeight / 2}px)`);
+            el_bracket2.style.setProperty("border-radius", `0 0 0 10px`);
+            el_bracket2.style.setProperty("border-top", `0`);
+          } else {
+            heightToReduce = el_child_first.offsetHeight / 2 + el_child_first_content.offsetHeight / 2 + el_child_last.offsetHeight / 2 - el_child_last_content.offsetHeight / 2;
+            el_bracket2.style.setProperty("height", `calc(100% - ${heightToReduce}px + 1px)`);
+            el_bracket2.style.setProperty("top", `${el_child_first.offsetHeight / 2 + el_child_first_content.offsetHeight / 2 - 1}px`);
+          }
+          el_bracket2.style.setProperty("width", "20px");
+        }
+      }
+    }
+  }
+  if (d.querySelector(".ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-lay-hfall):not(.ab-lay-grid)")) {
+    const root_el_list = d.querySelectorAll(".ab-items.ab-lay-vfall:not(.js-waterfall):not(.ab-lay-hfall):not(.ab-lay-grid)");
+    for (const root_el of root_el_list) {
+      root_el.classList.add("js-waterfall");
+      const list_children = root_el.querySelectorAll(".ab-items-item");
+      const columnCountTmp = parseInt(window.getComputedStyle(root_el).getPropertyValue("column-count"));
+      let columnCount;
+      if (columnCountTmp && !isNaN(columnCountTmp) && columnCountTmp > 0) {
+        columnCount = columnCountTmp;
+      } else if (root_el.classList.contains("ab-col-auto") && list_children.length <= 4) {
+        columnCount = list_children.length;
+        root_el.classList.add("ab-col" + columnCount);
+      } else {
+        columnCount = 4;
+        root_el.classList.add("ab-col" + columnCount);
+      }
+      const height_cache = [];
+      const el_cache = [];
+      for (let i = 0; i < columnCount; i++) {
+        height_cache.push(0);
+        el_cache.push([]);
+      }
+      for (const children2 of list_children) {
+        const minValue = Math.min.apply(null, height_cache);
+        const minIndex = height_cache.indexOf(minValue);
+        const heightTmp = parseInt(window.getComputedStyle(children2).getPropertyValue("height"));
+        height_cache[minIndex] += heightTmp && !isNaN(heightTmp) && heightTmp > 0 ? heightTmp : 10;
+        el_cache[minIndex].push(children2);
+      }
+      const fillNumber = columnCount - list_children.length % columnCount;
+      if (fillNumber != 4) {
+        for (let i = 0; i < fillNumber; i++) {
+          const children2 = document.createElement("div");
+          children2.classList.add(".ab-items-item.placeholder");
+          children2.setAttribute("style", "height: 20px");
+          const minValue = Math.min.apply(null, height_cache);
+          const minIndex = height_cache.indexOf(minValue);
+          height_cache[minIndex] += 20;
+          el_cache[minIndex].push(children2);
+        }
+      }
+      root_el.innerHTML = "";
+      for (let i = 0; i < columnCount; i++) {
+        for (const j of el_cache[i]) {
+          root_el.appendChild(j);
+        }
+      }
+    }
+  }
+  if (!isCycle && d.querySelector(".ab-markmap-div")) {
+    const divEl = d;
+    let markmapId = "";
+    if (divEl.tagName === "DIV") {
+      markmapId = ((_a3 = divEl.querySelector(".ab-markmap-div")) == null ? void 0 : _a3.id) || "";
+    }
+    let mindmaps;
+    if (markmapId) {
+      mindmaps = document.querySelectorAll("#" + markmapId);
+    } else {
+      mindmaps = document.querySelectorAll(".ab-markmap-div");
+    }
+    for (const el_div of mindmaps) {
+      const el_svg = el_div.querySelector("svg");
+      const el_g = el_svg == null ? void 0 : el_svg.querySelector("g");
+      if (el_svg && el_g) {
+        const scale_new = el_g.getBBox().height / el_div.offsetWidth;
+        el_svg.setAttribute("style", `height:${el_g.getBBox().height * scale_new + 40}px`);
+        (_c = (_b = ABCSetting.obsidian).markmap_event) == null ? void 0 : _c.call(_b, d);
+      }
+    }
+  }
+}
 
 // ab_manager/abm_cm/ABReplacer_Widget.ts
 var import_obsidian = require("obsidian");
@@ -53581,13 +54784,13 @@ var _ABReplacer_Widget = class extends import_view.WidgetType {
       else
         is_show = !is_show;
       if (is_show) {
-        btn_copy.style.display = "block";
-        btn_refresh.style.display = "block";
-        btn_wider.style.display = "block";
+        btn_copy.classList.remove("ab-hide");
+        btn_refresh.classList.remove("ab-hide");
+        btn_wider.classList.remove("ab-hide");
       } else {
-        btn_copy.style.display = "none";
-        btn_refresh.style.display = "none";
-        btn_wider.style.display = "none";
+        btn_copy.classList.add("ab-hide");
+        btn_refresh.classList.add("ab-hide");
+        btn_wider.classList.add("ab-hide");
       }
     }
     return this.div;
@@ -53732,10 +54935,10 @@ var ABReplacer_CodeBlock = class {
 // ab_manager/abm_cm/ABStateManager.ts
 var import_view2 = require("@codemirror/view");
 var import_state = require("@codemirror/state");
-var import_obsidian5 = require("obsidian");
+var import_obsidian4 = require("obsidian");
 
 // config/ABSettingTab.ts
-var import_obsidian4 = require("obsidian");
+var import_obsidian3 = require("obsidian");
 
 // ../CodeMirror2/ABSelector_Md.ts
 function autoMdSelector(mdText = "") {
@@ -53858,7 +55061,7 @@ function easySelector_headtail(list_text, from_line, selector, frist_reg) {
     content: "",
     prefix: ""
   };
-  if (from_line <= 0)
+  if (from_line < 0)
     return null;
   const first_line_match = list_text[from_line].match(frist_reg);
   if (!first_line_match)
@@ -54095,16 +55298,15 @@ var mdSelector_heading = {
 };
 registerMdSelector(mdSelector_heading);
 
-// locales/helper.ts
-var import_obsidian3 = require("obsidian");
-
-// locales/en.ts
+// ../ABConverter/locales/en.ts
 var en_default = {
   "any-block-rebuild-view": "Refresh/rebuild current view",
   "any-block-rebuild-view-btn": "Rebuild View",
   "any-block-to-codeblock": "Convert anyblock section into codeblock format",
   "any-block-to-codeblock-success": "Convert success! Generated to ",
   "any-block-to-codeblock-fail": "Convert failed, please check the console for details",
+  "any-block-delete-ab-header": "Delete AnyBlock header",
+  "any-block-switch-disable": "Toggle AnyBlock enable/disable",
   "Mini docs": `Mini docs`,
   "see website for detail": `See 
     <a href="https://lincdocs.github.io/AnyBlock/README.show.html">website</a>
@@ -54147,9 +55349,13 @@ var en_default = {
   "Pro editableblock render2": "EditableBlock default render mode",
   "Pro editableblock render21": "- Read mode: you need to press the middle key to enter the editing mode. Press the middle key / Esc / move the cursor outside to complete the editing.",
   "Pro editableblock render22": "- Teal time: allows for direct editing but requires more performance.",
-  "Pro editableblock render23": "- Only take over during editing (developing)",
+  "Pro editableblock render23": "- Simple text area: Display as plain text, suitable for cases where the sub-block does not contain complex markdown.",
+  "Pro editableblock render24": "- Only take over during editing (developing)",
   "Pro editableblock render3": "Read mode",
   "Pro editableblock render4": "Real mode",
+  "Pro editableblock render5": "Simple text area",
+  "Pro alias override": "Pro alias override",
+  "Pro alias override2": "(The modification requires restarting the plugin) Replace the original processor behavior with the corresponding Pro processor behavior. If disabled, the editable version and the original version will use different processor names.",
   "Pro callout": "Callout selector",
   "Pro callout2": "Use the Callout selector and enable editable Callout",
   "License": "License",
@@ -54165,13 +55371,15 @@ var en_default = {
   "Close": "Close"
 };
 
-// locales/zh-cn.ts
+// ../ABConverter/locales/zh-cn.ts
 var zh_cn_default = {
   "any-block-rebuild-view": "\u5237\u65B0/\u91CD\u5EFA\u5F53\u524D\u89C6\u56FE",
-  "any-block-rebuild-view-btn": "\u5237\u65B0/\u91CD\u5EFA\u89C6\u56FE",
+  "any-block-rebuild-view-btn": "\u5237\u65B0\u89C6\u56FE",
   "any-block-to-codeblock": "\u5C06 anyblock \u533A\u5757\u8F6C\u6362\u4E3A\u4EE3\u7801\u5757\u683C\u5F0F",
   "any-block-to-codeblock-success": "\u8F6C\u6362\u6210\u529F! \u5DF2\u751F\u6210\u5230 ",
   "any-block-to-codeblock-fail": "\u8F6C\u6362\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u63A7\u5236\u53F0\u4EE5\u83B7\u53D6\u8BE6\u7EC6\u4FE1\u606F",
+  "any-block-delete-ab-header": "\u5220\u9664 AnyBlock \u65B9\u62EC\u53F7\u5934\u90E8",
+  "any-block-switch-disable": "\u5207\u6362 AnyBlock \u542F\u7528/\u7981\u7528",
   "Mini docs": `mini\u6587\u6863`,
   "see website for detail": `\u67E5\u770B 
     <a href="https://lincdocs.github.io/AnyBlock/README.show.html">website</a>
@@ -54214,9 +55422,13 @@ var zh_cn_default = {
   "Pro editableblock render2": "\u53EF\u7F16\u8F91\u5757\u7684\u9ED8\u8BA4\u6E32\u67D3\u6A21\u5F0F",
   "Pro editableblock render21": "- \u9605\u8BFB\u6A21\u5F0F: \u9700\u8981\u4F7F\u7528\u4E2D\u952E\u8FDB\u5165\u7F16\u8F91\uFF0C\u4E2D\u952E/Esc/\u5149\u6807\u5916\u90E8\u805A\u7126\u5B8C\u6210\u7F16\u8F91",
   "Pro editableblock render22": "- \u5B9E\u65F6\u6A21\u5F0F: \u53EF\u76F4\u63A5\u7F16\u8F91\u4F46\u4F1A\u66F4\u5403\u6027\u80FD",
-  "Pro editableblock render23": "- \u4EC5\u7F16\u8F91\u65F6\u63A5\u7BA1 (\u5F00\u53D1\u4E2D): \u4E0D\u4FEE\u6539\u9ED8\u8BA4\u6E32\u67D3\u903B\u8F91\uFF0C\u4EC5\u4E2D\u952E\u5C06\u5176\u4FEE\u6539\u4E3A\u53EF\u7F16\u8F91\u72B6\u6001",
+  "Pro editableblock render23": "- \u7B80\u6613\u6587\u672C\u6846: \u663E\u793A\u4E3A\u7EAF\u6587\u672C\uFF0C\u9002\u5408\u5B50\u5757\u4E0D\u5305\u542B\u590D\u6742md\u7684\u60C5\u51B5",
+  "Pro editableblock render24": "- \u4EC5\u7F16\u8F91\u65F6\u63A5\u7BA1 (\u5F00\u53D1\u4E2D): \u4E0D\u4FEE\u6539\u9ED8\u8BA4\u6E32\u67D3\u903B\u8F91\uFF0C\u4EC5\u4E2D\u952E\u5C06\u5176\u4FEE\u6539\u4E3A\u53EF\u7F16\u8F91\u72B6\u6001",
   "Pro editableblock render3": "\u9605\u8BFB\u6A21\u5F0F",
   "Pro editableblock render4": "\u5B9E\u65F6\u6A21\u5F0F",
+  "Pro editableblock render5": "\u7B80\u6613\u6587\u672C\u6846",
+  "Pro alias override": "Pro \u522B\u540D\u8986\u76D6",
+  "Pro alias override2": "(\u91CD\u542F\u63D2\u4EF6\u751F\u6548) \u5C06\u539F\u5904\u7406\u5668\u884C\u4E3A\u66FF\u6362\u4E3A pro \u5BF9\u5E94\u5904\u7406\u5668\u7684\u884C\u4E3A\u3002\u82E5\u5173\u95ED\u5219\u53EF\u7F16\u8F91\u7248\u672C\u4E0E\u539F\u7248\u672C\u5206\u522B\u4F7F\u7528\u4E0D\u540C\u7684\u5904\u7406\u5668\u540D",
   "Pro callout": "Callout \u9009\u62E9\u5668",
   "Pro callout2": "\u4F7F\u7528 Callout \u9009\u62E9\u5668\uFF0C\u5E76\u542F\u7528\u53EF\u7F16\u8F91 Callout",
   "License": "\u8BB8\u53EF\u8BC1",
@@ -54232,14 +55444,21 @@ var zh_cn_default = {
   "Close": "\u5173\u95ED"
 };
 
-// locales/helper.ts
+// ../ABConverter/locales/helper.ts
 var localeMap = {
   en: en_default,
   "zh": zh_cn_default,
   "zh-TW": zh_cn_default
 };
-var locale = localeMap[(0, import_obsidian3.getLanguage)()];
+var locale;
 function t(str) {
+  if (locale == void 0) {
+    if (ABCSetting.state.language == "English")
+      ABCSetting.state.language = "en";
+    else if (ABCSetting.state.language == "\u4E2D\u6587")
+      ABCSetting.state.language = "zh";
+    locale = localeMap[ABCSetting.state.language];
+  }
   return locale && locale[str] || en_default[str];
 }
 
@@ -54280,20 +55499,21 @@ var AB_SETTINGS = {
     license_key: "",
     disable: false,
     enable_callout_selector: true,
+    enable_alias_override: true,
     editableblock_defaultRender: "readmode"
   }
 };
 var expiry = {
   expiry: -1
 };
-var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
+var ABSettingTab = class extends import_obsidian3.PluginSettingTab {
   constructor(app2, plugin2) {
     super(app2, plugin2);
     this.plugin = plugin2;
     ABCSetting.is_debug = this.plugin.settings.is_debug;
     ABReg.inline_split = new RegExp(this.plugin.settings.inline_split.slice(1, -1));
     if (!plugin2.settings.alias_use_default) {
-      ABAlias_json.length = 0;
+      ABAlias_user.length = 0;
     }
     for (let item of plugin2.settings.alias_user) {
       let newReg;
@@ -54302,7 +55522,7 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
       } else {
         newReg = item.regex;
       }
-      ABAlias_json.push({
+      ABAlias_user.push({
         regex: newReg,
         replacement: item.replacement
       });
@@ -54324,20 +55544,20 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
     let ab_tab_div_html;
     ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: t("Mini docs") });
     ab_tab_content_item = el_tab_content.createEl("div", { cls: "ab-tab-content-item" });
-    new import_obsidian4.Setting(ab_tab_content_item).setName(t("Mini docs")).setHeading();
+    new import_obsidian3.Setting(ab_tab_content_item).setName(t("Mini docs")).setHeading();
     ab_tab_div_html = ab_tab_content_item.createEl("div");
-    ab_tab_div_html.appendChild((0, import_obsidian4.sanitizeHTMLToDom)(t("see website for detail")));
-    new import_obsidian4.Setting(ab_tab_content_item).setName(t("Mini docs menu")).setHeading();
+    ab_tab_div_html.appendChild((0, import_obsidian3.sanitizeHTMLToDom)(t("see website for detail")));
+    new import_obsidian3.Setting(ab_tab_content_item).setName(t("Mini docs menu")).setHeading();
     ab_tab_div_html = ab_tab_content_item.createEl("div");
-    ab_tab_div_html.appendChild((0, import_obsidian4.sanitizeHTMLToDom)(t("Mini docs menu2")));
+    ab_tab_div_html.appendChild((0, import_obsidian3.sanitizeHTMLToDom)(t("Mini docs menu2")));
     ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: t("Selector manager") });
     ab_tab_content_item = el_tab_content.createEl("div", { cls: "ab-tab-content-item" });
-    new import_obsidian4.Setting(ab_tab_content_item).setName(t("Selector manager")).setHeading();
+    new import_obsidian3.Setting(ab_tab_content_item).setName(t("Selector manager")).setHeading();
     ab_tab_content_item.createEl("p", { text: t("Selector manager2") });
     this.selectorPanel = generateSelectorInfoTable(ab_tab_content_item);
     ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: t("Convertor manager") });
     ab_tab_content_item = el_tab_content.createEl("div", { cls: "ab-tab-content-item" });
-    new import_obsidian4.Setting(ab_tab_content_item).setName(t("Convertor manager")).setHeading();
+    new import_obsidian3.Setting(ab_tab_content_item).setName(t("Convertor manager")).setHeading();
     ab_tab_content_item.createEl("p", { text: t("Convertor manager2") });
     ab_tab_content_item.createEl("p", { text: t("Convertor manager3") });
     const div = ab_tab_content_item.createEl("div");
@@ -54345,10 +55565,10 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
     this.processorPanel = div;
     ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: t("AliasSystem manager") });
     ab_tab_content_item = el_tab_content.createEl("div", { cls: "ab-tab-content-item" });
-    new import_obsidian4.Setting(ab_tab_content_item).setName(t("AliasSystem manager")).setHeading();
+    new import_obsidian3.Setting(ab_tab_content_item).setName(t("AliasSystem manager")).setHeading();
     ab_tab_content_item.createEl("p", { text: t("AliasSystem manager2") });
     ab_tab_content_item.createEl("p", { text: t("AliasSystem manager3") });
-    new import_obsidian4.Setting(ab_tab_content_item).setName(t("AliasSystem manager4")).addButton((component) => {
+    new import_obsidian3.Setting(ab_tab_content_item).setName(t("AliasSystem manager4")).addButton((component) => {
       component.setIcon("plus-circle").onClick((e) => {
         new ABModal_alias(this.app, async (result) => {
           settings.alias_user.push({
@@ -54361,7 +55581,7 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
           } else {
             newReg = result.regex;
           }
-          ABAlias_json.push({
+          ABAlias_user.push({
             regex: newReg,
             replacement: result.replacement
           });
@@ -54369,7 +55589,7 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
         }).open();
       });
     });
-    new import_obsidian4.Setting(ab_tab_content_item).setName(t("AliasSystem manager5")).addButton((component) => {
+    new import_obsidian3.Setting(ab_tab_content_item).setName(t("AliasSystem manager5")).addButton((component) => {
       component.setIcon("plus-circle").onClick((e) => {
         new ABProcessorModal(this.app, async (result) => {
           ABConvert.factory(result);
@@ -54385,7 +55605,7 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
     if (ABCSetting.env === "obsidian-pro") {
       ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: "\u7F16\u8F91\u5668\u83DC\u5355" });
       ab_tab_content_item = el_tab_content.createEl("div", { cls: "ab-tab-content-item" });
-      new import_obsidian4.Setting(ab_tab_content_item).setName("\u7F16\u8F91\u5668\u83DC\u5355").setHeading();
+      new import_obsidian3.Setting(ab_tab_content_item).setName("\u7F16\u8F91\u5668\u83DC\u5355").setHeading();
       ab_tab_content_item.createEl("p", { text: `(!\u5C06\u5F03\u7528\uFF0C\u8BF7\u4F7F\u7528\u540C\u4F5C\u8005\u5F00\u53D1\u7684 AnyMenu \u63D2\u4EF6)` });
       ab_tab_content_item.createEl("p", { text: `\u4F60\u53EF\u4EE5\u5728\u8FD9\u91CC\u7F16\u8F91\u6269\u5C55\u7684\u7F16\u8F91\u5668\u53F3\u952E\u83DC\u5355\uFF0C\u52A0\u5165\u81EA\u5B9A\u4E49\u8981\u9ECF\u8D34\u7684\u9884\u8BBE\u6587\u672C\u3002
 \u7F16\u8F91\u5668\u83DC\u5355\u662F\u4E00\u4E2A\u72EC\u7ACB\u529F\u80FD\u7684\u901A\u7528\u6A21\u5757\uFF0C\u4F60\u53EF\u4EE5\u628A\u4ED6\u5F53\u4F5C\u53E6\u4E00\u4E2A\u72EC\u7ACB\u529F\u80FD\u7684\u63D2\u4EF6\u6765\u4F7F\u7528` });
@@ -54394,16 +55614,16 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
     if (ABCSetting.env === "obsidian-pro") {
       ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: t("Pro") });
       ab_tab_content_item = el_tab_content.createEl("div", { cls: "ab-tab-content-item" });
-      new import_obsidian4.Setting(ab_tab_content_item).setName(t("Pro")).setHeading();
+      new import_obsidian3.Setting(ab_tab_content_item).setName(t("Pro")).setHeading();
       ab_tab_content_item.createEl("p", { text: t("Pro2") });
-      new import_obsidian4.Setting(ab_tab_content_item).setName(t("Pro disable")).setDesc(t("Pro disable2")).addToggle(
+      new import_obsidian3.Setting(ab_tab_content_item).setName(t("Pro disable")).setDesc(t("Pro disable2")).addToggle(
         (toggle) => toggle.setValue(settings.pro.disable).onChange(async (value) => {
           settings.pro.disable = value;
           ABCSetting.pro.disable = value;
           await this.plugin.saveSettings();
         })
       );
-      new import_obsidian4.Setting(ab_tab_content_item).setName(t("Pro editableblock render")).setDesc(
+      new import_obsidian3.Setting(ab_tab_content_item).setName(t("Pro editableblock render")).setDesc(
         createFragment((frag) => {
           frag.appendText(t("Pro editableblock render2"));
           frag.appendChild(document.createElement("br"));
@@ -54412,15 +55632,24 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
           frag.appendText(t("Pro editableblock render22"));
           frag.appendChild(document.createElement("br"));
           frag.appendText(t("Pro editableblock render23"));
+          frag.appendChild(document.createElement("br"));
+          frag.appendText(t("Pro editableblock render24"));
         })
       ).addDropdown((component) => {
-        component.addOption("readmode", t("Pro editableblock render3")).addOption("realtime", t("Pro editableblock render4")).setValue(settings.pro.editableblock_defaultRender).onChange(async (v) => {
+        component.addOption("readmode", t("Pro editableblock render3")).addOption("realtime", t("Pro editableblock render4")).addOption("textarea", t("Pro editableblock render5")).setValue(settings.pro.editableblock_defaultRender).onChange(async (v) => {
           const value = v;
           settings.pro.editableblock_defaultRender = value;
           ABCSetting.pro.editableblock_defaultRender = value;
         });
       });
-      new import_obsidian4.Setting(ab_tab_content_item).setName(t("Pro callout")).setDesc(t("Pro callout2")).addToggle(
+      new import_obsidian3.Setting(ab_tab_content_item).setName(t("Pro alias override")).setDesc(t("Pro alias override2")).addToggle(
+        (toggle) => toggle.setValue(settings.pro.enable_alias_override).onChange(async (value) => {
+          settings.pro.enable_alias_override = value;
+          ABCSetting.pro.enable_alias_override = value;
+          await this.plugin.saveSettings();
+        })
+      );
+      new import_obsidian3.Setting(ab_tab_content_item).setName(t("Pro callout")).setDesc(t("Pro callout2")).addToggle(
         (toggle) => toggle.setValue(settings.pro.enable_callout_selector).onChange(async (value) => {
           settings.pro.enable_callout_selector = value;
           ABCSetting.pro.enable_callout_selector = value;
@@ -54431,18 +55660,18 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
     if (ABCSetting.env === "obsidian-pro") {
       ab_tab_nav_item = el_tab_nav.createEl("button", { cls: "ab-tab-nav-item", text: t("License") });
       ab_tab_content_item = el_tab_content.createEl("div", { cls: "ab-tab-content-item" });
-      new import_obsidian4.Setting(ab_tab_content_item).setName(t("License")).setHeading();
+      new import_obsidian3.Setting(ab_tab_content_item).setName(t("License")).setHeading();
       ab_tab_content_item.createEl("p", { text: t("License2") });
-      new import_obsidian4.Setting(ab_tab_content_item).setName(t("License key")).addTextArea(
-        (text4) => text4.setValue(settings.pro.license_key).onChange(async (value) => {
+      new import_obsidian3.Setting(ab_tab_content_item).setName(t("License key")).addTextArea(
+        (text5) => text5.setValue(settings.pro.license_key).onChange(async (value) => {
           settings.pro.license_key = value;
           await this.plugin.saveSettings();
         })
       );
-      new import_obsidian4.Setting(ab_tab_content_item).setName(t("License Expiry")).addText(
-        (text4) => text4.setDisabled(true).setValue(expiry.expiry > 0 ? new Date(expiry.expiry).toLocaleDateString() : "No License: " + expiry.expiry)
+      new import_obsidian3.Setting(ab_tab_content_item).setName(t("License Expiry")).addText(
+        (text5) => text5.setDisabled(true).setValue(expiry.expiry > 0 ? new Date(expiry.expiry).toLocaleDateString() : "No License: " + expiry.expiry)
       );
-      new import_obsidian4.Setting(ab_tab_content_item).setName("Debug").setDesc("Only for developer use").addToggle(
+      new import_obsidian3.Setting(ab_tab_content_item).setName("Debug").setDesc("Only for developer use").addToggle(
         (toggle) => toggle.setValue(settings.is_debug).onChange(async (value) => {
           settings.is_debug = value;
           ABCSetting.is_debug = value;
@@ -54458,26 +55687,26 @@ var ABSettingTab = class extends import_obsidian4.PluginSettingTab {
       if (i == 0) {
         lis[i].setAttribute("is_activate", "true");
         contents2[i].setAttribute("is_activate", "true");
-        contents2[i].setAttribute("style", "display:block");
+        contents2[i].classList.remove("ab-hide");
       } else {
         lis[i].setAttribute("is_activate", "false");
         contents2[i].setAttribute("is_activate", "false");
-        contents2[i].setAttribute("style", "display:none");
+        contents2[i].classList.add("ab-hide");
       }
       lis[i].onclick = () => {
         for (let j = 0; j < contents2.length; j++) {
           lis[j].setAttribute("is_activate", "false");
           contents2[j].setAttribute("is_activate", "false");
-          contents2[j].setAttribute("style", "display:none");
+          contents2[j].classList.add("ab-hide");
         }
         lis[i].setAttribute("is_activate", "true");
         contents2[i].setAttribute("is_activate", "true");
-        contents2[i].setAttribute("style", "display:block");
+        contents2[i].classList.remove("ab-hide");
       };
     }
   }
 };
-var ABProcessorModal = class extends import_obsidian4.Modal {
+var ABProcessorModal = class extends import_obsidian3.Modal {
   constructor(app2, onSubmit) {
     super(app2);
     this.args = {
@@ -54492,27 +55721,27 @@ var ABProcessorModal = class extends import_obsidian4.Modal {
     let { contentEl } = this;
     contentEl.setText(t("Custom processor"));
     contentEl.createEl("p", { text: "" });
-    new import_obsidian4.Setting(contentEl).setName(t("Custom processor2")).setDesc(t("Custom processor3")).addText((text4) => {
-      text4.onChange((value) => {
+    new import_obsidian3.Setting(contentEl).setName(t("Custom processor2")).setDesc(t("Custom processor3")).addText((text5) => {
+      text5.onChange((value) => {
         this.args.id = value;
       });
     });
-    new import_obsidian4.Setting(contentEl).setName(t("Custom processor4")).setDesc(t("Custom processor5")).addText((text4) => {
-      text4.onChange((value) => {
+    new import_obsidian3.Setting(contentEl).setName(t("Custom processor4")).setDesc(t("Custom processor5")).addText((text5) => {
+      text5.onChange((value) => {
         this.args.name = value;
       });
     });
-    new import_obsidian4.Setting(contentEl).setName(t("Custom processor6")).setDesc(t("Custom processor7")).addText((text4) => {
-      text4.onChange((value) => {
+    new import_obsidian3.Setting(contentEl).setName(t("Custom processor6")).setDesc(t("Custom processor7")).addText((text5) => {
+      text5.onChange((value) => {
         this.args.match = value;
       });
     });
-    new import_obsidian4.Setting(contentEl).setName(t("Custom processor8")).setDesc(t("Custom processor9")).addText((text4) => {
-      text4.onChange((value) => {
+    new import_obsidian3.Setting(contentEl).setName(t("Custom processor8")).setDesc(t("Custom processor9")).addText((text5) => {
+      text5.onChange((value) => {
         this.args.process_alias = value;
       });
     });
-    new import_obsidian4.Setting(contentEl).addButton((btn) => {
+    new import_obsidian3.Setting(contentEl).addButton((btn) => {
       btn.setButtonText(t("Submit")).setCta().onClick(() => {
         if (this.args.id && this.args.name && this.args.match && this.args.process_alias) {
           this.close();
@@ -54526,7 +55755,7 @@ var ABProcessorModal = class extends import_obsidian4.Modal {
     contentEl.empty();
   }
 };
-var ABModal_alias = class extends import_obsidian4.Modal {
+var ABModal_alias = class extends import_obsidian3.Modal {
   constructor(app2, onSubmit) {
     super(app2);
     this.args = {
@@ -54539,17 +55768,17 @@ var ABModal_alias = class extends import_obsidian4.Modal {
     let { contentEl } = this;
     contentEl.setText(t("Custom alias"));
     contentEl.createEl("p", { text: "" });
-    new import_obsidian4.Setting(contentEl).setName(t("Custom alias2")).setDesc(t("Custom alias3")).addText((text4) => {
-      text4.onChange((value) => {
+    new import_obsidian3.Setting(contentEl).setName(t("Custom alias2")).setDesc(t("Custom alias3")).addText((text5) => {
+      text5.onChange((value) => {
         this.args.regex = value;
       });
     });
-    new import_obsidian4.Setting(contentEl).setName(t("Custom alias4")).setDesc(t("Custom alias5")).addText((text4) => {
-      text4.onChange((value) => {
+    new import_obsidian3.Setting(contentEl).setName(t("Custom alias4")).setDesc(t("Custom alias5")).addText((text5) => {
+      text5.onChange((value) => {
         this.args.replacement = value;
       });
     });
-    new import_obsidian4.Setting(contentEl).addButton((btn) => {
+    new import_obsidian3.Setting(contentEl).addButton((btn) => {
       btn.setButtonText(t("Submit")).setCta().onClick(() => {
         if (this.args.regex && this.args.replacement) {
           this.close();
@@ -54607,7 +55836,7 @@ var ABStateManager = class {
   }
   constructor_init() {
     var _a3;
-    const view = this.plugin_this.app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView);
+    const view = this.plugin_this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
     if (!view)
       return false;
     this.view = view;
@@ -54674,7 +55903,7 @@ var ABStateManager = class {
       this.prev_editor_mode = editor_mode;
       return new_decorationSet;
     } else {
-      const create_widget = (customData, state, oldView, rangeSpec, focusLine = null, focusOffset = 0) => {
+      const create_widget = (customData, _state, _oldView, rangeSpec, _focusLine = null, _focusOffset = 0) => {
         const rangeSpec_ = {
           content: rangeSpec.text_content,
           from_ch: rangeSpec.fromPos,
@@ -54858,11 +56087,11 @@ var ABStateManager = class {
 
 // ab_manager/abm_html/ABSelector_PostHtml.ts
 var import_html_to_md = __toESM(require_dist());
-var import_obsidian7 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // ab_manager/abm_html/ABReplacer_Render.ts
-var import_obsidian6 = require("obsidian");
-var ABReplacer_Render = class extends import_obsidian6.MarkdownRenderChild {
+var import_obsidian5 = require("obsidian");
+var ABReplacer_Render = class extends import_obsidian5.MarkdownRenderChild {
   constructor(containerEl, header, content, selectorName = "replacer_default") {
     super(containerEl);
     this.header = header;
@@ -54887,7 +56116,7 @@ var ABReplacer_Render = class extends import_obsidian6.MarkdownRenderChild {
       attr: { "aria-label": "Refresh the block" }
     });
     dom_edit2.empty();
-    dom_edit2.appendChild((0, import_obsidian6.sanitizeHTMLToDom)(ABReplacer_Widget.STR_ICON_REFRESH));
+    dom_edit2.appendChild((0, import_obsidian5.sanitizeHTMLToDom)(ABReplacer_Widget.STR_ICON_REFRESH));
     dom_edit2.onclick = () => {
       abConvertEvent(div);
     };
@@ -54896,7 +56125,7 @@ var ABReplacer_Render = class extends import_obsidian6.MarkdownRenderChild {
     });
     const dom_edit_mask = dom_edit.createEl("button", {});
     dom_edit_mask.empty();
-    dom_edit_mask.appendChild((0, import_obsidian6.sanitizeHTMLToDom)(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>`));
+    dom_edit_mask.appendChild((0, import_obsidian5.sanitizeHTMLToDom)(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>`));
     const dom_edit_select = dom_edit.createEl("select", {
       attr: { "aria-label": "Change the block - " + this.header }
     });
@@ -54907,7 +56136,7 @@ var ABReplacer_Render = class extends import_obsidian6.MarkdownRenderChild {
     first_dom_option.selected = true;
     let header_name_flag = "";
     for (let item of ABConvertManager.getInstance().getConvertOptions()) {
-      const dom_option = dom_edit_select.createEl("option", {
+      const _dom_option = dom_edit_select.createEl("option", {
         text: item.name,
         attr: { "value": item.id }
       });
@@ -54984,7 +56213,7 @@ var ABSelector_PostHtml = class {
           is_subContent = true;
           return;
         }
-        const view = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView);
+        const view = this.app.workspace.getActiveViewOfType(import_obsidian6.MarkdownView);
         const path = (_c2 = view == null ? void 0 : view.file) == null ? void 0 : _c2.path;
         const basename = (_d2 = view == null ? void 0 : view.file) == null ? void 0 : _d2.basename;
         if (path && path !== ctx.sourcePath) {
@@ -55046,7 +56275,7 @@ var ABSelector_PostHtml = class {
       }
       if (!is_subContent && is_newContent) {
         if (cache_item && (/((\s|>\s|-\s|\*\s|\+\s)*)(%%)?(\[((?!toc)(?!TOC)[0-9a-zA-Z\u4e00-\u9fa5].*)\]):?(%%)?\s*\n/.test(cache_item.content) || /((\s|>\s|-\s|\*\s|\+\s)*)(:::)\s?(\S*)\n/.test(cache_item.content))) {
-          const leaf = (_g = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView)) == null ? void 0 : _g.leaf;
+          const leaf = (_g = this.app.workspace.getActiveViewOfType(import_obsidian6.MarkdownView)) == null ? void 0 : _g.leaf;
           if (!leaf) {
             return;
           }
@@ -55262,18 +56491,18 @@ function getSourceMarkdown(sectionEl, ctx) {
     return null;
   }
   const {
-    text: text4,
+    text: text5,
     lineStart,
     lineEnd
   } = info;
-  const list_text = text4.split("\n");
+  const list_text = text5.split("\n");
   const list_content = list_text.slice(lineStart, lineEnd + 1);
   let range = {
     to_line_all: list_text.length,
     from_line: lineStart,
     to_line: list_text.length - lineEnd < 3 && list_text.slice(lineEnd + 1, list_text.length).join("\n").trim() == "" ? list_text.length : lineEnd + 1,
     content: list_content.join("\n").replace(/(\n)+$/, ""),
-    content_all: text4,
+    content_all: text5,
     type: "",
     header: "",
     seFlag: "",
@@ -55335,7 +56564,7 @@ function getSourceMarkdown(sectionEl, ctx) {
 }
 
 // utils.ts
-var import_obsidian8 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 
 // ../Scripts/index.ts
 function convert_to_codeblock(file_content) {
@@ -55387,7 +56616,7 @@ function registerCommands(plugin2) {
     id: "any-block-rebuild-view",
     name: t("any-block-rebuild-view"),
     editorCallback: async (_editor, view) => {
-      if (!(view instanceof import_obsidian8.MarkdownView))
+      if (!(view instanceof import_obsidian7.MarkdownView))
         return;
       const leaf = view.leaf;
       if (!leaf)
@@ -55399,28 +56628,28 @@ function registerCommands(plugin2) {
     id: "any-block-to-codeblock",
     name: t("any-block-to-codeblock"),
     editorCallback: async (_editor, view) => {
-      if (!(view instanceof import_obsidian8.MarkdownView))
+      if (!(view instanceof import_obsidian7.MarkdownView))
         return;
       const file = view.file;
       if (!file)
         return;
-      const text4 = view.data;
-      const newText = convert_to_codeblock(text4);
+      const text5 = view.data;
+      const newText = convert_to_codeblock(text5);
       const newPath = `temp_any_block_convert.md`;
       await save_to_newPath(newText, newPath);
     }
   });
   plugin2.addCommand({
     id: "any-block-delete-ab-header",
-    name: "Delete AnyBlock header",
+    name: t("any-block-delete-ab-header"),
     editorCallback: async (_editor, view) => {
-      if (!(view instanceof import_obsidian8.MarkdownView))
+      if (!(view instanceof import_obsidian7.MarkdownView))
         return;
       const file = view.file;
       if (!file)
         return;
-      const text4 = view.data;
-      const newText = convert_delete_ab_header(text4);
+      const text5 = view.data;
+      const newText = convert_delete_ab_header(text5);
       const newPath = `temp_any_block_convert.md`;
       await save_to_newPath(newText, newPath);
     }
@@ -55429,17 +56658,17 @@ function registerCommands(plugin2) {
     try {
       let newFile;
       const abstractFile = plugin2.app.vault.getAbstractFileByPath(newPath);
-      if (abstractFile instanceof import_obsidian8.TFile) {
+      if (abstractFile instanceof import_obsidian7.TFile) {
         newFile = abstractFile;
         await plugin2.app.vault.modify(abstractFile, newText);
       } else {
         newFile = await plugin2.app.vault.create(newPath, newText);
       }
       await plugin2.app.workspace.getLeaf("tab").openFile(newFile);
-      new import_obsidian8.Notice(t("any-block-to-codeblock-success") + newPath);
+      new import_obsidian7.Notice(t("any-block-to-codeblock-success") + newPath);
     } catch (error2) {
       console.error("\u8F6C\u6362\u65F6\u6587\u4EF6\u4FDD\u5B58\u5931\u8D25:", error2);
-      new import_obsidian8.Notice(t("any-block-to-codeblock-fail"));
+      new import_obsidian7.Notice(t("any-block-to-codeblock-fail"));
     }
   }
 }
@@ -55450,12 +56679,12 @@ function registerStatus(plugin2) {
     const statusBtn = statusBtnContainer.createEl("div", {
       cls: "ab-rebuildview-btn"
     });
-    (0, import_obsidian8.setIcon)(statusBtn, "refresh-cw");
+    (0, import_obsidian7.setIcon)(statusBtn, "refresh-cw");
     statusBtn.setAttribute("aria-label", t("any-block-rebuild-view-btn"));
     statusBtn.setAttribute("data-tooltip-position", "top");
     statusBtn.onclick = () => {
       var _a3;
-      const leaf = (_a3 = plugin2.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView)) == null ? void 0 : _a3.leaf;
+      const leaf = (_a3 = plugin2.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView)) == null ? void 0 : _a3.leaf;
       if (!leaf)
         return;
       leaf.rebuildView();
@@ -55464,9 +56693,10 @@ function registerStatus(plugin2) {
 }
 
 // main.ts
-var AnyBlockPlugin = class extends import_obsidian9.Plugin {
+var AnyBlockPlugin = class extends import_obsidian8.Plugin {
   async onload() {
     ABCSetting.obsidian.global_app = this.app;
+    ABCSetting.state.language = (0, import_obsidian8.getLanguage)();
     await this.loadSettings();
     this.addSettingTab(new ABSettingTab(this.app, this));
     registerStatus(this);
@@ -55474,14 +56704,15 @@ var AnyBlockPlugin = class extends import_obsidian9.Plugin {
     ABConvertManager.getInstance().redefine_renderMarkdown((markdown, el, ctx) => {
       var _a3, _b, _c;
       el.classList.add("markdown-rendered");
-      const mdrc = new import_obsidian9.MarkdownRenderChild(el);
+      const mdrc = new import_obsidian8.MarkdownRenderChild(el);
       if (ctx)
         ctx.addChild(mdrc);
-      else if (ABCSetting.obsidian.global_ctx)
+      else if (ABCSetting.obsidian.global_ctx) {
         ABCSetting.obsidian.global_ctx.addChild(mdrc);
-      import_obsidian9.MarkdownRenderer.render(this.app, markdown, el, (_c = (_b = (_a3 = this.app.workspace.getActiveViewOfType(import_obsidian9.MarkdownView)) == null ? void 0 : _a3.file) == null ? void 0 : _b.path) != null ? _c : "", mdrc);
+      }
+      import_obsidian8.MarkdownRenderer.render(this.app, markdown, el, (_c = (_b = (_a3 = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView)) == null ? void 0 : _a3.file) == null ? void 0 : _b.path) != null ? _c : "", mdrc);
     });
-    ABCSetting.obsidian.mermaid = (0, import_obsidian9.loadMermaid)();
+    ABCSetting.obsidian.mermaid = (0, import_obsidian8.loadMermaid)();
     this.registerMarkdownCodeBlockProcessor("ab", ABReplacer_CodeBlock.processor);
     this.registerMarkdownCodeBlockProcessor("anyblock", ABReplacer_CodeBlock.processor);
     {
@@ -55517,13 +56748,14 @@ var AnyBlockPlugin = class extends import_obsidian9.Plugin {
       } else {
         newReg = result.regex;
       }
-      ABAlias_json.push({
+      ABAlias_user.push({
         regex: newReg,
         replacement: result.replacement
       });
     }
     ABCSetting.is_debug = this.settings.is_debug;
     ABCSetting.pro.disable = this.settings.pro.disable;
+    ABCSetting.pro.enable_alias_override = this.settings.pro.enable_alias_override;
     ABCSetting.pro.enable_callout_selector = this.settings.pro.enable_callout_selector;
     ABCSetting.pro.editableblock_defaultRender = this.settings.pro.editableblock_defaultRender;
     this.saveData(this.settings);
@@ -55531,6 +56763,7 @@ var AnyBlockPlugin = class extends import_obsidian9.Plugin {
   async saveSettings() {
     ABCSetting.is_debug = this.settings.is_debug;
     ABCSetting.pro.disable = this.settings.pro.disable;
+    ABCSetting.pro.enable_alias_override = this.settings.pro.enable_alias_override;
     ABCSetting.pro.enable_callout_selector = this.settings.pro.enable_callout_selector;
     ABCSetting.pro.editableblock_defaultRender = this.settings.pro.editableblock_defaultRender;
     await this.saveData(this.settings);
@@ -55543,5 +56776,6 @@ var AnyBlockPlugin = class extends import_obsidian9.Plugin {
   }
 };
 /*! @gera2ld/jsx-dom v2.2.2 | ISC License */
+/*! @license DOMPurify 3.4.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.4.3/LICENSE */
 
 /* nosourcemap */

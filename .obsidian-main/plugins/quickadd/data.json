@@ -200,8 +200,10 @@
         "mode": "live",
         "focus": true
       },
-      "fileExistsMode": "Increment the file name",
-      "setFileExistsBehavior": true
+      "fileExistsBehavior": {
+        "kind": "apply",
+        "mode": "increment"
+      }
     },
     {
       "id": "84d0e316-dcc2-4143-88ac-05d962a2e324",
@@ -611,7 +613,7 @@
   "devMode": false,
   "templateFolderPath": "Misc/Templates",
   "announceUpdates": "none",
-  "version": "2.12.0",
+  "version": "2.12.3",
   "globalVariables": {},
   "onePageInputEnabled": true,
   "disableOnlineFeatures": true,
@@ -685,6 +687,9 @@
     "migrateFileOpeningSettings": true,
     "setProviderModelDiscoveryMode": true,
     "backfillFileOpeningDefaults": true,
-    "migrateProviderApiKeysToSecretStorage": true
-  }
+    "migrateProviderApiKeysToSecretStorage": true,
+    "consolidateFileExistsBehavior": true,
+    "repairTemplateFileExistsBehavior": true
+  },
+  "macros": []
 }
