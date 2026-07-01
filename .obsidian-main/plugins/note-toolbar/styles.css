@@ -1513,6 +1513,14 @@ body {
         }
     }
 
+    &.ntb-is-modal-displayed {
+        /* fix: popovers + hover editor appearing under modal #568 */
+        --layer-popover: calc(var(--layer-modal) + 1);
+        --he-popover-layer-new: calc(var(--layer-modal) + 1);
+        --he-popover-layer-active: calc(var(--layer-modal) + 1);
+        --he-popover-layer-inactive: calc(var(--layer-modal) + 1);
+    }
+
 }
 
 .ntb-hidden {
@@ -2642,7 +2650,7 @@ body.is-mobile button.cg-note-toolbar-fab[data-fab-metadata*="mgls"] {
 
         /* remove the background color for toolbars using the button style */
         & .cg-note-toolbar-callout[data-callout-metadata*="button"],
-        & .cg-note-toolbar-callout[data-callout-metadata*="mbtn"] {
+        .is-mobile & .cg-note-toolbar-callout[data-callout-metadata*="mbtn"] {
             background-color: unset;
             @media (hover: hover) {
                 & a:hover, span.external-link:hover {
@@ -2697,7 +2705,7 @@ body.is-mobile button.cg-note-toolbar-fab[data-fab-metadata*="mgls"] {
     &[data-tbar-position="props"] {
         /* remove the background color for toolbars using the button style */
         & .cg-note-toolbar-callout[data-callout-metadata*="button"],
-        & .cg-note-toolbar-callout[data-callout-metadata*="mbtn"] {
+        .is-mobile & .cg-note-toolbar-callout[data-callout-metadata*="mbtn"] {
             background-color: unset;
             @media (hover: hover) {
                 & a:hover, span.external-link:hover {
@@ -2796,7 +2804,6 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
 .note-toolbar-setting-ui, .note-toolbar-setting-modal-container {
     & .setting-group {
         & .setting-items {
-            padding: var(--size-4-5);
             &:focus-within {
                 box-shadow: inset 0 0 0 2px var(--background-modifier-border-focus);
             }
@@ -2830,7 +2837,7 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
 }
 
 .note-toolbar-setting-plugin-error {
-    padding: 1em;
+    padding: var(--size-4-4);
     border: solid 1px var(--text-error);
     border-radius: 8px;
     & .setting-item-name {
@@ -2840,7 +2847,7 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
 
 .note-toolbar-setting-plugin-onboarding,
 .modal .modal-content .setting-item.note-toolbar-setting-plugin-onboarding:first-child {
-    padding: 1em;
+    padding: var(--size-4-4);
     border-radius: 8px;
     border: solid 1px var(--color-accent-1);
     position: relative;
@@ -2871,6 +2878,9 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
         padding-bottom: var(--size-4-5);
         padding-inline-start: var(--size-4-5);
         padding-inline-end: var(--size-4-5);
+        & .setting-group .setting-items {
+            padding: var(--size-4-4);
+        }
         .is-phone & {
             padding-top: 0;
             padding-bottom: var(--size-4-12);
@@ -2912,21 +2922,31 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
         background-color: var(--setting-items-background);
         border-radius: var(--setting-items-radius);
         margin: 0em 0em 1em 0em;
-        padding: 1em 1em;
         .is-mobile & {
-            padding: 1em;
             & .setting-item > .setting-item-control > button {
                 width: unset;
             }
         }
         & .setting-item {
-            border-radius: 0;
             border-top: var(--border-width) solid var(--background-modifier-border);
+            margin: 0;
+            margin-bottom: 2px;
+            padding: var(--size-4-4);
+            &:not(:first-child):not(:last-child) {
+                border-radius: 0;
+            }
+            &:only-child {
+                border-top: none;
+                border-radius: var(--setting-items-radius);
+            }
             &:first-child {
                 border-top: none;
+                border-radius: var(--setting-items-radius) var(--setting-items-radius) 0 0;
             }
-            padding: 0.5em;
-            margin: 0.25em;
+            &:last-child {
+                border-top: var(--border-width) solid var(--background-modifier-border);
+                border-radius: 0 0 var(--setting-items-radius) var(--setting-items-radius);
+            }
             /* options button */
             & button:first-child {
                 opacity: 0;
@@ -2946,9 +2966,14 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
             }
             &:focus-within {
                 outline: solid 2px var(--background-modifier-border-focus);
-                border-radius: var(--radius-m);
                 & button:first-child {
                     opacity: 1;
+                }
+                &:first-child {
+                    border-radius: var(--setting-items-radius) var(--setting-items-radius) 0 0;
+                }
+                &:last-child {
+                    border-radius: 0 0 var(--setting-items-radius) var(--setting-items-radius);
                 }
             }
         }
@@ -3344,7 +3369,7 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
     border: 1px solid var(--background-modifier-border);
     padding: 1.5em;
     .is-mobile & {
-        padding: 1em;
+        padding: var(--size-4-4);
     }
     &:focus-within {
         box-shadow: inset 0 0 0 2px var(--background-modifier-border-focus);
@@ -3558,6 +3583,10 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
             padding: 0px 8px;
         }
     }
+    & .note-toolbar-setting-item-preview-code {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
 }
 
 .note-toolbar-setting-script-preview {
@@ -3758,6 +3787,9 @@ input[type="text"].note-toolbar-setting-error,
                 .is-mobile & {
                     margin-top: 0;
                 }
+                & select.dropdown {
+                    width: 100%;
+                }
             }
         }
     }
@@ -3861,6 +3893,7 @@ input[type="text"].note-toolbar-setting-error,
                 border-radius: var(--radius-m);
             }
             & .setting-items {
+                padding: var(--size-4-4);
                 & .setting-item-info {
                     display: initial;
                     & .setting-item-name {
@@ -4053,6 +4086,7 @@ input[type="text"].note-toolbar-setting-error,
 }
 
 .note-toolbar-setting-item-fields {
+    align-items: center;
     display: flex;
     flex-grow: 1;
     flex-wrap: wrap;
@@ -4091,7 +4125,7 @@ input[type="text"].note-toolbar-setting-error,
 }
 
 .is-phone .note-toolbar-setting-dialog-phonefix {
-    padding: 1em;
+    padding: var(--size-4-4);
 }
 
 .note-toolbar-setting-mini-dialog {
@@ -4132,12 +4166,17 @@ input[type="text"].note-toolbar-setting-error,
 
 .note-toolbar-setting-import-text-area {
     border-top: none;
-    .setting-item-info {
+    & .setting-item-info {
         display: none;
     }
-    textarea {
-        flex: 1 1 auto;
-        min-height: 16em;
+    & .setting-item-control {
+        align-items: stretch;
+        flex-direction: column;
+        & textarea {
+            flex: 1 1 auto;
+            font-family: var(--font-monospace);
+            min-height: 16em;
+        }
     }
 }
 
@@ -4525,6 +4564,9 @@ input[type="text"].note-toolbar-setting-error,
     justify-content: space-between;
     border-top: 1px solid var(--background-modifier-border);
     padding: var(--size-4-4) 0;
+    .note-toolbar-link-dialog & {
+        border-top: none;
+    }
 }
 
 .note-toolbar-setting-link:first-child {

@@ -1,13 +1,15 @@
 {
   "disablePluginStyles": false,
   "enabled": true,
+  "showLineEndings": false,
+  "showHardLineBreaks": true,
+  "showUnicodeWhitespace": true,
   "outlineListMarkers": false,
+  "showBlockquoteMarkers": false,
   "showAllCodeblockWhitespace": false,
   "showAllWhitespace": false,
-  "showBlockquoteMarkers": false,
   "showCodeblockWhitespace": true,
   "showFrontmatterWhitespace": true,
-  "showLineEndings": false,
   "showTableWhitespace": true,
   "version": {
     "major": 0,

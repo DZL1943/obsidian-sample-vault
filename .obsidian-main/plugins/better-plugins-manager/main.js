@@ -141,8 +141,11 @@ var BaseSetting = class {
     this.containerEl = obj.contentEl;
     this.app = obj.app;
   }
-  display() {
+  render() {
     this.main();
+  }
+  display() {
+    this.render();
   }
 };
 
@@ -158,40 +161,79 @@ var EONDR_PLUGIN_TAG_ID = "bpm-eondr-plugin";
 
 // src/utils.ts
 var import_obsidian = require("obsidian");
+var import_electron = require("electron");
+var ManagerConfirmModal = class extends import_obsidian.Modal {
+  constructor(app, manager, options, resolve) {
+    super(app);
+    this.resolved = false;
+    this.manager = manager;
+    this.options = options;
+    this.resolve = resolve;
+  }
+  onOpen() {
+    var _a, _b;
+    const { contentEl } = this;
+    const t = (key) => this.manager.translator.t(key);
+    const modalEl = contentEl.parentElement;
+    modalEl == null ? void 0 : modalEl.addClass("manager-confirm-modal");
+    (_a = modalEl == null ? void 0 : modalEl.querySelector(".modal-close-button")) == null ? void 0 : _a.remove();
+    (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
+    this.titleEl.setText(this.options.title || t("\u901A\u7528_\u786E\u8BA4_\u6587\u672C"));
+    contentEl.empty();
+    contentEl.addClass("manager-item-container");
+    contentEl.createDiv({ cls: "manager-confirm-modal__message", text: this.options.message });
+    const actionBar = new import_obsidian.Setting(contentEl).setClass("manager-delete__action");
+    actionBar.nameEl.empty();
+    actionBar.descEl.empty();
+    actionBar.addButton((button) => {
+      button.setButtonText(this.options.cancelText || t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C")).onClick(() => this.finish(false));
+    });
+    actionBar.addButton((button) => {
+      button.setCta().setButtonText(this.options.confirmText || "OK").onClick(() => this.finish(true));
+      button.buttonEl.focus();
+    });
+  }
+  onClose() {
+    this.contentEl.empty();
+    this.finish(false);
+  }
+  finish(confirmed) {
+    if (this.resolved)
+      return;
+    this.resolved = true;
+    this.resolve(confirmed);
+    this.close();
+  }
+};
+var confirmWithModal = (app, manager, options) => {
+  const modalOptions = typeof options === "string" ? { message: options } : options;
+  return new Promise((resolve) => {
+    new ManagerConfirmModal(app, manager, modalOptions, resolve).open();
+  });
+};
 var managerOpen = (dir, manager) => {
   if (import_obsidian.Platform.isMobileApp) {
     new import_obsidian.Notice(manager.translator.t("\u901A\u7528_\u79FB\u52A8\u7AEF\u4E0D\u652F\u6301\u6253\u5F00\u6587\u4EF6\u5939_\u63D0\u793A"));
     return;
   }
-  try {
-    const { exec } = require("child_process");
-    if (import_obsidian.Platform.isDesktop || import_obsidian.Platform.isWin) {
-      exec(`start "" "${dir}"`, (error) => {
-        if (error) {
-          new import_obsidian.Notice(manager.translator.t("\u901A\u7528_\u5931\u8D25_\u6587\u672C"));
-        } else {
-          new import_obsidian.Notice(manager.translator.t("\u901A\u7528_\u6210\u529F_\u6587\u672C"));
-        }
-      });
-      return;
-    }
-    if (import_obsidian.Platform.isMacOS) {
-      exec(`open ${dir}`, (error) => {
-        if (error) {
-          new import_obsidian.Notice(manager.translator.t("\u901A\u7528_\u5931\u8D25_\u6587\u672C"));
-        } else {
-          new import_obsidian.Notice(manager.translator.t("\u901A\u7528_\u6210\u529F_\u6587\u672C"));
-        }
-      });
-    }
-  } catch (e) {
-    console.error("\u6253\u5F00\u76EE\u5F55\u5931\u8D25", e);
+  import_electron.shell.openPath(dir).then((error) => {
+    new import_obsidian.Notice(manager.translator.t(error ? "\u901A\u7528_\u5931\u8D25_\u6587\u672C" : "\u901A\u7528_\u6210\u529F_\u6587\u672C"));
+  }).catch((error) => {
+    console.error("\u6253\u5F00\u76EE\u5F55\u5931\u8D25", error);
     new import_obsidian.Notice(manager.translator.t("\u901A\u7528_\u5931\u8D25_\u6587\u672C"));
-  }
+  });
 };
 
 // src/modal/group-modal.ts
 var import_obsidian2 = require("obsidian");
+
+// src/obsidian-internals.ts
+function getExtraButtonElement(button) {
+  const component = button;
+  return component.extraSettingsEl || component.buttonEl;
+}
+
+// src/modal/group-modal.ts
 var GroupModal = class extends import_obsidian2.Modal {
   constructor(app, manager, managerModal, managerPlugin) {
     super(app);
@@ -204,7 +246,7 @@ var GroupModal = class extends import_obsidian2.Modal {
     this.add = false;
   }
   getExtraButtonEl(button) {
-    return button.extraSettingsEl || button.buttonEl;
+    return getExtraButtonElement(button);
   }
   prepareIconButton(button, label, className) {
     button.setTooltip(label);
@@ -220,6 +262,8 @@ var GroupModal = class extends import_obsidian2.Modal {
     var _a, _b;
     const t = (k, vars) => this.manager.translator.t(k, vars);
     const modalEl = this.contentEl.parentElement;
+    if (!modalEl)
+      return;
     modalEl.addClass("manager-editor__container");
     modalEl.addClass("manager-tag-editor");
     modalEl.addClass("manager-group-editor");
@@ -293,7 +337,7 @@ var GroupModal = class extends import_obsidian2.Modal {
           this.prepareIconButton(cb, t("\u901A\u7528_\u7F16\u8F91\u9879\u76EE_\u6807\u7B7E", { name: group.name || group.id }), "manager-tag-editor__edit-button");
           cb.onClick(() => {
             this.selected = group.id;
-            this.reloadShowData();
+            void this.reloadShowData();
           });
         });
         itemEl.addToggle((toggle) => {
@@ -301,7 +345,7 @@ var GroupModal = class extends import_obsidian2.Modal {
             this.managerPlugin.group = this.managerPlugin.group === group.id ? "" : group.id;
             await this.manager.savePluginAndExport(this.managerPlugin.id);
             this.managerModal.refreshPluginCard(this.managerPlugin.id, { allowReload: true });
-            this.reloadShowData();
+            void this.reloadShowData();
           });
           toggle.toggleEl.addClass("manager-tag-editor__toggle");
           toggle.toggleEl.setAttribute("aria-label", t(selected ? "\u901A\u7528_\u79FB\u9664\u9879\u76EE_\u6807\u7B7E" : "\u901A\u7528_\u9009\u62E9\u9879\u76EE_\u6807\u7B7E", { name: group.name || group.id }));
@@ -311,7 +355,7 @@ var GroupModal = class extends import_obsidian2.Modal {
         itemEl.addColorPicker(
           (cb) => cb.setValue(group.color).onChange((value) => {
             group.color = value;
-            this.manager.saveSettings();
+            void this.manager.saveSettings();
             tag.setAttribute("style", this.manager.generateTagStyle(value, this.settings.GROUP_STYLE));
           })
         );
@@ -319,7 +363,7 @@ var GroupModal = class extends import_obsidian2.Modal {
           text.setValue(group.name).onChange((value) => {
             group.name = value;
             tag.textContent = value || group.id;
-            this.manager.saveSettings();
+            void this.manager.saveSettings();
           });
           text.inputEl.addClass("manager-editor__item-input");
           text.inputEl.addClass("manager-tag-editor__name-input");
@@ -332,8 +376,8 @@ var GroupModal = class extends import_obsidian2.Modal {
             const hasTestGroup = this.settings.Plugins.some((plugin) => plugin.group === group.id);
             if (!hasTestGroup) {
               this.manager.settings.GROUPS = this.manager.settings.GROUPS.filter((t2) => t2.id !== group.id);
-              this.manager.saveSettings();
-              this.reloadShowData();
+              void this.manager.saveSettings();
+              void this.reloadShowData();
               command_default(this.app, this.manager);
               new import_obsidian2.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
             } else {
@@ -346,7 +390,7 @@ var GroupModal = class extends import_obsidian2.Modal {
           this.prepareIconButton(cb, t("\u901A\u7528_\u5B8C\u6210\u7F16\u8F91_\u6587\u672C"), "manager-tag-editor__save-button");
           cb.onClick(() => {
             this.selected = "";
-            this.reloadShowData();
+            void this.reloadShowData();
             this.managerModal.refreshVisiblePluginCards();
           });
         });
@@ -406,9 +450,9 @@ var GroupModal = class extends import_obsidian2.Modal {
         const containsId = this.manager.settings.GROUPS.some((tag) => tag.id === nextId);
         if (!containsId && nextId !== "") {
           this.manager.settings.GROUPS.push({ id: nextId, name: nextName, color });
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           this.add = false;
-          this.reloadShowData();
+          void this.reloadShowData();
           command_default(this.app, this.manager);
           new import_obsidian2.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
@@ -437,7 +481,7 @@ var GroupModal = class extends import_obsidian2.Modal {
       cancelButton.createSpan({ text: t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C") });
       cancelButton.addEventListener("click", () => {
         this.add = false;
-        this.reloadShowData();
+        void this.reloadShowData();
       });
       const submitButton = actions.createEl("button", { cls: "manager-tag-editor__create-action manager-tag-editor__create-action--primary" });
       submitButton.type = "button";
@@ -455,7 +499,7 @@ var GroupModal = class extends import_obsidian2.Modal {
       this.prepareIconButton(addButton, t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u65B0\u589E\u5206\u7EC4"), "manager-tag-editor__save-button");
       addButton.onClick(() => {
         this.add = true;
-        this.reloadShowData();
+        void this.reloadShowData();
       });
     }
   }
@@ -467,11 +511,13 @@ var GroupModal = class extends import_obsidian2.Modal {
     await this.showData();
     modalElement.scrollTo(0, scrollTop);
   }
-  async onOpen() {
-    await this.showHead();
-    await this.showData();
+  onOpen() {
+    void (async () => {
+      await this.showHead();
+      await this.showData();
+    })();
   }
-  async onClose() {
+  onClose() {
     this.contentEl.empty();
   }
   pickDistinctColor(existing) {
@@ -716,7 +762,7 @@ var TagsModal = class extends import_obsidian4.Modal {
     this.add = false;
   }
   getExtraButtonEl(button) {
-    return button.extraSettingsEl || button.buttonEl;
+    return getExtraButtonElement(button);
   }
   prepareIconButton(button, label, className) {
     button.setTooltip(label);
@@ -738,6 +784,8 @@ var TagsModal = class extends import_obsidian4.Modal {
     var _a, _b;
     const t = (k, vars) => this.manager.translator.t(k, vars);
     const modalEl = this.contentEl.parentElement;
+    if (!modalEl)
+      return;
     modalEl.addClass("manager-editor__container");
     modalEl.addClass("manager-tag-editor");
     (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
@@ -816,7 +864,7 @@ var TagsModal = class extends import_obsidian4.Modal {
           this.prepareIconButton(cb, t("\u901A\u7528_\u7F16\u8F91\u9879\u76EE_\u6807\u7B7E", { name: tag.name || tag.id }), "manager-tag-editor__edit-button");
           cb.onClick(() => {
             this.selected = tag.id;
-            this.reloadShowData();
+            void this.reloadShowData();
           });
         });
         itemEl.addToggle((toggle) => {
@@ -830,7 +878,7 @@ var TagsModal = class extends import_obsidian4.Modal {
             }
             await this.manager.savePluginAndExport(this.managerPlugin.id);
             this.managerModal.refreshPluginCard(this.managerPlugin.id, { allowReload: true });
-            this.reloadShowData();
+            void this.reloadShowData();
           });
           toggle.toggleEl.addClass("manager-tag-editor__toggle");
           toggle.toggleEl.setAttribute("aria-label", t(assigned ? "\u901A\u7528_\u79FB\u9664\u9879\u76EE_\u6807\u7B7E" : "\u901A\u7528_\u6DFB\u52A0\u9879\u76EE_\u6807\u7B7E", { name: tag.name || tag.id }));
@@ -840,7 +888,7 @@ var TagsModal = class extends import_obsidian4.Modal {
         itemEl.addColorPicker(
           (cb) => cb.setValue(tag.color).onChange((value) => {
             tag.color = value;
-            this.manager.saveSettings();
+            void this.manager.saveSettings();
             tagEl.setAttribute("style", this.manager.generateTagStyle(value, this.settings.TAG_STYLE));
           })
         );
@@ -848,7 +896,7 @@ var TagsModal = class extends import_obsidian4.Modal {
           text.setValue(tag.name).onChange((value) => {
             tag.name = value;
             tagEl.textContent = value || tag.id;
-            this.manager.saveSettings();
+            void this.manager.saveSettings();
           });
           text.inputEl.addClass("manager-editor__item-input");
           text.inputEl.addClass("manager-tag-editor__name-input");
@@ -865,8 +913,8 @@ var TagsModal = class extends import_obsidian4.Modal {
             const hasTestTag = this.settings.Plugins.some((plugin) => plugin.tags && plugin.tags.includes(tag.id));
             if (!hasTestTag) {
               this.manager.settings.TAGS = this.manager.settings.TAGS.filter((t2) => t2.id !== tag.id);
-              this.manager.saveSettings();
-              this.reloadShowData();
+              void this.manager.saveSettings();
+              void this.reloadShowData();
               command_default(this.app, this.manager);
               new import_obsidian4.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
             } else {
@@ -879,7 +927,7 @@ var TagsModal = class extends import_obsidian4.Modal {
           this.prepareIconButton(cb, t("\u901A\u7528_\u5B8C\u6210\u7F16\u8F91_\u6587\u672C"), "manager-tag-editor__save-button");
           cb.onClick(() => {
             this.selected = "";
-            this.reloadShowData();
+            void this.reloadShowData();
             this.managerModal.refreshVisiblePluginCards();
           });
         });
@@ -939,9 +987,9 @@ var TagsModal = class extends import_obsidian4.Modal {
         const containsId = this.manager.settings.TAGS.some((tag) => tag.id === nextId);
         if (!containsId && nextId !== "" && nextId !== BPM_TAG_ID && nextId !== BPM_IGNORE_TAG) {
           this.manager.settings.TAGS.push({ id: nextId, name: nextName, color });
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           this.add = false;
-          this.reloadShowData();
+          void this.reloadShowData();
           command_default(this.app, this.manager);
           new import_obsidian4.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
@@ -970,7 +1018,7 @@ var TagsModal = class extends import_obsidian4.Modal {
       cancelButton.createSpan({ text: t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C") });
       cancelButton.addEventListener("click", () => {
         this.add = false;
-        this.reloadShowData();
+        void this.reloadShowData();
       });
       const submitButton = actions.createEl("button", { cls: "manager-tag-editor__create-action manager-tag-editor__create-action--primary" });
       submitButton.type = "button";
@@ -988,7 +1036,7 @@ var TagsModal = class extends import_obsidian4.Modal {
       this.prepareIconButton(addButton, t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u65B0\u589E\u6807\u7B7E"), "manager-tag-editor__save-button");
       addButton.onClick(() => {
         this.add = true;
-        this.reloadShowData();
+        void this.reloadShowData();
       });
     }
   }
@@ -1000,11 +1048,13 @@ var TagsModal = class extends import_obsidian4.Modal {
     await this.showData();
     modalElement.scrollTo(0, scrollTop);
   }
-  async onOpen() {
-    await this.showHead();
-    await this.showData();
+  onOpen() {
+    void (async () => {
+      await this.showHead();
+      await this.showData();
+    })();
   }
-  async onClose() {
+  onClose() {
     this.contentEl.empty();
   }
   pickDistinctColor(existing) {
@@ -1044,7 +1094,7 @@ var DeleteModal = class extends import_obsidian5.Modal {
     return this.manager.translator.t(key, vars);
   }
   getExtraButtonEl(button) {
-    return button.extraSettingsEl || button.buttonEl;
+    return getExtraButtonElement(button);
   }
   prepareIconButton(button, label, className) {
     button.setTooltip(label);
@@ -1078,6 +1128,8 @@ var DeleteModal = class extends import_obsidian5.Modal {
   async showHead() {
     var _a, _b;
     const modalEl = this.contentEl.parentElement;
+    if (!modalEl)
+      return;
     modalEl.addClass("manager-delete__container");
     (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
     this.titleEl.empty();
@@ -1138,18 +1190,26 @@ var DeleteModal = class extends import_obsidian5.Modal {
       button.buttonEl.setAttribute("aria-label", this.t("\u5378\u8F7D_\u53D6\u6D88"));
     });
     actionBar.addButton((button) => {
+      var _a;
       this.confirmButton = button;
-      button.setWarning().setIcon("trash-2").setButtonText(this.t("\u5378\u8F7D_\u5378\u8F7D")).setTooltip(this.t("\u5378\u8F7D_\u5378\u8F7D\u786E\u8BA4", { name: pluginName })).setClass("manager-delete__confirm-button").onClick(() => void this.runDelete());
+      const destructiveButton = button;
+      if (destructiveButton.setDestructive)
+        destructiveButton.setDestructive();
+      else
+        (_a = destructiveButton["setWarning"]) == null ? void 0 : _a.call(destructiveButton);
+      button.setIcon("trash-2").setButtonText(this.t("\u5378\u8F7D_\u5378\u8F7D")).setTooltip(this.t("\u5378\u8F7D_\u5378\u8F7D\u786E\u8BA4", { name: pluginName })).setClass("manager-delete__confirm-button").onClick(() => void this.runDelete());
       button.buttonEl.setAttribute("aria-label", this.t("\u5378\u8F7D_\u5378\u8F7D\u786E\u8BA4", { name: pluginName }));
     });
   }
-  async onOpen() {
-    var _a;
-    await this.showHead();
-    await this.showData();
-    (_a = this.cancelButton) == null ? void 0 : _a.buttonEl.focus();
+  onOpen() {
+    void (async () => {
+      var _a;
+      await this.showHead();
+      await this.showData();
+      (_a = this.cancelButton) == null ? void 0 : _a.buttonEl.focus();
+    })();
   }
-  async onClose() {
+  onClose() {
     this.contentEl.empty();
   }
 };
@@ -1165,6 +1225,8 @@ var DisableModal = class extends import_obsidian6.Modal {
   async showHead() {
     var _a, _b;
     const modalEl = this.contentEl.parentElement;
+    if (!modalEl)
+      return;
     modalEl.addClass("manager-editor__container");
     (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
     (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
@@ -1183,7 +1245,7 @@ var DisableModal = class extends import_obsidian6.Modal {
     actionBar.setClass("manager-delete__action");
     actionBar.addButton(
       (cb) => cb.setCta().setButtonText(this.manager.translator.t("\u4E00\u952E_\u542F\u7981")).onClick(() => {
-        this.deleteCallback();
+        void this.deleteCallback();
         this.close();
       })
     );
@@ -1193,11 +1255,13 @@ var DisableModal = class extends import_obsidian6.Modal {
       })
     );
   }
-  async onOpen() {
-    await this.showHead();
-    await this.showData();
+  onOpen() {
+    void (async () => {
+      await this.showHead();
+      await this.showData();
+    })();
   }
-  async onClose() {
+  onClose() {
     this.contentEl.empty();
   }
 };
@@ -1219,7 +1283,7 @@ var NoteModal = class extends import_obsidian7.Modal {
     return this.manager.translator.t(key, vars);
   }
   getExtraButtonEl(button) {
-    return button.extraSettingsEl || button.buttonEl;
+    return getExtraButtonElement(button);
   }
   prepareIconButton(button, label, className) {
     button.setTooltip(label);
@@ -1309,6 +1373,8 @@ var NoteModal = class extends import_obsidian7.Modal {
   async showHead() {
     var _a, _b;
     const modalEl = this.contentEl.parentElement;
+    if (!modalEl)
+      return;
     modalEl.addClass("manager-note__container");
     (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
     this.titleEl.empty();
@@ -1382,14 +1448,16 @@ var NoteModal = class extends import_obsidian7.Modal {
     await this.showData();
     modalElement.scrollTo(0, scrollTop);
   }
-  async onOpen() {
-    var _a;
-    await this.showHead();
-    await this.showData();
-    (_a = this.textArea) == null ? void 0 : _a.inputEl.focus();
+  onOpen() {
+    void (async () => {
+      var _a;
+      await this.showHead();
+      await this.showData();
+      (_a = this.textArea) == null ? void 0 : _a.inputEl.focus();
+    })();
   }
-  async onClose() {
-    await this.flushPendingSave();
+  onClose() {
+    void this.flushPendingSave();
     if (this.saveTimer)
       window.clearTimeout(this.saveTimer);
     this.contentEl.empty();
@@ -1412,8 +1480,9 @@ var HideModal = class extends import_obsidian8.Modal {
     this.groupOperator = "contains";
     this.delayOperator = "contains";
     this.filter = "all";
-    this.appSetting = this.app.setting;
-    this.appPlugins = this.app.plugins;
+    const appWithInternals = this.app;
+    this.appSetting = appWithInternals.setting;
+    this.appPlugins = appWithInternals.plugins;
     this.manager = manager;
     this.managerModal = managerModal;
     this.settings = manager.settings;
@@ -1439,6 +1508,8 @@ var HideModal = class extends import_obsidian8.Modal {
   async showHead() {
     var _a, _b, _c, _d, _e;
     const modalEl = this.contentEl.parentElement;
+    if (!modalEl)
+      return;
     modalEl.addClass("manager-container");
     if (!this.settings.CENTER)
       modalEl.addClass("manager-container__top");
@@ -1467,7 +1538,7 @@ var HideModal = class extends import_obsidian8.Modal {
     filterDropdown.setValue(this.filter);
     filterDropdown.onChange((value) => {
       this.filter = value;
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     const groupCounts = this.settings.Plugins.reduce((acc, plugin) => {
       const groupId = plugin.group || "";
@@ -1490,14 +1561,14 @@ var HideModal = class extends import_obsidian8.Modal {
     groupOperatorDropdown.selectEl.setAttribute("aria-label", this.manager.translator.t("\u7B5B\u9009_\u5206\u7EC4\u53D6\u53CD_\u6807\u7B7E"));
     groupOperatorDropdown.onChange((value) => {
       this.groupOperator = value === "not-contains" ? "not-contains" : "contains";
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     const groupsDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
     this.addOrderedOptions(groupsDropdown, groups);
     groupsDropdown.setValue(this.group);
     groupsDropdown.onChange((value) => {
       this.group = value;
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     const tagCounts = this.settings.Plugins.reduce((acc, plugin) => {
       plugin.tags.forEach((tag) => {
@@ -1517,14 +1588,14 @@ var HideModal = class extends import_obsidian8.Modal {
     tagOperatorDropdown.selectEl.setAttribute("aria-label", this.manager.translator.t("\u7B5B\u9009_\u6807\u7B7E\u53D6\u53CD_\u6807\u7B7E"));
     tagOperatorDropdown.onChange((value) => {
       this.tagOperator = value === "not-contains" ? "not-contains" : "contains";
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     const tagsDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
     this.addOrderedOptions(tagsDropdown, tags);
     tagsDropdown.setValue(this.tag);
     tagsDropdown.onChange((value) => {
       this.tag = value;
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     if (this.settings.DELAY) {
       const delayCounts = this.settings.Plugins.reduce((acc, plugin) => {
@@ -1544,20 +1615,20 @@ var HideModal = class extends import_obsidian8.Modal {
       delayOperatorDropdown.selectEl.setAttribute("aria-label", this.manager.translator.t("\u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E"));
       delayOperatorDropdown.onChange((value) => {
         this.delayOperator = value === "not-contains" ? "not-contains" : "contains";
-        this.reloadShowData();
+        void this.reloadShowData();
       });
       const delaysDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
       this.addOrderedOptions(delaysDropdown, delays);
       delaysDropdown.setValue(this.delay || "");
       delaysDropdown.onChange((value) => {
         this.delay = value;
-        this.reloadShowData();
+        void this.reloadShowData();
       });
     }
     this.searchEl = new import_obsidian8.SearchComponent(searchBar.controlEl);
     this.searchEl.onChange((value) => {
       this.searchText = value;
-      this.reloadShowData();
+      void this.reloadShowData();
     });
   }
   async showData() {
@@ -1652,7 +1723,7 @@ var HideModal = class extends import_obsidian8.Modal {
           } else {
             this.settings.HIDES = this.settings.HIDES.filter((id) => id !== plugin.id);
           }
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           this.managerModal.refreshPluginCard(plugin.id, { allowReload: true });
         });
       }
@@ -1663,14 +1734,16 @@ var HideModal = class extends import_obsidian8.Modal {
     const modalElement = this.contentEl;
     scrollTop = modalElement.scrollTop;
     modalElement.empty();
-    this.showData();
+    await this.showData();
     modalElement.scrollTo(0, scrollTop);
   }
-  async onOpen() {
-    await this.showHead();
-    await this.showData();
+  onOpen() {
+    void (async () => {
+      await this.showHead();
+      await this.showData();
+    })();
   }
-  async onClose() {
+  onClose() {
     this.contentEl.empty();
   }
 };
@@ -2191,16 +2264,18 @@ var TroubleshootResultModal = class extends import_obsidian9.Modal {
     this.state = state;
     this.t = (k) => manager.translator.t(k);
   }
-  async onOpen() {
-    await this.render();
+  onOpen() {
+    void this.render();
   }
-  async onClose() {
+  onClose() {
   }
   async render() {
     const { contentEl, titleEl } = this;
     contentEl.empty();
     titleEl.empty();
     const modalEl = contentEl.parentElement;
+    if (!modalEl)
+      return;
     modalEl.addClass("troubleshoot-result-modal");
     const defaultCloseBtn = modalEl.querySelector(".modal-close-button");
     if (defaultCloseBtn) {
@@ -2405,7 +2480,7 @@ ${this.state.originalEnabledPlugins.map((id) => `- ${this.getPluginName(id)} (\`
       await this.app.vault.create(filePath, content);
       new import_obsidian9.Notice(`${this.t("\u6392\u67E5_\u62A5\u544A\u5DF2\u751F\u6210_\u901A\u77E5")}: ${fileName}`);
       const file = this.app.vault.getAbstractFileByPath(filePath);
-      if (file) {
+      if (file instanceof import_obsidian9.TFile) {
         await this.app.workspace.getLeaf().openFile(file);
       }
     } catch (e) {
@@ -3115,7 +3190,7 @@ var UpdateModal = class extends import_obsidian12.Modal {
     const closeButton = new import_obsidian12.ExtraButtonComponent(titleBar.controlEl);
     closeButton.setIcon("x");
     closeButton.setTooltip(t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C"));
-    const closeEl = closeButton.extraSettingsEl || closeButton.buttonEl;
+    const closeEl = getExtraButtonElement(closeButton);
     closeEl == null ? void 0 : closeEl.setAttribute("aria-label", t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C"));
     closeButton.onClick(() => this.close());
     const page = contentEl.createDiv("manager-version-picker__page");
@@ -3246,9 +3321,64 @@ var RibbonModal = class extends import_obsidian13.Modal {
     this.dragOffsetX = 0;
     this.dragOffsetY = 0;
     this.activePointerId = null;
+    this.handleDragEndEvent = (e) => {
+      void this.handleDragEnd(e);
+    };
+    this.handleDragMove = (e) => {
+      if (!this.ghostEl || !this.placeholderEl || !this.draggedItemEl)
+        return;
+      if (e.pointerId !== this.activePointerId)
+        return;
+      e.preventDefault();
+      this.updateGhostPosition(e);
+      const listContainer = this.placeholderEl.parentNode;
+      const items = Array.from(listContainer.children).filter(
+        (el) => el !== this.placeholderEl && !el.classList.contains("dragging") && !el.classList.contains("drag-ghost")
+      );
+      let dropTarget = null;
+      for (const item of items) {
+        const rect = item.getBoundingClientRect();
+        if (e.clientY < rect.top + rect.height / 2) {
+          dropTarget = item;
+          break;
+        }
+      }
+      if (dropTarget) {
+        listContainer.insertBefore(this.placeholderEl, dropTarget);
+      } else {
+        listContainer.appendChild(this.placeholderEl);
+      }
+    };
+    this.handleDragEnd = async (e) => {
+      if (!this.draggedItemEl || !this.placeholderEl)
+        return;
+      const listContainer = this.placeholderEl.parentNode;
+      let newIndex = 0;
+      const children = Array.from(listContainer.children);
+      for (const child of children) {
+        if (child === this.placeholderEl)
+          break;
+        if (child.matches(".draggable-item:not(.dragging)")) {
+          newIndex++;
+        }
+      }
+      this.placeholderEl.remove();
+      this.placeholderEl = null;
+      if (this.ghostEl) {
+        this.ghostEl.remove();
+        this.ghostEl = null;
+      }
+      this.draggedItemEl.removeClass("dragging");
+      const oldIndex = this.dragStartIndex;
+      activeDocument.removeEventListener("pointermove", this.handleDragMove);
+      this.draggedItemEl = null;
+      this.dragStartIndex = -1;
+      this.activePointerId = null;
+      if (newIndex !== oldIndex) {
+        await this.moveItem(oldIndex, newIndex);
+      }
+    };
     this.manager = manager;
-    this.handleDragMove = this.handleDragMove.bind(this);
-    this.handleDragEnd = this.handleDragEnd.bind(this);
   }
   async onOpen() {
     if (!this.manager.isRibbonManagerEnabled()) {
@@ -3321,7 +3451,7 @@ var RibbonModal = class extends import_obsidian13.Modal {
     resetBtn.setButtonText(t("\u901A\u7528_\u91CD\u7F6E_\u6587\u672C"));
     resetBtn.setTooltip(t("Ribbon_\u91CD\u7F6E_\u63D0\u793A"));
     resetBtn.onClick(async () => {
-      if (!window.confirm(t("Ribbon_\u91CD\u7F6E_\u786E\u8BA4")))
+      if (!await confirmWithModal(this.app, this.manager, t("Ribbon_\u91CD\u7F6E_\u786E\u8BA4")))
         return;
       await this.resetRibbonLayout();
     });
@@ -3391,79 +3521,31 @@ var RibbonModal = class extends import_obsidian13.Modal {
     this.activePointerId = e.pointerId;
     this.ghostEl = itemEl.cloneNode(true);
     this.ghostEl.addClass("drag-ghost");
-    document.body.appendChild(this.ghostEl);
-    this.ghostEl.style.width = `${rect.width}px`;
-    this.ghostEl.style.height = `${rect.height}px`;
+    activeDocument.body.appendChild(this.ghostEl);
+    this.ghostEl.setCssStyles({
+      width: `${rect.width}px`,
+      height: `${rect.height}px`
+    });
     this.updateGhostPosition(e);
-    this.placeholderEl = document.createElement("div");
+    this.placeholderEl = activeDocument.createElement("div");
     this.placeholderEl.className = "drag-gap-placeholder";
-    this.placeholderEl.style.height = `${rect.height}px`;
-    this.placeholderEl.style.marginBottom = "0";
+    this.placeholderEl.setCssStyles({
+      height: `${rect.height}px`,
+      marginBottom: "0"
+    });
     itemEl.parentNode.insertBefore(this.placeholderEl, itemEl);
     itemEl.addClass("dragging");
-    document.addEventListener("pointermove", this.handleDragMove, { passive: false });
-    document.addEventListener("pointerup", this.handleDragEnd, { once: true });
-    document.addEventListener("pointercancel", this.handleDragEnd, { once: true });
-  }
-  handleDragMove(e) {
-    if (!this.ghostEl || !this.placeholderEl || !this.draggedItemEl)
-      return;
-    if (e.pointerId !== this.activePointerId)
-      return;
-    e.preventDefault();
-    this.updateGhostPosition(e);
-    const listContainer = this.placeholderEl.parentNode;
-    const items = Array.from(listContainer.children).filter(
-      (el) => el !== this.placeholderEl && !el.classList.contains("dragging") && !el.classList.contains("drag-ghost")
-    );
-    let dropTarget = null;
-    for (const item of items) {
-      const rect = item.getBoundingClientRect();
-      if (e.clientY < rect.top + rect.height / 2) {
-        dropTarget = item;
-        break;
-      }
-    }
-    if (dropTarget) {
-      listContainer.insertBefore(this.placeholderEl, dropTarget);
-    } else {
-      listContainer.appendChild(this.placeholderEl);
-    }
+    activeDocument.addEventListener("pointermove", this.handleDragMove, { passive: false });
+    activeDocument.addEventListener("pointerup", this.handleDragEndEvent, { once: true });
+    activeDocument.addEventListener("pointercancel", this.handleDragEndEvent, { once: true });
   }
   updateGhostPosition(e) {
     if (!this.ghostEl)
       return;
-    this.ghostEl.style.left = `${e.clientX - this.dragOffsetX}px`;
-    this.ghostEl.style.top = `${e.clientY - this.dragOffsetY}px`;
-  }
-  async handleDragEnd(e) {
-    if (!this.draggedItemEl || !this.placeholderEl)
-      return;
-    const listContainer = this.placeholderEl.parentNode;
-    let newIndex = 0;
-    const children = Array.from(listContainer.children);
-    for (const child of children) {
-      if (child === this.placeholderEl)
-        break;
-      if (child.matches(".draggable-item:not(.dragging)")) {
-        newIndex++;
-      }
-    }
-    this.placeholderEl.remove();
-    this.placeholderEl = null;
-    if (this.ghostEl) {
-      this.ghostEl.remove();
-      this.ghostEl = null;
-    }
-    this.draggedItemEl.removeClass("dragging");
-    const oldIndex = this.dragStartIndex;
-    document.removeEventListener("pointermove", this.handleDragMove);
-    this.draggedItemEl = null;
-    this.dragStartIndex = -1;
-    this.activePointerId = null;
-    if (newIndex !== oldIndex) {
-      await this.moveItem(oldIndex, newIndex);
-    }
+    this.ghostEl.setCssStyles({
+      left: `${e.clientX - this.dragOffsetX}px`,
+      top: `${e.clientY - this.dragOffsetY}px`
+    });
   }
   async moveItem(oldIndex, newIndex) {
     if (!this.manager.isRibbonManagerEnabled())
@@ -4628,24 +4710,7 @@ var sourceHasUpdate = (source) => sourceUsesReleaseUpdateCheck(source) ? sourceH
 
 // src/vault-share.ts
 var import_obsidian15 = require("obsidian");
-var SHARED_FOLDER_NAMES = {
-  plugins: "plugins",
-  themes: "themes"
-};
-var CONFIG_DIR_NAME = ".obsidian";
-var getNodeDeps = () => {
-  try {
-    if (typeof require !== "function")
-      return null;
-    return {
-      fs: require("fs"),
-      path: require("path")
-    };
-  } catch (e) {
-    return null;
-  }
-};
-var isSharedVaultFsAvailable = () => Boolean(getNodeDeps());
+var UNAVAILABLE_ERROR = "Shared vault filesystem features are unavailable in the community-store build.";
 var cleanInputPath = (value) => {
   const trimmed = (value || "").trim();
   if (trimmed.startsWith('"') && trimmed.endsWith('"') || trimmed.startsWith("'") && trimmed.endsWith("'")) {
@@ -4653,556 +4718,33 @@ var cleanInputPath = (value) => {
   }
   return trimmed;
 };
-var pathKey = (deps, value) => {
-  const resolved = deps.path.resolve(value || "");
-  return deps.path.sep === "\\" ? resolved.toLowerCase() : resolved;
+var isSharedVaultFsAvailable = () => false;
+var setCurrentVaultAsSharedMain = async (_manager) => {
+  throw new Error(UNAVAILABLE_ERROR);
 };
-var pathsEqual = (deps, a, b) => {
-  if (!a || !b)
-    return false;
-  return pathKey(deps, a) === pathKey(deps, b);
+var createSharedVaultLinks = async (_manager, _targetVaultInput, _kinds, _backupExisting) => {
+  throw new Error(UNAVAILABLE_ERROR);
 };
-var getVaultName = (deps, vaultPath) => deps.path.basename(vaultPath) || vaultPath;
-var createVaultId = (deps, vaultPath) => {
-  const key = pathKey(deps, vaultPath);
-  let hash = 0;
-  for (let i = 0; i < key.length; i++) {
-    hash = (hash << 5) - hash + key.charCodeAt(i) | 0;
-  }
-  return `vault-${Math.abs(hash)}`;
+var unlinkSharedVaultFolder = async (_manager, _vaultPathInput, _kind) => {
+  throw new Error(UNAVAILABLE_ERROR);
 };
-var resolveVaultPath = (deps, inputPath) => {
-  let resolved = deps.path.resolve(cleanInputPath(inputPath));
-  const baseName = deps.path.basename(resolved).toLowerCase();
-  const parent = deps.path.dirname(resolved);
-  const parentName = deps.path.basename(parent).toLowerCase();
-  if (baseName === CONFIG_DIR_NAME)
-    return parent;
-  if ((baseName === "plugins" || baseName === "themes") && parentName === CONFIG_DIR_NAME) {
-    return deps.path.dirname(parent);
-  }
-  return resolved;
+var getSharedVaultSnapshot = async (_manager) => ({
+  available: false,
+  currentVaultPath: "",
+  mainVaultPath: "",
+  vaults: [],
+  error: UNAVAILABLE_ERROR
+});
+var readSharedPluginCatalog = async (_manager) => [];
+var readSharedThemeCatalog = async (_manager) => [];
+var setSharedVaultPluginEnabled = async (_manager, _vaultPathInput, _pluginId, _enabled) => {
+  throw new Error(UNAVAILABLE_ERROR);
 };
-var getConfigDir = (deps, vaultPath) => deps.path.join(vaultPath, CONFIG_DIR_NAME);
-var getSharedFolderPath = (deps, vaultPath, kind) => deps.path.join(getConfigDir(deps, vaultPath), SHARED_FOLDER_NAMES[kind]);
-var pathExists = async (fs, targetPath) => {
-  try {
-    await fs.promises.lstat(targetPath);
-    return true;
-  } catch (e) {
-    return false;
-  }
+var setSharedVaultTheme = async (_manager, _vaultPathInput, _themeName) => {
+  throw new Error(UNAVAILABLE_ERROR);
 };
-var readJsonFile = async (fs, filePath) => {
-  try {
-    const raw = await fs.promises.readFile(filePath, "utf8");
-    return JSON.parse(raw);
-  } catch (e) {
-    return null;
-  }
-};
-var writeJsonFile = async (fs, filePath, value) => {
-  await fs.promises.writeFile(filePath, `${JSON.stringify(value, null, 2)}
-`, "utf8");
-};
-var uniq = (ids) => {
-  const seen = /* @__PURE__ */ new Set();
-  return ids.filter((id) => {
-    if (!id || seen.has(id))
-      return false;
-    seen.add(id);
-    return true;
-  });
-};
-var readDirectoryEntries = async (fs, dirPath) => {
-  try {
-    return await fs.promises.readdir(dirPath);
-  } catch (e) {
-    return [];
-  }
-};
-var inferVaultPathFromSharedFolder = (deps, folderPath) => {
-  if (!folderPath)
-    return "";
-  const resolved = deps.path.resolve(folderPath);
-  const folderName = deps.path.basename(resolved).toLowerCase();
-  if (folderName !== "plugins" && folderName !== "themes")
-    return "";
-  const configDir = deps.path.dirname(resolved);
-  if (deps.path.basename(configDir).toLowerCase() !== CONFIG_DIR_NAME)
-    return "";
-  return deps.path.dirname(configDir);
-};
-var ensureSharedVaultSettings = (manager) => {
-  const settings = manager.settings;
-  if (!Array.isArray(settings.SHARED_VAULTS))
-    settings.SHARED_VAULTS = [];
-  return settings.SHARED_VAULTS;
-};
-var getStoredMainVaultPath = (manager, deps) => {
-  const settings = manager.settings;
-  return settings.SHARED_VAULT_MAIN_PATH ? resolveVaultPath(deps, settings.SHARED_VAULT_MAIN_PATH) : "";
-};
-var setStoredMainVaultPath = (manager, deps, vaultPath) => {
-  manager.settings.SHARED_VAULT_MAIN_PATH = deps.path.resolve(vaultPath);
-};
-var upsertSharedVaultEntry = (manager, deps, vaultPath, patch = {}) => {
-  var _a, _b, _c;
-  const normalizedPath = deps.path.resolve(vaultPath);
-  const entries = ensureSharedVaultSettings(manager);
-  const existing = entries.find((entry2) => pathsEqual(deps, entry2.path, normalizedPath));
-  if (existing) {
-    existing.path = normalizedPath;
-    existing.name = patch.name || existing.name || getVaultName(deps, normalizedPath);
-    existing.pluginsLinked = (_a = patch.pluginsLinked) != null ? _a : existing.pluginsLinked;
-    existing.themesLinked = (_b = patch.themesLinked) != null ? _b : existing.themesLinked;
-    existing.lastSeenAt = (_c = patch.lastSeenAt) != null ? _c : Date.now();
-    return existing;
-  }
-  const entry = {
-    id: createVaultId(deps, normalizedPath),
-    name: patch.name || getVaultName(deps, normalizedPath),
-    path: normalizedPath,
-    pluginsLinked: patch.pluginsLinked,
-    themesLinked: patch.themesLinked,
-    createdAt: Date.now(),
-    lastSeenAt: Date.now()
-  };
-  entries.push(entry);
-  return entry;
-};
-var getCurrentVaultPath = (manager) => {
-  var _a;
-  const deps = getNodeDeps();
-  if (!deps)
-    return "";
-  const adapter = manager.app.vault.adapter;
-  const basePath = ((_a = adapter.getBasePath) == null ? void 0 : _a.call(adapter)) || adapter.basePath || "";
-  return basePath ? deps.path.resolve(basePath) : "";
-};
-var getSharedVaultFolderStatus = async (vaultPathInput, kind) => {
-  const deps = getNodeDeps();
-  if (!deps) {
-    return {
-      kind,
-      path: "",
-      exists: false,
-      isSymlink: false,
-      itemCount: 0,
-      error: "Node file system is not available."
-    };
-  }
-  const vaultPath = resolveVaultPath(deps, vaultPathInput);
-  const folderPath = getSharedFolderPath(deps, vaultPath, kind);
-  try {
-    const stats = await deps.fs.promises.lstat(folderPath);
-    const isSymlink = stats.isSymbolicLink();
-    let realPath = "";
-    let targetPath = "";
-    if (isSymlink) {
-      try {
-        const linkTarget = await deps.fs.promises.readlink(folderPath);
-        targetPath = deps.path.isAbsolute(linkTarget) ? linkTarget : deps.path.resolve(deps.path.dirname(folderPath), linkTarget);
-      } catch (e) {
-        targetPath = "";
-      }
-    }
-    try {
-      realPath = await deps.fs.promises.realpath(folderPath);
-    } catch (e) {
-      realPath = targetPath;
-    }
-    const entries = stats.isDirectory() || isSymlink ? await readDirectoryEntries(deps.fs, folderPath) : [];
-    return {
-      kind,
-      path: folderPath,
-      exists: true,
-      isSymlink,
-      realPath: realPath || void 0,
-      targetPath: targetPath || void 0,
-      itemCount: entries.length
-    };
-  } catch (error) {
-    return {
-      kind,
-      path: folderPath,
-      exists: false,
-      isSymlink: false,
-      itemCount: 0,
-      error: error == null ? void 0 : error.message
-    };
-  }
-};
-var resolveSharedMainVaultPath = async (manager) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    return "";
-  const stored = getStoredMainVaultPath(manager, deps);
-  if (stored)
-    return stored;
-  const currentVaultPath = getCurrentVaultPath(manager);
-  if (!currentVaultPath)
-    return "";
-  for (const kind of ["plugins", "themes"]) {
-    const status = await getSharedVaultFolderStatus(currentVaultPath, kind);
-    if (!status.isSymlink)
-      continue;
-    const inferred = inferVaultPathFromSharedFolder(deps, status.realPath || status.targetPath);
-    if (inferred)
-      return inferred;
-  }
-  return currentVaultPath;
-};
-var setCurrentVaultAsSharedMain = async (manager) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    throw new Error("Node file system is not available.");
-  const currentVaultPath = getCurrentVaultPath(manager);
-  if (!currentVaultPath)
-    throw new Error("Current vault path is not available.");
-  const [pluginsStatus, themesStatus] = await Promise.all([
-    getSharedVaultFolderStatus(currentVaultPath, "plugins"),
-    getSharedVaultFolderStatus(currentVaultPath, "themes")
-  ]);
-  if (pluginsStatus.isSymlink || themesStatus.isSymlink) {
-    throw new Error("Current vault already uses symlink folders. Open the real main vault or unlink first.");
-  }
-  const configDir = getConfigDir(deps, currentVaultPath);
-  await deps.fs.promises.mkdir(configDir, { recursive: true });
-  await deps.fs.promises.mkdir(getSharedFolderPath(deps, currentVaultPath, "plugins"), { recursive: true });
-  await deps.fs.promises.mkdir(getSharedFolderPath(deps, currentVaultPath, "themes"), { recursive: true });
-  setStoredMainVaultPath(manager, deps, currentVaultPath);
-  upsertSharedVaultEntry(manager, deps, currentVaultPath, {
-    name: getVaultName(deps, currentVaultPath),
-    pluginsLinked: false,
-    themesLinked: false
-  });
-  await manager.saveSettings();
-  return currentVaultPath;
-};
-var getSharedFolderSourcePath = async (manager, kind) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    throw new Error("Node file system is not available.");
-  const mainVaultPath = await resolveSharedMainVaultPath(manager);
-  const sourcePath = getSharedFolderPath(deps, mainVaultPath, kind);
-  if (await pathExists(deps.fs, sourcePath))
-    return sourcePath;
-  const currentVaultPath = getCurrentVaultPath(manager);
-  const currentStatus = currentVaultPath ? await getSharedVaultFolderStatus(currentVaultPath, kind) : null;
-  return (currentStatus == null ? void 0 : currentStatus.realPath) || sourcePath;
-};
-var createBackupName = () => {
-  const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\..+$/, "").replace("T", "-");
-  return `bpm-backup-${stamp}`;
-};
-var createSharedVaultLinks = async (manager, targetVaultInput, kinds, backupExisting) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    throw new Error("Node file system is not available.");
-  const targetVaultPath = resolveVaultPath(deps, targetVaultInput);
-  const currentVaultPath = getCurrentVaultPath(manager);
-  const mainVaultPath = await resolveSharedMainVaultPath(manager);
-  if (!targetVaultPath)
-    throw new Error("Target vault path is empty.");
-  if (pathsEqual(deps, targetVaultPath, currentVaultPath) && !pathsEqual(deps, targetVaultPath, mainVaultPath)) {
-    throw new Error("Do not link the currently open vault. Set it as the main vault first.");
-  }
-  if (pathsEqual(deps, targetVaultPath, mainVaultPath)) {
-    throw new Error("The main vault does not need to link to itself.");
-  }
-  const targetConfigDir = getConfigDir(deps, targetVaultPath);
-  if (!await pathExists(deps.fs, targetConfigDir)) {
-    throw new Error("The target path is not an Obsidian vault because .obsidian was not found.");
-  }
-  const results = [];
-  for (const kind of kinds) {
-    const sourcePath = deps.path.resolve(await getSharedFolderSourcePath(manager, kind));
-    await deps.fs.promises.mkdir(sourcePath, { recursive: true });
-    const targetPath = getSharedFolderPath(deps, targetVaultPath, kind);
-    const parentDir = deps.path.dirname(targetPath);
-    await deps.fs.promises.mkdir(parentDir, { recursive: true });
-    let backupPath;
-    if (await pathExists(deps.fs, targetPath)) {
-      const stats = await deps.fs.promises.lstat(targetPath);
-      if (stats.isSymbolicLink()) {
-        const realPath = await deps.fs.promises.realpath(targetPath).catch(() => "");
-        if (pathsEqual(deps, realPath, sourcePath)) {
-          results.push({ kind, status: "already-linked", sourcePath, targetPath });
-          continue;
-        }
-        if (!backupExisting) {
-          throw new Error(`${SHARED_FOLDER_NAMES[kind]} is already linked to another folder.`);
-        }
-        await deps.fs.promises.rmdir(targetPath);
-      } else if (stats.isDirectory()) {
-        const entries = await readDirectoryEntries(deps.fs, targetPath);
-        if (entries.length === 0) {
-          await deps.fs.promises.rmdir(targetPath);
-        } else {
-          if (!backupExisting) {
-            throw new Error(`${SHARED_FOLDER_NAMES[kind]} already exists and is not empty.`);
-          }
-          backupPath = deps.path.join(parentDir, `${SHARED_FOLDER_NAMES[kind]}.${createBackupName()}`);
-          await deps.fs.promises.rename(targetPath, backupPath);
-        }
-      } else {
-        throw new Error(`${SHARED_FOLDER_NAMES[kind]} exists but is not a directory.`);
-      }
-    }
-    await deps.fs.promises.symlink(sourcePath, targetPath, deps.path.sep === "\\" ? "junction" : "dir");
-    results.push({ kind, status: "linked", sourcePath, targetPath, backupPath });
-  }
-  upsertSharedVaultEntry(manager, deps, targetVaultPath, {
-    pluginsLinked: kinds.includes("plugins") || void 0,
-    themesLinked: kinds.includes("themes") || void 0
-  });
-  await manager.saveSettings();
-  return results;
-};
-var unlinkSharedVaultFolder = async (manager, vaultPathInput, kind) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    throw new Error("Node file system is not available.");
-  const vaultPath = resolveVaultPath(deps, vaultPathInput);
-  const folderPath = getSharedFolderPath(deps, vaultPath, kind);
-  const stats = await deps.fs.promises.lstat(folderPath);
-  if (!stats.isSymbolicLink()) {
-    throw new Error(`${SHARED_FOLDER_NAMES[kind]} is not a symbolic link.`);
-  }
-  await deps.fs.promises.rmdir(folderPath);
-  await deps.fs.promises.mkdir(folderPath, { recursive: true });
-  const entry = ensureSharedVaultSettings(manager).find((item) => pathsEqual(deps, item.path, vaultPath));
-  if (entry) {
-    if (kind === "plugins")
-      entry.pluginsLinked = false;
-    if (kind === "themes")
-      entry.themesLinked = false;
-    entry.lastSeenAt = Date.now();
-    await manager.saveSettings();
-  }
-};
-var readCommunityPluginIdsFromVault = async (deps, vaultPath) => {
-  const filePath = deps.path.join(getConfigDir(deps, vaultPath), "community-plugins.json");
-  const parsed = await readJsonFile(deps.fs, filePath);
-  if (!Array.isArray(parsed))
-    return [];
-  return uniq(parsed.filter((id) => typeof id === "string"));
-};
-var writeCommunityPluginIdsToVault = async (deps, vaultPath, pluginIds) => {
-  const configDir = getConfigDir(deps, vaultPath);
-  await deps.fs.promises.mkdir(configDir, { recursive: true });
-  await writeJsonFile(deps.fs, deps.path.join(configDir, "community-plugins.json"), uniq(pluginIds));
-};
-var readActiveThemeNameFromVault = async (deps, vaultPath) => {
-  const filePath = deps.path.join(getConfigDir(deps, vaultPath), "appearance.json");
-  const parsed = await readJsonFile(deps.fs, filePath);
-  return typeof (parsed == null ? void 0 : parsed.cssTheme) === "string" ? parsed.cssTheme : "";
-};
-var writeActiveThemeNameToVault = async (deps, vaultPath, themeName) => {
-  const configDir = getConfigDir(deps, vaultPath);
-  await deps.fs.promises.mkdir(configDir, { recursive: true });
-  const filePath = deps.path.join(configDir, "appearance.json");
-  const parsed = await readJsonFile(deps.fs, filePath) || {};
-  if (themeName) {
-    parsed.cssTheme = themeName;
-  } else {
-    delete parsed.cssTheme;
-  }
-  await writeJsonFile(deps.fs, filePath, parsed);
-};
-var readSharedVaultStatus = async (manager, deps, vaultPath, currentVaultPath, mainVaultPath) => {
-  const normalizedVaultPath = deps.path.resolve(vaultPath);
-  const configDir = getConfigDir(deps, normalizedVaultPath);
-  const exists = await pathExists(deps.fs, configDir);
-  const [plugins, themes] = await Promise.all([
-    getSharedVaultFolderStatus(normalizedVaultPath, "plugins"),
-    getSharedVaultFolderStatus(normalizedVaultPath, "themes")
-  ]);
-  const pluginSource = getSharedFolderPath(deps, mainVaultPath, "plugins");
-  const themeSource = getSharedFolderPath(deps, mainVaultPath, "themes");
-  const [pluginSourceReal, themeSourceReal] = await Promise.all([
-    deps.fs.promises.realpath(pluginSource).catch(() => pluginSource),
-    deps.fs.promises.realpath(themeSource).catch(() => themeSource)
-  ]);
-  const pluginLinkedToMain = plugins.isSymlink && (pathsEqual(deps, plugins.realPath || plugins.targetPath, pluginSourceReal) || pathsEqual(deps, plugins.targetPath, pluginSource));
-  const themeLinkedToMain = themes.isSymlink && (pathsEqual(deps, themes.realPath || themes.targetPath, themeSourceReal) || pathsEqual(deps, themes.targetPath, themeSource));
-  const role = !exists ? "missing" : pathsEqual(deps, normalizedVaultPath, mainVaultPath) ? "main" : pluginLinkedToMain && themeLinkedToMain ? "linked" : pluginLinkedToMain || themeLinkedToMain ? "mixed" : "local";
-  return {
-    id: createVaultId(deps, normalizedVaultPath),
-    name: getVaultName(deps, normalizedVaultPath),
-    path: normalizedVaultPath,
-    configDir,
-    exists,
-    isCurrent: pathsEqual(deps, normalizedVaultPath, currentVaultPath),
-    role,
-    plugins,
-    themes,
-    enabledPluginIds: exists ? await readCommunityPluginIdsFromVault(deps, normalizedVaultPath) : [],
-    activeTheme: exists ? await readActiveThemeNameFromVault(deps, normalizedVaultPath) : ""
-  };
-};
-var getSharedVaultSnapshot = async (manager) => {
-  const deps = getNodeDeps();
-  if (!deps) {
-    return {
-      available: false,
-      currentVaultPath: "",
-      mainVaultPath: "",
-      vaults: [],
-      error: "Node file system is not available."
-    };
-  }
-  const currentVaultPath = getCurrentVaultPath(manager);
-  if (!currentVaultPath) {
-    return {
-      available: false,
-      currentVaultPath: "",
-      mainVaultPath: "",
-      vaults: [],
-      error: "Current vault path is not available."
-    };
-  }
-  const mainVaultPath = await resolveSharedMainVaultPath(manager);
-  const vaultMap = /* @__PURE__ */ new Map();
-  const addVault = (vaultPath) => {
-    if (!vaultPath)
-      return;
-    const resolved = resolveVaultPath(deps, vaultPath);
-    vaultMap.set(pathKey(deps, resolved), resolved);
-  };
-  addVault(currentVaultPath);
-  addVault(mainVaultPath);
-  for (const entry of ensureSharedVaultSettings(manager)) {
-    addVault(entry.path);
-  }
-  const vaults = [];
-  for (const vaultPath of vaultMap.values()) {
-    vaults.push(await readSharedVaultStatus(manager, deps, vaultPath, currentVaultPath, mainVaultPath));
-  }
-  vaults.sort((a, b) => {
-    if (a.role === "main" && b.role !== "main")
-      return -1;
-    if (b.role === "main" && a.role !== "main")
-      return 1;
-    if (a.isCurrent && !b.isCurrent)
-      return -1;
-    if (b.isCurrent && !a.isCurrent)
-      return 1;
-    return a.name.localeCompare(b.name);
-  });
-  return {
-    available: true,
-    currentVaultPath,
-    mainVaultPath,
-    vaults
-  };
-};
-var readSharedPluginCatalog = async (manager) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    return [];
-  const sourcePath = await getSharedFolderSourcePath(manager, "plugins");
-  const entries = await deps.fs.promises.readdir(sourcePath, { withFileTypes: true }).catch(() => []);
-  const plugins = [];
-  for (const entry of entries) {
-    if (!entry.isDirectory())
-      continue;
-    const manifest = await readJsonFile(deps.fs, deps.path.join(sourcePath, entry.name, "manifest.json"));
-    if (!(manifest == null ? void 0 : manifest.id))
-      continue;
-    plugins.push({
-      id: manifest.id,
-      name: manifest.name || manifest.id,
-      version: manifest.version,
-      description: manifest.description,
-      folder: entry.name
-    });
-  }
-  return plugins.sort((a, b) => a.name.localeCompare(b.name));
-};
-var readSharedThemeCatalog = async (manager) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    return [];
-  const sourcePath = await getSharedFolderSourcePath(manager, "themes");
-  const entries = await deps.fs.promises.readdir(sourcePath, { withFileTypes: true }).catch(() => []);
-  const themes = [];
-  for (const entry of entries) {
-    if (!entry.isDirectory())
-      continue;
-    const manifest = await readJsonFile(
-      deps.fs,
-      deps.path.join(sourcePath, entry.name, "manifest.json")
-    );
-    themes.push({
-      name: (manifest == null ? void 0 : manifest.name) || entry.name,
-      folder: entry.name,
-      version: manifest == null ? void 0 : manifest.version,
-      author: manifest == null ? void 0 : manifest.author
-    });
-  }
-  return themes.sort((a, b) => a.name.localeCompare(b.name));
-};
-var setSharedVaultPluginEnabled = async (manager, vaultPathInput, pluginId, enabled) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    throw new Error("Node file system is not available.");
-  const vaultPath = resolveVaultPath(deps, vaultPathInput);
-  const currentVaultPath = getCurrentVaultPath(manager);
-  if (pathsEqual(deps, vaultPath, currentVaultPath)) {
-    if (pluginId === manager.manifest.id && !enabled)
-      throw new Error("BPM cannot disable itself.");
-    const record = manager.settings.Plugins.find((plugin) => plugin.id === pluginId);
-    if (manager.settings.DELAY) {
-      if (enabled) {
-        await manager.appPlugins.enablePlugin(pluginId);
-      } else {
-        await manager.appPlugins.disablePlugin(pluginId);
-      }
-    } else if (enabled) {
-      await manager.appPlugins.enablePluginAndSave(pluginId);
-    } else {
-      await manager.appPlugins.disablePluginAndSave(pluginId);
-    }
-    if (record)
-      record.enabled = enabled;
-    await manager.savePluginAndExport(pluginId);
-    return;
-  }
-  const current = await readCommunityPluginIdsFromVault(deps, vaultPath);
-  const next = enabled ? uniq([...current, pluginId]) : current.filter((id) => id !== pluginId);
-  await writeCommunityPluginIdsToVault(deps, vaultPath, next);
-};
-var setSharedVaultTheme = async (manager, vaultPathInput, themeName) => {
-  var _a, _b;
-  const deps = getNodeDeps();
-  if (!deps)
-    throw new Error("Node file system is not available.");
-  const vaultPath = resolveVaultPath(deps, vaultPathInput);
-  const currentVaultPath = getCurrentVaultPath(manager);
-  if (pathsEqual(deps, vaultPath, currentVaultPath)) {
-    (_b = (_a = manager.app.customCss) == null ? void 0 : _a.setTheme) == null ? void 0 : _b.call(_a, themeName);
-  }
-  await writeActiveThemeNameToVault(deps, vaultPath, themeName);
-};
-var forgetSharedVault = async (manager, vaultPathInput) => {
-  const deps = getNodeDeps();
-  if (!deps)
-    return;
-  const vaultPath = resolveVaultPath(deps, vaultPathInput);
-  const currentVaultPath = getCurrentVaultPath(manager);
-  const mainVaultPath = await resolveSharedMainVaultPath(manager);
-  if (pathsEqual(deps, vaultPath, currentVaultPath) || pathsEqual(deps, vaultPath, mainVaultPath))
-    return;
-  const entries = ensureSharedVaultSettings(manager);
-  manager.settings.SHARED_VAULTS = entries.filter((entry) => !pathsEqual(deps, entry.path, vaultPath));
-  await manager.saveSettings();
-};
-var normalizeSharedVaultInputPath = (inputPath) => {
-  const deps = getNodeDeps();
-  return deps ? resolveVaultPath(deps, inputPath) : (0, import_obsidian15.normalizePath)(cleanInputPath(inputPath));
-};
+var forgetSharedVault = async (_manager, _vaultPathInput) => void 0;
+var normalizeSharedVaultInputPath = (inputPath) => (0, import_obsidian15.normalizePath)(cleanInputPath(inputPath));
 
 // src/modal/manager-modal.ts
 var SHARED_VAULTS_ENABLED = false;
@@ -5273,18 +4815,74 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.hiddenDragOffsetX = 0;
     this.hiddenDragOffsetY = 0;
     this.hiddenActivePointerId = null;
+    this.handleHiddenLayoutDragEndEvent = (event) => {
+      void this.handleHiddenLayoutDragEnd(event);
+    };
     this.vaultTargetPath = "";
     this.vaultLinkPlugins = true;
     this.vaultLinkThemes = true;
     this.vaultBackupExisting = false;
     this.vaultExpandedId = "";
+    this.handleHiddenLayoutDragMove = (event) => {
+      if (!this.hiddenGhostEl || !this.hiddenPlaceholderEl || !this.hiddenDraggedItemEl)
+        return;
+      if (event.pointerId !== this.hiddenActivePointerId)
+        return;
+      event.preventDefault();
+      this.updateHiddenLayoutGhost(event);
+      const listContainer = this.hiddenPlaceholderEl.parentElement;
+      if (!listContainer)
+        return;
+      const items = Array.from(listContainer.querySelectorAll(".manager-layout-editable-card[data-layout-index], .manager-hidden-card[data-layout-index]")).filter((item) => item !== this.hiddenDraggedItemEl && !item.classList.contains("dragging"));
+      let dropTarget = null;
+      for (const item of items) {
+        const rect = item.getBoundingClientRect();
+        if (event.clientY < rect.top + rect.height / 2) {
+          dropTarget = item;
+          break;
+        }
+      }
+      if (dropTarget) {
+        listContainer.insertBefore(this.hiddenPlaceholderEl, dropTarget);
+      } else {
+        listContainer.appendChild(this.hiddenPlaceholderEl);
+      }
+    };
+    this.handleHiddenLayoutDragEnd = async (event) => {
+      var _a;
+      if (event.pointerId !== this.hiddenActivePointerId)
+        return;
+      if (!this.hiddenDraggedItemEl || !this.hiddenPlaceholderEl)
+        return;
+      const listContainer = this.hiddenPlaceholderEl.parentElement;
+      let newIndex = 0;
+      if (listContainer) {
+        for (const child of Array.from(listContainer.children)) {
+          if (child === this.hiddenPlaceholderEl)
+            break;
+          if (child.matches(".manager-layout-editable-card[data-layout-index]:not(.dragging), .manager-hidden-card[data-layout-index]:not(.dragging)"))
+            newIndex++;
+        }
+      }
+      this.hiddenPlaceholderEl.remove();
+      this.hiddenPlaceholderEl = null;
+      (_a = this.hiddenGhostEl) == null ? void 0 : _a.remove();
+      this.hiddenGhostEl = null;
+      this.hiddenDraggedItemEl.removeClass("dragging");
+      const oldIndex = this.hiddenDragStartIndex;
+      this.hiddenDraggedItemEl = null;
+      this.hiddenDragStartIndex = -1;
+      this.hiddenActivePointerId = null;
+      activeDocument.removeEventListener("pointermove", this.handleHiddenLayoutDragMove);
+      activeDocument.removeEventListener("pointerup", this.handleHiddenLayoutDragEndEvent);
+      activeDocument.removeEventListener("pointercancel", this.handleHiddenLayoutDragEndEvent);
+      await this.movePluginLayoutItemTo(oldIndex, newIndex);
+    };
     this.appSetting = this.app.setting;
     this.appPlugins = this.app.plugins;
     this.manager = manager;
     this.settings = manager.settings;
     this.basePath = (0, import_obsidian17.normalizePath)(`${this.app.vault.configDir}`);
-    this.handleHiddenLayoutDragMove = this.handleHiddenLayoutDragMove.bind(this);
-    this.handleHiddenLayoutDragEnd = this.handleHiddenLayoutDragEnd.bind(this);
     manager.synchronizePlugins(
       Object.values(this.appPlugins.manifests).filter(
         (pm) => pm.id !== manager.manifest.id
@@ -5578,7 +5176,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     if (this.settings.PERSISTENCE) {
       this.settings.FILTER_STATUS_VALUES = next;
       this.settings.FILTER_STATUS = next[0] || "all";
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     } else {
       this.statusFilters = next;
       this.filter = next[0] || "all";
@@ -5591,7 +5189,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const next = this.normalizeFilterOperator(value);
     if (this.settings.PERSISTENCE) {
       this.settings.FILTER_STATUS_OPERATOR = next;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     } else {
       this.statusOperator = next;
     }
@@ -5612,7 +5210,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     if (this.settings.PERSISTENCE) {
       this.settings.FILTER_GROUP_VALUES = next;
       this.settings.FILTER_GROUP = next[0] || "";
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     } else {
       this.groups = next;
       this.group = next[0] || "";
@@ -5625,7 +5223,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const next = this.normalizeFilterOperator(value);
     if (this.settings.PERSISTENCE) {
       this.settings.FILTER_GROUP_OPERATOR = next;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     } else {
       this.groupOperator = next;
     }
@@ -5635,7 +5233,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     if (this.settings.PERSISTENCE) {
       this.settings.FILTER_TAG_VALUES = next;
       this.settings.FILTER_TAG = next[0] || "";
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     } else {
       this.tags = next;
       this.tag = next[0] || "";
@@ -5648,7 +5246,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const next = this.normalizeFilterOperator(value);
     if (this.settings.PERSISTENCE) {
       this.settings.FILTER_TAG_OPERATOR = next;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     } else {
       this.tagOperator = next;
     }
@@ -5658,7 +5256,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     if (this.settings.PERSISTENCE) {
       this.settings.FILTER_DELAY_VALUES = next;
       this.settings.FILTER_DELAY = next[0] || "";
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     } else {
       this.delays = next;
       this.delay = next[0] || "";
@@ -5671,7 +5269,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const next = this.normalizeFilterOperator(value);
     if (this.settings.PERSISTENCE) {
       this.settings.FILTER_DELAY_OPERATOR = next;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     } else {
       this.delayOperator = next;
     }
@@ -5771,7 +5369,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       mobileFilterPanelEl == null ? void 0 : mobileFilterPanelEl.removeClass("is-filter-menu-open");
       managerContainerEl == null ? void 0 : managerContainerEl.removeClass("has-open-filter-menu");
       buttonEl.setAttribute("aria-expanded", "false");
-      document.removeEventListener("click", handleDocumentClick);
+      activeDocument.removeEventListener("click", handleDocumentClick);
     }
     const toggleOpen = () => {
       if (isOpen) {
@@ -5785,7 +5383,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       mobileFilterPanelEl == null ? void 0 : mobileFilterPanelEl.addClass("is-filter-menu-open");
       managerContainerEl == null ? void 0 : managerContainerEl.addClass("has-open-filter-menu");
       buttonEl.setAttribute("aria-expanded", "true");
-      window.setTimeout(() => document.addEventListener("click", handleDocumentClick), 0);
+      window.setTimeout(() => activeDocument.addEventListener("click", handleDocumentClick), 0);
     };
     const emitChange = () => {
       updateButton();
@@ -5918,7 +5516,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     }
   }
   getExtraButtonEl(button) {
-    return button.extraSettingsEl || button.buttonEl;
+    return getExtraButtonElement(button);
   }
   async openPluginVersionList(pluginId, updateInfo) {
     var _a, _b, _c, _d, _e, _f, _g;
@@ -6072,7 +5670,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.updateStats();
   }
   refreshPluginCard(pluginId, options = {}) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
     if (this.activePage !== "plugins" || this.installMode)
       return;
     const manifest = this.getPluginManifest(pluginId);
@@ -6122,8 +5720,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     (_h = controller == null ? void 0 : controller.enableIgnoredButton) == null ? void 0 : _h.setDisabled(isSelf || !managerPlugin.tags.includes(BPM_IGNORE_TAG));
     if (controller == null ? void 0 : controller.openPluginSetting) {
       controller.openPluginSetting.setDisabled(!isEnabled);
-      if (controller.openPluginSettingEl)
-        controller.openPluginSettingEl.style.display = isEnabled ? "" : "none";
+      (_i = controller.openPluginSettingEl) == null ? void 0 : _i.classList.toggle("manager-display-none", !isEnabled);
     }
     const title = card.querySelector(".manager-item__name-title");
     if (title) {
@@ -6175,11 +5772,10 @@ var ManagerModal = class extends import_obsidian16.Modal {
         header.prepend(group);
     }
     let noteEl = card.querySelector(".manager-plugin-card__note");
-    if (((_i = managerPlugin.note) == null ? void 0 : _i.length) > 0) {
+    if (((_j = managerPlugin.note) == null ? void 0 : _j.length) > 0) {
       if (!noteEl) {
         const versionWrap = card.querySelector(".manager-item__versions");
         noteEl = createSpan({ cls: "manager-plugin-card__note" });
-        noteEl.style.cssText = "width:16px; height:16px; display:inline-flex; color: var(--text-accent);";
         noteEl.addEventListener("click", () => {
           new NoteModal(this.app, this.manager, managerPlugin, this).open();
         });
@@ -6187,7 +5783,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         if (versionWrap)
           versionWrap.insertAdjacentElement("afterend", noteEl);
         else
-          (_j = card.querySelector(".manager-plugin-card__header")) == null ? void 0 : _j.appendChild(noteEl);
+          (_k = card.querySelector(".manager-plugin-card__header")) == null ? void 0 : _k.appendChild(noteEl);
       }
     } else {
       noteEl == null ? void 0 : noteEl.remove();
@@ -6197,7 +5793,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       const delay = this.settings.DELAYS.find((item) => item.id === managerPlugin.delay);
       if (delay) {
         const delayEl = createSpan({ text: `${delay.time}s`, cls: ["manager-item__name-delay"] });
-        const anchor = (_l = (_k = card.querySelector(".manager-plugin-card__note")) != null ? _k : card.querySelector(".manager-item__versions")) != null ? _l : cardIcon;
+        const anchor = (_m = (_l = card.querySelector(".manager-plugin-card__note")) != null ? _l : card.querySelector(".manager-item__versions")) != null ? _m : cardIcon;
         if (anchor)
           anchor.insertAdjacentElement("afterend", delayEl);
         else
@@ -6236,7 +5832,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const hasExpandedDetails = this.editorMode || hasDescription || hasVisibleTags;
     card.toggleClass("has-description", hasDescription);
     card.toggleClass("has-visible-tags", hasVisibleTags);
-    (_m = card.querySelector(".manager-plugin-card__body")) == null ? void 0 : _m.toggleClass("manager-plugin-card__body--empty", !hasExpandedDetails);
+    (_n = card.querySelector(".manager-plugin-card__body")) == null ? void 0 : _n.toggleClass("manager-plugin-card__body--empty", !hasExpandedDetails);
     this.refreshSinglePluginUpdateUi(pluginId);
     this.syncPluginEmptyState();
     this.updateBulkBar();
@@ -6301,7 +5897,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       await this.appPlugins.uninstallPlugin(plugin.id);
       await this.appPlugins.loadManifests();
       this.invalidatePluginCaches();
-      this.reloadShowData();
+      void this.reloadShowData();
       command_default(this.app, this.manager);
       this.manager.synchronizePlugins(Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manager.manifest.id));
       new import_obsidian16.Notice(this.manager.translator.t("\u5378\u8F7D_\u901A\u77E5_\u4E00"));
@@ -6320,7 +5916,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         return;
       }
       const pluginName = plugin.name || plugin.id;
-      if (!window.confirm(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u786E\u8BA4", { name: pluginName })))
+      if (!await confirmWithModal(this.app, this.manager, this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u786E\u8BA4", { name: pluginName })))
         return;
       await adapter.remove(configPath);
       new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u6210\u529F"));
@@ -6367,16 +5963,28 @@ var ManagerModal = class extends import_obsidian16.Modal {
     } else {
       this.settings.HIDES = this.settings.HIDES.filter((id) => id !== pluginId);
     }
-    this.manager.saveSettings();
+    void this.manager.saveSettings();
     this.refreshPluginCard(pluginId, { allowReload: true });
   }
   async openPluginHotkeys(pluginId) {
     await this.appSetting.open();
     await this.appSetting.openTabById("hotkeys");
-    const tab = await this.appSetting.activeTab;
+    const tab = this.appSetting.activeTab;
+    if (!tab)
+      return;
     tab.searchComponent.inputEl.value = pluginId;
     tab.updateHotkeyVisibility();
     tab.searchComponent.inputEl.blur();
+  }
+  openSettingsTab(tabId) {
+    void (async () => {
+      await this.appSetting.open();
+      await this.appSetting.openTabById(tabId);
+    })();
+  }
+  copyPluginId(pluginId) {
+    void navigator.clipboard.writeText(pluginId);
+    new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
   }
   async openPluginMarket() {
     await this.appSetting.open();
@@ -6661,7 +6269,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const plugins = this.getSelectedManagerPlugins();
     if (plugins.length === 0)
       return;
-    if (!window.confirm(t("\u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4", { count: plugins.length })))
+    if (!await confirmWithModal(this.app, this.manager, t("\u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4", { count: plugins.length })))
       return;
     const protectedTagIds = /* @__PURE__ */ new Set([BPM_TAG_ID, BPM_IGNORE_TAG, EONDR_PLUGIN_TAG_ID]);
     plugins.forEach((plugin) => {
@@ -6696,7 +6304,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       new import_obsidian16.Notice(t("\u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6"));
       return;
     }
-    if (!window.confirm(t(targetEnabled ? "\u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4" : "\u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4", { count: plugins.length })))
+    if (!await confirmWithModal(this.app, this.manager, t(targetEnabled ? "\u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4" : "\u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4", { count: plugins.length })))
       return;
     const progress = this.showInlineProgress(t("\u7BA1\u7406\u5668_\u5E94\u7528\u66F4\u6539\u4E2D_\u63D0\u793A"));
     let processed = 0;
@@ -6728,8 +6336,8 @@ var ManagerModal = class extends import_obsidian16.Modal {
   }
   runDisplayedPluginsToggle() {
     const targetEnabled = this.getBulkToggleTarget();
-    new DisableModal(this.app, this.manager, async () => {
-      await this.setDisplayedPluginsEnabled(targetEnabled);
+    new DisableModal(this.app, this.manager, () => {
+      void this.setDisplayedPluginsEnabled(targetEnabled);
     }).open();
   }
   showInlineProgress(text, subText) {
@@ -6743,20 +6351,23 @@ var ManagerModal = class extends import_obsidian16.Modal {
     };
   }
   async getActivePlugins() {
-    const originPlugins = this.app.plugins.plugins;
+    const originPlugins = this.appPlugins.plugins || {};
     console.log(await this.processPlugins(originPlugins));
     return await this.processPlugins(originPlugins);
   }
   async processPlugins(originPlugins) {
     var _a;
-    let plugins = {};
-    for (let name in originPlugins) {
+    const plugins = {};
+    for (const name in originPlugins) {
       try {
-        let plugin = { ...originPlugins[name] };
-        plugin.manifest = { ...originPlugins[name].manifest };
-        plugin.manifest["pluginUrl"] = `https://obsidian.md/plugins?id=${plugin.manifest.id}`;
-        plugin.manifest["author2"] = (_a = plugin.manifest.author) == null ? void 0 : _a.replace(/<.*?@.*?\..*?>/g, "").trim();
-        plugin.manifest["installLink"] = `obsidian://BPM-install?id=${plugin.manifest.id}&enable=true`;
+        const source = originPlugins[name];
+        const manifest = source.manifest;
+        if (!manifest)
+          continue;
+        const plugin = { ...source, manifest: { ...manifest } };
+        plugin.manifest.pluginUrl = `https://obsidian.md/plugins?id=${plugin.manifest.id}`;
+        plugin.manifest.author2 = (_a = plugin.manifest.author) == null ? void 0 : _a.replace(/<.*?@.*?\\..*?>/g, "").trim();
+        plugin.manifest.installLink = `obsidian://BPM-install?id=${plugin.manifest.id}&enable=true`;
         plugins[name] = plugin;
       } catch (e) {
         console.error(name, e);
@@ -6772,6 +6383,8 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.migratePersistedFilterValues();
     const t = (k, vars) => this.manager.translator.t(k, vars);
     const modalEl = this.contentEl.parentElement;
+    if (!modalEl)
+      return;
     this.modalContainer = modalEl;
     modalEl.addClass("manager-container");
     if (import_obsidian16.Platform.isMobileApp)
@@ -6805,22 +6418,6 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.desktopActionWrapper = actionWrapper;
     const actionContent = actionWrapper.createDiv("manager-section__content");
     actionContent.addClass("manager-section__content--actions");
-    const bindLongPressTooltip = (btn, text) => {
-      let timer;
-      const show = () => {
-        new import_obsidian16.Notice(text, 1500);
-      };
-      btn.buttonEl.addEventListener("touchstart", () => {
-        timer = window.setTimeout(show, 500);
-      });
-      const clear = () => {
-        if (timer)
-          window.clearTimeout(timer);
-        timer = void 0;
-      };
-      btn.buttonEl.addEventListener("touchend", clear);
-      btn.buttonEl.addEventListener("touchcancel", clear);
-    };
     const toolbar = actionContent.createDiv("manager-toolbar");
     const tabs = toolbar.createDiv("manager-toolbar__tabs");
     tabs.setAttribute("role", "tablist");
@@ -6910,7 +6507,11 @@ var ManagerModal = class extends import_obsidian16.Modal {
     });
     const editorButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
     markTool(editorButton, "plugin", 50);
-    this.editorMode ? editorButton.setIcon("pen-off") : editorButton.setIcon("pen");
+    if (this.editorMode) {
+      editorButton.setIcon("pen-off");
+    } else {
+      editorButton.setIcon("pen");
+    }
     editorButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
     this.bindLongPressTooltip(editorButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
     editorButton.onClick(async () => {
@@ -6919,7 +6520,11 @@ var ManagerModal = class extends import_obsidian16.Modal {
         this.bulkEditMode = false;
         this.bulkSelectedPluginIds.clear();
       }
-      this.editorMode ? editorButton.setIcon("pen-off") : editorButton.setIcon("pen");
+      if (this.editorMode) {
+        editorButton.setIcon("pen-off");
+      } else {
+        editorButton.setIcon("pen");
+      }
       this.applyEditingStyle();
       if (!this.editorMode) {
         await this.refreshFilterOptions(true);
@@ -6935,7 +6540,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       ribbonResetButton.buttonEl.setAttribute("aria-label", t("Ribbon_\u91CD\u7F6E_\u63D0\u793A"));
       this.bindLongPressTooltip(ribbonResetButton.buttonEl, t("Ribbon_\u91CD\u7F6E_\u63D0\u793A"));
       ribbonResetButton.onClick(async () => {
-        if (!window.confirm(t("Ribbon_\u91CD\u7F6E_\u786E\u8BA4")))
+        if (!await confirmWithModal(this.app, this.manager, t("Ribbon_\u91CD\u7F6E_\u786E\u8BA4")))
           return;
         if (!this.isRibbonManagerEnabled())
           return;
@@ -6962,7 +6567,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     hiddenResetButton.buttonEl.setAttribute("aria-label", t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6309\u540D\u79F0\u91CD\u7F6E"));
     this.bindLongPressTooltip(hiddenResetButton.buttonEl, t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6309\u540D\u79F0\u91CD\u7F6E"));
     hiddenResetButton.onClick(async () => {
-      if (!window.confirm(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
+      if (!await confirmWithModal(this.app, this.manager, t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
         return;
       await this.resetPluginLayout();
     });
@@ -6972,7 +6577,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     githubButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0"));
     this.bindLongPressTooltip(githubButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0"));
     githubButton.onClick(() => {
-      window.open("https://github.com/zenozero-dev/obsidian-manager");
+      window.open("https://github.com/eondrcode/obsidian-manager");
     });
     const tutorialButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
     markTool(tutorialButton, "resource", 110);
@@ -7002,8 +6607,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     settingsButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0"));
     this.bindLongPressTooltip(settingsButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0"));
     settingsButton.onClick(() => {
-      this.appSetting.open();
-      this.appSetting.openTabById(this.manager.manifest.id);
+      this.openSettingsTab(this.manager.manifest.id);
     });
     if (this.developerMode) {
       const testButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
@@ -7067,7 +6671,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         currentValue = currentValue === "contains" ? "not-contains" : "contains";
         updateButton2();
         onChange(currentValue);
-        this.reloadShowData();
+        void this.reloadShowData();
       });
       updateButton2();
       return {
@@ -7093,21 +6697,21 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const statusOptions = Object.entries(this.getStatusFilterOptions());
     this.statusMultiSelect = this.createMultiSelectFilter(statusControl, statusOptions, this.getStatusFilterValues(), "all", this.getStatusFilterOptions()["all"], t("\u7B5B\u9009_\u72B6\u6001_\u6807\u7B7E"), (values) => {
       this.setStatusFilterValues(values);
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     const groups = this.getGroupFilterOptions(this.manager.translator.t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
     const groupControl = createFilterSelectField(t("\u901A\u7528_\u5206\u7EC4_\u6587\u672C"), "folder-tree", "compound");
     createOperatorToggle(groupControl, this.getGroupFilterOperator(), t("\u7B5B\u9009_\u5206\u7EC4\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setGroupFilterOperator(value));
     this.groupMultiSelect = this.createMultiSelectFilter(groupControl, groups, this.getGroupFilterValues(), "", ((_c = groups[0]) == null ? void 0 : _c[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5206\u7EC4_\u6807\u7B7E"), (values) => {
       this.setGroupFilterValues(values);
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     const tags = this.getTagFilterOptions(this.manager.translator.t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
     const tagControl = createFilterSelectField(t("\u901A\u7528_\u6807\u7B7E_\u6587\u672C"), "tags", "compound");
     createOperatorToggle(tagControl, this.getTagFilterOperator(), t("\u7B5B\u9009_\u6807\u7B7E\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setTagFilterOperator(value));
     this.tagMultiSelect = this.createMultiSelectFilter(tagControl, tags, this.getTagFilterValues(), "", ((_d = tags[0]) == null ? void 0 : _d[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u6807\u7B7E_\u6807\u7B7E"), (values) => {
       this.setTagFilterValues(values);
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     if (this.settings.DELAY) {
       const delays = this.getDelayFilterOptions(this.manager.translator.t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), true);
@@ -7115,7 +6719,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       createOperatorToggle(delayControl, this.getDelayFilterOperator(), t("\u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setDelayFilterOperator(value));
       this.delayMultiSelect = this.createMultiSelectFilter(delayControl, delays, this.getDelayFilterValues(), "", ((_e = delays[0]) == null ? void 0 : _e[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5EF6\u8FDF_\u6807\u7B7E"), (values) => {
         this.setDelayFilterValues(values);
-        this.reloadShowData();
+        void this.reloadShowData();
       });
     }
   }
@@ -7236,7 +6840,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
           await this.addPluginLayoutSeparator();
         }));
         menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6309\u540D\u79F0\u91CD\u7F6E")).setIcon("rotate-ccw").onClick(async () => {
-          if (!window.confirm(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
+          if (!await confirmWithModal(this.app, this.manager, t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
             return;
           await this.resetPluginLayout();
         }));
@@ -7253,11 +6857,10 @@ var ManagerModal = class extends import_obsidian16.Modal {
         void this.openPluginMarket();
       }));
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0")).setIcon("settings").onClick(() => {
-        this.appSetting.open();
-        this.appSetting.openTabById(this.manager.manifest.id);
+        this.openSettingsTab(this.manager.manifest.id);
       }));
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0")).setIcon("github").onClick(() => {
-        window.open("https://github.com/zenozero-dev/obsidian-manager");
+        window.open("https://github.com/eondrcode/obsidian-manager");
       }));
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0")).setIcon("book-open").onClick(() => {
         window.open("https://www.bilibili.com/video/BV1WyrkYMEce/");
@@ -7302,7 +6905,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         chip.addEventListener("click", () => {
           onRemove();
           this.showHeadMobile();
-          this.reloadShowData();
+          void this.reloadShowData();
         });
       };
       const filterLabels = this.getStatusFilterOptions();
@@ -7336,9 +6939,9 @@ var ManagerModal = class extends import_obsidian16.Modal {
         }
       }
       if (activeFiltersContainer.childElementCount === 0) {
-        activeFiltersContainer.style.display = "none";
+        activeFiltersContainer.addClass("manager-display-none");
       } else {
-        activeFiltersContainer.style.display = "flex";
+        activeFiltersContainer.removeClass("manager-display-none");
       }
     };
     updateActiveFilters();
@@ -7363,7 +6966,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         updateButton();
         onChange(currentValue);
         this.showHeadMobile();
-        this.reloadShowData();
+        void this.reloadShowData();
       });
       updateButton();
     };
@@ -7373,7 +6976,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.createMultiSelectFilter(statusSetting.controlEl, statusOptions, this.getStatusFilterValues(), "all", this.getStatusFilterOptions()["all"], t("\u7B5B\u9009_\u72B6\u6001_\u6807\u7B7E"), (values) => {
       this.setStatusFilterValues(values);
       this.showHeadMobile();
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     const groups = this.getGroupFilterOptions(t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
     const groupSetting = new import_obsidian16.Setting(filterPanel).setName(t("\u901A\u7528_\u5206\u7EC4_\u6587\u672C"));
@@ -7381,7 +6984,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.createMultiSelectFilter(groupSetting.controlEl, groups, this.getGroupFilterValues(), "", ((_a = groups[0]) == null ? void 0 : _a[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5206\u7EC4_\u6807\u7B7E"), (values) => {
       this.setGroupFilterValues(values);
       this.showHeadMobile();
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     const tags = this.getTagFilterOptions(t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
     const tagSetting = new import_obsidian16.Setting(filterPanel).setName(t("\u901A\u7528_\u6807\u7B7E_\u6587\u672C"));
@@ -7389,7 +6992,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.createMultiSelectFilter(tagSetting.controlEl, tags, this.getTagFilterValues(), "", ((_b = tags[0]) == null ? void 0 : _b[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u6807\u7B7E_\u6807\u7B7E"), (values) => {
       this.setTagFilterValues(values);
       this.showHeadMobile();
-      this.reloadShowData();
+      void this.reloadShowData();
     });
     if (this.settings.DELAY) {
       const delays = this.getDelayFilterOptions(t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
@@ -7398,7 +7001,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       this.createMultiSelectFilter(delaySetting.controlEl, delays, this.getDelayFilterValues(), "", ((_c = delays[0]) == null ? void 0 : _c[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5EF6\u8FDF_\u6807\u7B7E"), (values) => {
         this.setDelayFilterValues(values);
         this.showHeadMobile();
-        this.reloadShowData();
+        void this.reloadShowData();
       });
     }
   }
@@ -7408,15 +7011,15 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const existingFooter = this.modalEl.querySelector(".bpm-mobile-footer");
     if (existingFooter)
       existingFooter.remove();
-    const footer = document.createElement("div");
+    const footer = activeDocument.createElement("div");
     footer.addClass("bpm-mobile-footer");
     const createFooterBtn = (icon, label, onClick) => {
-      const btn = document.createElement("button");
+      const btn = activeDocument.createElement("button");
       btn.type = "button";
       btn.addClass("bpm-mobile-footer__btn");
       btn.setAttribute("aria-label", label);
       (0, import_obsidian16.setIcon)(btn, icon);
-      const labelEl = document.createElement("span");
+      const labelEl = activeDocument.createElement("span");
       labelEl.addClass("bpm-mobile-footer__btn-label");
       labelEl.setText(label);
       btn.appendChild(labelEl);
@@ -7439,8 +7042,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     updateBtn.addClass("manager-update-trigger");
     footer.appendChild(updateBtn);
     const settingsBtn = createFooterBtn("settings", t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0"), () => {
-      this.appSetting.open();
-      this.appSetting.openTabById(this.manager.manifest.id);
+      this.openSettingsTab(this.manager.manifest.id);
     });
     footer.appendChild(settingsBtn);
     const moreBtn = createFooterBtn("more-horizontal", t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"), () => {
@@ -7463,14 +7065,14 @@ var ManagerModal = class extends import_obsidian16.Modal {
           await this.addPluginLayoutSeparator();
         }));
         menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6309\u540D\u79F0\u91CD\u7F6E")).setIcon("rotate-ccw").onClick(async () => {
-          if (!window.confirm(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
+          if (!await confirmWithModal(this.app, this.manager, t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
             return;
           await this.resetPluginLayout();
         }));
       }
       menu.addSeparator();
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0")).setIcon("github").onClick(() => {
-        window.open("https://github.com/zenozero-dev/obsidian-manager");
+        window.open("https://github.com/eondrcode/obsidian-manager");
       }));
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0")).setIcon("book-open").onClick(() => {
         window.open("https://www.bilibili.com/video/BV1WyrkYMEce/");
@@ -7507,7 +7109,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const tagOperator = this.getTagFilterOperator();
     const delayFilter = this.getDelayFilterValues();
     const delayOperator = this.getDelayFilterOperator();
-    const getBasePath = (_b = (_a = this.app.vault.adapter) == null ? void 0 : _a.getBasePath) == null ? void 0 : _b.call(_a);
+    const getBasePath = (_b = (_a = this.app.vault.adapter).getBasePath) == null ? void 0 : _b.call(_a);
     const basePath = getBasePath ? (0, import_obsidian17.normalizePath)(getBasePath) : "";
     const cfgDir = this.app.vault.configDir;
     const showSeparators = this.shouldRenderPluginLayoutSeparators();
@@ -7686,8 +7288,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         if (this.isMainPageActionInMenu("openSettings")) {
           menu.addItem(
             (item) => item.setTitle(this.manager.translator.t("\u7BA1\u7406\u5668_\u6253\u5F00\u8BBE\u7F6E_\u63CF\u8FF0")).setIcon("settings").setDisabled(!currentIsEnabled).onClick(() => {
-              this.appSetting.open();
-              this.appSetting.openTabById(plugin.id);
+              this.openSettingsTab(plugin.id);
             })
           );
         }
@@ -7739,8 +7340,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         if (this.isMainPageActionInMenu("copyId"))
           menu.addItem(
             (item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u590D\u5236ID_\u6807\u9898")).setIcon("copy").onClick(() => {
-              navigator.clipboard.writeText(plugin.id);
-              new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
+              this.copyPluginId(plugin.id);
             })
           );
         if (hasConfigMenuItems)
@@ -7784,10 +7384,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
                 const excludedButtons = Array.from(
                   itemEl.controlEl.querySelectorAll("div")
                 );
-                if (
-                  // @ts-ignore
-                  excludedButtons.includes(event.target)
-                ) {
+                if (event.target instanceof HTMLDivElement && excludedButtons.includes(event.target)) {
                   event.stopPropagation();
                   return;
                 }
@@ -7845,14 +7442,15 @@ var ManagerModal = class extends import_obsidian16.Modal {
       }
       const title = createSpan({ text: ManagerPlugin4.name, title: plugin.name, cls: "manager-item__name-title" });
       if (this.editorMode) {
-        title.setAttribute("style", "border-width: 1px;border-style: dashed;");
         title.setAttribute("contenteditable", "true");
-        title.addEventListener("input", async () => {
-          if (title.textContent) {
-            ManagerPlugin4.name = title.textContent;
-            await this.manager.savePluginAndExport(plugin.id);
-            command_default(this.app, this.manager);
-          }
+        title.addEventListener("input", () => {
+          void (async () => {
+            if (title.textContent) {
+              ManagerPlugin4.name = title.textContent;
+              await this.manager.savePluginAndExport(plugin.id);
+              command_default(this.app, this.manager);
+            }
+          })();
         });
       }
       itemEl.nameEl.appendChild(title);
@@ -7885,7 +7483,6 @@ var ManagerModal = class extends import_obsidian16.Modal {
       if (((_f = ManagerPlugin4.note) == null ? void 0 : _f.length) > 0) {
         const note = createSpan();
         note.addClass("manager-plugin-card__note");
-        note.style.cssText = "width:16px; height:16px; display:inline-flex; color: var(--text-accent);";
         note.addEventListener("click", () => {
           new NoteModal(this.app, this.manager, ManagerPlugin4, this).open();
         });
@@ -7903,13 +7500,14 @@ var ManagerModal = class extends import_obsidian16.Modal {
       const desc = createDiv({ text: ManagerPlugin4.desc, title: plugin.description, cls: ["manager-item__name-desc"] });
       desc.addClass("manager-plugin-card__desc");
       if (this.editorMode) {
-        desc.setAttribute("style", "border-width: 1px;border-style: dashed");
         desc.setAttribute("contenteditable", "true");
-        desc.addEventListener("input", async () => {
-          if (desc.textContent) {
-            ManagerPlugin4.desc = desc.textContent;
-            await this.manager.savePluginAndExport(plugin.id);
-          }
+        desc.addEventListener("input", () => {
+          void (async () => {
+            if (desc.textContent) {
+              ManagerPlugin4.desc = desc.textContent;
+              await this.manager.savePluginAndExport(plugin.id);
+            }
+          })();
         });
       }
       itemEl.descEl.appendChild(desc);
@@ -7951,7 +7549,6 @@ var ManagerModal = class extends import_obsidian16.Modal {
         let singleStartButton = null;
         let restartButton = null;
         let enableIgnoredButton = null;
-        let toggleSwitch;
         if (isMobile && [
           "checkUpdate",
           "downloadUpdate",
@@ -7970,7 +7567,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
           const moreButton = new import_obsidian16.ExtraButtonComponent(itemEl.controlEl);
           moreButton.setIcon("more-vertical");
           moreButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
-          const moreEl = moreButton.extraSettingsEl || moreButton.buttonEl;
+          const moreEl = getExtraButtonElement(moreButton);
           this.bindLongPressTooltip(moreEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
           moreEl == null ? void 0 : moreEl.addEventListener("click", (event) => {
             var _a2, _b2;
@@ -8036,8 +7633,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
               if (hasPreviousGroup && !hasCurrentGroup)
                 menu.addSeparator();
               menu.addItem((item) => item.setTitle(this.manager.translator.t("\u7BA1\u7406\u5668_\u6253\u5F00\u8BBE\u7F6E_\u63CF\u8FF0")).setIcon("settings").setDisabled(!currentIsEnabled).onClick(() => {
-                this.appSetting.open();
-                this.appSetting.openTabById(plugin.id);
+                this.openSettingsTab(plugin.id);
               }));
               hasCurrentGroup = true;
             }
@@ -8095,8 +7691,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
               if (hasPreviousGroup && !hasCurrentGroup)
                 menu.addSeparator();
               menu.addItem((item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u590D\u5236ID_\u6807\u9898")).setIcon("copy").onClick(() => {
-                navigator.clipboard.writeText(plugin.id);
-                new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
+                this.copyPluginId(plugin.id);
               }));
             }
             menu.showAtMouseEvent(event);
@@ -8162,8 +7757,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
           copyIdButton.setIcon("copy");
           copyIdButton.setTooltip(this.manager.translator.t("\u83DC\u5355_\u590D\u5236ID_\u6807\u9898"));
           copyIdButton.onClick(() => {
-            navigator.clipboard.writeText(plugin.id);
-            new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
+            this.copyPluginId(plugin.id);
           });
         }
         if ((_h = ManagerPlugin4.tags) == null ? void 0 : _h.includes(BPM_IGNORE_TAG)) {
@@ -8194,15 +7788,19 @@ var ManagerModal = class extends import_obsidian16.Modal {
           openPluginSetting.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u6253\u5F00\u8BBE\u7F6E_\u63CF\u8FF0"));
           openPluginSetting.onClick(() => {
             openPluginSetting == null ? void 0 : openPluginSetting.setDisabled(true);
-            this.appSetting.open();
-            this.appSetting.openTabById(plugin.id);
-            openPluginSetting == null ? void 0 : openPluginSetting.setDisabled(false);
+            void (async () => {
+              try {
+                await this.appSetting.open();
+                await this.appSetting.openTabById(plugin.id);
+              } finally {
+                openPluginSetting == null ? void 0 : openPluginSetting.setDisabled(false);
+              }
+            })();
           });
-          openPluginSettingEl = openPluginSetting.extraSettingsEl || openPluginSetting.buttonEl;
+          openPluginSettingEl = getExtraButtonElement(openPluginSetting);
           if (!isEnabled) {
             openPluginSetting.setDisabled(true);
-            if (openPluginSettingEl)
-              openPluginSettingEl.style.display = "none";
+            openPluginSettingEl == null ? void 0 : openPluginSettingEl.addClass("manager-display-none");
           }
         }
         const openPluginDirButton = this.createConfiguredItemAction(itemEl.controlEl, "openDir");
@@ -8234,7 +7832,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
             await this.uninstallPluginWithConfirm(plugin, isSelf);
           });
         }
-        toggleSwitch = new import_obsidian16.ToggleComponent(itemEl.controlEl);
+        const toggleSwitch = new import_obsidian16.ToggleComponent(itemEl.controlEl);
         const stateToggle = toggleSwitch;
         stateToggle.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u5207\u6362\u72B6\u6001_\u63CF\u8FF0"));
         stateToggle.setValue(isEnabled);
@@ -8280,8 +7878,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
               }
               if (openPluginSetting) {
                 openPluginSetting.setDisabled(!targetEnabled);
-                if (openPluginSettingEl)
-                  openPluginSettingEl.style.display = targetEnabled ? "" : "none";
+                openPluginSettingEl == null ? void 0 : openPluginSettingEl.classList.toggle("manager-display-none", !targetEnabled);
               }
               if (removeByFilter) {
                 itemEl.settingEl.detach();
@@ -8427,7 +8024,10 @@ var ManagerModal = class extends import_obsidian16.Modal {
       const plugins = this.settings.Plugins;
       totalCount = plugins.length;
       plugins.forEach((plugin) => {
-        plugin.enabled ? enabledCount++ : disabledCount++;
+        if (plugin.enabled)
+          enabledCount++;
+        else
+          disabledCount++;
       });
     } else {
       const plugins = this.getUniquePluginManifests().filter((plugin) => plugin.id !== this.manager.manifest.id);
@@ -8544,10 +8144,13 @@ var ManagerModal = class extends import_obsidian16.Modal {
     (_x = this.bulkEditButtonEl) == null ? void 0 : _x.classList.toggle("is-active", this.bulkEditMode);
     if (this.desktopFilterWrapper) {
       this.desktopFilterWrapper.classList.toggle("manager-display-none", !isPlugins);
-      this.desktopFilterWrapper.style.display = isPlugins ? "" : "none";
     }
     if (this.searchBarEl) {
-      isPlugins ? this.searchBarEl.removeClass("manager-display-none") : this.searchBarEl.addClass("manager-display-none");
+      if (isPlugins) {
+        this.searchBarEl.removeClass("manager-display-none");
+      } else {
+        this.searchBarEl.addClass("manager-display-none");
+      }
     }
   }
   setDesktopPage(page) {
@@ -8739,79 +8342,28 @@ ${manifest.author || ""}`;
     this.hiddenGhostEl = itemEl.cloneNode(true);
     this.hiddenGhostEl.addClass("drag-ghost");
     this.hiddenGhostEl.addClass("manager-hidden-drag-ghost");
-    document.body.appendChild(this.hiddenGhostEl);
-    this.hiddenGhostEl.style.width = `${rect.width}px`;
-    this.hiddenGhostEl.style.height = `${rect.height}px`;
+    activeDocument.body.appendChild(this.hiddenGhostEl);
+    this.hiddenGhostEl.setCssStyles({
+      width: `${rect.width}px`,
+      height: `${rect.height}px`
+    });
     this.updateHiddenLayoutGhost(event);
-    this.hiddenPlaceholderEl = document.createElement("div");
+    this.hiddenPlaceholderEl = activeDocument.createElement("div");
     this.hiddenPlaceholderEl.className = "drag-gap-placeholder manager-hidden-drag-placeholder";
-    this.hiddenPlaceholderEl.style.height = `${rect.height}px`;
+    this.hiddenPlaceholderEl.setCssStyles({ height: `${rect.height}px` });
     (_b = itemEl.parentNode) == null ? void 0 : _b.insertBefore(this.hiddenPlaceholderEl, itemEl);
     itemEl.addClass("dragging");
-    document.addEventListener("pointermove", this.handleHiddenLayoutDragMove, { passive: false });
-    document.addEventListener("pointerup", this.handleHiddenLayoutDragEnd);
-    document.addEventListener("pointercancel", this.handleHiddenLayoutDragEnd);
-  }
-  handleHiddenLayoutDragMove(event) {
-    if (!this.hiddenGhostEl || !this.hiddenPlaceholderEl || !this.hiddenDraggedItemEl)
-      return;
-    if (event.pointerId !== this.hiddenActivePointerId)
-      return;
-    event.preventDefault();
-    this.updateHiddenLayoutGhost(event);
-    const listContainer = this.hiddenPlaceholderEl.parentElement;
-    if (!listContainer)
-      return;
-    const items = Array.from(listContainer.querySelectorAll(".manager-layout-editable-card[data-layout-index], .manager-hidden-card[data-layout-index]")).filter((item) => item !== this.hiddenDraggedItemEl && !item.classList.contains("dragging"));
-    let dropTarget = null;
-    for (const item of items) {
-      const rect = item.getBoundingClientRect();
-      if (event.clientY < rect.top + rect.height / 2) {
-        dropTarget = item;
-        break;
-      }
-    }
-    if (dropTarget) {
-      listContainer.insertBefore(this.hiddenPlaceholderEl, dropTarget);
-    } else {
-      listContainer.appendChild(this.hiddenPlaceholderEl);
-    }
+    activeDocument.addEventListener("pointermove", this.handleHiddenLayoutDragMove, { passive: false });
+    activeDocument.addEventListener("pointerup", this.handleHiddenLayoutDragEndEvent);
+    activeDocument.addEventListener("pointercancel", this.handleHiddenLayoutDragEndEvent);
   }
   updateHiddenLayoutGhost(event) {
     if (!this.hiddenGhostEl)
       return;
-    this.hiddenGhostEl.style.left = `${event.clientX - this.hiddenDragOffsetX}px`;
-    this.hiddenGhostEl.style.top = `${event.clientY - this.hiddenDragOffsetY}px`;
-  }
-  async handleHiddenLayoutDragEnd(event) {
-    var _a;
-    if (event.pointerId !== this.hiddenActivePointerId)
-      return;
-    if (!this.hiddenDraggedItemEl || !this.hiddenPlaceholderEl)
-      return;
-    const listContainer = this.hiddenPlaceholderEl.parentElement;
-    let newIndex = 0;
-    if (listContainer) {
-      for (const child of Array.from(listContainer.children)) {
-        if (child === this.hiddenPlaceholderEl)
-          break;
-        if (child.matches(".manager-layout-editable-card[data-layout-index]:not(.dragging), .manager-hidden-card[data-layout-index]:not(.dragging)"))
-          newIndex++;
-      }
-    }
-    this.hiddenPlaceholderEl.remove();
-    this.hiddenPlaceholderEl = null;
-    (_a = this.hiddenGhostEl) == null ? void 0 : _a.remove();
-    this.hiddenGhostEl = null;
-    this.hiddenDraggedItemEl.removeClass("dragging");
-    const oldIndex = this.hiddenDragStartIndex;
-    this.hiddenDraggedItemEl = null;
-    this.hiddenDragStartIndex = -1;
-    this.hiddenActivePointerId = null;
-    document.removeEventListener("pointermove", this.handleHiddenLayoutDragMove);
-    document.removeEventListener("pointerup", this.handleHiddenLayoutDragEnd);
-    document.removeEventListener("pointercancel", this.handleHiddenLayoutDragEnd);
-    await this.movePluginLayoutItemTo(oldIndex, newIndex);
+    this.hiddenGhostEl.setCssStyles({
+      left: `${event.clientX - this.hiddenDragOffsetX}px`,
+      top: `${event.clientY - this.hiddenDragOffsetY}px`
+    });
   }
   async addPluginLayoutSeparator() {
     const layout = this.getPluginLayout();
@@ -9154,8 +8706,8 @@ ${manifest.author || ""}`;
         } else {
           this.settings.HIDES = this.settings.HIDES.filter((id) => id !== plugin.id);
         }
-        this.manager.saveSettings();
-        this.reloadShowData();
+        void this.manager.saveSettings();
+        void this.reloadShowData();
       });
       this.displayPlugins.push(plugin);
       renderedCount++;
@@ -9293,6 +8845,8 @@ ${manifest.author || ""}`;
       modeDropdown.addOptions({ latest: t("\u6765\u6E90_\u6A21\u5F0F_\u8DDF\u968F\u6700\u65B0"), frozen: t("\u6765\u6E90_\u6A21\u5F0F_\u56FA\u5B9A\u7248\u672C") });
       modeDropdown.setValue(source.mode || "latest");
       modeDropdown.onChange(async (value) => {
+        if (value !== "latest" && value !== "frozen")
+          return;
         source.mode = value;
         if (value === "frozen" && !source.frozenVersion)
           source.frozenVersion = source.latestVersion || localVersion;
@@ -9308,6 +8862,8 @@ ${manifest.author || ""}`;
       });
       updateCheckDropdown.setValue(source.updateCheckMode || "release");
       updateCheckDropdown.onChange(async (value) => {
+        if (value !== "release" && value !== "version")
+          return;
         source.updateCheckMode = value;
         await this.manager.saveSettings();
         this.renderContent();
@@ -9394,7 +8950,7 @@ ${manifest.author || ""}`;
       removeBtn.setIcon("trash-2");
       prepareActionButton(removeBtn, t("\u6765\u6E90_\u505C\u6B62\u8DDF\u8E2A_\u6309\u94AE"));
       removeBtn.onClick(async () => {
-        if (!window.confirm(t("\u6765\u6E90_\u505C\u6B62\u8DDF\u8E2A_\u786E\u8BA4")))
+        if (!await confirmWithModal(this.app, this.manager, t("\u6765\u6E90_\u505C\u6B62\u8DDF\u8E2A_\u786E\u8BA4")))
           return;
         this.manager.settings.BETA_SOURCES = this.getBetaSources().filter((item) => item !== source);
         await this.manager.saveSettings();
@@ -9497,8 +9053,8 @@ ${manifest.author || ""}`;
     let versionSelectEl;
     const resetVersionControls = () => {
       if (versionSelectEl) {
-        versionSelectEl.innerHTML = "";
-        const option = document.createElement("option");
+        versionSelectEl.empty();
+        const option = activeDocument.createElement("option");
         option.value = "";
         option.text = t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u9ED8\u8BA4\u6700\u65B0");
         versionSelectEl.appendChild(option);
@@ -9507,9 +9063,7 @@ ${manifest.author || ""}`;
       if (versionInputEl)
         versionInputEl.value = "";
     };
-    let releaseTitleEl;
-    let releaseMetaEl;
-    let releaseBodyEl;
+    const releaseEls = {};
     const formatReleaseDate = (value) => {
       if (!value)
         return "";
@@ -9533,27 +9087,27 @@ ${manifest.author || ""}`;
       return this.installVersions.find((item) => !item.prerelease) || this.installVersions[0];
     };
     const updateReleaseInfo = () => {
-      if (!releaseTitleEl || !releaseMetaEl || !releaseBodyEl)
+      if (!releaseEls.title || !releaseEls.meta || !releaseEls.body)
         return;
       const release = getSelectedRelease();
-      releaseTitleEl.empty();
-      releaseMetaEl.empty();
-      releaseBodyEl.empty();
+      releaseEls.title.empty();
+      releaseEls.meta.empty();
+      releaseEls.body.empty();
       if (!release) {
-        releaseTitleEl.setText(t("\u5B89\u88C5_\u7248\u672C\u66F4\u65B0\u4FE1\u606F_\u6807\u9898"));
-        releaseBodyEl.setText(t("\u5B89\u88C5_\u7248\u672C\u66F4\u65B0\u4FE1\u606F_\u7A7A\u63D0\u793A"));
-        releaseBodyEl.addClass("is-empty");
+        releaseEls.title.setText(t("\u5B89\u88C5_\u7248\u672C\u66F4\u65B0\u4FE1\u606F_\u6807\u9898"));
+        releaseEls.body.setText(t("\u5B89\u88C5_\u7248\u672C\u66F4\u65B0\u4FE1\u606F_\u7A7A\u63D0\u793A"));
+        releaseEls.body.addClass("is-empty");
         return;
       }
-      releaseBodyEl.removeClass("is-empty");
-      releaseTitleEl.setText(release.name || release.version);
+      releaseEls.body.removeClass("is-empty");
+      releaseEls.title.setText(release.name || release.version);
       const metaParts = [
         release.version,
         release.prerelease ? t("\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u9884\u53D1\u5E03") : t("\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u6B63\u5F0F\u7248"),
         formatReleaseDate(release.publishedAt)
       ].filter(Boolean);
-      releaseMetaEl.setText(metaParts.join(" \xB7 "));
-      releaseBodyEl.setText((release.body || "").trim() || t("\u5B89\u88C5_\u6682\u65E0\u66F4\u65B0\u8BF4\u660E"));
+      releaseEls.meta.setText(metaParts.join(" \xB7 "));
+      releaseEls.body.setText((release.body || "").trim() || t("\u5B89\u88C5_\u6682\u65E0\u66F4\u65B0\u8BF4\u660E"));
     };
     const fetchVersions = async () => {
       const validRepo = this.requireInstallRepo();
@@ -9622,12 +9176,14 @@ ${manifest.author || ""}`;
         clearHistoryBtn.setAttribute("title", t("\u5B89\u88C5_\u5386\u53F2_\u6E05\u7A7A"));
         const clearIcon = clearHistoryBtn.createSpan();
         (0, import_obsidian16.setIcon)(clearIcon, "x");
-        clearHistoryBtn.addEventListener("click", async () => {
-          if (!window.confirm(t("\u5B89\u88C5_\u5386\u53F2_\u6E05\u7A7A_\u786E\u8BA4")))
-            return;
-          this.manager.settings.INSTALL_HISTORY = [];
-          await this.manager.saveSettings();
-          this.renderContent();
+        clearHistoryBtn.addEventListener("click", () => {
+          void (async () => {
+            if (!await confirmWithModal(this.app, this.manager, t("\u5B89\u88C5_\u5386\u53F2_\u6E05\u7A7A_\u786E\u8BA4")))
+              return;
+            this.manager.settings.INSTALL_HISTORY = [];
+            await this.manager.saveSettings();
+            this.renderContent();
+          })();
         });
       }
       const historyList = historyPanel.createDiv("manager-install__history-list");
@@ -9659,13 +9215,15 @@ ${manifest.author || ""}`;
     versionSetting.addDropdown((dd) => {
       versionSelectEl = dd.selectEl;
       dd.addOption("", t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u9ED8\u8BA4\u6700\u65B0"));
-      this.installVersions.forEach((v) => dd.addOption(v.version, getReleaseOptionLabel(v)));
+      this.installVersions.forEach((v) => {
+        dd.addOption(v.version, getReleaseOptionLabel(v));
+      });
       dd.setValue(this.installVersion);
       dd.onChange((v) => {
         this.installVersion = v;
         if (versionInputEl)
           versionInputEl.value = v;
-        updateReleaseInfo();
+        void updateReleaseInfo();
       });
       dd.selectEl.addClass("manager-install__version-select");
     });
@@ -9698,9 +9256,9 @@ ${manifest.author || ""}`;
     const releaseInfoIcon = releaseInfoHead.createSpan({ cls: "manager-install__release-icon" });
     (0, import_obsidian16.setIcon)(releaseInfoIcon, "newspaper");
     const releaseInfoText = releaseInfoHead.createDiv("manager-install__release-text");
-    releaseTitleEl = releaseInfoText.createDiv("manager-install__release-title");
-    releaseMetaEl = releaseInfoText.createDiv("manager-install__release-meta");
-    releaseBodyEl = releaseInfo.createDiv("manager-install__release-body");
+    releaseEls.title = releaseInfoText.createDiv("manager-install__release-title");
+    releaseEls.meta = releaseInfoText.createDiv("manager-install__release-meta");
+    releaseEls.body = releaseInfo.createDiv("manager-install__release-body");
     updateReleaseInfo();
     const trackSetting = new import_obsidian16.Setting(panel).setName(t("\u6765\u6E90_\u8DDF\u8E2A\u6765\u6E90_\u6807\u9898")).setDesc(t("\u6765\u6E90_\u8DDF\u8E2A\u6765\u6E90_\u63CF\u8FF0"));
     trackSetting.settingEl.addClass("manager-install__setting");
@@ -10058,10 +9616,10 @@ ${manifest.author || ""}`;
   downloadTextFile(filename, text) {
     const blob = new Blob([text], { type: "application/json;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    const link = activeDocument.createElement("a");
     link.href = url;
     link.download = filename;
-    document.body.appendChild(link);
+    activeDocument.body.appendChild(link);
     link.click();
     link.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 1e3);
@@ -10718,10 +10276,11 @@ ${manifest.author || ""}`;
   async handleCreateSharedVaultLinks() {
     const t = (k, vars) => this.manager.translator.t(k, vars);
     const targetPath = this.vaultTargetPath.trim();
-    const kinds = [
-      ...this.vaultLinkPlugins ? ["plugins"] : [],
-      ...this.vaultLinkThemes ? ["themes"] : []
-    ];
+    const kinds = [];
+    if (this.vaultLinkPlugins)
+      kinds.push("plugins");
+    if (this.vaultLinkThemes)
+      kinds.push("themes");
     if (!targetPath) {
       new import_obsidian16.Notice(t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u8BF7\u8F93\u5165\u76EE\u6807\u5E93"));
       return;
@@ -10730,7 +10289,7 @@ ${manifest.author || ""}`;
       new import_obsidian16.Notice(t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u81F3\u5C11\u9009\u62E9\u6587\u4EF6\u5939"));
       return;
     }
-    if (this.vaultBackupExisting && !window.confirm(t("\u5171\u4EAB\u5E93_\u786E\u8BA4_\u5907\u4EFD\u540E\u94FE\u63A5")))
+    if (this.vaultBackupExisting && !await confirmWithModal(this.app, this.manager, t("\u5171\u4EAB\u5E93_\u786E\u8BA4_\u5907\u4EFD\u540E\u94FE\u63A5")))
       return;
     await this.runVaultOperation(async () => {
       const results = await createSharedVaultLinks(this.manager, targetPath, kinds, this.vaultBackupExisting);
@@ -10858,14 +10417,14 @@ ${manifest.author || ""}`;
         managerOpen(vault.path, this.manager);
       }, !vault.exists);
       this.createVaultActionButton(actions, "unlink", t("\u5171\u4EAB\u5E93_\u64CD\u4F5C_\u89E3\u9664\u63D2\u4EF6\u94FE\u63A5"), async () => {
-        if (!window.confirm(t("\u5171\u4EAB\u5E93_\u786E\u8BA4_\u89E3\u9664\u94FE\u63A5")))
+        if (!await confirmWithModal(this.app, this.manager, t("\u5171\u4EAB\u5E93_\u786E\u8BA4_\u89E3\u9664\u94FE\u63A5")))
           return;
         await this.runVaultOperation(async () => {
           await unlinkSharedVaultFolder(this.manager, vault.path, "plugins");
         }, t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u89E3\u9664\u94FE\u63A5\u6210\u529F"));
       }, !vault.plugins.isSymlink || vault.isCurrent);
       this.createVaultActionButton(actions, "palette", t("\u5171\u4EAB\u5E93_\u64CD\u4F5C_\u89E3\u9664\u4E3B\u9898\u94FE\u63A5"), async () => {
-        if (!window.confirm(t("\u5171\u4EAB\u5E93_\u786E\u8BA4_\u89E3\u9664\u94FE\u63A5")))
+        if (!await confirmWithModal(this.app, this.manager, t("\u5171\u4EAB\u5E93_\u786E\u8BA4_\u89E3\u9664\u94FE\u63A5")))
           return;
         await this.runVaultOperation(async () => {
           await unlinkSharedVaultFolder(this.manager, vault.path, "themes");
@@ -11153,12 +10712,15 @@ ${manifest.author || ""}`;
     await this.showHead();
     this.renderContent();
   }
-  async onOpen() {
+  onOpen() {
+    void this.openAsync();
+  }
+  async openAsync() {
     await this.showHead();
     await this.showData();
     this.searchEl.inputEl.focus();
     this.applyEditingStyle();
-    document.addEventListener("keydown", (event) => {
+    activeDocument.addEventListener("keydown", (event) => {
       if (event.ctrlKey && event.key.toLowerCase() === "f") {
         if (this.searchEl.inputEl) {
           this.searchEl.inputEl.focus();
@@ -11166,7 +10728,7 @@ ${manifest.author || ""}`;
       }
     });
   }
-  async onClose() {
+  onClose() {
     this.clearScheduledSearchWork();
     if (this.settings.PERSISTENCE && this.settings.FILTER_SEARCH !== this.searchText) {
       this.settings.FILTER_SEARCH = this.searchText;
@@ -11227,7 +10789,7 @@ var TroubleshootModal = class {
       return;
     }
     this.createFloatingWindow();
-    this.render();
+    void this.render();
   }
   close() {
     if (this.containerEl) {
@@ -11236,7 +10798,7 @@ var TroubleshootModal = class {
       this.headerEl = null;
       this.contentEl = null;
     }
-    this.saveState();
+    void this.saveState();
   }
   async saveState() {
     this.manager.settings.TROUBLESHOOT_STATE = this.state;
@@ -11246,15 +10808,10 @@ var TroubleshootModal = class {
    * 创建悬浮窗
    */
   createFloatingWindow() {
-    this.containerEl = document.body.createDiv({ cls: "troubleshoot-floating-window" });
+    this.containerEl = activeDocument.body.createDiv({ cls: "troubleshoot-floating-window" });
     this.headerEl = this.containerEl.createDiv({ cls: "troubleshoot-floating-header" });
     this.contentEl = this.containerEl.createDiv({ cls: "troubleshoot-floating-content" });
-    this.containerEl.style.position = "fixed";
-    this.containerEl.style.right = "20px";
-    this.containerEl.style.bottom = "20px";
-    this.containerEl.style.left = "auto";
-    this.containerEl.style.top = "auto";
-    this.containerEl.style.zIndex = "1000";
+    this.containerEl.addClass("troubleshoot-floating-window--initial");
     this.bindDragEvents();
   }
   /**
@@ -11276,10 +10833,12 @@ var TroubleshootModal = class {
     const onMouseMove = (e) => {
       if (!this.isDragging || !this.containerEl)
         return;
-      this.containerEl.style.left = `${e.clientX - this.dragOffsetX}px`;
-      this.containerEl.style.top = `${e.clientY - this.dragOffsetY}px`;
-      this.containerEl.style.right = "auto";
-      this.containerEl.style.bottom = "auto";
+      this.containerEl.setCssStyles({
+        left: `${e.clientX - this.dragOffsetX}px`,
+        top: `${e.clientY - this.dragOffsetY}px`,
+        right: "auto",
+        bottom: "auto"
+      });
     };
     const onMouseUp = () => {
       var _a;
@@ -11287,8 +10846,8 @@ var TroubleshootModal = class {
       (_a = this.headerEl) == null ? void 0 : _a.removeClass("dragging");
     };
     this.headerEl.addEventListener("mousedown", onMouseDown);
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
+    activeDocument.addEventListener("mousemove", onMouseMove);
+    activeDocument.addEventListener("mouseup", onMouseUp);
     this.headerEl.addEventListener("touchstart", (e) => {
       if (!this.containerEl || e.touches.length !== 1)
         return;
@@ -11298,16 +10857,18 @@ var TroubleshootModal = class {
       this.dragOffsetX = touch.clientX - rect.left;
       this.dragOffsetY = touch.clientY - rect.top;
     });
-    document.addEventListener("touchmove", (e) => {
+    activeDocument.addEventListener("touchmove", (e) => {
       if (!this.isDragging || !this.containerEl || e.touches.length !== 1)
         return;
       const touch = e.touches[0];
-      this.containerEl.style.left = `${touch.clientX - this.dragOffsetX}px`;
-      this.containerEl.style.top = `${touch.clientY - this.dragOffsetY}px`;
-      this.containerEl.style.right = "auto";
-      this.containerEl.style.bottom = "auto";
+      this.containerEl.setCssStyles({
+        left: `${touch.clientX - this.dragOffsetX}px`,
+        top: `${touch.clientY - this.dragOffsetY}px`,
+        right: "auto",
+        bottom: "auto"
+      });
     });
-    document.addEventListener("touchend", () => {
+    activeDocument.addEventListener("touchend", () => {
       this.isDragging = false;
     });
   }
@@ -11331,7 +10892,7 @@ var TroubleshootModal = class {
   async renderWelcome() {
     if (!this.headerEl || !this.contentEl)
       return;
-    const titleSpan = this.headerEl.createSpan({ text: this.t("\u6392\u67E5_\u6B22\u8FCE_\u6807\u9898"), cls: "troubleshoot-floating-title" });
+    this.headerEl.createSpan({ text: this.t("\u6392\u67E5_\u6B22\u8FCE_\u6807\u9898"), cls: "troubleshoot-floating-title" });
     const closeBtn = this.headerEl.createEl("button", { cls: "troubleshoot-floating-close" });
     (0, import_obsidian18.setIcon)(closeBtn, "x");
     closeBtn.onclick = () => this.close();
@@ -11405,7 +10966,7 @@ var TroubleshootModal = class {
     const total = this.state.currentStep + remaining;
     const percent = Math.round(this.state.currentStep / total * 100);
     const progressBar = progressContainer.createDiv("troubleshoot-progress-bar");
-    progressBar.style.width = `${percent}%`;
+    progressBar.setCssStyles({ width: `${percent}%` });
     progressContainer.createSpan({ text: `${percent}%`, cls: "troubleshoot-progress-text" });
     const currentEnabled = this.algorithm.getEnabledPlugins();
     const listContainer = this.contentEl.createDiv("troubleshoot-lists");
@@ -11516,7 +11077,7 @@ var TroubleshootModal = class {
    * 确认退出
    */
   confirmExit() {
-    const overlay = document.body.createDiv({ cls: "troubleshoot-confirm-overlay" });
+    const overlay = activeDocument.body.createDiv({ cls: "troubleshoot-confirm-overlay" });
     const dialog = overlay.createDiv({ cls: "troubleshoot-confirm-dialog" });
     dialog.createEl("h4", { text: this.t("\u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6807\u9898") });
     dialog.createEl("p", { text: this.t("\u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6587\u672C") });
@@ -11554,12 +11115,6 @@ var Commands = (app, manager) => {
   manager.addCommand({
     id: "manager-view",
     name: manager.translator.t("\u547D\u4EE4_\u7BA1\u7406\u9762\u677F_\u63CF\u8FF0"),
-    hotkeys: [
-      {
-        modifiers: ["Ctrl"],
-        key: "M"
-      }
-    ],
     callback: () => {
       new ManagerModal(app, manager).open();
     }
@@ -11604,13 +11159,13 @@ var Commands = (app, manager) => {
           name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u542F\u7528_\u6587\u672C")} ${group.name}`,
           callback: async () => {
             const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
-            filteredPlugins.forEach(async (plugin) => {
+            for (const plugin of filteredPlugins) {
               if (plugin && !plugin.enabled) {
                 await manager.appPlugins.enablePlugin(plugin.id);
                 plugin.enabled = true;
                 await manager.savePluginAndExport(plugin.id);
               }
-            });
+            }
             Commands(app, manager);
           }
         });
@@ -11619,13 +11174,13 @@ var Commands = (app, manager) => {
           name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u7981\u7528_\u6587\u672C")} ${group.name}`,
           callback: async () => {
             const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
-            filteredPlugins.forEach(async (plugin) => {
+            for (const plugin of filteredPlugins) {
               if (plugin && plugin.enabled) {
                 await manager.appPlugins.disablePlugin(plugin.id);
                 plugin.enabled = false;
                 await manager.savePluginAndExport(plugin.id);
               }
-            });
+            }
             Commands(app, manager);
           }
         });
@@ -11666,13 +11221,13 @@ var Commands = (app, manager) => {
           name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u542F\u7528_\u6587\u672C")} ${group.name} ${manager.translator.t("\u547D\u4EE4\u884C_\u5206\u7EC4_\u6587\u672C")}`,
           callback: async () => {
             const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
-            filteredPlugins.forEach(async (plugin) => {
+            for (const plugin of filteredPlugins) {
               await manager.appPlugins.enablePluginAndSave(plugin.id);
               const mp = manager.settings.Plugins.find((p) => p.id === plugin.id);
               if (mp)
                 mp.enabled = true;
               await manager.savePluginAndExport(plugin.id);
-            });
+            }
             Commands(app, manager);
           }
         });
@@ -11681,13 +11236,13 @@ var Commands = (app, manager) => {
           name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u7981\u7528_\u6587\u672C")} ${group.name} ${manager.translator.t("\u547D\u4EE4\u884C_\u5206\u7EC4_\u6587\u672C")}`,
           callback: async () => {
             const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
-            filteredPlugins.forEach(async (plugin) => {
+            for (const plugin of filteredPlugins) {
               await manager.appPlugins.disablePluginAndSave(plugin.id);
               const mp = manager.settings.Plugins.find((p) => p.id === plugin.id);
               if (mp)
                 mp.enabled = false;
               await manager.savePluginAndExport(plugin.id);
-            });
+            }
             Commands(app, manager);
           }
         });
@@ -11710,11 +11265,11 @@ var ManagerBasis = class extends BaseSetting {
     languageDropdown.setValue(this.settings.LANGUAGE);
     languageDropdown.onChange((value) => {
       this.settings.LANGUAGE = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
       this.settingTab.basisDisplay();
       command_default(this.app, this.manager);
-      this.settingTab.display();
-      this.display();
+      this.settingTab.renderSettings();
+      this.render();
     });
     const persistenceBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0"));
     const persistenceToggle = new import_obsidian19.ToggleComponent(persistenceBar.controlEl);
@@ -11728,7 +11283,7 @@ var ManagerBasis = class extends BaseSetting {
       if (!value && managerModal) {
         managerModal.usePersistedFiltersAsSessionFilters();
       }
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u542F\u52A8\u63A5\u7BA1");
     const DelayBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u63CF\u8FF0"));
@@ -11736,10 +11291,14 @@ var ManagerBasis = class extends BaseSetting {
     DelayToggle.setValue(this.settings.DELAY);
     DelayToggle.onChange((value) => {
       this.settings.DELAY = value;
-      this.manager.saveSettings();
-      value ? this.manager.enableDelaysForAllPlugins() : this.manager.disableDelaysForAllPlugins();
-      this.settingTab.display();
-      this.display();
+      void this.manager.saveSettings();
+      if (value) {
+        void this.manager.enableDelaysForAllPlugins();
+      } else {
+        void this.manager.disableDelaysForAllPlugins();
+      }
+      this.settingTab.renderSettings();
+      this.render();
     });
     const autoTakeoverBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0"));
     const autoTakeoverToggle = new import_obsidian19.ToggleComponent(autoTakeoverBar.controlEl);
@@ -11749,7 +11308,7 @@ var ManagerBasis = class extends BaseSetting {
       if (!this.settings.DELAY)
         return;
       this.settings.AUTO_TAKEOVER = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u66F4\u65B0\u6765\u6E90");
     const startupCheckBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
@@ -11757,21 +11316,21 @@ var ManagerBasis = class extends BaseSetting {
     startupCheckToggle.setValue(this.settings.STARTUP_CHECK_UPDATES);
     startupCheckToggle.onChange((value) => {
       this.settings.STARTUP_CHECK_UPDATES = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     const sourceStartupCheckBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
     const sourceStartupCheckToggle = new import_obsidian19.ToggleComponent(sourceStartupCheckBar.controlEl);
     sourceStartupCheckToggle.setValue(this.settings.SOURCE_STARTUP_CHECK_UPDATES);
     sourceStartupCheckToggle.onChange((value) => {
       this.settings.SOURCE_STARTUP_CHECK_UPDATES = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     const sourceAutoUpdateBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0"));
     const sourceAutoUpdateToggle = new import_obsidian19.ToggleComponent(sourceAutoUpdateBar.controlEl);
     sourceAutoUpdateToggle.setValue(this.settings.SOURCE_AUTO_UPDATE);
     sourceAutoUpdateToggle.onChange((value) => {
       this.settings.SOURCE_AUTO_UPDATE = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u754C\u9762\u5C55\u793A");
     const hideBpmTagBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0"));
@@ -11780,8 +11339,8 @@ var ManagerBasis = class extends BaseSetting {
     hideBpmTagToggle.onChange((value) => {
       var _a;
       this.settings.HIDE_BPM_TAG = value;
-      this.manager.saveSettings();
-      (_a = this.manager.managerModal) == null ? void 0 : _a.reloadShowData();
+      void this.manager.saveSettings();
+      void ((_a = this.manager.managerModal) == null ? void 0 : _a.reloadShowData());
     });
     const ribbonManagerBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u63CF\u8FF0"));
     const ribbonManagerToggle = new import_obsidian19.ToggleComponent(ribbonManagerBar.controlEl);
@@ -11797,7 +11356,7 @@ var ManagerBasis = class extends BaseSetting {
     CommandItemToggle.setValue(this.settings.COMMAND_ITEM);
     CommandItemToggle.onChange((value) => {
       this.settings.COMMAND_ITEM = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
       command_default(this.app, this.manager);
     });
     const CommandGroupBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0"));
@@ -11805,7 +11364,7 @@ var ManagerBasis = class extends BaseSetting {
     CommandGroupToggle.setValue(this.settings.COMMAND_GROUP);
     CommandGroupToggle.onChange((value) => {
       this.settings.COMMAND_GROUP = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
       command_default(this.app, this.manager);
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u5F00\u53D1\u7F51\u7EDC");
@@ -11814,7 +11373,7 @@ var ManagerBasis = class extends BaseSetting {
     debugToggle.setValue(this.settings.DEBUG);
     debugToggle.onChange((value) => {
       this.settings.DEBUG = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     const tokenBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6807\u9898")).setDesc(`${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u63CF\u8FF0")} (${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6743\u9650")})`);
     tokenBar.settingEl.addClass("manager-secret-token-setting");
@@ -11825,7 +11384,7 @@ var ManagerBasis = class extends BaseSetting {
     const tokenInput = new import_obsidian19.TextComponent(tokenBar.controlEl);
     tokenInput.inputEl.type = "password";
     tokenInput.inputEl.autocomplete = "off";
-    tokenInput.setPlaceholder(this.manager.hasGithubToken() ? "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" : "ghp_xxx");
+    tokenInput.setPlaceholder(this.manager.hasGithubToken() ? "********" : "ghp_xxx");
     let clearTokenButton = null;
     const saveTokenButton = new import_obsidian19.ButtonComponent(tokenBar.controlEl);
     saveTokenButton.setButtonText(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u4FDD\u5B58"));
@@ -11836,7 +11395,7 @@ var ManagerBasis = class extends BaseSetting {
         return;
       await this.manager.setGithubToken(token);
       tokenInput.setValue("");
-      tokenInput.setPlaceholder("\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022");
+      tokenInput.setPlaceholder("********");
       tokenStatus.setText(this.getGithubTokenStatusText());
       clearTokenButton == null ? void 0 : clearTokenButton.setDisabled(false);
     });
@@ -11851,7 +11410,7 @@ var ManagerBasis = class extends BaseSetting {
       clearTokenButton == null ? void 0 : clearTokenButton.setDisabled(true);
     });
     void this.manager.getGithubToken().then(() => {
-      tokenInput.setPlaceholder(this.manager.hasGithubToken() ? "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" : "ghp_xxx");
+      tokenInput.setPlaceholder(this.manager.hasGithubToken() ? "********" : "ghp_xxx");
       tokenStatus.setText(this.getGithubTokenStatusText());
       clearTokenButton == null ? void 0 : clearTokenButton.setDisabled(!this.manager.hasGithubToken());
     });
@@ -11898,7 +11457,7 @@ var ManagerBasis2 = class extends BaseSetting {
     overviewLayoutDropdown.setValue(this.settings.PLUGIN_OVERVIEW_LAYOUT || "list");
     overviewLayoutDropdown.onChange((value) => {
       this.settings.PLUGIN_OVERVIEW_LAYOUT = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     const itemStyleBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u63CF\u8FF0"));
     const itemStyleDropdown = new import_obsidian20.DropdownComponent(itemStyleBar.controlEl);
@@ -11906,7 +11465,7 @@ var ManagerBasis2 = class extends BaseSetting {
     itemStyleDropdown.setValue(this.settings.ITEM_STYLE);
     itemStyleDropdown.onChange((value) => {
       this.settings.ITEM_STYLE = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     const groupStyleBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u63CF\u8FF0"));
     const groupStyleDropdown = new import_obsidian20.DropdownComponent(groupStyleBar.controlEl);
@@ -11914,7 +11473,7 @@ var ManagerBasis2 = class extends BaseSetting {
     groupStyleDropdown.setValue(this.settings.GROUP_STYLE);
     groupStyleDropdown.onChange((value) => {
       this.settings.GROUP_STYLE = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     const tagStyleBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u63CF\u8FF0"));
     const tagStyleDropdown = new import_obsidian20.DropdownComponent(tagStyleBar.controlEl);
@@ -11922,21 +11481,21 @@ var ManagerBasis2 = class extends BaseSetting {
     tagStyleDropdown.setValue(this.settings.TAG_STYLE);
     tagStyleDropdown.onChange((value) => {
       this.settings.TAG_STYLE = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     const topBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0"));
     const topToggle = new import_obsidian20.ToggleComponent(topBar.controlEl);
     topToggle.setValue(this.settings.CENTER);
     topToggle.onChange((value) => {
       this.settings.CENTER = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
     const fadeOutDisabledPluginsBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u63CF\u8FF0"));
     const fadeOutDisabledPluginsToggle = new import_obsidian20.ToggleComponent(fadeOutDisabledPluginsBar.controlEl);
     fadeOutDisabledPluginsToggle.setValue(this.settings.FADE_OUT_DISABLED_PLUGINS);
     fadeOutDisabledPluginsToggle.onChange((value) => {
       this.settings.FADE_OUT_DISABLED_PLUGINS = value;
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     });
   }
 };
@@ -11979,7 +11538,7 @@ var ManagerDelay = class extends BaseSetting {
     createItem.controlEl.addClass("manager-setting-delay__controls");
     createItem.controlEl.addClass("manager-taxonomy-setting__controls");
     createItem.addSlider(
-      (cb) => cb.setLimits(0, 100, 1).setValue(time).setDynamicTooltip().onChange((value) => {
+      (cb) => cb.setLimits(0, 100, 1).setValue(time).onChange((value) => {
         time = value;
       }).sliderEl.addClass("manager-setting-delay__slider")
     ).addText(
@@ -11997,7 +11556,7 @@ var ManagerDelay = class extends BaseSetting {
         const containsId = this.manager.settings.DELAYS.some((delay) => delay.id === nextId);
         if (!containsId && nextId !== "") {
           this.manager.settings.DELAYS.push({ id: nextId, name: nextName, time });
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           this.settingTab.delayDisplay();
           new import_obsidian21.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
@@ -12024,9 +11583,9 @@ var ManagerDelay = class extends BaseSetting {
       meta.createSpan({ text: t("\u8BBE\u7F6E_\u5206\u7C7B_\u63D2\u4EF6\u4F7F\u7528\u6570\u91CF", { count: usageCount }) });
       meta.createSpan({ text: `#${index + 1}` });
       item.addSlider(
-        (cb) => cb.setLimits(0, 100, 1).setValue(delay.time).setDynamicTooltip().onChange((value) => {
+        (cb) => cb.setLimits(0, 100, 1).setValue(delay.time).onChange((value) => {
           delay.time = value;
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           const preview = item.settingEl.querySelector(".manager-setting-delay__preview");
           if (preview)
             preview.textContent = `${value}s`;
@@ -12035,7 +11594,7 @@ var ManagerDelay = class extends BaseSetting {
       item.addText(
         (cb) => cb.setValue(delay.name).onChange((value) => {
           delay.name = value;
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           const nameEl = item.settingEl.querySelector(".manager-setting-delay__name");
           if (nameEl)
             nameEl.textContent = value || delay.id;
@@ -12046,7 +11605,7 @@ var ManagerDelay = class extends BaseSetting {
           const hasTestGroup = this.settings.Plugins.some((plugin) => plugin.delay === delay.id);
           if (!hasTestGroup) {
             this.manager.settings.DELAYS = this.manager.settings.DELAYS.filter((t2) => t2.id !== delay.id);
-            this.manager.saveSettings();
+            void this.manager.saveSettings();
             this.settingTab.delayDisplay();
             new import_obsidian21.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
@@ -12126,7 +11685,7 @@ var ManagerTag = class extends BaseSetting {
           if (color === "")
             color = this.manager.generateAutoColor(this.manager.settings.TAGS.map((t2) => t2.color));
           this.manager.settings.TAGS.push({ id: nextId, name: nextName, color });
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           this.settingTab.tagDisplay();
           command_default(this.app, this.manager);
           new import_obsidian22.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
@@ -12162,7 +11721,7 @@ var ManagerTag = class extends BaseSetting {
       item.addColorPicker(
         (cb) => cb.setValue(tag.color).onChange((value) => {
           tag.color = value;
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           tagEl.setAttribute("style", this.manager.generateTagStyle(value, this.settings.TAG_STYLE));
         })
       );
@@ -12170,7 +11729,7 @@ var ManagerTag = class extends BaseSetting {
         cb.setValue(tag.name).onChange((value) => {
           tag.name = value;
           tagEl.textContent = value || tag.id;
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
         });
         cb.inputEl.addClass("manager-setting-tag__input");
         cb.inputEl.addClass("manager-taxonomy-setting__input");
@@ -12184,7 +11743,7 @@ var ManagerTag = class extends BaseSetting {
           const hasTestTag = this.settings.Plugins.some((plugin) => plugin.tags && plugin.tags.includes(tag.id));
           if (!hasTestTag) {
             this.manager.settings.TAGS = this.manager.settings.TAGS.filter((t2) => t2.id !== tag.id);
-            this.manager.saveSettings();
+            void this.manager.saveSettings();
             this.settingTab.tagDisplay();
             command_default(this.app, this.manager);
             new import_obsidian22.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
@@ -12253,7 +11812,7 @@ var ManagerGroup = class extends BaseSetting {
           if (color === "")
             color = this.manager.generateAutoColor(this.manager.settings.GROUPS.map((g) => g.color));
           this.manager.settings.GROUPS.push({ id: nextId, name: nextName, color });
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           this.settingTab.groupDisplay();
           command_default(this.app, this.manager);
           new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
@@ -12283,7 +11842,7 @@ var ManagerGroup = class extends BaseSetting {
       item.addColorPicker(
         (cb) => cb.setValue(group.color).onChange((value) => {
           group.color = value;
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
           tagEl.setAttribute("style", this.manager.generateTagStyle(value, this.settings.GROUP_STYLE));
         })
       );
@@ -12291,7 +11850,7 @@ var ManagerGroup = class extends BaseSetting {
         (cb) => cb.setValue(group.name).onChange((value) => {
           group.name = value;
           tagEl.textContent = value || group.id;
-          this.manager.saveSettings();
+          void this.manager.saveSettings();
         }).inputEl.addClass("manager-taxonomy-setting__input")
       );
       item.addExtraButton(
@@ -12299,7 +11858,7 @@ var ManagerGroup = class extends BaseSetting {
           const hasTestGroup = this.settings.Plugins.some((plugin) => plugin.group === group.id);
           if (!hasTestGroup) {
             this.manager.settings.GROUPS = this.manager.settings.GROUPS.filter((t2) => t2.id !== group.id);
-            this.manager.saveSettings();
+            void this.manager.saveSettings();
             this.settingTab.groupDisplay();
             command_default(this.app, this.manager);
             new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
@@ -12351,7 +11910,7 @@ var ManagerMainPage = class extends BaseSetting {
         var _a;
         button.setIcon(action.icon);
         button.setDisabled(true);
-        (_a = button.extraSettingsEl) == null ? void 0 : _a.addClass("manager-main-page-action-setting__icon");
+        (_a = getExtraButtonElement(button)) == null ? void 0 : _a.addClass("manager-main-page-action-setting__icon");
       });
       const dropdown = new import_obsidian24.DropdownComponent(setting.controlEl);
       dropdown.addOptions(placementOptions);
@@ -12359,14 +11918,14 @@ var ManagerMainPage = class extends BaseSetting {
       dropdown.onChange((value) => {
         var _a;
         this.settings.MAIN_PAGE_ACTION_PLACEMENT[action.id] = value;
-        this.manager.saveSettings();
-        (_a = this.manager.managerModal) == null ? void 0 : _a.reloadShowData();
+        void this.manager.saveSettings();
+        void ((_a = this.manager.managerModal) == null ? void 0 : _a.reloadShowData());
       });
     });
     const unknownKeys = Object.keys(this.settings.MAIN_PAGE_ACTION_PLACEMENT).filter((key) => !MAIN_PAGE_ACTION_IDS.includes(key));
     if (unknownKeys.length > 0) {
       unknownKeys.forEach((key) => delete this.settings.MAIN_PAGE_ACTION_PLACEMENT[key]);
-      this.manager.saveSettings();
+      void this.manager.saveSettings();
     }
   }
   getPlacement(actionId) {
@@ -12383,6 +11942,9 @@ var ManagerSettingTab = class extends import_obsidian25.PluginSettingTab {
     this.app = app;
   }
   display() {
+    this.renderSettings();
+  }
+  renderSettings() {
     const { containerEl } = this;
     containerEl.empty();
     containerEl.addClass("manager-setting__container");
@@ -12420,27 +11982,27 @@ var ManagerSettingTab = class extends import_obsidian25.PluginSettingTab {
   }
   basisDisplay() {
     this.contentEl.empty();
-    new ManagerBasis(this).display();
+    new ManagerBasis(this).render();
   }
   mainPageDisplay() {
     this.contentEl.empty();
-    new ManagerMainPage(this).display();
+    new ManagerMainPage(this).render();
   }
   styleDisplay() {
     this.contentEl.empty();
-    new ManagerBasis2(this).display();
+    new ManagerBasis2(this).render();
   }
   delayDisplay() {
     this.contentEl.empty();
-    new ManagerDelay(this).display();
+    new ManagerDelay(this).render();
   }
   groupDisplay() {
     this.contentEl.empty();
-    new ManagerGroup(this).display();
+    new ManagerGroup(this).render();
   }
   tagDisplay() {
     this.contentEl.empty();
-    new ManagerTag(this).display();
+    new ManagerTag(this).render();
   }
 };
 
@@ -17886,7 +17448,6 @@ var Translator = class {
     };
     this.manager = manager;
   }
-  // 方法用于获取翻译后的字符串
   t(str, vars) {
     const language = this.normalizeLang(this.manager.settings.LANGUAGE || "en");
     const locale = this.localeMap[language] || en_default;
@@ -17928,6 +17489,8 @@ var Agreement = class {
    * @param SMPL - ShareMyPlugin 实例
    */
   constructor(SMPL) {
+    // 存储社区插件信息的对象，键为插件 ID，值为插件详细信息
+    this.communityPlugins = {};
     // 标记是否已经加载了社区插件列表
     this.loaded = false;
     // 防抖函数，用于定时刷新社区插件列表，每小时执行一次
@@ -17935,13 +17498,14 @@ var Agreement = class {
       await this.fetchCommunityPlugins();
     }, 1e3 * 60 * 60);
     this.plugin = SMPL;
-    this.fetchCommunityPlugins();
+    void this.fetchCommunityPlugins();
   }
   /**
    * 从远程获取社区插件列表，并将其转换为以插件 ID 为键的对象
    */
   async fetchCommunityPlugins() {
-    const pluginList = await fetch(`https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugins.json`).then((r) => r.json());
+    const res = await (0, import_obsidian26.requestUrl)("https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugins.json");
+    const pluginList = res.json;
     const keyedPluginList = {};
     for (const item of pluginList)
       keyedPluginList[item.id] = item;
@@ -17992,7 +17556,8 @@ var Agreement = class {
       installFlag = true;
     }
     if (installFlag) {
-      const manifest = await fetch(`https://raw.githubusercontent.com/${repo}/HEAD/manifest.json`).then((r) => r.json());
+      const manifestRes = await (0, import_obsidian26.requestUrl)(`https://raw.githubusercontent.com/${repo}/HEAD/manifest.json`);
+      const manifest = manifestRes.json;
       if (version.toLowerCase() === "latest" || version === "")
         version = manifest.version;
       await pluginRegistry.installPlugin(repo, version, manifest);
@@ -18010,13 +17575,13 @@ var Agreement = class {
    */
   async parsePluginInstall(params) {
     var _a, _b;
-    let args = {
+    const args = {
       id: params.id,
       version: (_a = params == null ? void 0 : params.version) != null ? _a : "",
       enable: ["", "true", "1"].includes(params.enable.toLowerCase()),
       github: (_b = params.github) != null ? _b : ""
     };
-    this.pluginInstall(args.id, args.version, args.enable);
+    await this.pluginInstall(args.id, args.version, args.enable);
   }
   /**
    * 解析包含插件信息的字符串或对象，获取插件的相关信息
@@ -18024,7 +17589,7 @@ var Agreement = class {
    * @return - 返回解析后的插件信息对象，如果解析失败则返回 null
    */
   async parsePluginGithub(params) {
-    let args = { id: params.id };
+    const args = { id: params.id };
     await this.pluginGithub(args.id);
   }
 };
@@ -18082,12 +17647,24 @@ var buildMarkdownWithFrontmatter = (frontmatter, body) => {
 ${yaml}
 ---${body.startsWith("\n") ? "" : "\n"}${body}`;
 };
-var isInsideExportDir = (file, exportDir) => {
-  const normalizedFilePath = (0, import_obsidian27.normalizePath)(file.path);
-  const normalizedExportDir = (0, import_obsidian27.normalizePath)(exportDir);
-  if (normalizedExportDir === "." || normalizedExportDir === "/")
-    return true;
-  return normalizedFilePath === normalizedExportDir || normalizedFilePath.startsWith(`${normalizedExportDir}/`);
+var listMarkdownFilesInFolder = async (manager, folderPath) => {
+  const adapter = manager.app.vault.adapter;
+  const normalizedFolder = (0, import_obsidian27.normalizePath)(folderPath);
+  const result = [];
+  let listed;
+  try {
+    listed = await adapter.list(normalizedFolder);
+  } catch (e) {
+    return result;
+  }
+  for (const filePath of listed.files) {
+    if (filePath.toLowerCase().endsWith(".md"))
+      result.push(filePath);
+  }
+  for (const childFolder of listed.folders) {
+    result.push(...await listMarkdownFilesInFolder(manager, childFolder));
+  }
+  return result;
 };
 var migrate031 = async (manager) => {
   var _a, _b, _c, _d;
@@ -18118,13 +17695,13 @@ var migrate031 = async (manager) => {
   return changed;
 };
 var migrate032 = async (manager) => {
-  const exportDir = manager.settings.EXPORT_DIR;
-  if (!exportDir)
+  const exportDir = manager.settings["EXPORT_DIR"];
+  if (typeof exportDir !== "string" || !exportDir)
     return;
-  const exportedMarkdownFiles = manager.app.vault.getMarkdownFiles().filter((file) => isInsideExportDir(file, exportDir));
-  for (const file of exportedMarkdownFiles) {
+  const exportedMarkdownFiles = await listMarkdownFilesInFolder(manager, exportDir);
+  for (const filePath of exportedMarkdownFiles) {
     try {
-      const oldContent = await manager.app.vault.read(file);
+      const oldContent = await manager.app.vault.adapter.read(filePath);
       const parsed = parseFrontmatter(oldContent);
       const frontmatter = parsed.frontmatter;
       if (!(frontmatter == null ? void 0 : frontmatter["bpm_ro_id"]) || !("bpm_ro_updated" in frontmatter))
@@ -18132,11 +17709,11 @@ var migrate032 = async (manager) => {
       delete frontmatter["bpm_ro_updated"];
       const nextContent = buildMarkdownWithFrontmatter(frontmatter, parsed.body);
       if (nextContent !== oldContent) {
-        await manager.app.vault.adapter.write(file.path, nextContent);
+        await manager.app.vault.adapter.write(filePath, nextContent);
       }
     } catch (e) {
       if (manager.settings.DEBUG) {
-        console.warn("[BPM] Failed to migrate exported plugin note", file.path, e);
+        console.warn("[BPM] Failed to migrate exported plugin note", filePath, e);
       }
     }
   }
@@ -18175,7 +17752,7 @@ var runMigrations = async (manager) => {
 // src/self-check.ts
 var import_obsidian28 = require("obsidian");
 var getCommunityPluginsPath = (manager) => (0, import_obsidian28.normalizePath)(`${manager.app.vault.configDir}/community-plugins.json`);
-var uniq2 = (ids) => {
+var uniq = (ids) => {
   const seen = /* @__PURE__ */ new Set();
   return ids.filter((id) => {
     if (!id || seen.has(id))
@@ -18195,12 +17772,12 @@ var isBpmIgnoredPlugin = (manager, pluginId) => {
 };
 var getTakeoverCandidates = (manager, communityPlugins) => {
   const bpmId = manager.manifest.id;
-  return uniq2(communityPlugins).filter((id) => id !== bpmId && !isBpmIgnoredPlugin(manager, id));
+  return uniq(communityPlugins).filter((id) => id !== bpmId && !isBpmIgnoredPlugin(manager, id));
 };
 var getObsidianControlledPluginsAfterTakeover = (manager, communityPlugins) => {
   const bpmId = manager.manifest.id;
-  const ignoredPlugins = uniq2(communityPlugins).filter((id) => id !== bpmId && isBpmIgnoredPlugin(manager, id));
-  return uniq2([bpmId, ...ignoredPlugins]);
+  const ignoredPlugins = uniq(communityPlugins).filter((id) => id !== bpmId && isBpmIgnoredPlugin(manager, id));
+  return uniq([bpmId, ...ignoredPlugins]);
 };
 async function readCommunityPlugins(manager) {
   try {
@@ -18209,7 +17786,7 @@ async function readCommunityPlugins(manager) {
     if (!await adapter.exists(path))
       return [];
     const parsed = JSON.parse(await adapter.read(path));
-    return Array.isArray(parsed) ? uniq2(parsed.filter((id) => typeof id === "string")) : [];
+    return Array.isArray(parsed) ? uniq(parsed.filter((id) => typeof id === "string")) : [];
   } catch (error) {
     if (manager.settings.DEBUG)
       console.error("[BPM] Failed to read community-plugins.json:", error);
@@ -18218,7 +17795,7 @@ async function readCommunityPlugins(manager) {
 }
 async function writeCommunityPlugins(manager, plugins, currentPlugins) {
   try {
-    const nextPlugins = uniq2(plugins);
+    const nextPlugins = uniq(plugins);
     const current = currentPlugins != null ? currentPlugins : await readCommunityPlugins(manager);
     if (samePluginList(current, nextPlugins))
       return true;
@@ -18233,7 +17810,7 @@ async function writeCommunityPlugins(manager, plugins, currentPlugins) {
 function syncTakeoverPluginRecords(manager, pluginIds) {
   const manifests = getManifestMap(manager);
   let changed = false;
-  for (const id of uniq2(pluginIds).filter((pluginId) => !isBpmIgnoredPlugin(manager, pluginId))) {
+  for (const id of uniq(pluginIds).filter((pluginId) => !isBpmIgnoredPlugin(manager, pluginId))) {
     const existing = manager.settings.Plugins.find((plugin) => plugin.id === id);
     if (existing) {
       if (!existing.enabled) {
@@ -18445,9 +18022,11 @@ var import_obsidian29 = require("obsidian");
 var SystemRibbonManager = class {
   constructor(app, manager) {
     this.isInternalUpdate = false;
+    this.onConfigChange = () => void 0;
+    this.fileWatcher = null;
     this.app = app;
     this.manager = manager;
-    this.configPath = import_obsidian29.Platform.isMobile ? ".obsidian/workspace-mobile.json" : ".obsidian/workspace.json";
+    this.configPath = import_obsidian29.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
     if (this.app.vault.configDir) {
       this.configPath = import_obsidian29.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
     }
@@ -18523,6 +18102,8 @@ var GITHUB_TOKEN_SECRET_ID = "github-token";
 var Manager = class extends import_obsidian30.Plugin {
   constructor() {
     super(...arguments);
+    this.managerModal = null;
+    this.ribbonModal = null;
     this.updateStatus = {};
     this.updateProgressNotice = null;
     // 拖拽隐藏功能相关状态
@@ -18579,32 +18160,36 @@ var Manager = class extends import_obsidian30.Plugin {
       this.managerModal.open();
     });
     this.addSettingTab(new ManagerSettingTab(this.app, this));
-    this.settings.DELAY ? this.enableDelay() : this.disableDelay();
+    if (this.settings.DELAY) {
+      this.enableDelay();
+    } else {
+      this.disableDelay();
+    }
     command_default(this.app, this);
     this.agreement = new Agreement(this);
-    this.startupCheckForUpdates();
-    this.startupMaintainBetaSources();
-    this.registerObsidianProtocolHandler("BPM-plugin-install", async (params) => {
-      await this.agreement.parsePluginInstall(params);
+    void this.startupCheckForUpdates();
+    void this.startupMaintainBetaSources();
+    this.registerObsidianProtocolHandler("BPM-plugin-install", (params) => {
+      void this.agreement.parsePluginInstall(params);
     });
-    this.registerObsidianProtocolHandler("BPM-plugin-github", async (params) => {
-      await this.agreement.parsePluginGithub(params);
+    this.registerObsidianProtocolHandler("BPM-plugin-github", (params) => {
+      void this.agreement.parsePluginGithub(params);
     });
     this.app.workspace.onLayoutReady(() => {
       this.startRibbonRuntimeFeatures();
-      setTimeout(() => {
+      window.setTimeout(() => {
         if (this.isRibbonManagerEnabled())
           this.cleanRibbonItems();
         if (this.settings.DELAY)
-          performSelfCheck(this);
+          void performSelfCheck(this);
       }, 2e3);
     });
   }
-  async onunload() {
+  onunload() {
     var _a;
     this.stopRibbonRuntimeFeatures();
     if (this.settings.DELAY)
-      this.disableDelaysForAllPlugins();
+      void this.disableDelaysForAllPlugins();
     if (this.isRibbonManagerEnabled())
       this.cleanRibbonItems();
     (_a = this.systemRibbonManager) == null ? void 0 : _a.stopWatch();
@@ -18622,40 +18207,43 @@ var Manager = class extends import_obsidian30.Plugin {
         this.draggedRibbonItem = target.closest(".side-dock-ribbon-action");
       }
     };
-    const handlePointerUp = async (e) => {
-      if (!this.isRibbonManagerEnabled()) {
-        this.isRibbonDragging = false;
-        this.draggedRibbonItem = null;
-        return;
-      }
-      if (!this.isRibbonDragging || !this.draggedRibbonItem) {
-        this.isRibbonDragging = false;
-        this.draggedRibbonItem = null;
-        return;
-      }
-      const container = document.querySelector(".side-dock-actions");
-      if (container) {
-        const rect = container.getBoundingClientRect();
-        const buffer = 50;
-        const isOutside = e.clientX > rect.right + buffer || e.clientX < rect.left - buffer || // 左侧通常不可能，除非浮动
-        e.clientY < rect.top - buffer || // 向上拖出
-        e.clientY > rect.bottom + buffer;
-        if (isOutside) {
-          const label = this.draggedRibbonItem.getAttribute("aria-label");
-          if (label) {
-            await this.hideRibbonItemByLabel(label);
-          }
-        }
-      }
+    const handlePointerUp = (e) => {
+      void this.handleRibbonPointerUp(e);
+    };
+    activeDocument.addEventListener("pointerdown", handlePointerDown, true);
+    activeDocument.addEventListener("pointerup", handlePointerUp, true);
+    this.dragObserverCleanup = () => {
+      activeDocument.removeEventListener("pointerdown", handlePointerDown, true);
+      activeDocument.removeEventListener("pointerup", handlePointerUp, true);
+    };
+  }
+  async handleRibbonPointerUp(e) {
+    if (!this.isRibbonManagerEnabled()) {
       this.isRibbonDragging = false;
       this.draggedRibbonItem = null;
-    };
-    document.addEventListener("pointerdown", handlePointerDown, true);
-    document.addEventListener("pointerup", handlePointerUp, true);
-    this.dragObserverCleanup = () => {
-      document.removeEventListener("pointerdown", handlePointerDown, true);
-      document.removeEventListener("pointerup", handlePointerUp, true);
-    };
+      return;
+    }
+    if (!this.isRibbonDragging || !this.draggedRibbonItem) {
+      this.isRibbonDragging = false;
+      this.draggedRibbonItem = null;
+      return;
+    }
+    const container = activeDocument.querySelector(".side-dock-actions");
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      const buffer = 50;
+      const isOutside = e.clientX > rect.right + buffer || e.clientX < rect.left - buffer || // 左侧通常不可能，除非浮动
+      e.clientY < rect.top - buffer || // 向上拖出
+      e.clientY > rect.bottom + buffer;
+      if (isOutside) {
+        const label = this.draggedRibbonItem.getAttribute("aria-label");
+        if (label) {
+          await this.hideRibbonItemByLabel(label);
+        }
+      }
+    }
+    this.isRibbonDragging = false;
+    this.draggedRibbonItem = null;
   }
   async hideRibbonItemByLabel(label) {
     var _a;
@@ -18666,7 +18254,7 @@ var Manager = class extends import_obsidian30.Plugin {
     let targetId = targetItem == null ? void 0 : targetItem.id;
     if (!targetId) {
       const ribbonItems = ((_a = this.app.workspace.leftRibbon) == null ? void 0 : _a.items) || [];
-      const nativeItem = ribbonItems.find((i) => i.title === label || i.name === label);
+      const nativeItem = ribbonItems.find((i) => Boolean(i && (i.title === label || i.name === label)));
       if (nativeItem)
         targetId = nativeItem.id;
     }
@@ -18699,8 +18287,41 @@ var Manager = class extends import_obsidian30.Plugin {
       this.systemRibbonManager = new SystemRibbonManager(this.app, this);
   }
   clearRibbonStyleOverrides() {
-    var _a;
-    (_a = document.getElementById("bpm-ribbon-manager-style")) == null ? void 0 : _a.remove();
+    activeDocument.querySelectorAll('[data-bpm-ribbon-managed="true"], [data-bpm-menu-managed="true"]').forEach((element) => this.clearManagedElementStyle(element));
+  }
+  rememberManagedElementStyle(element, marker) {
+    element.setAttribute(marker === "ribbon" ? "data-bpm-ribbon-managed" : "data-bpm-menu-managed", "true");
+    if (!element.hasAttribute("data-bpm-original-display")) {
+      element.setAttribute("data-bpm-original-display", element.style.display);
+    }
+    if (!element.hasAttribute("data-bpm-original-order")) {
+      element.setAttribute("data-bpm-original-order", element.style.order);
+    }
+  }
+  clearManagedElementStyle(element) {
+    const originalDisplay = element.getAttribute("data-bpm-original-display");
+    const originalOrder = element.getAttribute("data-bpm-original-order");
+    if (originalDisplay !== null)
+      element.style.display = originalDisplay;
+    else
+      element.style.removeProperty("display");
+    if (originalOrder !== null)
+      element.style.order = originalOrder;
+    else
+      element.style.removeProperty("order");
+    element.removeAttribute("data-bpm-ribbon-managed");
+    element.removeAttribute("data-bpm-menu-managed");
+    element.removeAttribute("data-bpm-original-display");
+    element.removeAttribute("data-bpm-original-order");
+  }
+  applyManagedVisibility(element, visible, marker) {
+    this.rememberManagedElementStyle(element, marker);
+    const originalDisplay = element.getAttribute("data-bpm-original-display") || "";
+    element.style.display = visible ? originalDisplay : "none";
+  }
+  applyManagedOrder(element, order, marker) {
+    this.rememberManagedElementStyle(element, marker);
+    element.style.order = `${order}`;
   }
   stopRibbonRuntimeFeatures() {
     if (this.dragObserverCleanup) {
@@ -19091,7 +18712,7 @@ var Manager = class extends import_obsidian30.Plugin {
         delay: "",
         note: ""
       });
-      this.saveSettings();
+      void this.saveSettings();
       return;
     }
     existing.name = existing.name || this.manifest.name;
@@ -19102,7 +18723,7 @@ var Manager = class extends import_obsidian30.Plugin {
   reloadIfCurrentModal() {
     var _a, _b;
     try {
-      (_a = this.managerModal) == null ? void 0 : _a.reloadShowData();
+      void ((_a = this.managerModal) == null ? void 0 : _a.reloadShowData());
     } catch (e) {
     }
     try {
@@ -19147,10 +18768,10 @@ var Manager = class extends import_obsidian30.Plugin {
     this.getDelayManagedPluginManifests().forEach((plugin) => this.startPluginWithDelay(plugin.id));
   }
   // 为所有插件启动延迟
-  enableDelaysForAllPlugins() {
+  async enableDelaysForAllPlugins() {
     const plugins = Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manifest.id);
     this.synchronizePlugins(plugins);
-    this.getDelayManagedPluginManifests().forEach(async (plugin) => {
+    for (const plugin of this.getDelayManagedPluginManifests()) {
       const isEnabled = this.appPlugins.enabledPlugins.has(plugin.id);
       if (isEnabled) {
         await this.appPlugins.disablePluginAndSave(plugin.id);
@@ -19158,19 +18779,19 @@ var Manager = class extends import_obsidian30.Plugin {
         const mp = this.settings.Plugins.find((p) => p.id === plugin.id);
         if (mp)
           mp.enabled = true;
-        this.saveSettings();
+        await this.saveSettings();
       } else {
         const mp = this.settings.Plugins.find((p) => p.id === plugin.id);
         if (mp)
           mp.enabled = false;
-        this.saveSettings();
+        await this.saveSettings();
       }
-    });
+    }
   }
   // 为所有插件关闭延迟
-  disableDelaysForAllPlugins() {
+  async disableDelaysForAllPlugins() {
     const plugins = this.getDelayManagedPluginManifests();
-    plugins.forEach(async (pm) => {
+    for (const pm of plugins) {
       const plugin = this.settings.Plugins.find((p) => p.id === pm.id);
       if (plugin) {
         if (plugin.enabled) {
@@ -19178,7 +18799,7 @@ var Manager = class extends import_obsidian30.Plugin {
           await this.appPlugins.enablePluginAndSave(pm.id);
         }
       }
-    });
+    }
   }
   // 延时启动指定插件
   startPluginWithDelay(id) {
@@ -19190,8 +18811,8 @@ var Manager = class extends import_obsidian30.Plugin {
     if (plugin && plugin.enabled) {
       const delay = this.settings.DELAYS.find((item) => item.id === plugin.delay);
       const time = delay ? delay.time : 0;
-      setTimeout(() => {
-        this.appPlugins.enablePlugin(id);
+      window.setTimeout(() => {
+        void this.appPlugins.enablePlugin(id);
       }, time * 1e3);
     }
   }
@@ -19227,7 +18848,7 @@ var Manager = class extends import_obsidian30.Plugin {
     });
     this.settings.Plugins = nextPlugins;
     this.ensureSelfPluginRecord();
-    this.saveSettings();
+    void this.saveSettings();
   }
   // 工具函数
   createTag(text, color, type) {
@@ -19277,13 +18898,13 @@ var Manager = class extends import_obsidian30.Plugin {
   // 获取 Obsidian 当前语言（兼容旧版类型定义）
   getAppLanguage() {
     var _a, _b, _c, _d, _e;
-    const anyApp = this.app;
+    const appWithInternals = this.app;
     const langCandidates = [
-      (_a = anyApp == null ? void 0 : anyApp.i18n) == null ? void 0 : _a.locale,
-      (_b = anyApp == null ? void 0 : anyApp.i18n) == null ? void 0 : _b.lang,
-      (_c = anyApp == null ? void 0 : anyApp.i18n) == null ? void 0 : _c.language,
-      (_e = (_d = window == null ? void 0 : window.moment) == null ? void 0 : _d.locale) == null ? void 0 : _e.call(_d),
-      navigator == null ? void 0 : navigator.language
+      (_a = appWithInternals.i18n) == null ? void 0 : _a.locale,
+      (_b = appWithInternals.i18n) == null ? void 0 : _b.lang,
+      (_c = appWithInternals.i18n) == null ? void 0 : _c.language,
+      (_e = (_d = window.moment) == null ? void 0 : _d.locale) == null ? void 0 : _e.call(_d),
+      navigator.language
     ];
     const picked = langCandidates.find((l) => typeof l === "string" && l.length > 0) || "en";
     const lower = picked.toLowerCase().replace("_", "-");
@@ -19581,50 +19202,42 @@ var Manager = class extends import_obsidian30.Plugin {
       this.clearRibbonStyleOverrides();
       return;
     }
-    let styleEl = document.getElementById("bpm-ribbon-manager-style");
-    if (!styleEl) {
-      styleEl = document.createElement("style");
-      styleEl.id = "bpm-ribbon-manager-style";
-      document.head.appendChild(styleEl);
-    }
     const items = this.settings.RIBBON_SETTINGS || [];
     if (items.length === 0) {
-      styleEl.innerHTML = "";
+      this.clearRibbonStyleOverrides();
       return;
     }
-    let baseSelector = "";
-    let isMobile = import_obsidian31.Platform.isMobile;
-    if (isMobile) {
-      baseSelector = `.menu-scroll .menu-item`;
-    } else {
-      baseSelector = `.side-dock-actions div.clickable-icon.side-dock-ribbon-action`;
+    if (import_obsidian31.Platform.isMobile) {
+      activeDocument.querySelectorAll(".menu-scroll").forEach((menuScroll) => this.processMenuItems(menuScroll));
+      return;
     }
-    const cssRules = items.map((item) => {
-      if (!item.name)
-        return "";
-      const order = Number.isFinite(item.order) ? item.order : 9999;
-      if (!item.visible) {
-        const selector2 = this.generateMultiLineAriaLabelSelector(baseSelector, item.name);
-        return `${selector2} { order: ${order}; display: none !important; }`;
+    const ribbonElements = Array.from(
+      activeDocument.querySelectorAll(".side-dock-actions div.clickable-icon.side-dock-ribbon-action")
+    );
+    ribbonElements.forEach((element) => {
+      const item = this.findRibbonSettingForElement(element, items);
+      if (!item) {
+        if (element.hasAttribute("data-bpm-ribbon-managed"))
+          this.clearManagedElementStyle(element);
+        return;
       }
-      const selector = this.generateMultiLineAriaLabelSelector(baseSelector, item.name);
-      return `${selector} { order: ${order}; }`;
-    }).filter((rule) => rule !== "").join("\n");
-    styleEl.innerHTML = cssRules;
+      const order = Number.isFinite(item.order) ? item.order : 9999;
+      this.applyManagedOrder(element, order, "ribbon");
+      this.applyManagedVisibility(element, item.visible !== false, "ribbon");
+    });
   }
-  generateMultiLineAriaLabelSelector(baseSelector, ariaLabelText) {
-    const lines = ariaLabelText.split("\n").filter((line) => line.trim() !== "");
+  findRibbonSettingForElement(element, items) {
+    const label = element.getAttribute("aria-label") || element.getAttribute("title") || "";
+    if (!label)
+      return void 0;
+    return items.find((item) => item.name && this.ribbonLabelMatchesName(label, item.name));
+  }
+  ribbonLabelMatchesName(label, itemName) {
+    const lines = itemName.split("\n").map((line) => line.trim()).filter((line) => line !== "");
     if (lines.length <= 1) {
-      const escapedName = ariaLabelText.replace(/"/g, '\\"');
-      return `${baseSelector}[aria-label="${escapedName}"]`;
-    } else {
-      const selectors = lines.map((line) => {
-        const trimmedLine = line.trim();
-        const escapedLine = trimmedLine.replace(/"/g, '\\"');
-        return `[aria-label*="${escapedLine}"]`;
-      }).join("");
-      return `${baseSelector}${selectors}`;
+      return label === itemName;
     }
+    return lines.every((line) => label.includes(line));
   }
   setupMenuObserver() {
     if (!this.isRibbonManagerEnabled() || this.menuObserver)
@@ -19660,7 +19273,7 @@ var Manager = class extends import_obsidian30.Plugin {
         this.processMenuItems(targetNode);
       }
     });
-    this.menuObserver.observe(document.body, {
+    this.menuObserver.observe(activeDocument.body, {
       childList: true,
       subtree: true
     });
@@ -19705,14 +19318,8 @@ var Manager = class extends import_obsidian30.Plugin {
       }
       return { item, order, visible };
     });
-    let visualChange = false;
     itemsWithOrder.forEach(({ item, visible }) => {
-      const currentDisplay = item.style.display;
-      const targetDisplay = visible ? "" : "none";
-      if (currentDisplay !== targetDisplay) {
-        item.style.display = targetDisplay;
-        visualChange = true;
-      }
+      this.applyManagedVisibility(item, visible, "menu");
     });
     itemsWithOrder.sort((a, b) => a.order - b.order);
     let needSort = false;
@@ -19723,7 +19330,7 @@ var Manager = class extends import_obsidian30.Plugin {
       }
     }
     if (needSort) {
-      const fragment = document.createDocumentFragment();
+      const fragment = activeDocument.createDocumentFragment();
       itemsWithOrder.forEach(({ item }) => fragment.appendChild(item));
       containerElement.appendChild(fragment);
     }
@@ -19749,7 +19356,7 @@ var Manager = class extends import_obsidian30.Plugin {
       var _a2, _b;
       let item = itemMap.get(id);
       if (!item) {
-        const nativeItem = (_b = (_a2 = this.app.workspace.leftRibbon) == null ? void 0 : _a2.items) == null ? void 0 : _b.find((i) => i.id === id);
+        const nativeItem = (_b = (_a2 = this.app.workspace.leftRibbon) == null ? void 0 : _a2.items) == null ? void 0 : _b.find((i) => Boolean(i && i.id === id));
         const name = (nativeItem == null ? void 0 : nativeItem.title) || (nativeItem == null ? void 0 : nativeItem.ariaLabel) || id;
         const icon = (nativeItem == null ? void 0 : nativeItem.icon) || "help-circle";
         item = {
@@ -19770,13 +19377,15 @@ var Manager = class extends import_obsidian30.Plugin {
     memoryItems.forEach((mItem) => {
       if (!mItem)
         return;
-      if (!seenIds.has(mItem.id)) {
+      const itemId = mItem.id;
+      if (!itemId)
+        return;
+      if (!seenIds.has(itemId)) {
         const item = {
-          id: mItem.id,
-          name: mItem.title || mItem.ariaLabel || mItem.id,
+          id: itemId,
+          name: mItem.title || mItem.ariaLabel || itemId,
           icon: mItem.icon || "help-circle",
           visible: true,
-          // 默认为显示
           order: newItems.length
         };
         newItems.push(item);

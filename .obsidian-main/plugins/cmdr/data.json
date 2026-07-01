@@ -148,12 +148,6 @@
       "icon": "lucide-toggle-left",
       "name": "显示/隐藏功能区",
       "mode": "any"
-    },
-    {
-      "id": "css-editor:open-quick-switcher",
-      "icon": "lucide-folder-code",
-      "name": "CSS Editor: Open quick switcher",
-      "mode": "any"
     }
   ],
   "pageHeader": [

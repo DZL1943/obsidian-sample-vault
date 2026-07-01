@@ -532,7 +532,7 @@ function createColumn(value, entries, options, ctx, cb) {
   if (cb.getQuickAddFolder()) {
     headerEl.appendChild(cb.createAddButton(value, options.swimlaneValue ?? null));
   }
-  if (entries.length === 0 && options.showRemoveButton !== false) {
+  if (ctx.globallyEmptyColumns.has(value)) {
     headerEl.appendChild(createRemoveButton(ctx.doc, value, () => cb.onRemoveColumn(value, columnEl)));
   }
   const bodyEl = columnEl.createDiv({ cls: CSS_CLASSES.COLUMN_BODY });
@@ -550,10 +550,10 @@ function patchColumnCards(columnEl, newEntries, ctx, cb) {
   const headerEl = columnEl.querySelector(`.${CSS_CLASSES.COLUMN_HEADER}`);
   const columnValue = columnEl.getAttribute(DATA_ATTRIBUTES.COLUMN_VALUE);
   const existingRemoveBtn = headerEl?.querySelector(`.${CSS_CLASSES.COLUMN_REMOVE_BTN}`) ?? null;
-  const isInSwimlane = !!columnEl.closest(`.${CSS_CLASSES.SWIMLANE}`);
-  if (headerEl && newEntries.length === 0 && !existingRemoveBtn && columnValue && !isInSwimlane) {
+  const showRemoveButton = !!columnValue && ctx.globallyEmptyColumns.has(columnValue);
+  if (headerEl && showRemoveButton && !existingRemoveBtn && columnValue) {
     headerEl.appendChild(createRemoveButton(ctx.doc, columnValue, () => cb.onRemoveColumn(columnValue, columnEl)));
-  } else if (newEntries.length > 0 && existingRemoveBtn) {
+  } else if (!showRemoveButton && existingRemoveBtn) {
     existingRemoveBtn.remove();
   }
   const existingAddBtn = headerEl?.querySelector(`.${CSS_CLASSES.COLUMN_ADD_BTN}`) ?? null;
@@ -661,7 +661,6 @@ function buildSwimlaneElement(laneValue, laneEntries, orderedColumnValues, ctx, 
       columnValue,
       laneEntries.get(columnValue) ?? [],
       {
-        showRemoveButton: false,
         swimlaneValue: laneValue
       },
       ctx,
@@ -2988,6 +2987,10 @@ var KanbanView = class extends import_obsidian5.BasesView {
     this._lastSwimlanePropertyId = void 0;
     this._lastQuickAddFolder = void 0;
     this._cardFingerprints = /* @__PURE__ */ new Map();
+    // Column values empty across the whole board (every swimlane). Recomputed each
+    // render() and read via _buildColumnCtx so components can show a remove button
+    // without the board-wide map being threaded through every render function.
+    this._globallyEmptyColumns = /* @__PURE__ */ new Set();
     this._deferredSortableListeners = /* @__PURE__ */ new Map();
     this._prefs = {
       columnOrder: [],
@@ -3258,6 +3261,9 @@ var KanbanView = class extends import_obsidian5.BasesView {
       const hasSwimlanes = groupedByLane !== null;
       const existingIsSwimlane = existingBoard?.classList.contains(CSS_CLASSES.BOARD_WITH_SWIMLANES) ?? false;
       const modeChanged = hasSwimlanes !== existingIsSwimlane;
+      this._globallyEmptyColumns = new Set(
+        orderedValues.filter((value) => (groupedEntries.get(value)?.length ?? 0) === 0)
+      );
       if (!existingBoard || modeChanged || groupChanged || optionsChanged) {
         this.fullRebuild(orderedValues, lanes, hasSwimlanes);
       } else {
@@ -3526,6 +3532,11 @@ var KanbanView = class extends import_obsidian5.BasesView {
           s.destroy();
           this._columnSortables.delete(key);
         }
+        const deferred = this._deferredSortableListeners.get(key);
+        if (deferred) {
+          deferred.el.removeEventListener("pointerdown", deferred.handler);
+          this._deferredSortableListeners.delete(key);
+        }
         colEl.remove();
         existingColumns.delete(colValue);
       }
@@ -3533,8 +3544,7 @@ var KanbanView = class extends import_obsidian5.BasesView {
     orderedColumnValues.forEach((colValue) => {
       const entries = groupedEntries.get(colValue) ?? [];
       if (!existingColumns.has(colValue)) {
-        const options = laneValue !== null ? { showRemoveButton: false, swimlaneValue: laneValue } : {};
-        const colEl = this.createColumn(colValue, entries, options);
+        const colEl = this.createColumn(colValue, entries, { swimlaneValue: laneValue });
         containerEl.appendChild(colEl);
         existingColumns.set(colValue, colEl);
         const cardBody = colEl.querySelector(
@@ -3655,7 +3665,8 @@ var KanbanView = class extends import_obsidian5.BasesView {
       cardCb: this._buildCardCallbacks(),
       prefs: { columnColors: this._prefs.columnColors },
       dragging: this._dragging,
-      cardFingerprints: this._cardFingerprints
+      cardFingerprints: this._cardFingerprints,
+      globallyEmptyColumns: this._globallyEmptyColumns
     };
   }
   _buildColumnCallbacks() {
@@ -3781,12 +3792,30 @@ var KanbanView = class extends import_obsidian5.BasesView {
     closeNativeNewItemPopover(this.containerEl.doc);
   }
   detachColumn(value, colEl) {
-    const sortable = this._columnSortables.get(value);
-    if (sortable) {
-      sortable.destroy();
-      this._columnSortables.delete(value);
+    const boardEl = this.containerEl.querySelector(`.${CSS_CLASSES.BOARD}`);
+    const columnEls = [];
+    if (boardEl) {
+      boardEl.querySelectorAll(`.${CSS_CLASSES.COLUMN}`).forEach((el) => {
+        if (el.getAttribute(DATA_ATTRIBUTES.COLUMN_VALUE) === value) columnEls.push(el);
+      });
     }
-    colEl.remove();
+    const suffix = `${SWIMLANE_KEY_SEPARATOR}${value}`;
+    const matchesColumn = (key) => key === value || key.endsWith(suffix);
+    for (const key of [...this._columnSortables.keys()]) {
+      if (matchesColumn(key)) {
+        this._columnSortables.get(key)?.destroy();
+        this._columnSortables.delete(key);
+      }
+    }
+    for (const key of [...this._deferredSortableListeners.keys()]) {
+      if (matchesColumn(key)) {
+        const deferred = this._deferredSortableListeners.get(key);
+        deferred?.el.removeEventListener("pointerdown", deferred.handler);
+        this._deferredSortableListeners.delete(key);
+      }
+    }
+    if (columnEls.length > 0) columnEls.forEach((el) => el.remove());
+    else colEl.remove();
   }
   removeColumn(value, columnEl) {
     if (!this._prefsPropertyId) return;
