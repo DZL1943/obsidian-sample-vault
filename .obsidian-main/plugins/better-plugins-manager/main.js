@@ -24,7 +24,7 @@ __export(main_exports, {
 module.exports = __toCommonJS(main_exports);
 
 // src/main.ts
-var import_obsidian30 = require("obsidian");
+var import_obsidian32 = require("obsidian");
 
 // src/settings/data.ts
 var MAIN_PAGE_ACTION_IDS = [
@@ -79,6 +79,10 @@ var DEFAULT_SETTINGS = {
   STARTUP_CHECK_UPDATES: false,
   SOURCE_STARTUP_CHECK_UPDATES: false,
   SOURCE_AUTO_UPDATE: true,
+  PLUGIN_UPDATE_CHECK_MODE: "release",
+  PLUGIN_UPDATE_COMPATIBILITY_MODE: "compatible",
+  PLUGIN_UPDATE_DELAY_DAYS: 0,
+  GITHUB_PROXY: "",
   GITHUB_TOKEN: "",
   // 管理页筛选状态
   FILTER_SEARCH: "",
@@ -130,7 +134,7 @@ var DEFAULT_SETTINGS = {
 };
 
 // src/settings/index.ts
-var import_obsidian25 = require("obsidian");
+var import_obsidian27 = require("obsidian");
 
 // src/settings/base-setting.ts
 var BaseSetting = class {
@@ -150,10 +154,10 @@ var BaseSetting = class {
 };
 
 // src/settings/ui/manager-basis.ts
-var import_obsidian19 = require("obsidian");
+var import_obsidian21 = require("obsidian");
 
 // src/modal/manager-modal.ts
-var import_obsidian16 = require("obsidian");
+var import_obsidian18 = require("obsidian");
 
 // src/data/types.ts
 var BPM_IGNORE_TAG = "bpm-ignore";
@@ -547,6 +551,46 @@ var import_obsidian4 = require("obsidian");
 
 // src/repo-resolver.ts
 var import_obsidian3 = require("obsidian");
+
+// src/github-url.ts
+var GITHUB_HOSTS = /* @__PURE__ */ new Set([
+  "github.com",
+  "api.github.com",
+  "raw.githubusercontent.com",
+  "objects.githubusercontent.com",
+  "release-assets.githubusercontent.com",
+  "codeload.github.com"
+]);
+var normalizeGithubProxy = (value) => {
+  const proxy = (value || "").trim();
+  if (!proxy || /^official$/i.test(proxy) || /^github$/i.test(proxy))
+    return "";
+  return proxy;
+};
+var isGithubUrl = (url) => {
+  try {
+    return GITHUB_HOSTS.has(new URL(url).hostname.toLowerCase());
+  } catch (e) {
+    return false;
+  }
+};
+var rewriteGithubUrl = (url, proxy) => {
+  const normalizedProxy = normalizeGithubProxy(proxy);
+  if (!normalizedProxy || !isGithubUrl(url))
+    return url;
+  const encodedUrl = encodeURIComponent(url);
+  if (normalizedProxy.includes("{encodedUrl}"))
+    return normalizedProxy.replace(/\{encodedUrl\}/g, encodedUrl);
+  if (normalizedProxy.includes("{url}"))
+    return normalizedProxy.replace(/\{url\}/g, url);
+  const prefix = normalizedProxy.replace(/\/+$/g, "");
+  return `${prefix}/${url}`;
+};
+var getGithubProxy = (manager) => normalizeGithubProxy(manager.settings.GITHUB_PROXY);
+var githubProxyEnabled = (manager) => Boolean(getGithubProxy(manager));
+var resolveGithubUrl = (manager, url) => rewriteGithubUrl(url, getGithubProxy(manager));
+
+// src/repo-resolver.ts
 var BPM_TAG_ID = "bpm-install";
 var CACHE_FILE = "better-plugins-manager-community-plugins-cache.json";
 var COMMUNITY_PLUGINS_URL = "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugins.json";
@@ -663,7 +707,7 @@ var RepoResolver = class {
   /** 真正发起网络请求；外层 fetchCommunityList() 负责并发复用和重试窗口。 */
   async requestCommunityList() {
     try {
-      const res = await (0, import_obsidian3.requestUrl)({ url: COMMUNITY_PLUGINS_URL, throw: false });
+      const res = await (0, import_obsidian3.requestUrl)({ url: resolveGithubUrl(this.manager, COMMUNITY_PLUGINS_URL), throw: false });
       if (res.status >= 400) {
         if (this.manager.settings.DEBUG) {
           console.warn("[BPM] Community plugin list request failed", res.status);
@@ -1190,13 +1234,7 @@ var DeleteModal = class extends import_obsidian5.Modal {
       button.buttonEl.setAttribute("aria-label", this.t("\u5378\u8F7D_\u53D6\u6D88"));
     });
     actionBar.addButton((button) => {
-      var _a;
       this.confirmButton = button;
-      const destructiveButton = button;
-      if (destructiveButton.setDestructive)
-        destructiveButton.setDestructive();
-      else
-        (_a = destructiveButton["setWarning"]) == null ? void 0 : _a.call(destructiveButton);
       button.setIcon("trash-2").setButtonText(this.t("\u5378\u8F7D_\u5378\u8F7D")).setTooltip(this.t("\u5378\u8F7D_\u5378\u8F7D\u786E\u8BA4", { name: pluginName })).setClass("manager-delete__confirm-button").onClick(() => void this.runDelete());
       button.buttonEl.setAttribute("aria-label", this.t("\u5378\u8F7D_\u5378\u8F7D\u786E\u8BA4", { name: pluginName }));
     });
@@ -1214,61 +1252,9 @@ var DeleteModal = class extends import_obsidian5.Modal {
   }
 };
 
-// src/modal/disable-modal.ts
-var import_obsidian6 = require("obsidian");
-var DisableModal = class extends import_obsidian6.Modal {
-  constructor(app, manager, deleteCallback) {
-    super(app);
-    this.manager = manager;
-    this.deleteCallback = deleteCallback;
-  }
-  async showHead() {
-    var _a, _b;
-    const modalEl = this.contentEl.parentElement;
-    if (!modalEl)
-      return;
-    modalEl.addClass("manager-editor__container");
-    (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
-    (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
-    this.contentEl.addClass("manager-item-container");
-    const titleBar = new import_obsidian6.Setting(this.titleEl);
-    titleBar.setClass("manager-delete__title");
-    titleBar.setName(this.manager.translator.t("\u4E00\u952E_\u6807\u9898"));
-    const closeButton = new import_obsidian6.ExtraButtonComponent(titleBar.controlEl);
-    closeButton.setIcon("circle-x");
-    closeButton.onClick(() => this.close());
-  }
-  async showData() {
-    const titleBar = new import_obsidian6.Setting(this.titleEl);
-    titleBar.setName(this.manager.translator.t("\u4E00\u952E_\u63D0\u793A"));
-    const actionBar = new import_obsidian6.Setting(this.titleEl);
-    actionBar.setClass("manager-delete__action");
-    actionBar.addButton(
-      (cb) => cb.setCta().setButtonText(this.manager.translator.t("\u4E00\u952E_\u542F\u7981")).onClick(() => {
-        void this.deleteCallback();
-        this.close();
-      })
-    );
-    actionBar.addButton(
-      (cb) => cb.setButtonText(this.manager.translator.t("\u4E00\u952E_\u53D6\u6D88")).onClick(() => {
-        this.close();
-      })
-    );
-  }
-  onOpen() {
-    void (async () => {
-      await this.showHead();
-      await this.showData();
-    })();
-  }
-  onClose() {
-    this.contentEl.empty();
-  }
-};
-
 // src/modal/note-modal.ts
-var import_obsidian7 = require("obsidian");
-var NoteModal = class extends import_obsidian7.Modal {
+var import_obsidian6 = require("obsidian");
+var NoteModal = class extends import_obsidian6.Modal {
   constructor(app, manager, managerPlugin, managerModal) {
     super(app);
     this.saveRevision = 0;
@@ -1321,7 +1307,7 @@ var NoteModal = class extends import_obsidian7.Modal {
     this.saveStatusEl.removeClass("is-dirty", "is-saving", "is-saved", "is-error");
     this.saveStatusEl.addClass(`is-${state}`);
     const iconEl = this.saveStatusEl.createSpan("manager-note__status-icon");
-    (0, import_obsidian7.setIcon)(iconEl, statusIcon);
+    (0, import_obsidian6.setIcon)(iconEl, statusIcon);
     this.saveStatusEl.createSpan({ text: statusText });
   }
   updateCharCount(value) {
@@ -1381,18 +1367,18 @@ var NoteModal = class extends import_obsidian7.Modal {
     (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
     this.contentEl.addClass("manager-item-container");
     this.contentEl.addClass("manager-note__body");
-    const titleBar = new import_obsidian7.Setting(this.titleEl).setClass("manager-bar__title");
+    const titleBar = new import_obsidian6.Setting(this.titleEl).setClass("manager-bar__title");
     titleBar.settingEl.addClass("manager-note__titlebar");
     titleBar.nameEl.empty();
     titleBar.descEl.empty();
     const titleWrap = titleBar.nameEl.createDiv("manager-note__title");
     const titleIcon = titleWrap.createSpan("manager-note__title-icon");
-    (0, import_obsidian7.setIcon)(titleIcon, "notebook-pen");
+    (0, import_obsidian6.setIcon)(titleIcon, "notebook-pen");
     const titleText = titleWrap.createDiv("manager-note__title-text");
     titleText.createDiv({ cls: "manager-note__eyebrow", text: this.t("\u7B14\u8BB0\u7F16\u8F91_\u6807\u9898") });
     titleText.createDiv({ cls: "manager-note__plugin-name", text: this.managerPlugin.name || this.managerPlugin.id });
     titleBar.descEl.setText(this.t("\u7B14\u8BB0\u7F16\u8F91_\u8BF4\u660E"));
-    const closeButton = new import_obsidian7.ExtraButtonComponent(titleBar.controlEl);
+    const closeButton = new import_obsidian6.ExtraButtonComponent(titleBar.controlEl);
     closeButton.setIcon("x");
     this.prepareIconButton(closeButton, this.t("\u901A\u7528_\u5173\u95ED_\u6587\u672C"), "manager-note__close-button");
     closeButton.onClick(() => this.close());
@@ -1402,7 +1388,7 @@ var NoteModal = class extends import_obsidian7.Modal {
     const summary = page.createDiv("manager-note__summary");
     const summaryMain = summary.createDiv("manager-note__summary-main");
     const summaryIcon = summaryMain.createSpan("manager-note__summary-icon");
-    (0, import_obsidian7.setIcon)(summaryIcon, "info");
+    (0, import_obsidian6.setIcon)(summaryIcon, "info");
     const summaryText = summaryMain.createDiv("manager-note__summary-text");
     summaryText.createDiv({ cls: "manager-note__summary-title", text: this.t("\u7B14\u8BB0\u7F16\u8F91_\u63D2\u4EF6\u4FE1\u606F") });
     summaryText.createDiv({ cls: "manager-note__summary-desc", text: this.managerPlugin.id });
@@ -1416,12 +1402,12 @@ var NoteModal = class extends import_obsidian7.Modal {
     const editorHead = editor.createDiv("manager-note__editor-head");
     const editorTitle = editorHead.createDiv("manager-note__editor-title");
     const editorIcon = editorTitle.createSpan("manager-note__editor-icon");
-    (0, import_obsidian7.setIcon)(editorIcon, "file-pen-line");
+    (0, import_obsidian6.setIcon)(editorIcon, "file-pen-line");
     editorTitle.createSpan({ text: this.t("\u7B14\u8BB0\u7F16\u8F91_\u7F16\u8F91\u533A") });
     this.saveStatusEl = editorHead.createDiv("manager-note__status");
     this.saveStatusEl.setAttribute("aria-live", "polite");
     this.setSaveState("saved");
-    const textArea = new import_obsidian7.TextAreaComponent(editor);
+    const textArea = new import_obsidian6.TextAreaComponent(editor);
     this.textArea = textArea;
     textArea.setValue(this.managerPlugin.note);
     textArea.setPlaceholder(this.t("\u7B14\u8BB0\u7F16\u8F91_\u5360\u4F4D\u7B26"));
@@ -1438,7 +1424,7 @@ var NoteModal = class extends import_obsidian7.Modal {
   createStatChip(container, icon, text) {
     const chip = container.createSpan("manager-note__stat");
     const iconEl = chip.createSpan("manager-note__stat-icon");
-    (0, import_obsidian7.setIcon)(iconEl, icon);
+    (0, import_obsidian6.setIcon)(iconEl, icon);
     return chip.createSpan({ cls: "manager-note__stat-text", text });
   }
   async reloadShowData() {
@@ -1465,8 +1451,8 @@ var NoteModal = class extends import_obsidian7.Modal {
 };
 
 // src/modal/hide-modal.ts
-var import_obsidian8 = require("obsidian");
-var HideModal = class extends import_obsidian8.Modal {
+var import_obsidian7 = require("obsidian");
+var HideModal = class extends import_obsidian7.Modal {
   constructor(app, manager, managerModal, plugins) {
     super(app);
     // [本地][变量] 导出插件列表
@@ -1516,13 +1502,13 @@ var HideModal = class extends import_obsidian8.Modal {
     (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
     (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
     this.contentEl.addClass("manager-item-container");
-    const actionBar = new import_obsidian8.Setting(this.titleEl).setClass("manager-bar__action").setName(this.manager.translator.t("\u83DC\u5355_\u9690\u85CF\u63D2\u4EF6_\u6807\u9898"));
-    const closeButton = new import_obsidian8.ButtonComponent(actionBar.controlEl);
+    const actionBar = new import_obsidian7.Setting(this.titleEl).setClass("manager-bar__action").setName(this.manager.translator.t("\u83DC\u5355_\u9690\u85CF\u63D2\u4EF6_\u6807\u9898"));
+    const closeButton = new import_obsidian7.ButtonComponent(actionBar.controlEl);
     closeButton.setIcon("x");
     closeButton.onClick(() => {
       this.close();
     });
-    const searchBar = new import_obsidian8.Setting(this.titleEl).setClass("manager-bar__search").setName(this.manager.translator.t("\u901A\u7528_\u641C\u7D22_\u6587\u672C"));
+    const searchBar = new import_obsidian7.Setting(this.titleEl).setClass("manager-bar__search").setName(this.manager.translator.t("\u901A\u7528_\u641C\u7D22_\u6587\u672C"));
     const filterOptions = {
       "all": this.manager.translator.t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"),
       "enabled": this.manager.translator.t("\u7B5B\u9009_\u4EC5\u542F\u7528_\u63CF\u8FF0"),
@@ -1533,7 +1519,7 @@ var HideModal = class extends import_obsidian8.Modal {
       "untagged": this.manager.translator.t("\u7B5B\u9009_\u65E0\u6807\u7B7E_\u63CF\u8FF0"),
       "noted": this.manager.translator.t("\u7B5B\u9009_\u6709\u7B14\u8BB0_\u63CF\u8FF0")
     };
-    const filterDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
+    const filterDropdown = new import_obsidian7.DropdownComponent(searchBar.controlEl);
     filterDropdown.addOptions(filterOptions);
     filterDropdown.setValue(this.filter);
     filterDropdown.onChange((value) => {
@@ -1553,7 +1539,7 @@ var HideModal = class extends import_obsidian8.Modal {
       "contains": this.manager.translator.t("\u7B5B\u9009_\u64CD\u4F5C\u7B26_\u5305\u542B"),
       "not-contains": this.manager.translator.t("\u7B5B\u9009_\u64CD\u4F5C\u7B26_\u6392\u9664")
     };
-    const groupOperatorDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
+    const groupOperatorDropdown = new import_obsidian7.DropdownComponent(searchBar.controlEl);
     (_c = groupOperatorDropdown.selectEl.parentElement) == null ? void 0 : _c.addClass("manager-filter-operator-dropdown");
     groupOperatorDropdown.selectEl.addClass("manager-filter-operator");
     groupOperatorDropdown.addOptions(operatorOptions);
@@ -1563,7 +1549,7 @@ var HideModal = class extends import_obsidian8.Modal {
       this.groupOperator = value === "not-contains" ? "not-contains" : "contains";
       void this.reloadShowData();
     });
-    const groupsDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
+    const groupsDropdown = new import_obsidian7.DropdownComponent(searchBar.controlEl);
     this.addOrderedOptions(groupsDropdown, groups);
     groupsDropdown.setValue(this.group);
     groupsDropdown.onChange((value) => {
@@ -1580,7 +1566,7 @@ var HideModal = class extends import_obsidian8.Modal {
       ["", this.manager.translator.t("\u901A\u7528_\u65E0\u6807\u7B7E_\u6587\u672C")],
       ...this.settings.TAGS.map((item) => [item.id, `${item.name} [${tagCounts[item.id] || 0}]`])
     ];
-    const tagOperatorDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
+    const tagOperatorDropdown = new import_obsidian7.DropdownComponent(searchBar.controlEl);
     (_d = tagOperatorDropdown.selectEl.parentElement) == null ? void 0 : _d.addClass("manager-filter-operator-dropdown");
     tagOperatorDropdown.selectEl.addClass("manager-filter-operator");
     tagOperatorDropdown.addOptions(operatorOptions);
@@ -1590,7 +1576,7 @@ var HideModal = class extends import_obsidian8.Modal {
       this.tagOperator = value === "not-contains" ? "not-contains" : "contains";
       void this.reloadShowData();
     });
-    const tagsDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
+    const tagsDropdown = new import_obsidian7.DropdownComponent(searchBar.controlEl);
     this.addOrderedOptions(tagsDropdown, tags);
     tagsDropdown.setValue(this.tag);
     tagsDropdown.onChange((value) => {
@@ -1607,7 +1593,7 @@ var HideModal = class extends import_obsidian8.Modal {
         ["", this.manager.translator.t("\u901A\u7528_\u65E0\u5EF6\u8FDF_\u6587\u672C")],
         ...this.settings.DELAYS.map((item) => [item.id, `${item.name} (${delayCounts[item.id] || 0})`])
       ];
-      const delayOperatorDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
+      const delayOperatorDropdown = new import_obsidian7.DropdownComponent(searchBar.controlEl);
       (_e = delayOperatorDropdown.selectEl.parentElement) == null ? void 0 : _e.addClass("manager-filter-operator-dropdown");
       delayOperatorDropdown.selectEl.addClass("manager-filter-operator");
       delayOperatorDropdown.addOptions(operatorOptions);
@@ -1617,7 +1603,7 @@ var HideModal = class extends import_obsidian8.Modal {
         this.delayOperator = value === "not-contains" ? "not-contains" : "contains";
         void this.reloadShowData();
       });
-      const delaysDropdown = new import_obsidian8.DropdownComponent(searchBar.controlEl);
+      const delaysDropdown = new import_obsidian7.DropdownComponent(searchBar.controlEl);
       this.addOrderedOptions(delaysDropdown, delays);
       delaysDropdown.setValue(this.delay || "");
       delaysDropdown.onChange((value) => {
@@ -1625,7 +1611,7 @@ var HideModal = class extends import_obsidian8.Modal {
         void this.reloadShowData();
       });
     }
-    this.searchEl = new import_obsidian8.SearchComponent(searchBar.controlEl);
+    this.searchEl = new import_obsidian7.SearchComponent(searchBar.controlEl);
     this.searchEl.onChange((value) => {
       this.searchText = value;
       void this.reloadShowData();
@@ -1678,7 +1664,7 @@ var HideModal = class extends import_obsidian8.Modal {
           continue;
         if (plugin.id === this.manager.manifest.id)
           continue;
-        const itemEl = new import_obsidian8.Setting(this.contentEl);
+        const itemEl = new import_obsidian7.Setting(this.contentEl);
         itemEl.setClass("manager-item");
         itemEl.nameEl.addClass("manager-item__name-container");
         itemEl.descEl.addClass("manager-item__description-container");
@@ -1713,7 +1699,7 @@ var HideModal = class extends import_obsidian8.Modal {
             tags.appendChild(tag);
           }
         });
-        const hiddenToggle = new import_obsidian8.ToggleComponent(itemEl.controlEl);
+        const hiddenToggle = new import_obsidian7.ToggleComponent(itemEl.controlEl);
         const isHidden = this.settings.HIDES.includes(plugin.id);
         hiddenToggle.setValue(isHidden);
         hiddenToggle.onChange((value) => {
@@ -1747,6 +1733,139 @@ var HideModal = class extends import_obsidian8.Modal {
     this.contentEl.empty();
   }
 };
+
+// src/modal/bulk-status-confirm-modal.ts
+var import_obsidian8 = require("obsidian");
+var BulkStatusConfirmModal = class extends import_obsidian8.Modal {
+  constructor(app, manager, options, resolve) {
+    super(app);
+    this.manager = manager;
+    this.options = options;
+    this.resolve = resolve;
+    this.resolved = false;
+  }
+  t(key, vars) {
+    return this.manager.translator.t(key, vars);
+  }
+  finish(confirmed) {
+    if (this.resolved)
+      return;
+    this.resolved = true;
+    this.resolve(confirmed);
+    this.close();
+  }
+  prepareCloseButton(button) {
+    const label = this.t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C");
+    button.setIcon("x");
+    button.setTooltip(label);
+    const buttonEl = getExtraButtonElement(button);
+    buttonEl == null ? void 0 : buttonEl.addClass("manager-bulk-status-confirm__close");
+    buttonEl == null ? void 0 : buttonEl.setAttribute("aria-label", label);
+  }
+  renderHeader() {
+    var _a, _b;
+    const targetEnabled = this.options.targetEnabled;
+    const title = this.t(targetEnabled ? "\u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4" : "\u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4", { count: this.options.actionableCount });
+    const modalEl = this.contentEl.parentElement;
+    modalEl == null ? void 0 : modalEl.addClass("manager-bulk-status-confirm");
+    modalEl == null ? void 0 : modalEl.addClass(targetEnabled ? "is-enable" : "is-disable");
+    (_a = modalEl == null ? void 0 : modalEl.querySelector(".modal-close-button")) == null ? void 0 : _a.remove();
+    this.titleEl.empty();
+    (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
+    const titleBar = new import_obsidian8.Setting(this.titleEl).setClass("manager-bulk-status-confirm__titlebar");
+    titleBar.nameEl.empty();
+    titleBar.descEl.empty();
+    const titleWrap = titleBar.nameEl.createDiv("manager-bulk-status-confirm__title");
+    const titleIcon = titleWrap.createSpan("manager-bulk-status-confirm__title-icon");
+    (0, import_obsidian8.setIcon)(titleIcon, targetEnabled ? "power" : "power-off");
+    const titleText = titleWrap.createDiv("manager-bulk-status-confirm__title-text");
+    titleText.createDiv({ cls: "manager-bulk-status-confirm__eyebrow", text: this.t("\u6279\u91CF\u7F16\u8F91_\u6807\u9898") });
+    titleText.createDiv({ cls: "manager-bulk-status-confirm__heading", text: title });
+    titleBar.descEl.setText(this.t("\u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8BF4\u660E"));
+    const closeButton = new import_obsidian8.ExtraButtonComponent(titleBar.controlEl);
+    this.prepareCloseButton(closeButton);
+    closeButton.onClick(() => this.finish(false));
+  }
+  renderMetric(container, value, label, cls = "") {
+    const item = container.createDiv(`manager-bulk-status-confirm__metric ${cls}`.trim());
+    item.createDiv({ cls: "manager-bulk-status-confirm__metric-value", text: `${value}` });
+    item.createDiv({ cls: "manager-bulk-status-confirm__metric-label", text: label });
+  }
+  renderBody() {
+    this.contentEl.empty();
+    this.contentEl.addClass("manager-item-container");
+    this.contentEl.addClass("manager-bulk-status-confirm__body");
+    const page = this.contentEl.createDiv("manager-bulk-status-confirm__page");
+    const summary = page.createDiv("manager-bulk-status-confirm__summary");
+    const summaryIcon = summary.createSpan("manager-bulk-status-confirm__summary-icon");
+    (0, import_obsidian8.setIcon)(summaryIcon, this.options.targetEnabled ? "badge-check" : "badge-x");
+    const summaryText = summary.createDiv("manager-bulk-status-confirm__summary-text");
+    summaryText.createDiv({
+      cls: "manager-bulk-status-confirm__summary-title",
+      text: this.t(this.options.targetEnabled ? "\u901A\u7528_\u542F\u7528_\u6587\u672C" : "\u901A\u7528_\u7981\u7528_\u6587\u672C")
+    });
+    summaryText.createDiv({
+      cls: "manager-bulk-status-confirm__summary-desc",
+      text: this.t(this.options.targetEnabled ? "\u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4" : "\u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4", { count: this.options.actionableCount })
+    });
+    const metrics = page.createDiv("manager-bulk-status-confirm__metrics");
+    this.renderMetric(metrics, this.options.actionableCount, this.t("\u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5904\u7406"));
+    this.renderMetric(metrics, this.options.selectedCount, this.t("\u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u9009\u62E9"));
+    if (this.options.skippedCount > 0) {
+      this.renderMetric(metrics, this.options.skippedCount, this.t("\u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u8DF3\u8FC7"), "is-muted");
+    }
+    const preview = page.createDiv("manager-bulk-status-confirm__preview");
+    preview.createDiv({ cls: "manager-bulk-status-confirm__preview-label", text: this.t("\u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5BF9\u8C61\u9884\u89C8") });
+    const list = preview.createDiv("manager-bulk-status-confirm__plugin-list");
+    const previewNames = this.options.pluginNames.slice(0, 5);
+    previewNames.forEach((name) => {
+      const item = list.createDiv("manager-bulk-status-confirm__plugin");
+      const icon = item.createSpan("manager-bulk-status-confirm__plugin-icon");
+      (0, import_obsidian8.setIcon)(icon, "blocks");
+      item.createSpan({ cls: "manager-bulk-status-confirm__plugin-name", text: name });
+    });
+    const hiddenCount = Math.max(0, this.options.pluginNames.length - previewNames.length);
+    if (hiddenCount > 0) {
+      list.createDiv({
+        cls: "manager-bulk-status-confirm__plugin-more",
+        text: this.t("\u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u66F4\u591A\u5BF9\u8C61", { count: hiddenCount })
+      });
+    }
+    const note = page.createDiv("manager-bulk-status-confirm__note");
+    const noteIcon = note.createSpan("manager-bulk-status-confirm__note-icon");
+    (0, import_obsidian8.setIcon)(noteIcon, "info");
+    const noteText = note.createDiv("manager-bulk-status-confirm__note-text");
+    noteText.createDiv({ text: this.t("\u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u7ACB\u5373\u751F\u6548") });
+    noteText.createDiv({ text: this.t("\u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8DF3\u8FC7\u8BF4\u660E") });
+    const actionBar = new import_obsidian8.Setting(page).setClass("manager-bulk-status-confirm__actions");
+    actionBar.nameEl.empty();
+    actionBar.descEl.empty();
+    actionBar.addButton((button) => {
+      this.cancelButton = button;
+      button.setButtonText(this.t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C")).setTooltip(this.t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C")).setClass("manager-bulk-status-confirm__cancel").onClick(() => this.finish(false));
+      button.buttonEl.setAttribute("aria-label", this.t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C"));
+    });
+    actionBar.addButton((button) => {
+      this.confirmButton = button;
+      const label = this.t(this.options.targetEnabled ? "\u901A\u7528_\u542F\u7528_\u6587\u672C" : "\u901A\u7528_\u7981\u7528_\u6587\u672C");
+      button.setIcon(this.options.targetEnabled ? "power" : "power-off").setButtonText(label).setTooltip(label).setClass("manager-bulk-status-confirm__confirm").onClick(() => this.finish(true));
+      button.buttonEl.setAttribute("aria-label", label);
+    });
+  }
+  onOpen() {
+    var _a;
+    this.renderHeader();
+    this.renderBody();
+    (_a = this.cancelButton) == null ? void 0 : _a.buttonEl.focus();
+  }
+  onClose() {
+    this.contentEl.empty();
+    this.finish(false);
+  }
+};
+var confirmBulkStatusChange = (app, manager, options) => new Promise((resolve) => {
+  new BulkStatusConfirmModal(app, manager, options, resolve).open();
+});
 
 // src/troubleshoot/troubleshoot-panel.ts
 var import_obsidian10 = require("obsidian");
@@ -2876,30 +2995,33 @@ var enrichError = (res, msg) => {
   err.rateReset = getHeader(res.headers, "x-ratelimit-reset");
   return err;
 };
-var fetchJson = async (url, token) => {
-  const res = await (0, import_obsidian11.requestUrl)({ url, headers: buildHeaders(token), throw: false });
+var fetchJson = async (manager, url, token) => {
+  const res = await (0, import_obsidian11.requestUrl)({ url: resolveGithubUrl(manager, url), headers: buildHeaders(token), throw: false });
   if (res.status >= 400)
     throw enrichError(res);
   return res.json;
 };
-var fetchText = async (url, token) => {
-  const res = await (0, import_obsidian11.requestUrl)({ url, headers: buildHeaders(token, "*/*"), throw: false });
+var fetchText = async (manager, url, token) => {
+  const res = await (0, import_obsidian11.requestUrl)({ url: resolveGithubUrl(manager, url), headers: buildHeaders(token, "*/*"), throw: false });
   if (res.status >= 400)
     throw enrichError(res);
   return res.text;
 };
-var getRelease = async (repo, version, token) => {
+var getRelease = async (manager, repo, version, token) => {
   const requestedVersion = version == null ? void 0 : version.trim();
   const url = requestedVersion ? `${API_BASE}/repos/${repo}/releases/tags/${encodeURIComponent(requestedVersion)}` : `${API_BASE}/repos/${repo}/releases/latest`;
-  return fetchJson(url, token);
+  return fetchJson(manager, url, token);
 };
 var pickAsset = (release, name) => {
   var _a, _b, _c;
   return (_c = (_b = (_a = release.assets) == null ? void 0 : _a.find((asset) => asset.name === name)) == null ? void 0 : _b.browser_download_url) != null ? _c : null;
 };
 var cloneReleaseVersions = (versions) => versions.map((version) => ({ ...version }));
-var buildReleaseCacheKey = (repo, token) => `${repo}
-${token ? "authenticated" : "anonymous"}`;
+var buildReleaseCacheKey = (repo, token, proxy) => `${repo}
+${token ? "authenticated" : "anonymous"}
+${proxy || "direct"}`;
+var buildReleaseCacheKeyWithOptions = (repo, token, proxy, options) => `${buildReleaseCacheKey(repo, token, proxy)}
+manifest:${(options == null ? void 0 : options.includeManifest) ? "1" : "0"}`;
 var buildRawTagCandidates = (tag) => {
   const candidates = [tag];
   if (tag.startsWith("v") && tag.length > 1) {
@@ -2909,24 +3031,24 @@ var buildRawTagCandidates = (tag) => {
   }
   return Array.from(new Set(candidates));
 };
-var fetchRawFromTag = async (repo, tag, file, token) => {
+var fetchRawFromTag = async (manager, repo, tag, file, token) => {
   for (const candidateTag of buildRawTagCandidates(tag)) {
     try {
-      return await fetchText(`https://raw.githubusercontent.com/${repo}/${candidateTag}/${file}`, token);
+      return await fetchText(manager, `https://raw.githubusercontent.com/${repo}/${candidateTag}/${file}`, token);
     } catch (e) {
     }
   }
   throw new Error(`Raw file missing: ${file}`);
 };
 var settledValue = (result) => result.status === "fulfilled" ? result.value : null;
-var fetchPluginFilesFromReleaseAssets = async (release, token) => {
+var fetchPluginFilesFromReleaseAssets = async (manager, release, token) => {
   const manifestUrl = pickAsset(release, "manifest.json");
   const mainJsUrl = pickAsset(release, "main.js");
   const stylesUrl = pickAsset(release, "styles.css");
   const [manifestText, mainJs, styles] = await Promise.allSettled([
-    manifestUrl ? fetchText(manifestUrl, token) : Promise.resolve(null),
-    mainJsUrl ? fetchText(mainJsUrl, token) : Promise.resolve(null),
-    stylesUrl ? fetchText(stylesUrl, token) : Promise.resolve(null)
+    manifestUrl ? fetchText(manager, manifestUrl, token) : Promise.resolve(null),
+    mainJsUrl ? fetchText(manager, mainJsUrl, token) : Promise.resolve(null),
+    stylesUrl ? fetchText(manager, stylesUrl, token) : Promise.resolve(null)
   ]);
   return {
     manifestText: settledValue(manifestText),
@@ -2934,12 +3056,12 @@ var fetchPluginFilesFromReleaseAssets = async (release, token) => {
     styles: settledValue(styles)
   };
 };
-var fetchPluginFilesFromRawTag = async (repo, tag, token, current) => {
+var fetchPluginFilesFromRawTag = async (manager, repo, tag, token, current) => {
   var _a, _b, _c;
   const [manifestText, mainJs, styles] = await Promise.all([
-    (_a = current.manifestText) != null ? _a : fetchRawFromTag(repo, tag, "manifest.json", token),
-    (_b = current.mainJs) != null ? _b : fetchRawFromTag(repo, tag, "main.js", token),
-    (_c = current.styles) != null ? _c : fetchRawFromTag(repo, tag, "styles.css", token).catch(() => null)
+    (_a = current.manifestText) != null ? _a : fetchRawFromTag(manager, repo, tag, "manifest.json", token),
+    (_b = current.mainJs) != null ? _b : fetchRawFromTag(manager, repo, tag, "main.js", token),
+    (_c = current.styles) != null ? _c : fetchRawFromTag(manager, repo, tag, "styles.css", token).catch(() => null)
   ]);
   return { manifestText, mainJs, styles };
 };
@@ -2971,33 +3093,77 @@ var upsertInstalledPluginRecord = (manager, manifest, loadedManifest, markAsBpm)
   manager.applySpecialPluginTags(record);
   manager.settings.Plugins.push(record);
 };
-var fetchReleaseVersions = async (manager, repoInput) => {
+var releaseToVersion = (release, latestTag) => ({
+  version: release.tag_name || "",
+  prerelease: Boolean(release.prerelease),
+  name: release.name || void 0,
+  body: release.body || void 0,
+  publishedAt: release.published_at || void 0,
+  url: release.html_url || void 0,
+  isGithubLatest: Boolean(latestTag && release.tag_name === latestTag)
+});
+var fetchReleaseManifestText = async (manager, repo, release, token) => {
+  const manifestUrl = pickAsset(release, "manifest.json");
+  if (manifestUrl) {
+    try {
+      return await fetchText(manager, manifestUrl, token);
+    } catch (e) {
+    }
+  }
+  const tag = release.tag_name || "";
+  if (!tag)
+    return null;
+  try {
+    return await fetchRawFromTag(manager, repo, tag, "manifest.json", token);
+  } catch (e) {
+    return null;
+  }
+};
+var enrichReleaseVersionWithManifest = async (manager, repo, release, version, token) => {
+  const manifestText = await fetchReleaseManifestText(manager, repo, release, token);
+  if (!manifestText)
+    return { ...version, compatibilityChecked: true };
+  try {
+    const manifest = JSON.parse(manifestText);
+    return {
+      ...version,
+      manifestVersion: typeof manifest.version === "string" ? manifest.version : void 0,
+      minAppVersion: typeof manifest.minAppVersion === "string" ? manifest.minAppVersion : void 0,
+      compatibilityChecked: true
+    };
+  } catch (e) {
+    return { ...version, compatibilityChecked: true };
+  }
+};
+var fetchReleaseVersions = async (manager, repoInput, options = {}) => {
   const repo = sanitizeRepo(repoInput);
   const token = await getToken(manager);
-  const cacheKey = buildReleaseCacheKey(repo, token);
+  const cacheKey = buildReleaseCacheKeyWithOptions(repo, token, manager.settings.GITHUB_PROXY, options);
   const cached = releaseVersionCache.get(cacheKey);
   const now = Date.now();
   if (cached && cached.expiresAt > now) {
     return cloneReleaseVersions(cached.versions);
   }
+  const latestRelease = await getRelease(manager, repo, void 0, token).catch(() => null);
+  const latestTag = (latestRelease == null ? void 0 : latestRelease.tag_name) || void 0;
   const releases = [];
   for (let page = 1; ; page++) {
     const url = `${API_BASE}/repos/${repo}/releases?per_page=${RELEASES_PER_PAGE}&page=${page}`;
-    const pageReleases = await fetchJson(url, token);
+    const pageReleases = await fetchJson(manager, url, token);
     if (!Array.isArray(pageReleases) || pageReleases.length === 0)
       break;
     releases.push(...pageReleases);
     if (pageReleases.length < RELEASES_PER_PAGE)
       break;
   }
-  const versions = releases.filter((release) => !release.draft).map((release) => ({
-    version: release.tag_name || "",
-    prerelease: Boolean(release.prerelease),
-    name: release.name || void 0,
-    body: release.body || void 0,
-    publishedAt: release.published_at || void 0,
-    url: release.html_url || void 0
-  })).filter((release) => release.version);
+  let releaseEntries = releases.filter((release) => !release.draft).map((release) => ({ release, version: releaseToVersion(release, latestTag) })).filter((entry) => entry.version.version);
+  if (options.includeManifest) {
+    releaseEntries = await Promise.all(releaseEntries.map(async (entry) => ({
+      release: entry.release,
+      version: await enrichReleaseVersionWithManifest(manager, repo, entry.release, entry.version, token)
+    })));
+  }
+  const versions = releaseEntries.map((entry) => entry.version);
   releaseVersionCache.set(cacheKey, {
     expiresAt: now + RELEASE_VERSION_CACHE_TTL_MS,
     versions: cloneReleaseVersions(versions)
@@ -3009,11 +3175,11 @@ var installPluginFromGithub = async (manager, repoInput, version, markAsBpm = tr
   try {
     const repo = sanitizeRepo(repoInput);
     const token = await getToken(manager);
-    const release = await getRelease(repo, version, token);
+    const release = await getRelease(manager, repo, version, token);
     const tag = release.tag_name || version || "";
     if (manager.settings.DEBUG)
       console.log("[BPM] install from GitHub", { repo, version, tag });
-    let files = await fetchPluginFilesFromReleaseAssets(release, token);
+    let files = await fetchPluginFilesFromReleaseAssets(manager, release, token);
     if (manager.settings.DEBUG) {
       console.log("[BPM] release assets picked", {
         manifest: Boolean(files.manifestText),
@@ -3025,7 +3191,7 @@ var installPluginFromGithub = async (manager, repoInput, version, markAsBpm = tr
       if (!tag)
         throw new Error("\u672A\u627E\u5230\u53D1\u5E03 tag\uFF0C\u65E0\u6CD5\u4E0B\u8F7D\u539F\u59CB\u6587\u4EF6\u3002");
       try {
-        files = await fetchPluginFilesFromRawTag(repo, tag, token, files);
+        files = await fetchPluginFilesFromRawTag(manager, repo, tag, token, files);
         if (manager.settings.DEBUG) {
           console.log("[BPM] fallback to raw tag", {
             repo,
@@ -3112,7 +3278,7 @@ var installThemeFromGithub = async (manager, repoInput, version) => {
   try {
     const repo = sanitizeRepo(repoInput);
     const token = await getToken(manager);
-    const release = await getRelease(repo, version, token);
+    const release = await getRelease(manager, repo, version, token);
     const manifestUrl = pickAsset(release, "manifest.json");
     const themeUrl = (_b = (_a = pickAsset(release, "theme.css")) != null ? _a : pickAsset(release, "themes.css")) != null ? _b : pickAsset(release, "theme-beta.css");
     if (!manifestUrl || !themeUrl) {
@@ -3120,8 +3286,8 @@ var installThemeFromGithub = async (manager, repoInput, version) => {
       return false;
     }
     const [manifestText, themeCss] = await Promise.all([
-      fetchText(manifestUrl, token),
-      fetchText(themeUrl, token)
+      fetchText(manager, manifestUrl, token),
+      fetchText(manager, themeUrl, token)
     ]);
     const manifest = JSON.parse(manifestText);
     if (!(manifest == null ? void 0 : manifest.name)) {
@@ -3148,11 +3314,205 @@ var installThemeFromGithub = async (manager, repoInput, version) => {
 };
 
 // src/modal/manager-modal.ts
-var import_obsidian17 = require("obsidian");
+var import_obsidian19 = require("obsidian");
 
 // src/modal/update-modal.ts
+var import_obsidian13 = require("obsidian");
+
+// src/source-release.ts
 var import_obsidian12 = require("obsidian");
-var UpdateModal = class extends import_obsidian12.Modal {
+var cleanReleaseTag = (tag) => (tag || "").trim();
+var normalizeReleaseTag = (tag) => {
+  const cleaned = cleanReleaseTag(tag).replace(/^refs\/tags\//i, "");
+  return cleaned.replace(/^v(?=\d)/i, "").toLowerCase();
+};
+var releaseTagsMatch = (a, b) => {
+  const left = cleanReleaseTag(a);
+  const right = cleanReleaseTag(b);
+  if (!left || !right)
+    return false;
+  if (left === right)
+    return true;
+  const normalizedLeft = normalizeReleaseTag(left);
+  const normalizedRight = normalizeReleaseTag(right);
+  return Boolean(normalizedLeft && normalizedRight && normalizedLeft === normalizedRight);
+};
+var releaseToRef = (release, index) => ({
+  tag: release.version,
+  publishedAt: release.publishedAt,
+  prerelease: release.prerelease,
+  index,
+  isGithubLatest: release.isGithubLatest
+});
+var DAY_MS = 24 * 60 * 60 * 1e3;
+var normalizeUpdateDelayDays = (source) => {
+  const value = Number(source.updateDelayDays);
+  if (!Number.isFinite(value) || value <= 0)
+    return 0;
+  return Math.floor(value);
+};
+var parseReleaseDate = (value) => {
+  if (!value)
+    return null;
+  const time = new Date(value).getTime();
+  return Number.isNaN(time) ? null : time;
+};
+var releaseIsMatureEnough = (source, release, now = Date.now()) => {
+  const delayDays = normalizeUpdateDelayDays(source);
+  if (delayDays <= 0)
+    return true;
+  if (!release.publishedAt)
+    return true;
+  const publishedAt = new Date(release.publishedAt).getTime();
+  if (Number.isNaN(publishedAt))
+    return true;
+  return publishedAt <= now - delayDays * DAY_MS;
+};
+var releaseIsCompatible = (release) => {
+  var _a;
+  const minAppVersion = (_a = release.minAppVersion) == null ? void 0 : _a.trim();
+  if (!minAppVersion)
+    return true;
+  try {
+    return (0, import_obsidian12.requireApiVersion)(minAppVersion);
+  } catch (e) {
+    return true;
+  }
+};
+var sourceTargetIsMatureEnough = (source) => {
+  const delayDays = normalizeUpdateDelayDays(source);
+  if (delayDays <= 0)
+    return true;
+  const targetDate = parseReleaseDate(source.latestReleasePublishedAt || source.latestPublishedAt);
+  if (targetDate === null)
+    return true;
+  return targetDate <= Date.now() - delayDays * DAY_MS;
+};
+var findReleaseByTag = (versions, tag) => {
+  const cleaned = cleanReleaseTag(tag);
+  if (!cleaned)
+    return null;
+  const exactIndex = versions.findIndex((release) => cleanReleaseTag(release.version) === cleaned);
+  if (exactIndex >= 0)
+    return releaseToRef(versions[exactIndex], exactIndex);
+  const normalizedIndex = versions.findIndex((release) => releaseTagsMatch(release.version, cleaned));
+  return normalizedIndex >= 0 ? releaseToRef(versions[normalizedIndex], normalizedIndex) : null;
+};
+var pickSourceTargetRelease = (source, versions) => {
+  var _a;
+  if (source.mode === "frozen") {
+    const pinnedTag = cleanReleaseTag(source.frozenVersion) || cleanReleaseTag(source.latestReleaseTag) || cleanReleaseTag(source.latestVersion);
+    if (!pinnedTag)
+      return null;
+    return (_a = findReleaseByTag(versions, pinnedTag)) != null ? _a : {
+      tag: pinnedTag,
+      publishedAt: source.latestReleasePublishedAt || source.latestPublishedAt
+    };
+  }
+  const compatibleVersions = source.compatibilityMode === "all" ? versions : versions.filter((item) => releaseIsCompatible(item));
+  const candidates = source.includePrerelease ? compatibleVersions : compatibleVersions.filter((item) => !item.prerelease);
+  const githubLatest = candidates.find((item) => item.isGithubLatest);
+  const release = githubLatest && releaseIsMatureEnough(source, githubLatest) ? githubLatest : candidates.find((item) => releaseIsMatureEnough(source, item));
+  if (!release)
+    return null;
+  return releaseToRef(release, versions.indexOf(release));
+};
+var resolveInstalledSourceRelease = (source, versions, localVersion) => {
+  const candidates = [
+    source.installedReleaseTag,
+    localVersion,
+    source.localVersion
+  ].filter(Boolean);
+  for (const candidate of candidates) {
+    const release = findReleaseByTag(versions, candidate);
+    if (release)
+      return release;
+  }
+  const storedTag = cleanReleaseTag(source.installedReleaseTag);
+  if (storedTag) {
+    return {
+      tag: storedTag,
+      publishedAt: source.installedReleasePublishedAt
+    };
+  }
+  const fallbackTag = cleanReleaseTag(localVersion || source.localVersion);
+  return fallbackTag ? { tag: fallbackTag, publishedAt: source.installedReleasePublishedAt } : null;
+};
+var syncSourceReleaseCheck = (source, versions, localVersion) => {
+  const target = pickSourceTargetRelease(source, versions);
+  const installed = resolveInstalledSourceRelease(source, versions, localVersion);
+  source.localVersion = localVersion || source.localVersion || "";
+  source.latestReleaseTag = (target == null ? void 0 : target.tag) || "";
+  source.latestReleasePublishedAt = target == null ? void 0 : target.publishedAt;
+  source.latestReleaseIsGithubLatest = target == null ? void 0 : target.isGithubLatest;
+  source.latestVersion = (target == null ? void 0 : target.tag) || "";
+  source.latestPublishedAt = target == null ? void 0 : target.publishedAt;
+  if (installed == null ? void 0 : installed.tag)
+    source.installedReleaseTag = installed.tag;
+  if (installed == null ? void 0 : installed.publishedAt)
+    source.installedReleasePublishedAt = installed.publishedAt;
+  source.installedReleaseIsGithubLatest = installed == null ? void 0 : installed.isGithubLatest;
+  return { target, installed };
+};
+var markSourceInstalledRelease = (source, releaseTag, publishedAt, localVersion) => {
+  const tag = cleanReleaseTag(releaseTag);
+  if (tag)
+    source.installedReleaseTag = tag;
+  source.installedReleasePublishedAt = publishedAt || source.installedReleasePublishedAt;
+  if (releaseTagsMatch(tag, source.latestReleaseTag)) {
+    source.installedReleaseIsGithubLatest = source.latestReleaseIsGithubLatest;
+  }
+  source.localVersion = localVersion || source.localVersion || tag;
+};
+var compareVersionTags = (a = "0.0.0", b = "0.0.0") => {
+  const pa = a.replace(/^v/i, "").split(".").map(Number);
+  const pb = b.replace(/^v/i, "").split(".").map(Number);
+  const len = Math.max(pa.length, pb.length);
+  for (let i = 0; i < len; i++) {
+    const ai = Number.isFinite(pa[i]) ? pa[i] : 0;
+    const bi = Number.isFinite(pb[i]) ? pb[i] : 0;
+    if (ai > bi)
+      return 1;
+    if (ai < bi)
+      return -1;
+  }
+  return 0;
+};
+var sourceUsesReleaseUpdateCheck = (source) => source.updateCheckMode !== "version";
+var sourceHasVersionUpdate = (source) => {
+  const targetVersion = cleanReleaseTag(
+    source.mode === "frozen" ? source.frozenVersion || source.latestVersion || source.latestReleaseTag : source.latestVersion || source.latestReleaseTag
+  );
+  const localVersion = cleanReleaseTag(source.localVersion || source.installedReleaseTag);
+  if (!targetVersion || !localVersion)
+    return false;
+  if (!sourceTargetIsMatureEnough(source))
+    return false;
+  return source.mode === "frozen" ? !releaseTagsMatch(targetVersion, localVersion) : compareVersionTags(targetVersion, localVersion) > 0;
+};
+var sourceHasReleaseUpdate = (source) => {
+  const targetTag = source.mode === "frozen" ? cleanReleaseTag(source.frozenVersion || source.latestReleaseTag || source.latestVersion) : cleanReleaseTag(source.latestReleaseTag || source.latestVersion);
+  const installedTag = cleanReleaseTag(source.installedReleaseTag || source.localVersion);
+  if (!targetTag || !installedTag)
+    return false;
+  if (releaseTagsMatch(targetTag, installedTag))
+    return false;
+  if (!sourceTargetIsMatureEnough(source))
+    return false;
+  if (source.compatibilityMode !== "all" && source.installedReleaseIsGithubLatest && !source.latestReleaseIsGithubLatest)
+    return false;
+  if (source.mode === "frozen")
+    return true;
+  const targetDate = parseReleaseDate(source.latestReleasePublishedAt || source.latestPublishedAt);
+  const installedDate = parseReleaseDate(source.installedReleasePublishedAt);
+  if (targetDate !== null && installedDate !== null)
+    return targetDate > installedDate;
+  return true;
+};
+var sourceHasUpdate = (source) => sourceUsesReleaseUpdateCheck(source) ? sourceHasReleaseUpdate(source) : sourceHasVersionUpdate(source);
+
+// src/modal/update-modal.ts
+var UpdateModal = class extends import_obsidian13.Modal {
   constructor(app, manager, pluginId, versions, defaultVersion, repo) {
     super(app);
     this.selectedVersion = "";
@@ -3176,18 +3536,18 @@ var UpdateModal = class extends import_obsidian12.Modal {
     (_e = this.titleEl.parentElement) == null ? void 0 : _e.addClass("manager-container__header");
     contentEl.addClass("manager-item-container");
     contentEl.addClass("manager-version-picker__body");
-    const titleBar = new import_obsidian12.Setting(this.titleEl).setClass("manager-bar__title");
+    const titleBar = new import_obsidian13.Setting(this.titleEl).setClass("manager-bar__title");
     titleBar.settingEl.addClass("manager-version-picker__titlebar");
     titleBar.nameEl.empty();
     titleBar.descEl.empty();
     const titleWrap = titleBar.nameEl.createDiv("manager-version-picker__title");
     const titleIcon = titleWrap.createSpan({ cls: "manager-version-picker__title-icon" });
-    (0, import_obsidian12.setIcon)(titleIcon, "package-down");
+    (0, import_obsidian13.setIcon)(titleIcon, "package-down");
     const titleText = titleWrap.createDiv("manager-version-picker__title-text");
     titleText.createDiv({ cls: "manager-version-picker__eyebrow", text: t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u6807\u9898") });
     titleText.createDiv({ cls: "manager-version-picker__plugin-name", text: (manifest == null ? void 0 : manifest.name) || this.pluginId });
     titleBar.descEl.setText(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u8BF4\u660E"));
-    const closeButton = new import_obsidian12.ExtraButtonComponent(titleBar.controlEl);
+    const closeButton = new import_obsidian13.ExtraButtonComponent(titleBar.controlEl);
     closeButton.setIcon("x");
     closeButton.setTooltip(t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C"));
     const closeEl = getExtraButtonElement(closeButton);
@@ -3203,7 +3563,7 @@ var UpdateModal = class extends import_obsidian12.Modal {
     });
     const summaryStats = summary.createDiv("manager-version-picker__summary-stats");
     const countStat = summaryStats.createSpan({ cls: "manager-version-picker__summary-stat" });
-    (0, import_obsidian12.setIcon)(countStat.createSpan({ cls: "manager-version-picker__summary-stat-icon" }), "tags");
+    (0, import_obsidian13.setIcon)(countStat.createSpan({ cls: "manager-version-picker__summary-stat-icon" }), "tags");
     countStat.createSpan({ text: `${this.versions.length}` });
     this.versionListEl = page.createDiv("manager-version-picker__list");
     let versionList = [...this.versions];
@@ -3211,10 +3571,10 @@ var UpdateModal = class extends import_obsidian12.Modal {
       const loading = this.versionListEl.createDiv("manager-version-picker__empty");
       loading.setText(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u83B7\u53D6\u4E2D"));
       try {
-        versionList = await fetchReleaseVersions(this.manager, this.repo);
+        versionList = await fetchReleaseVersions(this.manager, this.repo, { includeManifest: true });
       } catch (e) {
         console.error("fetch versions in modal failed", e);
-        new import_obsidian12.Notice(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u83B7\u53D6\u5931\u8D25\u63D0\u793A"), 4e3);
+        new import_obsidian13.Notice(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u83B7\u53D6\u5931\u8D25\u63D0\u793A"), 4e3);
       } finally {
         loading.remove();
       }
@@ -3222,13 +3582,26 @@ var UpdateModal = class extends import_obsidian12.Modal {
     }
     const hasDefaultVersion = Boolean(this.defaultVersion && versionList.some((release) => release.version === this.defaultVersion));
     const hasLocalVersion = Boolean((manifest == null ? void 0 : manifest.version) && versionList.some((release) => release.version === manifest.version));
-    this.selectedVersion = hasDefaultVersion ? this.defaultVersion : hasLocalVersion ? manifest.version : (_g = (_f = versionList[0]) == null ? void 0 : _f.version) != null ? _g : "";
+    const updateOptions = this.manager.getPluginUpdateCheckOptions();
+    const target = this.repo ? pickSourceTargetRelease({
+      id: this.pluginId,
+      repo: this.repo,
+      type: "plugin",
+      mode: "latest",
+      includePrerelease: false,
+      updateCheckMode: updateOptions.updateCheckMode,
+      compatibilityMode: updateOptions.compatibilityMode,
+      updateDelayDays: updateOptions.updateDelayDays || void 0,
+      autoUpdate: false,
+      enabled: true
+    }, versionList) : null;
+    this.selectedVersion = hasDefaultVersion ? this.defaultVersion : (target == null ? void 0 : target.tag) || (hasLocalVersion ? manifest.version : (_g = (_f = versionList[0]) == null ? void 0 : _f.version) != null ? _g : "");
     summaryStats.empty();
     const releaseCount = summaryStats.createSpan({ cls: "manager-version-picker__summary-stat" });
-    (0, import_obsidian12.setIcon)(releaseCount.createSpan({ cls: "manager-version-picker__summary-stat-icon" }), "tags");
+    (0, import_obsidian13.setIcon)(releaseCount.createSpan({ cls: "manager-version-picker__summary-stat-icon" }), "tags");
     releaseCount.createSpan({ text: t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u7248\u672C\u6570\u91CF", { count: versionList.length }) });
     const currentStat = summaryStats.createSpan({ cls: "manager-version-picker__summary-stat" });
-    (0, import_obsidian12.setIcon)(currentStat.createSpan({ cls: "manager-version-picker__summary-stat-icon" }), "badge-check");
+    (0, import_obsidian13.setIcon)(currentStat.createSpan({ cls: "manager-version-picker__summary-stat-icon" }), "badge-check");
     currentStat.createSpan({ text: this.selectedVersion || t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u9ED8\u8BA4\u6700\u65B0") });
     if (versionList.length > 0 && this.versionListEl) {
       this.renderVersionList(versionList, (manifest == null ? void 0 : manifest.version) || "");
@@ -3236,7 +3609,7 @@ var UpdateModal = class extends import_obsidian12.Modal {
       const info = (_i = (_h = this.versionListEl) == null ? void 0 : _h.createDiv("manager-version-picker__empty")) != null ? _i : page.createDiv("manager-version-picker__empty");
       info.setText(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u65E0\u7248\u672C\u63D0\u793A"));
     }
-    const footer = new import_obsidian12.Setting(page);
+    const footer = new import_obsidian13.Setting(page);
     footer.settingEl.addClass("manager-version-picker__footer");
     footer.nameEl.empty();
     footer.descEl.empty();
@@ -3250,7 +3623,7 @@ var UpdateModal = class extends import_obsidian12.Modal {
         try {
           const ok = await this.manager.downloadUpdate(this.pluginId, this.selectedVersion);
           if (ok) {
-            new import_obsidian12.Notice(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u6210\u529F\u63D0\u793A"), 3e3);
+            new import_obsidian13.Notice(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u6210\u529F\u63D0\u793A"), 3e3);
             this.close();
           }
         } finally {
@@ -3280,17 +3653,28 @@ var UpdateModal = class extends import_obsidian12.Modal {
       if (release.version === localVersion) {
         title.createSpan({ cls: "manager-version-picker__badge", text: t("\u6765\u6E90_\u5F53\u524D") });
       }
+      if (release.isGithubLatest) {
+        title.createSpan({ cls: "manager-version-picker__badge is-latest", text: t("\u517C\u5BB9\u6027_GitHubLatest") });
+      }
       title.createSpan({
         cls: `manager-version-picker__badge ${release.prerelease ? "is-prerelease" : "is-stable"}`,
         text: t(release.prerelease ? "\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u9884\u53D1\u5E03" : "\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u6B63\u5F0F\u7248")
       });
+      if (release.minAppVersion) {
+        title.createSpan({
+          cls: `manager-version-picker__badge ${releaseIsCompatible(release) ? "is-compatible" : "is-incompatible"}`,
+          text: t(releaseIsCompatible(release) ? "\u517C\u5BB9\u6027_\u517C\u5BB9" : "\u517C\u5BB9\u6027_\u4E0D\u517C\u5BB9")
+        });
+      }
       const meta = main.createDiv("manager-version-picker__item-meta");
       if (release.name && release.name !== release.version)
         meta.createSpan({ text: release.name });
+      if (release.minAppVersion)
+        meta.createSpan({ text: t("\u517C\u5BB9\u6027_\u9700\u8981\u7248\u672C", { version: release.minAppVersion }) });
       if (release.publishedAt)
         meta.createSpan({ text: this.formatDate(release.publishedAt) });
       const check = item.createSpan({ cls: "manager-version-picker__item-check" });
-      (0, import_obsidian12.setIcon)(check, release.version === this.selectedVersion ? "check" : "circle");
+      (0, import_obsidian13.setIcon)(check, release.version === this.selectedVersion ? "check" : "circle");
       item.addEventListener("click", () => {
         var _a;
         this.selectedVersion = release.version;
@@ -3307,9 +3691,110 @@ var UpdateModal = class extends import_obsidian12.Modal {
   }
 };
 
+// src/modal/update-check-modal.ts
+var import_obsidian14 = require("obsidian");
+var normalizePluginUpdateDelayDays = (value) => {
+  const days = Math.floor(Number(value));
+  return Number.isFinite(days) && days > 0 ? days : 0;
+};
+var normalizePluginUpdateCheckMode = (value) => value === "version" ? "version" : "release";
+var normalizeReleaseCompatibilityMode = (value) => value === "all" ? "all" : "compatible";
+var openPluginUpdateCheckModal = (app, manager, initial) => new Promise((resolve) => {
+  new PluginUpdateCheckModal(app, manager, initial, resolve).open();
+});
+var PluginUpdateCheckModal = class extends import_obsidian14.Modal {
+  constructor(app, manager, initial, resolve) {
+    super(app);
+    this.manager = manager;
+    this.resolve = resolve;
+    this.resolved = false;
+    this.config = {
+      updateCheckMode: normalizePluginUpdateCheckMode(initial.updateCheckMode),
+      compatibilityMode: normalizeReleaseCompatibilityMode(initial.compatibilityMode),
+      updateDelayDays: normalizePluginUpdateDelayDays(initial.updateDelayDays)
+    };
+  }
+  onOpen() {
+    const { contentEl } = this;
+    const t = (key, vars) => this.manager.translator.t(key, vars);
+    contentEl.empty();
+    contentEl.addClass("manager-update-check-config");
+    this.modalEl.addClass("manager-update-check-config__modal");
+    const header = contentEl.createDiv("manager-update-check-config__header");
+    const icon = header.createSpan({ cls: "manager-update-check-config__icon" });
+    (0, import_obsidian14.setIcon)(icon, "rss");
+    const titleGroup = header.createDiv("manager-update-check-config__title-group");
+    titleGroup.createEl("h2", { cls: "manager-update-check-config__title", text: t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u6807\u9898") });
+    titleGroup.createDiv({ cls: "manager-update-check-config__desc", text: t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u8BF4\u660E") });
+    const body = contentEl.createDiv("manager-update-check-config__body");
+    new import_obsidian14.Setting(body).setName(t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u65B9\u5F0F_\u6807\u9898")).setDesc(t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u65B9\u5F0F_\u63CF\u8FF0")).addDropdown((dropdown) => {
+      dropdown.addOptions({
+        release: t("\u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F"),
+        version: t("\u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7")
+      });
+      dropdown.setValue(this.config.updateCheckMode);
+      dropdown.selectEl.setAttribute("aria-label", t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u65B9\u5F0F_\u6807\u9898"));
+      dropdown.onChange((value) => {
+        this.config.updateCheckMode = normalizePluginUpdateCheckMode(value);
+      });
+    });
+    new import_obsidian14.Setting(body).setName(t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u6807\u9898")).setDesc(t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u63CF\u8FF0")).addDropdown((dropdown) => {
+      dropdown.addOptions({
+        compatible: t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u517C\u5BB9\u4F18\u5148"),
+        all: t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u663E\u793A\u5168\u90E8")
+      });
+      dropdown.setValue(this.config.compatibilityMode);
+      dropdown.selectEl.setAttribute("aria-label", t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u6807\u9898"));
+      dropdown.onChange((value) => {
+        this.config.compatibilityMode = normalizeReleaseCompatibilityMode(value);
+      });
+    });
+    new import_obsidian14.Setting(body).setName(t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5EF6\u8FDF_\u6807\u9898")).setDesc(t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5EF6\u8FDF_\u63CF\u8FF0")).addText((text) => {
+      text.setValue(this.config.updateDelayDays > 0 ? String(this.config.updateDelayDays) : "0");
+      text.inputEl.type = "number";
+      text.inputEl.min = "0";
+      text.inputEl.step = "1";
+      text.inputEl.inputMode = "numeric";
+      text.inputEl.setAttribute("aria-label", t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5EF6\u8FDF_\u6807\u9898"));
+      text.onChange((value) => {
+        this.config.updateDelayDays = normalizePluginUpdateDelayDays(value);
+      });
+    });
+    const footer = new import_obsidian14.Setting(contentEl);
+    footer.settingEl.addClass("manager-update-check-config__footer");
+    footer.nameEl.empty();
+    footer.descEl.empty();
+    footer.addButton((button) => {
+      button.setButtonText(t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5F00\u59CB\u6309\u94AE"));
+      button.setCta();
+      button.buttonEl.setAttribute("aria-label", t("\u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5F00\u59CB\u6309\u94AE"));
+      button.onClick(() => this.submit());
+    }).addButton((button) => {
+      button.setButtonText(t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C"));
+      button.onClick(() => this.close());
+    });
+  }
+  onClose() {
+    this.contentEl.empty();
+    if (!this.resolved) {
+      this.resolved = true;
+      this.resolve(null);
+    }
+  }
+  submit() {
+    if (this.resolved)
+      return;
+    this.resolved = true;
+    this.config.updateDelayDays = normalizePluginUpdateDelayDays(this.config.updateDelayDays);
+    this.config.compatibilityMode = normalizeReleaseCompatibilityMode(this.config.compatibilityMode);
+    this.resolve({ ...this.config });
+    this.close();
+  }
+};
+
 // src/modal/ribbon-modal.ts
-var import_obsidian13 = require("obsidian");
-var RibbonModal = class extends import_obsidian13.Modal {
+var import_obsidian15 = require("obsidian");
+var RibbonModal = class extends import_obsidian15.Modal {
   constructor(app, manager) {
     super(app);
     this.renderToolbarInRoot = true;
@@ -3417,12 +3902,12 @@ var RibbonModal = class extends import_obsidian13.Modal {
     const icon = (_a = item.icon) == null ? void 0 : _a.trim();
     try {
       if (icon)
-        (0, import_obsidian13.setIcon)(iconEl, icon);
+        (0, import_obsidian15.setIcon)(iconEl, icon);
     } catch (e) {
     }
     if (!iconEl.querySelector("svg")) {
       iconEl.empty();
-      (0, import_obsidian13.setIcon)(iconEl, this.getRibbonFallbackIcon(item));
+      (0, import_obsidian15.setIcon)(iconEl, this.getRibbonFallbackIcon(item));
     }
   }
   display(targetEl, showToolbar = this.renderToolbarInRoot) {
@@ -3446,7 +3931,7 @@ var RibbonModal = class extends import_obsidian13.Modal {
       text: t("Ribbon_\u529F\u80FD\u7F16\u6392_\u8BF4\u660E")
     });
     const toolbarActions = toolbar.createDiv("manager-hidden-toolbar__actions");
-    const resetBtn = new import_obsidian13.ButtonComponent(toolbarActions);
+    const resetBtn = new import_obsidian15.ButtonComponent(toolbarActions);
     resetBtn.setIcon("rotate-ccw");
     resetBtn.setButtonText(t("\u901A\u7528_\u91CD\u7F6E_\u6587\u672C"));
     resetBtn.setTooltip(t("Ribbon_\u91CD\u7F6E_\u63D0\u793A"));
@@ -3465,7 +3950,7 @@ var RibbonModal = class extends import_obsidian13.Modal {
       return;
     }
     items.forEach((item, index) => {
-      const setting = new import_obsidian13.Setting(listContainer);
+      const setting = new import_obsidian15.Setting(listContainer);
       const itemEl = setting.settingEl;
       itemEl.addClass("draggable-item");
       itemEl.setAttr("data-index", index);
@@ -3493,7 +3978,7 @@ var RibbonModal = class extends import_obsidian13.Modal {
       });
       const controlBar = setting.controlEl.createDiv({ cls: "ribbon-manager-control-bar" });
       const visibilityDiv = controlBar.createDiv({ cls: "ribbon-manager-control-visibility" });
-      new import_obsidian13.ButtonComponent(visibilityDiv).setIcon(item.visible ? "eye" : "eye-off").setTooltip(item.visible ? this.manager.translator.t("Ribbon_\u9690\u85CF") : this.manager.translator.t("Ribbon_\u663E\u793A")).onClick(async () => {
+      new import_obsidian15.ButtonComponent(visibilityDiv).setIcon(item.visible ? "eye" : "eye-off").setTooltip(item.visible ? this.manager.translator.t("Ribbon_\u9690\u85CF") : this.manager.translator.t("Ribbon_\u663E\u793A")).onClick(async () => {
         const newValue = !item.visible;
         item.visible = newValue;
         await this.persistRibbonConfig();
@@ -3503,7 +3988,7 @@ var RibbonModal = class extends import_obsidian13.Modal {
         cls: "ribbon-manager-control-drag",
         attr: { role: "button", "aria-label": t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u62D6\u52A8\u6392\u5E8F") }
       });
-      (0, import_obsidian13.setIcon)(handle, "grip-vertical");
+      (0, import_obsidian15.setIcon)(handle, "grip-vertical");
       handle.setAttr("draggable", "true");
       handle.addEventListener("pointerdown", (e) => this.startDrag(itemEl, index, e));
       handle.addEventListener("dragstart", (e) => e.preventDefault());
@@ -3591,7 +4076,7 @@ var RibbonModal = class extends import_obsidian13.Modal {
 };
 
 // src/import-export.ts
-var import_obsidian14 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 var MANAGER_TRANSFER_SCHEMA = "better-plugins-manager.transfer/v1";
 var DEFAULT_TRANSFER_BUILD_OPTIONS = {
   plugins: true,
@@ -3676,7 +4161,7 @@ var getSafePackageFolderName = (name) => {
   return folder;
 };
 var normalizePackageRelativePath = (path) => {
-  const normalized = (0, import_obsidian14.normalizePath)((path || "").replace(/\\/g, "/"));
+  const normalized = (0, import_obsidian16.normalizePath)((path || "").replace(/\\/g, "/"));
   const segments = normalized.split("/").filter(Boolean);
   if (segments.length === 0)
     return "";
@@ -3685,17 +4170,17 @@ var normalizePackageRelativePath = (path) => {
   return segments.join("/");
 };
 var getPluginDir = (manager, pluginId) => {
-  return (0, import_obsidian14.normalizePath)(`${manager.app.vault.configDir}/plugins/${pluginId}`);
+  return (0, import_obsidian16.normalizePath)(`${manager.app.vault.configDir}/plugins/${pluginId}`);
 };
 var getPluginConfigPath = (manager, pluginId) => {
-  return (0, import_obsidian14.normalizePath)(`${getPluginDir(manager, pluginId)}/data.json`);
+  return (0, import_obsidian16.normalizePath)(`${getPluginDir(manager, pluginId)}/data.json`);
 };
 var getThemeDir = (manager, themeFolder) => {
-  return (0, import_obsidian14.normalizePath)(`${manager.app.vault.configDir}/themes/${themeFolder}`);
+  return (0, import_obsidian16.normalizePath)(`${manager.app.vault.configDir}/themes/${themeFolder}`);
 };
 var getRelativePackageFilePath = (baseDir, filePath) => {
-  const normalizedDir = (0, import_obsidian14.normalizePath)(baseDir);
-  const normalizedFile = (0, import_obsidian14.normalizePath)(filePath);
+  const normalizedDir = (0, import_obsidian16.normalizePath)(baseDir);
+  const normalizedFile = (0, import_obsidian16.normalizePath)(filePath);
   const prefix = `${normalizedDir}/`;
   return normalizedFile.startsWith(prefix) ? normalizedFile.slice(prefix.length) : "";
 };
@@ -3705,7 +4190,7 @@ var shouldSkipPackageExportFolder = (folderPath) => {
 };
 var ensureFolderExists = async (manager, folder) => {
   const adapter = manager.app.vault.adapter;
-  const normalized = (0, import_obsidian14.normalizePath)(folder);
+  const normalized = (0, import_obsidian16.normalizePath)(folder);
   const parts = normalized.split("/").filter(Boolean);
   let current = "";
   for (const part of parts) {
@@ -3716,7 +4201,7 @@ var ensureFolderExists = async (manager, folder) => {
   }
 };
 var ensureParentFolderExists = async (manager, filePath) => {
-  const parts = (0, import_obsidian14.normalizePath)(filePath).split("/");
+  const parts = (0, import_obsidian16.normalizePath)(filePath).split("/");
   parts.pop();
   if (parts.length > 0) {
     await ensureFolderExists(manager, parts.join("/"));
@@ -3810,7 +4295,7 @@ var writePluginFileBundle = async (manager, plugin) => {
     const relativePath = normalizePackageRelativePath(file.path);
     if (!relativePath)
       throw new Error(`Unsafe plugin file path: ${file.path}`);
-    const targetPath = (0, import_obsidian14.normalizePath)(`${pluginDir}/${relativePath}`);
+    const targetPath = (0, import_obsidian16.normalizePath)(`${pluginDir}/${relativePath}`);
     if (!targetPath.startsWith(`${pluginDir}/`))
       throw new Error(`Unsafe plugin file path: ${file.path}`);
     await ensureParentFolderExists(manager, targetPath);
@@ -3863,7 +4348,7 @@ var writeThemeFileBundle = async (manager, theme) => {
     const relativePath = normalizePackageRelativePath(file.path);
     if (!relativePath)
       throw new Error(`Unsafe theme file path: ${file.path}`);
-    const targetPath = (0, import_obsidian14.normalizePath)(`${themeDir}/${relativePath}`);
+    const targetPath = (0, import_obsidian16.normalizePath)(`${themeDir}/${relativePath}`);
     if (!targetPath.startsWith(`${themeDir}/`))
       throw new Error(`Unsafe theme file path: ${file.path}`);
     await ensureParentFolderExists(manager, targetPath);
@@ -3873,7 +4358,7 @@ var writeThemeFileBundle = async (manager, theme) => {
 var getInstalledThemeNames = async (manager) => {
   const names = /* @__PURE__ */ new Set();
   const adapter = manager.app.vault.adapter;
-  const themesDir = (0, import_obsidian14.normalizePath)(`${manager.app.vault.configDir}/themes`);
+  const themesDir = (0, import_obsidian16.normalizePath)(`${manager.app.vault.configDir}/themes`);
   if (!await adapter.exists(themesDir))
     return names;
   try {
@@ -3881,7 +4366,7 @@ var getInstalledThemeNames = async (manager) => {
     for (const folder of listed.folders || []) {
       const folderName = folder.split("/").pop() || folder;
       names.add(folderName);
-      const manifest = await readJsonIfExists(manager, (0, import_obsidian14.normalizePath)(`${folder}/manifest.json`));
+      const manifest = await readJsonIfExists(manager, (0, import_obsidian16.normalizePath)(`${folder}/manifest.json`));
       if (manifest == null ? void 0 : manifest.name)
         names.add(manifest.name);
     }
@@ -3892,7 +4377,7 @@ var getInstalledThemeNames = async (manager) => {
 };
 var collectInstalledThemes = async (manager, selectedThemeNames, includeFiles = false, includeSource = false) => {
   const adapter = manager.app.vault.adapter;
-  const themesDir = (0, import_obsidian14.normalizePath)(`${manager.app.vault.configDir}/themes`);
+  const themesDir = (0, import_obsidian16.normalizePath)(`${manager.app.vault.configDir}/themes`);
   const activeTheme = getActiveThemeName(manager);
   const themes = [];
   const sources = (manager.settings.BETA_SOURCES || []).filter((source) => source.type === "theme");
@@ -3902,7 +4387,7 @@ var collectInstalledThemes = async (manager, selectedThemeNames, includeFiles = 
       const listed = await adapter.list(themesDir);
       for (const folder of listed.folders || []) {
         const folderName = folder.split("/").pop() || folder;
-        const manifest = await readJsonIfExists(manager, (0, import_obsidian14.normalizePath)(`${folder}/manifest.json`));
+        const manifest = await readJsonIfExists(manager, (0, import_obsidian16.normalizePath)(`${folder}/manifest.json`));
         const name = (manifest == null ? void 0 : manifest.name) || folderName;
         let source = sources.find((item) => item.id === name || item.id === folderName);
         if (!source && (manifest == null ? void 0 : manifest.version)) {
@@ -3937,6 +4422,7 @@ var collectInstalledThemes = async (manager, selectedThemeNames, includeFiles = 
             frozenVersion: source.frozenVersion,
             includePrerelease: source.includePrerelease,
             updateCheckMode: source.updateCheckMode,
+            updateDelayDays: source.updateDelayDays,
             autoUpdate: source.autoUpdate,
             localVersion: source.localVersion,
             latestVersion: source.latestVersion,
@@ -3988,6 +4474,7 @@ var buildTransferPlugin = async (manager, record, manifest, includeSource = fals
       frozenVersion: source.frozenVersion,
       includePrerelease: source.includePrerelease,
       updateCheckMode: source.updateCheckMode,
+      updateDelayDays: source.updateDelayDays,
       autoUpdate: source.autoUpdate,
       localVersion: source.localVersion,
       latestVersion: source.latestVersion,
@@ -4260,7 +4747,7 @@ var setPluginEnabled = async (manager, pluginId, enabled) => {
   }
 };
 var applyManagerTransferPackage = async (manager, transferPackage, options, onProgress) => {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p;
   const result = {
     installedPlugins: 0,
     updatedPlugins: 0,
@@ -4504,21 +4991,22 @@ var applyManagerTransferPackage = async (manager, transferPackage, options, onPr
           frozenVersion: (_b = theme.source) == null ? void 0 : _b.frozenVersion,
           includePrerelease: (_c = theme.source) == null ? void 0 : _c.includePrerelease,
           updateCheckMode: (_d = theme.source) == null ? void 0 : _d.updateCheckMode,
-          autoUpdate: Boolean((_e = theme.source) == null ? void 0 : _e.autoUpdate),
+          updateDelayDays: (_e = theme.source) == null ? void 0 : _e.updateDelayDays,
+          autoUpdate: Boolean((_f = theme.source) == null ? void 0 : _f.autoUpdate),
           enabled: true,
-          localVersion: ((_f = theme.source) == null ? void 0 : _f.localVersion) || theme.version,
-          latestVersion: ((_g = theme.source) == null ? void 0 : _g.latestVersion) || theme.version,
-          latestPublishedAt: (_h = theme.source) == null ? void 0 : _h.latestPublishedAt,
-          installedReleaseTag: (_i = theme.source) == null ? void 0 : _i.installedReleaseTag,
-          installedReleasePublishedAt: (_j = theme.source) == null ? void 0 : _j.installedReleasePublishedAt,
-          latestReleaseTag: (_k = theme.source) == null ? void 0 : _k.latestReleaseTag,
-          latestReleasePublishedAt: (_l = theme.source) == null ? void 0 : _l.latestReleasePublishedAt,
-          installedAt: (_m = theme.source) == null ? void 0 : _m.installedAt,
+          localVersion: ((_g = theme.source) == null ? void 0 : _g.localVersion) || theme.version,
+          latestVersion: ((_h = theme.source) == null ? void 0 : _h.latestVersion) || theme.version,
+          latestPublishedAt: (_i = theme.source) == null ? void 0 : _i.latestPublishedAt,
+          installedReleaseTag: (_j = theme.source) == null ? void 0 : _j.installedReleaseTag,
+          installedReleasePublishedAt: (_k = theme.source) == null ? void 0 : _k.installedReleasePublishedAt,
+          latestReleaseTag: (_l = theme.source) == null ? void 0 : _l.latestReleaseTag,
+          latestReleasePublishedAt: (_m = theme.source) == null ? void 0 : _m.latestReleasePublishedAt,
+          installedAt: (_n = theme.source) == null ? void 0 : _n.installedAt,
           lastChecked: Date.now()
         }]);
       }
       if (theme.active && options.applyActiveTheme) {
-        (_o = (_n = manager.app.customCss) == null ? void 0 : _n.setTheme) == null ? void 0 : _o.call(_n, theme.name);
+        (_p = (_o = manager.app.customCss) == null ? void 0 : _o.setTheme) == null ? void 0 : _p.call(_o, theme.name);
       }
       if (wasInstalled)
         result.updatedThemes++;
@@ -4570,146 +5058,8 @@ var applyManagerTransferPackage = async (manager, transferPackage, options, onPr
   return result;
 };
 
-// src/source-release.ts
-var cleanReleaseTag = (tag) => (tag || "").trim();
-var normalizeReleaseTag = (tag) => {
-  const cleaned = cleanReleaseTag(tag).replace(/^refs\/tags\//i, "");
-  return cleaned.replace(/^v(?=\d)/i, "").toLowerCase();
-};
-var releaseTagsMatch = (a, b) => {
-  const left = cleanReleaseTag(a);
-  const right = cleanReleaseTag(b);
-  if (!left || !right)
-    return false;
-  if (left === right)
-    return true;
-  const normalizedLeft = normalizeReleaseTag(left);
-  const normalizedRight = normalizeReleaseTag(right);
-  return Boolean(normalizedLeft && normalizedRight && normalizedLeft === normalizedRight);
-};
-var releaseToRef = (release, index) => ({
-  tag: release.version,
-  publishedAt: release.publishedAt,
-  prerelease: release.prerelease,
-  index
-});
-var findReleaseByTag = (versions, tag) => {
-  const cleaned = cleanReleaseTag(tag);
-  if (!cleaned)
-    return null;
-  const exactIndex = versions.findIndex((release) => cleanReleaseTag(release.version) === cleaned);
-  if (exactIndex >= 0)
-    return releaseToRef(versions[exactIndex], exactIndex);
-  const normalizedIndex = versions.findIndex((release) => releaseTagsMatch(release.version, cleaned));
-  return normalizedIndex >= 0 ? releaseToRef(versions[normalizedIndex], normalizedIndex) : null;
-};
-var pickSourceTargetRelease = (source, versions) => {
-  var _a;
-  if (source.mode === "frozen") {
-    const pinnedTag = cleanReleaseTag(source.frozenVersion) || cleanReleaseTag(source.latestReleaseTag) || cleanReleaseTag(source.latestVersion);
-    if (!pinnedTag)
-      return null;
-    return (_a = findReleaseByTag(versions, pinnedTag)) != null ? _a : {
-      tag: pinnedTag,
-      publishedAt: source.latestReleasePublishedAt || source.latestPublishedAt
-    };
-  }
-  const release = (source.includePrerelease ? versions : versions.filter((item) => !item.prerelease))[0];
-  if (!release)
-    return null;
-  return releaseToRef(release, versions.indexOf(release));
-};
-var resolveInstalledSourceRelease = (source, versions, localVersion) => {
-  const candidates = [
-    source.installedReleaseTag,
-    localVersion,
-    source.localVersion
-  ].filter(Boolean);
-  for (const candidate of candidates) {
-    const release = findReleaseByTag(versions, candidate);
-    if (release)
-      return release;
-  }
-  const storedTag = cleanReleaseTag(source.installedReleaseTag);
-  if (storedTag) {
-    return {
-      tag: storedTag,
-      publishedAt: source.installedReleasePublishedAt
-    };
-  }
-  const fallbackTag = cleanReleaseTag(localVersion || source.localVersion);
-  return fallbackTag ? { tag: fallbackTag, publishedAt: source.installedReleasePublishedAt } : null;
-};
-var syncSourceReleaseCheck = (source, versions, localVersion) => {
-  const target = pickSourceTargetRelease(source, versions);
-  const installed = resolveInstalledSourceRelease(source, versions, localVersion);
-  source.localVersion = localVersion || source.localVersion || "";
-  source.latestReleaseTag = (target == null ? void 0 : target.tag) || "";
-  source.latestReleasePublishedAt = target == null ? void 0 : target.publishedAt;
-  source.latestVersion = (target == null ? void 0 : target.tag) || "";
-  source.latestPublishedAt = target == null ? void 0 : target.publishedAt;
-  if (installed == null ? void 0 : installed.tag)
-    source.installedReleaseTag = installed.tag;
-  if (installed == null ? void 0 : installed.publishedAt)
-    source.installedReleasePublishedAt = installed.publishedAt;
-  return { target, installed };
-};
-var markSourceInstalledRelease = (source, releaseTag, publishedAt, localVersion) => {
-  const tag = cleanReleaseTag(releaseTag);
-  if (tag)
-    source.installedReleaseTag = tag;
-  source.installedReleasePublishedAt = publishedAt || source.installedReleasePublishedAt;
-  source.localVersion = localVersion || source.localVersion || tag;
-};
-var parseReleaseDate = (value) => {
-  if (!value)
-    return null;
-  const time = new Date(value).getTime();
-  return Number.isNaN(time) ? null : time;
-};
-var compareVersionTags = (a = "0.0.0", b = "0.0.0") => {
-  const pa = a.replace(/^v/i, "").split(".").map(Number);
-  const pb = b.replace(/^v/i, "").split(".").map(Number);
-  const len = Math.max(pa.length, pb.length);
-  for (let i = 0; i < len; i++) {
-    const ai = Number.isFinite(pa[i]) ? pa[i] : 0;
-    const bi = Number.isFinite(pb[i]) ? pb[i] : 0;
-    if (ai > bi)
-      return 1;
-    if (ai < bi)
-      return -1;
-  }
-  return 0;
-};
-var sourceUsesReleaseUpdateCheck = (source) => source.updateCheckMode !== "version";
-var sourceHasVersionUpdate = (source) => {
-  const targetVersion = cleanReleaseTag(
-    source.mode === "frozen" ? source.frozenVersion || source.latestVersion || source.latestReleaseTag : source.latestVersion || source.latestReleaseTag
-  );
-  const localVersion = cleanReleaseTag(source.localVersion || source.installedReleaseTag);
-  if (!targetVersion || !localVersion)
-    return false;
-  return source.mode === "frozen" ? !releaseTagsMatch(targetVersion, localVersion) : compareVersionTags(targetVersion, localVersion) > 0;
-};
-var sourceHasReleaseUpdate = (source) => {
-  const targetTag = source.mode === "frozen" ? cleanReleaseTag(source.frozenVersion || source.latestReleaseTag || source.latestVersion) : cleanReleaseTag(source.latestReleaseTag || source.latestVersion);
-  const installedTag = cleanReleaseTag(source.installedReleaseTag || source.localVersion);
-  if (!targetTag || !installedTag)
-    return false;
-  if (releaseTagsMatch(targetTag, installedTag))
-    return false;
-  if (source.mode === "frozen")
-    return true;
-  const targetDate = parseReleaseDate(source.latestReleasePublishedAt || source.latestPublishedAt);
-  const installedDate = parseReleaseDate(source.installedReleasePublishedAt);
-  if (targetDate !== null && installedDate !== null)
-    return targetDate > installedDate;
-  return true;
-};
-var sourceHasUpdate = (source) => sourceUsesReleaseUpdateCheck(source) ? sourceHasReleaseUpdate(source) : sourceHasVersionUpdate(source);
-
 // src/vault-share.ts
-var import_obsidian15 = require("obsidian");
+var import_obsidian17 = require("obsidian");
 var UNAVAILABLE_ERROR = "Shared vault filesystem features are unavailable in the community-store build.";
 var cleanInputPath = (value) => {
   const trimmed = (value || "").trim();
@@ -4744,14 +5094,14 @@ var setSharedVaultTheme = async (_manager, _vaultPathInput, _themeName) => {
   throw new Error(UNAVAILABLE_ERROR);
 };
 var forgetSharedVault = async (_manager, _vaultPathInput) => void 0;
-var normalizeSharedVaultInputPath = (inputPath) => (0, import_obsidian15.normalizePath)(cleanInputPath(inputPath));
+var normalizeSharedVaultInputPath = (inputPath) => (0, import_obsidian17.normalizePath)(cleanInputPath(inputPath));
 
 // src/modal/manager-modal.ts
 var SHARED_VAULTS_ENABLED = false;
 var SUPPORT_QQ_GROUP_URL = "https://qm.qq.com/cgi-bin/qm/qr?k=kHTS0iC1FC5igTXbdbKzff6_tc54mOF5&jump_from=webapi&authKey=AoSkriW+nDeDzBPqBl9jcpbAYkPXN2QRbrMh0hFbvMrGbqZyRAbJwaD6JKbOy4Nx";
 var SUPPORT_QQ_GROUP_LABEL = "\u52A0\u5165 QQ \u7FA4";
 var SUPPORT_QQ_GROUP_TOOLTIP = "\u52A0\u5165 QQ \u7FA4\u54A8\u8BE2\u95EE\u9898";
-var ManagerModal = class extends import_obsidian16.Modal {
+var ManagerModal = class extends import_obsidian18.Modal {
   constructor(app, manager) {
     super(app);
     // [本地][变量] 展示插件列表
@@ -4794,6 +5144,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.searchIndex = /* @__PURE__ */ new Map();
     this.pluginCardControllers = /* @__PURE__ */ new Map();
     this.singleStartedPluginIds = /* @__PURE__ */ new Set();
+    this.expandedSourceConfigKeys = /* @__PURE__ */ new Set();
     this.renderBatchSize = 80;
     this.desktopPages = SHARED_VAULTS_ENABLED ? ["plugins", "install", "sources", "transfer", "vaults", "ribbon", "troubleshoot"] : ["plugins", "install", "sources", "transfer", "ribbon", "troubleshoot"];
     // 编辑模式
@@ -4882,12 +5233,16 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.appPlugins = this.app.plugins;
     this.manager = manager;
     this.settings = manager.settings;
-    this.basePath = (0, import_obsidian17.normalizePath)(`${this.app.vault.configDir}`);
+    this.basePath = (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}`);
     manager.synchronizePlugins(
       Object.values(this.appPlugins.manifests).filter(
         (pm) => pm.id !== manager.manifest.id
       )
     );
+  }
+  get pageEl() {
+    var _a;
+    return (_a = this.modalPageEl) != null ? _a : this.contentEl;
   }
   nextRenderGeneration() {
     return ++this.renderGeneration;
@@ -4955,13 +5310,13 @@ var ManagerModal = class extends import_obsidian16.Modal {
     return layout === "two-column" ? layout : "list";
   }
   syncPluginOverviewLayoutClass() {
-    this.contentEl.removeClass("manager-plugin-overview--list");
-    this.contentEl.removeClass("manager-plugin-overview--two-column");
-    this.contentEl.addClass(`manager-plugin-overview--${this.getPluginOverviewLayout()}`);
+    this.pageEl.removeClass("manager-plugin-overview--list");
+    this.pageEl.removeClass("manager-plugin-overview--two-column");
+    this.pageEl.addClass(`manager-plugin-overview--${this.getPluginOverviewLayout()}`);
   }
   clearPluginOverviewLayoutClass() {
-    this.contentEl.removeClass("manager-plugin-overview--list");
-    this.contentEl.removeClass("manager-plugin-overview--two-column");
+    this.pageEl.removeClass("manager-plugin-overview--list");
+    this.pageEl.removeClass("manager-plugin-overview--two-column");
   }
   getPluginUpdateCount(statusMap) {
     return Object.values(statusMap || this.manager.updateStatus || {}).filter((status) => status == null ? void 0 : status.hasUpdate).length;
@@ -5340,7 +5695,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const summaryEl = buttonEl.createSpan({ cls: "manager-multiselect-filter__summary" });
     const countEl = buttonEl.createSpan({ cls: "manager-multiselect-filter__count" });
     const chevronEl = buttonEl.createSpan({ cls: "manager-multiselect-filter__chevron" });
-    (0, import_obsidian16.setIcon)(chevronEl, "chevron-down");
+    (0, import_obsidian18.setIcon)(chevronEl, "chevron-down");
     const menuEl = rootEl.createDiv("manager-multiselect-filter__menu");
     menuEl.setAttribute("role", "listbox");
     menuEl.setAttribute("aria-multiselectable", "true");
@@ -5397,7 +5752,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       allOption.setAttribute("aria-selected", `${selectedValues.length === 0}`);
       allOption.toggleClass("is-selected", selectedValues.length === 0);
       const allCheck = allOption.createSpan({ cls: "manager-multiselect-filter__check" });
-      (0, import_obsidian16.setIcon)(allCheck, selectedValues.length === 0 ? "check" : "circle");
+      (0, import_obsidian18.setIcon)(allCheck, selectedValues.length === 0 ? "check" : "circle");
       allOption.createSpan({ cls: "manager-multiselect-filter__option-label", text: allLabel });
       allOption.addEventListener("click", () => {
         selectedValues = [];
@@ -5414,7 +5769,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         optionEl.setAttribute("aria-selected", `${selected}`);
         optionEl.toggleClass("is-selected", selected);
         const check = optionEl.createSpan({ cls: "manager-multiselect-filter__check" });
-        (0, import_obsidian16.setIcon)(check, selected ? "square-check-big" : "square");
+        (0, import_obsidian18.setIcon)(check, selected ? "square-check-big" : "square");
         optionEl.createSpan({ cls: "manager-multiselect-filter__option-label", text: label });
         optionEl.addEventListener("click", () => {
           selectedValues = selected ? selectedValues.filter((item) => item !== value) : [...selectedValues, value];
@@ -5478,14 +5833,27 @@ var ManagerModal = class extends import_obsidian16.Modal {
   async runPluginUpdateCheck(trigger) {
     if (this.isCheckingPluginUpdates)
       return;
+    this.isCheckingPluginUpdates = true;
+    const config = await openPluginUpdateCheckModal(this.app, this.manager, this.manager.getPluginUpdateCheckOptions());
+    if (!config) {
+      this.isCheckingPluginUpdates = false;
+      return;
+    }
+    try {
+      await this.manager.setPluginUpdateCheckOptions(config);
+    } catch (error) {
+      this.isCheckingPluginUpdates = false;
+      console.error("[BPM] save update check config failed", error);
+      new import_obsidian18.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25"));
+      return;
+    }
     const label = this.manager.translator.t("\u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0");
     const busyLabel = this.manager.translator.t("\u901A\u77E5_\u68C0\u6D4B\u66F4\u65B0\u4E2D\u6587\u6848");
-    const buttonEl = trigger instanceof import_obsidian16.ButtonComponent ? trigger.buttonEl : trigger;
+    const buttonEl = trigger instanceof import_obsidian18.ButtonComponent ? trigger.buttonEl : trigger;
     const wasDisabled = buttonEl instanceof HTMLButtonElement ? buttonEl.disabled : false;
-    this.isCheckingPluginUpdates = true;
     buttonEl == null ? void 0 : buttonEl.addClass("is-loading");
     buttonEl == null ? void 0 : buttonEl.setAttribute("aria-busy", "true");
-    if (trigger instanceof import_obsidian16.ButtonComponent) {
+    if (trigger instanceof import_obsidian18.ButtonComponent) {
       trigger.setDisabled(true);
       trigger.setIcon("loader");
       trigger.setTooltip(busyLabel);
@@ -5494,15 +5862,18 @@ var ManagerModal = class extends import_obsidian16.Modal {
       buttonEl.setAttribute("title", busyLabel);
     }
     try {
-      const status = await this.manager.checkUpdatesWithNotice();
-      this.refreshVisiblePluginCards();
+      const status = await this.manager.checkUpdatesWithNotice({
+        ...config,
+        onChecked: (pluginId) => this.refreshCheckedPluginUpdateUi(pluginId)
+      });
+      this.updateStats();
       const count = this.getPluginUpdateCount(status);
-      new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210").replace("{count}", `${count}`));
+      new import_obsidian18.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5B8C\u6210").replace("{count}", `${count}`));
     } catch (error) {
       console.error("\u68C0\u67E5\u66F4\u65B0\u65F6\u51FA\u9519:", error);
-      new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25"));
     } finally {
-      if (trigger instanceof import_obsidian16.ButtonComponent) {
+      if (trigger instanceof import_obsidian18.ButtonComponent) {
         trigger.setIcon("rss");
         trigger.setTooltip(label);
         trigger.setDisabled(wasDisabled);
@@ -5519,7 +5890,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     return getExtraButtonElement(button);
   }
   async openPluginVersionList(pluginId, updateInfo) {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e;
     const t = (k, vars) => this.manager.translator.t(k, vars);
     const progress = this.showInlineProgress(t("\u901A\u77E5_\u83B7\u53D6\u7248\u672C\u4E2D\u6587\u6848"), pluginId);
     progress.update(0, 1, pluginId);
@@ -5534,27 +5905,41 @@ var ManagerModal = class extends import_obsidian16.Modal {
         }
       }
       if (!repo) {
-        new import_obsidian16.Notice(t("\u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A"));
+        new import_obsidian18.Notice(t("\u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A"));
         return;
       }
-      const versions = await fetchReleaseVersions(this.manager, repo);
+      const versions = await fetchReleaseVersions(this.manager, repo, { includeManifest: true });
       if (!status)
         status = {};
       status.repo = repo;
       status.versions = versions;
-      const stableVersion = (_c = versions.find((release) => !release.prerelease)) == null ? void 0 : _c.version;
-      status.remoteVersion = stableVersion || ((_d = versions[0]) == null ? void 0 : _d.version) || status.remoteVersion || null;
+      status.error = "";
+      status.message = "";
+      const updateOptions = this.manager.getPluginUpdateCheckOptions();
+      const target = pickSourceTargetRelease({
+        id: pluginId,
+        repo,
+        type: "plugin",
+        mode: "latest",
+        includePrerelease: false,
+        updateCheckMode: updateOptions.updateCheckMode,
+        compatibilityMode: updateOptions.compatibilityMode,
+        updateDelayDays: updateOptions.updateDelayDays || void 0,
+        autoUpdate: false,
+        enabled: true
+      }, versions);
+      status.remoteVersion = (target == null ? void 0 : target.tag) || status.remoteVersion || null;
       this.manager.updateStatus[pluginId] = {
-        ...(_f = (_e = this.manager.updateStatus) == null ? void 0 : _e[pluginId]) != null ? _f : {},
+        ...(_d = (_c = this.manager.updateStatus) == null ? void 0 : _c[pluginId]) != null ? _d : {},
         ...status
       };
       progress.update(1, 1, pluginId);
       this.refreshSinglePluginUpdateUi(pluginId);
       this.updateStats();
-      new UpdateModal(this.app, this.manager, pluginId, versions, (_g = status.remoteVersion) != null ? _g : null, repo).open();
+      new UpdateModal(this.app, this.manager, pluginId, versions, (_e = status.remoteVersion) != null ? _e : null, repo).open();
     } catch (e) {
       console.error("[BPM] fetch remote versions failed", e);
-      new import_obsidian16.Notice(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u83B7\u53D6\u5931\u8D25\u63D0\u793A"), 4e3);
+      new import_obsidian18.Notice(t("\u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u83B7\u53D6\u5931\u8D25\u63D0\u793A"), 4e3);
     } finally {
       progress.hide();
     }
@@ -5565,9 +5950,11 @@ var ManagerModal = class extends import_obsidian16.Modal {
   addPluginDownloadButton(controlEl, pluginId, updateInfo, prepend = false) {
     if (!updateInfo.remoteVersion)
       return;
+    if (this.getPluginUpdateProblem(updateInfo))
+      return;
     if (!this.isMainPageActionOnItem("downloadUpdate"))
       return;
-    const downloadBtn = new import_obsidian16.ExtraButtonComponent(controlEl);
+    const downloadBtn = new import_obsidian18.ExtraButtonComponent(controlEl);
     downloadBtn.setIcon("download");
     downloadBtn.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u4E0B\u8F7D\u66F4\u65B0_\u63CF\u8FF0"));
     downloadBtn.onClick(() => this.openPluginUpdateModal(pluginId, updateInfo));
@@ -5577,18 +5964,39 @@ var ManagerModal = class extends import_obsidian16.Modal {
     if (prepend && downloadEl)
       controlEl.prepend(downloadEl);
   }
+  getPluginUpdateProblem(updateInfo) {
+    return (updateInfo == null ? void 0 : updateInfo.error) || (updateInfo == null ? void 0 : updateInfo.message) || "";
+  }
+  appendPluginUpdateProblem(versionWrap, updateInfo) {
+    const message = this.getPluginUpdateProblem(updateInfo);
+    if (!message)
+      return;
+    const isError = Boolean(updateInfo.error);
+    const label = this.manager.translator.t(isError ? "\u66F4\u65B0_\u68C0\u6D4B\u9519\u8BEF\u6807\u7B7E" : "\u66F4\u65B0_\u65E0\u6CD5\u68C0\u6D4B\u6807\u7B7E");
+    const problem = createSpan({
+      text: label,
+      cls: ["manager-item__name-update-problem", isError ? "is-error" : "is-warning"]
+    });
+    problem.setAttribute("role", "status");
+    problem.setAttribute("title", this.manager.translator.t("\u66F4\u65B0_\u68C0\u6D4B\u9519\u8BEF\u63D0\u793A", { message }));
+    versionWrap.appendChild(problem);
+  }
   refreshSinglePluginUpdateUi(pluginId) {
     var _a;
-    const card = Array.from(this.contentEl.querySelectorAll(".manager-plugin-card[data-plugin-id]")).find((el) => el.getAttribute("data-plugin-id") === pluginId);
+    const card = Array.from(this.pageEl.querySelectorAll(".manager-plugin-card[data-plugin-id]")).find((el) => el.getAttribute("data-plugin-id") === pluginId);
     if (!card)
       return;
     const updateInfo = (_a = this.manager.updateStatus) == null ? void 0 : _a[pluginId];
+    const updateProblem = this.getPluginUpdateProblem(updateInfo);
     const hasUpdate = Boolean(updateInfo == null ? void 0 : updateInfo.hasUpdate);
-    const hasRemoteVersion = Boolean((updateInfo == null ? void 0 : updateInfo.hasUpdate) && updateInfo.remoteVersion);
+    const hasRemoteVersion = Boolean((updateInfo == null ? void 0 : updateInfo.hasUpdate) && updateInfo.remoteVersion && !updateProblem);
     card.toggleClass("has-update", hasUpdate);
+    card.toggleClass("has-update-problem", Boolean(updateProblem));
     const versionWrap = card.querySelector(".manager-item__versions");
-    versionWrap == null ? void 0 : versionWrap.querySelectorAll(".manager-item__name-remote-arrow, .manager-item__name-remote").forEach((el) => el.remove());
-    if (versionWrap && hasRemoteVersion && (updateInfo == null ? void 0 : updateInfo.remoteVersion)) {
+    versionWrap == null ? void 0 : versionWrap.querySelectorAll(".manager-item__name-remote-arrow, .manager-item__name-remote, .manager-item__name-update-problem").forEach((el) => el.remove());
+    if (versionWrap && updateInfo && updateProblem) {
+      this.appendPluginUpdateProblem(versionWrap, updateInfo);
+    } else if (versionWrap && hasRemoteVersion && (updateInfo == null ? void 0 : updateInfo.remoteVersion)) {
       const arrow = createSpan({ text: "\u2192", cls: ["manager-item__name-remote-arrow"] });
       const remote = createSpan({ text: updateInfo.remoteVersion, cls: ["manager-item__name-remote"] });
       versionWrap.appendChild(arrow);
@@ -5596,7 +6004,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     }
     const controlEl = card.querySelector(".manager-plugin-card__actions");
     controlEl == null ? void 0 : controlEl.querySelectorAll(".manager-plugin-card__download-update").forEach((el) => el.remove());
-    if (controlEl && hasRemoteVersion && updateInfo && !this.editorMode && !import_obsidian16.Platform.isMobileApp) {
+    if (controlEl && hasRemoteVersion && updateInfo && !this.editorMode && !import_obsidian18.Platform.isMobileApp) {
       this.addPluginDownloadButton(controlEl, pluginId, updateInfo, true);
     }
     const manifest = this.getUniquePluginManifests().find((plugin) => plugin.id === pluginId);
@@ -5611,7 +6019,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   }
   findPluginCard(pluginId) {
     var _a;
-    return (_a = Array.from(this.contentEl.querySelectorAll(".manager-plugin-card[data-plugin-id]")).find((el) => el.getAttribute("data-plugin-id") === pluginId)) != null ? _a : null;
+    return (_a = Array.from(this.pageEl.querySelectorAll(".manager-plugin-card[data-plugin-id]")).find((el) => el.getAttribute("data-plugin-id") === pluginId)) != null ? _a : null;
   }
   getPluginManifest(pluginId) {
     var _a, _b;
@@ -5711,7 +6119,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     }
     if (cardIcon) {
       cardIcon.empty();
-      (0, import_obsidian16.setIcon)(cardIcon, isEnabled ? "plug-zap" : "plug");
+      (0, import_obsidian18.setIcon)(cardIcon, isEnabled ? "plug-zap" : "plug");
     }
     (_d = controller == null ? void 0 : controller.syncToggleValue) == null ? void 0 : _d.call(controller, isSelf ? true : isEnabled);
     (_e = controller == null ? void 0 : controller.toggleSwitch) == null ? void 0 : _e.setDisabled(isSelf);
@@ -5779,7 +6187,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         noteEl.addEventListener("click", () => {
           new NoteModal(this.app, this.manager, managerPlugin, this).open();
         });
-        (0, import_obsidian16.setIcon)(noteEl, "notebook-pen");
+        (0, import_obsidian18.setIcon)(noteEl, "notebook-pen");
         if (versionWrap)
           versionWrap.insertAdjacentElement("afterend", noteEl);
         else
@@ -5838,13 +6246,24 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.updateBulkBar();
     this.updateStats();
   }
+  refreshCheckedPluginUpdateUi(pluginId) {
+    if (this.activePage !== "plugins" || this.installMode)
+      return;
+    const statusValues = this.getStatusFilterValues();
+    const statusChangesCardMembership = statusValues.includes("has-update") || this.getStatusFilterOperator() === "not-contains";
+    if (statusChangesCardMembership) {
+      this.refreshPluginCard(pluginId, { allowReload: true });
+      return;
+    }
+    this.refreshSinglePluginUpdateUi(pluginId);
+  }
   refreshVisiblePluginCards() {
     const statusValues = this.getStatusFilterValues();
     if (statusValues.includes("has-update") || this.getStatusFilterOperator() === "not-contains") {
       void this.reloadShowData();
       return;
     }
-    const visiblePluginIds = Array.from(this.contentEl.querySelectorAll(".manager-plugin-card[data-plugin-id]")).map((card) => card.getAttribute("data-plugin-id")).filter((pluginId) => Boolean(pluginId));
+    const visiblePluginIds = Array.from(this.pageEl.querySelectorAll(".manager-plugin-card[data-plugin-id]")).map((card) => card.getAttribute("data-plugin-id")).filter((pluginId) => Boolean(pluginId));
     visiblePluginIds.forEach((pluginId) => this.refreshPluginCard(pluginId));
     this.updateStats();
   }
@@ -5861,7 +6280,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   createConfiguredItemAction(controlEl, actionId) {
     if (!this.isMainPageActionOnItem(actionId))
       return null;
-    return new import_obsidian16.ExtraButtonComponent(controlEl);
+    return new import_obsidian18.ExtraButtonComponent(controlEl);
   }
   resolvePluginRepoAction(pluginId, repo) {
     if (repo) {
@@ -5880,7 +6299,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   }
   handleMissingRepo(pluginId) {
     const isBpmInstall = this.manager.settings.BPM_INSTALLED.includes(pluginId);
-    new import_obsidian16.Notice(isBpmInstall ? this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u672A\u8BB0\u5F55_\u63D0\u793A") : this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A"));
+    new import_obsidian18.Notice(isBpmInstall ? this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u672A\u8BB0\u5F55_\u63D0\u793A") : this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A"));
   }
   async openPluginRepo(pluginId, repo) {
     const resolvedRepo = repo != null ? repo : await this.manager.repoResolver.resolveRepo(pluginId);
@@ -5900,39 +6319,39 @@ var ManagerModal = class extends import_obsidian16.Modal {
       void this.reloadShowData();
       command_default(this.app, this.manager);
       this.manager.synchronizePlugins(Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manager.manifest.id));
-      new import_obsidian16.Notice(this.manager.translator.t("\u5378\u8F7D_\u901A\u77E5_\u4E00"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u5378\u8F7D_\u901A\u77E5_\u4E00"));
     }, { id: plugin.id, name: plugin.name }).open();
   }
   async clearPluginConfig(plugin, isSelf) {
     if (isSelf) {
-      new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u81EA\u8EAB\u62E6\u622A"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u81EA\u8EAB\u62E6\u622A"));
       return;
     }
-    const configPath = (0, import_obsidian17.normalizePath)(`${this.app.vault.configDir}/plugins/${plugin.id}/data.json`);
+    const configPath = (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/plugins/${plugin.id}/data.json`);
     const adapter = this.app.vault.adapter;
     try {
       if (!await adapter.exists(configPath)) {
-        new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u65E0\u914D\u7F6E"));
+        new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u65E0\u914D\u7F6E"));
         return;
       }
       const pluginName = plugin.name || plugin.id;
       if (!await confirmWithModal(this.app, this.manager, this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u786E\u8BA4", { name: pluginName })))
         return;
       await adapter.remove(configPath);
-      new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u6210\u529F"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u6210\u529F"));
     } catch (error) {
       console.error("[BPM] clear plugin config failed", plugin.id, error);
-      new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u5931\u8D25"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u6E05\u7A7A\u914D\u7F6E_\u5931\u8D25"));
     }
   }
   async singleStartPlugin(plugin) {
-    new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u5355\u6B21\u542F\u52A8\u4E2D_\u63D0\u793A"));
+    new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u5355\u6B21\u542F\u52A8\u4E2D_\u63D0\u793A"));
     await this.appPlugins.enablePlugin(plugin.id);
     this.singleStartedPluginIds.add(plugin.id);
     this.refreshPluginCard(plugin.id, { allowReload: true });
   }
   async restartPlugin(plugin) {
-    new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u542F\u4E2D_\u63D0\u793A"));
+    new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u542F\u4E2D_\u63D0\u793A"));
     await this.appPlugins.disablePluginAndSave(plugin.id);
     await this.appPlugins.enablePluginAndSave(plugin.id);
     this.singleStartedPluginIds.delete(plugin.id);
@@ -5947,7 +6366,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     await this.manager.savePluginAndExport(plugin.id);
     this.singleStartedPluginIds.delete(plugin.id);
     command_default(this.app, this.manager);
-    new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u542F\u7528BPM\u5FFD\u7565\u63D2\u4EF6\u4E2D_\u63D0\u793A"));
+    new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u542F\u7528BPM\u5FFD\u7565\u63D2\u4EF6\u4E2D_\u63D0\u793A"));
     await this.reloadShowData();
   }
   togglePluginHidden(pluginId) {
@@ -5984,7 +6403,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   }
   copyPluginId(pluginId) {
     void navigator.clipboard.writeText(pluginId);
-    new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
+    new import_obsidian18.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
   }
   async openPluginMarket() {
     await this.appSetting.open();
@@ -6000,16 +6419,16 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const progress = this.showInlineProgress(this.manager.translator.t("\u901A\u77E5_\u68C0\u6D4B\u66F4\u65B0\u4E2D\u6587\u6848"), pluginId);
     progress.update(0, 1, pluginId);
     try {
-      const status = await this.manager.checkUpdateForPlugin(pluginId);
+      const status = await this.manager.checkUpdateForPlugin(pluginId, this.manager.getPluginUpdateCheckOptions());
       progress.update(1, 1, pluginId);
       this.refreshSinglePluginUpdateUi(pluginId);
       this.updateStats();
       if (status == null ? void 0 : status.error) {
-        new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25"));
+        new import_obsidian18.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25"));
       }
     } catch (error) {
       console.error("\u68C0\u67E5\u5355\u4E2A\u63D2\u4EF6\u66F4\u65B0\u65F6\u51FA\u9519:", error);
-      new import_obsidian16.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25"));
     } finally {
       progress.hide();
     }
@@ -6020,42 +6439,6 @@ var ManagerModal = class extends import_obsidian16.Modal {
       return Boolean((_a = this.settings.Plugins.find((plugin) => plugin.id === pluginId)) == null ? void 0 : _a.enabled);
     }
     return this.isPluginEnabledForDisplay(pluginId);
-  }
-  getBulkToggleTarget() {
-    const targets = this.displayPlugins.filter((plugin) => plugin.id !== this.manager.manifest.id);
-    if (targets.length === 0)
-      return true;
-    return !targets.every((plugin) => this.isManagedPluginEnabled(plugin.id));
-  }
-  async setDisplayedPluginsEnabled(targetEnabled) {
-    for (const plugin of this.displayPlugins) {
-      if (plugin.id === this.manager.manifest.id)
-        continue;
-      const managerPlugin = this.settings.Plugins.find((item) => item.id === plugin.id);
-      if (!managerPlugin)
-        continue;
-      const isEnabled = this.isManagedPluginEnabled(plugin.id);
-      if (isEnabled === targetEnabled)
-        continue;
-      if (this.settings.DELAY) {
-        managerPlugin.enabled = targetEnabled;
-        if (targetEnabled) {
-          await this.appPlugins.enablePlugin(plugin.id);
-        } else {
-          await this.appPlugins.disablePlugin(plugin.id);
-        }
-      } else if (targetEnabled) {
-        managerPlugin.enabled = true;
-        await this.appPlugins.enablePluginAndSave(plugin.id);
-      } else {
-        managerPlugin.enabled = false;
-        await this.appPlugins.disablePluginAndSave(plugin.id);
-      }
-      this.singleStartedPluginIds.delete(plugin.id);
-      await this.manager.savePluginAndExport(plugin.id);
-    }
-    command_default(this.app, this.manager);
-    await this.reloadShowData();
   }
   getSelectedManagerPlugins() {
     return this.settings.Plugins.filter((plugin) => this.bulkSelectedPluginIds.has(plugin.id));
@@ -6083,7 +6466,29 @@ var ManagerModal = class extends import_obsidian16.Modal {
       this.bulkSelectedPluginIds.clear();
     this.applyEditingStyle();
     this.renderContent();
-    if (import_obsidian16.Platform.isMobileApp)
+    if (import_obsidian18.Platform.isMobileApp)
+      this.showHeadMobile();
+  }
+  async setEditorMode(value) {
+    if (value && this.activePage !== "plugins")
+      return;
+    if (this.editorMode === value) {
+      this.applyEditingStyle();
+      this.syncPageChrome();
+      return;
+    }
+    this.editorMode = value;
+    if (value && this.bulkEditMode) {
+      this.bulkEditMode = false;
+      this.bulkSelectedPluginIds.clear();
+    }
+    this.applyEditingStyle();
+    if (!value) {
+      await this.refreshFilterOptions(true);
+    } else {
+      this.renderContent();
+    }
+    if (import_obsidian18.Platform.isMobileApp)
       this.showHeadMobile();
   }
   toggleBulkPluginSelection(pluginId, selected) {
@@ -6111,7 +6516,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     button.setAttribute("title", label);
     const iconEl = button.createSpan({ cls: "manager-bulk-bar__button-icon" });
     iconEl.setAttribute("aria-hidden", "true");
-    (0, import_obsidian16.setIcon)(iconEl, icon);
+    (0, import_obsidian18.setIcon)(iconEl, icon);
     button.createSpan({ cls: "manager-bulk-bar__button-label", text: label });
     button.addEventListener("click", onClick);
     this.bindLongPressTooltip(button, label);
@@ -6119,7 +6524,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   }
   showBulkGroupMenu(event) {
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    const menu = new import_obsidian16.Menu();
+    const menu = new import_obsidian18.Menu();
     menu.addItem((item) => item.setTitle(t("\u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5206\u7EC4")).setIcon("folder-x").onClick(() => {
       void this.applyBulkGroup("");
     }));
@@ -6134,7 +6539,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   }
   showBulkTagMenu(event, mode) {
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    const menu = new import_obsidian16.Menu();
+    const menu = new import_obsidian18.Menu();
     const tags = this.settings.TAGS.filter((tag) => tag.id !== BPM_TAG_ID);
     if (mode === "remove") {
       menu.addItem((item) => item.setTitle(t("\u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E")).setIcon("tags").onClick(() => {
@@ -6155,7 +6560,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   }
   showBulkDelayMenu(event) {
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    const menu = new import_obsidian16.Menu();
+    const menu = new import_obsidian18.Menu();
     menu.addItem((item) => item.setTitle(t("\u901A\u7528_\u65E0\u5EF6\u8FDF_\u6587\u672C")).setIcon("timer-off").onClick(() => {
       void this.applyBulkDelay("");
     }));
@@ -6170,16 +6575,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   }
   showBulkMoreMenu(event) {
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    const selectedCount = this.getBulkSelectedCount();
-    const disabled = selectedCount === 0;
-    const menu = new import_obsidian16.Menu();
-    menu.addItem((item) => item.setTitle(t("\u901A\u7528_\u542F\u7528_\u6587\u672C")).setIcon("power").setDisabled(disabled).onClick(() => {
-      void this.applyBulkEnabled(true);
-    }));
-    menu.addItem((item) => item.setTitle(t("\u901A\u7528_\u7981\u7528_\u6587\u672C")).setIcon("power-off").setDisabled(disabled).onClick(() => {
-      void this.applyBulkEnabled(false);
-    }));
-    menu.addSeparator();
+    const menu = new import_obsidian18.Menu();
     menu.addItem((item) => item.setTitle(t("\u6279\u91CF\u7F16\u8F91_\u5168\u9009\u5F53\u524D\u5217\u8868")).setIcon("list-checks").onClick(() => this.selectDisplayedPlugins()));
     menu.addItem((item) => item.setTitle(t("\u6279\u91CF\u7F16\u8F91_\u6E05\u7A7A\u9009\u62E9")).setIcon("x").setDisabled(this.bulkSelectedPluginIds.size === 0).onClick(() => this.clearBulkSelection()));
     menu.showAtMouseEvent(event);
@@ -6195,12 +6591,18 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const bar = container.createDiv("manager-bulk-bar");
     const summary = bar.createDiv("manager-bulk-bar__summary");
     const summaryIcon = summary.createSpan({ cls: "manager-bulk-bar__summary-icon" });
-    (0, import_obsidian16.setIcon)(summaryIcon, "square-check-big");
+    (0, import_obsidian18.setIcon)(summaryIcon, "square-check-big");
     const text = summary.createDiv("manager-bulk-bar__summary-text");
     text.createSpan({ cls: "manager-bulk-bar__title", text: t("\u6279\u91CF\u7F16\u8F91_\u6807\u9898") });
     text.createSpan({ cls: "manager-bulk-bar__count", text: t("\u6279\u91CF\u7F16\u8F91_\u5DF2\u9009\u62E9\u6570\u91CF", { count: selectedCount, total: displayedCount }) });
     const actions = bar.createDiv("manager-bulk-bar__actions");
     this.createBulkActionButton(actions, "list-checks", t("\u6279\u91CF\u7F16\u8F91_\u5168\u9009\u5F53\u524D\u5217\u8868"), () => this.selectDisplayedPlugins(), displayedCount === 0);
+    this.createBulkActionButton(actions, "power", t("\u901A\u7528_\u542F\u7528_\u6587\u672C"), () => {
+      void this.applyBulkEnabled(true);
+    }, disabled);
+    this.createBulkActionButton(actions, "power-off", t("\u901A\u7528_\u7981\u7528_\u6587\u672C"), () => {
+      void this.applyBulkEnabled(false);
+    }, disabled);
     this.createBulkActionButton(actions, "folder-tree", t("\u6279\u91CF\u7F16\u8F91_\u8BBE\u7F6E\u5206\u7EC4"), (event) => this.showBulkGroupMenu(event), disabled);
     this.createBulkActionButton(actions, "tag", t("\u6279\u91CF\u7F16\u8F91_\u6DFB\u52A0\u6807\u7B7E"), (event) => this.showBulkTagMenu(event, "add"), disabled);
     this.createBulkActionButton(actions, "tag-x", t("\u6279\u91CF\u7F16\u8F91_\u79FB\u9664\u6807\u7B7E"), (event) => this.showBulkTagMenu(event, "remove"), disabled);
@@ -6209,6 +6611,32 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.createBulkActionButton(actions, "more-horizontal", t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"), (event) => this.showBulkMoreMenu(event));
     this.createBulkActionButton(actions, "x", t("\u901A\u7528_\u5B8C\u6210_\u6587\u672C"), () => this.setBulkEditMode(false));
   }
+  renderEditorBar(container) {
+    if (!this.editorMode)
+      return;
+    const t = (k, vars) => this.manager.translator.t(k, vars);
+    const canEditLayout = this.shouldRenderPluginLayoutSeparators();
+    const bar = container.createDiv("manager-bulk-bar manager-editor-bar");
+    const summary = bar.createDiv("manager-bulk-bar__summary");
+    const summaryIcon = summary.createSpan({ cls: "manager-bulk-bar__summary-icon" });
+    (0, import_obsidian18.setIcon)(summaryIcon, "pen-line");
+    const text = summary.createDiv("manager-bulk-bar__summary-text");
+    text.createSpan({ cls: "manager-bulk-bar__title", text: t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u6807\u9898") });
+    const actions = bar.createDiv("manager-bulk-bar__actions");
+    if (canEditLayout) {
+      this.createBulkActionButton(actions, "separator-horizontal", t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6DFB\u52A0\u5206\u5272\u7EBF"), () => {
+        void this.addPluginLayoutSeparator();
+      });
+      this.createBulkActionButton(actions, "rotate-ccw", t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6309\u540D\u79F0\u91CD\u7F6E"), async () => {
+        if (!await confirmWithModal(this.app, this.manager, t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
+          return;
+        await this.resetPluginLayout();
+      });
+    }
+    this.createBulkActionButton(actions, "x", t("\u901A\u7528_\u5B8C\u6210\u7F16\u8F91_\u6587\u672C"), () => {
+      void this.setEditorMode(false);
+    });
+  }
   updateBulkBar() {
     if (!this.bulkBarHostEl || !this.bulkBarHostEl.isConnected)
       return;
@@ -6216,7 +6644,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.renderBulkBar(this.bulkBarHostEl);
   }
   refreshBulkSelectionUi() {
-    this.contentEl.querySelectorAll(".manager-plugin-card[data-plugin-id]").forEach((card) => {
+    this.pageEl.querySelectorAll(".manager-plugin-card[data-plugin-id]").forEach((card) => {
       const pluginId = card.getAttribute("data-plugin-id") || "";
       const selected = this.bulkSelectedPluginIds.has(pluginId);
       card.toggleClass("is-bulk-selected", selected);
@@ -6227,18 +6655,18 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.updateBulkBar();
   }
   syncPluginEmptyState() {
-    const existing = this.contentEl.querySelector(".manager-plugin-page__empty");
-    const hasCards = Boolean(this.contentEl.querySelector(".manager-plugin-card[data-plugin-id]"));
+    const existing = this.pageEl.querySelector(".manager-plugin-page__empty");
+    const hasCards = Boolean(this.pageEl.querySelector(".manager-plugin-card[data-plugin-id]"));
     if (hasCards) {
       existing == null ? void 0 : existing.remove();
       return;
     }
     if (existing)
       return;
-    const empty = this.contentEl.createDiv("bpm-empty-state manager-plugin-page__empty");
+    const empty = this.pageEl.createDiv("bpm-empty-state manager-plugin-page__empty");
     empty.setAttribute("role", "status");
     const icon = empty.createDiv("bpm-empty-state__icon");
-    (0, import_obsidian16.setIcon)(icon, "search-x");
+    (0, import_obsidian18.setIcon)(icon, "search-x");
     empty.createDiv({ cls: "bpm-empty-state__title", text: this.manager.translator.t("\u7BA1\u7406\u5668_\u6682\u65E0\u5339\u914D\u63D2\u4EF6") });
     empty.createDiv({ cls: "bpm-empty-state__text", text: this.manager.translator.t("\u7BA1\u7406\u5668_\u6682\u65E0\u5339\u914D\u63D2\u4EF6_\u8BF4\u660E") });
   }
@@ -6281,7 +6709,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
   async applyBulkDelay(delayId) {
     const plugins = this.getSelectedManagerPlugins().filter((plugin) => !plugin.tags.includes(BPM_IGNORE_TAG));
     if (plugins.length === 0) {
-      new import_obsidian16.Notice(this.manager.translator.t("\u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6"));
       return;
     }
     plugins.forEach((plugin) => {
@@ -6295,16 +6723,23 @@ var ManagerModal = class extends import_obsidian16.Modal {
     await this.manager.saveSettings();
     command_default(this.app, this.manager);
     await this.refreshFilterOptions(true);
-    new import_obsidian16.Notice(this.manager.translator.t(messageKey, { count }));
+    new import_obsidian18.Notice(this.manager.translator.t(messageKey, { count }));
   }
   async applyBulkEnabled(targetEnabled) {
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    const plugins = this.getSelectedManagerPlugins().filter((plugin) => plugin.id !== this.manager.manifest.id && !plugin.tags.includes(BPM_IGNORE_TAG));
+    const selectedPlugins = this.getSelectedManagerPlugins();
+    const plugins = selectedPlugins.filter((plugin) => plugin.id !== this.manager.manifest.id && !plugin.tags.includes(BPM_IGNORE_TAG));
     if (plugins.length === 0) {
-      new import_obsidian16.Notice(t("\u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6"));
+      new import_obsidian18.Notice(t("\u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6"));
       return;
     }
-    if (!await confirmWithModal(this.app, this.manager, t(targetEnabled ? "\u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4" : "\u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4", { count: plugins.length })))
+    if (!await confirmBulkStatusChange(this.app, this.manager, {
+      targetEnabled,
+      selectedCount: selectedPlugins.length,
+      actionableCount: plugins.length,
+      skippedCount: Math.max(0, selectedPlugins.length - plugins.length),
+      pluginNames: plugins.map((plugin) => plugin.name || plugin.id)
+    }))
       return;
     const progress = this.showInlineProgress(t("\u7BA1\u7406\u5668_\u5E94\u7528\u66F4\u6539\u4E2D_\u63D0\u793A"));
     let processed = 0;
@@ -6332,17 +6767,11 @@ var ManagerModal = class extends import_obsidian16.Modal {
     await this.manager.saveSettings();
     command_default(this.app, this.manager);
     await this.reloadShowData();
-    new import_obsidian16.Notice(t("\u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u72B6\u6001", { count: plugins.length }));
-  }
-  runDisplayedPluginsToggle() {
-    const targetEnabled = this.getBulkToggleTarget();
-    new DisableModal(this.app, this.manager, () => {
-      void this.setDisplayedPluginsEnabled(targetEnabled);
-    }).open();
+    new import_obsidian18.Notice(t("\u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u72B6\u6001", { count: plugins.length }));
   }
   showInlineProgress(text, subText) {
     const baseText = subText ? `${text} ${subText}` : text;
-    const notice = new import_obsidian16.Notice(baseText, 0);
+    const notice = new import_obsidian18.Notice(baseText, 0);
     return {
       update: (processed, total = 1, current) => {
         notice.setMessage(`${text} ${Math.min(processed, total)}/${total}${current ? ` \xB7 ${current}` : ""}`);
@@ -6387,25 +6816,33 @@ var ManagerModal = class extends import_obsidian16.Modal {
       return;
     this.modalContainer = modalEl;
     modalEl.addClass("manager-container");
-    if (import_obsidian16.Platform.isMobileApp)
+    modalEl.addClass("manager-container--main");
+    if (import_obsidian18.Platform.isMobileApp)
       modalEl.addClass("manager-container--mobile");
-    if (!this.settings.CENTER && !import_obsidian16.Platform.isMobileApp)
+    if (!this.settings.CENTER && !import_obsidian18.Platform.isMobileApp)
       modalEl.addClass("manager-container__top");
     if (this.editorMode)
       modalEl.addClass("manager-container--editing");
     (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
     this.titleEl.empty();
-    (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
-    this.contentEl.addClass("manager-item-container");
-    if (import_obsidian16.Platform.isMobileApp) {
+    (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__native-header");
+    this.contentEl.empty();
+    this.contentEl.addClass("manager-modal-shell-host");
+    this.contentEl.removeClass("manager-item-container");
+    const shell2 = this.contentEl.createDiv("manager-modal-shell");
+    const chromeEl = shell2.createDiv("manager-modal-chrome");
+    this.modalChromeEl = chromeEl;
+    this.modalPageEl = shell2.createDiv("manager-modal-page manager-item-container");
+    if (import_obsidian18.Platform.isMobileApp) {
       this.showHeadMobile();
       return;
     }
-    const titleBar = this.titleEl.createDiv("manager-header");
+    chromeEl.empty();
+    const titleBar = chromeEl.createDiv("manager-header");
     const identity = titleBar.createDiv("manager-header__identity");
     const mark = identity.createDiv("manager-header__mark");
     mark.setAttribute("aria-hidden", "true");
-    (0, import_obsidian16.setIcon)(mark, "blocks");
+    (0, import_obsidian18.setIcon)(mark, "blocks");
     const titleGroup = identity.createDiv("manager-header__title-group");
     titleGroup.createDiv({ cls: "manager-header__eyebrow", text: "BPM" });
     titleGroup.createEl("h2", {
@@ -6414,17 +6851,19 @@ var ManagerModal = class extends import_obsidian16.Modal {
     });
     this.footEl = titleBar.createDiv("manager-food manager-header__stats");
     this.updateStats();
-    const actionWrapper = this.titleEl.createDiv("manager-section manager-section--actions");
+    const actionWrapper = chromeEl.createDiv("manager-section manager-section--actions");
     this.desktopActionWrapper = actionWrapper;
     const actionContent = actionWrapper.createDiv("manager-section__content");
     actionContent.addClass("manager-section__content--actions");
     const toolbar = actionContent.createDiv("manager-toolbar");
     const tabs = toolbar.createDiv("manager-toolbar__tabs");
     tabs.setAttribute("role", "tablist");
+    tabs.setAttribute("data-slot", "tabs-list");
     const createTab = (page, label, icon, tooltip) => {
       const tab = tabs.createEl("button", { cls: "manager-toolbar__tab" });
       tab.type = "button";
       tab.setAttribute("role", "tab");
+      tab.setAttribute("data-slot", "tabs-trigger");
       tab.setAttribute("aria-label", label);
       if (tooltip) {
         tab.setAttribute("title", tooltip);
@@ -6433,7 +6872,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       tab.dataset.page = page;
       const iconEl = tab.createSpan({ cls: "manager-toolbar__tab-icon" });
       iconEl.setAttribute("aria-hidden", "true");
-      (0, import_obsidian16.setIcon)(iconEl, icon);
+      (0, import_obsidian18.setIcon)(iconEl, icon);
       tab.createSpan({ cls: "manager-toolbar__tab-label", text: label });
       tab.addEventListener("click", () => this.setDesktopPage(page));
       return tab;
@@ -6446,14 +6885,14 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.ribbonTabEl = this.isRibbonManagerEnabled() ? createTab("ribbon", t("\u7BA1\u7406\u5668_Tab_\u529F\u80FD\u7F16\u6392"), "grip-vertical", t("Ribbon_\u529F\u80FD\u7F16\u6392_\u8BF4\u660E")) : void 0;
     this.troubleshootTabEl = createTab("troubleshoot", t("\u6392\u67E5_Tab_\u77ED\u6807\u9898"), "search-check");
     const tools = toolbar.createDiv("manager-toolbar__tools");
-    const actionBar = new import_obsidian16.Setting(tools).setClass("manager-bar__action").setName("");
+    const actionBar = new import_obsidian18.Setting(tools).setClass("manager-bar__action").setName("");
     const markTool = (btn, scope, order) => {
       btn.buttonEl.addClass("manager-tool");
       btn.buttonEl.addClass(`manager-tool--${scope}`);
       if (order !== void 0)
         btn.buttonEl.style.setProperty("--manager-tool-order", `${order}`);
     };
-    const bulkEditButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const bulkEditButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(bulkEditButton, "plugin", 20);
     bulkEditButton.setIcon(this.bulkEditMode ? "square-check-big" : "list-plus");
     bulkEditButton.setTooltip(t("\u6279\u91CF\u7F16\u8F91_\u5165\u53E3"));
@@ -6464,18 +6903,10 @@ var ManagerModal = class extends import_obsidian16.Modal {
     bulkEditButton.onClick(() => {
       this.setBulkEditMode(!this.bulkEditMode);
     });
-    const updateButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const updateButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(updateButton, "plugin", 10);
     this.preparePluginUpdateButton(updateButton);
-    const toggleAllButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
-    markTool(toggleAllButton, "plugin", 30);
-    toggleAllButton.setIcon("list-checks");
-    toggleAllButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u5168\u9009\u53D6\u6D88_\u63CF\u8FF0"));
-    this.bindLongPressTooltip(toggleAllButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u5168\u9009\u53D6\u6D88_\u63CF\u8FF0"));
-    toggleAllButton.onClick(() => {
-      this.runDisplayedPluginsToggle();
-    });
-    const reloadButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const reloadButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(reloadButton, "plugin", 40);
     reloadButton.setIcon("refresh-ccw");
     reloadButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0"));
@@ -6485,7 +6916,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         return;
       this.reloadingManifests = true;
       reloadButton.setDisabled(true);
-      const notice = new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5F00\u59CB\u63D0\u793A"), 0);
+      const notice = new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5F00\u59CB\u63D0\u793A"), 0);
       await new Promise((r) => window.setTimeout(r, 50));
       try {
         await this.appPlugins.loadManifests();
@@ -6498,42 +6929,29 @@ var ManagerModal = class extends import_obsidian16.Modal {
         await this.reloadShowData();
       } catch (e) {
         console.error("[BPM] reload manifests failed", e);
-        new import_obsidian16.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5931\u8D25\u63D0\u793A"), 4e3);
+        new import_obsidian18.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5931\u8D25\u63D0\u793A"), 4e3);
       } finally {
         notice.hide();
         reloadButton.setDisabled(false);
         this.reloadingManifests = false;
       }
     });
-    const editorButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
-    markTool(editorButton, "plugin", 50);
+    const editorButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
+    markTool(editorButton, "plugin", 30);
     if (this.editorMode) {
       editorButton.setIcon("pen-off");
     } else {
       editorButton.setIcon("pen");
     }
     editorButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
+    editorButton.buttonEl.classList.toggle("is-active", this.editorMode);
+    this.editorButtonEl = editorButton.buttonEl;
     this.bindLongPressTooltip(editorButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
-    editorButton.onClick(async () => {
-      this.editorMode = !this.editorMode;
-      if (this.editorMode && this.bulkEditMode) {
-        this.bulkEditMode = false;
-        this.bulkSelectedPluginIds.clear();
-      }
-      if (this.editorMode) {
-        editorButton.setIcon("pen-off");
-      } else {
-        editorButton.setIcon("pen");
-      }
-      this.applyEditingStyle();
-      if (!this.editorMode) {
-        await this.refreshFilterOptions(true);
-      } else {
-        this.renderContent();
-      }
+    editorButton.onClick(() => {
+      void this.setEditorMode(!this.editorMode);
     });
     if (this.isRibbonManagerEnabled()) {
-      const ribbonResetButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+      const ribbonResetButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
       markTool(ribbonResetButton, "ribbon", 10);
       ribbonResetButton.setIcon("rotate-ccw");
       ribbonResetButton.setTooltip(t("Ribbon_\u91CD\u7F6E_\u63D0\u793A"));
@@ -6551,7 +6969,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         await this.ribbonPage.resetRibbonLayout();
       });
     }
-    const addSeparatorButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const addSeparatorButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(addSeparatorButton, "layout", 60);
     addSeparatorButton.setIcon("separator-horizontal");
     addSeparatorButton.setTooltip(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6DFB\u52A0\u5206\u5272\u7EBF"));
@@ -6560,7 +6978,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     addSeparatorButton.onClick(async () => {
       await this.addPluginLayoutSeparator();
     });
-    const hiddenResetButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const hiddenResetButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(hiddenResetButton, "layout", 61);
     hiddenResetButton.setIcon("rotate-ccw");
     hiddenResetButton.setTooltip(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6309\u540D\u79F0\u91CD\u7F6E"));
@@ -6571,7 +6989,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         return;
       await this.resetPluginLayout();
     });
-    const githubButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const githubButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(githubButton, "resource", 120);
     githubButton.setIcon("github");
     githubButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0"));
@@ -6579,7 +6997,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     githubButton.onClick(() => {
       window.open("https://github.com/eondrcode/obsidian-manager");
     });
-    const tutorialButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const tutorialButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(tutorialButton, "resource", 110);
     tutorialButton.setIcon("book-open");
     tutorialButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0"));
@@ -6587,13 +7005,13 @@ var ManagerModal = class extends import_obsidian16.Modal {
     tutorialButton.onClick(() => {
       window.open("https://www.bilibili.com/video/BV1WyrkYMEce/");
     });
-    const supportGroupButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const supportGroupButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(supportGroupButton, "resource", 130);
     supportGroupButton.setIcon("message-circle");
     supportGroupButton.setTooltip(SUPPORT_QQ_GROUP_TOOLTIP);
     this.bindLongPressTooltip(supportGroupButton.buttonEl, SUPPORT_QQ_GROUP_TOOLTIP);
     supportGroupButton.onClick(() => this.openSupportQQGroup());
-    const marketButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const marketButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(marketButton, "global", 70);
     marketButton.setIcon("store");
     marketButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u5E02\u573A_\u63CF\u8FF0"));
@@ -6601,7 +7019,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     marketButton.onClick(() => {
       void this.openPluginMarket();
     });
-    const settingsButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+    const settingsButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(settingsButton, "global", 80);
     settingsButton.setIcon("settings");
     settingsButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0"));
@@ -6610,7 +7028,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       this.openSettingsTab(this.manager.manifest.id);
     });
     if (this.developerMode) {
-      const testButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+      const testButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
       markTool(testButton, "plugin", 90);
       testButton.setIcon("refresh-ccw");
       testButton.setTooltip(t("\u5F00\u53D1_\u5237\u65B0\u63D2\u4EF6_\u63D0\u793A"));
@@ -6621,18 +7039,18 @@ var ManagerModal = class extends import_obsidian16.Modal {
       });
     }
     if (this.developerMode) {
-      const testButton = new import_obsidian16.ButtonComponent(actionBar.controlEl);
+      const testButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
       markTool(testButton, "plugin", 91);
       testButton.setIcon("test-tube");
       testButton.setTooltip(t("\u5F00\u53D1_\u6D4B\u8BD5\u63D2\u4EF6_\u63D0\u793A"));
       testButton.onClick(async () => {
       });
     }
-    const filterWrapper = this.titleEl.createDiv("manager-section manager-section--filters");
+    const filterWrapper = chromeEl.createDiv("manager-section manager-section--filters");
     this.desktopFilterWrapper = filterWrapper;
     const filterContent = filterWrapper.createDiv("manager-section__content");
     filterContent.addClass("manager-section__content--filters");
-    const searchBar = new import_obsidian16.Setting(filterContent).setClass("manager-bar__search").setName("");
+    const searchBar = new import_obsidian18.Setting(filterContent).setClass("manager-bar__search").setName("");
     this.searchBarEl = searchBar.settingEl;
     this.syncPageChrome();
     const filterControlGroup = searchBar.controlEl.createDiv("manager-filter-control-group");
@@ -6642,7 +7060,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       field.addClass(`manager-filter-field--${variant}`);
       const labelEl = field.createDiv("manager-filter-field__label");
       const iconEl = labelEl.createSpan({ cls: "manager-filter-field__icon" });
-      (0, import_obsidian16.setIcon)(iconEl, icon);
+      (0, import_obsidian18.setIcon)(iconEl, icon);
       labelEl.createSpan({ cls: "manager-filter-field__text", text: label });
       const controlEl = field.createDiv("manager-filter-field__control");
       return controlEl;
@@ -6660,7 +7078,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       const updateButton2 = () => {
         const isExclude = currentValue === "not-contains";
         buttonEl.empty();
-        (0, import_obsidian16.setIcon)(buttonEl, isExclude ? "circle-slash" : "check");
+        (0, import_obsidian18.setIcon)(buttonEl, isExclude ? "circle-slash" : "check");
         buttonEl.toggleClass("is-exclude", isExclude);
         buttonEl.toggleClass("is-include", !isExclude);
         buttonEl.setAttribute("aria-label", `${ariaLabel}: ${options[currentValue]}`);
@@ -6682,7 +7100,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       };
     };
     const searchField = createFilterField(t("\u901A\u7528_\u641C\u7D22_\u6587\u672C"), "search", "search");
-    this.searchEl = new import_obsidian16.SearchComponent(searchField);
+    this.searchEl = new import_obsidian18.SearchComponent(searchField);
     this.searchEl.inputEl.setAttribute("aria-label", t("\u7B5B\u9009_\u641C\u7D22\u63D2\u4EF6_\u6807\u7B7E"));
     if (this.settings.PERSISTENCE && typeof this.settings.FILTER_SEARCH === "string") {
       this.searchText = this.settings.FILTER_SEARCH;
@@ -6724,17 +7142,18 @@ var ManagerModal = class extends import_obsidian16.Modal {
     }
   }
   showHeadMobile() {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     const t = (k) => this.manager.translator.t(k);
     this.migratePersistedFilterValues();
-    this.titleEl.empty();
-    const header = this.titleEl.createDiv("bpm-mobile-header");
+    const chromeEl = (_a = this.modalChromeEl) != null ? _a : this.titleEl;
+    chromeEl.empty();
+    const header = chromeEl.createDiv("bpm-mobile-header");
     const topRow = header.createDiv("bpm-mobile-header__top");
     const titleGroup = topRow.createDiv("bpm-mobile-header__identity");
     const titleMain = titleGroup.createDiv("bpm-mobile-header__main");
     const mark = titleMain.createDiv("manager-header__mark");
     mark.setAttribute("aria-hidden", "true");
-    (0, import_obsidian16.setIcon)(mark, "blocks");
+    (0, import_obsidian18.setIcon)(mark, "blocks");
     const titleText = titleMain.createDiv("manager-header__title-group");
     titleText.createDiv({ cls: "manager-header__eyebrow", text: "BPM" });
     titleText.createEl("h2", {
@@ -6744,27 +7163,9 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.footEl = titleGroup.createDiv("manager-food bpm-mobile-header__stats");
     this.updateStats();
     const topActions = topRow.createDiv("bpm-mobile-header__actions");
-    const updateBtn = new import_obsidian16.ButtonComponent(topActions);
+    const updateBtn = new import_obsidian18.ButtonComponent(topActions);
     this.preparePluginUpdateButton(updateBtn);
-    const editorBtn = new import_obsidian16.ButtonComponent(topActions);
-    editorBtn.setIcon(this.editorMode ? "pen-off" : "pen");
-    editorBtn.setTooltip(t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
-    this.bindLongPressTooltip(editorBtn.buttonEl, t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
-    editorBtn.onClick(async () => {
-      this.editorMode = !this.editorMode;
-      if (this.editorMode && this.bulkEditMode) {
-        this.bulkEditMode = false;
-        this.bulkSelectedPluginIds.clear();
-      }
-      this.applyEditingStyle();
-      if (!this.editorMode) {
-        await this.refreshFilterOptions(true);
-      } else {
-        this.renderContent();
-      }
-      this.showHeadMobile();
-    });
-    const bulkBtn = new import_obsidian16.ButtonComponent(topActions);
+    const bulkBtn = new import_obsidian18.ButtonComponent(topActions);
     bulkBtn.setIcon(this.bulkEditMode ? "square-check-big" : "list-plus");
     bulkBtn.setTooltip(t("\u6279\u91CF\u7F16\u8F91_\u5165\u53E3"));
     bulkBtn.buttonEl.toggleClass("is-active", this.bulkEditMode);
@@ -6772,7 +7173,15 @@ var ManagerModal = class extends import_obsidian16.Modal {
     bulkBtn.onClick(() => {
       this.setBulkEditMode(!this.bulkEditMode);
     });
-    const installBtn = new import_obsidian16.ButtonComponent(topActions);
+    const editorBtn = new import_obsidian18.ButtonComponent(topActions);
+    editorBtn.setIcon(this.editorMode ? "pen-off" : "pen");
+    editorBtn.setTooltip(t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
+    editorBtn.buttonEl.toggleClass("is-active", this.editorMode);
+    this.bindLongPressTooltip(editorBtn.buttonEl, t("\u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0"));
+    editorBtn.onClick(() => {
+      void this.setEditorMode(!this.editorMode);
+    });
+    const installBtn = new import_obsidian18.ButtonComponent(topActions);
     installBtn.setIcon(this.installMode ? "arrow-left" : "download");
     installBtn.setTooltip(this.installMode ? t("\u901A\u7528_\u8FD4\u56DE_\u6587\u672C") : t("\u7BA1\u7406\u5668_\u5B89\u88C5_GITHUB_\u63CF\u8FF0"));
     this.bindLongPressTooltip(installBtn.buttonEl, this.installMode ? t("\u901A\u7528_\u8FD4\u56DE_\u6587\u672C") : t("\u7BA1\u7406\u5668_\u5B89\u88C5_GITHUB_\u63CF\u8FF0"));
@@ -6783,17 +7192,14 @@ var ManagerModal = class extends import_obsidian16.Modal {
       this.renderContent();
       this.showHeadMobile();
     });
-    const moreBtn = new import_obsidian16.ButtonComponent(topActions);
+    const moreBtn = new import_obsidian18.ButtonComponent(topActions);
     moreBtn.setIcon("more-vertical");
     moreBtn.setTooltip(t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
     this.bindLongPressTooltip(moreBtn.buttonEl, t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
     moreBtn.buttonEl.addEventListener("click", (ev) => {
-      const menu = new import_obsidian16.Menu();
+      const menu = new import_obsidian18.Menu();
       menu.addItem((item) => item.setTitle(t("\u6279\u91CF\u7F16\u8F91_\u5165\u53E3")).setIcon("list-plus").onClick(() => {
         this.setBulkEditMode(!this.bulkEditMode);
-      }));
-      menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u5168\u9009\u53D6\u6D88_\u63CF\u8FF0")).setIcon("list-checks").onClick(() => {
-        this.runDisplayedPluginsToggle();
       }));
       menu.addItem((item) => item.setTitle(t("\u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0")).setIcon("search-check").onClick(() => {
         this.activePage = "troubleshoot";
@@ -6871,7 +7277,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     if (this.activePage !== "plugins")
       return;
     const searchWrap = header.createDiv("bpm-mobile-header__search");
-    this.searchEl = new import_obsidian16.SearchComponent(searchWrap);
+    this.searchEl = new import_obsidian18.SearchComponent(searchWrap);
     if (this.settings.PERSISTENCE && typeof this.settings.FILTER_SEARCH === "string") {
       this.searchText = this.settings.FILTER_SEARCH;
       this.searchEl.inputEl.value = this.searchText;
@@ -6901,7 +7307,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         const chip = activeFiltersContainer.createDiv("bpm-active-filter-chip");
         chip.setText(this.formatFilterChipLabel(label, operator));
         const closeIcon = chip.createSpan("bpm-active-filter-chip__close");
-        (0, import_obsidian16.setIcon)(closeIcon, "x");
+        (0, import_obsidian18.setIcon)(closeIcon, "x");
         chip.addEventListener("click", () => {
           onRemove();
           this.showHeadMobile();
@@ -6954,7 +7360,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       const updateButton = () => {
         const isExclude = currentValue === "not-contains";
         buttonEl.empty();
-        (0, import_obsidian16.setIcon)(buttonEl, isExclude ? "circle-slash" : "check");
+        (0, import_obsidian18.setIcon)(buttonEl, isExclude ? "circle-slash" : "check");
         buttonEl.toggleClass("is-exclude", isExclude);
         buttonEl.toggleClass("is-include", !isExclude);
         buttonEl.setAttribute("aria-label", `${ariaLabel}: ${options[currentValue]}`);
@@ -6970,7 +7376,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       });
       updateButton();
     };
-    const statusSetting = new import_obsidian16.Setting(filterPanel).setName(t("\u901A\u7528_\u72B6\u6001_\u6587\u672C"));
+    const statusSetting = new import_obsidian18.Setting(filterPanel).setName(t("\u901A\u7528_\u72B6\u6001_\u6587\u672C"));
     addMobileOperatorToggle(statusSetting, this.getStatusFilterOperator(), t("\u7B5B\u9009_\u72B6\u6001\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setStatusFilterOperator(value));
     const statusOptions = Object.entries(this.getStatusFilterOptions());
     this.createMultiSelectFilter(statusSetting.controlEl, statusOptions, this.getStatusFilterValues(), "all", this.getStatusFilterOptions()["all"], t("\u7B5B\u9009_\u72B6\u6001_\u6807\u7B7E"), (values) => {
@@ -6979,26 +7385,26 @@ var ManagerModal = class extends import_obsidian16.Modal {
       void this.reloadShowData();
     });
     const groups = this.getGroupFilterOptions(t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
-    const groupSetting = new import_obsidian16.Setting(filterPanel).setName(t("\u901A\u7528_\u5206\u7EC4_\u6587\u672C"));
+    const groupSetting = new import_obsidian18.Setting(filterPanel).setName(t("\u901A\u7528_\u5206\u7EC4_\u6587\u672C"));
     addMobileOperatorToggle(groupSetting, this.getGroupFilterOperator(), t("\u7B5B\u9009_\u5206\u7EC4\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setGroupFilterOperator(value));
-    this.createMultiSelectFilter(groupSetting.controlEl, groups, this.getGroupFilterValues(), "", ((_a = groups[0]) == null ? void 0 : _a[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5206\u7EC4_\u6807\u7B7E"), (values) => {
+    this.createMultiSelectFilter(groupSetting.controlEl, groups, this.getGroupFilterValues(), "", ((_b = groups[0]) == null ? void 0 : _b[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5206\u7EC4_\u6807\u7B7E"), (values) => {
       this.setGroupFilterValues(values);
       this.showHeadMobile();
       void this.reloadShowData();
     });
     const tags = this.getTagFilterOptions(t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
-    const tagSetting = new import_obsidian16.Setting(filterPanel).setName(t("\u901A\u7528_\u6807\u7B7E_\u6587\u672C"));
+    const tagSetting = new import_obsidian18.Setting(filterPanel).setName(t("\u901A\u7528_\u6807\u7B7E_\u6587\u672C"));
     addMobileOperatorToggle(tagSetting, this.getTagFilterOperator(), t("\u7B5B\u9009_\u6807\u7B7E\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setTagFilterOperator(value));
-    this.createMultiSelectFilter(tagSetting.controlEl, tags, this.getTagFilterValues(), "", ((_b = tags[0]) == null ? void 0 : _b[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u6807\u7B7E_\u6807\u7B7E"), (values) => {
+    this.createMultiSelectFilter(tagSetting.controlEl, tags, this.getTagFilterValues(), "", ((_c = tags[0]) == null ? void 0 : _c[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u6807\u7B7E_\u6807\u7B7E"), (values) => {
       this.setTagFilterValues(values);
       this.showHeadMobile();
       void this.reloadShowData();
     });
     if (this.settings.DELAY) {
       const delays = this.getDelayFilterOptions(t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
-      const delaySetting = new import_obsidian16.Setting(filterPanel).setName(t("\u901A\u7528_\u5EF6\u8FDF_\u6587\u672C"));
+      const delaySetting = new import_obsidian18.Setting(filterPanel).setName(t("\u901A\u7528_\u5EF6\u8FDF_\u6587\u672C"));
       addMobileOperatorToggle(delaySetting, this.getDelayFilterOperator(), t("\u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setDelayFilterOperator(value));
-      this.createMultiSelectFilter(delaySetting.controlEl, delays, this.getDelayFilterValues(), "", ((_c = delays[0]) == null ? void 0 : _c[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5EF6\u8FDF_\u6807\u7B7E"), (values) => {
+      this.createMultiSelectFilter(delaySetting.controlEl, delays, this.getDelayFilterValues(), "", ((_d = delays[0]) == null ? void 0 : _d[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5EF6\u8FDF_\u6807\u7B7E"), (values) => {
         this.setDelayFilterValues(values);
         this.showHeadMobile();
         void this.reloadShowData();
@@ -7018,7 +7424,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       btn.type = "button";
       btn.addClass("bpm-mobile-footer__btn");
       btn.setAttribute("aria-label", label);
-      (0, import_obsidian16.setIcon)(btn, icon);
+      (0, import_obsidian18.setIcon)(btn, icon);
       const labelEl = activeDocument.createElement("span");
       labelEl.addClass("bpm-mobile-footer__btn-label");
       labelEl.setText(label);
@@ -7027,10 +7433,6 @@ var ManagerModal = class extends import_obsidian16.Modal {
       this.bindLongPressTooltip(btn, label);
       return btn;
     };
-    const toggleAllBtn = createFooterBtn("list-checks", t("\u7BA1\u7406\u5668_\u5168\u9009\u53D6\u6D88_\u63CF\u8FF0"), () => {
-      this.runDisplayedPluginsToggle();
-    });
-    footer.appendChild(toggleAllBtn);
     const bulkBtn = createFooterBtn(this.bulkEditMode ? "square-check-big" : "list-plus", t("\u6279\u91CF\u7F16\u8F91_\u5165\u53E3"), () => {
       this.setBulkEditMode(!this.bulkEditMode);
     });
@@ -7048,7 +7450,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const moreBtn = createFooterBtn("more-horizontal", t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"), () => {
     });
     moreBtn.addEventListener("click", (ev) => {
-      const menu = new import_obsidian16.Menu();
+      const menu = new import_obsidian18.Menu();
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0")).setIcon("refresh-ccw").onClick(async () => {
         await this.appPlugins.loadManifests();
         this.invalidatePluginCaches();
@@ -7084,7 +7486,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     this.modalEl.appendChild(footer);
   }
   async showData(renderGeneration = this.renderGeneration) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i;
     this.syncPluginOverviewLayoutClass();
     const t = (k, vars) => this.manager.translator.t(k, vars);
     const page = "plugins";
@@ -7110,16 +7512,18 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const delayFilter = this.getDelayFilterValues();
     const delayOperator = this.getDelayFilterOperator();
     const getBasePath = (_b = (_a = this.app.vault.adapter).getBasePath) == null ? void 0 : _b.call(_a);
-    const basePath = getBasePath ? (0, import_obsidian17.normalizePath)(getBasePath) : "";
+    const basePath = getBasePath ? (0, import_obsidian19.normalizePath)(getBasePath) : "";
     const cfgDir = this.app.vault.configDir;
     const showSeparators = this.shouldRenderPluginLayoutSeparators();
     const canEditLayout = this.editorMode && showSeparators;
     if (this.settings.DEBUG)
       console.log("[BPM] render showData uniquePlugins:", uniquePlugins.map((p) => p.id).join(","));
     if (this.settings.DEBUG)
-      console.log("[BPM] render showData before loop, children:", this.contentEl.children.length);
+      console.log("[BPM] render showData before loop, children:", this.pageEl.children.length);
     this.displayPlugins = [];
-    const bulkBarHost = this.bulkEditMode ? this.contentEl.createDiv("manager-bulk-bar-host") : null;
+    const modeBarHost = this.bulkEditMode || this.editorMode ? this.pageEl.createDiv("manager-bulk-bar-host") : null;
+    const bulkBarHost = this.bulkEditMode ? modeBarHost : null;
+    const editBarHost = this.editorMode ? modeBarHost : null;
     this.bulkBarHostEl = bulkBarHost != null ? bulkBarHost : void 0;
     this.pluginCardControllers.clear();
     const renderedIds = /* @__PURE__ */ new Set();
@@ -7155,6 +7559,8 @@ var ManagerModal = class extends import_obsidian16.Modal {
         continue;
       const isSelf = plugin.id === this.manager.manifest.id;
       const isEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin4);
+      const currentUpdateInfo = (_c = this.manager.updateStatus) == null ? void 0 : _c[plugin.id];
+      const updateProblem = this.getPluginUpdateProblem(currentUpdateInfo);
       if (!this.matchesStatusFilter(ManagerPlugin4, plugin, isEnabled, statusFilter, statusOperator, hiddenPluginIds))
         continue;
       if (!this.matchesSingleValueFilter(ManagerPlugin4.group, groupFilter, groupOperator))
@@ -7171,15 +7577,15 @@ var ManagerModal = class extends import_obsidian16.Modal {
       const isAbsolute = new RegExp("^(?:[a-zA-Z]:[\\\\/]|[\\\\/])").test(rawDir);
       let pluginDir;
       if (isAbsolute) {
-        pluginDir = (0, import_obsidian17.normalizePath)(rawDir);
+        pluginDir = (0, import_obsidian19.normalizePath)(rawDir);
       } else if (rawDir.startsWith(cfgDir) || rawDir.startsWith(".") || rawDir.startsWith("/")) {
-        pluginDir = (0, import_obsidian17.normalizePath)(`${basePath}/${rawDir}`);
+        pluginDir = (0, import_obsidian19.normalizePath)(`${basePath}/${rawDir}`);
       } else {
-        pluginDir = (0, import_obsidian17.normalizePath)(`${basePath}/${cfgDir}/${rawDir}`);
+        pluginDir = (0, import_obsidian19.normalizePath)(`${basePath}/${cfgDir}/${rawDir}`);
       }
       if (this.settings.DEBUG)
-        console.log("[BPM] render item", plugin.id, "children before add:", this.contentEl.children.length);
-      const itemEl = new import_obsidian16.Setting(this.contentEl);
+        console.log("[BPM] render item", plugin.id, "children before add:", this.pageEl.children.length);
+      const itemEl = new import_obsidian18.Setting(this.pageEl);
       renderedInBatch++;
       itemEl.settingEl.setAttr("data-plugin-id", plugin.id);
       itemEl.setClass("manager-item");
@@ -7187,7 +7593,8 @@ var ManagerModal = class extends import_obsidian16.Modal {
       itemEl.settingEl.toggleClass("is-enabled", isEnabled);
       itemEl.settingEl.toggleClass("is-disabled", !isEnabled);
       itemEl.settingEl.toggleClass("is-self", isSelf);
-      itemEl.settingEl.toggleClass("has-update", Boolean((_d = (_c = this.manager.updateStatus) == null ? void 0 : _c[plugin.id]) == null ? void 0 : _d.hasUpdate));
+      itemEl.settingEl.toggleClass("has-update", Boolean(currentUpdateInfo == null ? void 0 : currentUpdateInfo.hasUpdate));
+      itemEl.settingEl.toggleClass("has-update-problem", Boolean(updateProblem));
       itemEl.settingEl.toggleClass("is-bpm-ignored", ManagerPlugin4.tags.includes(BPM_IGNORE_TAG));
       itemEl.settingEl.toggleClass("is-hidden-layout", hiddenPluginIds.has(plugin.id));
       itemEl.settingEl.toggleClass("is-bulk-selected", this.bulkSelectedPluginIds.has(plugin.id));
@@ -7221,13 +7628,13 @@ var ManagerModal = class extends import_obsidian16.Modal {
         });
       }
       itemEl.settingEl.addEventListener("contextmenu", (event) => {
-        var _a2, _b2;
+        var _a2;
         if (this.bulkEditMode)
           return;
         event.preventDefault();
         const currentIsEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin4);
         const currentIsBpmIgnored = (_a2 = ManagerPlugin4.tags) == null ? void 0 : _a2.includes(BPM_IGNORE_TAG);
-        const menu = new import_obsidian16.Menu();
+        const menu = new import_obsidian18.Menu();
         let hasContextMenuItems = false;
         const addContextSeparator = () => {
           if (hasContextMenuItems)
@@ -7241,8 +7648,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
           );
           hasContextMenuItems = true;
         }
-        const currentUpdateInfo = (_b2 = this.manager.updateStatus) == null ? void 0 : _b2[plugin.id];
-        if (this.isMainPageActionInMenu("downloadUpdate") && (currentUpdateInfo == null ? void 0 : currentUpdateInfo.hasUpdate) && currentUpdateInfo.remoteVersion) {
+        if (this.isMainPageActionInMenu("downloadUpdate") && (currentUpdateInfo == null ? void 0 : currentUpdateInfo.hasUpdate) && currentUpdateInfo.remoteVersion && !this.getPluginUpdateProblem(currentUpdateInfo)) {
           menu.addItem(
             (item) => item.setTitle(this.manager.translator.t("\u7BA1\u7406\u5668_\u4E0B\u8F7D\u66F4\u65B0_\u63CF\u8FF0")).setIcon("download").onClick(() => {
               this.openPluginUpdateModal(plugin.id, currentUpdateInfo);
@@ -7402,7 +7808,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       }
       const cardIcon = createSpan({ cls: "manager-plugin-card__icon" });
       cardIcon.setAttribute("aria-hidden", "true");
-      (0, import_obsidian16.setIcon)(cardIcon, isEnabled ? "plug-zap" : "plug");
+      (0, import_obsidian18.setIcon)(cardIcon, isEnabled ? "plug-zap" : "plug");
       itemEl.nameEl.appendChild(cardIcon);
       if (ManagerPlugin4.group !== "") {
         const group = createSpan({ cls: "manager-item__name-group" });
@@ -7469,8 +7875,10 @@ var ManagerModal = class extends import_obsidian16.Modal {
           void this.openPluginVersionList(plugin.id, (_a2 = this.manager.updateStatus) == null ? void 0 : _a2[plugin.id]);
         });
       }
-      const updateInfo = (_e = this.manager.updateStatus) == null ? void 0 : _e[plugin.id];
-      if ((updateInfo == null ? void 0 : updateInfo.hasUpdate) && updateInfo.remoteVersion) {
+      const updateInfo = currentUpdateInfo;
+      if (updateInfo && updateProblem) {
+        this.appendPluginUpdateProblem(versionWrap, updateInfo);
+      } else if ((updateInfo == null ? void 0 : updateInfo.hasUpdate) && updateInfo.remoteVersion) {
         const arrow = createSpan({ text: "\u2192", cls: ["manager-item__name-remote-arrow"] });
         versionWrap.appendChild(arrow);
         const remote = createSpan({ text: `${updateInfo.remoteVersion}`, cls: ["manager-item__name-remote"] });
@@ -7480,14 +7888,14 @@ var ManagerModal = class extends import_obsidian16.Modal {
         }
       }
       itemEl.nameEl.appendChild(versionWrap);
-      if (((_f = ManagerPlugin4.note) == null ? void 0 : _f.length) > 0) {
+      if (((_d = ManagerPlugin4.note) == null ? void 0 : _d.length) > 0) {
         const note = createSpan();
         note.addClass("manager-plugin-card__note");
         note.addEventListener("click", () => {
           new NoteModal(this.app, this.manager, ManagerPlugin4, this).open();
         });
         itemEl.nameEl.appendChild(note);
-        (0, import_obsidian16.setIcon)(note, "notebook-pen");
+        (0, import_obsidian18.setIcon)(note, "notebook-pen");
       }
       if (this.settings.DELAY && !this.editorMode && !isSelf && ManagerPlugin4.delay !== "") {
         const d = delaySettingsById.get(ManagerPlugin4.delay);
@@ -7543,7 +7951,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       itemEl.settingEl.toggleClass("has-visible-tags", hasVisibleTags);
       itemEl.descEl.toggleClass("manager-plugin-card__body--empty", !hasExpandedDetails);
       if (!this.editorMode) {
-        const isMobile = import_obsidian16.Platform.isMobileApp;
+        const isMobile = import_obsidian18.Platform.isMobileApp;
         let openPluginSetting = null;
         let openPluginSettingEl;
         let singleStartButton = null;
@@ -7554,7 +7962,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
           "downloadUpdate",
           "singleStart",
           "restart",
-          ...((_g = ManagerPlugin4.tags) == null ? void 0 : _g.includes(BPM_IGNORE_TAG)) ? ["enableIgnored"] : [],
+          ...((_e = ManagerPlugin4.tags) == null ? void 0 : _e.includes(BPM_IGNORE_TAG)) ? ["enableIgnored"] : [],
           "hide",
           "note",
           "hotkeys",
@@ -7564,7 +7972,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
           "openDir",
           "delete"
         ].some((id) => this.isMainPageActionInMenu(id))) {
-          const moreButton = new import_obsidian16.ExtraButtonComponent(itemEl.controlEl);
+          const moreButton = new import_obsidian18.ExtraButtonComponent(itemEl.controlEl);
           moreButton.setIcon("more-vertical");
           moreButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
           const moreEl = getExtraButtonElement(moreButton);
@@ -7575,7 +7983,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
             event.stopPropagation();
             const currentIsEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin4);
             const currentIsBpmIgnored = (_a2 = ManagerPlugin4.tags) == null ? void 0 : _a2.includes(BPM_IGNORE_TAG);
-            const menu = new import_obsidian16.Menu();
+            const menu = new import_obsidian18.Menu();
             let hasPreviousGroup = false;
             let hasCurrentGroup = false;
             if (this.isMainPageActionInMenu("checkUpdate")) {
@@ -7584,10 +7992,10 @@ var ManagerModal = class extends import_obsidian16.Modal {
               }));
               hasCurrentGroup = true;
             }
-            const currentUpdateInfo = (_b2 = this.manager.updateStatus) == null ? void 0 : _b2[plugin.id];
-            if (this.isMainPageActionInMenu("downloadUpdate") && (currentUpdateInfo == null ? void 0 : currentUpdateInfo.hasUpdate) && currentUpdateInfo.remoteVersion) {
+            const currentUpdateInfo2 = (_b2 = this.manager.updateStatus) == null ? void 0 : _b2[plugin.id];
+            if (this.isMainPageActionInMenu("downloadUpdate") && (currentUpdateInfo2 == null ? void 0 : currentUpdateInfo2.hasUpdate) && currentUpdateInfo2.remoteVersion && !this.getPluginUpdateProblem(currentUpdateInfo2)) {
               menu.addItem((item) => item.setTitle(this.manager.translator.t("\u7BA1\u7406\u5668_\u4E0B\u8F7D\u66F4\u65B0_\u63CF\u8FF0")).setIcon("download").onClick(() => {
-                this.openPluginUpdateModal(plugin.id, currentUpdateInfo);
+                this.openPluginUpdateModal(plugin.id, currentUpdateInfo2);
               }));
               hasCurrentGroup = true;
             }
@@ -7760,7 +8168,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
             this.copyPluginId(plugin.id);
           });
         }
-        if ((_h = ManagerPlugin4.tags) == null ? void 0 : _h.includes(BPM_IGNORE_TAG)) {
+        if ((_f = ManagerPlugin4.tags) == null ? void 0 : _f.includes(BPM_IGNORE_TAG)) {
           enableIgnoredButton = this.createConfiguredItemAction(itemEl.controlEl, "enableIgnored");
           if (enableIgnoredButton) {
             enableIgnoredButton.setIcon("shield-check");
@@ -7774,7 +8182,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
         const openRepoButton = this.createConfiguredItemAction(itemEl.controlEl, "openRepo");
         if (openRepoButton) {
           openRepoButton.setIcon("github");
-          const knownRepo = ((_i = this.manager.settings.REPO_MAP) == null ? void 0 : _i[plugin.id]) || null;
+          const knownRepo = ((_g = this.manager.settings.REPO_MAP) == null ? void 0 : _g[plugin.id]) || null;
           const repoState = this.resolvePluginRepoAction(plugin.id, knownRepo);
           openRepoButton.setTooltip(knownRepo ? repoState.tooltip : this.manager.translator.t("\u7BA1\u7406\u5668_\u6253\u5F00\u4ED3\u5E93_\u6807\u9898"));
           openRepoButton.setDisabled(false);
@@ -7832,12 +8240,12 @@ var ManagerModal = class extends import_obsidian16.Modal {
             await this.uninstallPluginWithConfirm(plugin, isSelf);
           });
         }
-        const toggleSwitch = new import_obsidian16.ToggleComponent(itemEl.controlEl);
+        const toggleSwitch = new import_obsidian18.ToggleComponent(itemEl.controlEl);
         const stateToggle = toggleSwitch;
         stateToggle.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u5207\u6362\u72B6\u6001_\u63CF\u8FF0"));
         stateToggle.setValue(isEnabled);
         const managerPluginForToggle = ManagerPlugin4;
-        const isBpmIgnored = (_j = managerPluginForToggle.tags) == null ? void 0 : _j.includes(BPM_IGNORE_TAG);
+        const isBpmIgnored = (_h = managerPluginForToggle.tags) == null ? void 0 : _h.includes(BPM_IGNORE_TAG);
         if (isSelf) {
           stateToggle.setValue(true);
           stateToggle.setDisabled(true);
@@ -7856,7 +8264,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
               return;
             const targetEnabled = stateToggle.getValue();
             if (isBpmIgnored) {
-              new import_obsidian16.Notice(this.manager.translator.t("\u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A"));
+              new import_obsidian18.Notice(this.manager.translator.t("\u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A"));
               isRestoring = true;
               stateToggle.setValue(!targetEnabled);
               isRestoring = false;
@@ -7872,7 +8280,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
               statusChip.removeClass(targetEnabled ? "is-disabled" : "is-enabled");
               statusChip.addClass(targetEnabled ? "is-enabled" : "is-disabled");
               cardIcon.empty();
-              (0, import_obsidian16.setIcon)(cardIcon, targetEnabled ? "plug-zap" : "plug");
+              (0, import_obsidian18.setIcon)(cardIcon, targetEnabled ? "plug-zap" : "plug");
               if (this.settings.FADE_OUT_DISABLED_PLUGINS) {
                 itemEl.settingEl.toggleClass("inactive", !targetEnabled);
               }
@@ -7948,14 +8356,14 @@ var ManagerModal = class extends import_obsidian16.Modal {
         }
         const hiddenControl = itemEl.controlEl.createDiv("manager-plugin-card__layout-control");
         hiddenControl.createSpan({ cls: "manager-plugin-card__layout-control-label", text: this.manager.translator.t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u9690\u85CF\u4E8E\u7BA1\u7406\u9875") });
-        const hiddenToggle = new import_obsidian16.ToggleComponent(hiddenControl);
+        const hiddenToggle = new import_obsidian18.ToggleComponent(hiddenControl);
         hiddenToggle.setValue(hiddenPluginIds.has(plugin.id));
         hiddenToggle.setDisabled(isSelf);
         hiddenToggle.toggleEl.setAttribute("aria-label", this.manager.translator.t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u9690\u85CF\u4E8E\u7BA1\u7406\u9875_\u6807\u7B7E", { name: ManagerPlugin4.name }));
         hiddenToggle.onChange((value) => {
           this.setPluginHidden(plugin.id, value);
         });
-        const reloadButton = new import_obsidian16.ExtraButtonComponent(itemEl.controlEl);
+        const reloadButton = new import_obsidian18.ExtraButtonComponent(itemEl.controlEl);
         reloadButton.setIcon("refresh-ccw");
         reloadButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u8FD8\u539F\u5185\u5BB9_\u63CF\u8FF0"));
         reloadButton.onClick(async () => {
@@ -7975,11 +8383,11 @@ var ManagerModal = class extends import_obsidian16.Modal {
             ["", this.manager.translator.t("\u901A\u7528_\u65E0\u5EF6\u8FDF_\u6587\u672C")],
             ...this.settings.DELAYS.map((item) => [item.id, item.name])
           ];
-          const delaysEl = new import_obsidian16.DropdownComponent(itemEl.controlEl);
+          const delaysEl = new import_obsidian18.DropdownComponent(itemEl.controlEl);
           this.addOrderedOptions(delaysEl, delays);
           delaysEl.setValue((ManagerPlugin4 == null ? void 0 : ManagerPlugin4.delay) || "");
           const pSettings = this.settings.Plugins.find((p) => p.id === plugin.id);
-          const isIgnored = (_k = pSettings == null ? void 0 : pSettings.tags) == null ? void 0 : _k.includes(BPM_IGNORE_TAG);
+          const isIgnored = (_i = pSettings == null ? void 0 : pSettings.tags) == null ? void 0 : _i.includes(BPM_IGNORE_TAG);
           let isRestoring = false;
           delaysEl.onChange(async (val) => {
             if (!ManagerPlugin4)
@@ -7987,7 +8395,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
             if (isRestoring)
               return;
             if (isIgnored) {
-              new import_obsidian16.Notice(this.manager.translator.t("\u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A"));
+              new import_obsidian18.Notice(this.manager.translator.t("\u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A"));
               isRestoring = true;
               delaysEl.setValue(ManagerPlugin4.delay || "");
               isRestoring = false;
@@ -8000,17 +8408,19 @@ var ManagerModal = class extends import_obsidian16.Modal {
         }
       }
       if (this.settings.DEBUG) {
-        const cards = Array.from(this.contentEl.querySelectorAll(".manager-item"));
+        const cards = Array.from(this.pageEl.querySelectorAll(".manager-item"));
         console.log("[BPM] render showData after loop, cards:", cards.length, "ids:", cards.map((el) => el.getAttribute("data-plugin-id")).filter(Boolean).join(","));
       }
     }
     if (bulkBarHost)
       this.renderBulkBar(bulkBarHost);
+    if (editBarHost)
+      this.renderEditorBar(editBarHost);
     if (renderedCount === 0) {
-      const empty = this.contentEl.createDiv("bpm-empty-state manager-plugin-page__empty");
+      const empty = this.pageEl.createDiv("bpm-empty-state manager-plugin-page__empty");
       empty.setAttribute("role", "status");
       const icon = empty.createDiv("bpm-empty-state__icon");
-      (0, import_obsidian16.setIcon)(icon, "search-x");
+      (0, import_obsidian18.setIcon)(icon, "search-x");
       empty.createDiv({ cls: "bpm-empty-state__title", text: t("\u7BA1\u7406\u5668_\u6682\u65E0\u5339\u914D\u63D2\u4EF6") });
       empty.createDiv({ cls: "bpm-empty-state__text", text: t("\u7BA1\u7406\u5668_\u6682\u65E0\u5339\u914D\u63D2\u4EF6_\u8BF4\u660E") });
     }
@@ -8092,7 +8502,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
       chip.setAttribute("aria-label", `${item.label} ${item.value}`);
       chip.setAttribute("aria-pressed", `${isActive}`);
       const icon = chip.createSpan({ cls: "bpm-stat-chip__icon" });
-      (0, import_obsidian16.setIcon)(icon, item.icon);
+      (0, import_obsidian18.setIcon)(icon, item.icon);
       chip.createSpan({ cls: "bpm-stat-chip__label", text: item.label });
       chip.createSpan({ cls: "bpm-stat-chip__value", text: `${item.value}` });
       const activate = () => this.setStatusFilterFromStats(item.filter);
@@ -8106,7 +8516,7 @@ var ManagerModal = class extends import_obsidian16.Modal {
     });
   }
   syncPageChrome() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
     this.ensureAllowedActivePage();
     const isPlugins = this.activePage === "plugins";
     const isInstall = this.activePage === "install";
@@ -8116,32 +8526,37 @@ var ManagerModal = class extends import_obsidian16.Modal {
     const isVaults = this.activePage === "vaults";
     const isRibbon = this.activePage === "ribbon";
     const isTroubleshoot = this.activePage === "troubleshoot";
-    const showLayoutTools = isPlugins && this.editorMode && this.shouldRenderPluginLayoutSeparators();
+    if (!isPlugins && (this.bulkEditMode || this.editorMode)) {
+      this.bulkEditMode = false;
+      this.editorMode = false;
+      this.bulkSelectedPluginIds.clear();
+      (_a = this.modalContainer) == null ? void 0 : _a.removeClass("manager-container--editing");
+      (_b = this.modalContainer) == null ? void 0 : _b.removeClass("manager-container--bulk-editing");
+    }
+    const syncTabState = (tabEl, active) => {
+      tabEl == null ? void 0 : tabEl.classList.toggle("is-active", active);
+      tabEl == null ? void 0 : tabEl.setAttribute("aria-selected", `${active}`);
+      tabEl == null ? void 0 : tabEl.setAttribute("data-state", active ? "active" : "inactive");
+    };
     this.installMode = isInstallWorkspace;
-    (_a = this.pluginTabEl) == null ? void 0 : _a.classList.toggle("is-active", isPlugins);
-    (_b = this.installTabEl) == null ? void 0 : _b.classList.toggle("is-active", isInstallWorkspace);
-    (_c = this.sourcesTabEl) == null ? void 0 : _c.classList.toggle("is-active", isSources);
-    (_d = this.transferTabEl) == null ? void 0 : _d.classList.toggle("is-active", isTransfer);
-    (_e = this.vaultsTabEl) == null ? void 0 : _e.classList.toggle("is-active", isVaults);
-    (_f = this.ribbonTabEl) == null ? void 0 : _f.classList.toggle("is-active", isRibbon);
-    (_g = this.troubleshootTabEl) == null ? void 0 : _g.classList.toggle("is-active", isTroubleshoot);
-    (_h = this.pluginTabEl) == null ? void 0 : _h.setAttribute("aria-selected", `${isPlugins}`);
-    (_i = this.installTabEl) == null ? void 0 : _i.setAttribute("aria-selected", `${isInstallWorkspace}`);
-    (_j = this.sourcesTabEl) == null ? void 0 : _j.setAttribute("aria-selected", `${isSources}`);
-    (_k = this.transferTabEl) == null ? void 0 : _k.setAttribute("aria-selected", `${isTransfer}`);
-    (_l = this.vaultsTabEl) == null ? void 0 : _l.setAttribute("aria-selected", `${isVaults}`);
-    (_m = this.ribbonTabEl) == null ? void 0 : _m.setAttribute("aria-selected", `${isRibbon}`);
-    (_n = this.troubleshootTabEl) == null ? void 0 : _n.setAttribute("aria-selected", `${isTroubleshoot}`);
-    (_o = this.desktopActionWrapper) == null ? void 0 : _o.classList.toggle("is-plugin-page", isPlugins);
-    (_p = this.desktopActionWrapper) == null ? void 0 : _p.classList.toggle("is-install-page", isInstall);
-    (_q = this.desktopActionWrapper) == null ? void 0 : _q.classList.toggle("is-sources-page", isSources);
-    (_r = this.desktopActionWrapper) == null ? void 0 : _r.classList.toggle("is-transfer-page", isTransfer);
-    (_s = this.desktopActionWrapper) == null ? void 0 : _s.classList.toggle("is-vaults-page", isVaults);
-    (_t = this.desktopActionWrapper) == null ? void 0 : _t.classList.toggle("is-ribbon-page", isRibbon);
-    (_u = this.desktopActionWrapper) == null ? void 0 : _u.classList.toggle("is-troubleshoot-page", isTroubleshoot);
-    (_v = this.desktopActionWrapper) == null ? void 0 : _v.classList.toggle("is-layout-editing", showLayoutTools);
-    (_w = this.desktopActionWrapper) == null ? void 0 : _w.classList.toggle("is-bulk-editing", isPlugins && this.bulkEditMode);
-    (_x = this.bulkEditButtonEl) == null ? void 0 : _x.classList.toggle("is-active", this.bulkEditMode);
+    syncTabState(this.pluginTabEl, isPlugins);
+    syncTabState(this.installTabEl, isInstallWorkspace);
+    syncTabState(this.sourcesTabEl, isSources);
+    syncTabState(this.transferTabEl, isTransfer);
+    syncTabState(this.vaultsTabEl, isVaults);
+    syncTabState(this.ribbonTabEl, isRibbon);
+    syncTabState(this.troubleshootTabEl, isTroubleshoot);
+    (_c = this.desktopActionWrapper) == null ? void 0 : _c.classList.toggle("is-plugin-page", isPlugins);
+    (_d = this.desktopActionWrapper) == null ? void 0 : _d.classList.toggle("is-install-page", isInstall);
+    (_e = this.desktopActionWrapper) == null ? void 0 : _e.classList.toggle("is-sources-page", isSources);
+    (_f = this.desktopActionWrapper) == null ? void 0 : _f.classList.toggle("is-transfer-page", isTransfer);
+    (_g = this.desktopActionWrapper) == null ? void 0 : _g.classList.toggle("is-vaults-page", isVaults);
+    (_h = this.desktopActionWrapper) == null ? void 0 : _h.classList.toggle("is-ribbon-page", isRibbon);
+    (_i = this.desktopActionWrapper) == null ? void 0 : _i.classList.toggle("is-troubleshoot-page", isTroubleshoot);
+    (_j = this.desktopActionWrapper) == null ? void 0 : _j.classList.remove("is-layout-editing");
+    (_k = this.desktopActionWrapper) == null ? void 0 : _k.classList.toggle("is-bulk-editing", isPlugins && this.bulkEditMode);
+    (_l = this.bulkEditButtonEl) == null ? void 0 : _l.classList.toggle("is-active", this.bulkEditMode);
+    (_m = this.editorButtonEl) == null ? void 0 : _m.classList.toggle("is-active", isPlugins && this.editorMode);
     if (this.desktopFilterWrapper) {
       this.desktopFilterWrapper.classList.toggle("manager-display-none", !isPlugins);
     }
@@ -8160,9 +8575,12 @@ var ManagerModal = class extends import_obsidian16.Modal {
       return;
     }
     this.activePage = page;
-    if (page !== "plugins" && this.bulkEditMode) {
-      this.bulkEditMode = false;
-      this.bulkSelectedPluginIds.clear();
+    if (page !== "plugins" && (this.bulkEditMode || this.editorMode)) {
+      if (this.bulkEditMode) {
+        this.bulkEditMode = false;
+        this.bulkSelectedPluginIds.clear();
+      }
+      this.editorMode = false;
       this.applyEditingStyle();
     }
     this.syncPageChrome();
@@ -8247,7 +8665,7 @@ ${manifest.author || ""}`;
     return !this.hasActiveStatusFilter() && this.getGroupFilterValues().length === 0 && this.getTagFilterValues().length === 0 && this.getDelayFilterValues().length === 0 && !this.searchText;
   }
   renderPluginLayoutSeparator(title) {
-    const separator = this.contentEl.createDiv("manager-plugin-separator");
+    const separator = this.pageEl.createDiv("manager-plugin-separator");
     const lineStart = separator.createSpan({ cls: "manager-plugin-separator__line" });
     lineStart.setAttribute("aria-hidden", "true");
     const label = separator.createSpan({ cls: "manager-plugin-separator__label", text: title || this.manager.translator.t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF") });
@@ -8256,7 +8674,7 @@ ${manifest.author || ""}`;
     lineEnd.setAttribute("aria-hidden", "true");
   }
   createPluginLayoutOrderButton(container, icon, label, disabled, onClick) {
-    const btn = new import_obsidian16.ButtonComponent(container);
+    const btn = new import_obsidian18.ButtonComponent(container);
     btn.setIcon(icon);
     btn.setTooltip(label);
     btn.setDisabled(disabled);
@@ -8271,7 +8689,7 @@ ${manifest.author || ""}`;
     handle.setAttr("role", "button");
     handle.setAttr("aria-label", this.manager.translator.t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u62D6\u52A8\u6392\u5E8F_\u6807\u7B7E", { label }));
     handle.setAttr("tabindex", "0");
-    (0, import_obsidian16.setIcon)(handle, "grip-vertical");
+    (0, import_obsidian18.setIcon)(handle, "grip-vertical");
     card.prepend(handle);
     handle.addEventListener("pointerdown", (event) => this.startHiddenLayoutDrag(card, index, event));
     handle.addEventListener("dragstart", (event) => event.preventDefault());
@@ -8279,18 +8697,18 @@ ${manifest.author || ""}`;
   }
   renderPluginLayoutSeparatorEditor(layoutItem, index, layoutLength) {
     const t = (k) => this.manager.translator.t(k);
-    const card = this.contentEl.createDiv("manager-hidden-card manager-hidden-separator-card manager-layout-editable-card manager-plugin-separator-editor");
+    const card = this.pageEl.createDiv("manager-hidden-card manager-hidden-separator-card manager-layout-editable-card manager-plugin-separator-editor");
     card.setAttr("data-layout-id", layoutItem.id);
     this.bindPluginLayoutDragHandle(card, index, layoutItem.title || t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF"));
     const main = card.createDiv("manager-hidden-card__main");
     const iconWrap = main.createDiv("manager-hidden-card__icon");
-    (0, import_obsidian16.setIcon)(iconWrap, "separator-horizontal");
+    (0, import_obsidian18.setIcon)(iconWrap, "separator-horizontal");
     const textWrap = main.createDiv("manager-hidden-card__text");
     const titleRow = textWrap.createDiv("manager-hidden-card__title-row");
     titleRow.createSpan({ cls: "manager-hidden-card__name", text: t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF") });
     titleRow.createSpan({ text: t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5E03\u5C40\u6807\u8BB0"), cls: "manager-hidden-item__state is-separator" });
     const titleInputWrap = textWrap.createDiv("manager-hidden-separator-card__input");
-    const titleInput = new import_obsidian16.TextComponent(titleInputWrap);
+    const titleInput = new import_obsidian18.TextComponent(titleInputWrap);
     titleInput.setValue(layoutItem.title || t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF"));
     titleInput.setPlaceholder(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF\u6807\u9898"));
     titleInput.inputEl.setAttribute("aria-label", t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF\u6807\u9898"));
@@ -8401,6 +8819,9 @@ ${manifest.author || ""}`;
       this.manager.settings.BETA_SOURCES = [];
     return this.manager.settings.BETA_SOURCES;
   }
+  getSourceConfigKey(source) {
+    return `${source.type}:${sanitizeRepo(source.repo || source.id).toLowerCase()}`;
+  }
   getPluginIdByRepo(repo) {
     var _a;
     const normalized = sanitizeRepo(repo);
@@ -8410,9 +8831,9 @@ ${manifest.author || ""}`;
   getSourcePackageFolder(source) {
     if (source.type === "plugin") {
       const pluginId = this.getPluginIdByRepo(source.repo) || source.id;
-      return pluginId ? (0, import_obsidian17.normalizePath)(`${this.app.vault.configDir}/plugins/${pluginId}`) : "";
+      return pluginId ? (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/plugins/${pluginId}`) : "";
     }
-    return (0, import_obsidian17.normalizePath)(`${this.app.vault.configDir}/themes/${source.id}`);
+    return (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/themes/${source.id}`);
   }
   async readSourcePackageCreatedAt(source) {
     const folder = this.getSourcePackageFolder(source);
@@ -8453,6 +8874,10 @@ ${manifest.author || ""}`;
   formatVersionWithDate(version, date) {
     const dateText = this.formatSourceDate(date);
     return dateText ? `${version} \xB7 ${dateText}` : version;
+  }
+  normalizeSourceUpdateDelayDays(value) {
+    const days = Math.floor(Number(value));
+    return Number.isFinite(days) && days > 0 ? days : void 0;
   }
   getSourceLocalVersion(source) {
     var _a;
@@ -8540,7 +8965,9 @@ ${manifest.author || ""}`;
       enabled: (_a = source.enabled) != null ? _a : true,
       autoUpdate: (_b = source.autoUpdate) != null ? _b : false,
       mode: source.mode || "latest",
-      updateCheckMode: source.updateCheckMode || "release"
+      updateCheckMode: source.updateCheckMode || "release",
+      compatibilityMode: source.compatibilityMode || "compatible",
+      updateDelayDays: this.normalizeSourceUpdateDelayDays(source.updateDelayDays)
     };
     if (existing) {
       Object.assign(existing, next);
@@ -8551,7 +8978,7 @@ ${manifest.author || ""}`;
   async checkBetaSource(source) {
     var _a;
     try {
-      const versions = await fetchReleaseVersions(this.manager, source.repo);
+      const versions = await fetchReleaseVersions(this.manager, source.repo, { includeManifest: source.type === "plugin" });
       const localVersion = this.getSourceLocalVersion(source);
       const releaseCheck = syncSourceReleaseCheck(source, versions, localVersion);
       await this.refreshSourcePackageCreatedAt(source);
@@ -8572,9 +8999,11 @@ ${manifest.author || ""}`;
     const targetVersion = source.mode === "frozen" ? source.frozenVersion || source.latestReleaseTag || source.latestVersion || "" : source.latestReleaseTag || source.latestVersion || "";
     const targetPublishedAt = source.latestReleasePublishedAt || source.latestPublishedAt;
     if (!targetVersion && !reinstall) {
-      new import_obsidian16.Notice(this.manager.translator.t("\u6765\u6E90_\u672A\u83B7\u53D6\u53EF\u5B89\u88C5\u7248\u672C_\u63D0\u793A"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u6765\u6E90_\u672A\u83B7\u53D6\u53EF\u5B89\u88C5\u7248\u672C_\u63D0\u793A"));
       return false;
     }
+    if (!reinstall && this.getSourceLocalVersion(source) && !this.sourceHasUpdate(source))
+      return false;
     const ok = source.type === "plugin" ? await installPluginFromGithub(this.manager, source.repo, targetVersion, true) : await installThemeFromGithub(this.manager, source.repo, targetVersion);
     if (!ok)
       return false;
@@ -8594,17 +9023,17 @@ ${manifest.author || ""}`;
   }
   showHiddenPanel() {
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    this.contentEl.empty();
+    this.pageEl.empty();
     this.displayPlugins = [];
     let renderedCount = 0;
-    const page = this.contentEl.createDiv("manager-hidden-page");
+    const page = this.pageEl.createDiv("manager-hidden-page");
     const manifests = this.getUniquePluginManifests();
     const manifestById = new Map(manifests.map((plugin) => [plugin.id, plugin]));
     const managerPluginById = new Map(this.manager.settings.Plugins.map((plugin) => [plugin.id, plugin]));
     const hiddenPluginIds = new Set(this.settings.HIDES || []);
     const layout = this.getPluginLayout(manifests);
     const createOrderButton = (container, icon, label, disabled, onClick) => {
-      const btn = new import_obsidian16.ButtonComponent(container);
+      const btn = new import_obsidian18.ButtonComponent(container);
       btn.setIcon(icon);
       btn.setTooltip(label);
       btn.setDisabled(disabled);
@@ -8619,7 +9048,7 @@ ${manifest.author || ""}`;
       handle.setAttr("role", "button");
       handle.setAttr("aria-label", t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u62D6\u52A8\u6392\u5E8F_\u6807\u7B7E", { label }));
       handle.setAttr("tabindex", "0");
-      (0, import_obsidian16.setIcon)(handle, "grip-vertical");
+      (0, import_obsidian18.setIcon)(handle, "grip-vertical");
       handle.addEventListener("pointerdown", (event) => this.startHiddenLayoutDrag(card, index, event));
       handle.addEventListener("dragstart", (event) => event.preventDefault());
       return handle;
@@ -8632,13 +9061,13 @@ ${manifest.author || ""}`;
         bindDragHandle(card2, index, layoutItem.title || t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF"));
         const main2 = card2.createDiv("manager-hidden-card__main");
         const iconWrap2 = main2.createDiv("manager-hidden-card__icon");
-        (0, import_obsidian16.setIcon)(iconWrap2, "separator-horizontal");
+        (0, import_obsidian18.setIcon)(iconWrap2, "separator-horizontal");
         const textWrap2 = main2.createDiv("manager-hidden-card__text");
         const titleRow2 = textWrap2.createDiv("manager-hidden-card__title-row");
         titleRow2.createSpan({ cls: "manager-hidden-card__name", text: t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF") });
         titleRow2.createSpan({ text: t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5E03\u5C40\u6807\u8BB0"), cls: "manager-hidden-item__state is-separator" });
         const titleInputWrap = textWrap2.createDiv("manager-hidden-separator-card__input");
-        const titleInput = new import_obsidian16.TextComponent(titleInputWrap);
+        const titleInput = new import_obsidian18.TextComponent(titleInputWrap);
         titleInput.setValue(layoutItem.title || t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF"));
         titleInput.setPlaceholder(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF\u6807\u9898"));
         titleInput.inputEl.setAttribute("aria-label", t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF\u6807\u9898"));
@@ -8671,7 +9100,7 @@ ${manifest.author || ""}`;
         card.addClass("inactive");
       const main = card.createDiv("manager-hidden-card__main");
       const iconWrap = main.createDiv("manager-hidden-card__icon");
-      (0, import_obsidian16.setIcon)(iconWrap, isHidden ? "eye-off" : "eye");
+      (0, import_obsidian18.setIcon)(iconWrap, isHidden ? "eye-off" : "eye");
       const textWrap = main.createDiv("manager-hidden-card__text");
       const titleRow = textWrap.createDiv("manager-hidden-card__title-row");
       titleRow.createSpan({
@@ -8693,7 +9122,7 @@ ${manifest.author || ""}`;
       createOrderButton(order, "arrow-down", t("\u901A\u7528_\u4E0B\u79FB_\u6587\u672C"), index === layout.length - 1, async () => this.movePluginLayoutItem(index, 1));
       const control = actions.createDiv("manager-hidden-card__control");
       control.createSpan({ cls: "manager-hidden-card__control-label", text: t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u9690\u85CF\u4E8E\u7BA1\u7406\u9875") });
-      const hiddenToggle = new import_obsidian16.ToggleComponent(control);
+      const hiddenToggle = new import_obsidian18.ToggleComponent(control);
       hiddenToggle.setValue(isHidden);
       hiddenToggle.setDisabled(isSelf);
       hiddenToggle.toggleEl.setAttribute("aria-label", t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u9690\u85CF\u4E8E\u7BA1\u7406\u9875_\u6807\u7B7E", { name: managerPlugin.name }));
@@ -8715,13 +9144,13 @@ ${manifest.author || ""}`;
     if (renderedCount === 0) {
       const empty = page.createDiv("bpm-empty-state manager-hidden-page__empty");
       const icon = empty.createDiv();
-      (0, import_obsidian16.setIcon)(icon, "eye-off");
+      (0, import_obsidian18.setIcon)(icon, "eye-off");
       empty.createDiv({ cls: "bpm-empty-state__text", text: t("\u7BA1\u7406\u5668_\u6682\u65E0\u5339\u914D\u63D2\u4EF6") });
     }
   }
-  showSourcesPanel(containerEl = this.contentEl) {
+  showSourcesPanel(containerEl = this.pageEl) {
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    if (containerEl === this.contentEl)
+    if (containerEl === this.pageEl)
       containerEl.empty();
     const page = containerEl.createDiv("manager-source-page");
     const sources = this.getBetaSources();
@@ -8734,10 +9163,10 @@ ${manifest.author || ""}`;
     if (sources.length === 0) {
       const empty = page.createDiv("bpm-empty-state manager-source-page__empty");
       const icon = empty.createDiv();
-      (0, import_obsidian16.setIcon)(icon, "radio-tower");
+      (0, import_obsidian18.setIcon)(icon, "radio-tower");
       empty.createDiv({ cls: "bpm-empty-state__text", text: t("\u6765\u6E90_\u6682\u65E0\u8BA2\u9605_\u63D0\u793A") });
       const actionWrap = empty.createDiv("manager-source-page__empty-action");
-      const addBtn = new import_obsidian16.ButtonComponent(actionWrap);
+      const addBtn = new import_obsidian18.ButtonComponent(actionWrap);
       addBtn.setIcon("download");
       addBtn.setButtonText(t("\u6765\u6E90_\u5B89\u88C5\u4ED3\u5E93_\u6309\u94AE"));
       addBtn.onClick(() => {
@@ -8749,7 +9178,7 @@ ${manifest.author || ""}`;
     }
     const toolbar = page.createDiv("manager-source-page__toolbar manager-source-page__toolbar--actions");
     const actions = toolbar.createDiv("manager-source-page__actions");
-    const checkAllBtn = new import_obsidian16.ButtonComponent(actions);
+    const checkAllBtn = new import_obsidian18.ButtonComponent(actions);
     checkAllBtn.setIcon("refresh-cw");
     checkAllBtn.setButtonText(t("\u6765\u6E90_\u5168\u90E8\u68C0\u67E5_\u6309\u94AE"));
     checkAllBtn.onClick(async () => {
@@ -8761,7 +9190,7 @@ ${manifest.author || ""}`;
       this.renderContent();
     });
     const updateTargets = sources.filter((source) => this.sourceHasUpdate(source));
-    const updateAllBtn = new import_obsidian16.ButtonComponent(actions);
+    const updateAllBtn = new import_obsidian18.ButtonComponent(actions);
     updateAllBtn.setIcon("download");
     updateAllBtn.setButtonText(t("\u6765\u6E90_\u66F4\u65B0\u53EF\u66F4\u65B0_\u6309\u94AE"));
     updateAllBtn.setDisabled(updateTargets.length === 0);
@@ -8784,20 +9213,28 @@ ${manifest.author || ""}`;
       const localVersionText = localVersion === notInstalledText ? localVersion : this.formatVersionWithDate(installedReleaseTag || localVersion, source.installedReleasePublishedAt || source.installedAt);
       const latestVersionText = source.latestReleaseTag || source.latestVersion ? this.formatVersionWithDate(source.latestReleaseTag || source.latestVersion || "", source.latestReleasePublishedAt || source.latestPublishedAt) : latestVersion;
       const hasUpdate = this.sourceHasUpdate(source);
+      const sourceKey = this.getSourceConfigKey(source);
+      const isConfigExpanded = this.expandedSourceConfigKeys.has(sourceKey);
+      const configRegionId = `manager-source-config-${sourceKey.replace(/[^a-z0-9_-]+/gi, "-")}`;
       const card = list.createDiv("manager-source-card");
       card.setAttribute("data-source-repo", source.repo);
+      card.toggleClass("has-update", hasUpdate);
+      card.toggleClass("has-error", Boolean(source.error));
+      card.toggleClass("is-config-expanded", isConfigExpanded);
+      card.toggleClass("is-config-collapsed", !isConfigExpanded);
       const cardMain = card.createDiv("manager-source-card__main");
       const cardHeader = cardMain.createDiv("manager-source-card__header");
       const titleBlock = cardHeader.createDiv("manager-source-card__title-block");
       const repoLine = titleBlock.createDiv("manager-source-card__repo-line");
       const repoIcon = repoLine.createSpan({ cls: "manager-source-card__repo-icon" });
-      (0, import_obsidian16.setIcon)(repoIcon, "github");
+      (0, import_obsidian18.setIcon)(repoIcon, "github");
       repoLine.createSpan({
         text: source.repo,
         cls: "manager-source-card__repo",
         title: `https://github.com/${source.repo}`
       });
-      const chips = cardHeader.createDiv("manager-source-card__chips");
+      const headerActions = cardHeader.createDiv("manager-source-card__header-actions");
+      const chips = headerActions.createDiv("manager-source-card__chips");
       chips.appendChild(createSpan({
         text: source.type === "plugin" ? t("\u6765\u6E90_\u7C7B\u578B_\u63D2\u4EF6") : t("\u6765\u6E90_\u7C7B\u578B_\u4E3B\u9898"),
         cls: "manager-source-item__chip"
@@ -8810,6 +9247,10 @@ ${manifest.author || ""}`;
         text: source.updateCheckMode === "version" ? t("\u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7") : t("\u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F"),
         cls: `manager-source-item__chip ${source.updateCheckMode === "version" ? "is-latest" : "is-frozen"}`
       }));
+      chips.appendChild(createSpan({
+        text: source.compatibilityMode === "all" ? t("\u517C\u5BB9\u6027_\u663E\u793A\u5168\u90E8") : t("\u517C\u5BB9\u6027_\u4EC5\u517C\u5BB9"),
+        cls: `manager-source-item__chip ${source.compatibilityMode === "all" ? "is-frozen" : "is-latest"}`
+      }));
       if (source.autoUpdate) {
         chips.appendChild(createSpan({ text: t("\u6765\u6E90_\u81EA\u52A8\u66F4\u65B0"), cls: "manager-source-item__chip is-auto" }));
       }
@@ -8819,12 +9260,29 @@ ${manifest.author || ""}`;
       if (hasUpdate) {
         chips.appendChild(createSpan({ text: t("\u6765\u6E90_\u6709\u66F4\u65B0"), cls: "manager-source-item__chip is-update" }));
       }
+      const configToggleLabel = `${isConfigExpanded ? t("Ribbon_\u9690\u85CF") : t("Ribbon_\u663E\u793A")} ${t("\u5BFC\u5165\u5BFC\u51FA_\u914D\u7F6E\u77ED\u6807\u7B7E")}`;
+      const configToggle = headerActions.createEl("button", { cls: "manager-source-card__config-toggle" });
+      configToggle.setAttribute("type", "button");
+      configToggle.setAttribute("aria-expanded", String(isConfigExpanded));
+      configToggle.setAttribute("aria-controls", configRegionId);
+      configToggle.setAttribute("aria-label", configToggleLabel);
+      configToggle.setAttribute("title", configToggleLabel);
+      const configToggleIcon = configToggle.createSpan("manager-source-card__config-toggle-icon");
+      (0, import_obsidian18.setIcon)(configToggleIcon, isConfigExpanded ? "chevron-up" : "chevron-down");
+      configToggle.addEventListener("click", () => {
+        if (isConfigExpanded) {
+          this.expandedSourceConfigKeys.delete(sourceKey);
+        } else {
+          this.expandedSourceConfigKeys.add(sourceKey);
+        }
+        this.renderContent();
+      });
       const checkedText = source.lastChecked ? new Date(source.lastChecked).toLocaleString() : notCheckedText;
       const metaGrid = cardMain.createDiv("manager-source-card__meta-grid");
       const createMeta = (label, value, iconName, extraCls) => {
         const meta = metaGrid.createDiv(`manager-source-card__meta${extraCls ? ` ${extraCls}` : ""}`);
         const iconEl = meta.createSpan({ cls: "manager-source-card__meta-icon" });
-        (0, import_obsidian16.setIcon)(iconEl, iconName);
+        (0, import_obsidian18.setIcon)(iconEl, iconName);
         meta.createSpan({ cls: "manager-source-card__meta-label", text: label });
         meta.createSpan({ cls: "manager-source-card__meta-value", text: value, title: value });
       };
@@ -8834,14 +9292,20 @@ ${manifest.author || ""}`;
       if (source.error) {
         const errorEl = cardMain.createDiv("manager-source-card__error");
         const errorIcon = errorEl.createSpan({ cls: "manager-source-card__error-icon" });
-        (0, import_obsidian16.setIcon)(errorIcon, "triangle-alert");
+        (0, import_obsidian18.setIcon)(errorIcon, "triangle-alert");
         errorEl.createSpan({ text: source.error });
       }
       const controls = card.createDiv("manager-source-card__controls");
-      const strategyGroup = controls.createDiv("manager-source-card__control-group manager-source-card__control-group--strategy");
+      controls.id = configRegionId;
+      controls.setAttribute("role", "region");
+      controls.setAttribute("aria-label", configToggleLabel);
+      controls.toggleAttribute("hidden", !isConfigExpanded);
+      const strategyPanel = controls.createDiv("manager-source-card__control-panel manager-source-card__control-panel--strategy");
+      const updatePanel = controls.createDiv("manager-source-card__control-panel manager-source-card__control-panel--update");
+      const strategyGroup = strategyPanel.createDiv("manager-source-card__control-group manager-source-card__control-group--strategy");
       strategyGroup.createSpan({ cls: "manager-source-card__control-label", text: t("\u6765\u6E90_\u7248\u672C\u7B56\u7565") });
       const strategyWrap = strategyGroup.createDiv("manager-source-item__strategy");
-      const modeDropdown = new import_obsidian16.DropdownComponent(strategyWrap);
+      const modeDropdown = new import_obsidian18.DropdownComponent(strategyWrap);
       modeDropdown.addOptions({ latest: t("\u6765\u6E90_\u6A21\u5F0F_\u8DDF\u968F\u6700\u65B0"), frozen: t("\u6765\u6E90_\u6A21\u5F0F_\u56FA\u5B9A\u7248\u672C") });
       modeDropdown.setValue(source.mode || "latest");
       modeDropdown.onChange(async (value) => {
@@ -8855,7 +9319,7 @@ ${manifest.author || ""}`;
       });
       modeDropdown.selectEl.addClass("manager-source-item__mode");
       modeDropdown.selectEl.setAttribute("aria-label", t("\u6765\u6E90_\u7248\u672C\u7B56\u7565"));
-      const updateCheckDropdown = new import_obsidian16.DropdownComponent(strategyWrap);
+      const updateCheckDropdown = new import_obsidian18.DropdownComponent(strategyWrap);
       updateCheckDropdown.addOptions({
         release: t("\u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F"),
         version: t("\u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7")
@@ -8871,8 +9335,46 @@ ${manifest.author || ""}`;
       updateCheckDropdown.selectEl.addClass("manager-source-item__mode");
       updateCheckDropdown.selectEl.addClass("manager-source-item__check-mode");
       updateCheckDropdown.selectEl.setAttribute("aria-label", t("\u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F"));
+      if (source.type === "plugin") {
+        const compatibilityGroup = strategyPanel.createDiv("manager-source-card__control-group manager-source-card__control-group--compatibility");
+        compatibilityGroup.createSpan({ cls: "manager-source-card__control-label", text: t("\u517C\u5BB9\u6027_\u7B56\u7565") });
+        const compatibilityDropdown = new import_obsidian18.DropdownComponent(compatibilityGroup);
+        compatibilityDropdown.addOptions({
+          compatible: t("\u517C\u5BB9\u6027_\u4EC5\u517C\u5BB9"),
+          all: t("\u517C\u5BB9\u6027_\u663E\u793A\u5168\u90E8")
+        });
+        compatibilityDropdown.setValue(source.compatibilityMode || "compatible");
+        compatibilityDropdown.onChange(async (value) => {
+          source.compatibilityMode = value === "all" ? "all" : "compatible";
+          await this.checkBetaSource(source);
+          this.renderContent();
+        });
+        compatibilityDropdown.selectEl.addClass("manager-source-item__mode");
+        compatibilityDropdown.selectEl.setAttribute("aria-label", t("\u517C\u5BB9\u6027_\u7B56\u7565"));
+      }
+      const delayWrap = strategyWrap.createDiv("manager-source-item__delay");
+      delayWrap.createSpan({ cls: "manager-source-item__delay-label", text: t("\u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E") });
+      const delayInput = new import_obsidian18.TextComponent(delayWrap);
+      delayInput.setPlaceholder("0");
+      delayInput.setValue(source.updateDelayDays ? String(source.updateDelayDays) : "");
+      delayInput.inputEl.addClass("manager-source-item__delay-input");
+      delayInput.inputEl.setAttribute("type", "number");
+      delayInput.inputEl.setAttribute("min", "0");
+      delayInput.inputEl.setAttribute("step", "1");
+      delayInput.inputEl.setAttribute("aria-label", t("\u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E"));
+      delayInput.inputEl.setAttribute("title", t("\u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u8BF4\u660E"));
+      delayInput.onChange(async (value) => {
+        source.updateDelayDays = this.normalizeSourceUpdateDelayDays(value);
+        await this.manager.saveSettings();
+      });
+      delayInput.inputEl.addEventListener("blur", () => {
+        void this.checkBetaSource(source).then(() => {
+          if (this.activePage === "sources")
+            this.renderContent();
+        });
+      });
       if (source.mode === "frozen") {
-        const frozenInput = new import_obsidian16.TextComponent(strategyWrap);
+        const frozenInput = new import_obsidian18.TextComponent(strategyWrap);
         frozenInput.setPlaceholder("tag");
         frozenInput.setValue(source.frozenVersion || "");
         frozenInput.inputEl.addClass("manager-source-item__version");
@@ -8882,11 +9384,12 @@ ${manifest.author || ""}`;
           await this.manager.saveSettings();
         });
       }
-      const autoGroup = controls.createDiv("manager-source-card__control-group manager-source-card__control-group--auto");
+      const updateToggleGrid = updatePanel.createDiv("manager-source-card__toggle-grid");
+      const autoGroup = updateToggleGrid.createDiv("manager-source-card__control-group manager-source-card__control-group--auto");
       autoGroup.createSpan({ cls: "manager-source-card__control-label", text: t("\u6765\u6E90_\u66F4\u65B0") });
       const autoWrap = autoGroup.createDiv("manager-source-item__toggle");
       autoWrap.createSpan({ cls: "manager-source-item__toggle-label", text: t("\u6765\u6E90_\u81EA\u52A8") });
-      const autoToggle = new import_obsidian16.ToggleComponent(autoWrap);
+      const autoToggle = new import_obsidian18.ToggleComponent(autoWrap);
       autoToggle.setValue(Boolean(source.autoUpdate));
       autoToggle.toggleEl.setAttribute("aria-label", t("\u6765\u6E90_\u81EA\u52A8\u66F4\u65B0"));
       autoToggle.onChange(async (value) => {
@@ -8894,11 +9397,11 @@ ${manifest.author || ""}`;
         await this.manager.saveSettings();
         this.renderContent();
       });
-      const prereleaseGroup = controls.createDiv("manager-source-card__control-group manager-source-card__control-group--pre");
+      const prereleaseGroup = updateToggleGrid.createDiv("manager-source-card__control-group manager-source-card__control-group--pre");
       prereleaseGroup.createSpan({ cls: "manager-source-card__control-label", text: t("\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u9884\u53D1\u5E03") });
       const prereleaseWrap = prereleaseGroup.createDiv("manager-source-item__toggle");
       prereleaseWrap.createSpan({ cls: "manager-source-item__toggle-label", text: t("\u6765\u6E90_\u6700\u65B0") });
-      const prereleaseToggle = new import_obsidian16.ToggleComponent(prereleaseWrap);
+      const prereleaseToggle = new import_obsidian18.ToggleComponent(prereleaseWrap);
       prereleaseToggle.setValue(Boolean(source.includePrerelease));
       prereleaseToggle.toggleEl.setAttribute("aria-label", t("\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u9884\u53D1\u5E03"));
       prereleaseToggle.onChange(async (value) => {
@@ -8907,12 +9410,12 @@ ${manifest.author || ""}`;
         await this.checkBetaSource(source);
         this.renderContent();
       });
-      const actionGroup = controls.createDiv("manager-source-card__actions");
+      const actionGroup = updatePanel.createDiv("manager-source-card__actions");
       const prepareActionButton = (btn, label) => {
         btn.setTooltip(label);
         btn.buttonEl.setAttribute("aria-label", label);
       };
-      const checkBtn = new import_obsidian16.ButtonComponent(actionGroup);
+      const checkBtn = new import_obsidian18.ButtonComponent(actionGroup);
       checkBtn.setIcon("refresh-cw");
       prepareActionButton(checkBtn, t("\u6765\u6E90_\u68C0\u67E5\u66F4\u65B0_\u6309\u94AE"));
       checkBtn.onClick(async () => {
@@ -8921,17 +9424,17 @@ ${manifest.author || ""}`;
         checkBtn.setDisabled(false);
         this.renderContent();
       });
-      const updateBtn = new import_obsidian16.ButtonComponent(actionGroup);
+      const updateBtn = new import_obsidian18.ButtonComponent(actionGroup);
       updateBtn.setIcon("download");
       prepareActionButton(updateBtn, t("\u6765\u6E90_\u66F4\u65B0_\u6309\u94AE"));
-      updateBtn.setDisabled(!source.latestReleaseTag && !source.latestVersion && localVersion === notInstalledText);
+      updateBtn.setDisabled(localVersion === notInstalledText ? !source.latestReleaseTag && !source.latestVersion : !hasUpdate);
       updateBtn.onClick(async () => {
         updateBtn.setDisabled(true);
         await this.updateBetaSource(source);
         updateBtn.setDisabled(false);
         this.renderContent();
       });
-      const reinstallBtn = new import_obsidian16.ButtonComponent(actionGroup);
+      const reinstallBtn = new import_obsidian18.ButtonComponent(actionGroup);
       reinstallBtn.setIcon("rotate-ccw");
       prepareActionButton(reinstallBtn, t("\u6765\u6E90_\u91CD\u88C5_\u6309\u94AE"));
       reinstallBtn.onClick(async () => {
@@ -8940,13 +9443,13 @@ ${manifest.author || ""}`;
         reinstallBtn.setDisabled(false);
         this.renderContent();
       });
-      const githubBtn = new import_obsidian16.ButtonComponent(actionGroup);
+      const githubBtn = new import_obsidian18.ButtonComponent(actionGroup);
       githubBtn.setIcon("github");
       prepareActionButton(githubBtn, t("\u6765\u6E90_\u6253\u5F00GitHub_\u6309\u94AE"));
       githubBtn.onClick(() => {
         window.open(`https://github.com/${source.repo}`);
       });
-      const removeBtn = new import_obsidian16.ButtonComponent(actionGroup);
+      const removeBtn = new import_obsidian18.ButtonComponent(actionGroup);
       removeBtn.setIcon("trash-2");
       prepareActionButton(removeBtn, t("\u6765\u6E90_\u505C\u6B62\u8DDF\u8E2A_\u6309\u94AE"));
       removeBtn.onClick(async () => {
@@ -8973,7 +9476,7 @@ ${manifest.author || ""}`;
   }
   // 安装面板
   showInstallPanel() {
-    this.contentEl.empty();
+    this.pageEl.empty();
     const t = (k, vars) => this.manager.translator.t(k, vars);
     const repo = this.getNormalizedInstallRepo();
     const repoIsValid = this.isValidInstallRepo(repo);
@@ -8981,17 +9484,23 @@ ${manifest.author || ""}`;
     const versionLabel = this.installVersion || t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u9ED8\u8BA4\u6700\u65B0");
     const sources = this.getBetaSources();
     const stats = this.getSourceStats(sources);
-    const workspace = this.contentEl.createDiv("manager-repo-page");
+    const workspace = this.pageEl.createDiv("manager-repo-page");
     const toolbar = workspace.createDiv("manager-repo-page__toolbar");
     const switcher = toolbar.createDiv("manager-repo-page__switcher");
+    switcher.setAttribute("role", "tablist");
+    switcher.setAttribute("data-slot", "tabs-list");
     const createWorkspaceButton = (page, icon, label, count) => {
       const button = switcher.createEl("button", { cls: "manager-repo-page__switch" });
       const selected = this.activePage === page;
       button.type = "button";
+      button.setAttribute("role", "tab");
+      button.setAttribute("data-slot", "tabs-trigger");
       button.toggleClass("is-active", selected);
       button.setAttribute("aria-pressed", `${selected}`);
+      button.setAttribute("aria-selected", `${selected}`);
+      button.setAttribute("data-state", selected ? "active" : "inactive");
       const iconEl = button.createSpan({ cls: "manager-repo-page__switch-icon" });
-      (0, import_obsidian16.setIcon)(iconEl, icon);
+      (0, import_obsidian18.setIcon)(iconEl, icon);
       button.createSpan({ cls: "manager-repo-page__switch-label", text: label });
       if (typeof count === "number")
         button.createSpan({ cls: "manager-repo-page__switch-count", text: `${count}` });
@@ -9016,7 +9525,7 @@ ${manifest.author || ""}`;
       const chip = toolbarStats.createSpan({ cls: "manager-repo-page__stat" });
       chip.setAttribute("aria-label", `${item.label} ${item.value}`);
       const chipIcon = chip.createSpan({ cls: "manager-repo-page__stat-icon" });
-      (0, import_obsidian16.setIcon)(chipIcon, item.icon);
+      (0, import_obsidian18.setIcon)(chipIcon, item.icon);
       chip.createSpan({ cls: "manager-repo-page__stat-label", text: item.label });
       chip.createSpan({ cls: "manager-repo-page__stat-value", text: `${item.value}` });
     });
@@ -9026,17 +9535,23 @@ ${manifest.author || ""}`;
       return;
     }
     const panel = body.createDiv("manager-install");
-    const typeSetting = new import_obsidian16.Setting(panel).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u63CF\u8FF0"));
+    const typeSetting = new import_obsidian18.Setting(panel).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7C7B\u578B_\u63CF\u8FF0"));
     typeSetting.settingEl.addClass("manager-install__setting");
     typeSetting.controlEl.addClass("manager-install__type-control");
     const typeSegment = typeSetting.controlEl.createDiv("manager-install__segmented");
+    typeSegment.setAttribute("role", "tablist");
+    typeSegment.setAttribute("data-slot", "tabs-list");
     const createTypeButton = (type, icon, label) => {
       const button = typeSegment.createEl("button", { cls: "manager-install__segment" });
       button.type = "button";
+      button.setAttribute("role", "tab");
+      button.setAttribute("data-slot", "tabs-trigger");
       button.toggleClass("is-active", this.installType === type);
       button.setAttribute("aria-pressed", `${this.installType === type}`);
+      button.setAttribute("aria-selected", `${this.installType === type}`);
+      button.setAttribute("data-state", this.installType === type ? "active" : "inactive");
       const iconEl = button.createSpan({ cls: "manager-install__segment-icon" });
-      (0, import_obsidian16.setIcon)(iconEl, icon);
+      (0, import_obsidian18.setIcon)(iconEl, icon);
       button.createSpan({ text: label });
       button.addEventListener("click", () => {
         if (this.installType === type)
@@ -9074,16 +9589,35 @@ ${manifest.author || ""}`;
     };
     const getReleaseOptionLabel = (release) => [
       release.version,
+      release.isGithubLatest ? t("\u517C\u5BB9\u6027_GitHubLatest") : "",
+      release.minAppVersion ? t("\u517C\u5BB9\u6027_\u9700\u8981\u7248\u672C", { version: release.minAppVersion }) : "",
+      release.minAppVersion ? t(releaseIsCompatible(release) ? "\u517C\u5BB9\u6027_\u517C\u5BB9" : "\u517C\u5BB9\u6027_\u4E0D\u517C\u5BB9") : "",
       formatReleaseDate(release.publishedAt),
       release.prerelease ? t("\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u9884\u53D1\u5E03") : ""
     ].filter(Boolean).join(" \xB7 ");
     const getSelectedRelease = () => {
-      var _a;
+      var _a, _b;
       if (this.installVersions.length === 0)
         return null;
       const selected = this.installVersion.trim();
       if (selected)
         return (_a = this.installVersions.find((item) => item.version === selected)) != null ? _a : null;
+      if (this.installType === "plugin") {
+        const updateOptions = this.manager.getPluginUpdateCheckOptions();
+        const target = pickSourceTargetRelease({
+          id: this.getNormalizedInstallRepo(),
+          repo: this.getNormalizedInstallRepo(),
+          type: "plugin",
+          mode: "latest",
+          includePrerelease: false,
+          updateCheckMode: "release",
+          compatibilityMode: updateOptions.compatibilityMode,
+          autoUpdate: false,
+          enabled: true
+        }, this.installVersions);
+        if (target)
+          return (_b = this.installVersions.find((item) => item.version === target.tag)) != null ? _b : null;
+      }
       return this.installVersions.find((item) => !item.prerelease) || this.installVersions[0];
     };
     const updateReleaseInfo = () => {
@@ -9103,6 +9637,9 @@ ${manifest.author || ""}`;
       releaseEls.title.setText(release.name || release.version);
       const metaParts = [
         release.version,
+        release.isGithubLatest ? t("\u517C\u5BB9\u6027_GitHubLatest") : "",
+        release.minAppVersion ? t("\u517C\u5BB9\u6027_\u9700\u8981\u7248\u672C", { version: release.minAppVersion }) : "",
+        release.minAppVersion ? t(releaseIsCompatible(release) ? "\u517C\u5BB9\u6027_\u517C\u5BB9" : "\u517C\u5BB9\u6027_\u4E0D\u517C\u5BB9") : "",
         release.prerelease ? t("\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u9884\u53D1\u5E03") : t("\u5B89\u88C5_\u53D1\u5E03\u7C7B\u578B_\u6B63\u5F0F\u7248"),
         formatReleaseDate(release.publishedAt)
       ].filter(Boolean);
@@ -9112,24 +9649,24 @@ ${manifest.author || ""}`;
     const fetchVersions = async () => {
       const validRepo = this.requireInstallRepo();
       if (!validRepo) {
-        new import_obsidian16.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93\u4E3A\u7A7A\u63D0\u793A"));
+        new import_obsidian18.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93\u4E3A\u7A7A\u63D0\u793A"));
         return;
       }
       fetchButton == null ? void 0 : fetchButton.setDisabled(true);
       fetchButton == null ? void 0 : fetchButton.setButtonText(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u83B7\u53D6\u4E2D"));
       try {
-        this.installVersions = await fetchReleaseVersions(this.manager, validRepo);
+        this.installVersions = await fetchReleaseVersions(this.manager, validRepo, { includeManifest: this.installType === "plugin" });
         this.installVersion = "";
         if (this.installVersions.length === 0)
-          new import_obsidian16.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u7A7A\u63D0\u793A"));
+          new import_obsidian18.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u7A7A\u63D0\u793A"));
       } catch (e) {
         console.error(e);
-        new import_obsidian16.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u5931\u8D25\u63D0\u793A"));
+        new import_obsidian18.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u5931\u8D25\u63D0\u793A"));
       } finally {
         this.renderContent();
       }
     };
-    const repoSetting = new import_obsidian16.Setting(panel).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u63CF\u8FF0"));
+    const repoSetting = new import_obsidian18.Setting(panel).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u63CF\u8FF0"));
     repoSetting.settingEl.addClass("manager-install__setting");
     repoSetting.controlEl.addClass("manager-install__repo-control");
     repoSetting.addText((text) => {
@@ -9166,7 +9703,7 @@ ${manifest.author || ""}`;
       const historyHead = historyPanel.createDiv("manager-install__history-head");
       const historyTitle = historyHead.createDiv("manager-install__history-title");
       const historyIcon = historyTitle.createSpan({ cls: "manager-install__history-title-icon" });
-      (0, import_obsidian16.setIcon)(historyIcon, "history");
+      (0, import_obsidian18.setIcon)(historyIcon, "history");
       historyTitle.createSpan({ text: t("\u5B89\u88C5_\u5386\u53F2_\u6807\u9898") });
       historyTitle.createSpan({ cls: "manager-install__history-count", text: `${historyItems.length}` });
       if (this.getInstallHistory().length > 0) {
@@ -9175,7 +9712,7 @@ ${manifest.author || ""}`;
         clearHistoryBtn.setAttribute("aria-label", t("\u5B89\u88C5_\u5386\u53F2_\u6E05\u7A7A"));
         clearHistoryBtn.setAttribute("title", t("\u5B89\u88C5_\u5386\u53F2_\u6E05\u7A7A"));
         const clearIcon = clearHistoryBtn.createSpan();
-        (0, import_obsidian16.setIcon)(clearIcon, "x");
+        (0, import_obsidian18.setIcon)(clearIcon, "x");
         clearHistoryBtn.addEventListener("click", () => {
           void (async () => {
             if (!await confirmWithModal(this.app, this.manager, t("\u5B89\u88C5_\u5386\u53F2_\u6E05\u7A7A_\u786E\u8BA4")))
@@ -9195,7 +9732,7 @@ ${manifest.author || ""}`;
         historyBtn.setAttribute("aria-label", t("\u5B89\u88C5_\u5386\u53F2_\u9009\u62E9_\u6807\u7B7E", { repo: item.repo }));
         historyBtn.setAttribute("title", item.repo);
         const itemIcon = historyBtn.createSpan({ cls: "manager-install__history-item-icon" });
-        (0, import_obsidian16.setIcon)(itemIcon, item.type === "plugin" ? "blocks" : "palette");
+        (0, import_obsidian18.setIcon)(itemIcon, item.type === "plugin" ? "blocks" : "palette");
         const textWrap = historyBtn.createSpan({ cls: "manager-install__history-item-text" });
         textWrap.createSpan({ cls: "manager-install__history-item-repo", text: item.repo });
         historyBtn.addEventListener("click", () => {
@@ -9209,7 +9746,7 @@ ${manifest.author || ""}`;
         });
       });
     }
-    const versionSetting = new import_obsidian16.Setting(panel).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u63CF\u8FF0"));
+    const versionSetting = new import_obsidian18.Setting(panel).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u6807\u9898")).setDesc(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u7248\u672C_\u63CF\u8FF0"));
     versionSetting.settingEl.addClass("manager-install__setting");
     versionSetting.controlEl.addClass("manager-install__version-control");
     versionSetting.addDropdown((dd) => {
@@ -9254,13 +9791,13 @@ ${manifest.author || ""}`;
     const releaseInfo = panel.createDiv("manager-install__release");
     const releaseInfoHead = releaseInfo.createDiv("manager-install__release-head");
     const releaseInfoIcon = releaseInfoHead.createSpan({ cls: "manager-install__release-icon" });
-    (0, import_obsidian16.setIcon)(releaseInfoIcon, "newspaper");
+    (0, import_obsidian18.setIcon)(releaseInfoIcon, "newspaper");
     const releaseInfoText = releaseInfoHead.createDiv("manager-install__release-text");
     releaseEls.title = releaseInfoText.createDiv("manager-install__release-title");
     releaseEls.meta = releaseInfoText.createDiv("manager-install__release-meta");
     releaseEls.body = releaseInfo.createDiv("manager-install__release-body");
     updateReleaseInfo();
-    const trackSetting = new import_obsidian16.Setting(panel).setName(t("\u6765\u6E90_\u8DDF\u8E2A\u6765\u6E90_\u6807\u9898")).setDesc(t("\u6765\u6E90_\u8DDF\u8E2A\u6765\u6E90_\u63CF\u8FF0"));
+    const trackSetting = new import_obsidian18.Setting(panel).setName(t("\u6765\u6E90_\u8DDF\u8E2A\u6765\u6E90_\u6807\u9898")).setDesc(t("\u6765\u6E90_\u8DDF\u8E2A\u6765\u6E90_\u63CF\u8FF0"));
     trackSetting.settingEl.addClass("manager-install__setting");
     trackSetting.addToggle((toggle) => {
       toggle.setValue(this.installTrackSource);
@@ -9268,7 +9805,7 @@ ${manifest.author || ""}`;
         this.installTrackSource = value;
       });
     });
-    const action = new import_obsidian16.Setting(panel).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u64CD\u4F5C_\u6807\u9898")).setDesc(`${repoIsValid ? repo : t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u5360\u4F4D")} \xB7 ${typeLabel} \xB7 ${versionLabel}`);
+    const action = new import_obsidian18.Setting(panel).setName(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u64CD\u4F5C_\u6807\u9898")).setDesc(`${repoIsValid ? repo : t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93_\u5360\u4F4D")} \xB7 ${typeLabel} \xB7 ${versionLabel}`);
     action.settingEl.addClass("manager-install__setting");
     action.settingEl.addClass("manager-install__action");
     action.addButton((btn) => {
@@ -9280,7 +9817,7 @@ ${manifest.author || ""}`;
         var _a, _b;
         const validRepo = this.requireInstallRepo();
         if (!validRepo) {
-          new import_obsidian16.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93\u4E3A\u7A7A\u63D0\u793A"));
+          new import_obsidian18.Notice(t("\u7BA1\u7406\u5668_\u5B89\u88C5_\u4ED3\u5E93\u4E3A\u7A7A\u63D0\u793A"));
           return;
         }
         btn.setDisabled(true);
@@ -9294,8 +9831,22 @@ ${manifest.author || ""}`;
             let selectedRelease = getSelectedRelease();
             if (!selectedRelease) {
               try {
-                const versions = await fetchReleaseVersions(this.manager, validRepo);
-                selectedRelease = this.installVersion ? (_a = versions.find((item) => item.version === this.installVersion)) != null ? _a : null : versions.find((item) => !item.prerelease) || versions[0] || null;
+                const updateOptions = this.manager.getPluginUpdateCheckOptions();
+                const versions = await fetchReleaseVersions(this.manager, validRepo, { includeManifest: this.installType === "plugin" });
+                selectedRelease = this.installVersion ? (_a = versions.find((item) => item.version === this.installVersion)) != null ? _a : null : this.installType === "plugin" ? versions.find((item) => {
+                  var _a2;
+                  return item.version === ((_a2 = pickSourceTargetRelease({
+                    id: pluginId || validRepo,
+                    repo: validRepo,
+                    type: "plugin",
+                    mode: "latest",
+                    includePrerelease: false,
+                    updateCheckMode: "release",
+                    compatibilityMode: updateOptions.compatibilityMode,
+                    autoUpdate: false,
+                    enabled: true
+                  }, versions)) == null ? void 0 : _a2.tag);
+                }) || versions.find((item) => !item.prerelease) || versions[0] || null : versions.find((item) => !item.prerelease) || versions[0] || null;
               } catch (e) {
                 selectedRelease = null;
               }
@@ -9311,6 +9862,7 @@ ${manifest.author || ""}`;
               frozenVersion: this.installVersion || void 0,
               includePrerelease: Boolean(selectedRelease == null ? void 0 : selectedRelease.prerelease),
               updateCheckMode: "release",
+              compatibilityMode: this.manager.getPluginUpdateCheckOptions().compatibilityMode,
               autoUpdate: false,
               enabled: true,
               localVersion,
@@ -9340,12 +9892,12 @@ ${manifest.author || ""}`;
       this.activePage = "plugins";
       this.installMode = false;
       this.syncPageChrome();
-      this.contentEl.empty();
+      this.pageEl.empty();
       await this.showData(renderGeneration);
       return;
     }
-    this.contentEl.empty();
-    const page = this.contentEl.createDiv("manager-ribbon-page ribbon-manager-modal");
+    this.pageEl.empty();
+    const page = this.pageEl.createDiv("manager-ribbon-page ribbon-manager-modal");
     page.createDiv({
       cls: "manager-ribbon-page__loading",
       text: this.manager.translator.t("Ribbon_\u6807\u9898")
@@ -9359,16 +9911,16 @@ ${manifest.author || ""}`;
     this.ribbonPage.display(page, false);
   }
   showTroubleshootPanel() {
-    this.contentEl.empty();
+    this.pageEl.empty();
     if (!this.troubleshootPanel) {
       this.troubleshootPanel = new TroubleshootPanel(this.app, this.manager, () => this.updateStats());
     }
-    this.troubleshootPanel.display(this.contentEl);
+    this.troubleshootPanel.display(this.pageEl);
   }
   renderTransferCardHeader(card, icon, title, desc) {
     const header = card.createDiv("manager-transfer-card__header");
     const iconWrap = header.createDiv("manager-transfer-card__icon");
-    (0, import_obsidian16.setIcon)(iconWrap, icon);
+    (0, import_obsidian18.setIcon)(iconWrap, icon);
     const textWrap = header.createDiv("manager-transfer-card__title-group");
     textWrap.createDiv({ cls: "manager-transfer-card__title", text: title });
     textWrap.createDiv({ cls: "manager-transfer-card__desc", text: desc });
@@ -9378,11 +9930,11 @@ ${manifest.author || ""}`;
     const header = card.createDiv("manager-transfer-card__header manager-transfer-card__header--split");
     const main = header.createDiv("manager-transfer-card__header-main");
     const iconWrap = main.createDiv("manager-transfer-card__icon");
-    (0, import_obsidian16.setIcon)(iconWrap, "package-open");
+    (0, import_obsidian18.setIcon)(iconWrap, "package-open");
     const textWrap = main.createDiv("manager-transfer-card__title-group");
     textWrap.createDiv({ cls: "manager-transfer-card__title", text: t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u51FA\u6807\u9898") });
     textWrap.createDiv({ cls: "manager-transfer-card__desc", text: t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u51FA\u8BF4\u660E") });
-    const downloadBtn = new import_obsidian16.ButtonComponent(header);
+    const downloadBtn = new import_obsidian18.ButtonComponent(header);
     downloadBtn.setIcon("download");
     downloadBtn.setButtonText(t("\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7DJSON"));
     downloadBtn.setCta();
@@ -9396,12 +9948,12 @@ ${manifest.author || ""}`;
     const header = card.createDiv("manager-transfer-card__header manager-transfer-card__header--split");
     const main = header.createDiv("manager-transfer-card__header-main");
     const iconWrap = main.createDiv("manager-transfer-card__icon");
-    (0, import_obsidian16.setIcon)(iconWrap, "download");
+    (0, import_obsidian18.setIcon)(iconWrap, "download");
     const textWrap = main.createDiv("manager-transfer-card__title-group");
     textWrap.createDiv({ cls: "manager-transfer-card__title", text: t("\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u6E05\u5355\u6807\u9898") });
     textWrap.createDiv({ cls: "manager-transfer-card__desc", text: t("\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u6E05\u5355\u8BF4\u660E") });
     const total = this.transferPackage ? (this.transferPackage.data.plugins || []).length + (this.transferPackage.data.themes || []).length : 0;
-    const downloadAllBtn = new import_obsidian16.ButtonComponent(header);
+    const downloadAllBtn = new import_obsidian18.ButtonComponent(header);
     downloadAllBtn.setIcon("download");
     downloadAllBtn.setButtonText(t("\u5BFC\u5165\u5BFC\u51FA_\u4E00\u952E\u4E0B\u8F7D"));
     downloadAllBtn.setCta();
@@ -9413,7 +9965,7 @@ ${manifest.author || ""}`;
   renderTransferMetric(container, icon, label, value, tone, summaryKey) {
     const metric = container.createDiv(`manager-transfer-metric${tone ? ` ${tone}` : ""}`);
     const iconEl = metric.createSpan({ cls: "manager-transfer-metric__icon" });
-    (0, import_obsidian16.setIcon)(iconEl, icon);
+    (0, import_obsidian18.setIcon)(iconEl, icon);
     const text = metric.createSpan({ cls: "manager-transfer-metric__text" });
     text.createSpan({ cls: "manager-transfer-metric__label", text: label });
     const valueEl = text.createSpan({ cls: "manager-transfer-metric__value", text: `${value}` });
@@ -9426,11 +9978,11 @@ ${manifest.author || ""}`;
     const text = option.createDiv("manager-transfer-option__text");
     const title = text.createDiv("manager-transfer-option__title");
     const iconEl = title.createSpan({ cls: "manager-transfer-option__icon" });
-    (0, import_obsidian16.setIcon)(iconEl, icon);
+    (0, import_obsidian18.setIcon)(iconEl, icon);
     title.createSpan({ text: label });
     text.createDiv({ cls: "manager-transfer-option__desc", text: desc });
     const control = option.createDiv("manager-transfer-option__control");
-    const toggle = new import_obsidian16.ToggleComponent(control);
+    const toggle = new import_obsidian18.ToggleComponent(control);
     toggle.setValue(Boolean(this.transferBuildOptions[key]));
     toggle.toggleEl.setAttribute("aria-label", label);
     toggle.onChange((value) => {
@@ -9442,11 +9994,11 @@ ${manifest.author || ""}`;
     const text = option.createDiv("manager-transfer-option__text");
     const title = text.createDiv("manager-transfer-option__title");
     const iconEl = title.createSpan({ cls: "manager-transfer-option__icon" });
-    (0, import_obsidian16.setIcon)(iconEl, icon);
+    (0, import_obsidian18.setIcon)(iconEl, icon);
     title.createSpan({ text: label });
     text.createDiv({ cls: "manager-transfer-option__desc", text: desc });
     const control = option.createDiv("manager-transfer-option__control");
-    const toggle = new import_obsidian16.ToggleComponent(control);
+    const toggle = new import_obsidian18.ToggleComponent(control);
     toggle.setValue(Boolean(this.transferImportOptions[key]));
     toggle.toggleEl.setAttribute("aria-label", label);
     toggle.onChange((value) => {
@@ -9460,7 +10012,7 @@ ${manifest.author || ""}`;
     const adapter = this.app.vault.adapter;
     const items = [];
     for (const plugin of plugins) {
-      const path = (0, import_obsidian17.normalizePath)(`${this.app.vault.configDir}/plugins/${plugin.id}/data.json`);
+      const path = (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/plugins/${plugin.id}/data.json`);
       try {
         if (!await adapter.exists(path))
           continue;
@@ -9512,7 +10064,7 @@ ${manifest.author || ""}`;
   }
   updateTransferSelectionSummary() {
     const setValue = (key, value) => {
-      const el = this.contentEl.querySelector(`[data-transfer-summary-value="${key}"]`);
+      const el = this.pageEl.querySelector(`[data-transfer-summary-value="${key}"]`);
       if (el)
         el.setText(`${value}`);
     };
@@ -9526,7 +10078,7 @@ ${manifest.author || ""}`;
     const header = panel.createDiv("manager-transfer-list__header");
     const titleWrap = header.createDiv("manager-transfer-list__title");
     const titleIcon = titleWrap.createSpan({ cls: "manager-transfer-list__icon" });
-    (0, import_obsidian16.setIcon)(titleIcon, icon);
+    (0, import_obsidian18.setIcon)(titleIcon, icon);
     titleWrap.createSpan({ text: title });
     const actions = header.createDiv("manager-transfer-list__actions");
     const totalCount = items.length + items.filter((item) => item.configAvailable).length;
@@ -9579,7 +10131,7 @@ ${manifest.author || ""}`;
         updateSelectionChrome();
       });
       const itemIcon = primary.createSpan({ cls: "manager-transfer-list__item-icon" });
-      (0, import_obsidian16.setIcon)(itemIcon, item.icon);
+      (0, import_obsidian18.setIcon)(itemIcon, item.icon);
       const text = primary.createSpan({ cls: "manager-transfer-list__text" });
       text.createSpan({ cls: "manager-transfer-list__name", text: item.name });
       text.createSpan({ cls: "manager-transfer-list__meta", text: `${item.type} \xB7 ${item.meta}` });
@@ -9589,7 +10141,7 @@ ${manifest.author || ""}`;
         configCheckbox.checked = Boolean(item.configSelected);
         configCheckbox.disabled = this.transferBusy;
         const configIcon = config.createSpan({ cls: "manager-transfer-list__config-icon" });
-        (0, import_obsidian16.setIcon)(configIcon, "file-cog");
+        (0, import_obsidian18.setIcon)(configIcon, "file-cog");
         config.createSpan({ cls: "manager-transfer-list__config-text", text: item.configLabel || t("\u5BFC\u5165\u5BFC\u51FA_\u914D\u7F6E\u77ED\u6807\u7B7E") });
         configCheckbox.addEventListener("change", () => {
           item.configSelected = configCheckbox.checked;
@@ -9629,7 +10181,7 @@ ${manifest.author || ""}`;
     const folder = "Obsidian-Plugin-Exports";
     if (!await adapter.exists(folder))
       await adapter.mkdir(folder);
-    const path = (0, import_obsidian17.normalizePath)(`${folder}/${filename}`);
+    const path = (0, import_obsidian19.normalizePath)(`${folder}/${filename}`);
     await adapter.write(path, text);
     return path;
   }
@@ -9638,7 +10190,7 @@ ${manifest.author || ""}`;
       return;
     const selectedOptions = this.createSelectedTransferBuildOptions();
     if ((selectedOptions.selectedPluginIds || []).length + (selectedOptions.selectedThemeNames || []).length + (selectedOptions.selectedPluginConfigIds || []).length === 0) {
-      new import_obsidian16.Notice(this.manager.translator.t("\u5BFC\u5165\u5BFC\u51FA_\u672A\u9009\u62E9\u5BFC\u51FA\u9879"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u5BFC\u5165\u5BFC\u51FA_\u672A\u9009\u62E9\u5BFC\u51FA\u9879"));
       return;
     }
     this.transferBusy = true;
@@ -9652,14 +10204,14 @@ ${manifest.author || ""}`;
       const text = JSON.stringify(transferPackage, null, 2);
       if (mode === "download") {
         this.downloadTextFile(filename, text);
-        new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5DF2\u4E0B\u8F7D", { name: filename }));
+        new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5DF2\u4E0B\u8F7D", { name: filename }));
       } else {
         const path = await this.writeTransferPackageToVault(filename, text);
-        new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5DF2\u4FDD\u5B58", { path }));
+        new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5DF2\u4FDD\u5B58", { path }));
       }
     } catch (error) {
       console.error("[BPM] export transfer package failed", error);
-      new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u51FA\u5931\u8D25"));
+      new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u51FA\u5931\u8D25"));
     } finally {
       progress.hide();
       this.transferBusy = false;
@@ -9678,7 +10230,7 @@ ${manifest.author || ""}`;
       this.renderContent();
     } catch (error) {
       console.error("[BPM] import transfer package parse failed", error);
-      new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u6587\u4EF6\u65E0\u6548"));
+      new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u6587\u4EF6\u65E0\u6548"));
     }
   }
   normalizeTransferRepo(input) {
@@ -9804,10 +10356,10 @@ ${manifest.author || ""}`;
       this.transferImportResult = result;
       this.transferPreview = await createManagerTransferPreview(this.manager, this.transferPackage);
       this.updateStats();
-      new import_obsidian16.Notice(t(result.failedPlugins.length + result.failedThemes.length > 0 ? "\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5931\u8D25" : "\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5B8C\u6210"));
+      new import_obsidian18.Notice(t(result.failedPlugins.length + result.failedThemes.length > 0 ? "\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5931\u8D25" : "\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5B8C\u6210"));
     } catch (error) {
       console.error("[BPM] transfer item download failed", error);
-      new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5931\u8D25"));
+      new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5931\u8D25"));
     } finally {
       progress.hide();
       this.transferBusy = false;
@@ -9846,10 +10398,10 @@ ${manifest.author || ""}`;
       this.transferImportResult = result;
       this.transferPreview = await createManagerTransferPreview(this.manager, this.transferPackage);
       this.updateStats();
-      new import_obsidian16.Notice(t(result.failedPlugins.length + result.failedThemes.length > 0 ? "\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u90E8\u5206\u5931\u8D25" : "\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5B8C\u6210"));
+      new import_obsidian18.Notice(t(result.failedPlugins.length + result.failedThemes.length > 0 ? "\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u90E8\u5206\u5931\u8D25" : "\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5B8C\u6210"));
     } catch (error) {
       console.error("[BPM] transfer batch download failed", error);
-      new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5931\u8D25"));
+      new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u4E0B\u8F7D\u5931\u8D25"));
     } finally {
       progress.hide();
       this.transferBusy = false;
@@ -9862,7 +10414,7 @@ ${manifest.author || ""}`;
     const header = panel.createDiv("manager-transfer-list__header");
     const titleWrap = header.createDiv("manager-transfer-list__title");
     const titleIcon = titleWrap.createSpan({ cls: "manager-transfer-list__icon" });
-    (0, import_obsidian16.setIcon)(titleIcon, icon);
+    (0, import_obsidian18.setIcon)(titleIcon, icon);
     titleWrap.createSpan({ text: title });
     header.createSpan({ cls: "manager-transfer-list__count", text: `${items.length}` });
     const body = panel.createDiv("manager-transfer-list__body");
@@ -9873,7 +10425,7 @@ ${manifest.author || ""}`;
     items.forEach((item) => {
       const row = body.createDiv("manager-transfer-download__item");
       const itemIcon = row.createSpan({ cls: "manager-transfer-list__item-icon" });
-      (0, import_obsidian16.setIcon)(itemIcon, item.icon);
+      (0, import_obsidian18.setIcon)(itemIcon, item.icon);
       const text = row.createSpan({ cls: "manager-transfer-list__text" });
       text.createSpan({ cls: "manager-transfer-list__name", text: item.name });
       text.createSpan({ cls: "manager-transfer-list__meta", text: `${item.type} \xB7 ${item.meta}` });
@@ -9963,7 +10515,7 @@ ${manifest.author || ""}`;
     const card = container.createDiv("manager-transfer-result");
     const title = card.createDiv("manager-transfer-result__title");
     const icon = title.createSpan({ cls: "manager-transfer-result__icon" });
-    (0, import_obsidian16.setIcon)(icon, "check-check");
+    (0, import_obsidian18.setIcon)(icon, "check-check");
     title.createSpan({ text: t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u7ED3\u679C") });
     const metrics = card.createDiv("manager-transfer-result__metrics");
     this.renderTransferMetric(metrics, "download", t("\u5BFC\u5165\u5BFC\u51FA_\u7ED3\u679C_\u5DF2\u5B89\u88C5\u63D2\u4EF6"), result.installedPlugins);
@@ -9986,13 +10538,20 @@ ${manifest.author || ""}`;
     const row = container.createDiv("manager-transfer-strategy");
     row.createDiv({ cls: "manager-transfer-strategy__label", text: t("\u5BFC\u5165\u5BFC\u51FA_\u7248\u672C\u7B56\u7565") });
     const controls = row.createDiv("manager-transfer-strategy__controls");
+    controls.setAttribute("role", "tablist");
+    controls.setAttribute("data-slot", "tabs-list");
     const createButton = (strategy, icon, label) => {
       const button = controls.createEl("button", { cls: "manager-transfer-segment" });
+      const selected = this.transferImportOptions.installVersionStrategy === strategy;
       button.type = "button";
-      button.toggleClass("is-active", this.transferImportOptions.installVersionStrategy === strategy);
-      button.setAttribute("aria-pressed", `${this.transferImportOptions.installVersionStrategy === strategy}`);
+      button.setAttribute("role", "tab");
+      button.setAttribute("data-slot", "tabs-trigger");
+      button.toggleClass("is-active", selected);
+      button.setAttribute("aria-pressed", `${selected}`);
+      button.setAttribute("aria-selected", `${selected}`);
+      button.setAttribute("data-state", selected ? "active" : "inactive");
       const iconEl = button.createSpan({ cls: "manager-transfer-segment__icon" });
-      (0, import_obsidian16.setIcon)(iconEl, icon);
+      (0, import_obsidian18.setIcon)(iconEl, icon);
       button.createSpan({ text: label });
       button.addEventListener("click", () => {
         this.transferImportOptions.installVersionStrategy = strategy;
@@ -10015,10 +10574,10 @@ ${manifest.author || ""}`;
       this.transferImportResult = result;
       this.transferPreview = await createManagerTransferPreview(this.manager, this.transferPackage);
       this.updateStats();
-      new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u5B8C\u6210"));
+      new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u5B8C\u6210"));
     } catch (error) {
       console.error("[BPM] import transfer package failed", error);
-      new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u5931\u8D25"));
+      new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u5931\u8D25"));
     } finally {
       progress.hide();
       this.transferBusy = false;
@@ -10030,7 +10589,7 @@ ${manifest.author || ""}`;
       return;
     const selectedPluginConfigIds = [...new Set(configIds)];
     if (selectedPluginConfigIds.length === 0) {
-      new import_obsidian16.Notice(this.manager.translator.t("\u5BFC\u5165\u5BFC\u51FA_\u672A\u9009\u62E9\u914D\u7F6E\u6587\u4EF6"));
+      new import_obsidian18.Notice(this.manager.translator.t("\u5BFC\u5165\u5BFC\u51FA_\u672A\u9009\u62E9\u914D\u7F6E\u6587\u4EF6"));
       return;
     }
     this.transferBusy = true;
@@ -10055,10 +10614,10 @@ ${manifest.author || ""}`;
       this.transferImportResult = result;
       this.transferPreview = await createManagerTransferPreview(this.manager, this.transferPackage);
       this.updateStats();
-      new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u914D\u7F6E\u5B8C\u6210", { count: result.appliedPluginConfigs }));
+      new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u914D\u7F6E\u5B8C\u6210", { count: result.appliedPluginConfigs }));
     } catch (error) {
       console.error("[BPM] import transfer plugin configs failed", error);
-      new import_obsidian16.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u5931\u8D25"));
+      new import_obsidian18.Notice(t("\u5BFC\u5165\u5BFC\u51FA_\u5BFC\u5165\u5931\u8D25"));
     } finally {
       progress.hide();
       this.transferBusy = false;
@@ -10066,9 +10625,9 @@ ${manifest.author || ""}`;
     }
   }
   async showTransferPanel(renderGeneration = this.renderGeneration) {
-    this.contentEl.empty();
+    this.pageEl.empty();
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    const page = this.contentEl.createDiv("manager-transfer");
+    const page = this.pageEl.createDiv("manager-transfer");
     const plugins = this.getTransferPluginItems();
     const themes = await this.getTransferThemeItems();
     const pluginConfigs = await this.getTransferPluginConfigItems(plugins);
@@ -10091,7 +10650,7 @@ ${manifest.author || ""}`;
     dropzone.setAttribute("tabindex", "0");
     dropzone.setAttribute("aria-label", t("\u5BFC\u5165\u5BFC\u51FA_\u9009\u62E9\u6587\u4EF6"));
     const dropIcon = dropzone.createDiv("manager-transfer-dropzone__icon");
-    (0, import_obsidian16.setIcon)(dropIcon, "file-up");
+    (0, import_obsidian18.setIcon)(dropIcon, "file-up");
     dropzone.createDiv({ cls: "manager-transfer-dropzone__title", text: t("\u5BFC\u5165\u5BFC\u51FA_\u9009\u62E9\u6587\u4EF6") });
     dropzone.createDiv({ cls: "manager-transfer-dropzone__desc", text: t("\u5BFC\u5165\u5BFC\u51FA_\u9009\u62E9\u6587\u4EF6\u8BF4\u660E") });
     dropzone.addEventListener("click", () => fileInput.click());
@@ -10222,7 +10781,7 @@ ${manifest.author || ""}`;
   renderVaultMetric(container, iconName, label, value) {
     const item = container.createDiv("manager-vault-metric");
     const icon = item.createSpan({ cls: "manager-vault-metric__icon" });
-    (0, import_obsidian16.setIcon)(icon, iconName);
+    (0, import_obsidian18.setIcon)(icon, iconName);
     const text = item.createDiv("manager-vault-metric__text");
     text.createSpan({ cls: "manager-vault-metric__label", text: label });
     text.createSpan({ cls: "manager-vault-metric__value", text: `${value}` });
@@ -10233,7 +10792,7 @@ ${manifest.author || ""}`;
     pill.toggleClass("is-linked", status.isSymlink);
     pill.toggleClass("is-missing", !status.exists);
     const icon = pill.createSpan({ cls: "manager-vault-folder-pill__icon" });
-    (0, import_obsidian16.setIcon)(icon, status.kind === "plugins" ? "blocks" : "palette");
+    (0, import_obsidian18.setIcon)(icon, status.kind === "plugins" ? "blocks" : "palette");
     pill.createSpan({ cls: "manager-vault-folder-pill__label", text: kindLabel });
     pill.createSpan({ cls: "manager-vault-folder-pill__state", text: this.getVaultFolderLabel(status) });
     pill.createSpan({ cls: "manager-vault-folder-pill__count", text: `${status.itemCount}` });
@@ -10241,18 +10800,18 @@ ${manifest.author || ""}`;
   renderVaultEmpty(container, iconName, title, desc) {
     const empty = container.createDiv("manager-vault-empty");
     const icon = empty.createDiv("manager-vault-empty__icon");
-    (0, import_obsidian16.setIcon)(icon, iconName);
+    (0, import_obsidian18.setIcon)(icon, iconName);
     empty.createDiv({ cls: "manager-vault-empty__title", text: title });
     empty.createDiv({ cls: "manager-vault-empty__desc", text: desc });
   }
   renderVaultWarning(container, text) {
     const warning = container.createDiv("manager-vault-warning");
     const icon = warning.createSpan({ cls: "manager-vault-warning__icon" });
-    (0, import_obsidian16.setIcon)(icon, "triangle-alert");
+    (0, import_obsidian18.setIcon)(icon, "triangle-alert");
     warning.createSpan({ cls: "manager-vault-warning__text", text });
   }
   createVaultActionButton(container, iconName, tooltip, onClick, disabled = false) {
-    const button = new import_obsidian16.ButtonComponent(container);
+    const button = new import_obsidian18.ButtonComponent(container);
     button.setIcon(iconName);
     button.setTooltip(tooltip);
     button.buttonEl.addClass("manager-vault-action");
@@ -10266,11 +10825,11 @@ ${manifest.author || ""}`;
   async runVaultOperation(action, successMessage) {
     try {
       await action();
-      new import_obsidian16.Notice(successMessage);
+      new import_obsidian18.Notice(successMessage);
       await this.reloadShowData();
     } catch (error) {
       console.error("[BPM] shared vault operation failed", error);
-      new import_obsidian16.Notice((error == null ? void 0 : error.message) || this.manager.translator.t("\u901A\u7528_\u5931\u8D25_\u6587\u672C"));
+      new import_obsidian18.Notice((error == null ? void 0 : error.message) || this.manager.translator.t("\u901A\u7528_\u5931\u8D25_\u6587\u672C"));
     }
   }
   async handleCreateSharedVaultLinks() {
@@ -10282,11 +10841,11 @@ ${manifest.author || ""}`;
     if (this.vaultLinkThemes)
       kinds.push("themes");
     if (!targetPath) {
-      new import_obsidian16.Notice(t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u8BF7\u8F93\u5165\u76EE\u6807\u5E93"));
+      new import_obsidian18.Notice(t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u8BF7\u8F93\u5165\u76EE\u6807\u5E93"));
       return;
     }
     if (kinds.length === 0) {
-      new import_obsidian16.Notice(t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u81F3\u5C11\u9009\u62E9\u6587\u4EF6\u5939"));
+      new import_obsidian18.Notice(t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u81F3\u5C11\u9009\u62E9\u6587\u4EF6\u5939"));
       return;
     }
     if (this.vaultBackupExisting && !await confirmWithModal(this.app, this.manager, t("\u5171\u4EAB\u5E93_\u786E\u8BA4_\u5907\u4EFD\u540E\u94FE\u63A5")))
@@ -10295,26 +10854,26 @@ ${manifest.author || ""}`;
       const results = await createSharedVaultLinks(this.manager, targetPath, kinds, this.vaultBackupExisting);
       this.vaultTargetPath = normalizeSharedVaultInputPath(targetPath);
       if (results.some((result) => result.backupPath)) {
-        new import_obsidian16.Notice(t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u5DF2\u5907\u4EFD\u539F\u6587\u4EF6\u5939"));
+        new import_obsidian18.Notice(t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u5DF2\u5907\u4EFD\u539F\u6587\u4EF6\u5939"));
       }
     }, t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u521B\u5EFA\u94FE\u63A5\u6210\u529F"));
   }
   renderVaultToggleOption(container, iconName, title, desc, value, onChange) {
     const option = container.createDiv("manager-vault-option");
     const icon = option.createSpan({ cls: "manager-vault-option__icon" });
-    (0, import_obsidian16.setIcon)(icon, iconName);
+    (0, import_obsidian18.setIcon)(icon, iconName);
     const text = option.createDiv("manager-vault-option__text");
     text.createDiv({ cls: "manager-vault-option__title", text: title });
     text.createDiv({ cls: "manager-vault-option__desc", text: desc });
     const control = option.createDiv("manager-vault-option__control");
-    new import_obsidian16.ToggleComponent(control).setValue(value).onChange(onChange);
+    new import_obsidian18.ToggleComponent(control).setValue(value).onChange(onChange);
   }
   renderVaultSetupCard(page, snapshotVaultCount, currentVault) {
     const t = (k) => this.manager.translator.t(k);
     const card = page.createDiv("manager-vault-card manager-vault-setup");
     const header = card.createDiv("manager-vault-card__header");
     const icon = header.createDiv("manager-vault-card__icon");
-    (0, import_obsidian16.setIcon)(icon, "folder-sync");
+    (0, import_obsidian18.setIcon)(icon, "folder-sync");
     const title = header.createDiv("manager-vault-card__title-group");
     title.createDiv({ cls: "manager-vault-card__title", text: t("\u5171\u4EAB\u5E93_\u94FE\u63A5\u8BBE\u7F6E_\u6807\u9898") });
     title.createDiv({ cls: "manager-vault-card__desc", text: t("\u5171\u4EAB\u5E93_\u94FE\u63A5\u8BBE\u7F6E_\u8BF4\u660E") });
@@ -10324,7 +10883,7 @@ ${manifest.author || ""}`;
     pathText.createDiv({ cls: "manager-vault-path-field__label", text: t("\u5171\u4EAB\u5E93_\u76EE\u6807\u5E93\u8DEF\u5F84_\u6807\u9898") });
     pathText.createDiv({ cls: "manager-vault-path-field__desc", text: t("\u5171\u4EAB\u5E93_\u76EE\u6807\u5E93\u8DEF\u5F84_\u8BF4\u660E") });
     const pathControl = pathField.createDiv("manager-vault-path-field__control");
-    const input = new import_obsidian16.TextComponent(pathControl);
+    const input = new import_obsidian18.TextComponent(pathControl);
     input.setPlaceholder(t("\u5171\u4EAB\u5E93_\u76EE\u6807\u5E93\u8DEF\u5F84_\u5360\u4F4D"));
     input.setValue(this.vaultTargetPath);
     input.onChange((value) => {
@@ -10362,7 +10921,7 @@ ${manifest.author || ""}`;
       }
     );
     const actions = card.createDiv("manager-vault-form__actions");
-    const setMainButton = new import_obsidian16.ButtonComponent(actions);
+    const setMainButton = new import_obsidian18.ButtonComponent(actions);
     setMainButton.setIcon("crown");
     setMainButton.setButtonText(t("\u5171\u4EAB\u5E93_\u8BBE\u4E3A\u4E3B\u5E93_\u6309\u94AE"));
     const canSetCurrentAsMain = !currentVault || currentVault.role === "main" || currentVault.role === "local";
@@ -10372,7 +10931,7 @@ ${manifest.author || ""}`;
         await setCurrentVaultAsSharedMain(this.manager);
       }, t("\u5171\u4EAB\u5E93_\u63D0\u793A_\u5DF2\u8BBE\u4E3A\u4E3B\u5E93"));
     });
-    const linkButton = new import_obsidian16.ButtonComponent(actions);
+    const linkButton = new import_obsidian18.ButtonComponent(actions);
     linkButton.setIcon("link");
     linkButton.setButtonText(t("\u5171\u4EAB\u5E93_\u521B\u5EFA\u94FE\u63A5_\u6309\u94AE"));
     linkButton.setCta();
@@ -10397,7 +10956,7 @@ ${manifest.author || ""}`;
       card.toggleClass("is-missing", !vault.exists);
       const main = card.createDiv("manager-vault-item__main");
       const icon = main.createDiv("manager-vault-item__icon");
-      (0, import_obsidian16.setIcon)(icon, vault.role === "main" ? "crown" : vault.role === "linked" ? "link" : "folder");
+      (0, import_obsidian18.setIcon)(icon, vault.role === "main" ? "crown" : vault.role === "linked" ? "link" : "folder");
       const text = main.createDiv("manager-vault-item__text");
       const titleRow = text.createDiv("manager-vault-item__title-row");
       titleRow.createSpan({ cls: "manager-vault-item__name", text: vault.name });
@@ -10443,7 +11002,7 @@ ${manifest.author || ""}`;
     const header = card.createDiv("manager-vault-panel__header");
     const title = header.createDiv("manager-vault-panel__title");
     const icon = title.createSpan({ cls: "manager-vault-panel__icon" });
-    (0, import_obsidian16.setIcon)(icon, "blocks");
+    (0, import_obsidian18.setIcon)(icon, "blocks");
     title.createSpan({ text: t("\u5171\u4EAB\u5E93_\u63D2\u4EF6\u7BA1\u7406_\u6807\u9898") });
     header.createSpan({ cls: "manager-vault-panel__count", text: `${vault.enabledPluginIds.length}/${plugins.length}` });
     const canManagePlugins = vault.exists && (vault.role === "main" || vault.plugins.isSymlink);
@@ -10466,7 +11025,7 @@ ${manifest.author || ""}`;
       const item = list.createDiv("manager-vault-plugin");
       item.toggleClass("is-enabled", enabled);
       const itemIcon = item.createDiv("manager-vault-plugin__icon");
-      (0, import_obsidian16.setIcon)(itemIcon, enabled ? "check-circle-2" : "circle");
+      (0, import_obsidian18.setIcon)(itemIcon, enabled ? "check-circle-2" : "circle");
       const text = item.createDiv("manager-vault-plugin__text");
       text.createDiv({ cls: "manager-vault-plugin__name", text: plugin.name || plugin.id });
       text.createDiv({
@@ -10474,7 +11033,7 @@ ${manifest.author || ""}`;
         text: `${plugin.id}${plugin.version ? ` \xB7 v${plugin.version}` : ""}`
       });
       const control = item.createDiv("manager-vault-plugin__control");
-      const toggle = new import_obsidian16.ToggleComponent(control);
+      const toggle = new import_obsidian18.ToggleComponent(control);
       toggle.setValue(enabled);
       toggle.setDisabled(isSelf);
       toggle.onChange(async (value) => {
@@ -10491,7 +11050,7 @@ ${manifest.author || ""}`;
     const header = card.createDiv("manager-vault-panel__header");
     const title = header.createDiv("manager-vault-panel__title");
     const icon = title.createSpan({ cls: "manager-vault-panel__icon" });
-    (0, import_obsidian16.setIcon)(icon, "palette");
+    (0, import_obsidian18.setIcon)(icon, "palette");
     title.createSpan({ text: t("\u5171\u4EAB\u5E93_\u4E3B\u9898\u7BA1\u7406_\u6807\u9898") });
     header.createSpan({ cls: "manager-vault-panel__count", text: `${themes.length}` });
     const canManageThemes = vault.exists && (vault.role === "main" || vault.themes.isSymlink);
@@ -10504,7 +11063,7 @@ ${manifest.author || ""}`;
     text.createDiv({ cls: "manager-vault-theme-row__label", text: t("\u5171\u4EAB\u5E93_\u5F53\u524D\u4E3B\u9898_\u6807\u9898") });
     text.createDiv({ cls: "manager-vault-theme-row__desc", text: vault.activeTheme || t("\u5171\u4EAB\u5E93_\u9ED8\u8BA4\u4E3B\u9898") });
     const control = row.createDiv("manager-vault-theme-row__control");
-    const dropdown = new import_obsidian16.DropdownComponent(control);
+    const dropdown = new import_obsidian18.DropdownComponent(control);
     dropdown.addOption("", t("\u5171\u4EAB\u5E93_\u9ED8\u8BA4\u4E3B\u9898"));
     const hasActiveTheme = !vault.activeTheme || themes.some((theme) => theme.name === vault.activeTheme);
     if (!hasActiveTheme)
@@ -10524,12 +11083,12 @@ ${manifest.author || ""}`;
     const selector = container.createDiv("manager-vault-selector");
     const label = selector.createDiv("manager-vault-selector__label");
     const icon = label.createSpan({ cls: "manager-vault-selector__icon" });
-    (0, import_obsidian16.setIcon)(icon, "folder-cog");
+    (0, import_obsidian18.setIcon)(icon, "folder-cog");
     const text = label.createDiv("manager-vault-selector__text");
     text.createDiv({ cls: "manager-vault-selector__title", text: t("\u5171\u4EAB\u5E93_\u7BA1\u7406\u5E93_\u6807\u9898") });
     text.createDiv({ cls: "manager-vault-selector__desc", text: t("\u5171\u4EAB\u5E93_\u7BA1\u7406\u5E93_\u8BF4\u660E") });
     const control = selector.createDiv("manager-vault-selector__control");
-    const dropdown = new import_obsidian16.DropdownComponent(control);
+    const dropdown = new import_obsidian18.DropdownComponent(control);
     for (const vault of vaults) {
       const suffix = [
         this.getVaultRoleLabel(vault.role),
@@ -10550,7 +11109,7 @@ ${manifest.author || ""}`;
     const header = detail.createDiv("manager-vault-detail__header");
     const title = header.createDiv("manager-vault-detail__title");
     const icon = title.createSpan({ cls: "manager-vault-detail__icon" });
-    (0, import_obsidian16.setIcon)(icon, vault.role === "main" ? "crown" : "folder-cog");
+    (0, import_obsidian18.setIcon)(icon, vault.role === "main" ? "crown" : "folder-cog");
     title.createSpan({ text: vault.name });
     header.createSpan({ cls: `manager-vault-detail__role is-${vault.role}`, text: this.getVaultRoleLabel(vault.role) });
     detail.createDiv({ cls: "manager-vault-detail__path", text: vault.path });
@@ -10567,14 +11126,14 @@ ${manifest.author || ""}`;
       this.activePage = "plugins";
       this.installMode = false;
       this.syncPageChrome();
-      this.contentEl.empty();
+      this.pageEl.empty();
       await this.showData(renderGeneration);
       return;
     }
-    this.contentEl.empty();
+    this.pageEl.empty();
     const t = (k, vars) => this.manager.translator.t(k, vars);
-    const page = this.contentEl.createDiv("manager-vault-share");
-    if (import_obsidian16.Platform.isMobileApp || !isSharedVaultFsAvailable()) {
+    const page = this.pageEl.createDiv("manager-vault-share");
+    if (import_obsidian18.Platform.isMobileApp || !isSharedVaultFsAvailable()) {
       this.renderVaultEmpty(page, "monitor-x", t("\u5171\u4EAB\u5E93_\u684C\u9762\u7AEF\u9650\u5B9A_\u6807\u9898"), t("\u5171\u4EAB\u5E93_\u684C\u9762\u7AEF\u9650\u5B9A_\u8BF4\u660E"));
       return;
     }
@@ -10603,7 +11162,7 @@ ${manifest.author || ""}`;
     const vaultListCard = workspace.createDiv("manager-vault-card");
     const listHeader = vaultListCard.createDiv("manager-vault-card__header");
     const listIcon = listHeader.createDiv("manager-vault-card__icon");
-    (0, import_obsidian16.setIcon)(listIcon, "folder-kanban");
+    (0, import_obsidian18.setIcon)(listIcon, "folder-kanban");
     const listTitle = listHeader.createDiv("manager-vault-card__title-group");
     listTitle.createDiv({ cls: "manager-vault-card__title", text: t("\u5171\u4EAB\u5E93_\u5E93\u5217\u8868_\u6807\u9898") });
     listTitle.createDiv({ cls: "manager-vault-card__desc", text: t("\u5171\u4EAB\u5E93_\u5E93\u5217\u8868_\u8BF4\u660E") });
@@ -10615,7 +11174,7 @@ ${manifest.author || ""}`;
   renderContent() {
     this.ensureAllowedActivePage();
     const renderGeneration = this.nextRenderGeneration();
-    this.contentEl.empty();
+    this.pageEl.empty();
     this.clearPluginOverviewLayoutClass();
     if (this.activePage === "ribbon") {
       void this.showRibbonPanel(renderGeneration);
@@ -10636,7 +11195,7 @@ ${manifest.author || ""}`;
       return;
     let timer;
     const show = () => {
-      new import_obsidian16.Notice(text, 1500);
+      new import_obsidian18.Notice(text, 1500);
     };
     const clear = () => {
       if (timer)
@@ -10652,10 +11211,10 @@ ${manifest.author || ""}`;
   async reloadShowData() {
     this.ensureAllowedActivePage();
     if (this.settings.DEBUG)
-      console.log("[BPM] reloadShowData start, children before empty:", this.contentEl.children.length);
+      console.log("[BPM] reloadShowData start, children before empty:", this.pageEl.children.length);
     this.clearScheduledSearchRender();
     const renderGeneration = this.nextRenderGeneration();
-    const modalElement = this.contentEl;
+    const modalElement = this.pageEl;
     const scrollTop = modalElement.scrollTop;
     modalElement.empty();
     this.clearPluginOverviewLayoutClass();
@@ -10687,10 +11246,10 @@ ${manifest.author || ""}`;
       modalElement.scrollTo(0, scrollTop);
     }
     if (this.settings.DEBUG)
-      console.log("[BPM] reloadShowData end, children after render:", this.contentEl.children.length);
+      console.log("[BPM] reloadShowData end, children after render:", this.pageEl.children.length);
   }
   async refreshFilterOptions(preserveScroll = false) {
-    const scrollTop = preserveScroll ? this.contentEl.scrollTop : 0;
+    const scrollTop = preserveScroll ? this.pageEl.scrollTop : 0;
     if (this.groupMultiSelect) {
       const groups = this.getGroupFilterOptions(this.manager.translator.t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
       this.groupMultiSelect.refreshOptions(groups, this.getGroupFilterValues());
@@ -10705,7 +11264,7 @@ ${manifest.author || ""}`;
     }
     await this.reloadShowData();
     if (preserveScroll)
-      this.contentEl.scrollTo({ top: scrollTop });
+      this.pageEl.scrollTo({ top: scrollTop });
   }
   async refreshRibbonFeatureAvailability() {
     this.ensureAllowedActivePage();
@@ -10735,6 +11294,8 @@ ${manifest.author || ""}`;
       void this.manager.saveSettings();
     }
     this.contentEl.empty();
+    this.modalChromeEl = void 0;
+    this.modalPageEl = void 0;
     if (this.manager.ribbonModal === this.ribbonPage)
       this.manager.ribbonModal = null;
     if (this.modalContainer)
@@ -10761,7 +11322,7 @@ ${manifest.author || ""}`;
 };
 
 // src/troubleshoot/troubleshoot-modal.ts
-var import_obsidian18 = require("obsidian");
+var import_obsidian20 = require("obsidian");
 var TroubleshootModal = class {
   constructor(app, manager) {
     this.lastDescription = "";
@@ -10894,7 +11455,7 @@ var TroubleshootModal = class {
       return;
     this.headerEl.createSpan({ text: this.t("\u6392\u67E5_\u6B22\u8FCE_\u6807\u9898"), cls: "troubleshoot-floating-title" });
     const closeBtn = this.headerEl.createEl("button", { cls: "troubleshoot-floating-close" });
-    (0, import_obsidian18.setIcon)(closeBtn, "x");
+    (0, import_obsidian20.setIcon)(closeBtn, "x");
     closeBtn.onclick = () => this.close();
     this.contentEl.createEl("p", {
       text: this.t("\u6392\u67E5_\u6B22\u8FCE_\u8BF4\u660E"),
@@ -10911,13 +11472,13 @@ var TroubleshootModal = class {
       cls: "troubleshoot-info"
     });
     const actionContainer = this.contentEl.createDiv("troubleshoot-actions");
-    const startBtn = new import_obsidian18.ButtonComponent(actionContainer);
+    const startBtn = new import_obsidian20.ButtonComponent(actionContainer);
     startBtn.setButtonText(this.t("\u6392\u67E5_\u5F00\u59CB_\u6309\u94AE"));
     startBtn.setCta();
     startBtn.onClick(async () => {
       await this.startTroubleshoot();
     });
-    const cancelBtn = new import_obsidian18.ButtonComponent(actionContainer);
+    const cancelBtn = new import_obsidian20.ButtonComponent(actionContainer);
     cancelBtn.setButtonText(this.t("\u6392\u67E5_\u53D6\u6D88_\u6309\u94AE"));
     cancelBtn.onClick(() => this.close());
   }
@@ -10932,7 +11493,7 @@ var TroubleshootModal = class {
       cls: "troubleshoot-floating-title"
     });
     const closeBtn = this.headerEl.createEl("button", { cls: "troubleshoot-floating-close" });
-    (0, import_obsidian18.setIcon)(closeBtn, "x");
+    (0, import_obsidian20.setIcon)(closeBtn, "x");
     closeBtn.onclick = () => this.confirmExit();
     const algo = this.state.algorithmState;
     let phaseText = "";
@@ -10984,31 +11545,31 @@ var TroubleshootModal = class {
       cls: "troubleshoot-hint"
     });
     const actionContainer = this.contentEl.createDiv("troubleshoot-actions");
-    const problemExistsBtn = new import_obsidian18.ButtonComponent(actionContainer);
+    const problemExistsBtn = new import_obsidian20.ButtonComponent(actionContainer);
     problemExistsBtn.setButtonText(`\u{1F44E} ${this.t("\u6392\u67E5_\u95EE\u9898\u8FD8\u5728_\u6309\u94AE")}`);
     problemExistsBtn.onClick(async () => {
       await this.handleFeedback(true);
     });
-    const problemGoneBtn = new import_obsidian18.ButtonComponent(actionContainer);
+    const problemGoneBtn = new import_obsidian20.ButtonComponent(actionContainer);
     problemGoneBtn.setButtonText(`\u{1F44D} ${this.t("\u6392\u67E5_\u95EE\u9898\u6D88\u5931_\u6309\u94AE")}`);
     problemGoneBtn.setCta();
     problemGoneBtn.onClick(async () => {
       await this.handleFeedback(false);
     });
-    const restartBtn = new import_obsidian18.ButtonComponent(actionContainer);
+    const restartBtn = new import_obsidian20.ButtonComponent(actionContainer);
     restartBtn.setButtonText(`\u{1F504} ${this.t("\u6392\u67E5_\u91CD\u542F_\u6309\u94AE")}`);
     restartBtn.onClick(async () => {
       await this.saveState();
       this.algorithm.restartObsidian();
     });
     const footerContainer = this.contentEl.createDiv("troubleshoot-footer");
-    const undoBtn = new import_obsidian18.ButtonComponent(footerContainer);
+    const undoBtn = new import_obsidian20.ButtonComponent(footerContainer);
     undoBtn.setButtonText(`\u21A9\uFE0F ${this.t("\u6392\u67E5_\u64A4\u9500_\u6309\u94AE")}`);
     undoBtn.setDisabled(this.state.history.length === 0);
     undoBtn.onClick(async () => {
       await this.undo();
     });
-    const exitBtn = new import_obsidian18.ButtonComponent(footerContainer);
+    const exitBtn = new import_obsidian20.ButtonComponent(footerContainer);
     exitBtn.setButtonText(`\u{1F6AA} ${this.t("\u6392\u67E5_\u9000\u51FA_\u6309\u94AE")}`);
     exitBtn.onClick(() => this.confirmExit());
   }
@@ -11020,7 +11581,7 @@ var TroubleshootModal = class {
     this.lastDescription = this.t("\u6392\u67E5_\u63CF\u8FF0_\u7981\u7528\u5168\u90E8");
     await this.algorithm.startTroubleshoot(this.state);
     await this.saveState();
-    new import_obsidian18.Notice(this.t("\u6392\u67E5_\u5DF2\u7981\u7528\u6240\u6709_\u901A\u77E5"));
+    new import_obsidian20.Notice(this.t("\u6392\u67E5_\u5DF2\u7981\u7528\u6240\u6709_\u901A\u77E5"));
     await this.render();
   }
   /**
@@ -11030,7 +11591,7 @@ var TroubleshootModal = class {
     const result = await this.algorithm.executeNextStep(this.state, problemExists);
     switch (result.type) {
       case "not-plugin-issue":
-        new import_obsidian18.Notice(this.t("\u6392\u67E5_\u975E\u63D2\u4EF6\u95EE\u9898_\u901A\u77E5"));
+        new import_obsidian20.Notice(this.t("\u6392\u67E5_\u975E\u63D2\u4EF6\u95EE\u9898_\u901A\u77E5"));
         await this.algorithm.restoreOriginal(this.state);
         this.state.status = "aborted";
         await this.saveState();
@@ -11047,7 +11608,7 @@ var TroubleshootModal = class {
         new TroubleshootResultModal(this.app, this.manager, this.state).open();
         return;
       case "error":
-        new import_obsidian18.Notice(result.message);
+        new import_obsidian20.Notice(result.message);
         await this.algorithm.restoreOriginal(this.state);
         this.state.status = "aborted";
         await this.saveState();
@@ -11070,7 +11631,7 @@ var TroubleshootModal = class {
     if (success) {
       await this.saveState();
       await this.render();
-      new import_obsidian18.Notice(this.t("\u6392\u67E5_\u5DF2\u64A4\u9500_\u901A\u77E5"));
+      new import_obsidian20.Notice(this.t("\u6392\u67E5_\u5DF2\u64A4\u9500_\u901A\u77E5"));
     }
   }
   /**
@@ -11082,7 +11643,7 @@ var TroubleshootModal = class {
     dialog.createEl("h4", { text: this.t("\u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6807\u9898") });
     dialog.createEl("p", { text: this.t("\u6392\u67E5_\u9000\u51FA\u786E\u8BA4_\u6587\u672C") });
     const actions = dialog.createDiv("troubleshoot-actions");
-    const restoreBtn = new import_obsidian18.ButtonComponent(actions);
+    const restoreBtn = new import_obsidian20.ButtonComponent(actions);
     restoreBtn.setButtonText(this.t("\u6392\u67E5_\u6062\u590D\u5E76\u9000\u51FA_\u6309\u94AE"));
     restoreBtn.setCta();
     restoreBtn.onClick(async () => {
@@ -11092,14 +11653,14 @@ var TroubleshootModal = class {
       overlay.remove();
       this.close();
     });
-    const keepBtn = new import_obsidian18.ButtonComponent(actions);
+    const keepBtn = new import_obsidian20.ButtonComponent(actions);
     keepBtn.setButtonText(this.t("\u6392\u67E5_\u4FDD\u6301\u5E76\u9000\u51FA_\u6309\u94AE"));
     keepBtn.onClick(async () => {
       await this.saveState();
       overlay.remove();
       this.close();
     });
-    const cancelBtn = new import_obsidian18.ButtonComponent(actions);
+    const cancelBtn = new import_obsidian20.ButtonComponent(actions);
     cancelBtn.setButtonText(this.t("\u6392\u67E5_\u7EE7\u7EED\u6392\u67E5_\u6309\u94AE"));
     cancelBtn.onClick(() => overlay.remove());
     overlay.addEventListener("click", (e) => {
@@ -11256,11 +11817,11 @@ var command_default = Commands;
 var ManagerBasis = class extends BaseSetting {
   main() {
     const heading = (key) => {
-      new import_obsidian19.Setting(this.containerEl).setHeading().setName(this.manager.translator.t(key));
+      new import_obsidian21.Setting(this.containerEl).setHeading().setName(this.manager.translator.t(key));
     };
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u5E38\u89C4");
-    const languageBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u63CF\u8FF0"));
-    const languageDropdown = new import_obsidian19.DropdownComponent(languageBar.controlEl);
+    const languageBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u63CF\u8FF0"));
+    const languageDropdown = new import_obsidian21.DropdownComponent(languageBar.controlEl);
     languageDropdown.addOptions(this.manager.translator.language);
     languageDropdown.setValue(this.settings.LANGUAGE);
     languageDropdown.onChange((value) => {
@@ -11271,8 +11832,8 @@ var ManagerBasis = class extends BaseSetting {
       this.settingTab.renderSettings();
       this.render();
     });
-    const persistenceBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0"));
-    const persistenceToggle = new import_obsidian19.ToggleComponent(persistenceBar.controlEl);
+    const persistenceBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0"));
+    const persistenceToggle = new import_obsidian21.ToggleComponent(persistenceBar.controlEl);
     persistenceToggle.setValue(this.settings.PERSISTENCE);
     persistenceToggle.onChange((value) => {
       const managerModal = this.manager.managerModal;
@@ -11286,8 +11847,8 @@ var ManagerBasis = class extends BaseSetting {
       void this.manager.saveSettings();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u542F\u52A8\u63A5\u7BA1");
-    const DelayBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u63CF\u8FF0"));
-    const DelayToggle = new import_obsidian19.ToggleComponent(DelayBar.controlEl);
+    const DelayBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u63CF\u8FF0"));
+    const DelayToggle = new import_obsidian21.ToggleComponent(DelayBar.controlEl);
     DelayToggle.setValue(this.settings.DELAY);
     DelayToggle.onChange((value) => {
       this.settings.DELAY = value;
@@ -11300,8 +11861,8 @@ var ManagerBasis = class extends BaseSetting {
       this.settingTab.renderSettings();
       this.render();
     });
-    const autoTakeoverBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0"));
-    const autoTakeoverToggle = new import_obsidian19.ToggleComponent(autoTakeoverBar.controlEl);
+    const autoTakeoverBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0"));
+    const autoTakeoverToggle = new import_obsidian21.ToggleComponent(autoTakeoverBar.controlEl);
     autoTakeoverToggle.setValue(this.settings.AUTO_TAKEOVER);
     autoTakeoverToggle.setDisabled(!this.settings.DELAY);
     autoTakeoverToggle.onChange((value) => {
@@ -11311,30 +11872,48 @@ var ManagerBasis = class extends BaseSetting {
       void this.manager.saveSettings();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u66F4\u65B0\u6765\u6E90");
-    const startupCheckBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
-    const startupCheckToggle = new import_obsidian19.ToggleComponent(startupCheckBar.controlEl);
+    const startupCheckBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
+    const startupCheckToggle = new import_obsidian21.ToggleComponent(startupCheckBar.controlEl);
     startupCheckToggle.setValue(this.settings.STARTUP_CHECK_UPDATES);
     startupCheckToggle.onChange((value) => {
       this.settings.STARTUP_CHECK_UPDATES = value;
       void this.manager.saveSettings();
     });
-    const sourceStartupCheckBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
-    const sourceStartupCheckToggle = new import_obsidian19.ToggleComponent(sourceStartupCheckBar.controlEl);
+    const sourceStartupCheckBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
+    const sourceStartupCheckToggle = new import_obsidian21.ToggleComponent(sourceStartupCheckBar.controlEl);
     sourceStartupCheckToggle.setValue(this.settings.SOURCE_STARTUP_CHECK_UPDATES);
     sourceStartupCheckToggle.onChange((value) => {
       this.settings.SOURCE_STARTUP_CHECK_UPDATES = value;
       void this.manager.saveSettings();
     });
-    const sourceAutoUpdateBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0"));
-    const sourceAutoUpdateToggle = new import_obsidian19.ToggleComponent(sourceAutoUpdateBar.controlEl);
+    const sourceAutoUpdateBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0"));
+    const sourceAutoUpdateToggle = new import_obsidian21.ToggleComponent(sourceAutoUpdateBar.controlEl);
     sourceAutoUpdateToggle.setValue(this.settings.SOURCE_AUTO_UPDATE);
     sourceAutoUpdateToggle.onChange((value) => {
       this.settings.SOURCE_AUTO_UPDATE = value;
       void this.manager.saveSettings();
     });
+    let tokenBar = null;
+    const githubProxyBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0"));
+    const githubProxyInput = new import_obsidian21.TextComponent(githubProxyBar.controlEl);
+    githubProxyInput.setPlaceholder(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26"));
+    githubProxyInput.setValue(this.settings.GITHUB_PROXY || "");
+    githubProxyInput.onChange((value) => {
+      const wasProxyEnabled = githubProxyEnabled(this.manager);
+      this.settings.GITHUB_PROXY = value.trim();
+      void this.manager.saveSettings();
+      const isProxyEnabled = githubProxyEnabled(this.manager);
+      if (isProxyEnabled) {
+        tokenBar == null ? void 0 : tokenBar.settingEl.remove();
+        tokenBar = null;
+      } else if (wasProxyEnabled) {
+        this.render();
+      }
+    });
+    githubProxyInput.inputEl.addEventListener("blur", () => this.render());
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u754C\u9762\u5C55\u793A");
-    const hideBpmTagBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0"));
-    const hideBpmTagToggle = new import_obsidian19.ToggleComponent(hideBpmTagBar.controlEl);
+    const hideBpmTagBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0"));
+    const hideBpmTagToggle = new import_obsidian21.ToggleComponent(hideBpmTagBar.controlEl);
     hideBpmTagToggle.setValue(this.settings.HIDE_BPM_TAG);
     hideBpmTagToggle.onChange((value) => {
       var _a;
@@ -11342,8 +11921,8 @@ var ManagerBasis = class extends BaseSetting {
       void this.manager.saveSettings();
       void ((_a = this.manager.managerModal) == null ? void 0 : _a.reloadShowData());
     });
-    const ribbonManagerBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u63CF\u8FF0"));
-    const ribbonManagerToggle = new import_obsidian19.ToggleComponent(ribbonManagerBar.controlEl);
+    const ribbonManagerBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u63CF\u8FF0"));
+    const ribbonManagerToggle = new import_obsidian21.ToggleComponent(ribbonManagerBar.controlEl);
     ribbonManagerToggle.setValue(this.settings.RIBBON_MANAGER_ENABLED !== false);
     ribbonManagerToggle.onChange(async (value) => {
       this.settings.RIBBON_MANAGER_ENABLED = value;
@@ -11351,16 +11930,16 @@ var ManagerBasis = class extends BaseSetting {
       await this.manager.refreshRibbonManagerFeature();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u547D\u4EE4");
-    const CommandItemBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0"));
-    const CommandItemToggle = new import_obsidian19.ToggleComponent(CommandItemBar.controlEl);
+    const CommandItemBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0"));
+    const CommandItemToggle = new import_obsidian21.ToggleComponent(CommandItemBar.controlEl);
     CommandItemToggle.setValue(this.settings.COMMAND_ITEM);
     CommandItemToggle.onChange((value) => {
       this.settings.COMMAND_ITEM = value;
       void this.manager.saveSettings();
       command_default(this.app, this.manager);
     });
-    const CommandGroupBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0"));
-    const CommandGroupToggle = new import_obsidian19.ToggleComponent(CommandGroupBar.controlEl);
+    const CommandGroupBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0"));
+    const CommandGroupToggle = new import_obsidian21.ToggleComponent(CommandGroupBar.controlEl);
     CommandGroupToggle.setValue(this.settings.COMMAND_GROUP);
     CommandGroupToggle.onChange((value) => {
       this.settings.COMMAND_GROUP = value;
@@ -11368,25 +11947,27 @@ var ManagerBasis = class extends BaseSetting {
       command_default(this.app, this.manager);
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u5F00\u53D1\u7F51\u7EDC");
-    const debugBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0"));
-    const debugToggle = new import_obsidian19.ToggleComponent(debugBar.controlEl);
+    const debugBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0"));
+    const debugToggle = new import_obsidian21.ToggleComponent(debugBar.controlEl);
     debugToggle.setValue(this.settings.DEBUG);
     debugToggle.onChange((value) => {
       this.settings.DEBUG = value;
       void this.manager.saveSettings();
     });
-    const tokenBar = new import_obsidian19.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6807\u9898")).setDesc(`${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u63CF\u8FF0")} (${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6743\u9650")})`);
+    if (githubProxyEnabled(this.manager))
+      return;
+    tokenBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6807\u9898")).setDesc(`${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u63CF\u8FF0")} (${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6743\u9650")})`);
     tokenBar.settingEl.addClass("manager-secret-token-setting");
     const tokenStatus = tokenBar.descEl.createDiv({
       cls: "manager-secret-token-setting__status",
       text: this.getGithubTokenStatusText()
     });
-    const tokenInput = new import_obsidian19.TextComponent(tokenBar.controlEl);
+    const tokenInput = new import_obsidian21.TextComponent(tokenBar.controlEl);
     tokenInput.inputEl.type = "password";
     tokenInput.inputEl.autocomplete = "off";
     tokenInput.setPlaceholder(this.manager.hasGithubToken() ? "********" : "ghp_xxx");
     let clearTokenButton = null;
-    const saveTokenButton = new import_obsidian19.ButtonComponent(tokenBar.controlEl);
+    const saveTokenButton = new import_obsidian21.ButtonComponent(tokenBar.controlEl);
     saveTokenButton.setButtonText(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u4FDD\u5B58"));
     saveTokenButton.setCta();
     saveTokenButton.onClick(async () => {
@@ -11399,7 +11980,7 @@ var ManagerBasis = class extends BaseSetting {
       tokenStatus.setText(this.getGithubTokenStatusText());
       clearTokenButton == null ? void 0 : clearTokenButton.setDisabled(false);
     });
-    clearTokenButton = new import_obsidian19.ButtonComponent(tokenBar.controlEl);
+    clearTokenButton = new import_obsidian21.ButtonComponent(tokenBar.controlEl);
     clearTokenButton.setButtonText(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6E05\u9664"));
     clearTokenButton.setDisabled(!this.manager.hasGithubToken());
     clearTokenButton.onClick(async () => {
@@ -11423,7 +12004,7 @@ var ManagerBasis = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-style.ts
-var import_obsidian20 = require("obsidian");
+var import_obsidian22 = require("obsidian");
 var ManagerBasis2 = class extends BaseSetting {
   constructor() {
     super(...arguments);
@@ -11451,47 +12032,47 @@ var ManagerBasis2 = class extends BaseSetting {
     };
   }
   main() {
-    const overviewLayoutBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u63D2\u4EF6\u603B\u89C8\u5E03\u5C40_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u63D2\u4EF6\u603B\u89C8\u5E03\u5C40_\u63CF\u8FF0"));
-    const overviewLayoutDropdown = new import_obsidian20.DropdownComponent(overviewLayoutBar.controlEl);
+    const overviewLayoutBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u63D2\u4EF6\u603B\u89C8\u5E03\u5C40_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u63D2\u4EF6\u603B\u89C8\u5E03\u5C40_\u63CF\u8FF0"));
+    const overviewLayoutDropdown = new import_obsidian22.DropdownComponent(overviewLayoutBar.controlEl);
     overviewLayoutDropdown.addOptions(this.PLUGIN_OVERVIEW_LAYOUT);
     overviewLayoutDropdown.setValue(this.settings.PLUGIN_OVERVIEW_LAYOUT || "list");
     overviewLayoutDropdown.onChange((value) => {
       this.settings.PLUGIN_OVERVIEW_LAYOUT = value;
       void this.manager.saveSettings();
     });
-    const itemStyleBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u63CF\u8FF0"));
-    const itemStyleDropdown = new import_obsidian20.DropdownComponent(itemStyleBar.controlEl);
+    const itemStyleBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u63CF\u8FF0"));
+    const itemStyleDropdown = new import_obsidian22.DropdownComponent(itemStyleBar.controlEl);
     itemStyleDropdown.addOptions(this.ITEM_STYLE);
     itemStyleDropdown.setValue(this.settings.ITEM_STYLE);
     itemStyleDropdown.onChange((value) => {
       this.settings.ITEM_STYLE = value;
       void this.manager.saveSettings();
     });
-    const groupStyleBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u63CF\u8FF0"));
-    const groupStyleDropdown = new import_obsidian20.DropdownComponent(groupStyleBar.controlEl);
+    const groupStyleBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u63CF\u8FF0"));
+    const groupStyleDropdown = new import_obsidian22.DropdownComponent(groupStyleBar.controlEl);
     groupStyleDropdown.addOptions(this.GROUP_STYLE);
     groupStyleDropdown.setValue(this.settings.GROUP_STYLE);
     groupStyleDropdown.onChange((value) => {
       this.settings.GROUP_STYLE = value;
       void this.manager.saveSettings();
     });
-    const tagStyleBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u63CF\u8FF0"));
-    const tagStyleDropdown = new import_obsidian20.DropdownComponent(tagStyleBar.controlEl);
+    const tagStyleBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u63CF\u8FF0"));
+    const tagStyleDropdown = new import_obsidian22.DropdownComponent(tagStyleBar.controlEl);
     tagStyleDropdown.addOptions(this.TAG_STYLE);
     tagStyleDropdown.setValue(this.settings.TAG_STYLE);
     tagStyleDropdown.onChange((value) => {
       this.settings.TAG_STYLE = value;
       void this.manager.saveSettings();
     });
-    const topBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0"));
-    const topToggle = new import_obsidian20.ToggleComponent(topBar.controlEl);
+    const topBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0"));
+    const topToggle = new import_obsidian22.ToggleComponent(topBar.controlEl);
     topToggle.setValue(this.settings.CENTER);
     topToggle.onChange((value) => {
       this.settings.CENTER = value;
       void this.manager.saveSettings();
     });
-    const fadeOutDisabledPluginsBar = new import_obsidian20.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u63CF\u8FF0"));
-    const fadeOutDisabledPluginsToggle = new import_obsidian20.ToggleComponent(fadeOutDisabledPluginsBar.controlEl);
+    const fadeOutDisabledPluginsBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u63CF\u8FF0"));
+    const fadeOutDisabledPluginsToggle = new import_obsidian22.ToggleComponent(fadeOutDisabledPluginsBar.controlEl);
     fadeOutDisabledPluginsToggle.setValue(this.settings.FADE_OUT_DISABLED_PLUGINS);
     fadeOutDisabledPluginsToggle.onChange((value) => {
       this.settings.FADE_OUT_DISABLED_PLUGINS = value;
@@ -11501,7 +12082,7 @@ var ManagerBasis2 = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-delay.ts
-var import_obsidian21 = require("obsidian");
+var import_obsidian23 = require("obsidian");
 var ManagerDelay = class extends BaseSetting {
   getDelayUsageCount(delayId) {
     return this.settings.Plugins.reduce((count, plugin) => count + (plugin.delay === delayId ? 1 : 0), 0);
@@ -11516,7 +12097,7 @@ var ManagerDelay = class extends BaseSetting {
     const header = page.createDiv("manager-setting-delay__header manager-taxonomy-setting__header");
     const headerMain = header.createDiv("manager-setting-delay__header-main manager-taxonomy-setting__header-main");
     const headerIcon = headerMain.createSpan({ cls: "manager-setting-delay__header-icon manager-taxonomy-setting__header-icon" });
-    (0, import_obsidian21.setIcon)(headerIcon, "timer");
+    (0, import_obsidian23.setIcon)(headerIcon, "timer");
     const headerText = headerMain.createDiv("manager-setting-delay__header-text manager-taxonomy-setting__header-text");
     headerText.createDiv({ cls: "manager-setting-delay__title manager-taxonomy-setting__title", text: t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u6807\u9898") });
     headerText.createDiv({ cls: "manager-setting-delay__desc manager-taxonomy-setting__desc", text: t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u63CF\u8FF0") });
@@ -11524,13 +12105,13 @@ var ManagerDelay = class extends BaseSetting {
     const createStat = (label, value, icon) => {
       const stat = stats.createSpan({ cls: "manager-setting-delay__stat manager-taxonomy-setting__stat" });
       const statIcon = stat.createSpan({ cls: "manager-setting-delay__stat-icon manager-taxonomy-setting__stat-icon" });
-      (0, import_obsidian21.setIcon)(statIcon, icon);
+      (0, import_obsidian23.setIcon)(statIcon, icon);
       stat.createSpan({ cls: "manager-setting-delay__stat-label manager-taxonomy-setting__stat-label", text: label });
       stat.createSpan({ cls: "manager-setting-delay__stat-value manager-taxonomy-setting__stat-value", text: `${value}` });
     };
     createStat(t("\u901A\u7528_\u5168\u90E8_\u6587\u672C"), this.manager.settings.DELAYS.length, "timer");
     createStat(t("\u901A\u7528_\u4F7F\u7528\u4E2D_\u6587\u672C"), usedCount, "check");
-    const createItem = new import_obsidian21.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u65B0\u589E\u63CF\u8FF0"));
+    const createItem = new import_obsidian23.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u65B0\u589E\u63CF\u8FF0"));
     createItem.settingEl.addClass("manager-setting-delay__item");
     createItem.settingEl.addClass("manager-setting-delay__item--create");
     createItem.settingEl.addClass("manager-taxonomy-setting__row");
@@ -11558,15 +12139,15 @@ var ManagerDelay = class extends BaseSetting {
           this.manager.settings.DELAYS.push({ id: nextId, name: nextName, time });
           void this.manager.saveSettings();
           this.settingTab.delayDisplay();
-          new import_obsidian21.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian21.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     const list = page.createDiv("manager-setting-delay__list manager-taxonomy-setting__list");
     this.manager.settings.DELAYS.forEach((delay, index) => {
-      const item = new import_obsidian21.Setting(list);
+      const item = new import_obsidian23.Setting(list);
       const usageCount = this.getDelayUsageCount(delay.id);
       item.settingEl.addClass("manager-setting-delay__item");
       item.settingEl.addClass("manager-taxonomy-setting__row");
@@ -11607,9 +12188,9 @@ var ManagerDelay = class extends BaseSetting {
             this.manager.settings.DELAYS = this.manager.settings.DELAYS.filter((t2) => t2.id !== delay.id);
             void this.manager.saveSettings();
             this.settingTab.delayDisplay();
-            new import_obsidian21.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian21.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -11618,7 +12199,7 @@ var ManagerDelay = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-tag.ts
-var import_obsidian22 = require("obsidian");
+var import_obsidian24 = require("obsidian");
 var ManagerTag = class extends BaseSetting {
   getTagUsageCount(tagId) {
     return this.settings.Plugins.reduce((count, plugin) => {
@@ -11639,7 +12220,7 @@ var ManagerTag = class extends BaseSetting {
     const header = page.createDiv("manager-setting-tag__header manager-taxonomy-setting__header");
     const headerMain = header.createDiv("manager-setting-tag__header-main manager-taxonomy-setting__header-main");
     const headerIcon = headerMain.createSpan({ cls: "manager-setting-tag__header-icon manager-taxonomy-setting__header-icon" });
-    (0, import_obsidian22.setIcon)(headerIcon, "tags");
+    (0, import_obsidian24.setIcon)(headerIcon, "tags");
     const headerText = headerMain.createDiv("manager-setting-tag__header-text manager-taxonomy-setting__header-text");
     headerText.createDiv({ cls: "manager-setting-tag__title manager-taxonomy-setting__title", text: t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u6807\u9898") });
     headerText.createDiv({ cls: "manager-setting-tag__desc manager-taxonomy-setting__desc", text: t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u63CF\u8FF0") });
@@ -11647,13 +12228,13 @@ var ManagerTag = class extends BaseSetting {
     const createStat = (label, value, icon) => {
       const stat = stats.createSpan({ cls: "manager-setting-tag__stat manager-taxonomy-setting__stat" });
       const statIcon = stat.createSpan({ cls: "manager-setting-tag__stat-icon manager-taxonomy-setting__stat-icon" });
-      (0, import_obsidian22.setIcon)(statIcon, icon);
+      (0, import_obsidian24.setIcon)(statIcon, icon);
       stat.createSpan({ cls: "manager-setting-tag__stat-label manager-taxonomy-setting__stat-label", text: label });
       stat.createSpan({ cls: "manager-setting-tag__stat-value manager-taxonomy-setting__stat-value", text: `${value}` });
     };
     createStat(t("\u901A\u7528_\u5168\u90E8_\u6587\u672C"), this.manager.settings.TAGS.length, "tags");
     createStat(t("\u901A\u7528_\u4F7F\u7528\u4E2D_\u6587\u672C"), usedCount, "check");
-    const createItem = new import_obsidian22.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5206\u7C7B_\u65B0\u589E\u63CF\u8FF0"));
+    const createItem = new import_obsidian24.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5206\u7C7B_\u65B0\u589E\u63CF\u8FF0"));
     createItem.settingEl.addClass("manager-setting-tag__item");
     createItem.settingEl.addClass("manager-setting-tag__item--create");
     createItem.settingEl.addClass("manager-taxonomy-setting__row");
@@ -11688,15 +12269,15 @@ var ManagerTag = class extends BaseSetting {
           void this.manager.saveSettings();
           this.settingTab.tagDisplay();
           command_default(this.app, this.manager);
-          new import_obsidian22.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian22.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     const list = page.createDiv("manager-setting-tag__list manager-taxonomy-setting__list");
     this.manager.settings.TAGS.forEach((tag, index) => {
-      const item = new import_obsidian22.Setting(list);
+      const item = new import_obsidian24.Setting(list);
       const usageCount = this.getTagUsageCount(tag.id);
       const isPreset = this.isPresetTag(tag.id);
       item.setClass("manager-setting-tag__item");
@@ -11737,7 +12318,7 @@ var ManagerTag = class extends BaseSetting {
       item.addExtraButton(
         (cb) => cb.setIcon("trash-2").setTooltip(isPreset ? t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u7CFB\u7EDF\u6807\u7B7E\u4E0D\u53EF\u5220\u9664") : usageCount > 0 ? t("\u8BBE\u7F6E_\u5206\u7C7B_\u4ECD\u6709\u63D2\u4EF6\u4F7F\u7528\u4E0D\u53EF\u5220\u9664") : t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u5220\u9664\u6807\u7B7E")).onClick(() => {
           if (isPreset) {
-            new import_obsidian22.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664"));
+            new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664"));
             return;
           }
           const hasTestTag = this.settings.Plugins.some((plugin) => plugin.tags && plugin.tags.includes(tag.id));
@@ -11746,9 +12327,9 @@ var ManagerTag = class extends BaseSetting {
             void this.manager.saveSettings();
             this.settingTab.tagDisplay();
             command_default(this.app, this.manager);
-            new import_obsidian22.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian22.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -11757,7 +12338,7 @@ var ManagerTag = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-group.ts
-var import_obsidian23 = require("obsidian");
+var import_obsidian25 = require("obsidian");
 var ManagerGroup = class extends BaseSetting {
   getGroupUsageCount(groupId) {
     return this.settings.Plugins.reduce((count, plugin) => count + (plugin.group === groupId ? 1 : 0), 0);
@@ -11772,7 +12353,7 @@ var ManagerGroup = class extends BaseSetting {
     const header = page.createDiv("manager-taxonomy-setting__header");
     const headerMain = header.createDiv("manager-taxonomy-setting__header-main");
     const headerIcon = headerMain.createSpan({ cls: "manager-taxonomy-setting__header-icon" });
-    (0, import_obsidian23.setIcon)(headerIcon, "folders");
+    (0, import_obsidian25.setIcon)(headerIcon, "folders");
     const headerText = headerMain.createDiv("manager-taxonomy-setting__header-text");
     headerText.createDiv({ cls: "manager-taxonomy-setting__title", text: t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u6807\u9898") });
     headerText.createDiv({ cls: "manager-taxonomy-setting__desc", text: t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u63CF\u8FF0") });
@@ -11780,13 +12361,13 @@ var ManagerGroup = class extends BaseSetting {
     const createStat = (label, value, icon) => {
       const stat = stats.createSpan({ cls: "manager-taxonomy-setting__stat" });
       const statIcon = stat.createSpan({ cls: "manager-taxonomy-setting__stat-icon" });
-      (0, import_obsidian23.setIcon)(statIcon, icon);
+      (0, import_obsidian25.setIcon)(statIcon, icon);
       stat.createSpan({ cls: "manager-taxonomy-setting__stat-label", text: label });
       stat.createSpan({ cls: "manager-taxonomy-setting__stat-value", text: `${value}` });
     };
     createStat(t("\u901A\u7528_\u5168\u90E8_\u6587\u672C"), this.manager.settings.GROUPS.length, "folders");
     createStat(t("\u901A\u7528_\u4F7F\u7528\u4E2D_\u6587\u672C"), usedCount, "check");
-    const createItem = new import_obsidian23.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5206\u7C7B_\u65B0\u589E\u63CF\u8FF0"));
+    const createItem = new import_obsidian25.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5206\u7C7B_\u65B0\u589E\u63CF\u8FF0"));
     createItem.settingEl.addClass("manager-setting-group__item");
     createItem.settingEl.addClass("manager-taxonomy-setting__row");
     createItem.settingEl.addClass("manager-taxonomy-setting__row--create");
@@ -11815,15 +12396,15 @@ var ManagerGroup = class extends BaseSetting {
           void this.manager.saveSettings();
           this.settingTab.groupDisplay();
           command_default(this.app, this.manager);
-          new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     const list = page.createDiv("manager-taxonomy-setting__list");
     this.manager.settings.GROUPS.forEach((group, index) => {
-      const item = new import_obsidian23.Setting(list);
+      const item = new import_obsidian25.Setting(list);
       const usageCount = this.getGroupUsageCount(group.id);
       item.settingEl.addClass("manager-setting-group__item");
       item.settingEl.addClass("manager-taxonomy-setting__row");
@@ -11861,9 +12442,9 @@ var ManagerGroup = class extends BaseSetting {
             void this.manager.saveSettings();
             this.settingTab.groupDisplay();
             command_default(this.app, this.manager);
-            new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -11872,7 +12453,7 @@ var ManagerGroup = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-main-page.ts
-var import_obsidian24 = require("obsidian");
+var import_obsidian26 = require("obsidian");
 var ManagerMainPage = class extends BaseSetting {
   constructor() {
     super(...arguments);
@@ -11894,7 +12475,7 @@ var ManagerMainPage = class extends BaseSetting {
     ];
   }
   main() {
-    new import_obsidian24.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u63CF\u8FF0"));
+    new import_obsidian26.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u63CF\u8FF0"));
     this.settings.MAIN_PAGE_ACTION_PLACEMENT = {
       ...DEFAULT_MAIN_PAGE_ACTION_PLACEMENT,
       ...this.settings.MAIN_PAGE_ACTION_PLACEMENT || {}
@@ -11904,7 +12485,7 @@ var ManagerMainPage = class extends BaseSetting {
       menu: this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u5B58\u50A8\u5728\u53F3\u952E")
     };
     this.actions.forEach((action) => {
-      const setting = new import_obsidian24.Setting(this.containerEl).setName(this.manager.translator.t(action.labelKey)).setDesc(this.manager.translator.t(action.descKey));
+      const setting = new import_obsidian26.Setting(this.containerEl).setName(this.manager.translator.t(action.labelKey)).setDesc(this.manager.translator.t(action.descKey));
       setting.setClass("manager-main-page-action-setting");
       setting.addExtraButton((button) => {
         var _a;
@@ -11912,7 +12493,7 @@ var ManagerMainPage = class extends BaseSetting {
         button.setDisabled(true);
         (_a = getExtraButtonElement(button)) == null ? void 0 : _a.addClass("manager-main-page-action-setting__icon");
       });
-      const dropdown = new import_obsidian24.DropdownComponent(setting.controlEl);
+      const dropdown = new import_obsidian26.DropdownComponent(setting.controlEl);
       dropdown.addOptions(placementOptions);
       dropdown.setValue(this.getPlacement(action.id));
       dropdown.onChange((value) => {
@@ -11935,7 +12516,7 @@ var ManagerMainPage = class extends BaseSetting {
 };
 
 // src/settings/index.ts
-var ManagerSettingTab = class extends import_obsidian25.PluginSettingTab {
+var ManagerSettingTab = class extends import_obsidian27.PluginSettingTab {
   constructor(app, manager) {
     super(app, manager);
     this.manager = manager;
@@ -11950,6 +12531,8 @@ var ManagerSettingTab = class extends import_obsidian25.PluginSettingTab {
     containerEl.addClass("manager-setting__container");
     const tabsEl = this.containerEl.createEl("div");
     tabsEl.addClass("manager-setting__tabs");
+    tabsEl.setAttribute("role", "tablist");
+    tabsEl.setAttribute("data-slot", "tabs-list");
     this.contentEl = this.containerEl.createEl("div");
     this.contentEl.addClass("manager-setting__content");
     const tabItems = [
@@ -11963,20 +12546,35 @@ var ManagerSettingTab = class extends import_obsidian25.PluginSettingTab {
       tabItems.push({ text: this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u524D\u7F00"), content: () => this.delayDisplay() });
     const tabItemsEls = [];
     tabItems.forEach((item, index) => {
-      const itemEl = tabsEl.createEl("div");
+      const itemEl = tabsEl.createEl("button");
+      itemEl.type = "button";
       itemEl.addClass("manager-setting__tabs-item");
+      itemEl.setAttribute("role", "tab");
+      itemEl.setAttribute("tabindex", "0");
+      itemEl.setAttribute("data-slot", "tabs-trigger");
       itemEl.textContent = item.text;
       tabItemsEls.push(itemEl);
-      if (index === 0) {
-        itemEl.addClass("manager-setting__tabs-item_is-active");
-        item.content();
-      }
-      itemEl.addEventListener("click", () => {
+      const activate = () => {
         tabItemsEls.forEach((tabEl) => {
           tabEl.removeClass("manager-setting__tabs-item_is-active");
+          tabEl.setAttribute("aria-selected", "false");
+          tabEl.setAttribute("data-state", "inactive");
         });
         itemEl.addClass("manager-setting__tabs-item_is-active");
+        itemEl.setAttribute("aria-selected", "true");
+        itemEl.setAttribute("data-state", "active");
         item.content();
+      };
+      itemEl.setAttribute("aria-selected", "false");
+      itemEl.setAttribute("data-state", "inactive");
+      if (index === 0)
+        activate();
+      itemEl.addEventListener("click", activate);
+      itemEl.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ")
+          return;
+        event.preventDefault();
+        activate();
       });
     });
   }
@@ -12041,10 +12639,22 @@ var zh_cn_default = {
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "\u8BBF\u95EE\u4ED3\u5E93",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "\u8BBF\u95EE\u89C6\u9891\u6559\u7A0B",
   \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u542F\u7528\u7F16\u8F91\u6A21\u5F0F",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u6807\u9898: "\u7F16\u8F91\u6A21\u5F0F",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u91CD\u8F7D\u63D2\u4EF6\u5217\u8868",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5F00\u59CB\u63D0\u793A: "\u6B63\u5728\u91CD\u65B0\u8BFB\u53D6\u63D2\u4EF6\u6E05\u5355\u2026",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5931\u8D25\u63D0\u793A: "\u91CD\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\uFF08\u8BE6\u60C5\u89C1\u63A7\u5236\u53F0\uFF09\u3002",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u68C0\u67E5\u63D2\u4EF6\u66F4\u65B0",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u6807\u9898: "\u68C0\u67E5\u63D2\u4EF6\u66F4\u65B0",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u8BF4\u660E: "\u9009\u62E9\u672C\u6B21\u603B\u89C8\u68C0\u6D4B\u7684\u5224\u5B9A\u65B9\u5F0F\u548C\u5EF6\u8FDF\u5929\u6570\u3002",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u65B9\u5F0F_\u6807\u9898: "\u68C0\u6D4B\u65B9\u5F0F",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u65B9\u5F0F_\u63CF\u8FF0: "\u53D1\u5E03\u987A\u5E8F\u9002\u5408 tag \u4E0D\u4E25\u683C\u9012\u589E\u7684\u4ED3\u5E93\uFF1B\u7248\u672C\u53F7\u9002\u5408\u89C4\u8303\u8BED\u4E49\u5316\u7248\u672C\u3002",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u6807\u9898: "\u517C\u5BB9\u6027\u7B56\u7565",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u63CF\u8FF0: "\u6309 manifest.json \u7684 minAppVersion \u5224\u65AD\u3002\u517C\u5BB9\u4F18\u5148\u4F1A\u63A8\u8350\u5F53\u524D Obsidian \u53EF\u8FD0\u884C\u7684\u7248\u672C\uFF1B\u663E\u793A\u5168\u90E8\u5219\u5141\u8BB8\u6700\u65B0\u7248\u6216\u517C\u5BB9\u5206\u652F\u90FD\u53C2\u4E0E\u5224\u65AD\u3002",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u517C\u5BB9\u4F18\u5148: "\u53EA\u63A8\u8350\u517C\u5BB9\u7248\u672C",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u663E\u793A\u5168\u90E8: "\u663E\u793A\u5168\u90E8\u7248\u672C",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5EF6\u8FDF_\u6807\u9898: "\u5EF6\u8FDF\u5929\u6570",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5EF6\u8FDF_\u63CF\u8FF0: "\u53EA\u628A\u53D1\u5E03\u6EE1\u6307\u5B9A\u5929\u6570\u7684\u7248\u672C\u89C6\u4E3A\u53EF\u66F4\u65B0\uFF1B0 \u8868\u793A\u4E0D\u5EF6\u8FDF\u3002",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5F00\u59CB\u6309\u94AE: "\u5F00\u59CB\u68C0\u67E5",
   \u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0: "\u66F4\u591A\u64CD\u4F5C",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "\u4E00\u952E\u7981\u7528\u6240\u6709\u63D2\u4EF6",
   \u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0: "\u4E00\u952E\u542F\u7528\u6240\u6709\u63D2\u4EF6",
@@ -12084,6 +12694,9 @@ var zh_cn_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u542F\u52A8 BPM \u65F6\u68C0\u67E5\u201C\u5B89\u88C5\u4E0E\u6765\u6E90\u201D\u4E2D\u7684 GitHub \u6765\u6E90\u8BA2\u9605\uFF0C\u5E76\u63D0\u793A\u53EF\u66F4\u65B0\u6570\u91CF\u3002",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898: "\u5141\u8BB8\u6765\u6E90\u81EA\u52A8\u66F4\u65B0",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0: "\u542F\u52A8\u65F6\u6267\u884C\u6765\u6E90\u8BA2\u9605\u7684\u81EA\u52A8\u66F4\u65B0\uFF1B\u4ECD\u9700\u5728\u5355\u4E2A\u6765\u6E90\u5361\u7247\u4E2D\u5F00\u542F\u201C\u81EA\u52A8\u66F4\u65B0\u201D\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898: "GitHub \u4E2D\u8F6C\u7AD9",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0: "\u7559\u7A7A\u65F6\u4F7F\u7528 GitHub \u5B98\u65B9\u5730\u5740\u3002\u53EF\u586B\u5199\u4E2D\u8F6C\u7AD9\u524D\u7F00\uFF0C\u6216\u4F7F\u7528 {url}/{encodedUrl} \u6A21\u677F\u3002\u82E5\u5DF2\u914D\u7F6E Token\uFF0C\u8BF7\u53EA\u4F7F\u7528\u53EF\u4FE1\u4E2D\u8F6C\u7AD9\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26: "\u4F8B\u5982: https://gh-proxy.example.com/",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u6807\u9898: "\u63D2\u4EF6\u4FE1\u606F\u5BFC\u51FA\u76EE\u5F55",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u63CF\u8FF0: "\u76F8\u5BF9\u5E93\u8DEF\u5F84\u7684\u6587\u4EF6\u5939\uFF0C\u7528\u4E8E\u5BFC\u51FA BPM \u63D2\u4EF6\u4FE1\u606F\uFF08\u652F\u6301 Base\uFF09\u3002\u4E0D\u4F1A\u5728\u8F93\u5165\u65F6\u7ACB\u523B\u5199\u5165\uFF0C\u9700\u70B9\u51FB\u201C\u4FDD\u5B58\u8BBE\u7F6E\u201D\u3002",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898: "\u81EA\u52A8\u63A5\u7BA1\u63D2\u4EF6",
@@ -12174,6 +12787,13 @@ var zh_cn_default = {
   \u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u5F53\u524D\u7248\u672C: "\u5F53\u524D\u5B89\u88C5\uFF1A{version}",
   \u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u7248\u672C\u6570\u91CF: "{count} \u4E2A\u7248\u672C",
   \u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u9009\u62E9\u7248\u672C: "\u9009\u62E9\u7248\u672C {version}",
+  \u517C\u5BB9\u6027_\u7B56\u7565: "\u517C\u5BB9\u6027\u7B56\u7565",
+  \u517C\u5BB9\u6027_\u4EC5\u517C\u5BB9: "\u63A8\u8350\u517C\u5BB9",
+  \u517C\u5BB9\u6027_\u663E\u793A\u5168\u90E8: "\u663E\u793A\u5168\u90E8",
+  \u517C\u5BB9\u6027_GitHubLatest: "GitHub \u6700\u65B0",
+  \u517C\u5BB9\u6027_\u9700\u8981\u7248\u672C: "\u9700\u8981 Obsidian {version}",
+  \u517C\u5BB9\u6027_\u517C\u5BB9: "\u517C\u5BB9",
+  \u517C\u5BB9\u6027_\u4E0D\u517C\u5BB9: "\u4E0D\u517C\u5BB9",
   \u901A\u77E5_ID\u5DF2\u590D\u5236: "ID\u5DF2\u590D\u5236",
   \u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0: "\u5168\u90E8",
   \u7B5B\u9009_\u4EC5\u542F\u7528_\u63CF\u8FF0: "\u4EC5\u542F\u7528",
@@ -12489,6 +13109,14 @@ var zh_cn_default = {
   \u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4: "\u786E\u5B9A\u6E05\u9664 {count} \u4E2A\u63D2\u4EF6\u7684\u5168\u90E8\u6807\u7B7E\u5417\uFF1FBPM \u5185\u7F6E\u6807\u7B7E\u4F1A\u4FDD\u7559\u3002",
   \u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4: "\u786E\u5B9A\u542F\u7528 {count} \u4E2A\u63D2\u4EF6\u5417\uFF1F",
   \u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4: "\u786E\u5B9A\u7981\u7528 {count} \u4E2A\u63D2\u4EF6\u5417\uFF1F",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8BF4\u660E: "\u786E\u8BA4\u540E\u4F1A\u7ACB\u5373\u66F4\u65B0\u9009\u4E2D\u63D2\u4EF6\u7684\u542F\u7528\u72B6\u6001\u3002",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5904\u7406: "\u5C06\u5904\u7406",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u9009\u62E9: "\u5DF2\u9009\u62E9",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u8DF3\u8FC7: "\u5DF2\u8DF3\u8FC7",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5BF9\u8C61\u9884\u89C8: "\u64CD\u4F5C\u5BF9\u8C61",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u66F4\u591A\u5BF9\u8C61: "\u8FD8\u6709 {count} \u4E2A\u63D2\u4EF6",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u7ACB\u5373\u751F\u6548: "\u64CD\u4F5C\u4F1A\u7ACB\u5373\u5199\u5165\u63D2\u4EF6\u542F\u7528\u72B6\u6001\u3002",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8DF3\u8FC7\u8BF4\u660E: "BPM \u81EA\u8EAB\u548C BPM \u5FFD\u7565\u63D2\u4EF6\u4F1A\u81EA\u52A8\u8DF3\u8FC7\u3002",
   \u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6: "\u6CA1\u6709\u53EF\u64CD\u4F5C\u7684\u63D2\u4EF6",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u5206\u7EC4: "\u5DF2\u66F4\u65B0 {count} \u4E2A\u63D2\u4EF6\u7684\u5206\u7EC4",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u6DFB\u52A0\u6807\u7B7E: "\u5DF2\u4E3A {count} \u4E2A\u63D2\u4EF6\u6DFB\u52A0\u6807\u7B7E",
@@ -12497,6 +13125,9 @@ var zh_cn_default = {
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u72B6\u6001: "\u5DF2\u66F4\u65B0 {count} \u4E2A\u63D2\u4EF6\u7684\u72B6\u6001",
   \u66F4\u65B0_\u672A\u83B7\u53D6\u5230\u8FDC\u7AEF\u7248\u672C: "\u672A\u83B7\u53D6\u5230\u8FDC\u7AEF\u7248\u672C",
   \u66F4\u65B0_\u65E0\u6765\u6E90\u65E0\u6CD5\u68C0\u6D4B: "\u65E0\u6765\u6E90\uFF0C\u65E0\u6CD5\u68C0\u6D4B",
+  \u66F4\u65B0_\u68C0\u6D4B\u9519\u8BEF\u6807\u7B7E: "\u68C0\u6D4B\u9519\u8BEF",
+  \u66F4\u65B0_\u65E0\u6CD5\u68C0\u6D4B\u6807\u7B7E: "\u65E0\u6CD5\u68C0\u6D4B",
+  \u66F4\u65B0_\u68C0\u6D4B\u9519\u8BEF\u63D0\u793A: "\u68C0\u6D4B\u5931\u8D25\uFF1A{message}",
   \u5F00\u53D1_\u5237\u65B0\u63D2\u4EF6_\u63D0\u793A: "\u5237\u65B0\u63D2\u4EF6",
   \u5F00\u53D1_\u6D4B\u8BD5\u63D2\u4EF6_\u63D0\u793A: "\u6D4B\u8BD5\u63D2\u4EF6",
   // 筛选
@@ -12554,6 +13185,8 @@ var zh_cn_default = {
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F: "\u68C0\u6D4B\u65B9\u5F0F",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F: "\u53D1\u5E03\u987A\u5E8F",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7: "\u7248\u672C\u53F7",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E: "\u5EF6\u8FDF\u5929\u6570",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u8BF4\u660E: "\u53EA\u628A\u53D1\u5E03\u6EE1\u6307\u5B9A\u5929\u6570\u7684\u7248\u672C\u89C6\u4E3A\u53EF\u66F4\u65B0\uFF1B0 \u8868\u793A\u4E0D\u5EF6\u8FDF\u3002",
   \u6765\u6E90_\u56FA\u5B9ATag_\u6807\u7B7E: "\u56FA\u5B9A tag",
   \u6765\u6E90_\u66F4\u65B0: "\u66F4\u65B0",
   \u6765\u6E90_\u81EA\u52A8: "\u81EA\u52A8",
@@ -12906,6 +13539,13 @@ var en_default = {
   \u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u5F53\u524D\u7248\u672C: "Installed: {version}",
   \u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u7248\u672C\u6570\u91CF: "{count} versions",
   \u7BA1\u7406\u5668_\u9009\u62E9\u7248\u672C_\u9009\u62E9\u7248\u672C: "Select version {version}",
+  \u517C\u5BB9\u6027_\u7B56\u7565: "Compatibility",
+  \u517C\u5BB9\u6027_\u4EC5\u517C\u5BB9: "Compatible only",
+  \u517C\u5BB9\u6027_\u663E\u793A\u5168\u90E8: "Show all",
+  \u517C\u5BB9\u6027_GitHubLatest: "GitHub Latest",
+  \u517C\u5BB9\u6027_\u9700\u8981\u7248\u672C: "Requires Obsidian {version}",
+  \u517C\u5BB9\u6027_\u517C\u5BB9: "Compatible",
+  \u517C\u5BB9\u6027_\u4E0D\u517C\u5BB9: "Incompatible",
   \u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0: "All",
   \u7B5B\u9009_\u4EC5\u542F\u7528_\u63CF\u8FF0: "Enabled only",
   \u7B5B\u9009_\u4EC5\u7981\u7528_\u63CF\u8FF0: "Disabled only",
@@ -12922,10 +13562,22 @@ var en_default = {
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "Visit Repository",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "Access video tutorials",
   \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Enable edit mode",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u6807\u9898: "Edit mode",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Reload plugin list",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5F00\u59CB\u63D0\u793A: "Refreshing plugin manifests\u2026",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u5931\u8D25\u63D0\u793A: "Reload failed. Please try again (see console for details).",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "Check for plugin updates",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u6807\u9898: "Check Plugin Updates",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u8BF4\u660E: "Choose how this overview check determines updates and delay days.",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u65B9\u5F0F_\u6807\u9898: "Detection method",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u65B9\u5F0F_\u63CF\u8FF0: "Release order works for repositories with non-monotonic tags; version works for semantic versions.",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u6807\u9898: "Compatibility strategy",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u63CF\u8FF0: "Uses manifest.json minAppVersion. Compatible first recommends versions that can run on this Obsidian version; show all lets latest and compatibility branches both participate.",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u517C\u5BB9\u4F18\u5148: "Recommend compatible only",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u517C\u5BB9\u6027_\u663E\u793A\u5168\u90E8: "Show all versions",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5EF6\u8FDF_\u6807\u9898: "Delay days",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5EF6\u8FDF_\u63CF\u8FF0: "Only treat releases older than this many days as updates. 0 disables the delay.",
+  \u66F4\u65B0\u68C0\u6D4B\u914D\u7F6E_\u5F00\u59CB\u6309\u94AE: "Start check",
   \u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0: "More actions",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "Disable all plugins at once",
   \u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0: "Enable all plugins at once",
@@ -13026,6 +13678,9 @@ var en_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "When BPM starts, check GitHub source subscriptions in Install & Sources and show the available update count.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898: "Allow source auto updates",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0: "Run source subscription auto updates on startup. Each source still needs its own Auto update switch enabled.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898: "GitHub proxy",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0: "Leave blank to use official GitHub URLs. Enter a proxy prefix, or use a {url}/{encodedUrl} template. If a token is configured, only use a trusted proxy.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26: "e.g. https://gh-proxy.example.com/",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898: "Filter Persistence",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0: "After enabling, you will see the same plugin list every time you open the manager.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898: "Control Plugin Commands Separately",
@@ -13285,6 +13940,14 @@ var en_default = {
   \u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4: "Clear all tags from {count} plugins? Built-in BPM tags will be kept.",
   \u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4: "Enable {count} plugins?",
   \u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4: "Disable {count} plugins?",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8BF4\u660E: "Confirm to immediately update the enabled state of the selected plugins.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5904\u7406: "Will update",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u9009\u62E9: "Selected",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u8DF3\u8FC7: "Skipped",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5BF9\u8C61\u9884\u89C8: "Targets",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u66F4\u591A\u5BF9\u8C61: "{count} more plugins",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u7ACB\u5373\u751F\u6548: "The enabled state will be written immediately.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8DF3\u8FC7\u8BF4\u660E: "BPM itself and BPM-ignored plugins are skipped automatically.",
   \u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6: "No actionable plugins",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u5206\u7EC4: "Updated group for {count} plugins",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u6DFB\u52A0\u6807\u7B7E: "Added tag to {count} plugins",
@@ -13293,6 +13956,9 @@ var en_default = {
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u72B6\u6001: "Updated status for {count} plugins",
   \u66F4\u65B0_\u672A\u83B7\u53D6\u5230\u8FDC\u7AEF\u7248\u672C: "Remote version not found",
   \u66F4\u65B0_\u65E0\u6765\u6E90\u65E0\u6CD5\u68C0\u6D4B: "No source available, cannot check",
+  \u66F4\u65B0_\u68C0\u6D4B\u9519\u8BEF\u6807\u7B7E: "Check error",
+  \u66F4\u65B0_\u65E0\u6CD5\u68C0\u6D4B\u6807\u7B7E: "Cannot check",
+  \u66F4\u65B0_\u68C0\u6D4B\u9519\u8BEF\u63D0\u793A: "Check failed: {message}",
   \u5F00\u53D1_\u5237\u65B0\u63D2\u4EF6_\u63D0\u793A: "Refresh plugin",
   \u5F00\u53D1_\u6D4B\u8BD5\u63D2\u4EF6_\u63D0\u793A: "Test plugin",
   // Filters
@@ -13350,6 +14016,8 @@ var en_default = {
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F: "Update detection",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F: "Release",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7: "Version",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E: "Delay days",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u8BF4\u660E: "Only treat releases older than this many days as updates. 0 disables the delay.",
   \u6765\u6E90_\u56FA\u5B9ATag_\u6807\u7B7E: "Pinned tag",
   \u6765\u6E90_\u66F4\u65B0: "Update",
   \u6765\u6E90_\u81EA\u52A8: "Auto",
@@ -13674,6 +14342,7 @@ var ru_default = {
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u044C \u0440\u0435\u043F\u043E\u0437\u0438\u0442\u043E\u0440\u0438\u0439",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "\u0414\u043E\u0441\u0442\u0443\u043F \u043A \u0432\u0438\u0434\u0435\u043E-\u0443\u0440\u043E\u043A\u0430\u043C",
   \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0440\u0435\u0436\u0438\u043C \u0440\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u6807\u9898: "\u0420\u0435\u0436\u0438\u043C \u0440\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u041F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0441\u043F\u0438\u0441\u043E\u043A \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u041F\u0440\u043E\u0432\u0435\u0440\u0438\u0442\u044C \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "\u041E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0432\u0441\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u0440\u0430\u0437\u043E\u043C",
@@ -14036,6 +14705,8 @@ var ru_default = {
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F: "\u041E\u043F\u0440\u0435\u0434\u0435\u043B\u0435\u043D\u0438\u0435 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F: "\u0420\u0435\u043B\u0438\u0437",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7: "\u0412\u0435\u0440\u0441\u0438\u044F",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E: "Delay",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u8BF4\u660E: "Only treat releases older than this many days as updates. 0 disables the delay.",
   \u6765\u6E90_\u56FA\u5B9ATag_\u6807\u7B7E: "\u0417\u0430\u043A\u0440\u0435\u043F\u043B\u0435\u043D\u043D\u044B\u0439 tag",
   \u6765\u6E90_\u66F4\u65B0: "\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C",
   \u6765\u6E90_\u81EA\u52A8: "\u0410\u0432\u0442\u043E",
@@ -14212,6 +14883,9 @@ var ru_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u041F\u0440\u0438 \u0437\u0430\u043F\u0443\u0441\u043A\u0435 BPM \u043F\u0440\u043E\u0432\u0435\u0440\u044F\u0442\u044C \u043F\u043E\u0434\u043F\u0438\u0441\u043A\u0438 \u043D\u0430 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0438 GitHub \u0432 \u0440\u0430\u0437\u0434\u0435\u043B\u0435 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0438 \u0438 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u043E\u0432 \u0438 \u043F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0447\u0438\u0441\u043B\u043E \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0445 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0439.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898: "\u0420\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u044C \u0430\u0432\u0442\u043E\u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u043E\u0432",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0: "\u0412\u044B\u043F\u043E\u043B\u043D\u044F\u0442\u044C \u0430\u0432\u0442\u043E\u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435 \u043F\u043E\u0434\u043F\u0438\u0441\u043E\u043A \u043D\u0430 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0438 \u043F\u0440\u0438 \u0437\u0430\u043F\u0443\u0441\u043A\u0435. \u0414\u043B\u044F \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0430 \u0442\u0430\u043A\u0436\u0435 \u0434\u043E\u043B\u0436\u0435\u043D \u0431\u044B\u0442\u044C \u0432\u043A\u043B\u044E\u0447\u0435\u043D \u0441\u043E\u0431\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439 \u043F\u0435\u0440\u0435\u043A\u043B\u044E\u0447\u0430\u0442\u0435\u043B\u044C \u0430\u0432\u0442\u043E\u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898: "GitHub proxy",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0: "Leave blank to use official GitHub URLs. Enter a proxy prefix, or use a {url}/{encodedUrl} template.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26: "e.g. https://gh-proxy.example.com/",
   \u5378\u8F7D_\u5371\u9669\u64CD\u4F5C: "\u041E\u043F\u0430\u0441\u043D\u043E\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435",
   \u5378\u8F7D_\u8BF4\u660E: "\u0423\u0434\u0430\u043B\u0435\u043D\u0438\u0435 \u0443\u0434\u0430\u043B\u0438\u0442 \u0444\u0430\u0439\u043B\u044B \u043F\u043B\u0430\u0433\u0438\u043D\u0430. \u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435 \u0446\u0435\u043B\u044C \u043F\u0435\u0440\u0435\u0434 \u043F\u0440\u043E\u0434\u043E\u043B\u0436\u0435\u043D\u0438\u0435\u043C.",
   \u5378\u8F7D_\u786E\u8BA4\u6807\u9898: "\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u0435 \u0443\u0434\u0430\u043B\u0435\u043D\u0438\u0435 \u043F\u043B\u0430\u0433\u0438\u043D\u0430",
@@ -14282,6 +14956,14 @@ var ru_default = {
   \u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4: "\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C \u0432\u0441\u0435 \u0442\u0435\u0433\u0438 \u0443 {count} \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432? \u0412\u0441\u0442\u0440\u043E\u0435\u043D\u043D\u044B\u0435 \u0442\u0435\u0433\u0438 BPM \u0431\u0443\u0434\u0443\u0442 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u044B.",
   \u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C {count} \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432?",
   \u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4: "\u041E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u044C {count} \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432?",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8BF4\u660E: "\u041F\u043E\u0441\u043B\u0435 \u043F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u0438\u044F \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0445 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u043E \u0441\u0440\u0430\u0437\u0443.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5904\u7406: "\u0411\u0443\u0434\u0435\u0442 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u043E",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u9009\u62E9: "\u0412\u044B\u0431\u0440\u0430\u043D\u043E",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u8DF3\u8FC7: "\u041F\u0440\u043E\u043F\u0443\u0449\u0435\u043D\u043E",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5BF9\u8C61\u9884\u89C8: "\u0426\u0435\u043B\u0438",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u66F4\u591A\u5BF9\u8C61: "\u0415\u0449\u0435 {count} \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u7ACB\u5373\u751F\u6548: "\u0421\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435 \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u044F \u0431\u0443\u0434\u0435\u0442 \u0437\u0430\u043F\u0438\u0441\u0430\u043D\u043E \u043D\u0435\u043C\u0435\u0434\u043B\u0435\u043D\u043D\u043E.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8DF3\u8FC7\u8BF4\u660E: "\u0421\u0430\u043C BPM \u0438 \u0438\u0433\u043D\u043E\u0440\u0438\u0440\u0443\u0435\u043C\u044B\u0435 BPM \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u043F\u0440\u043E\u043F\u0443\u0441\u043A\u0430\u044E\u0442\u0441\u044F \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438.",
   \u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6: "\u041D\u0435\u0442 \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0445 \u0434\u043B\u044F \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u5206\u7EC4: "\u0413\u0440\u0443\u043F\u043F\u0430 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0430 \u0434\u043B\u044F {count} \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u6DFB\u52A0\u6807\u7B7E: "\u0422\u0435\u0433 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u043A {count} \u043F\u043B\u0430\u0433\u0438\u043D\u0430\u043C",
@@ -14385,6 +15067,7 @@ var ja_default = {
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "\u30EA\u30DD\u30B8\u30C8\u30EA\u3092\u898B\u308B",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "\u30D3\u30C7\u30AA\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB\u306B\u30A2\u30AF\u30BB\u30B9",
   \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\u7DE8\u96C6\u30E2\u30FC\u30C9\u3092\u6709\u52B9\u306B\u3059\u308B",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u6807\u9898: "\u7DE8\u96C6\u30E2\u30FC\u30C9",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\u30D7\u30E9\u30B0\u30A4\u30F3\u30EA\u30B9\u30C8\u3092\u518D\u8AAD\u307F\u8FBC\u307F",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u66F4\u65B0\u3092\u78BA\u8A8D\u3059\u308B",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "\u4E00\u5EA6\u306B\u3059\u3079\u3066\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u7121\u52B9\u306B\u3057\u307E\u3059",
@@ -14801,6 +15484,8 @@ var ja_default = {
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F: "\u66F4\u65B0\u5224\u5B9A",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F: "\u30EA\u30EA\u30FC\u30B9",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7: "\u30D0\u30FC\u30B8\u30E7\u30F3",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E: "Delay",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u8BF4\u660E: "Only treat releases older than this many days as updates. 0 disables the delay.",
   \u6765\u6E90_\u56FA\u5B9ATag_\u6807\u7B7E: "\u56FA\u5B9A tag",
   \u6765\u6E90_\u66F4\u65B0: "\u66F4\u65B0",
   \u6765\u6E90_\u81EA\u52A8: "\u81EA\u52D5",
@@ -14977,6 +15662,9 @@ var ja_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "BPM \u306E\u8D77\u52D5\u6642\u306B\u300C\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3068\u30BD\u30FC\u30B9\u300D\u306E GitHub \u30BD\u30FC\u30B9\u8CFC\u8AAD\u3092\u78BA\u8A8D\u3057\u3001\u66F4\u65B0\u53EF\u80FD\u306A\u4EF6\u6570\u3092\u8868\u793A\u3057\u307E\u3059\u3002",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898: "\u30BD\u30FC\u30B9\u306E\u81EA\u52D5\u66F4\u65B0\u3092\u8A31\u53EF",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0: "\u8D77\u52D5\u6642\u306B\u30BD\u30FC\u30B9\u8CFC\u8AAD\u306E\u81EA\u52D5\u66F4\u65B0\u3092\u5B9F\u884C\u3057\u307E\u3059\u3002\u5404\u30BD\u30FC\u30B9\u3067\u306F\u500B\u5225\u306B\u300C\u81EA\u52D5\u66F4\u65B0\u300D\u3092\u6709\u52B9\u306B\u3059\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\u3002",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898: "GitHub proxy",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0: "Leave blank to use official GitHub URLs. Enter a proxy prefix, or use a {url}/{encodedUrl} template.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26: "e.g. https://gh-proxy.example.com/",
   \u5378\u8F7D_\u5371\u9669\u64CD\u4F5C: "\u5371\u967A\u306A\u64CD\u4F5C",
   \u5378\u8F7D_\u8BF4\u660E: "\u30A2\u30F3\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3059\u308B\u3068\u30D7\u30E9\u30B0\u30A4\u30F3\u30D5\u30A1\u30A4\u30EB\u304C\u524A\u9664\u3055\u308C\u307E\u3059\u3002\u7D9A\u884C\u524D\u306B\u5BFE\u8C61\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
   \u5378\u8F7D_\u786E\u8BA4\u6807\u9898: "\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u30A2\u30F3\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3092\u78BA\u8A8D",
@@ -15047,6 +15735,14 @@ var ja_default = {
   \u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4: "{count} \u500B\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u304B\u3089\u3059\u3079\u3066\u306E\u30BF\u30B0\u3092\u30AF\u30EA\u30A2\u3057\u307E\u3059\u304B\uFF1F\u7D44\u307F\u8FBC\u307F BPM \u30BF\u30B0\u306F\u4FDD\u6301\u3055\u308C\u307E\u3059\u3002",
   \u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4: "{count} \u500B\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u6709\u52B9\u5316\u3057\u307E\u3059\u304B\uFF1F",
   \u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4: "{count} \u500B\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u7121\u52B9\u5316\u3057\u307E\u3059\u304B\uFF1F",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8BF4\u660E: "\u78BA\u8A8D\u3059\u308B\u3068\u3001\u9078\u629E\u3057\u305F\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u6709\u52B9\u72B6\u614B\u3092\u3059\u3050\u306B\u66F4\u65B0\u3057\u307E\u3059\u3002",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5904\u7406: "\u51E6\u7406\u5BFE\u8C61",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u9009\u62E9: "\u9078\u629E\u6E08\u307F",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u8DF3\u8FC7: "\u30B9\u30AD\u30C3\u30D7",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5BF9\u8C61\u9884\u89C8: "\u5BFE\u8C61",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u66F4\u591A\u5BF9\u8C61: "\u307B\u304B {count} \u500B\u306E\u30D7\u30E9\u30B0\u30A4\u30F3",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u7ACB\u5373\u751F\u6548: "\u6709\u52B9\u72B6\u614B\u306F\u3059\u3050\u306B\u66F8\u304D\u8FBC\u307E\u308C\u307E\u3059\u3002",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8DF3\u8FC7\u8BF4\u660E: "BPM \u672C\u4F53\u3068 BPM \u5FFD\u7565\u30D7\u30E9\u30B0\u30A4\u30F3\u306F\u81EA\u52D5\u7684\u306B\u30B9\u30AD\u30C3\u30D7\u3055\u308C\u307E\u3059\u3002",
   \u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6: "\u64CD\u4F5C\u53EF\u80FD\u306A\u30D7\u30E9\u30B0\u30A4\u30F3\u304C\u3042\u308A\u307E\u305B\u3093",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u5206\u7EC4: "{count} \u500B\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u306E\u30B0\u30EB\u30FC\u30D7\u3092\u66F4\u65B0\u3057\u307E\u3057\u305F",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u6DFB\u52A0\u6807\u7B7E: "{count} \u500B\u306E\u30D7\u30E9\u30B0\u30A4\u30F3\u306B\u30BF\u30B0\u3092\u8FFD\u52A0\u3057\u307E\u3057\u305F",
@@ -15150,6 +15846,7 @@ var ko_default = {
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "\uC800\uC7A5\uC18C \uBC29\uBB38",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "\uBE44\uB514\uC624 \uD29C\uD1A0\uB9AC\uC5BC\uC5D0 \uC561\uC138\uC2A4",
   \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "\uD3B8\uC9D1 \uBAA8\uB4DC \uD65C\uC131\uD654",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u6807\u9898: "\uD3B8\uC9D1 \uBAA8\uB4DC",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "\uD50C\uB7EC\uADF8\uC778 \uBAA9\uB85D \uB2E4\uC2DC \uB85C\uB4DC",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "\uD50C\uB7EC\uADF8\uC778 \uC5C5\uB370\uC774\uD2B8\uB97C \uD655\uC778\uD558\uC138\uC694",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "\uD55C \uBC88\uC5D0 \uBAA8\uB4E0 \uD50C\uB7EC\uADF8\uC778\uC744 \uBE44\uD65C\uC131\uD654\uD558\uC138\uC694",
@@ -15566,6 +16263,8 @@ var ko_default = {
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F: "\uC5C5\uB370\uC774\uD2B8 \uD310\uC815",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F: "\uB9B4\uB9AC\uC2A4",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7: "\uBC84\uC804",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E: "Delay",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u8BF4\u660E: "Only treat releases older than this many days as updates. 0 disables the delay.",
   \u6765\u6E90_\u56FA\u5B9ATag_\u6807\u7B7E: "\uACE0\uC815 tag",
   \u6765\u6E90_\u66F4\u65B0: "\uC5C5\uB370\uC774\uD2B8",
   \u6765\u6E90_\u81EA\u52A8: "\uC790\uB3D9",
@@ -15742,6 +16441,9 @@ var ko_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "BPM \uC2DC\uC791 \uC2DC \uC124\uCE58 \uBC0F \uC18C\uC2A4\uC758 GitHub \uC18C\uC2A4 \uAD6C\uB3C5\uC744 \uD655\uC778\uD558\uACE0 \uC5C5\uB370\uC774\uD2B8 \uAC00\uB2A5\uD55C \uAC1C\uC218\uB97C \uD45C\uC2DC\uD569\uB2C8\uB2E4.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898: "\uC18C\uC2A4 \uC790\uB3D9 \uC5C5\uB370\uC774\uD2B8 \uD5C8\uC6A9",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0: "\uC2DC\uC791 \uC2DC \uC18C\uC2A4 \uAD6C\uB3C5 \uC790\uB3D9 \uC5C5\uB370\uC774\uD2B8\uB97C \uC2E4\uD589\uD569\uB2C8\uB2E4. \uAC01 \uC18C\uC2A4\uC5D0\uC11C\uB3C4 \uC790\uB3D9 \uC5C5\uB370\uC774\uD2B8 \uC2A4\uC704\uCE58\uB97C \uBCC4\uB3C4\uB85C \uCF1C\uC57C \uD569\uB2C8\uB2E4.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898: "GitHub proxy",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0: "Leave blank to use official GitHub URLs. Enter a proxy prefix, or use a {url}/{encodedUrl} template.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26: "e.g. https://gh-proxy.example.com/",
   \u5378\u8F7D_\u5371\u9669\u64CD\u4F5C: "\uC704\uD5D8\uD55C \uC791\uC5C5",
   \u5378\u8F7D_\u8BF4\u660E: "\uC81C\uAC70\uD558\uBA74 \uD50C\uB7EC\uADF8\uC778 \uD30C\uC77C\uC774 \uC0AD\uC81C\uB429\uB2C8\uB2E4. \uACC4\uC18D\uD558\uAE30 \uC804\uC5D0 \uB300\uC0C1\uC744 \uD655\uC778\uD558\uC138\uC694.",
   \u5378\u8F7D_\u786E\u8BA4\u6807\u9898: "\uD50C\uB7EC\uADF8\uC778 \uC81C\uAC70 \uD655\uC778",
@@ -15812,6 +16514,14 @@ var ko_default = {
   \u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4: "\uD50C\uB7EC\uADF8\uC778 {count}\uAC1C\uC758 \uBAA8\uB4E0 \uD0DC\uADF8\uB97C \uC9C0\uC6B8\uAE4C\uC694? \uAE30\uBCF8 BPM \uD0DC\uADF8\uB294 \uC720\uC9C0\uB429\uB2C8\uB2E4.",
   \u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4: "\uD50C\uB7EC\uADF8\uC778 {count}\uAC1C\uB97C \uD65C\uC131\uD654\uD560\uAE4C\uC694?",
   \u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4: "\uD50C\uB7EC\uADF8\uC778 {count}\uAC1C\uB97C \uBE44\uD65C\uC131\uD654\uD560\uAE4C\uC694?",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8BF4\u660E: "\uD655\uC778\uD558\uBA74 \uC120\uD0DD\uD55C \uD50C\uB7EC\uADF8\uC778\uC758 \uD65C\uC131 \uC0C1\uD0DC\uB97C \uC989\uC2DC \uC5C5\uB370\uC774\uD2B8\uD569\uB2C8\uB2E4.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5904\u7406: "\uCC98\uB9AC \uB300\uC0C1",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u9009\u62E9: "\uC120\uD0DD\uB428",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u8DF3\u8FC7: "\uAC74\uB108\uB700",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5BF9\u8C61\u9884\u89C8: "\uB300\uC0C1",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u66F4\u591A\u5BF9\u8C61: "\uD50C\uB7EC\uADF8\uC778 {count}\uAC1C \uB354",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u7ACB\u5373\u751F\u6548: "\uD65C\uC131 \uC0C1\uD0DC\uAC00 \uC989\uC2DC \uAE30\uB85D\uB429\uB2C8\uB2E4.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8DF3\u8FC7\u8BF4\u660E: "BPM \uC790\uCCB4\uC640 BPM \uBB34\uC2DC \uD50C\uB7EC\uADF8\uC778\uC740 \uC790\uB3D9\uC73C\uB85C \uAC74\uB108\uB701\uB2C8\uB2E4.",
   \u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6: "\uC791\uC5C5 \uAC00\uB2A5\uD55C \uD50C\uB7EC\uADF8\uC778\uC774 \uC5C6\uC2B5\uB2C8\uB2E4",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u5206\u7EC4: "\uD50C\uB7EC\uADF8\uC778 {count}\uAC1C\uC758 \uADF8\uB8F9\uC744 \uC5C5\uB370\uC774\uD2B8\uD588\uC2B5\uB2C8\uB2E4",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u6DFB\u52A0\u6807\u7B7E: "\uD50C\uB7EC\uADF8\uC778 {count}\uAC1C\uC5D0 \uD0DC\uADF8\uB97C \uCD94\uAC00\uD588\uC2B5\uB2C8\uB2E4",
@@ -15985,6 +16695,7 @@ var fr_default = {
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "Visiter le d\xE9p\xF4t",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "Acc\xE9der aux tutoriels vid\xE9o",
   \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Activer le mode \xE9dition",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u6807\u9898: "Mode \xE9dition",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Recharger la liste des plugins",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "V\xE9rifier les mises \xE0 jour de plugins",
   \u7BA1\u7406\u5668_\u4E00\u952E\u7981\u7528_\u63CF\u8FF0: "Tout d\xE9sactiver en un clic",
@@ -16331,6 +17042,8 @@ var fr_default = {
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F: "D\xE9tection des mises \xE0 jour",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F: "Release",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7: "Version",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E: "Delay",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u8BF4\u660E: "Only treat releases older than this many days as updates. 0 disables the delay.",
   \u6765\u6E90_\u56FA\u5B9ATag_\u6807\u7B7E: "Tag \xE9pingl\xE9",
   \u6765\u6E90_\u66F4\u65B0: "Mettre \xE0 jour",
   \u6765\u6E90_\u81EA\u52A8: "Auto",
@@ -16507,6 +17220,9 @@ var fr_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "Au d\xE9marrage de BPM, v\xE9rifie les abonnements aux sources GitHub dans Installation et sources, puis affiche le nombre de mises \xE0 jour disponibles.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898: "Autoriser les mises \xE0 jour automatiques des sources",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0: "Ex\xE9cute les mises \xE0 jour automatiques des abonnements aux sources au d\xE9marrage. Chaque source doit encore avoir son interrupteur de mise \xE0 jour automatique activ\xE9.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898: "GitHub proxy",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0: "Leave blank to use official GitHub URLs. Enter a proxy prefix, or use a {url}/{encodedUrl} template.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26: "e.g. https://gh-proxy.example.com/",
   \u5378\u8F7D_\u5371\u9669\u64CD\u4F5C: "Action dangereuse",
   \u5378\u8F7D_\u8BF4\u660E: "La d\xE9sinstallation supprime les fichiers du plugin. Confirmez la cible avant de continuer.",
   \u5378\u8F7D_\u786E\u8BA4\u6807\u9898: "Confirmer la d\xE9sinstallation du plugin",
@@ -16577,6 +17293,14 @@ var fr_default = {
   \u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4: "Effacer tous les tags de {count} plugins ? Les tags BPM int\xE9gr\xE9s seront conserv\xE9s.",
   \u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4: "Activer {count} plugins ?",
   \u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4: "D\xE9sactiver {count} plugins ?",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8BF4\u660E: "Apr\xE8s confirmation, l\u2019\xE9tat d\u2019activation des plugins s\xE9lectionn\xE9s sera mis \xE0 jour imm\xE9diatement.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5904\u7406: "\xC0 traiter",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u9009\u62E9: "S\xE9lectionn\xE9s",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u8DF3\u8FC7: "Ignor\xE9s",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5BF9\u8C61\u9884\u89C8: "Cibles",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u66F4\u591A\u5BF9\u8C61: "{count} plugins de plus",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u7ACB\u5373\u751F\u6548: "L\u2019\xE9tat d\u2019activation sera \xE9crit imm\xE9diatement.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8DF3\u8FC7\u8BF4\u660E: "BPM lui-m\xEAme et les plugins ignor\xE9s par BPM sont ignor\xE9s automatiquement.",
   \u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6: "Aucun plugin actionnable",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u5206\u7EC4: "Groupe mis \xE0 jour pour {count} plugins",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u6DFB\u52A0\u6807\u7B7E: "Tag ajout\xE9 \xE0 {count} plugins",
@@ -16680,6 +17404,7 @@ var es_default = {
   \u7BA1\u7406\u5668_GITHUB_\u63CF\u8FF0: "Visitar repositorio",
   \u7BA1\u7406\u5668_\u89C6\u9891\u6559\u7A0B_\u63CF\u8FF0: "Acceder a tutoriales en video",
   \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u63CF\u8FF0: "Habilitar modo de edici\xF3n",
+  \u7BA1\u7406\u5668_\u7F16\u8F91\u6A21\u5F0F_\u6807\u9898: "Modo de edici\xF3n",
   \u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0: "Recargar lista de plugins",
   \u7BA1\u7406\u5668_\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "Comprobar actualizaciones de plugins",
   \u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0: "M\xE1s acciones",
@@ -17096,6 +17821,8 @@ var es_default = {
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F: "Detecci\xF3n de actualizaci\xF3n",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u53D1\u5E03\u987A\u5E8F: "Release",
   \u6765\u6E90_\u68C0\u6D4B\u65B9\u5F0F_\u7248\u672C\u53F7: "Versi\xF3n",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u6807\u7B7E: "Delay",
+  \u6765\u6E90_\u66F4\u65B0\u5EF6\u8FDF_\u8BF4\u660E: "Only treat releases older than this many days as updates. 0 disables the delay.",
   \u6765\u6E90_\u56FA\u5B9ATag_\u6807\u7B7E: "Tag fijado",
   \u6765\u6E90_\u66F4\u65B0: "Actualizar",
   \u6765\u6E90_\u81EA\u52A8: "Auto",
@@ -17272,6 +17999,9 @@ var es_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0: "Al iniciar BPM, comprueba las suscripciones de fuentes de GitHub en Instalaci\xF3n y fuentes, y muestra el n\xFAmero de actualizaciones disponibles.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898: "Permitir actualizaciones autom\xE1ticas de fuentes",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0: "Ejecuta las actualizaciones autom\xE1ticas de suscripciones de fuentes al iniciar. Cada fuente a\xFAn necesita tener activado su propio interruptor de actualizaci\xF3n autom\xE1tica.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898: "GitHub proxy",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0: "Leave blank to use official GitHub URLs. Enter a proxy prefix, or use a {url}/{encodedUrl} template.",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26: "e.g. https://gh-proxy.example.com/",
   \u5378\u8F7D_\u5371\u9669\u64CD\u4F5C: "Acci\xF3n peligrosa",
   \u5378\u8F7D_\u8BF4\u660E: "La desinstalaci\xF3n elimina los archivos del plugin. Confirma el objetivo antes de continuar.",
   \u5378\u8F7D_\u786E\u8BA4\u6807\u9898: "Confirmar desinstalaci\xF3n del plugin",
@@ -17342,6 +18072,14 @@ var es_default = {
   \u6279\u91CF\u7F16\u8F91_\u6E05\u9664\u5168\u90E8\u6807\u7B7E\u786E\u8BA4: "\xBFLimpiar todas las etiquetas de {count} plugins? Las etiquetas BPM integradas se conservar\xE1n.",
   \u6279\u91CF\u7F16\u8F91_\u542F\u7528\u786E\u8BA4: "\xBFActivar {count} plugins?",
   \u6279\u91CF\u7F16\u8F91_\u7981\u7528\u786E\u8BA4: "\xBFDesactivar {count} plugins?",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8BF4\u660E: "Al confirmar, el estado de activaci\xF3n de los plugins seleccionados se actualizar\xE1 de inmediato.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5904\u7406: "Se actualizar\xE1n",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u9009\u62E9: "Seleccionados",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5DF2\u8DF3\u8FC7: "Omitidos",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u5BF9\u8C61\u9884\u89C8: "Objetivos",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u66F4\u591A\u5BF9\u8C61: "{count} plugins m\xE1s",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u7ACB\u5373\u751F\u6548: "El estado de activaci\xF3n se escribir\xE1 inmediatamente.",
+  \u6279\u91CF\u7F16\u8F91_\u542F\u505C_\u8DF3\u8FC7\u8BF4\u660E: "BPM y los plugins ignorados por BPM se omiten autom\xE1ticamente.",
   \u6279\u91CF\u7F16\u8F91_\u65E0\u53EF\u64CD\u4F5C\u63D2\u4EF6: "No hay plugins accionables",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u66F4\u65B0\u5206\u7EC4: "Grupo actualizado para {count} plugins",
   \u6279\u91CF\u7F16\u8F91_\u5DF2\u6DFB\u52A0\u6807\u7B7E: "Etiqueta a\xF1adida a {count} plugins",
@@ -17482,7 +18220,7 @@ var Translator = class {
 };
 
 // src/agreement.ts
-var import_obsidian26 = require("obsidian");
+var import_obsidian28 = require("obsidian");
 var Agreement = class {
   /**
    * 构造函数，初始化插件安装器
@@ -17494,7 +18232,7 @@ var Agreement = class {
     // 标记是否已经加载了社区插件列表
     this.loaded = false;
     // 防抖函数，用于定时刷新社区插件列表，每小时执行一次
-    this.debounceFetch = (0, import_obsidian26.debounce)(async () => {
+    this.debounceFetch = (0, import_obsidian28.debounce)(async () => {
       await this.fetchCommunityPlugins();
     }, 1e3 * 60 * 60);
     this.plugin = SMPL;
@@ -17504,7 +18242,8 @@ var Agreement = class {
    * 从远程获取社区插件列表，并将其转换为以插件 ID 为键的对象
    */
   async fetchCommunityPlugins() {
-    const res = await (0, import_obsidian26.requestUrl)("https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugins.json");
+    const url = "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugins.json";
+    const res = await (0, import_obsidian28.requestUrl)(resolveGithubUrl(this.plugin, url));
     const pluginList = res.json;
     const keyedPluginList = {};
     for (const item of pluginList)
@@ -17522,7 +18261,7 @@ var Agreement = class {
     }
     const pluginInfo = this.communityPlugins[id];
     if (!pluginInfo) {
-      new import_obsidian26.Notice(this.plugin.translator.t("\u534F\u8BAE_\u672A\u77E5\u63D2\u4EF6ID_\u63D0\u793A", { id }));
+      new import_obsidian28.Notice(this.plugin.translator.t("\u534F\u8BAE_\u672A\u77E5\u63D2\u4EF6ID_\u63D0\u793A", { id }));
       return null;
     }
     window.open(`https://github.com/${pluginInfo.repo}`);
@@ -17545,18 +18284,19 @@ var Agreement = class {
     const repo = github !== "" ? github : (_a = this.communityPlugins[id]) == null ? void 0 : _a.repo;
     console.log(repo);
     if (!repo) {
-      new import_obsidian26.Notice(this.plugin.translator.t("\u534F\u8BAE_\u672A\u77E5\u63D2\u4EF6ID_\u63D0\u793A", { id }));
+      new import_obsidian28.Notice(this.plugin.translator.t("\u534F\u8BAE_\u672A\u77E5\u63D2\u4EF6ID_\u63D0\u793A", { id }));
       return;
     }
     if (pluginRegistry.manifests[id]) {
-      new import_obsidian26.Notice(this.plugin.translator.t("\u534F\u8BAE_\u63D2\u4EF6\u5DF2\u5B89\u88C5_\u63D0\u793A", { name: pluginRegistry.manifests[id].name }));
+      new import_obsidian28.Notice(this.plugin.translator.t("\u534F\u8BAE_\u63D2\u4EF6\u5DF2\u5B89\u88C5_\u63D0\u793A", { name: pluginRegistry.manifests[id].name }));
       if (version !== "" && version !== ((_b = pluginRegistry.manifests[id]) == null ? void 0 : _b.version))
         installFlag = true;
     } else {
       installFlag = true;
     }
     if (installFlag) {
-      const manifestRes = await (0, import_obsidian26.requestUrl)(`https://raw.githubusercontent.com/${repo}/HEAD/manifest.json`);
+      const manifestUrl = `https://raw.githubusercontent.com/${repo}/HEAD/manifest.json`;
+      const manifestRes = await (0, import_obsidian28.requestUrl)(resolveGithubUrl(this.plugin, manifestUrl));
       const manifest = manifestRes.json;
       if (version.toLowerCase() === "latest" || version === "")
         version = manifest.version;
@@ -17595,10 +18335,10 @@ var Agreement = class {
 };
 
 // src/main.ts
-var import_obsidian31 = require("obsidian");
+var import_obsidian33 = require("obsidian");
 
 // src/migrations.ts
-var import_obsidian27 = require("obsidian");
+var import_obsidian29 = require("obsidian");
 var parseVersionParts = (version) => {
   return (version || "0").replace(/^v/i, "").split(".").map((part) => {
     const match = part.match(/^\d+/);
@@ -17629,7 +18369,7 @@ var parseFrontmatter = (content) => {
   const raw = content.slice(3, end).trim();
   let frontmatter = null;
   try {
-    const parsed = (0, import_obsidian27.parseYaml)(raw);
+    const parsed = (0, import_obsidian29.parseYaml)(raw);
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
       frontmatter = parsed;
     }
@@ -17642,14 +18382,14 @@ var parseFrontmatter = (content) => {
   };
 };
 var buildMarkdownWithFrontmatter = (frontmatter, body) => {
-  const yaml = (0, import_obsidian27.stringifyYaml)(frontmatter).trimEnd();
+  const yaml = (0, import_obsidian29.stringifyYaml)(frontmatter).trimEnd();
   return `---
 ${yaml}
 ---${body.startsWith("\n") ? "" : "\n"}${body}`;
 };
 var listMarkdownFilesInFolder = async (manager, folderPath) => {
   const adapter = manager.app.vault.adapter;
-  const normalizedFolder = (0, import_obsidian27.normalizePath)(folderPath);
+  const normalizedFolder = (0, import_obsidian29.normalizePath)(folderPath);
   const result = [];
   let listed;
   try {
@@ -17732,6 +18472,7 @@ var runMigrations = async (manager) => {
   const currentVersion = manager.manifest.version;
   const lastMigrationVersion = manager.settings.MIGRATION_VERSION || "";
   const pendingMigrations = migrations.filter((migration) => compareVersions(migration.version, lastMigrationVersion) > 0).sort((a, b) => compareVersions(a.version, b.version));
+  let anyChange = false;
   for (const migration of pendingMigrations) {
     if (manager.settings.DEBUG) {
       console.log("[BPM] Running migration", migration.version);
@@ -17740,18 +18481,21 @@ var runMigrations = async (manager) => {
     const settingsChanged = await migration.run(manager);
     manager.settings.MIGRATION_VERSION = migration.version;
     if (settingsChanged || manager.settings.MIGRATION_VERSION !== previousMigrationVersion) {
-      await manager.saveSettings();
+      anyChange = true;
     }
   }
   if (!manager.settings.MIGRATION_VERSION || compareVersions(manager.settings.MIGRATION_VERSION, currentVersion) < 0) {
     manager.settings.MIGRATION_VERSION = currentVersion;
+    anyChange = true;
+  }
+  if (anyChange) {
     await manager.saveSettings();
   }
 };
 
 // src/self-check.ts
-var import_obsidian28 = require("obsidian");
-var getCommunityPluginsPath = (manager) => (0, import_obsidian28.normalizePath)(`${manager.app.vault.configDir}/community-plugins.json`);
+var import_obsidian30 = require("obsidian");
+var getCommunityPluginsPath = (manager) => (0, import_obsidian30.normalizePath)(`${manager.app.vault.configDir}/community-plugins.json`);
 var uniq = (ids) => {
   const seen = /* @__PURE__ */ new Set();
   return ids.filter((id) => {
@@ -17858,14 +18602,14 @@ async function performSelfCheck(manager) {
     return;
   if (manager.settings.AUTO_TAKEOVER) {
     const success = await execTakeover(manager, takeoverCandidates, communityPlugins);
-    new import_obsidian28.Notice(manager.translator.t(success ? "\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5" : "\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
+    new import_obsidian30.Notice(manager.translator.t(success ? "\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5" : "\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
     return;
   }
   if (manager.settings.SELF_CHECK_IGNORED)
     return;
   new TakeoverModal(manager.app, manager, takeoverCandidates, communityPlugins).open();
 }
-var TakeoverModal = class extends import_obsidian28.Modal {
+var TakeoverModal = class extends import_obsidian30.Modal {
   constructor(app, manager, takeoverCandidates, communityPlugins) {
     super(app);
     this.manager = manager;
@@ -17884,7 +18628,7 @@ var TakeoverModal = class extends import_obsidian28.Modal {
     titleEl.addClass("takeover-title");
     const titleMain = titleEl.createDiv("takeover-title__main");
     const titleIcon = titleMain.createSpan({ cls: "takeover-title__icon" });
-    (0, import_obsidian28.setIcon)(titleIcon, "shield-alert");
+    (0, import_obsidian30.setIcon)(titleIcon, "shield-alert");
     const titleText = titleMain.createDiv("takeover-title__copy");
     titleText.createDiv({ cls: "takeover-title__eyebrow", text: "BPM" });
     titleText.createDiv({ cls: "takeover-title__text", text: this.t("\u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u6807\u9898") });
@@ -17895,14 +18639,14 @@ var TakeoverModal = class extends import_obsidian28.Modal {
       attr: { type: "button", "aria-label": this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE") },
       title: this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE")
     });
-    (0, import_obsidian28.setIcon)(closeButton, "x");
+    (0, import_obsidian30.setIcon)(closeButton, "x");
     closeButton.addEventListener("click", () => {
       void this.ignoreWarning();
     });
     const page = contentEl.createDiv("takeover-page");
     const summary = page.createDiv("takeover-summary");
     const summaryIcon = summary.createSpan({ cls: "takeover-summary__icon" });
-    (0, import_obsidian28.setIcon)(summaryIcon, "route");
+    (0, import_obsidian30.setIcon)(summaryIcon, "route");
     const summaryMain = summary.createDiv("takeover-summary__main");
     summaryMain.createDiv({
       text: this.t("\u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u8BF4\u660E"),
@@ -17911,13 +18655,13 @@ var TakeoverModal = class extends import_obsidian28.Modal {
     const flow = summaryMain.createDiv("takeover-flow");
     this.renderFlowChip(flow, "file-json-2", "community-plugins.json");
     const flowArrow = flow.createSpan({ cls: "takeover-flow__arrow" });
-    (0, import_obsidian28.setIcon)(flowArrow, "arrow-right");
+    (0, import_obsidian30.setIcon)(flowArrow, "arrow-right");
     this.renderFlowChip(flow, "shield-check", "BPM");
     const listContainer = page.createDiv("takeover-plugin-list");
     const listHeader = listContainer.createDiv("takeover-plugin-list__header");
     const listTitle = listHeader.createDiv("takeover-plugin-list__title");
     const listIcon = listTitle.createSpan({ cls: "takeover-plugin-list__icon" });
-    (0, import_obsidian28.setIcon)(listIcon, "blocks");
+    (0, import_obsidian30.setIcon)(listIcon, "blocks");
     listTitle.createEl("h4", { text: this.t("\u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u5217\u8868") });
     listHeader.createSpan({ cls: "takeover-plugin-list__count", text: `${this.takeoverCandidates.length}` });
     const pluginList = listContainer.createDiv({
@@ -17931,7 +18675,7 @@ var TakeoverModal = class extends import_obsidian28.Modal {
         attr: { role: "listitem" }
       });
       const itemIcon = item.createSpan({ cls: "takeover-plugin-item__icon" });
-      (0, import_obsidian28.setIcon)(itemIcon, "plug");
+      (0, import_obsidian30.setIcon)(itemIcon, "plug");
       const itemMain = item.createDiv("takeover-plugin-item__main");
       itemMain.createSpan({ cls: "takeover-plugin-item__name", text: name });
       if (name !== id) {
@@ -17940,24 +18684,24 @@ var TakeoverModal = class extends import_obsidian28.Modal {
     }
     const warning = page.createDiv("takeover-warning");
     const warningIcon = warning.createSpan({ cls: "takeover-warning__icon" });
-    (0, import_obsidian28.setIcon)(warningIcon, "triangle-alert");
+    (0, import_obsidian30.setIcon)(warningIcon, "triangle-alert");
     warning.createDiv({
       text: this.t("\u81EA\u68C0_\u8B66\u544A_\u6587\u672C"),
       cls: "takeover-warning__text"
     });
     const actionContainer = page.createDiv("takeover-actions");
-    const takeoverBtn = new import_obsidian28.ButtonComponent(actionContainer);
+    const takeoverBtn = new import_obsidian30.ButtonComponent(actionContainer);
     takeoverBtn.setButtonText(this.t("\u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE"));
     takeoverBtn.setIcon("shield-check");
     takeoverBtn.setCta();
     takeoverBtn.buttonEl.addClass("takeover-actions__primary");
     takeoverBtn.buttonEl.setAttribute("aria-label", this.t("\u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE"));
-    const ignoreBtn = new import_obsidian28.ButtonComponent(actionContainer);
+    const ignoreBtn = new import_obsidian30.ButtonComponent(actionContainer);
     ignoreBtn.setButtonText(this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE"));
     ignoreBtn.setIcon("clock");
     ignoreBtn.buttonEl.addClass("takeover-actions__secondary");
     ignoreBtn.buttonEl.setAttribute("aria-label", this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE"));
-    const ignoreForeverBtn = new import_obsidian28.ButtonComponent(actionContainer);
+    const ignoreForeverBtn = new import_obsidian30.ButtonComponent(actionContainer);
     ignoreForeverBtn.setButtonText(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A_\u6309\u94AE"));
     ignoreForeverBtn.setIcon("bell-off");
     ignoreForeverBtn.buttonEl.addClass("takeover-actions__secondary");
@@ -17983,7 +18727,7 @@ var TakeoverModal = class extends import_obsidian28.Modal {
   renderFlowChip(container, iconName, text) {
     const chip = container.createSpan({ cls: "takeover-flow__chip" });
     const icon = chip.createSpan({ cls: "takeover-flow__chip-icon" });
-    (0, import_obsidian28.setIcon)(icon, iconName);
+    (0, import_obsidian30.setIcon)(icon, iconName);
     chip.createSpan({ cls: "takeover-flow__chip-text", text });
   }
   getPluginName(id) {
@@ -17993,23 +18737,23 @@ var TakeoverModal = class extends import_obsidian28.Modal {
   async takeoverPlugins() {
     const success = await execTakeover(this.manager, this.takeoverCandidates, this.communityPlugins);
     if (success) {
-      new import_obsidian28.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5"));
+      new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5"));
       this.close();
-      new import_obsidian28.Notice(this.t("\u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5"), 5e3);
+      new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5"), 5e3);
       return true;
     } else {
-      new import_obsidian28.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
+      new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
       return false;
     }
   }
   async ignoreWarning() {
-    new import_obsidian28.Notice(this.t("\u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5"), 5e3);
+    new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5"), 5e3);
     this.close();
   }
   async ignoreForever() {
     this.manager.settings.SELF_CHECK_IGNORED = true;
     await this.manager.saveSettings();
-    new import_obsidian28.Notice(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5"));
+    new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5"));
     this.close();
   }
   onClose() {
@@ -18018,7 +18762,7 @@ var TakeoverModal = class extends import_obsidian28.Modal {
 };
 
 // src/manager/system-ribbon-manager.ts
-var import_obsidian29 = require("obsidian");
+var import_obsidian31 = require("obsidian");
 var SystemRibbonManager = class {
   constructor(app, manager) {
     this.isInternalUpdate = false;
@@ -18026,9 +18770,9 @@ var SystemRibbonManager = class {
     this.fileWatcher = null;
     this.app = app;
     this.manager = manager;
-    this.configPath = import_obsidian29.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
+    this.configPath = import_obsidian31.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
     if (this.app.vault.configDir) {
-      this.configPath = import_obsidian29.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
+      this.configPath = import_obsidian31.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
     }
   }
   /**
@@ -18073,14 +18817,14 @@ var SystemRibbonManager = class {
    */
   startWatch(callback) {
     this.onConfigChange = callback;
-    const debouncedReload = (0, import_obsidian29.debounce)(() => {
+    const debouncedReload = (0, import_obsidian31.debounce)(() => {
       if (this.isInternalUpdate)
         return;
       console.log("[BPM] Detected workspace config change, reloading...");
       this.onConfigChange();
     }, 1e3, true);
     this.fileWatcher = this.app.vault.on("modify", (file) => {
-      if (file instanceof import_obsidian29.TFile && file.path === this.configPath) {
+      if (file instanceof import_obsidian31.TFile && file.path === this.configPath) {
         debouncedReload();
       }
     });
@@ -18099,7 +18843,7 @@ var EONDR_PLUGIN_RULES = [
 ];
 var EONDR_REPO_OWNER = "eondrcode";
 var GITHUB_TOKEN_SECRET_ID = "github-token";
-var Manager = class extends import_obsidian30.Plugin {
+var Manager = class extends import_obsidian32.Plugin {
   constructor() {
     super(...arguments);
     this.managerModal = null;
@@ -18117,11 +18861,15 @@ var Manager = class extends import_obsidian30.Plugin {
     this.appWorkspace = this.app.workspace;
     console.log(`%c ${this.manifest.name} %c v${this.manifest.version} `, `padding: 2px; border-radius: 2px 0 0 2px; color: #fff; background: #5B5B5B;`, `padding: 2px; border-radius: 0 2px 2px 0; color: #fff; background: #409EFF;`);
     await this.loadSettings();
+    let settingsDirty = false;
+    const markSettingsDirty = () => {
+      settingsDirty = true;
+    };
     await runMigrations(this);
     if (!this.settings.LANGUAGE_INITIALIZED || !this.settings.LANGUAGE) {
       this.settings.LANGUAGE = this.getAppLanguage();
       this.settings.LANGUAGE_INITIALIZED = true;
-      await this.saveSettings();
+      markSettingsDirty();
     }
     this.translator = new Translator(this);
     let builtinTagsChanged = false;
@@ -18145,10 +18893,10 @@ var Manager = class extends import_obsidian30.Plugin {
       });
       builtinTagsChanged = true;
     }
-    this.ensureBpmTagAndRecords();
-    this.ensureSelfPluginRecord();
-    if (this.normalizeBuiltinTagNames() || builtinTagsChanged)
-      await this.saveSettings();
+    const bpmRecordsChanged = this.ensureBpmTagAndRecords();
+    const selfRecordChanged = this.ensureSelfPluginRecord({ save: false });
+    if (this.normalizeBuiltinTagNames() || builtinTagsChanged || bpmRecordsChanged || selfRecordChanged)
+      markSettingsDirty();
     this.repoResolver = new RepoResolver(this);
     if (this.isRibbonManagerEnabled()) {
       await this.syncStoredRibbonConfig();
@@ -18160,12 +18908,13 @@ var Manager = class extends import_obsidian30.Plugin {
       this.managerModal.open();
     });
     this.addSettingTab(new ManagerSettingTab(this.app, this));
-    if (this.settings.DELAY) {
-      this.enableDelay();
-    } else {
-      this.disableDelay();
-    }
+    const pluginsChanged = this.settings.DELAY ? this.enableDelay({ save: false }) : this.disableDelay({ save: false });
+    if (pluginsChanged)
+      markSettingsDirty();
     command_default(this.app, this);
+    if (settingsDirty) {
+      await this.saveSettings();
+    }
     this.agreement = new Agreement(this);
     void this.startupCheckForUpdates();
     void this.startupMaintainBetaSources();
@@ -18275,7 +19024,7 @@ var Manager = class extends import_obsidian30.Plugin {
       this.reloadIfCurrentModal();
       this.applyRibbonConfigToMemory(orderedIds, hiddenStatus);
       this.updateRibbonStyles();
-      new import_obsidian31.Notice(this.translator.t("Ribbon_\u5DF2\u9690\u85CF_\u901A\u77E5", { name: label }));
+      new import_obsidian33.Notice(this.translator.t("Ribbon_\u5DF2\u9690\u85CF_\u901A\u77E5", { name: label }));
     }
   }
   isRibbonManagerEnabled() {
@@ -18356,7 +19105,7 @@ var Manager = class extends import_obsidian30.Plugin {
     }
     this.ensureSystemRibbonManager();
     this.updateRibbonStyles();
-    if (import_obsidian31.Platform.isMobile) {
+    if (import_obsidian33.Platform.isMobile) {
       this.setupMenuObserver();
     } else {
       this.setupDragToHideObserver();
@@ -18400,6 +19149,8 @@ var Manager = class extends import_obsidian30.Plugin {
   }
   async getGithubToken() {
     var _a, _b, _c, _d;
+    if (githubProxyEnabled(this))
+      return void 0;
     const storage = this.getSecretStorage();
     const stored = (_b = (_a = storage == null ? void 0 : storage.getSecret) == null ? void 0 : _a.call(storage, GITHUB_TOKEN_SECRET_ID)) == null ? void 0 : _b.trim();
     if (stored)
@@ -18421,10 +19172,14 @@ var Manager = class extends import_obsidian30.Plugin {
   }
   hasGithubToken() {
     var _a, _b, _c, _d;
+    if (githubProxyEnabled(this))
+      return false;
     return Boolean(((_c = (_b = (_a = this.getSecretStorage()) == null ? void 0 : _a.getSecret) == null ? void 0 : _b.call(_a, GITHUB_TOKEN_SECRET_ID)) == null ? void 0 : _c.trim()) || ((_d = this.settings.GITHUB_TOKEN) == null ? void 0 : _d.trim()));
   }
   async setGithubToken(token) {
     var _a;
+    if (githubProxyEnabled(this))
+      return;
     const nextToken = token.trim();
     const storage = this.getSecretStorage();
     if (storage) {
@@ -18457,7 +19212,7 @@ var Manager = class extends import_obsidian30.Plugin {
     if (this.updateProgressNotice)
       this.updateProgressNotice.hide();
     const baseText = this.translator.t("\u901A\u77E5_\u68C0\u6D4B\u66F4\u65B0\u4E2D\u6587\u6848");
-    const notice = new import_obsidian31.Notice(baseText, 0);
+    const notice = new import_obsidian33.Notice(baseText, 0);
     const update = (p, currentId) => {
       notice.setMessage(`${baseText} ${Math.min(p, total)}/${total}${currentId ? ` \xB7 ${currentId}` : ""}`);
     };
@@ -18474,15 +19229,32 @@ var Manager = class extends import_obsidian30.Plugin {
       isCancelled: () => false
     };
   }
-  async checkUpdatesWithNotice() {
+  getPluginUpdateCheckOptions() {
+    return {
+      updateCheckMode: this.normalizePluginUpdateCheckMode(this.settings.PLUGIN_UPDATE_CHECK_MODE),
+      compatibilityMode: this.normalizeReleaseCompatibilityMode(this.settings.PLUGIN_UPDATE_COMPATIBILITY_MODE),
+      updateDelayDays: this.normalizePluginUpdateDelayDays(this.settings.PLUGIN_UPDATE_DELAY_DAYS)
+    };
+  }
+  async setPluginUpdateCheckOptions(options) {
+    this.settings.PLUGIN_UPDATE_CHECK_MODE = this.normalizePluginUpdateCheckMode(options.updateCheckMode);
+    this.settings.PLUGIN_UPDATE_COMPATIBILITY_MODE = this.normalizeReleaseCompatibilityMode(options.compatibilityMode);
+    this.settings.PLUGIN_UPDATE_DELAY_DAYS = this.normalizePluginUpdateDelayDays(options.updateDelayDays);
+    await this.saveSettings();
+  }
+  async checkUpdatesWithNotice(options = {}) {
+    const { onChecked, ...checkOptions } = options;
     const manifests = Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manifest.id);
     const progress = this.showUpdateProgress(manifests.length);
     let processed = 0;
     try {
       const res = await this.checkUpdates({
+        ...checkOptions,
         onProgress: (id) => {
           processed++;
           progress.update(processed, id);
+          if (id)
+            onChecked == null ? void 0 : onChecked(id);
         },
         isCancelled: () => progress.isCancelled()
       });
@@ -18508,14 +19280,14 @@ var Manager = class extends import_obsidian30.Plugin {
       const count = Object.values(status || {}).filter((s) => s.hasUpdate).length;
       if (count > 0) {
         const msg = this.translator.t("\u901A\u77E5_\u53EF\u66F4\u65B0\u6570\u91CF").replace("{count}", `${count}`);
-        new import_obsidian31.Notice(msg, 5e3);
+        new import_obsidian33.Notice(msg, 5e3);
       }
       progress.dispose();
     } catch (e) {
       if (this.settings.DEBUG)
         console.error("[BPM] startup check updates failed", e);
-      if (!this.hasGithubToken()) {
-        new import_obsidian31.Notice(this.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25_\u5EFA\u8BAEToken"));
+      if (!githubProxyEnabled(this) && !this.hasGithubToken()) {
+        new import_obsidian33.Notice(this.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25_\u5EFA\u8BAEToken"));
       }
     }
   }
@@ -18530,7 +19302,7 @@ var Manager = class extends import_obsidian30.Plugin {
     return mappedId || source.id;
   }
   async refreshBetaSourceInstalledAt(source) {
-    const folder = source.type === "plugin" ? (0, import_obsidian30.normalizePath)(`${this.app.vault.configDir}/plugins/${this.getBetaSourcePluginId(source)}`) : (0, import_obsidian30.normalizePath)(`${this.app.vault.configDir}/themes/${source.id}`);
+    const folder = source.type === "plugin" ? (0, import_obsidian32.normalizePath)(`${this.app.vault.configDir}/plugins/${this.getBetaSourcePluginId(source)}`) : (0, import_obsidian32.normalizePath)(`${this.app.vault.configDir}/themes/${source.id}`);
     try {
       const stat = await this.app.vault.adapter.stat(folder);
       source.installedAt = stat ? stat.ctime || stat.mtime || void 0 : void 0;
@@ -18541,7 +19313,7 @@ var Manager = class extends import_obsidian30.Plugin {
   async checkBetaSource(source) {
     var _a, _b;
     try {
-      const versions = await fetchReleaseVersions(this, source.repo);
+      const versions = await fetchReleaseVersions(this, source.repo, { includeManifest: source.type === "plugin" });
       let localVersion = source.localVersion || "";
       if (source.type === "plugin") {
         const pluginId = this.getBetaSourcePluginId(source);
@@ -18572,7 +19344,7 @@ var Manager = class extends import_obsidian30.Plugin {
     await this.saveSettings();
     const count = sources.filter((source) => this.sourceHasUpdate(source)).length;
     if (count > 0) {
-      new import_obsidian31.Notice(this.translator.t("\u901A\u77E5_\u6765\u6E90\u53EF\u66F4\u65B0\u6570\u91CF", { count }), 5e3);
+      new import_obsidian33.Notice(this.translator.t("\u901A\u77E5_\u6765\u6E90\u53EF\u66F4\u65B0\u6570\u91CF", { count }), 5e3);
     }
   }
   async startupMaintainBetaSources() {
@@ -18592,7 +19364,7 @@ var Manager = class extends import_obsidian30.Plugin {
         let targetVersion = checkedRecently ? source.latestReleaseTag || source.latestVersion || "" : "";
         let targetPublishedAt = checkedRecently ? source.latestReleasePublishedAt || source.latestPublishedAt : void 0;
         if (!targetVersion) {
-          const versions = await fetchReleaseVersions(this, source.repo);
+          const versions = await fetchReleaseVersions(this, source.repo, { includeManifest: source.type === "plugin" });
           let localVersion = source.localVersion || "";
           if (source.type === "plugin") {
             const pluginId = this.getBetaSourcePluginId(source);
@@ -18608,12 +19380,13 @@ var Manager = class extends import_obsidian30.Plugin {
         }
         if (!targetVersion)
           continue;
+        const configuredTargetVersion = source.mode === "frozen" ? source.frozenVersion || source.latestReleaseTag || source.latestVersion || "" : source.latestReleaseTag || source.latestVersion || "";
         if (source.type === "plugin") {
           const pluginId = this.getBetaSourcePluginId(source);
           const localVersion = ((_e = this.appPlugins.manifests[pluginId]) == null ? void 0 : _e.version) || source.localVersion || "";
           source.localVersion = localVersion;
           const needsUpdate = sourceHasUpdate(source);
-          if (needsUpdate) {
+          if (needsUpdate && targetVersion === configuredTargetVersion) {
             const ok = await installPluginFromGithub(this, source.repo, targetVersion, true);
             if (ok) {
               this.getBetaSourcePluginId(source);
@@ -18623,7 +19396,7 @@ var Manager = class extends import_obsidian30.Plugin {
           }
         } else {
           const needsUpdate = sourceHasUpdate(source);
-          if (needsUpdate) {
+          if (needsUpdate && targetVersion === configuredTargetVersion) {
             const ok = await installThemeFromGithub(this, source.repo, targetVersion);
             if (ok)
               markSourceInstalledRelease(source, targetVersion, targetPublishedAt, targetVersion);
@@ -18640,6 +19413,10 @@ var Manager = class extends import_obsidian30.Plugin {
     await this.saveSettings();
   }
   ensureBpmTagAndRecords() {
+    const previousStateJson = JSON.stringify({
+      TAGS: this.settings.TAGS,
+      Plugins: this.settings.Plugins
+    });
     ensureBpmTagExists(this);
     this.settings.BPM_INSTALLED.forEach((id) => {
       const mp = this.settings.Plugins.find((p) => p.id === id);
@@ -18647,6 +19424,11 @@ var Manager = class extends import_obsidian30.Plugin {
         mp.tags.push(BPM_TAG_ID);
     });
     this.settings.Plugins.forEach((plugin) => this.applySpecialPluginTags(plugin));
+    const nextStateJson = JSON.stringify({
+      TAGS: this.settings.TAGS,
+      Plugins: this.settings.Plugins
+    });
+    return previousStateJson !== nextStateJson;
   }
   isEondrPlugin(pluginId) {
     var _a;
@@ -18694,12 +19476,23 @@ var Manager = class extends import_obsidian30.Plugin {
     return changed;
   }
   // 确保 BPM 自身也存在于插件记录中（用于面板显示）
-  ensureSelfPluginRecord() {
+  ensureSelfPluginRecord(options = {}) {
     var _a;
+    const shouldSave = options.save !== false;
+    let changed = false;
+    if (!Array.isArray(this.settings.Plugins)) {
+      this.settings.Plugins = [];
+      changed = true;
+    }
+    if (!Array.isArray(this.settings.HIDES)) {
+      this.settings.HIDES = [];
+      changed = true;
+    }
     const id = this.manifest.id;
     const existing = this.settings.Plugins.find((p) => p.id === id);
     if ((_a = this.settings.HIDES) == null ? void 0 : _a.includes(id)) {
       this.settings.HIDES = this.settings.HIDES.filter((x) => x !== id);
+      changed = true;
     }
     if (!existing) {
       this.settings.Plugins.push({
@@ -18712,13 +19505,29 @@ var Manager = class extends import_obsidian30.Plugin {
         delay: "",
         note: ""
       });
-      void this.saveSettings();
-      return;
+      if (shouldSave)
+        void this.saveSettings();
+      return true;
     }
-    existing.name = existing.name || this.manifest.name;
-    existing.desc = existing.desc || this.manifest.description;
-    existing.enabled = true;
-    existing.delay = "";
+    if (!existing.name) {
+      existing.name = this.manifest.name;
+      changed = true;
+    }
+    if (!existing.desc) {
+      existing.desc = this.manifest.description;
+      changed = true;
+    }
+    if (existing.enabled !== true) {
+      existing.enabled = true;
+      changed = true;
+    }
+    if (existing.delay !== "") {
+      existing.delay = "";
+      changed = true;
+    }
+    if (changed && shouldSave)
+      void this.saveSettings();
+    return changed;
   }
   reloadIfCurrentModal() {
     var _a, _b;
@@ -18750,9 +19559,9 @@ var Manager = class extends import_obsidian30.Plugin {
       console.log("[BPM] Cleaned undefined items from leftRibbon.");
   }
   // 关闭延时 调用
-  disableDelay() {
+  disableDelay(options = {}) {
     const plugins = Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manifest.id);
-    this.synchronizePlugins(plugins);
+    return this.synchronizePlugins(plugins, options);
   }
   // 开启延时 调用
   isBpmIgnoredPlugin(pluginId) {
@@ -18762,10 +19571,11 @@ var Manager = class extends import_obsidian30.Plugin {
   getDelayManagedPluginManifests() {
     return Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manifest.id && !this.isBpmIgnoredPlugin(pm.id));
   }
-  enableDelay() {
+  enableDelay(options = {}) {
     const plugins = Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manifest.id);
-    this.synchronizePlugins(plugins);
+    const changed = this.synchronizePlugins(plugins, options);
     this.getDelayManagedPluginManifests().forEach((plugin) => this.startPluginWithDelay(plugin.id));
+    return changed;
   }
   // 为所有插件启动延迟
   async enableDelaysForAllPlugins() {
@@ -18817,7 +19627,12 @@ var Manager = class extends import_obsidian30.Plugin {
     }
   }
   // 同步插件到配置文件
-  synchronizePlugins(p1) {
+  synchronizePlugins(p1, options = {}) {
+    const previousStateJson = JSON.stringify({
+      Plugins: this.settings.Plugins,
+      HIDES: this.settings.HIDES
+    });
+    const shouldSave = options.save !== false;
     const manifestIds = new Set(p1.map((plugin) => plugin.id));
     const bpmInstalledIds = new Set(this.settings.BPM_INSTALLED || []);
     const nextPlugins = this.settings.Plugins.filter((plugin) => {
@@ -18847,8 +19662,15 @@ var Manager = class extends import_obsidian30.Plugin {
       this.applySpecialPluginTags(mp);
     });
     this.settings.Plugins = nextPlugins;
-    this.ensureSelfPluginRecord();
-    void this.saveSettings();
+    this.ensureSelfPluginRecord({ save: false });
+    const nextStateJson = JSON.stringify({
+      Plugins: this.settings.Plugins,
+      HIDES: this.settings.HIDES
+    });
+    const changed = previousStateJson !== nextStateJson;
+    if (changed && shouldSave)
+      void this.saveSettings();
+    return changed;
   }
   // 工具函数
   createTag(text, color, type) {
@@ -18924,8 +19746,12 @@ var Manager = class extends import_obsidian30.Plugin {
   }
   // 版本比较：>0 表示 a>b
   compareVersions(a = "0.0.0", b = "0.0.0") {
-    const pa = a.split(".").map(Number);
-    const pb = b.split(".").map(Number);
+    const normalize = (value) => value.trim().replace(/^v(?=\d)/i, "").split(/[.+-]/).map((part) => {
+      const parsed = Number.parseInt(part, 10);
+      return Number.isFinite(parsed) ? parsed : 0;
+    });
+    const pa = normalize(a);
+    const pb = normalize(b);
     const len = Math.max(pa.length, pb.length);
     for (let i = 0; i < len; i++) {
       const ai = pa[i] || 0;
@@ -18937,12 +19763,68 @@ var Manager = class extends import_obsidian30.Plugin {
     }
     return 0;
   }
+  normalizePluginUpdateCheckMode(value) {
+    return value === "version" ? "version" : "release";
+  }
+  normalizeReleaseCompatibilityMode(value) {
+    return value === "all" ? "all" : "compatible";
+  }
+  normalizePluginUpdateDelayDays(value) {
+    const days = Math.floor(Number(value));
+    return Number.isFinite(days) && days > 0 ? days : 0;
+  }
+  resolvePluginUpdateCheckOptions(options) {
+    var _a, _b, _c;
+    return {
+      updateCheckMode: this.normalizePluginUpdateCheckMode((_a = options == null ? void 0 : options.updateCheckMode) != null ? _a : this.settings.PLUGIN_UPDATE_CHECK_MODE),
+      compatibilityMode: this.normalizeReleaseCompatibilityMode((_b = options == null ? void 0 : options.compatibilityMode) != null ? _b : this.settings.PLUGIN_UPDATE_COMPATIBILITY_MODE),
+      updateDelayDays: this.normalizePluginUpdateDelayDays((_c = options == null ? void 0 : options.updateDelayDays) != null ? _c : this.settings.PLUGIN_UPDATE_DELAY_DAYS)
+    };
+  }
+  applyPluginUpdateStatus(st, pm, repo, versions, fallbackRemoteVersion, options) {
+    var _a, _b;
+    const localVersion = pm.version || "0.0.0";
+    const remoteFallback = fallbackRemoteVersion || null;
+    st.localVersion = localVersion;
+    st.repo = repo;
+    st.versions = versions;
+    st.checkMode = options.updateCheckMode;
+    st.updateDelayDays = options.updateDelayDays;
+    if (versions.length > 0 && repo) {
+      const source = {
+        id: pm.id,
+        repo,
+        type: "plugin",
+        mode: "latest",
+        includePrerelease: false,
+        updateCheckMode: options.updateCheckMode,
+        compatibilityMode: options.compatibilityMode,
+        updateDelayDays: options.updateDelayDays || void 0,
+        autoUpdate: false,
+        enabled: true,
+        localVersion,
+        latestVersion: remoteFallback || void 0,
+        latestReleaseTag: remoteFallback || void 0
+      };
+      const releaseCheck = syncSourceReleaseCheck(source, versions, localVersion);
+      st.remoteVersion = ((_a = releaseCheck.target) == null ? void 0 : _a.tag) || null;
+      st.remotePublishedAt = (_b = releaseCheck.target) == null ? void 0 : _b.publishedAt;
+      st.hasUpdate = sourceHasUpdate(source);
+      return;
+    }
+    st.remoteVersion = remoteFallback;
+    st.hasUpdate = remoteFallback ? this.compareVersions(remoteFallback, localVersion) > 0 : false;
+    if (!st.remoteVersion)
+      st.message = this.translator.t("\u66F4\u65B0_\u672A\u83B7\u53D6\u5230\u8FDC\u7AEF\u7248\u672C");
+  }
   // 检测插件更新：官方 + GitHub（BPM 或用户指定仓库）
   async checkUpdates(opts) {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b;
     const manifests = Object.values(this.appPlugins.manifests).filter((pm) => pm.id !== this.manifest.id);
     const officialMap = await this.fetchOfficialStats();
     const statusMap = {};
+    const updateOptions = this.resolvePluginUpdateCheckOptions(opts);
+    this.updateStatus = statusMap;
     if (this.settings.DEBUG)
       console.log("[BPM] checkUpdates start, total manifests:", manifests.length);
     for (const pm of manifests) {
@@ -18954,12 +19836,15 @@ var Manager = class extends import_obsidian30.Plugin {
         const official = officialMap[pm.id];
         if (official) {
           st.source = "official";
-          st.remoteVersion = official;
-          st.repo = await this.repoResolver.resolveRepo(pm.id);
-          if (st.repo) {
-            st.versions = await this.fetchGithubVersions(st.repo);
+          try {
+            st.repo = await this.repoResolver.resolveRepo(pm.id);
+          } catch (e) {
+            st.repo = null;
           }
-          st.hasUpdate = this.compareVersions(official, localVersion) > 0;
+          if (st.repo) {
+            st.versions = await this.fetchGithubVersions(st.repo, updateOptions.updateCheckMode === "release", true);
+          }
+          this.applyPluginUpdateStatus(st, pm, st.repo || null, st.versions || [], official, updateOptions);
           if (this.settings.DEBUG)
             console.log("[BPM] update official match", pm.id, localVersion, "->", st.remoteVersion);
         } else {
@@ -18973,10 +19858,9 @@ var Manager = class extends import_obsidian30.Plugin {
           if (repo) {
             st.source = "github";
             st.repo = repo;
-            st.versions = await this.fetchGithubVersions(repo);
-            const pick = (_e = (_d = (_b = st.versions) == null ? void 0 : _b.find((v) => !v.prerelease)) != null ? _d : (_c = st.versions) == null ? void 0 : _c[0]) != null ? _e : null;
-            st.remoteVersion = (_f = pick == null ? void 0 : pick.version) != null ? _f : await this.fetchGithubManifestVersion(repo);
-            st.hasUpdate = st.remoteVersion ? this.compareVersions(st.remoteVersion, localVersion) > 0 : false;
+            st.versions = await this.fetchGithubVersions(repo, updateOptions.updateCheckMode === "release", true);
+            const remoteVersion = st.versions.length > 0 ? null : await this.fetchGithubManifestVersion(repo);
+            this.applyPluginUpdateStatus(st, pm, repo, st.versions || [], remoteVersion, updateOptions);
             if (!st.remoteVersion)
               st.message = this.translator.t("\u66F4\u65B0_\u672A\u83B7\u53D6\u5230\u8FDC\u7AEF\u7248\u672C");
             if (this.settings.DEBUG)
@@ -18993,31 +19877,32 @@ var Manager = class extends import_obsidian30.Plugin {
         console.error("[BPM] checkUpdates error", pm.id, e);
       }
       statusMap[pm.id] = st;
-      (_g = opts == null ? void 0 : opts.onProgress) == null ? void 0 : _g.call(opts, pm.id);
+      (_b = opts == null ? void 0 : opts.onProgress) == null ? void 0 : _b.call(opts, pm.id);
     }
     this.updateStatus = statusMap;
     return statusMap;
   }
-  async checkUpdateForPlugin(pluginId) {
-    var _a, _b, _c, _d, _e;
+  async checkUpdateForPlugin(pluginId, options) {
     const pm = this.appPlugins.manifests[pluginId];
     if (!pm)
       return null;
     const localVersion = pm.version || "0.0.0";
     const st = { source: "unknown", localVersion, checkedAt: Date.now() };
+    const updateOptions = this.resolvePluginUpdateCheckOptions(options);
     try {
       const officialMap = await this.fetchOfficialStats();
       const official = officialMap[pm.id];
       if (official) {
         st.source = "official";
-        st.remoteVersion = official;
         try {
           st.repo = await this.repoResolver.resolveRepo(pm.id);
           if (st.repo)
-            st.versions = await this.fetchGithubVersions(st.repo);
+            st.versions = await this.fetchGithubVersions(st.repo, updateOptions.updateCheckMode === "release", true);
         } catch (e) {
+          if (updateOptions.updateCheckMode === "release")
+            throw new Error(this.translator.t("\u66F4\u65B0_\u672A\u83B7\u53D6\u5230\u8FDC\u7AEF\u7248\u672C"));
         }
-        st.hasUpdate = this.compareVersions(official, localVersion) > 0;
+        this.applyPluginUpdateStatus(st, pm, st.repo || null, st.versions || [], official, updateOptions);
         this.updateStatus[pm.id] = st;
         if (this.settings.DEBUG)
           console.log("[BPM] single update official", pm.id, localVersion, "->", st.remoteVersion);
@@ -19034,10 +19919,9 @@ var Manager = class extends import_obsidian30.Plugin {
       if (repo) {
         st.source = "github";
         st.repo = repo;
-        st.versions = await this.fetchGithubVersions(repo);
-        const pick = (_d = (_c = (_a = st.versions) == null ? void 0 : _a.find((v) => !v.prerelease)) != null ? _c : (_b = st.versions) == null ? void 0 : _b[0]) != null ? _d : null;
-        st.remoteVersion = (_e = pick == null ? void 0 : pick.version) != null ? _e : await this.fetchGithubManifestVersion(repo);
-        st.hasUpdate = st.remoteVersion ? this.compareVersions(st.remoteVersion, localVersion) > 0 : false;
+        st.versions = await this.fetchGithubVersions(repo, updateOptions.updateCheckMode === "release", true);
+        const remoteVersion = st.versions.length > 0 ? null : await this.fetchGithubManifestVersion(repo);
+        this.applyPluginUpdateStatus(st, pm, repo, st.versions || [], remoteVersion, updateOptions);
         if (!st.remoteVersion)
           st.message = this.translator.t("\u66F4\u65B0_\u672A\u83B7\u53D6\u5230\u8FDC\u7AEF\u7248\u672C");
         if (this.settings.DEBUG)
@@ -19058,7 +19942,7 @@ var Manager = class extends import_obsidian30.Plugin {
   async fetchOfficialStats() {
     const url = "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugin-stats.json";
     try {
-      const res = await (0, import_obsidian31.requestUrl)({ url });
+      const res = await (0, import_obsidian33.requestUrl)({ url: resolveGithubUrl(this, url) });
       const json = res.json;
       const map = {};
       Object.entries(json || {}).forEach(([id, entry]) => {
@@ -19094,11 +19978,12 @@ var Manager = class extends import_obsidian30.Plugin {
     if (token)
       headers["Authorization"] = `Bearer ${token}`;
     try {
-      const release = await (0, import_obsidian31.requestUrl)({ url: `https://api.github.com/repos/${repo}/releases/latest`, headers });
+      const releaseUrl = `https://api.github.com/repos/${repo}/releases/latest`;
+      const release = await (0, import_obsidian33.requestUrl)({ url: resolveGithubUrl(this, releaseUrl), headers });
       const assets = ((_a = release.json) == null ? void 0 : _a.assets) || [];
       const manifestAsset = assets.find((a) => a.name === "manifest.json");
       if (manifestAsset == null ? void 0 : manifestAsset.browser_download_url) {
-        const manifestRes = await (0, import_obsidian31.requestUrl)({ url: manifestAsset.browser_download_url, headers });
+        const manifestRes = await (0, import_obsidian33.requestUrl)({ url: resolveGithubUrl(this, manifestAsset.browser_download_url), headers });
         const manifest = manifestRes.json;
         if (manifest == null ? void 0 : manifest.version)
           return manifest.version;
@@ -19112,7 +19997,7 @@ var Manager = class extends import_obsidian30.Plugin {
     ];
     for (const url of candidates) {
       try {
-        const res = await (0, import_obsidian31.requestUrl)({ url, headers });
+        const res = await (0, import_obsidian33.requestUrl)({ url: resolveGithubUrl(this, url), headers });
         const manifest = res.json;
         if (manifest == null ? void 0 : manifest.version)
           return manifest.version;
@@ -19121,11 +20006,13 @@ var Manager = class extends import_obsidian30.Plugin {
     }
     return null;
   }
-  async fetchGithubVersions(repoInput) {
+  async fetchGithubVersions(repoInput, throwOnError = false, includeManifest = false) {
     try {
-      return await fetchReleaseVersions(this, repoInput);
+      return await fetchReleaseVersions(this, repoInput, { includeManifest });
     } catch (e) {
       console.error("[BPM] fetchGithubVersions error", repoInput, e);
+      if (throwOnError)
+        throw e;
       return [];
     }
   }
@@ -19141,7 +20028,7 @@ var Manager = class extends import_obsidian30.Plugin {
       }
     }
     if (!repo) {
-      new import_obsidian31.Notice(this.translator.t("\u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A"));
+      new import_obsidian33.Notice(this.translator.t("\u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A"));
       return false;
     }
     const ok = await installPluginFromGithub(this, repo, version, false);
@@ -19207,7 +20094,7 @@ var Manager = class extends import_obsidian30.Plugin {
       this.clearRibbonStyleOverrides();
       return;
     }
-    if (import_obsidian31.Platform.isMobile) {
+    if (import_obsidian33.Platform.isMobile) {
       activeDocument.querySelectorAll(".menu-scroll").forEach((menuScroll) => this.processMenuItems(menuScroll));
       return;
     }

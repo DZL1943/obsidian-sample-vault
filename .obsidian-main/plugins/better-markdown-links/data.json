@@ -3,8 +3,8 @@
     "Ext"
   ],
   "includePaths": [],
+  "linkConversionMode": "OnEveryModification",
   "shouldAllowEmptyEmbedAlias": true,
-  "shouldAutomaticallyConvertNewLinks": true,
   "shouldAutomaticallyUpdateLinksOnRenameOrMove": true,
   "shouldIncludeAttachmentExtensionToEmbedAlias": true,
   "shouldPreserveExistingLinkStyle": true,

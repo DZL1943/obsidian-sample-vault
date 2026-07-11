@@ -72,7 +72,8 @@
           "transitionStyle": "hue",
           "scope": "root"
         }
-      }
+      },
+      "descendantExcludedFolders": []
     }
   ],
   "vaultTitle": "navigation",
@@ -284,6 +285,7 @@
   "calendarMonthHeadingFormat": "full",
   "calendarHighlightToday": true,
   "calendarShowFeatureImage": true,
+  "calendarShowTasks": true,
   "calendarMonthHighlights": {},
   "calendarShowWeekNumber": true,
   "calendarShowQuarter": true,
@@ -530,7 +532,7 @@
     "#404040",
     "#404040"
   ],
-  "lastShownVersion": "3.2.2",
+  "lastShownVersion": "3.2.3",
   "rootFolderOrder": [
     "Inbox",
     "Private",

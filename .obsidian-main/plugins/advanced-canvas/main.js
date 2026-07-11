@@ -1701,6 +1701,7 @@ var DEFAULT_SETTINGS_VALUES = {
   disableNodePopup: false,
   disableZoom: false,
   disablePan: false,
+  readingModeFixEnabled: false,
   autoResizeNodeFeatureEnabled: false,
   autoResizeNodeEnabledByDefault: false,
   autoResizeNodeMaxHeight: -1,
@@ -2105,6 +2106,12 @@ var SETTINGS = {
     label: "Variable breakpoint",
     description: `Change the zoom breakpoint (the zoom level at which the nodes won't render their content anymore) on a per-node basis using the ${VARIABLE_BREAKPOINT_CSS_VAR} CSS variable.`,
     infoSection: "variable-breakpoints",
+    children: {}
+  },
+  readingModeFixEnabled: {
+    label: "Alternative text rendering",
+    description: "Tries to synchronize editing and reading view rendering. Caution: Causes visual inconsistencies compared to the default Obsidian reading view.",
+    infoSection: "alternative-text-rendering",
     children: {}
   },
   autoResizeNodeFeatureEnabled: {
@@ -2854,6 +2861,11 @@ var CanvasPatcher = class extends Patcher {
   patchNode(node) {
     const that = this;
     Patcher.patch(this.plugin, node, {
+      render: Patcher.OverrideExisting((next) => function(...args) {
+        const result = next.call(this, ...args);
+        that.plugin.app.workspace.trigger("advanced-canvas:node-rendered", this.canvas, node);
+        return result;
+      }),
       setData: Patcher.OverrideExisting((next) => function(data, addHistory) {
         const result = next.call(this, data);
         if (node.initialized && !node.isDirty) {
@@ -3688,9 +3700,10 @@ var MetadataCanvasExtension = class extends CanvasExtension {
 // src/utils/modal-helper.ts
 var import_obsidian12 = require("obsidian");
 var AbstractSelectionModal = class extends import_obsidian12.FuzzySuggestModal {
-  constructor(app, placeholder, suggestions) {
+  constructor(app, placeholder, suggestions, arbitrary = false) {
     super(app);
     this.suggestions = suggestions;
+    this.arbitrary = arbitrary;
     this.setPlaceholder(placeholder);
     this.setInstructions([{
       command: "\u2191\u2193",
@@ -3706,13 +3719,17 @@ var AbstractSelectionModal = class extends import_obsidian12.FuzzySuggestModal {
   getItemText(item) {
     return item;
   }
+  getSuggestions(query) {
+    const suggestions = super.getSuggestions(query);
+    if (this.arbitrary && query.length > 0 && !suggestions.some((s) => s.item === query))
+      suggestions.splice(0, 0, { item: query, match: { score: 1, matches: [[0, query.length]] } });
+    return suggestions;
+  }
   onChooseItem(_item, _evt) {
   }
   awaitInput() {
     return new Promise((resolve, _reject) => {
-      this.onChooseItem = (item) => {
-        resolve(item);
-      };
+      this.onChooseItem = (item) => resolve(item);
       this.open();
     });
   }
@@ -3935,10 +3952,42 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
         (canvas) => void this.saveNodeAsTemplate(canvas)
       )
     });
+    this.registeredNodeTemplateCommandIds = [];
+    this.registerNodeTemplateCommands();
     this.plugin.registerEvent(this.plugin.app.workspace.on(
       "advanced-canvas:canvas-changed",
       (canvas) => this.onCardMenuCreated(canvas)
     ));
+  }
+  registerNodeTemplateCommands() {
+    for (const commandId of this.registeredNodeTemplateCommandIds)
+      this.plugin.removeCommand(commandId);
+    this.registeredNodeTemplateCommandIds = [];
+    const templates = this.plugin.settings.getSetting("nodeTemplates");
+    for (let i = 0; i < templates.length; i++) {
+      const template = templates[i];
+      const commandId = `create-template-node-${i}`;
+      this.plugin.addCommand({
+        id: commandId,
+        name: "Create template node " + (template.label ? `"${template.label}"` : i + 1),
+        checkCallback: CanvasHelper.canvasCommand(
+          this.plugin,
+          (_) => true,
+          (canvas) => {
+            const center = canvas.posCenter();
+            void this.createNodeFromTemplate(
+              canvas,
+              template,
+              {
+                x: center.x - template.width / 2,
+                y: center.y - template.height / 2
+              }
+            );
+          }
+        )
+      });
+      this.registeredNodeTemplateCommandIds.push(commandId);
+    }
   }
   onCardMenuCreated(canvas) {
     var _a;
@@ -3953,7 +4002,7 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
           canvas,
           {
             id: `${TEMPLATE_NODE_BUTTON_ID_PREFIX}${i}`,
-            label: `Drag to add template node ${i + 1}`,
+            label: "Drag to add template node " + (template.label ? `"${template.label}"` : i + 1),
             icon: (_a = template.icon) != null ? _a : "book-dashed"
           },
           () => ({ width: template.width, height: template.height }),
@@ -4021,11 +4070,13 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
       new import_obsidian13.Notice("No icon selected, template creation cancelled.");
       return;
     }
+    const label = await new AbstractSelectionModal(this.plugin.app, "Set template label (optional)", [], true).awaitInput();
     await this.plugin.settings.setSetting({
       nodeTemplates: [
         ...this.plugin.settings.getSetting("nodeTemplates"),
         {
           icon,
+          label: label != null ? label : void 0,
           type: selectedNodeData.type,
           width: selectedNodeData.width,
           height: selectedNodeData.height,
@@ -4036,10 +4087,15 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
         }
       ]
     });
+    this.registerNodeTemplateCommands();
     this.onCardMenuCreated(canvas);
   }
 };
 var IconModal = class extends import_obsidian13.FuzzySuggestModal {
+  constructor(app) {
+    super(app);
+    this.setPlaceholder("Set template icon");
+  }
   getItems() {
     return (0, import_obsidian13.getIconIds)();
   }
@@ -7378,6 +7434,38 @@ var EdgeHighlightCanvasExtension = class extends CanvasExtension {
   }
 };
 
+// src/canvas-extensions/reading-mode-fix-canvas-extension.ts
+var ReadingModeFixCanvasExtension = class extends CanvasExtension {
+  isEnabled() {
+    return "readingModeFixEnabled";
+  }
+  init() {
+    this.plugin.registerEvent(this.plugin.app.workspace.on(
+      "advanced-canvas:node-rendered",
+      (_canvas, node) => this.updateNodeRenderer(node)
+    ));
+    this.plugin.registerEvent(this.plugin.app.workspace.on(
+      "advanced-canvas:node-editing-state-changed",
+      (_canvas, node, isEditing) => {
+        if (isEditing) return;
+        this.updateNodeRenderer(node);
+      }
+    ));
+  }
+  updateNodeRenderer(node) {
+    var _a, _b;
+    const renderer = (_b = (_a = node.child) == null ? void 0 : _a.previewMode) == null ? void 0 : _b.renderer;
+    if (!renderer) return;
+    renderer.onRendered(() => {
+      var _a2;
+      let text = (_a2 = renderer.text) != null ? _a2 : "";
+      text = text.replaceAll('<span class="vertical-space">&nbsp;</span>\n', "\n");
+      text = text.replaceAll("\n", '<span class="vertical-space">&nbsp;</span>\n');
+      renderer.set(text);
+    });
+  }
+};
+
 // src/canvas-extensions/dataset-exposers/canvas-metadata-exposer.ts
 var CanvasMetadataExposerExtension = class extends CanvasExtension {
   isEnabled() {
@@ -7398,6 +7486,54 @@ var CanvasMetadataExposerExtension = class extends CanvasExtension {
     for (const [nodeId, node] of canvas.nodes) {
       if (nodeId === startNodeId) node.nodeEl.dataset.isStartNode = "true";
       else delete node.nodeEl.dataset.isStartNode;
+    }
+  }
+};
+
+// src/canvas-extensions/dataset-exposers/canvas-wrapper-exposer.ts
+var EXPOSED_SETTINGS = [
+  "disableFontSizeRelativeToZoom",
+  "hideBackgroundGridWhenInReadonly",
+  "readingModeFixEnabled",
+  "collapsibleGroupsFeatureEnabled",
+  "collapsedGroupPreviewOnDrag",
+  "allowFloatingEdgeCreation"
+];
+var CanvasWrapperExposerExtension = class _CanvasWrapperExposerExtension extends CanvasExtension {
+  isEnabled() {
+    return true;
+  }
+  init() {
+    this.plugin.registerEvent(this.plugin.app.workspace.on(
+      "advanced-canvas:settings-changed",
+      () => {
+        var _a;
+        return _CanvasWrapperExposerExtension.updateCanvasExposedSettings(
+          this.plugin,
+          (_a = this.plugin.getCurrentCanvas()) == null ? void 0 : _a.wrapperEl
+        );
+      }
+    ));
+    this.plugin.registerEvent(this.plugin.app.workspace.on(
+      "advanced-canvas:canvas-changed",
+      (canvas) => _CanvasWrapperExposerExtension.updateCanvasExposedSettings(
+        this.plugin,
+        canvas.wrapperEl
+      )
+    ));
+    this.plugin.registerEvent(this.plugin.app.workspace.on(
+      "advanced-canvas:dragging-state-changed",
+      (canvas, dragging) => {
+        if (dragging) canvas.wrapperEl.dataset.isDragging = "true";
+        else delete canvas.wrapperEl.dataset.isDragging;
+      }
+    ));
+  }
+  static updateCanvasExposedSettings(plugin, element) {
+    if (!element) return;
+    for (const setting of EXPOSED_SETTINGS) {
+      const value = plugin.settings.getSetting(setting);
+      element.dataset[setting] = JSON.stringify(value);
     }
   }
 };
@@ -7439,6 +7575,7 @@ var NodeExposerExtension = class extends CanvasExtension {
         iframe.classList.add(CANVAS_NODE_IFRAME_BODY_CLASS);
         new MutationObserver(() => iframe.classList.toggle(CANVAS_NODE_IFRAME_BODY_CLASS, true)).observe(iframe, { attributes: true, attributeFilter: ["class"] });
         this.setDataAttributes(iframe, nodeData);
+        CanvasWrapperExposerExtension.updateCanvasExposedSettings(this.plugin, iframe);
       }
     ));
   }
@@ -7515,43 +7652,6 @@ var EdgeExposerExtension = class extends CanvasExtension {
         }
       }
     ));
-  }
-};
-
-// src/canvas-extensions/dataset-exposers/canvas-wrapper-exposer.ts
-var EXPOSED_SETTINGS = [
-  "disableFontSizeRelativeToZoom",
-  "hideBackgroundGridWhenInReadonly",
-  "collapsibleGroupsFeatureEnabled",
-  "collapsedGroupPreviewOnDrag",
-  "allowFloatingEdgeCreation"
-];
-var CanvasWrapperExposerExtension = class extends CanvasExtension {
-  isEnabled() {
-    return true;
-  }
-  init() {
-    this.plugin.registerEvent(this.plugin.app.workspace.on(
-      "advanced-canvas:settings-changed",
-      () => this.updateExposedSettings(this.plugin.getCurrentCanvas())
-    ));
-    this.plugin.registerEvent(this.plugin.app.workspace.on(
-      "advanced-canvas:canvas-changed",
-      (canvas) => this.updateExposedSettings(canvas)
-    ));
-    this.plugin.registerEvent(this.plugin.app.workspace.on(
-      "advanced-canvas:dragging-state-changed",
-      (canvas, dragging) => {
-        if (dragging) canvas.wrapperEl.dataset.isDragging = "true";
-        else delete canvas.wrapperEl.dataset.isDragging;
-      }
-    ));
-  }
-  updateExposedSettings(canvas) {
-    if (!canvas) return;
-    for (const setting of EXPOSED_SETTINGS) {
-      canvas.wrapperEl.dataset[setting] = JSON.stringify(this.plugin.settings.getSetting(setting));
-    }
   }
 };
 
@@ -7657,6 +7757,7 @@ var CANVAS_EXTENSIONS = [
   BetterDefaultSettingsCanvasExtension,
   CommandsCanvasExtension,
   BetterReadonlyCanvasExtension,
+  ReadingModeFixCanvasExtension,
   GroupCanvasExtension,
   NodeTemplatesCanvasExtension,
   VariableBreakpointCanvasExtension,

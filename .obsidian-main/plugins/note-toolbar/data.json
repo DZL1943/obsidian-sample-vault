@@ -23,8 +23,7 @@
   "onboarding": {
     "startup-help-view": true
   },
-  "ribbonAction": "toolbar",
-  "ribbonToolbar": null,
+  "ribbon": [],
   "rules": [],
   "scriptingEnabled": true,
   "showEditInFabMenu": false,
@@ -2234,7 +2233,7 @@
       "updated": "2026-01-24T01:31:30.108Z"
     }
   ],
-  "version": 20260428.1,
+  "version": 20260703.1,
   "webviewerToolbar": null,
   "whatsnew_version": "1.30"
 }

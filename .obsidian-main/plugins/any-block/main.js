@@ -19156,14 +19156,17 @@ var ABAlias_json_mdit = [
   { regex: /\|:::_140lne\|(?:mdit2|2)?(puml)?(plantuml|mindmap|脑图|思维导图)\|/, replacement: "|mdit2list|list2pumlMindmap|" },
   { regex: /\|:::_140lne\|(?:mdit2|2)?(markmap|mdMindmap|md脑图|md思维导图)\|/, replacement: "|mdit2list|list2markmap|" },
   { regex: /\|:::_140lne\|(?:mdit2|2)?(wbs|(工作)?分解(图|结构))\|/, replacement: "|mdit2list|list2pumlWBS|" },
-  { regex: /\|:::_140lne\|(?:mdit2|2)?(table|multiWayTable|multiCrossTable|表格?|多叉表格?|跨行表格?)\|/, replacement: "|mdit2list|list2table|" },
+  { regex: /\|:::_140lne\|(?:mdit2|2)?(table|multiWayTable|multiCrossTable|表格?|多叉表格?|跨行表格?)\|/, replacement: "|mdit2Listdata|listdata2strict|listdata2table|" },
   { regex: /\|:::_140lne\|(?:mdit2|2)?(lt|listTable|treeTable|listGrid|treeGrid|列表格|树形表格?)\|/, replacement: "|mdit2list|list2lt|" },
   { regex: /\|:::_140lne\|2?(list|列表)\|/, replacement: "|mdit2list|list2lt|addClass(ab-listtable-likelist)|" },
   { regex: /\|:::_140lne\|(?:mdit2|2)?(dir|dirTree|目录树?|目录结构)\|/, replacement: "|mdit2list|list2dt|" },
   { regex: /\|:::_140lne\|(fakeList|仿列表)\|/, replacement: "|mdit2list|list2table|addClass(ab-table-fc)|addClass(ab-table-likelist)|" },
-  { regex: "|mdit2list|", replacement: "|mdit2listdata|listdata2strict|listdata2list|" }
+  { regex: "|mdit2list|", replacement: "|mdit2listdata|listdata2strict|listdata2list|" },
+  { regex: "|mdit2List|", replacement: "|mdit2Listdata|listdata2strict|listdata2list|" }
 ];
 var ABAlias_json_title = [
+  { regex: "|heading2", replacement: "|title2" },
+  { regex: "|h2", replacement: "|title2" },
   { regex: /\|heading_140lne\|2?(timeline|时间线)\|/, replacement: "|title2timeline|" },
   { regex: /\|heading_140lne\|2?(tabs?|标签页?)\||\|title2tabs?\|/, replacement: "|title2c2listdata|c2listdata2tab|" },
   { regex: /\|heading_140lne\|2?(col|分栏)\||\|title2col\|/, replacement: "|title2c2listdata|c2listdata2items|addClass(ab-col)|" },
@@ -19174,7 +19177,7 @@ var ABAlias_json_title = [
   { regex: /\|heading_140lne\|2?(puml)?(plantuml|mindmap|脑图|思维导图)\|/, replacement: "|title2list|list2pumlMindmap|" },
   { regex: /\|heading_140lne\|2?(markmap|mdMindmap|md脑图|md思维导图)\|/, replacement: "|title2list|list2markmap|" },
   { regex: /\|heading_140lne\|2?(wbs|(工作)?分解(图|结构))\|/, replacement: "|title2list|list2pumlWBS|" },
-  { regex: /\|heading_140lne\|2?(table|multiWayTable|multiCrossTable|表格?|多叉表格?|跨行表格?)\|/, replacement: "|title2list|list2table|" },
+  { regex: /\|heading_140lne\|2?(table|multiWayTable|multiCrossTable|表格?|多叉表格?|跨行表格?)\|/, replacement: "|title2Listdata|listdata2strict|listdata2table|" },
   { regex: /\|heading_140lne\|2?(lt|listTable|treeTable|listGrid|treeGrid|列表格|树形表格?)\|/, replacement: "|title2list|list2lt|" },
   { regex: /\|heading_140lne\|2?(list|列表)\|/, replacement: "|title2list|list2lt|addClass(ab-listtable-likelist)|" },
   { regex: /\|heading_140lne\|2?(dir|dirTree|目录树?|目录结构)\|/, replacement: "|title2list|list2dt|" },
@@ -19879,7 +19882,7 @@ var ListProcess = class {
       }
     }
   }
-  static title2data(text5) {
+  static title2data(text5, fine_mode = true) {
     let list_itemInfo = [];
     const list_text = text5.split("\n");
     let mul_mode = "";
@@ -19888,14 +19891,17 @@ var ListProcess = class {
       if (codeBlockFlag == "") {
         const match3 = line.match(ABReg.reg_code);
         if (match3 && match3[3]) {
-          if (mul_mode === "heading" || mul_mode === "") {
+          codeBlockFlag = match3[1] + match3[3];
+          if (!fine_mode && list_itemInfo.length > 0) {
+            list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+          } else if (mul_mode === "heading" || mul_mode === "") {
+            removeTailBlank();
             list_itemInfo.push({
               content: line,
               level: 0
             });
             mul_mode = "para";
           } else {
-            codeBlockFlag = match3[1] + match3[3];
             list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
           }
           continue;
@@ -19911,10 +19917,13 @@ var ListProcess = class {
       if (match_heading && !match_heading[1]) {
         removeTailBlank();
         list_itemInfo.push({
-          content: match_heading[4],
+          content: fine_mode ? match_heading[4] : line,
           level: match_heading[3].length - 1 - 10
         });
         mul_mode = "heading";
+      } else if (!fine_mode && list_itemInfo.length > 0) {
+        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+        continue;
       } else if (match_list) {
         removeTailBlank();
         list_itemInfo.push({
@@ -19922,19 +19931,23 @@ var ListProcess = class {
           level: match_list[1].length + 1
         });
         mul_mode = "list";
-      } else if (/^\S/.test(line) && mul_mode == "list") {
-        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+      } else if (mul_mode == "list" && /^\s/.test(line)) {
+        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line.trimStart();
+        continue;
       } else {
         if (mul_mode == "para") {
           list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+          continue;
         } else if (/^\s*$/.test(line)) {
           continue;
         } else {
+          removeTailBlank();
           list_itemInfo.push({
             content: line,
             level: 0
           });
           mul_mode = "para";
+          continue;
         }
       }
     }
@@ -19946,7 +19959,8 @@ var ListProcess = class {
       }
     }
   }
-  static mdit2data(text5) {
+  static mdit2data(text5, fine_mode = true) {
+    var _a3;
     let list_itemInfo = [];
     const list_text = text5.split("\n");
     let mul_mode = "";
@@ -19955,14 +19969,17 @@ var ListProcess = class {
       if (codeBlockFlag == "") {
         const match3 = line.match(ABReg.reg_code);
         if (match3 && match3[3]) {
-          if (mul_mode === "mdit" || mul_mode === "") {
+          codeBlockFlag = match3[1] + match3[3];
+          if (!fine_mode && list_itemInfo.length > 0) {
+            list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+          } else if (mul_mode === "mdit" || mul_mode === "") {
+            removeTailBlank();
             list_itemInfo.push({
               content: line,
               level: 0
             });
             mul_mode = "para";
           } else {
-            codeBlockFlag = match3[1] + match3[3];
             list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
           }
           continue;
@@ -19973,15 +19990,18 @@ var ListProcess = class {
         list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
         continue;
       }
-      const match_mdit = line.match(/^(\s*)@(\d+)\s+(.*)$/);
+      const match_mdit = line.match(/^(\s*)@(\d+)(?:\s+(.*))?$/);
       const match_list = line.match(ABReg.reg_list_noprefix);
       if (match_mdit && !match_mdit[1]) {
         removeTailBlank();
         list_itemInfo.push({
-          content: match_mdit[3],
+          content: (_a3 = match_mdit[3]) != null ? _a3 : "",
           level: Number(match_mdit[2]) - 100
         });
         mul_mode = "mdit";
+      } else if (!fine_mode && list_itemInfo.length > 0) {
+        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+        continue;
       } else if (match_list) {
         removeTailBlank();
         list_itemInfo.push({
@@ -19989,19 +20009,23 @@ var ListProcess = class {
           level: match_list[1].length + 1
         });
         mul_mode = "list";
-      } else if (/^\S/.test(line) && mul_mode == "list") {
-        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+      } else if (mul_mode == "list" && /^\s/.test(line)) {
+        list_itemInfo[list_itemInfo.length - 1].content += "\n" + line.trimStart();
+        continue;
       } else {
         if (mul_mode == "para") {
           list_itemInfo[list_itemInfo.length - 1].content += "\n" + line;
+          continue;
         } else if (/^\s*$/.test(line)) {
           continue;
         } else {
+          removeTailBlank();
           list_itemInfo.push({
             content: line,
             level: 0
           });
           mul_mode = "para";
+          continue;
         }
       }
     }
@@ -20190,7 +20214,7 @@ var abc_list2listdata = ABConvert.factory({
   process_param: "string" /* text */,
   process_return: "array" /* list_stream */,
   detail: "\u5217\u8868\u5230listdata",
-  process: (el, header, content) => {
+  process: (_el, _header, content) => {
     return ListProcess.list2data(content);
   }
 });
@@ -20199,9 +20223,19 @@ var abc_title2listdata = ABConvert.factory({
   name: "\u6807\u9898\u5230listdata",
   process_param: "string" /* text */,
   process_return: "array" /* list_stream */,
-  detail: "\u6807\u9898\u5230listdata",
-  process: (el, header, content) => {
-    return ListProcess.title2data(content);
+  detail: "\u6807\u9898\u5230listdata\u3002\u7EC6\u7C92\u5EA6\u7248\u672C\uFF0C\u5217\u8868\u4F1A\u62C6\u5206\u6210\u591A\u4E2A\u8282\u70B9",
+  process: (_el, _header, content) => {
+    return ListProcess.title2data(content, true);
+  }
+});
+var abc_title2Listdata = ABConvert.factory({
+  id: "title2Listdata",
+  name: "\u6807\u9898\u5230Listdata",
+  process_param: "string" /* text */,
+  process_return: "array" /* list_stream */,
+  detail: "\u6807\u9898\u5230Listdata\u3002\u7C97\u7C92\u5EA6\u7248\u672C\uFF0C\u5217\u8868\u4E3A\u4E00\u4E2A\u8282\u70B9\uFF0C\u4E0D\u4F1A\u62C6\u5206",
+  process: (_el, _header, content) => {
+    return ListProcess.title2data(content, false);
   }
 });
 var abc_mdit2listdata = ABConvert.factory({
@@ -20209,9 +20243,19 @@ var abc_mdit2listdata = ABConvert.factory({
   name: "mdit\u5230listdata",
   process_param: "string" /* text */,
   process_return: "array" /* list_stream */,
-  detail: "mdit\u5230listdata",
-  process: (el, header, content) => {
-    return ListProcess.mdit2data(content);
+  detail: "mdit\u5230listdata\u3002\u7EC6\u7C92\u5EA6\u7248\u672C\uFF0C\u5217\u8868\u4F1A\u62C6\u5206\u6210\u591A\u4E2A\u8282\u70B9",
+  process: (_el, _header, content) => {
+    return ListProcess.mdit2data(content, true);
+  }
+});
+var abc_mdit2Listdata = ABConvert.factory({
+  id: "mdit2Listdata",
+  name: "mdit\u5230Listdata",
+  process_param: "string" /* text */,
+  process_return: "array" /* list_stream */,
+  detail: "mdit\u5230Listdata\u3002\u7C97\u7C92\u5EA6\u7248\u672C\uFF0C\u5217\u8868\u4E3A\u4E00\u4E2A\u8282\u70B9\uFF0C\u4E0D\u4F1A\u62C6\u5206",
+  process: (_el, _header, content) => {
+    return ListProcess.mdit2data(content, false);
   }
 });
 var _abc_listdata2list = ABConvert.factory({
@@ -20220,7 +20264,7 @@ var _abc_listdata2list = ABConvert.factory({
   process_param: "array" /* list_stream */,
   process_return: "string" /* text */,
   detail: "listdata\u5230\u5217\u8868",
-  process: (el, header, content) => {
+  process: (_el, _header, content) => {
     return ListProcess.data2list(content);
   }
 });
@@ -20230,17 +20274,18 @@ var _abc_listdata2nodes = ABConvert.factory({
   process_param: "array" /* list_stream */,
   process_return: "HTMLElement" /* el */,
   detail: "listdata\u5230\u8282\u70B9\u56FE",
-  process: (el, header, content) => {
+  process: (el, _header, content) => {
     return ListProcess.data2nodes(content, el);
   }
 });
 var _abc_listdata2strict = ABConvert.factory({
   id: "listdata2strict",
   name: "listdata\u4E25\u683C\u5316",
+  match: /listdata2strict|listdata2lint/,
   process_param: "array" /* list_stream */,
   process_return: "array" /* list_stream */,
   detail: "\u5C06\u5217\u8868\u6570\u636E\u8F6C\u5316\u4E3A\u66F4\u89C4\u8303\u7684\u5217\u8868\u6570\u636E\u3002\u7EDF\u4E00\u7F29\u8FDB\u7B26(2\u7A7A\u683C 4\u7A7A\u683C tab\u6DF7\u7528)\u4E3Alevel 1\u3001\u7981\u6B62\u8DF3\u7B49\u7EA7(h1\u76F4\u63A5\u5C31\u5230h3)",
-  process: (el, header, content) => {
+  process: (_el, _header, content) => {
     return ListProcess.data2strict(content);
   }
 });
@@ -20250,7 +20295,7 @@ var _abc_listdata2task = ABConvert.factory({
   process_param: "array" /* list_stream */,
   process_return: "array" /* list_stream */,
   detail: "\u5F53\u5217\u8868\u4E2D\u5B58\u5728\u4EFB\u52A1\u5217\u8868\u9879\u65F6\uFF0C\u4EE4\u6B64\u5217\u8868\u9879\u652F\u6301\u4EFB\u52A1\u9879",
-  process: (el, header, content) => {
+  process: (_el, _header, content) => {
     return ListProcess.data2taskData(content);
   }
 });
@@ -20260,7 +20305,7 @@ var abc_list2listnode = ABConvert.factory({
   process_param: "string" /* text */,
   process_return: "json_string" /* json */,
   detail: "\u5217\u8868\u5230listnode",
-  process: (el, header, content) => {
+  process: (_el, _header, content) => {
     const data2 = ListProcess.list2listnode(content);
     return JSON.stringify(data2, null, 2);
   }
@@ -20271,7 +20316,7 @@ var abc_list2json = ABConvert.factory({
   process_param: "string" /* text */,
   process_return: "json_string" /* json */,
   detail: "\u5217\u8868\u5230json",
-  process: (el, header, content) => {
+  process: (_el, _header, content) => {
     const data2 = ListProcess.list2json(content);
     return JSON.stringify(data2, null, 2);
   }
@@ -20746,6 +20791,20 @@ var _abc_list2table = ABConvert.factory({
       return el;
     const data2 = abc_list2listdata.process(el, header, content);
     return el = TableProcess.data2table(data2, el, matchs[2] == "T");
+  }
+});
+var _abc_listdata2table = ABConvert.factory({
+  id: "listdata2table",
+  name: "\u5217\u8868\u6570\u636E\u8F6C\u8868\u683C",
+  match: /listdata2(md)?table(T)?/,
+  default: "listdata2table",
+  process_param: "array" /* list_stream */,
+  process_return: "HTMLElement" /* el */,
+  process: (el, header, content) => {
+    const matchs = header.match(/listdata2(md)?table(T)?/);
+    if (!matchs)
+      return el;
+    return el = TableProcess.data2table(content, el, matchs[2] == "T");
   }
 });
 var _abc_list2c2table = ABConvert.factory({
@@ -54643,7 +54702,7 @@ var _ABReplacer_Widget = class extends import_view.WidgetType {
       let fromPos;
       try {
         fromPos = view.posAtDOM(this.div, 0);
-      } catch (e) {
+      } catch (_) {
         console.warn("get cursor pos failed:", this.div);
         return null;
       }
@@ -55795,6 +55854,21 @@ var ABModal_alias = class extends import_obsidian3.Modal {
 
 // ab_manager/abm_cm/ABStateManager.ts
 var global_timer = null;
+var managerMap = /* @__PURE__ */ new Map();
+var decorationField = import_state.StateField.define({
+  create: (_editorState) => {
+    return import_view2.Decoration.none;
+  },
+  update: (decorationSet, tr) => {
+    for (const [v, abStateManager] of managerMap) {
+      if (v.state === tr.startState) {
+        return abStateManager.onUpdate(decorationSet, tr);
+      }
+    }
+    return decorationSet;
+  },
+  provide: (f) => import_view2.EditorView.decorations.from(f)
+});
 var ABStateManager = class {
   constructor(plugin_this) {
     this.replace_this = this;
@@ -55802,21 +55876,14 @@ var ABStateManager = class {
       cancelFlag: [],
       updateMode: ""
     };
-    this.decorationField = import_state.StateField.define({
-      create: (editorState) => {
-        return import_view2.Decoration.none;
-      },
-      update: (decorationSet, tr) => {
-        return this.onUpdate(decorationSet, tr);
-      },
-      provide: (f) => import_view2.EditorView.decorations.from(f)
-    });
     this.plugin_this = plugin_this;
     let ret = this.constructor_init();
     if (this.plugin_this.settings.is_debug)
       console.log(">>> ABStateManager, initialFileName:", this.initialFileName, "initRet:", ret);
-    if (ret)
-      this.setStateEffects();
+    if (!ret)
+      return;
+    managerMap.set(this.editorView, this);
+    this.setStateEffects();
     {
       if (global_timer !== null) {
         window.clearInterval(global_timer);
@@ -55856,20 +55923,21 @@ var ABStateManager = class {
     return true;
   }
   destructor() {
-    if (this.plugin_this.settings.is_debug)
-      console.log("<<< ABStateManager, initialFileName:", this.initialFileName);
     if (global_timer !== null) {
       window.clearInterval(global_timer);
       global_timer = null;
     }
+    if (this.plugin_this.settings.is_debug)
+      console.log("<<< ABStateManager, initialFileName:", this.initialFileName);
+    managerMap.delete(this.editorView);
   }
   setStateEffects() {
+    if (this.editorState.field(decorationField, false))
+      return;
     let stateEffects = [];
-    if (!this.editorState.field(this.decorationField, false)) {
-      stateEffects.push(import_state.StateEffect.appendConfig.of(
-        [this.decorationField]
-      ));
-    }
+    stateEffects.push(import_state.StateEffect.appendConfig.of(
+      [decorationField]
+    ));
     this.editorView.dispatch({ effects: stateEffects });
     return true;
   }
@@ -55989,7 +56057,7 @@ var ABStateManager = class {
     }
     let debug_count1 = 0, debug_count2 = 0, debug_count3 = 0, debug_count4 = 0;
     decorationSet = decorationSet.update({
-      filter(from, to, value) {
+      filter(from, to, _value) {
         for (let i = 0; i < list_decoration_nochange.length; i++) {
           const item = list_decoration_nochange[i];
           if (item.from == from && item.to == to) {
