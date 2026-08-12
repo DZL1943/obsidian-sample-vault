@@ -5,7 +5,6 @@
       "name": "默认",
       "fileVisibility": "supported",
       "hiddenFolders": [
-        "/Misc",
         "/Scripts",
         "/Templates",
         "/Attachments",
@@ -498,12 +497,9 @@
   "folderBackgroundColors": {},
   "folderSortOverrides": {
     "Pages": "created-desc",
-    "Thoughts": "created-desc",
-    "Private": "created-desc"
+    "Thoughts": "created-desc"
   },
-  "folderTreeSortOverrides": {
-    "Private": "alpha-desc"
-  },
+  "folderTreeSortOverrides": {},
   "folderAppearances": {},
   "tagIcons": {},
   "tagColors": {},
@@ -545,16 +541,21 @@
   "lastShownVersion": "3.3.3",
   "rootFolderOrder": [
     "Inbox",
-    "Private",
+    "Journals",
     "Jottings",
+    "Memos",
     "Pages",
     "Thoughts",
+    "References",
     "Projects",
     "Areas",
     "Resources",
     "Archives",
+    "Clippings",
+    "Misc",
     "Attachments",
-    "Misc"
+    "Scripts",
+    "Templates"
   ],
   "rootTagOrder": [],
   "rootPropertyOrder": [],

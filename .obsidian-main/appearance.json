@@ -21,8 +21,7 @@
     "ui",
     "hide",
     "hide-nav",
-    "note-toolbar",
-    "hidefile"
+    "note-toolbar"
   ],
   "showViewHeader": false,
   "cssTheme": "",
