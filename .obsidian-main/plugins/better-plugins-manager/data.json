@@ -920,7 +920,248 @@
     }
   ],
   "HIDES": [],
-  "PLUGIN_LAYOUT": [],
+  "PLUGIN_LAYOUT": [
+    {
+      "id": "obsidian-admonition",
+      "type": "plugin"
+    },
+    {
+      "id": "advanced-canvas",
+      "type": "plugin"
+    },
+    {
+      "id": "table-editor-obsidian",
+      "type": "plugin"
+    },
+    {
+      "id": "any-block",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-auto-hide",
+      "type": "plugin"
+    },
+    {
+      "id": "better-plugins-manager",
+      "type": "plugin"
+    },
+    {
+      "id": "better-export-pdf",
+      "type": "plugin"
+    },
+    {
+      "id": "better-markdown-links",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian42-brat",
+      "type": "plugin"
+    },
+    {
+      "id": "calendar-bases",
+      "type": "plugin"
+    },
+    {
+      "id": "codeblock-customizer",
+      "type": "plugin"
+    },
+    {
+      "id": "cmdr",
+      "type": "plugin"
+    },
+    {
+      "id": "css-editor",
+      "type": "plugin"
+    },
+    {
+      "id": "custom-sort",
+      "type": "plugin"
+    },
+    {
+      "id": "dataview",
+      "type": "plugin"
+    },
+    {
+      "id": "docxer",
+      "type": "plugin"
+    },
+    {
+      "id": "easy-typing-obsidian",
+      "type": "plugin"
+    },
+    {
+      "id": "editing-toolbar",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-excalidraw-plugin",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-export-image",
+      "type": "plugin"
+    },
+    {
+      "id": "float-search",
+      "type": "plugin"
+    },
+    {
+      "id": "floating-toc",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-view-mode-by-frontmatter",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-front-matter-title-plugin",
+      "type": "plugin"
+    },
+    {
+      "id": "fuzzy-chinese-pinyin",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-git",
+      "type": "plugin"
+    },
+    {
+      "id": "heading-decorator",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-heading-shifter",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-hover-editor",
+      "type": "plugin"
+    },
+    {
+      "id": "image-converter",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-image-toolkit",
+      "type": "plugin"
+    },
+    {
+      "id": "janitor",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-kanban",
+      "type": "plugin"
+    },
+    {
+      "id": "kanban-bases-view",
+      "type": "plugin"
+    },
+    {
+      "id": "keyboard-analyzer",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-latex-suite",
+      "type": "plugin"
+    },
+    {
+      "id": "links",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-linter",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-markmind",
+      "type": "plugin"
+    },
+    {
+      "id": "multi-properties",
+      "type": "plugin"
+    },
+    {
+      "id": "nldates-redux",
+      "type": "plugin"
+    },
+    {
+      "id": "note-toolbar",
+      "type": "plugin"
+    },
+    {
+      "id": "notebook-navigator",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-outliner",
+      "type": "plugin"
+    },
+    {
+      "id": "paste-link",
+      "type": "plugin"
+    },
+    {
+      "id": "quick-explorer",
+      "type": "plugin"
+    },
+    {
+      "id": "quick-peek-sidebar",
+      "type": "plugin"
+    },
+    {
+      "id": "quickadd",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-quiet-outline",
+      "type": "plugin"
+    },
+    {
+      "id": "refresh-preview",
+      "type": "plugin"
+    },
+    {
+      "id": "settings-search",
+      "type": "plugin"
+    },
+    {
+      "id": "show-whitespace-cm6",
+      "type": "plugin"
+    },
+    {
+      "id": "solve",
+      "type": "plugin"
+    },
+    {
+      "id": "statusbar-organizer",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-style-settings",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-tasks-plugin",
+      "type": "plugin"
+    },
+    {
+      "id": "templater-obsidian",
+      "type": "plugin"
+    },
+    {
+      "id": "various-complements",
+      "type": "plugin"
+    },
+    {
+      "id": "virtual-linker",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-zoom",
+      "type": "plugin"
+    }
+  ],
   "REPO_MAP": {
     "obsidian-admonition": "javalent/admonitions",
     "calendar-bases": "edrickleong/obsidian-calendar-bases",
