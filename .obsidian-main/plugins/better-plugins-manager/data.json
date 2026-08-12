@@ -592,17 +592,6 @@
       "delay": "default"
     },
     {
-      "id": "settings-search",
-      "name": "Settings Search",
-      "desc": "Globally search settings in Obsidian.md",
-      "group": "main",
-      "tags": [
-        "optional"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
       "id": "solve",
       "name": "Solve",
       "desc": "Supercharge your notes with real-time calculations without AI fuss. From dates ('Now + 20 days'), percentages ('10% of 120'), units of measurement ('100cm + 2m'), arithmetic ('10 + 5') and more!",
@@ -695,18 +684,6 @@
       "group": "ui",
       "tags": [
         "optional"
-      ],
-      "enabled": true,
-      "delay": "",
-      "note": ""
-    },
-    {
-      "id": "obsidian-image-toolkit",
-      "name": "Image Toolkit",
-      "desc": "This plugin provides some image viewing toolkit.",
-      "group": "aux",
-      "tags": [
-        "required"
       ],
       "enabled": true,
       "delay": "",
@@ -1047,10 +1024,6 @@
       "type": "plugin"
     },
     {
-      "id": "obsidian-image-toolkit",
-      "type": "plugin"
-    },
-    {
       "id": "janitor",
       "type": "plugin"
     },
@@ -1124,10 +1097,6 @@
     },
     {
       "id": "refresh-preview",
-      "type": "plugin"
-    },
-    {
-      "id": "settings-search",
       "type": "plugin"
     },
     {
