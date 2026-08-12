@@ -171,14 +171,21 @@
         "direction": "vertical",
         "mode": "source",
         "focus": true
-      }
+      },
+      "insertBefore": {
+        "enabled": false,
+        "before": "",
+        "createIfNotFound": false,
+        "createIfNotFoundLocation": "top"
+      },
+      "captureToCanvasNodeId": ""
     },
     {
       "id": "0ac28af9-0ea7-47fe-8e1a-78193b9bdc2d",
       "name": "create-in-folder",
       "type": "Template",
       "command": false,
-      "templatePath": "Misc/Templates/default-template.md",
+      "templatePath": "Templates/default-template.md",
       "fileNameFormat": {
         "enabled": true,
         "format": "Untitled"
@@ -218,8 +225,8 @@
           {
             "name": "currentDir",
             "type": "UserScript",
-            "id": "a8aa1eb5-6ae9-4842-9cbe-caf7c459df70",
-            "path": "Misc/Scripts/currentDir.js",
+            "id": "033bfa54-d727-43c8-8cb7-90c9b4e607e8",
+            "path": "Scripts/currentDir.js",
             "settings": {}
           }
         ]
@@ -238,8 +245,8 @@
           {
             "name": "headings",
             "type": "UserScript",
-            "id": "64734d07-837d-4fff-a1d7-128977bb2304",
-            "path": "Misc/Scripts/Universal/headings.js",
+            "id": "90cf3ed4-e5dd-4aa1-8f7f-7f1403e2748f",
+            "path": "Scripts/Universal/headings.js",
             "settings": {}
           }
         ]
@@ -258,8 +265,8 @@
           {
             "name": "bookmarks",
             "type": "UserScript",
-            "id": "7bfe5c0d-55d4-4fb2-a147-1c42a5a0c3d9",
-            "path": "Misc/Scripts/bookmarks.js",
+            "id": "8bbc74a4-98d4-43fb-b5b8-78f9bbaadd06",
+            "path": "Scripts/bookmarks.js",
             "settings": {}
           }
         ]
@@ -278,8 +285,8 @@
           {
             "name": "snippets",
             "type": "UserScript",
-            "id": "b72373d8-5148-4ce6-944a-1cfce9a513e8",
-            "path": "Misc/Scripts/snippets.js",
+            "id": "fe44b4da-1fd2-431c-b4f8-76297c14b29e",
+            "path": "Scripts/snippets.js",
             "settings": {}
           }
         ]
@@ -298,8 +305,8 @@
           {
             "name": "replace",
             "type": "UserScript",
-            "id": "7f1d22b6-389e-49ab-8c4f-207278c1fca4",
-            "path": "Misc/Scripts/replace.js",
+            "id": "5b51df03-da50-4bd7-b7a6-1794724baf23",
+            "path": "Scripts/replace.js",
             "settings": {}
           }
         ]
@@ -318,8 +325,8 @@
           {
             "name": "tags",
             "type": "UserScript",
-            "id": "02b61442-daf5-4c5f-9528-4cc8d1a2139c",
-            "path": "Misc/Scripts/tags.js",
+            "id": "af4dc2d7-022b-4b66-96e8-f4acced8fc20",
+            "path": "Scripts/tags.js",
             "settings": {}
           }
         ]
@@ -338,8 +345,8 @@
           {
             "name": "attachments",
             "type": "UserScript",
-            "id": "af9d26e7-9eb8-4ac0-a570-b7399b2a9385",
-            "path": "Misc/Scripts/attachments.js",
+            "id": "10f03201-9c95-41e9-a33a-4f673f003950",
+            "path": "Scripts/attachments.js",
             "settings": {}
           }
         ]
@@ -358,8 +365,8 @@
           {
             "name": "periodicNote",
             "type": "UserScript",
-            "id": "238986c0-ea28-4645-a750-ee6eb6eee378",
-            "path": "Misc/Scripts/Universal/periodicNote.js",
+            "id": "68f80be9-69fc-47e3-a319-22ec477cd908",
+            "path": "Scripts/Universal/periodicNote.js",
             "settings": {}
           }
         ]
@@ -378,8 +385,8 @@
           {
             "name": "weekdays",
             "type": "UserScript",
-            "id": "05f56954-3b74-4419-90f5-d1110750c390",
-            "path": "Misc/Scripts/Universal/weekdays.js",
+            "id": "f372f21a-137d-4aae-ad85-648bd03be84f",
+            "path": "Scripts/Universal/weekdays.js",
             "settings": {}
           },
           {
@@ -443,8 +450,8 @@
           {
             "name": "monthdays",
             "type": "UserScript",
-            "id": "110b5a87-79c1-49d0-a8e4-cadb3c02d3c2",
-            "path": "Misc/Scripts/Universal/monthdays.js",
+            "id": "f78b22ed-25fa-4534-8521-1131cc4b50be",
+            "path": "Scripts/Universal/monthdays.js",
             "settings": {}
           },
           {
@@ -508,12 +515,9 @@
           {
             "name": "ghproxy",
             "type": "UserScript",
-            "id": "a9b4616c-d4ed-4a91-8da8-146a39345360",
-            "path": "Misc/Scripts/ghproxy.js",
-            "settings": {
-              "config": "{\"default\": \"https://v6.gh-proxy.org/\"}",
-              "transform": "prepend"
-            }
+            "id": "677ae6a1-2705-498f-8a1f-c5e7637b469a",
+            "path": "Scripts/ghproxy.js",
+            "settings": {}
           }
         ]
       }
@@ -531,8 +535,8 @@
           {
             "name": "calc",
             "type": "UserScript",
-            "id": "2f355cf9-54ac-4de3-92e2-6a90f5cbcc86",
-            "path": "Misc/Scripts/calc.js",
+            "id": "11025693-dd5e-494c-b80f-6bee0fa9be8f",
+            "path": "Scripts/calc.js",
             "settings": {}
           }
         ]
@@ -551,8 +555,8 @@
           {
             "name": "test",
             "type": "UserScript",
-            "id": "4401ce1d-c8e9-4a4e-bce8-6e5f07ea702e",
-            "path": "Misc/Scripts/test.js",
+            "id": "7fcf518e-36f6-4e0a-a168-425305c54fa6",
+            "path": "Scripts/test.js",
             "settings": {}
           },
           {
@@ -614,7 +618,7 @@
   "templateFolderLauncherRow": "bottom",
   "devMode": false,
   "templateFolderPaths": [
-    "Misc/Templates"
+    "Templates"
   ],
   "announceUpdates": "none",
   "version": "2.22.0",
