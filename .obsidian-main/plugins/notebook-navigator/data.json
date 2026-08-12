@@ -3,8 +3,9 @@
     {
       "id": "default",
       "name": "默认",
-      "fileVisibility": "supported",
+      "fileVisibility": "all",
       "hiddenFolders": [
+        "/Misc",
         "/Scripts",
         "/Templates",
         "/Attachments",
@@ -542,18 +543,14 @@
   "rootFolderOrder": [
     "Inbox",
     "Journals",
-    "Jottings",
     "Memos",
-    "Pages",
     "Thoughts",
+    "Pages",
     "References",
-    "Projects",
-    "Areas",
-    "Resources",
     "Archives",
     "Clippings",
-    "Misc",
     "Attachments",
+    "Misc",
     "Scripts",
     "Templates"
   ],
