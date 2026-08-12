@@ -2705,6 +2705,7 @@ body.theme-dark {
 }
 
 .manager-toolbar__tools .manager-tool--plugin,
+.manager-toolbar__tools .manager-tool--theme,
 .manager-toolbar__tools .manager-tool--install,
 .manager-toolbar__tools .manager-tool--ribbon,
 .manager-toolbar__tools .manager-tool--layout,
@@ -2721,7 +2722,10 @@ body.theme-dark {
 }
 
 .manager-section--actions:not(.is-ribbon-page) .manager-tool--ribbon,
+.manager-section--actions:not(.is-theme-page) .manager-tool--theme,
+.manager-section--actions:not(.is-appearance-profiles-page) .manager-tool--appearance-profile,
 .manager-section--actions:not(.is-layout-editing) .manager-tool--layout,
+.manager-section--actions.is-theme-page .manager-tool--plugin,
 .manager-section--actions.is-install-page .manager-tool--plugin,
 .manager-section--actions.is-sources-page .manager-tool--plugin,
 .manager-section--actions.is-ribbon-page .manager-tool--plugin,
@@ -2783,6 +2787,23 @@ body.theme-dark {
     height: auto;
     gap: 8px;
     overflow: visible;
+}
+
+.manager-search-line {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+}
+
+.manager-search-line .manager-filter-field--search:not(.manager-filter-field--sort) {
+    flex: 1 1 auto;
+}
+
+.manager-search-line .manager-filter-field--sort {
+    flex: 0 0 230px;
+    max-width: 230px;
 }
 
 .manager-filter-control-group {
@@ -5431,6 +5452,204 @@ body.theme-dark {
     stroke-width: 2;
 }
 
+.manager-container .manager-theme-overview {
+    gap: var(--bpm-item-gap);
+    padding: 0;
+}
+
+.manager-container.manager-container--main .manager-modal-page.manager-theme-overview {
+    padding: 0;
+}
+
+.manager-container .manager-appearance-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.manager-container .manager-appearance-section__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--bpm-item-gap);
+    min-width: 0;
+}
+
+.manager-container .manager-theme-card {
+    align-items: center;
+}
+
+.manager-container .manager-theme-card.is-active-theme {
+    border-color: color-mix(in srgb, var(--interactive-accent) 44%, var(--bpm-border));
+    background: color-mix(in srgb, var(--interactive-accent) 8%, var(--bpm-card));
+}
+
+.manager-container .manager-theme-card__header {
+    min-width: 0;
+}
+
+.manager-container .manager-theme-card__title-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+}
+
+.manager-container .manager-theme-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 auto;
+    color: var(--text-accent);
+}
+
+.manager-container .manager-theme-card__icon svg {
+    width: 17px;
+    height: 17px;
+}
+
+.manager-container .manager-theme-card__name {
+    min-width: 0;
+    max-width: min(360px, 100%);
+    overflow: hidden;
+    color: var(--text-normal);
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.manager-container .manager-theme-card__chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 2px 7px;
+    border: 1px solid var(--bpm-border);
+    border-radius: var(--bpm-radius-xs);
+    background: color-mix(in srgb, var(--bpm-muted) 58%, var(--bpm-card));
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.2;
+}
+
+.manager-container .manager-theme-card__chip.is-active {
+    border-color: color-mix(in srgb, var(--interactive-accent) 38%, var(--bpm-border));
+    background: var(--bpm-accent-soft);
+    color: var(--text-accent);
+}
+
+.manager-container .manager-theme-card__chip.is-source {
+    color: var(--text-normal);
+}
+
+.manager-container .manager-theme-card__body {
+    min-width: 0;
+}
+
+.manager-container .manager-theme-card__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 12px;
+    min-width: 0;
+}
+
+.manager-container .manager-theme-card__meta-row {
+    display: grid;
+    grid-template-columns: 16px max-content minmax(0, 1fr);
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.manager-container .manager-theme-card__meta-row--wide {
+    grid-column: 1 / -1;
+}
+
+.manager-container .manager-theme-card__meta-icon {
+    display: inline-flex;
+    color: var(--text-faint);
+}
+
+.manager-container .manager-theme-card__meta-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.manager-container .manager-theme-card__meta-label {
+    color: var(--text-faint);
+}
+
+.manager-container .manager-theme-card__meta-value {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--text-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.manager-container .manager-theme-card__actions.setting-item-control {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.manager-container .manager-theme-page__empty {
+    flex: 1 0 auto;
+    min-height: clamp(260px, 38vh, 460px);
+    padding: 28px;
+    border: 1px dashed color-mix(in srgb, var(--text-muted) 30%, var(--bpm-border));
+    border-radius: var(--bpm-radius);
+    background: color-mix(in srgb, var(--bpm-muted) 58%, var(--bpm-card));
+}
+
+.manager-container .manager-theme-page__empty-action {
+    margin-top: 6px;
+}
+
+.manager-container .manager-appearance-inline-empty {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 0;
+    padding: var(--bpm-item-padding);
+    border: 1px dashed color-mix(in srgb, var(--text-muted) 24%, var(--bpm-border));
+    border-radius: var(--bpm-radius);
+    background: color-mix(in srgb, var(--bpm-muted) 58%, var(--bpm-card));
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.manager-container .manager-css-snippet-card .manager-theme-card__chip:not(.is-active) {
+    color: var(--text-faint);
+}
+
+@media (max-width: 720px) {
+    .manager-container .manager-theme-card {
+        align-items: stretch;
+    }
+
+    .manager-container .manager-theme-card__meta {
+        grid-template-columns: 1fr;
+    }
+
+    .manager-container .manager-theme-card__actions.setting-item-control {
+        justify-content: flex-start;
+    }
+
+    .manager-container .manager-appearance-inline-empty {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
 .manager-container:not(.manager-container--mobile) .manager-item-container {
     padding: var(--bpm-content-padding);
 }
@@ -6673,6 +6892,35 @@ body.theme-dark {
     line-height: 1.45;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+}
+
+.manager-container .manager-plugin-card__date-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--text-faint);
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.manager-container .manager-plugin-card__date-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.manager-container .manager-plugin-card__date-meta-icon {
+    display: inline-flex;
+    width: 13px;
+    height: 13px;
+}
+
+.manager-container .manager-plugin-card__date-meta-icon svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 2;
 }
 
 .manager-container .manager-plugin-card:not(.has-description) .manager-plugin-card__desc,
@@ -11967,6 +12215,11 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
     border-left-width: 1px;
 }
 
+.manager-container .manager-plugin-overview--list > .manager-plugin-card:first-child,
+.manager-container .manager-plugin-overview--two-column > .manager-plugin-card:first-child {
+    border-top: 1px solid var(--bpm-unified-item-border);
+}
+
 .manager-tag-editor__item.is-editing {
     box-shadow:
         inset 0 0 0 1px color-mix(in srgb, var(--interactive-accent) 42%, transparent),
@@ -12031,7 +12284,7 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
 
 /* Main manager modal: use a custom shell instead of Obsidian's fixed header/content split. */
 .manager-container.manager-container--main {
-    height: min(86vh, 820px);
+    min-height: min(560px, calc(100vh - 48px));
     max-height: calc(100vh - 48px);
     overflow: hidden;
 }
@@ -12097,10 +12350,12 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
 .manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--list,
 .manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column {
     min-height: 0;
+    padding: var(--bpm-content-padding);
+    scroll-padding-top: var(--bpm-content-padding);
 }
 
 .manager-container.manager-container--main.manager-container--mobile {
-    height: calc(100vh - 8vh - env(safe-area-inset-top, 0px));
+    min-height: min(420px, calc(100vh - 8vh - env(safe-area-inset-top, 0px)));
     max-height: calc(100vh - 8vh - env(safe-area-inset-top, 0px));
 }
 
@@ -12112,6 +12367,49 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
 .manager-container.manager-container--main.manager-container--mobile .manager-modal-page.manager-item-container {
     max-height: none;
     padding: 0;
+}
+
+.manager-container.manager-container--main.manager-container--mobile .manager-modal-page.manager-item-container.manager-plugin-overview--list,
+.manager-container.manager-container--main.manager-container--mobile .manager-modal-page.manager-item-container.manager-plugin-overview--two-column {
+    padding: var(--bpm-ui-content-padding-mobile);
+    scroll-padding-top: var(--bpm-ui-content-padding-mobile);
+}
+
+.manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--list {
+    padding: 0;
+    scroll-padding-top: 0;
+}
+
+.manager-container.manager-container--main.manager-container--mobile .manager-modal-page.manager-item-container.manager-plugin-overview--list {
+    padding: 0;
+    scroll-padding-top: 0;
+}
+
+.manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    align-items: start;
+}
+
+.manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-bulk-bar-host,
+.manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-plugin-separator,
+.manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-plugin-separator-editor,
+.manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-plugin-page__empty {
+    grid-column: 1 / -1;
+}
+
+.manager-container.manager-container--main.manager-container--mobile .manager-modal-page.manager-item-container.manager-plugin-overview--two-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.manager-container .manager-plugin-card__body.manager-display-block:not(.manager-plugin-card__body--empty) {
+    display: flex;
+}
+
+.manager-container .manager-plugin-card__body.manager-display-none {
+    display: none;
 }
 
 .manager-container.manager-container--main .manager-modal-page>.manager-troubleshoot-page {
@@ -12170,4 +12468,1398 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
 .manager-repo-page .manager-repo-page__switch,
 .manager-repo-page .manager-install__segment {
     padding: 4px 8px !important;
+}
+
+.manager-command-suggestion {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    min-height: 38px;
+}
+
+.manager-command-suggestion.is-disabled {
+    opacity: 0.55;
+}
+
+.manager-command-suggestion__icon {
+    color: var(--text-muted);
+    display: inline-flex;
+    flex: 0 0 auto;
+}
+
+.manager-command-suggestion__text {
+    min-width: 0;
+}
+
+.manager-command-suggestion__title,
+.manager-command-suggestion__meta {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.manager-command-suggestion__meta {
+    color: var(--text-muted);
+    font-size: var(--font-ui-smaller);
+}
+
+/* Final taxonomy editor/settings refresh: groups and tags share one visual system. */
+.manager-taxonomy-editor.manager-editor__container {
+    width: min(720px, calc(100vw - 32px));
+    max-height: min(84vh, 780px);
+    border: 1px solid color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 76%, transparent);
+    border-radius: 10px;
+    background: var(--bpm-surface, var(--background-primary));
+    box-shadow: var(--bpm-ui-modal-shadow);
+}
+
+.manager-taxonomy-editor .manager-container__header {
+    border-bottom: 1px solid color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 72%, transparent);
+    background: color-mix(in srgb, var(--bpm-card, var(--background-primary)) 88%, var(--bpm-muted, var(--background-secondary)));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__titlebar.setting-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    min-height: 64px;
+    padding: 12px 14px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__title {
+    gap: 12px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__title-icon,
+.manager-taxonomy-setting__header-icon {
+    border-color: color-mix(in srgb, var(--interactive-accent) 28%, var(--bpm-border, var(--background-modifier-border)));
+    background: color-mix(in srgb, var(--interactive-accent) 11%, transparent);
+}
+
+.manager-taxonomy-editor .manager-tag-editor__eyebrow {
+    color: var(--text-accent);
+    font-size: 11px;
+    letter-spacing: 0;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__plugin-name {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__titlebar .setting-item-description {
+    max-width: 520px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__body.manager-item-container {
+    padding: 14px;
+    background: color-mix(in srgb, var(--bpm-surface, var(--background-primary)) 92%, var(--bpm-muted, var(--background-secondary)));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__page,
+.manager-taxonomy-editor .manager-tag-editor__list {
+    gap: 10px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary,
+.manager-taxonomy-setting__header {
+    border-color: color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 72%, transparent);
+    background: color-mix(in srgb, var(--bpm-card, var(--background-primary)) 92%, var(--bpm-muted, var(--background-secondary)));
+    box-shadow: none;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 12px 14px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary-title,
+.manager-taxonomy-setting__title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary-desc,
+.manager-taxonomy-setting__desc {
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary-stat,
+.manager-taxonomy-editor .manager-tag-editor__badge,
+.manager-taxonomy-setting__stat,
+.manager-taxonomy-setting__badge {
+    min-height: 24px;
+    padding: 0 8px;
+    border-color: color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 78%, transparent);
+    background: color-mix(in srgb, var(--bpm-card-muted, var(--background-secondary)) 78%, var(--bpm-card, var(--background-primary)));
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.setting-item,
+.manager-taxonomy-editor .manager-tag-editor__add-trigger.setting-item,
+.manager-taxonomy-setting__row.setting-item {
+    border-color: color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 72%, transparent);
+    border-radius: 8px;
+    background: var(--bpm-card, var(--background-primary));
+    box-shadow: none;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.setting-item:hover,
+.manager-taxonomy-editor .manager-tag-editor__add-trigger.setting-item:hover,
+.manager-taxonomy-setting__row.setting-item:hover {
+    border-color: color-mix(in srgb, var(--interactive-accent) 30%, var(--bpm-border, var(--background-modifier-border)));
+    background: color-mix(in srgb, var(--bpm-card-hover, var(--background-secondary)) 62%, var(--bpm-card, var(--background-primary)));
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.setting-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 62px;
+    padding: 12px 14px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.is-assigned,
+.manager-taxonomy-setting__row.is-used {
+    border-left-width: 3px;
+    border-left-color: color-mix(in srgb, var(--interactive-accent) 68%, var(--bpm-border, var(--background-modifier-border)));
+    background: color-mix(in srgb, var(--interactive-accent) 5%, var(--bpm-card, var(--background-primary)));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.is-editing {
+    border-color: color-mix(in srgb, var(--interactive-accent) 44%, var(--bpm-border, var(--background-modifier-border)));
+    background: color-mix(in srgb, var(--interactive-accent) 8%, var(--bpm-card, var(--background-primary)));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--interactive-accent) 20%, transparent);
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.is-system,
+.manager-taxonomy-setting__row.is-system {
+    background: color-mix(in srgb, var(--bpm-muted, var(--background-secondary)) 42%, var(--bpm-card, var(--background-primary)));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__preview-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__chip-slot {
+    min-width: 0;
+    max-width: 240px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__chip.manager-tag,
+.manager-taxonomy-setting__preview.manager-tag {
+    min-height: 24px;
+    height: 24px;
+    margin-left: 0;
+    padding: 0 9px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__id,
+.manager-taxonomy-setting__id {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    max-width: 220px;
+    padding: 0 7px;
+    border: 1px solid color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 68%, transparent);
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--bpm-muted, var(--background-secondary)) 34%, transparent);
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__meta,
+.manager-taxonomy-setting__meta {
+    gap: 8px;
+    margin-top: 7px;
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item>.setting-item-control {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    min-width: 0;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.is-editing>.setting-item-control {
+    flex-wrap: wrap;
+}
+
+.manager-taxonomy-editor input[type="color"],
+.manager-taxonomy-setting input[type="color"] {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    padding: 2px;
+    border: 1px solid color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 84%, transparent);
+    border-radius: 7px;
+    background: var(--bpm-card, var(--background-primary));
+}
+
+.manager-taxonomy-editor .clickable-icon,
+.manager-taxonomy-editor button,
+.manager-taxonomy-setting .clickable-icon,
+.manager-taxonomy-setting button {
+    min-width: 34px;
+    min-height: 34px;
+    border-radius: 7px;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+}
+
+.manager-taxonomy-editor .clickable-icon:hover,
+.manager-taxonomy-setting .clickable-icon:hover {
+    background: color-mix(in srgb, var(--bpm-muted, var(--background-secondary)) 56%, transparent);
+}
+
+.manager-taxonomy-editor .clickable-icon:active,
+.manager-taxonomy-editor button:active,
+.manager-taxonomy-setting .clickable-icon:active,
+.manager-taxonomy-setting button:active {
+    transform: scale(0.96);
+}
+
+.manager-taxonomy-editor .manager-tag-editor__delete-button:hover,
+.manager-taxonomy-setting .clickable-icon[aria-label*="删除"]:hover,
+.manager-taxonomy-setting .clickable-icon[aria-label*="Delete"]:hover {
+    color: var(--text-error);
+    background: color-mix(in srgb, var(--text-error) 10%, transparent);
+}
+
+.manager-taxonomy-editor .manager-tag-editor__save-button,
+.manager-taxonomy-editor .manager-tag-editor__create-action--primary {
+    border-color: color-mix(in srgb, var(--interactive-accent) 48%, var(--bpm-border, var(--background-modifier-border)));
+    background: color-mix(in srgb, var(--interactive-accent) 13%, var(--bpm-card, var(--background-primary)));
+    color: var(--text-accent);
+}
+
+.manager-taxonomy-editor .manager-tag-editor__toggle {
+    width: 44px;
+    min-width: 44px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__name-input,
+.manager-taxonomy-editor .manager-editor__item-input,
+.manager-taxonomy-setting__input {
+    min-height: 34px;
+    border-color: color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 84%, transparent);
+    border-radius: 7px;
+    background: var(--bpm-card, var(--background-primary));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__name-input {
+    width: 190px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__create-panel {
+    gap: 12px;
+    padding: 14px;
+    border: 1px dashed color-mix(in srgb, var(--interactive-accent) 42%, var(--bpm-border, var(--background-modifier-border)));
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--interactive-accent) 5%, var(--bpm-card, var(--background-primary)));
+    box-shadow: none;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__create-preview {
+    padding: 10px 12px;
+    border-color: color-mix(in srgb, var(--bpm-border, var(--background-modifier-border)) 72%, transparent);
+    border-radius: 8px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__create-title {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__create-form {
+    grid-template-columns: 84px minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__create-label {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__add-trigger.setting-item {
+    border-style: dashed;
+    background: color-mix(in srgb, var(--bpm-muted, var(--background-secondary)) 28%, var(--bpm-card, var(--background-primary)));
+}
+
+.manager-taxonomy-setting {
+    display: flex;
+    flex-direction: column;
+}
+
+.manager-taxonomy-setting__header {
+    padding: 14px;
+}
+
+.manager-taxonomy-setting__list {
+    gap: 9px;
+}
+
+.manager-taxonomy-setting__row.setting-item {
+    min-height: 58px;
+    padding: 12px 14px;
+}
+
+.manager-taxonomy-setting__row--create.setting-item {
+    border-style: dashed;
+    background: color-mix(in srgb, var(--bpm-muted, var(--background-secondary)) 28%, var(--bpm-card, var(--background-primary)));
+}
+
+.manager-taxonomy-setting__row>.setting-item-info {
+    padding: 0;
+}
+
+.manager-taxonomy-setting__row .setting-item-name {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.manager-taxonomy-setting__row .setting-item-description {
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.manager-taxonomy-setting__controls.setting-item-control {
+    align-items: center;
+    gap: 8px;
+}
+
+.manager-taxonomy-setting__input {
+    width: 154px;
+}
+
+@media (max-width: 760px) {
+    .manager-taxonomy-editor.manager-editor__container {
+        width: min(94vw, 720px);
+        max-height: 88vh;
+    }
+
+    .manager-taxonomy-editor .manager-tag-editor__titlebar.setting-item,
+    .manager-taxonomy-editor .manager-tag-editor__summary,
+    .manager-taxonomy-editor .manager-tag-editor__item.setting-item,
+    .manager-taxonomy-editor .manager-tag-editor__item.is-editing,
+    .manager-taxonomy-editor .manager-tag-editor__add-trigger.setting-item,
+    .manager-taxonomy-setting__header,
+    .manager-taxonomy-setting__row.setting-item {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .manager-taxonomy-editor .manager-tag-editor__item>.setting-item-control,
+    .manager-taxonomy-editor .manager-tag-editor__item.is-editing>.setting-item-control,
+    .manager-taxonomy-editor .manager-tag-editor__summary-stats,
+    .manager-taxonomy-editor .manager-tag-editor__add-trigger>.setting-item-control,
+    .manager-taxonomy-setting__stats,
+    .manager-taxonomy-setting__controls.setting-item-control {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .manager-taxonomy-editor .manager-tag-editor__summary-desc {
+        white-space: normal;
+    }
+
+    .manager-taxonomy-editor .manager-tag-editor__chip-slot,
+    .manager-taxonomy-editor .manager-tag-editor__id {
+        max-width: 100%;
+    }
+
+    .manager-taxonomy-editor .manager-tag-editor__name-input,
+    .manager-taxonomy-setting__input {
+        width: min(100%, 240px);
+    }
+
+    .manager-taxonomy-editor .manager-tag-editor__create-form {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Taxonomy spacing correction: reduce visual noise and give every item real breathing room. */
+.manager-taxonomy-editor.manager-editor__container {
+    border-color: color-mix(in srgb, var(--background-modifier-border) 64%, transparent);
+    background: var(--background-primary);
+}
+
+.manager-taxonomy-editor .manager-container__header {
+    background: var(--background-primary);
+}
+
+.manager-taxonomy-editor .manager-tag-editor__titlebar.setting-item {
+    min-height: 72px;
+    padding: 16px 18px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__body.manager-item-container {
+    padding: 18px;
+    background: color-mix(in srgb, var(--background-secondary) 40%, var(--background-primary));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__page {
+    gap: 14px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__list {
+    gap: 12px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary,
+.manager-taxonomy-setting__header {
+    padding: 16px 18px;
+    border-color: transparent;
+    background: color-mix(in srgb, var(--background-secondary) 46%, var(--background-primary));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary-title,
+.manager-taxonomy-setting__title {
+    font-size: 15px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary-desc,
+.manager-taxonomy-setting__desc {
+    margin-top: 6px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.setting-item,
+.manager-taxonomy-editor .manager-tag-editor__add-trigger.setting-item,
+.manager-taxonomy-setting__row.setting-item {
+    min-height: 72px;
+    padding: 16px 18px;
+    border-color: color-mix(in srgb, var(--background-modifier-border) 62%, transparent);
+    background: color-mix(in srgb, var(--background-primary) 96%, var(--background-secondary));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.setting-item:hover,
+.manager-taxonomy-editor .manager-tag-editor__add-trigger.setting-item:hover,
+.manager-taxonomy-setting__row.setting-item:hover {
+    border-color: color-mix(in srgb, var(--interactive-accent) 28%, var(--background-modifier-border));
+    background: color-mix(in srgb, var(--background-secondary) 34%, var(--background-primary));
+    box-shadow: none;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item.is-assigned,
+.manager-taxonomy-setting__row.is-used {
+    padding-left: 18px;
+    border-left: 3px solid color-mix(in srgb, var(--interactive-accent) 70%, var(--background-modifier-border));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item>.setting-item-info,
+.manager-taxonomy-editor .manager-tag-editor__add-trigger>.setting-item-info,
+.manager-taxonomy-setting__row>.setting-item-info {
+    padding: 2px 0;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__item>.setting-item-control,
+.manager-taxonomy-editor .manager-tag-editor__add-trigger>.setting-item-control,
+.manager-taxonomy-setting__controls.setting-item-control {
+    gap: 10px;
+    padding: 2px 0;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__preview-line,
+.manager-taxonomy-setting__item-title {
+    gap: 10px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__meta,
+.manager-taxonomy-setting__meta {
+    margin-top: 9px;
+    gap: 10px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__chip.manager-tag,
+.manager-taxonomy-setting__preview.manager-tag {
+    min-height: 26px;
+    height: 26px;
+    padding: 0 10px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__id,
+.manager-taxonomy-setting__id {
+    min-height: 24px;
+    padding: 0 8px;
+    border-color: transparent;
+    background: color-mix(in srgb, var(--background-secondary) 68%, transparent);
+}
+
+.manager-taxonomy-editor .manager-tag-editor__summary-stat,
+.manager-taxonomy-editor .manager-tag-editor__badge,
+.manager-taxonomy-setting__stat,
+.manager-taxonomy-setting__badge {
+    min-height: 26px;
+    padding: 0 9px;
+    border-color: transparent;
+}
+
+.manager-taxonomy-editor input[type="color"],
+.manager-taxonomy-setting input[type="color"],
+.manager-taxonomy-editor .clickable-icon,
+.manager-taxonomy-editor button,
+.manager-taxonomy-setting .clickable-icon,
+.manager-taxonomy-setting button {
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__name-input,
+.manager-taxonomy-editor .manager-editor__item-input,
+.manager-taxonomy-setting__input {
+    min-height: 36px;
+}
+
+.manager-taxonomy-editor .manager-tag-editor__create-panel {
+    gap: 14px;
+    padding: 18px;
+    border-color: color-mix(in srgb, var(--interactive-accent) 34%, var(--background-modifier-border));
+    background: color-mix(in srgb, var(--background-primary) 94%, var(--background-secondary));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__create-preview {
+    padding: 14px;
+    border-color: transparent;
+    background: color-mix(in srgb, var(--background-secondary) 44%, var(--background-primary));
+}
+
+.manager-taxonomy-editor .manager-tag-editor__create-form {
+    gap: 12px;
+}
+
+.manager-taxonomy-setting {
+    gap: 14px;
+    padding: 6px 2px 8px;
+}
+
+.manager-taxonomy-setting__list {
+    gap: 12px;
+}
+
+.manager-taxonomy-setting__controls.setting-item-control {
+    justify-content: flex-end;
+}
+
+@media (max-width: 760px) {
+    .manager-taxonomy-editor .manager-tag-editor__titlebar.setting-item,
+    .manager-taxonomy-editor .manager-tag-editor__body.manager-item-container,
+    .manager-taxonomy-editor .manager-tag-editor__summary,
+    .manager-taxonomy-editor .manager-tag-editor__item.setting-item,
+    .manager-taxonomy-editor .manager-tag-editor__add-trigger.setting-item,
+    .manager-taxonomy-editor .manager-tag-editor__create-panel,
+    .manager-taxonomy-setting__header,
+    .manager-taxonomy-setting__row.setting-item {
+        padding: 14px;
+    }
+
+    .manager-taxonomy-editor .manager-tag-editor__item>.setting-item-control,
+    .manager-taxonomy-editor .manager-tag-editor__add-trigger>.setting-item-control,
+    .manager-taxonomy-setting__controls.setting-item-control {
+        gap: 8px;
+    }
+}
+
+/* Plugin overview edit-mode group/tag modal: target the existing runtime class, no rebuild-only class required. */
+.manager-tag-editor.manager-editor__container {
+    width: min(720px, calc(100vw - 32px)) !important;
+    border: 1px solid color-mix(in srgb, var(--background-modifier-border) 60%, transparent) !important;
+    border-radius: 12px !important;
+    background: var(--background-primary) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18) !important;
+}
+
+.manager-tag-editor .manager-container__header {
+    padding: 0 !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--background-modifier-border) 64%, transparent) !important;
+    background: var(--background-primary) !important;
+}
+
+.manager-tag-editor .manager-tag-editor__titlebar.setting-item {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 16px !important;
+    min-height: 76px !important;
+    padding: 18px 20px !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.manager-tag-editor .manager-tag-editor__title {
+    gap: 12px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__title-icon {
+    width: 36px !important;
+    height: 36px !important;
+    flex-basis: 36px !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: color-mix(in srgb, var(--interactive-accent) 14%, var(--background-secondary)) !important;
+    color: var(--text-accent) !important;
+}
+
+.manager-tag-editor .manager-tag-editor__eyebrow {
+    color: var(--text-accent) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__plugin-name {
+    margin-top: 4px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__titlebar .setting-item-description {
+    margin-top: 6px !important;
+    color: var(--text-muted) !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__body.manager-item-container {
+    padding: 18px !important;
+    background: color-mix(in srgb, var(--background-secondary) 42%, var(--background-primary)) !important;
+}
+
+.manager-tag-editor .manager-tag-editor__page {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 16px !important;
+    align-items: center !important;
+    padding: 16px 18px !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: color-mix(in srgb, var(--background-secondary) 56%, var(--background-primary)) !important;
+    box-shadow: none !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary-title {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary-desc {
+    margin-top: 6px !important;
+    color: var(--text-muted) !important;
+    line-height: 1.45 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary-stats {
+    gap: 8px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary-stat,
+.manager-tag-editor .manager-tag-editor__badge {
+    min-height: 26px !important;
+    padding: 0 9px !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: color-mix(in srgb, var(--background-primary) 72%, var(--background-secondary)) !important;
+    font-size: 11px !important;
+    font-weight: 650 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item.setting-item,
+.manager-tag-editor .manager-tag-editor__add-trigger.setting-item {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 18px !important;
+    min-height: 76px !important;
+    margin: 0 !important;
+    padding: 18px 20px !important;
+    border: 1px solid color-mix(in srgb, var(--background-modifier-border) 58%, transparent) !important;
+    border-radius: 10px !important;
+    background: color-mix(in srgb, var(--background-primary) 96%, var(--background-secondary)) !important;
+    box-shadow: none !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item.setting-item:hover,
+.manager-tag-editor .manager-tag-editor__add-trigger.setting-item:hover {
+    border-color: color-mix(in srgb, var(--interactive-accent) 30%, var(--background-modifier-border)) !important;
+    background: color-mix(in srgb, var(--background-secondary) 34%, var(--background-primary)) !important;
+    box-shadow: none !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item.is-assigned {
+    border-left: 4px solid color-mix(in srgb, var(--interactive-accent) 72%, var(--background-modifier-border)) !important;
+    padding-left: 18px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item.is-editing {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    border-color: color-mix(in srgb, var(--interactive-accent) 44%, var(--background-modifier-border)) !important;
+    background: color-mix(in srgb, var(--interactive-accent) 8%, var(--background-primary)) !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item > .setting-item-info,
+.manager-tag-editor .manager-tag-editor__add-trigger > .setting-item-info {
+    min-width: 0 !important;
+    padding: 2px 0 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item > .setting-item-control,
+.manager-tag-editor .manager-tag-editor__add-trigger > .setting-item-control {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    min-width: 0 !important;
+    padding: 2px 0 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__preview-line {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__chip-slot {
+    min-width: 0 !important;
+    max-width: 260px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.manager-tag-editor .manager-tag-editor__chip.manager-tag {
+    height: 26px !important;
+    min-height: 26px !important;
+    margin-left: 0 !important;
+    padding: 0 10px !important;
+    border-radius: 7px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__id {
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 24px !important;
+    max-width: 220px !important;
+    padding: 0 8px !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: color-mix(in srgb, var(--background-secondary) 68%, transparent) !important;
+    color: var(--text-muted) !important;
+    font-family: var(--font-monospace) !important;
+    font-size: 11px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__meta {
+    margin-top: 10px !important;
+    gap: 10px !important;
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+}
+
+.manager-tag-editor input[type="color"],
+.manager-tag-editor .clickable-icon,
+.manager-tag-editor button {
+    min-width: 38px !important;
+    min-height: 38px !important;
+    border-radius: 8px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__name-input,
+.manager-tag-editor .manager-editor__item-input {
+    min-height: 38px !important;
+    border-radius: 8px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-panel {
+    gap: 14px !important;
+    padding: 18px !important;
+    border: 1px dashed color-mix(in srgb, var(--interactive-accent) 36%, var(--background-modifier-border)) !important;
+    border-radius: 10px !important;
+    background: color-mix(in srgb, var(--background-primary) 94%, var(--background-secondary)) !important;
+    box-shadow: none !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-preview {
+    padding: 14px !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: color-mix(in srgb, var(--background-secondary) 48%, var(--background-primary)) !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-form {
+    gap: 12px !important;
+}
+
+@media (max-width: 760px) {
+    .manager-tag-editor .manager-tag-editor__titlebar.setting-item,
+    .manager-tag-editor .manager-tag-editor__summary,
+    .manager-tag-editor .manager-tag-editor__item.setting-item,
+    .manager-tag-editor .manager-tag-editor__add-trigger.setting-item,
+    .manager-tag-editor .manager-tag-editor__create-panel {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 14px !important;
+    }
+
+    .manager-tag-editor .manager-tag-editor__body.manager-item-container {
+        padding: 14px !important;
+    }
+
+    .manager-tag-editor .manager-tag-editor__summary-stats,
+    .manager-tag-editor .manager-tag-editor__item > .setting-item-control,
+    .manager-tag-editor .manager-tag-editor__add-trigger > .setting-item-control {
+        justify-content: flex-start !important;
+        width: 100% !important;
+    }
+}
+
+/* Compact taxonomy editing density: these are editor lists, not display cards. */
+.manager-tag-editor .manager-tag-editor__body.manager-item-container {
+    padding: 12px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__page {
+    gap: 10px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__list {
+    gap: 7px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary {
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary-title {
+    font-size: 13px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary-desc {
+    margin-top: 3px !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__summary-stat,
+.manager-tag-editor .manager-tag-editor__badge {
+    min-height: 21px !important;
+    padding: 0 7px !important;
+    font-size: 10px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item.setting-item,
+.manager-tag-editor .manager-tag-editor__add-trigger.setting-item {
+    min-height: 50px !important;
+    gap: 12px !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item.is-assigned {
+    padding-left: 10px !important;
+    border-left-width: 3px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item > .setting-item-info,
+.manager-tag-editor .manager-tag-editor__add-trigger > .setting-item-info {
+    padding: 0 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item > .setting-item-control,
+.manager-tag-editor .manager-tag-editor__add-trigger > .setting-item-control {
+    gap: 6px !important;
+    padding: 0 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__preview-line {
+    gap: 7px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__chip.manager-tag {
+    height: 22px !important;
+    min-height: 22px !important;
+    padding: 0 8px !important;
+    border-radius: 6px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__id {
+    min-height: 20px !important;
+    padding: 0 6px !important;
+    border-radius: 6px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__meta {
+    margin-top: 4px !important;
+    gap: 7px !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+}
+
+.manager-tag-editor input[type="color"],
+.manager-tag-editor .clickable-icon,
+.manager-tag-editor button {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 7px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__toggle {
+    width: 38px !important;
+    min-width: 38px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__name-input,
+.manager-tag-editor .manager-editor__item-input {
+    min-height: 32px !important;
+    height: 32px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-panel {
+    gap: 10px !important;
+    padding: 12px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-preview {
+    padding: 9px 10px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-form {
+    gap: 8px !important;
+}
+
+.manager-taxonomy-setting {
+    gap: 10px !important;
+    padding: 2px 0 4px !important;
+}
+
+.manager-taxonomy-setting__list {
+    gap: 7px !important;
+}
+
+.manager-taxonomy-setting__header {
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+}
+
+.manager-taxonomy-setting__row.setting-item {
+    min-height: 50px !important;
+    gap: 10px !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+}
+
+.manager-taxonomy-setting__row.is-used {
+    padding-left: 10px !important;
+    border-left-width: 3px !important;
+}
+
+.manager-taxonomy-setting__row > .setting-item-info {
+    padding: 0 !important;
+}
+
+.manager-taxonomy-setting__controls.setting-item-control {
+    gap: 6px !important;
+    padding: 0 !important;
+}
+
+.manager-taxonomy-setting__item-title {
+    gap: 7px !important;
+}
+
+.manager-taxonomy-setting__preview.manager-tag {
+    height: 22px !important;
+    min-height: 22px !important;
+    padding: 0 8px !important;
+}
+
+.manager-taxonomy-setting__id {
+    min-height: 20px !important;
+    padding: 0 6px !important;
+}
+
+.manager-taxonomy-setting__meta {
+    margin-top: 4px !important;
+    gap: 7px !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+}
+
+.manager-taxonomy-setting input[type="color"],
+.manager-taxonomy-setting .clickable-icon,
+.manager-taxonomy-setting button {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.manager-taxonomy-setting__input {
+    min-height: 32px !important;
+    height: 32px !important;
+}
+
+@media (max-width: 760px) {
+    .manager-tag-editor .manager-tag-editor__item.setting-item,
+    .manager-tag-editor .manager-tag-editor__add-trigger.setting-item,
+    .manager-taxonomy-setting__row.setting-item {
+        min-height: 56px !important;
+        padding: 10px 12px !important;
+    }
+
+    .manager-tag-editor input[type="color"],
+    .manager-tag-editor .clickable-icon,
+    .manager-tag-editor button,
+    .manager-taxonomy-setting input[type="color"],
+    .manager-taxonomy-setting .clickable-icon,
+    .manager-taxonomy-setting button {
+        min-width: 36px !important;
+        min-height: 36px !important;
+        width: 36px !important;
+        height: 36px !important;
+    }
+}
+
+/* Final edit-mode group/tag control polish: fixed toggle thumb alignment and text button widths. */
+.manager-tag-editor .checkbox-container.manager-tag-editor__toggle {
+    position: relative !important;
+    display: inline-flex !important;
+    flex: 0 0 38px !important;
+    align-items: center !important;
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+    background: color-mix(in srgb, var(--text-muted) 28%, var(--background-secondary)) !important;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--background-modifier-border) 70%, transparent) !important;
+}
+
+.manager-tag-editor .checkbox-container.manager-tag-editor__toggle.is-enabled {
+    background: color-mix(in srgb, var(--interactive-accent) 82%, var(--background-secondary)) !important;
+    box-shadow: none !important;
+}
+
+.manager-tag-editor .checkbox-container.manager-tag-editor__toggle::after {
+    top: 2px !important;
+    left: 2px !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
+    transform: translateX(0) !important;
+    background: var(--background-primary) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24) !important;
+}
+
+.manager-tag-editor .checkbox-container.manager-tag-editor__toggle.is-enabled::after {
+    transform: translateX(16px) !important;
+}
+
+.manager-tag-editor .checkbox-container.manager-tag-editor__toggle input {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-action {
+    width: auto !important;
+    min-width: 72px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 0 11px !important;
+    gap: 6px !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-action--primary {
+    min-width: 92px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__create-action-icon,
+.manager-tag-editor .manager-tag-editor__create-action-icon svg {
+    flex: 0 0 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.manager-tag-editor .manager-tag-editor__add-trigger.setting-item {
+    border-style: dashed !important;
+    background: color-mix(in srgb, var(--background-secondary) 32%, var(--background-primary)) !important;
+}
+
+.manager-tag-editor .manager-tag-editor__add-trigger .setting-item-name {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__add-trigger .setting-item-description {
+    margin-top: 2px !important;
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+}
+
+.manager-tag-editor .manager-tag-editor__add-trigger .clickable-icon.manager-tag-editor__save-button {
+    width: 32px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    border-radius: 8px !important;
+    background: color-mix(in srgb, var(--interactive-accent) 12%, var(--background-primary)) !important;
+    color: var(--text-accent) !important;
+}
+
+.manager-tag-editor .manager-tag-editor__item-actions.setting-item-control {
+    align-items: center !important;
+}
+
+/* Appearance overview polish: keep these overrides after the unified item rules. */
+.manager-container .manager-theme-overview {
+    gap: var(--bpm-item-gap);
+    padding: 0;
+}
+
+.manager-container.manager-container--main .manager-modal-page.manager-theme-overview {
+    padding: 0 !important;
+    scroll-padding-top: 0;
+}
+
+.manager-container .manager-theme-overview .manager-appearance-workspace,
+.manager-container .manager-theme-overview .manager-appearance-body {
+    gap: var(--bpm-item-gap);
+}
+
+.manager-container .manager-theme-overview .manager-appearance-toolbar {
+    justify-content: flex-start;
+}
+
+.manager-container .manager-theme-overview .manager-appearance-section {
+    gap: 10px;
+}
+
+.manager-container .manager-theme-overview .manager-appearance-tabs {
+    flex: 0 0 auto;
+}
+
+.manager-container .manager-theme-overview .manager-appearance-section__list {
+    gap: 10px;
+    padding-top: 2px;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card {
+    position: relative;
+    align-items: stretch;
+    gap: 12px;
+    min-height: 58px;
+    padding: 10px 12px !important;
+    border-left-width: 3px;
+    border-left-color: transparent;
+    background: color-mix(in srgb, var(--bpm-card) 96%, var(--bpm-surface));
+}
+
+.manager-container .manager-theme-overview .manager-theme-card:hover {
+    transform: translateY(-1px);
+}
+
+.manager-container .manager-theme-overview .manager-theme-card.is-active-theme {
+    border-left-color: color-mix(in srgb, var(--interactive-accent) 78%, var(--bpm-border));
+    background: color-mix(in srgb, var(--interactive-accent) 7%, var(--bpm-card));
+}
+
+.manager-container .manager-theme-overview .manager-css-snippet-card:not(.is-active-theme) {
+    border-left-color: color-mix(in srgb, var(--text-muted) 18%, transparent);
+}
+
+.manager-container .manager-theme-overview .manager-theme-card > .setting-item-info {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+    min-width: 0;
+    padding: 0;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__header {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 28px;
+    padding: 0;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__title-row {
+    gap: 7px;
+    width: 100%;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__icon {
+    width: 26px;
+    height: 26px;
+    border: 1px solid color-mix(in srgb, var(--interactive-accent) 25%, var(--bpm-border));
+    border-radius: var(--bpm-radius-xs);
+    background: color-mix(in srgb, var(--interactive-accent) 8%, var(--bpm-card));
+}
+
+.manager-container .manager-theme-overview .manager-css-snippet-card:not(.is-active-theme) .manager-theme-card__icon {
+    border-color: var(--bpm-border);
+    background: color-mix(in srgb, var(--bpm-muted) 64%, var(--bpm-card));
+    color: var(--text-muted);
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__name {
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__chip {
+    min-height: 20px;
+    padding: 1px 7px;
+    background: color-mix(in srgb, var(--bpm-muted) 48%, var(--bpm-card));
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__body {
+    min-width: 0;
+    padding: 0;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__meta {
+    gap: 4px 10px;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__meta-row {
+    min-height: 19px;
+    padding: 1px 0;
+    line-height: 1.35;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__meta-label {
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__meta-value {
+    font-size: 12px;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__actions.setting-item-control {
+    align-self: center;
+    gap: 5px;
+    min-width: max-content;
+    padding: 0;
+}
+
+.manager-container .manager-theme-overview .manager-theme-card__actions .clickable-icon,
+.manager-container .manager-theme-overview .manager-theme-card__actions button {
+    min-width: 28px;
+    min-height: 28px;
+}
+
+.manager-container .manager-theme-overview .manager-appearance-inline-empty {
+    padding: 14px 16px;
+    background: color-mix(in srgb, var(--bpm-muted) 42%, var(--bpm-card));
+}
+
+.manager-container .manager-theme-overview .manager-appearance-profile-card .manager-theme-card__icon {
+    border-color: color-mix(in srgb, var(--interactive-accent) 22%, var(--bpm-border));
+    background: color-mix(in srgb, var(--interactive-accent) 6%, var(--bpm-card));
+}
+
+.manager-appearance-profile-modal .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.manager-appearance-profile-modal__snippet-header {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 6px;
+    padding: 8px 0 4px;
+    border-bottom: 1px solid var(--background-modifier-border);
+    font-weight: 650;
+}
+
+.manager-appearance-profile-modal__snippet-header span:last-child {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.manager-appearance-profile-modal__snippet-list {
+    display: flex;
+    flex-direction: column;
+    max-height: min(42vh, 420px);
+    overflow: auto;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: var(--bpm-radius-sm);
+}
+
+.manager-appearance-profile-modal__snippet-list .setting-item {
+    padding: 8px 10px;
+}
+
+.manager-appearance-profile-modal__footer {
+    border-top: 1px solid var(--background-modifier-border);
+}
+
+@media (max-width: 720px) {
+    .manager-container .manager-theme-overview {
+        gap: 14px;
+        padding: 0;
+    }
+
+    .manager-container.manager-container--main .manager-modal-page.manager-theme-overview {
+        padding: 0 !important;
+        scroll-padding-top: 0;
+    }
+
+    .manager-container .manager-theme-overview .manager-theme-card {
+        gap: 10px;
+        padding: 10px 12px !important;
+    }
+
+    .manager-container .manager-theme-overview .manager-theme-card__actions.setting-item-control {
+        align-self: stretch;
+        justify-content: flex-start;
+        padding-top: 2px;
+    }
 }

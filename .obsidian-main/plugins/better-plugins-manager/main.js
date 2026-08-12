@@ -24,7 +24,7 @@ __export(main_exports, {
 module.exports = __toCommonJS(main_exports);
 
 // src/main.ts
-var import_obsidian32 = require("obsidian");
+var import_obsidian33 = require("obsidian");
 
 // src/settings/data.ts
 var MAIN_PAGE_ACTION_IDS = [
@@ -76,6 +76,10 @@ var DEFAULT_SETTINGS = {
   SELF_CHECK_IGNORED: false,
   COMMAND_ITEM: false,
   COMMAND_GROUP: false,
+  COMMAND_TAG: false,
+  COMMAND_PROFILE: false,
+  COMMAND_PROFILES: [],
+  APPEARANCE_PROFILES: [],
   STARTUP_CHECK_UPDATES: false,
   SOURCE_STARTUP_CHECK_UPDATES: false,
   SOURCE_AUTO_UPDATE: true,
@@ -100,6 +104,7 @@ var DEFAULT_SETTINGS = {
   FILTER_DELAY_OPERATOR: "contains",
   // 样式设置页
   PLUGIN_OVERVIEW_LAYOUT: "list",
+  PLUGIN_OVERVIEW_SORT: "layout",
   ITEM_STYLE: "alwaysExpand",
   GROUP_STYLE: "a",
   TAG_STYLE: "b",
@@ -134,7 +139,7 @@ var DEFAULT_SETTINGS = {
 };
 
 // src/settings/index.ts
-var import_obsidian27 = require("obsidian");
+var import_obsidian28 = require("obsidian");
 
 // src/settings/base-setting.ts
 var BaseSetting = class {
@@ -154,6 +159,9 @@ var BaseSetting = class {
 };
 
 // src/settings/ui/manager-basis.ts
+var import_obsidian22 = require("obsidian");
+
+// src/command.ts
 var import_obsidian21 = require("obsidian");
 
 // src/modal/manager-modal.ts
@@ -270,6 +278,8 @@ var GroupModal = class extends import_obsidian2.Modal {
       return;
     modalEl.addClass("manager-editor__container");
     modalEl.addClass("manager-tag-editor");
+    modalEl.addClass("manager-taxonomy-editor");
+    modalEl.addClass("manager-taxonomy-editor--group");
     modalEl.addClass("manager-group-editor");
     (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
     (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
@@ -822,7 +832,7 @@ var TagsModal = class extends import_obsidian4.Modal {
     }, 0);
   }
   isPresetTag(tagId) {
-    return tagId === BPM_TAG_ID || tagId === BPM_IGNORE_TAG;
+    return tagId === BPM_TAG_ID || tagId === BPM_IGNORE_TAG || tagId === EONDR_PLUGIN_TAG_ID;
   }
   async showHead() {
     var _a, _b;
@@ -832,6 +842,8 @@ var TagsModal = class extends import_obsidian4.Modal {
       return;
     modalEl.addClass("manager-editor__container");
     modalEl.addClass("manager-tag-editor");
+    modalEl.addClass("manager-taxonomy-editor");
+    modalEl.addClass("manager-taxonomy-editor--tag");
     (_a = modalEl.getElementsByClassName("modal-close-button")[0]) == null ? void 0 : _a.remove();
     (_b = this.titleEl.parentElement) == null ? void 0 : _b.addClass("manager-container__header");
     this.contentEl.addClass("manager-item-container");
@@ -1619,9 +1631,9 @@ var HideModal = class extends import_obsidian7.Modal {
   }
   async showData() {
     for (const plugin of this.plugins) {
-      const ManagerPlugin4 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
-      const isEnabled = this.settings.DELAY ? ManagerPlugin4 == null ? void 0 : ManagerPlugin4.enabled : this.appPlugins.enabledPlugins.has(plugin.id);
-      if (ManagerPlugin4) {
+      const ManagerPlugin5 = this.manager.settings.Plugins.find((mp) => mp.id === plugin.id);
+      const isEnabled = this.settings.DELAY ? ManagerPlugin5 == null ? void 0 : ManagerPlugin5.enabled : this.appPlugins.enabledPlugins.has(plugin.id);
+      if (ManagerPlugin5) {
         switch (this.filter) {
           case "enabled":
             if (!isEnabled)
@@ -1632,35 +1644,35 @@ var HideModal = class extends import_obsidian7.Modal {
               continue;
             break;
           case "grouped":
-            if (ManagerPlugin4.group === "")
+            if (ManagerPlugin5.group === "")
               continue;
             break;
           case "ungrouped":
-            if (ManagerPlugin4.group !== "")
+            if (ManagerPlugin5.group !== "")
               continue;
             break;
           case "tagged":
-            if (ManagerPlugin4.tags.length === 0)
+            if (ManagerPlugin5.tags.length === 0)
               continue;
             break;
           case "untagged":
-            if (ManagerPlugin4.tags.length > 0)
+            if (ManagerPlugin5.tags.length > 0)
               continue;
             break;
           case "noted":
-            if (!ManagerPlugin4.note || ManagerPlugin4.note === "")
+            if (!ManagerPlugin5.note || ManagerPlugin5.note === "")
               continue;
             break;
           default:
             break;
         }
-        if (!this.matchesSingleValueFilter(ManagerPlugin4.group, this.group, this.groupOperator))
+        if (!this.matchesSingleValueFilter(ManagerPlugin5.group, this.group, this.groupOperator))
           continue;
-        if (!this.matchesTagFilter(ManagerPlugin4.tags, this.tag, this.tagOperator))
+        if (!this.matchesTagFilter(ManagerPlugin5.tags, this.tag, this.tagOperator))
           continue;
-        if (!this.matchesSingleValueFilter(ManagerPlugin4.delay, this.delay, this.delayOperator))
+        if (!this.matchesSingleValueFilter(ManagerPlugin5.delay, this.delay, this.delayOperator))
           continue;
-        if (this.searchText !== "" && ManagerPlugin4.name.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && ManagerPlugin4.desc.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && plugin.author.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1)
+        if (this.searchText !== "" && ManagerPlugin5.name.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && ManagerPlugin5.desc.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1 && plugin.author.toLowerCase().indexOf(this.searchText.toLowerCase()) == -1)
           continue;
         if (plugin.id === this.manager.manifest.id)
           continue;
@@ -1668,31 +1680,31 @@ var HideModal = class extends import_obsidian7.Modal {
         itemEl.setClass("manager-item");
         itemEl.nameEl.addClass("manager-item__name-container");
         itemEl.descEl.addClass("manager-item__description-container");
-        if (ManagerPlugin4.group !== "") {
+        if (ManagerPlugin5.group !== "") {
           const group = createSpan({ cls: "manager-item__name-group" });
           itemEl.nameEl.appendChild(group);
-          const item = this.settings.GROUPS.find((t) => t.id === ManagerPlugin4.group);
+          const item = this.settings.GROUPS.find((t) => t.id === ManagerPlugin5.group);
           if (item) {
             const tag = this.manager.createTag(item.name, item.color, this.settings.GROUP_STYLE);
             group.appendChild(tag);
           }
         }
-        const title = createSpan({ text: ManagerPlugin4.name, cls: "manager-item__name-title" });
+        const title = createSpan({ text: ManagerPlugin5.name, cls: "manager-item__name-title" });
         itemEl.nameEl.appendChild(title);
         const version = createSpan({ text: `[${plugin.version}]`, cls: ["manager-item__name-version"] });
         itemEl.nameEl.appendChild(version);
-        if (this.settings.DELAY && ManagerPlugin4.delay !== "") {
-          const d = this.settings.DELAYS.find((item) => item.id === ManagerPlugin4.delay);
+        if (this.settings.DELAY && ManagerPlugin5.delay !== "") {
+          const d = this.settings.DELAYS.find((item) => item.id === ManagerPlugin5.delay);
           if (d) {
             const delay = createSpan({ text: `${d.time}s`, cls: ["manager-item__name-delay"] });
             itemEl.nameEl.appendChild(delay);
           }
         }
-        const desc = createDiv({ text: ManagerPlugin4.desc, cls: ["manager-item__name-desc"] });
+        const desc = createDiv({ text: ManagerPlugin5.desc, cls: ["manager-item__name-desc"] });
         itemEl.descEl.appendChild(desc);
         const tags = createDiv();
         itemEl.descEl.appendChild(tags);
-        ManagerPlugin4.tags.map((id) => {
+        ManagerPlugin5.tags.map((id) => {
           const item = this.settings.TAGS.find((item2) => item2.id === id);
           if (item) {
             const tag = this.manager.createTag(item.name, item.color, this.settings.TAG_STYLE);
@@ -5101,6 +5113,121 @@ var SHARED_VAULTS_ENABLED = false;
 var SUPPORT_QQ_GROUP_URL = "https://qm.qq.com/cgi-bin/qm/qr?k=kHTS0iC1FC5igTXbdbKzff6_tc54mOF5&jump_from=webapi&authKey=AoSkriW+nDeDzBPqBl9jcpbAYkPXN2QRbrMh0hFbvMrGbqZyRAbJwaD6JKbOy4Nx";
 var SUPPORT_QQ_GROUP_LABEL = "\u52A0\u5165 QQ \u7FA4";
 var SUPPORT_QQ_GROUP_TOOLTIP = "\u52A0\u5165 QQ \u7FA4\u54A8\u8BE2\u95EE\u9898";
+var AppearanceProfileModal = class extends import_obsidian18.Modal {
+  constructor(app, manager, profile, themes, snippets, onSave) {
+    super(app);
+    this.manager = manager;
+    this.profile = {
+      ...profile,
+      enableSnippets: [...profile.enableSnippets || []],
+      disableSnippets: [...profile.disableSnippets || []]
+    };
+    this.themes = themes;
+    this.snippets = snippets;
+    this.onSave = onSave;
+  }
+  onOpen() {
+    const t = (key, vars) => this.manager.translator.t(key, vars);
+    const modalEl = this.contentEl.parentElement;
+    modalEl == null ? void 0 : modalEl.addClass("manager-appearance-profile-modal");
+    this.titleEl.setText(t(this.profile.id ? "\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7F16\u8F91\u6807\u9898" : "\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u65B0\u5EFA\u6807\u9898"));
+    this.contentEl.empty();
+    let name = this.profile.name || t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u9ED8\u8BA4\u540D\u79F0");
+    let theme = this.profile.theme || "";
+    let mode = this.profile.mode || "merge";
+    let autoApplyOnTheme = Boolean(this.profile.autoApplyOnTheme);
+    const snippetChoices = /* @__PURE__ */ new Map();
+    new Set(this.profile.enableSnippets || []).forEach((id) => snippetChoices.set(id, "enable"));
+    new Set(this.profile.disableSnippets || []).forEach((id) => {
+      if (!snippetChoices.has(id))
+        snippetChoices.set(id, "disable");
+    });
+    new import_obsidian18.Setting(this.contentEl).setName(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u540D\u79F0")).addText((text) => {
+      text.setValue(name);
+      text.setPlaceholder(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u9ED8\u8BA4\u540D\u79F0"));
+      text.onChange((value) => {
+        name = value;
+      });
+    });
+    new import_obsidian18.Setting(this.contentEl).setName(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7ED1\u5B9A\u4E3B\u9898")).setDesc(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7ED1\u5B9A\u4E3B\u9898\u8BF4\u660E")).addDropdown((dropdown) => {
+      dropdown.addOption("", t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u4E0D\u7ED1\u5B9A\u4E3B\u9898"));
+      this.themes.forEach((item) => dropdown.addOption(item.name, item.name));
+      dropdown.setValue(theme);
+      dropdown.onChange((value) => {
+        theme = value;
+      });
+    });
+    new import_obsidian18.Setting(this.contentEl).setName(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u6A21\u5F0F")).setDesc(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u6A21\u5F0F\u8BF4\u660E")).addDropdown((dropdown) => {
+      dropdown.addOption("merge", t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5408\u5E76\u6A21\u5F0F"));
+      dropdown.addOption("exact", t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7CBE\u786E\u6A21\u5F0F"));
+      dropdown.setValue(mode);
+      dropdown.onChange((value) => {
+        mode = value;
+      });
+    });
+    new import_obsidian18.Setting(this.contentEl).setName(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528")).setDesc(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528\u8BF4\u660E")).addToggle((toggle) => {
+      toggle.setValue(autoApplyOnTheme);
+      toggle.onChange((value) => {
+        autoApplyOnTheme = value;
+      });
+    });
+    const snippetHeader = this.contentEl.createDiv("manager-appearance-profile-modal__snippet-header");
+    snippetHeader.createSpan({ text: t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_CSS\u7247\u6BB5\u89C4\u5219") });
+    snippetHeader.createSpan({ text: t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_CSS\u7247\u6BB5\u89C4\u5219\u8BF4\u660E") });
+    const snippetList = this.contentEl.createDiv("manager-appearance-profile-modal__snippet-list");
+    if (this.snippets.length === 0) {
+      snippetList.createDiv({ cls: "manager-appearance-inline-empty", text: t("\u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0CSS\u7247\u6BB5") });
+    }
+    for (const snippet of this.snippets) {
+      const choice = snippetChoices.get(snippet.id) || "ignore";
+      const item = new import_obsidian18.Setting(snippetList);
+      item.setName(snippet.name);
+      item.setDesc(`${snippet.id}.css`);
+      item.addDropdown((dropdown) => {
+        dropdown.addOption("ignore", t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u5FFD\u7565"));
+        dropdown.addOption("enable", t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u542F\u7528"));
+        dropdown.addOption("disable", t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u7981\u7528"));
+        dropdown.setValue(choice);
+        dropdown.onChange((value) => {
+          const nextChoice = value;
+          if (nextChoice === "ignore")
+            snippetChoices.delete(snippet.id);
+          else
+            snippetChoices.set(snippet.id, nextChoice);
+        });
+      });
+    }
+    const footer = new import_obsidian18.Setting(this.contentEl);
+    footer.settingEl.addClass("manager-appearance-profile-modal__footer");
+    footer.addButton((button) => {
+      button.setButtonText(t("\u901A\u7528_\u53D6\u6D88_\u6587\u672C"));
+      button.onClick(() => this.close());
+    });
+    footer.addButton((button) => {
+      button.setCta();
+      button.setButtonText(t("\u901A\u7528_\u4FDD\u5B58_\u6587\u672C"));
+      button.onClick(async () => {
+        const normalizedName = name.trim();
+        if (!normalizedName) {
+          new import_obsidian18.Notice(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A"));
+          return;
+        }
+        const enableSnippets = [...snippetChoices.entries()].filter(([, value]) => value === "enable").map(([id]) => id).sort((a, b) => a.localeCompare(b));
+        const disableSnippets = [...snippetChoices.entries()].filter(([, value]) => value === "disable").map(([id]) => id).sort((a, b) => a.localeCompare(b));
+        await this.onSave({
+          ...this.profile,
+          name: normalizedName,
+          theme,
+          mode,
+          autoApplyOnTheme,
+          enableSnippets,
+          disableSnippets
+        });
+        this.close();
+      });
+    });
+  }
+};
 var ManagerModal = class extends import_obsidian18.Modal {
   constructor(app, manager) {
     super(app);
@@ -5128,6 +5255,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
     // 安装模式
     this.installMode = false;
     this.activePage = "plugins";
+    this.appearanceView = "profiles";
     this.installType = "plugin";
     this.installRepo = "";
     this.installVersion = "";
@@ -5146,7 +5274,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
     this.singleStartedPluginIds = /* @__PURE__ */ new Set();
     this.expandedSourceConfigKeys = /* @__PURE__ */ new Set();
     this.renderBatchSize = 80;
-    this.desktopPages = SHARED_VAULTS_ENABLED ? ["plugins", "install", "sources", "transfer", "vaults", "ribbon", "troubleshoot"] : ["plugins", "install", "sources", "transfer", "ribbon", "troubleshoot"];
+    this.desktopPages = SHARED_VAULTS_ENABLED ? ["plugins", "themes", "install", "sources", "transfer", "vaults", "ribbon", "troubleshoot"] : ["plugins", "themes", "install", "sources", "transfer", "ribbon", "troubleshoot"];
     // 编辑模式
     this.editorMode = false;
     // 测试模式
@@ -5309,12 +5437,47 @@ var ManagerModal = class extends import_obsidian18.Modal {
     const layout = this.settings.PLUGIN_OVERVIEW_LAYOUT;
     return layout === "two-column" ? layout : "list";
   }
+  normalizePluginOverviewSort(value) {
+    switch (value) {
+      case "name-asc":
+      case "name-desc":
+      case "installed-desc":
+      case "installed-asc":
+      case "updated-desc":
+      case "updated-asc":
+        return value;
+      default:
+        return "layout";
+    }
+  }
+  getPluginOverviewSort() {
+    return this.normalizePluginOverviewSort(this.settings.PLUGIN_OVERVIEW_SORT);
+  }
+  getPluginOverviewSortOptions() {
+    const t = (key) => this.manager.translator.t(key);
+    return [
+      ["layout", t("\u6392\u5E8F_\u81EA\u5B9A\u4E49\u5E03\u5C40")],
+      ["name-asc", t("\u6392\u5E8F_\u540D\u79F0\u5347\u5E8F")],
+      ["name-desc", t("\u6392\u5E8F_\u540D\u79F0\u964D\u5E8F")],
+      ["installed-desc", t("\u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65B0\u5230\u65E7")],
+      ["installed-asc", t("\u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65E7\u5230\u65B0")],
+      ["updated-desc", t("\u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65B0\u5230\u65E7")],
+      ["updated-asc", t("\u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65E7\u5230\u65B0")]
+    ];
+  }
+  async setPluginOverviewSort(value) {
+    this.settings.PLUGIN_OVERVIEW_SORT = this.normalizePluginOverviewSort(value);
+    await this.manager.saveSettings();
+    await this.reloadShowData();
+  }
   syncPluginOverviewLayoutClass() {
+    this.pageEl.removeClass("manager-theme-overview");
     this.pageEl.removeClass("manager-plugin-overview--list");
     this.pageEl.removeClass("manager-plugin-overview--two-column");
     this.pageEl.addClass(`manager-plugin-overview--${this.getPluginOverviewLayout()}`);
   }
   clearPluginOverviewLayoutClass() {
+    this.pageEl.removeClass("manager-theme-overview");
     this.pageEl.removeClass("manager-plugin-overview--list");
     this.pageEl.removeClass("manager-plugin-overview--two-column");
   }
@@ -6237,9 +6400,11 @@ var ManagerModal = class extends import_obsidian18.Modal {
     }
     const hasDescription = managerPlugin.desc.trim().length > 0;
     const hasVisibleTags = this.editorMode || visibleTagCount > 0;
-    const hasExpandedDetails = this.editorMode || hasDescription || hasVisibleTags;
+    const hasDateMeta = Boolean(card.querySelector(".manager-plugin-card__date-meta"));
+    const hasExpandedDetails = this.editorMode || hasDescription || hasVisibleTags || hasDateMeta;
     card.toggleClass("has-description", hasDescription);
     card.toggleClass("has-visible-tags", hasVisibleTags);
+    card.toggleClass("has-date-meta", hasDateMeta);
     (_n = card.querySelector(".manager-plugin-card__body")) == null ? void 0 : _n.toggleClass("manager-plugin-card__body--empty", !hasExpandedDetails);
     this.refreshSinglePluginUpdateUi(pluginId);
     this.syncPluginEmptyState();
@@ -6408,6 +6573,16 @@ var ManagerModal = class extends import_obsidian18.Modal {
   async openPluginMarket() {
     await this.appSetting.open();
     await this.appSetting.openTabById("community-plugins");
+    window.setTimeout(() => {
+      var _a;
+      const tab = this.appSetting.activeTab;
+      const marketButton = (_a = tab == null ? void 0 : tab.containerEl) == null ? void 0 : _a.querySelector("button.mod-cta");
+      marketButton == null ? void 0 : marketButton.click();
+    }, 50);
+  }
+  async openAppearanceMarket() {
+    await this.appSetting.open();
+    await this.appSetting.openTabById("appearance");
     window.setTimeout(() => {
       var _a;
       const tab = this.appSetting.activeTab;
@@ -6808,7 +6983,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
     return plugins;
   }
   async showHead() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
     this.migratePersistedFilterValues();
     const t = (k, vars) => this.manager.translator.t(k, vars);
     const modalEl = this.contentEl.parentElement;
@@ -6878,6 +7053,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
       return tab;
     };
     this.pluginTabEl = createTab("plugins", t("\u7BA1\u7406\u5668_Tab_\u63D2\u4EF6\u7BA1\u7406"), "blocks");
+    this.themeTabEl = createTab("themes", t("\u5916\u89C2\u603B\u89C8_Tab_\u6807\u9898"), "palette");
     this.installTabEl = createTab("install", t("\u7BA1\u7406\u5668_Tab_\u5B89\u88C5\u6765\u6E90"), "download");
     this.sourcesTabEl = void 0;
     this.transferTabEl = createTab("transfer", t("\u5BFC\u5165\u5BFC\u51FA_Tab_\u6807\u9898"), "archive-restore", t("\u5BFC\u5165\u5BFC\u51FA_Tab_\u8BF4\u660E"));
@@ -7012,12 +7188,33 @@ var ManagerModal = class extends import_obsidian18.Modal {
     this.bindLongPressTooltip(supportGroupButton.buttonEl, SUPPORT_QQ_GROUP_TOOLTIP);
     supportGroupButton.onClick(() => this.openSupportQQGroup());
     const marketButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
-    markTool(marketButton, "global", 70);
+    markTool(marketButton, "plugin", 70);
     marketButton.setIcon("store");
     marketButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u5E02\u573A_\u63CF\u8FF0"));
     this.bindLongPressTooltip(marketButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u5E02\u573A_\u63CF\u8FF0"));
     marketButton.onClick(() => {
       void this.openPluginMarket();
+    });
+    const appearanceMarketButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
+    markTool(appearanceMarketButton, "theme", 70);
+    appearanceMarketButton.setIcon("store");
+    appearanceMarketButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u5916\u89C2\u5E02\u573A_\u63CF\u8FF0"));
+    this.bindLongPressTooltip(appearanceMarketButton.buttonEl, this.manager.translator.t("\u7BA1\u7406\u5668_\u5916\u89C2\u5E02\u573A_\u63CF\u8FF0"));
+    appearanceMarketButton.onClick(() => {
+      void this.openAppearanceMarket();
+    });
+    const saveAppearanceProfileButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
+    markTool(saveAppearanceProfileButton, "theme", 60);
+    saveAppearanceProfileButton.buttonEl.addClass("manager-tool--appearance-profile");
+    saveAppearanceProfileButton.setIcon("plus");
+    saveAppearanceProfileButton.setTooltip(this.manager.translator.t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u4FDD\u5B58\u5F53\u524D"));
+    this.bindLongPressTooltip(saveAppearanceProfileButton.buttonEl, this.manager.translator.t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u4FDD\u5B58\u5F53\u524D"));
+    saveAppearanceProfileButton.onClick(async () => {
+      const [themes, snippets] = await Promise.all([
+        collectInstalledThemes(this.manager, void 0, false, true),
+        this.collectCssSnippets()
+      ]);
+      this.openAppearanceProfileModal(this.createCurrentAppearanceProfileDraft(snippets), themes, snippets);
     });
     const settingsButton = new import_obsidian18.ButtonComponent(actionBar.controlEl);
     markTool(settingsButton, "global", 80);
@@ -7053,9 +7250,10 @@ var ManagerModal = class extends import_obsidian18.Modal {
     const searchBar = new import_obsidian18.Setting(filterContent).setClass("manager-bar__search").setName("");
     this.searchBarEl = searchBar.settingEl;
     this.syncPageChrome();
+    const searchLine = searchBar.controlEl.createDiv("manager-search-line");
     const filterControlGroup = searchBar.controlEl.createDiv("manager-filter-control-group");
     const createFilterField = (label, icon, variant = "select") => {
-      const parent = variant === "search" ? searchBar.controlEl : filterControlGroup;
+      const parent = variant === "search" ? searchLine : filterControlGroup;
       const field = parent.createDiv("manager-filter-field");
       field.addClass(`manager-filter-field--${variant}`);
       const labelEl = field.createDiv("manager-filter-field__label");
@@ -7110,6 +7308,14 @@ var ManagerModal = class extends import_obsidian18.Modal {
       this.handleSearchChange(value);
     });
     searchBar.controlEl.appendChild(filterControlGroup);
+    const sortControl = createFilterSelectField(t("\u901A\u7528_\u6392\u5E8F_\u6587\u672C"), "arrow-up-down", "search");
+    (_c = sortControl.closest(".manager-filter-field")) == null ? void 0 : _c.addClass("manager-filter-field--sort");
+    const sortDropdown = new import_obsidian18.DropdownComponent(sortControl);
+    this.addOrderedOptions(sortDropdown, this.getPluginOverviewSortOptions());
+    sortDropdown.setValue(this.getPluginOverviewSort());
+    sortDropdown.onChange((value) => {
+      void this.setPluginOverviewSort(value);
+    });
     const statusControl = createFilterSelectField(t("\u901A\u7528_\u72B6\u6001_\u6587\u672C"), "list-filter", "compound");
     this.statusOperatorControl = createOperatorToggle(statusControl, this.getStatusFilterOperator(), t("\u7B5B\u9009_\u72B6\u6001\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setStatusFilterOperator(value));
     const statusOptions = Object.entries(this.getStatusFilterOptions());
@@ -7120,14 +7326,14 @@ var ManagerModal = class extends import_obsidian18.Modal {
     const groups = this.getGroupFilterOptions(this.manager.translator.t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
     const groupControl = createFilterSelectField(t("\u901A\u7528_\u5206\u7EC4_\u6587\u672C"), "folder-tree", "compound");
     createOperatorToggle(groupControl, this.getGroupFilterOperator(), t("\u7B5B\u9009_\u5206\u7EC4\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setGroupFilterOperator(value));
-    this.groupMultiSelect = this.createMultiSelectFilter(groupControl, groups, this.getGroupFilterValues(), "", ((_c = groups[0]) == null ? void 0 : _c[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5206\u7EC4_\u6807\u7B7E"), (values) => {
+    this.groupMultiSelect = this.createMultiSelectFilter(groupControl, groups, this.getGroupFilterValues(), "", ((_d = groups[0]) == null ? void 0 : _d[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5206\u7EC4_\u6807\u7B7E"), (values) => {
       this.setGroupFilterValues(values);
       void this.reloadShowData();
     });
     const tags = this.getTagFilterOptions(this.manager.translator.t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"));
     const tagControl = createFilterSelectField(t("\u901A\u7528_\u6807\u7B7E_\u6587\u672C"), "tags", "compound");
     createOperatorToggle(tagControl, this.getTagFilterOperator(), t("\u7B5B\u9009_\u6807\u7B7E\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setTagFilterOperator(value));
-    this.tagMultiSelect = this.createMultiSelectFilter(tagControl, tags, this.getTagFilterValues(), "", ((_d = tags[0]) == null ? void 0 : _d[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u6807\u7B7E_\u6807\u7B7E"), (values) => {
+    this.tagMultiSelect = this.createMultiSelectFilter(tagControl, tags, this.getTagFilterValues(), "", ((_e = tags[0]) == null ? void 0 : _e[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u6807\u7B7E_\u6807\u7B7E"), (values) => {
       this.setTagFilterValues(values);
       void this.reloadShowData();
     });
@@ -7135,7 +7341,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
       const delays = this.getDelayFilterOptions(this.manager.translator.t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), true);
       const delayControl = createFilterSelectField(t("\u901A\u7528_\u5EF6\u8FDF_\u6587\u672C"), "timer", "compound");
       createOperatorToggle(delayControl, this.getDelayFilterOperator(), t("\u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setDelayFilterOperator(value));
-      this.delayMultiSelect = this.createMultiSelectFilter(delayControl, delays, this.getDelayFilterValues(), "", ((_e = delays[0]) == null ? void 0 : _e[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5EF6\u8FDF_\u6807\u7B7E"), (values) => {
+      this.delayMultiSelect = this.createMultiSelectFilter(delayControl, delays, this.getDelayFilterValues(), "", ((_f = delays[0]) == null ? void 0 : _f[1]) || t("\u7B5B\u9009_\u5168\u90E8_\u63CF\u8FF0"), t("\u7B5B\u9009_\u5EF6\u8FDF_\u6807\u7B7E"), (values) => {
         this.setDelayFilterValues(values);
         void this.reloadShowData();
       });
@@ -7198,11 +7404,22 @@ var ManagerModal = class extends import_obsidian18.Modal {
     this.bindLongPressTooltip(moreBtn.buttonEl, t("\u7BA1\u7406\u5668_\u66F4\u591A\u64CD\u4F5C_\u63CF\u8FF0"));
     moreBtn.buttonEl.addEventListener("click", (ev) => {
       const menu = new import_obsidian18.Menu();
-      menu.addItem((item) => item.setTitle(t("\u6279\u91CF\u7F16\u8F91_\u5165\u53E3")).setIcon("list-plus").onClick(() => {
-        this.setBulkEditMode(!this.bulkEditMode);
-      }));
+      const isPluginPage = this.activePage === "plugins";
+      const isThemePage = this.activePage === "themes";
+      if (isPluginPage) {
+        menu.addItem((item) => item.setTitle(t("\u6279\u91CF\u7F16\u8F91_\u5165\u53E3")).setIcon("list-plus").onClick(() => {
+          this.setBulkEditMode(!this.bulkEditMode);
+        }));
+      }
       menu.addItem((item) => item.setTitle(t("\u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0")).setIcon("search-check").onClick(() => {
         this.activePage = "troubleshoot";
+        this.installMode = false;
+        this.syncPageChrome();
+        this.renderContent();
+        this.showHeadMobile();
+      }));
+      menu.addItem((item) => item.setTitle(t("\u5916\u89C2\u603B\u89C8_Tab_\u6807\u9898")).setIcon("palette").onClick(() => {
+        this.activePage = "themes";
         this.installMode = false;
         this.syncPageChrome();
         this.renderContent();
@@ -7225,31 +7442,33 @@ var ManagerModal = class extends import_obsidian18.Modal {
         }));
       }
       menu.addSeparator();
-      menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0")).setIcon("refresh-ccw").onClick(async () => {
-        await this.appPlugins.loadManifests();
-        this.invalidatePluginCaches();
-        this.manager.synchronizePlugins(
-          Object.values(this.appPlugins.manifests).filter(
-            (pm) => pm.id !== this.manager.manifest.id
-          )
-        );
-        await this.reloadShowData();
-      }));
-      menu.addItem((item) => item.setTitle(t("\u83DC\u5355_\u9690\u85CF\u63D2\u4EF6_\u6807\u9898")).setIcon("eye-off").onClick(async () => {
-        const all = Object.values(this.appPlugins.manifests);
-        const plugins = all.filter((pm) => pm.id !== this.manager.manifest.id);
-        plugins.sort((item1, item2) => item1.name.localeCompare(item2.name));
-        new HideModal(this.app, this.manager, this, plugins).open();
-      }));
-      if (this.activePage === "plugins" && this.editorMode && this.shouldRenderPluginLayoutSeparators()) {
-        menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6DFB\u52A0\u5206\u5272\u7EBF")).setIcon("separator-horizontal").onClick(async () => {
-          await this.addPluginLayoutSeparator();
+      if (isPluginPage) {
+        menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u91CD\u8F7D\u63D2\u4EF6_\u63CF\u8FF0")).setIcon("refresh-ccw").onClick(async () => {
+          await this.appPlugins.loadManifests();
+          this.invalidatePluginCaches();
+          this.manager.synchronizePlugins(
+            Object.values(this.appPlugins.manifests).filter(
+              (pm) => pm.id !== this.manager.manifest.id
+            )
+          );
+          await this.reloadShowData();
         }));
-        menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6309\u540D\u79F0\u91CD\u7F6E")).setIcon("rotate-ccw").onClick(async () => {
-          if (!await confirmWithModal(this.app, this.manager, t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
-            return;
-          await this.resetPluginLayout();
+        menu.addItem((item) => item.setTitle(t("\u83DC\u5355_\u9690\u85CF\u63D2\u4EF6_\u6807\u9898")).setIcon("eye-off").onClick(async () => {
+          const all = Object.values(this.appPlugins.manifests);
+          const plugins = all.filter((pm) => pm.id !== this.manager.manifest.id);
+          plugins.sort((item1, item2) => item1.name.localeCompare(item2.name));
+          new HideModal(this.app, this.manager, this, plugins).open();
         }));
+        if (this.editorMode && this.shouldRenderPluginLayoutSeparators()) {
+          menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6DFB\u52A0\u5206\u5272\u7EBF")).setIcon("separator-horizontal").onClick(async () => {
+            await this.addPluginLayoutSeparator();
+          }));
+          menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u6309\u540D\u79F0\u91CD\u7F6E")).setIcon("rotate-ccw").onClick(async () => {
+            if (!await confirmWithModal(this.app, this.manager, t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u91CD\u7F6E\u786E\u8BA4")))
+              return;
+            await this.resetPluginLayout();
+          }));
+        }
       }
       if (this.isRibbonManagerEnabled()) {
         menu.addSeparator();
@@ -7259,9 +7478,22 @@ var ManagerModal = class extends import_obsidian18.Modal {
           new RibbonModal(this.app, this.manager).open();
         }));
       }
-      menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u5E02\u573A_\u63CF\u8FF0")).setIcon("store").onClick(() => {
-        void this.openPluginMarket();
-      }));
+      if (isPluginPage) {
+        menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u5E02\u573A_\u63CF\u8FF0")).setIcon("store").onClick(() => {
+          void this.openPluginMarket();
+        }));
+      } else if (isThemePage) {
+        menu.addItem((item) => item.setTitle(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u4FDD\u5B58\u5F53\u524D")).setIcon("plus").onClick(async () => {
+          const [themes, snippets] = await Promise.all([
+            collectInstalledThemes(this.manager, void 0, false, true),
+            this.collectCssSnippets()
+          ]);
+          this.openAppearanceProfileModal(this.createCurrentAppearanceProfileDraft(snippets), themes, snippets);
+        }));
+        menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u5916\u89C2\u5E02\u573A_\u63CF\u8FF0")).setIcon("store").onClick(() => {
+          void this.openAppearanceMarket();
+        }));
+      }
       menu.addItem((item) => item.setTitle(t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0")).setIcon("settings").onClick(() => {
         this.openSettingsTab(this.manager.manifest.id);
       }));
@@ -7376,6 +7608,16 @@ var ManagerModal = class extends import_obsidian18.Modal {
       });
       updateButton();
     };
+    const sortSetting = new import_obsidian18.Setting(filterPanel).setName(t("\u901A\u7528_\u6392\u5E8F_\u6587\u672C"));
+    const sortDropdown = new import_obsidian18.DropdownComponent(sortSetting.controlEl);
+    this.addOrderedOptions(sortDropdown, this.getPluginOverviewSortOptions());
+    sortDropdown.setValue(this.getPluginOverviewSort());
+    sortDropdown.onChange((value) => {
+      void (async () => {
+        await this.setPluginOverviewSort(value);
+        this.showHeadMobile();
+      })();
+    });
     const statusSetting = new import_obsidian18.Setting(filterPanel).setName(t("\u901A\u7528_\u72B6\u6001_\u6587\u672C"));
     addMobileOperatorToggle(statusSetting, this.getStatusFilterOperator(), t("\u7B5B\u9009_\u72B6\u6001\u53D6\u53CD_\u6807\u7B7E"), (value) => this.setStatusFilterOperator(value));
     const statusOptions = Object.entries(this.getStatusFilterOptions());
@@ -7496,8 +7738,11 @@ var ManagerModal = class extends import_obsidian18.Modal {
       console.log("[BPM] render showData manifests size:", Object.keys(this.appPlugins.manifests).length);
     const uniquePlugins = this.getUniquePluginManifests();
     const manifestById = new Map(uniquePlugins.map((plugin) => [plugin.id, plugin]));
-    const layoutItems = this.getPluginLayout(uniquePlugins);
     const pluginSettingsById = new Map(this.manager.settings.Plugins.map((plugin) => [plugin.id, plugin]));
+    const dateMetaById = await this.getPluginDateMetaMap(uniquePlugins);
+    if (!this.isRenderCurrent(renderGeneration, page))
+      return;
+    const layoutItems = this.getSortedPluginLayoutItems(this.getPluginLayout(uniquePlugins), manifestById, pluginSettingsById, dateMetaById);
     const groupSettingsById = new Map(this.settings.GROUPS.map((group) => [group.id, group]));
     const tagSettingsById = new Map(this.settings.TAGS.map((tag) => [tag.id, tag]));
     const delaySettingsById = new Map(this.settings.DELAYS.map((delay) => [delay.id, delay]));
@@ -7554,22 +7799,22 @@ var ManagerModal = class extends import_obsidian18.Modal {
       if (renderedIds.has(plugin.id))
         continue;
       renderedIds.add(plugin.id);
-      const ManagerPlugin4 = pluginSettingsById.get(plugin.id);
-      if (!ManagerPlugin4)
+      const ManagerPlugin5 = pluginSettingsById.get(plugin.id);
+      if (!ManagerPlugin5)
         continue;
       const isSelf = plugin.id === this.manager.manifest.id;
-      const isEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin4);
+      const isEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin5);
       const currentUpdateInfo = (_c = this.manager.updateStatus) == null ? void 0 : _c[plugin.id];
       const updateProblem = this.getPluginUpdateProblem(currentUpdateInfo);
-      if (!this.matchesStatusFilter(ManagerPlugin4, plugin, isEnabled, statusFilter, statusOperator, hiddenPluginIds))
+      if (!this.matchesStatusFilter(ManagerPlugin5, plugin, isEnabled, statusFilter, statusOperator, hiddenPluginIds))
         continue;
-      if (!this.matchesSingleValueFilter(ManagerPlugin4.group, groupFilter, groupOperator))
+      if (!this.matchesSingleValueFilter(ManagerPlugin5.group, groupFilter, groupOperator))
         continue;
-      if (!this.matchesTagFilter(ManagerPlugin4.tags, tagFilter, tagOperator))
+      if (!this.matchesTagFilter(ManagerPlugin5.tags, tagFilter, tagOperator))
         continue;
-      if (!this.matchesSingleValueFilter(ManagerPlugin4.delay, delayFilter, delayOperator))
+      if (!this.matchesSingleValueFilter(ManagerPlugin5.delay, delayFilter, delayOperator))
         continue;
-      if (lowerSearchText !== "" && !this.getPluginSearchText(ManagerPlugin4, plugin).includes(lowerSearchText))
+      if (lowerSearchText !== "" && !this.getPluginSearchText(ManagerPlugin5, plugin).includes(lowerSearchText))
         continue;
       if (!this.editorMode && !isSelf && hiddenPluginIds.has(plugin.id) && !statusFilter.includes("hidden"))
         continue;
@@ -7595,7 +7840,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
       itemEl.settingEl.toggleClass("is-self", isSelf);
       itemEl.settingEl.toggleClass("has-update", Boolean(currentUpdateInfo == null ? void 0 : currentUpdateInfo.hasUpdate));
       itemEl.settingEl.toggleClass("has-update-problem", Boolean(updateProblem));
-      itemEl.settingEl.toggleClass("is-bpm-ignored", ManagerPlugin4.tags.includes(BPM_IGNORE_TAG));
+      itemEl.settingEl.toggleClass("is-bpm-ignored", ManagerPlugin5.tags.includes(BPM_IGNORE_TAG));
       itemEl.settingEl.toggleClass("is-hidden-layout", hiddenPluginIds.has(plugin.id));
       itemEl.settingEl.toggleClass("is-bulk-selected", this.bulkSelectedPluginIds.has(plugin.id));
       itemEl.nameEl.addClass("manager-item__name-container");
@@ -7604,18 +7849,18 @@ var ManagerModal = class extends import_obsidian18.Modal {
       itemEl.descEl.addClass("manager-plugin-card__body");
       itemEl.controlEl.addClass("manager-item__controls");
       itemEl.controlEl.addClass("manager-plugin-card__actions");
-      itemEl.controlEl.setAttribute("aria-label", this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u64CD\u4F5C_\u6807\u7B7E", { name: ManagerPlugin4.name }));
+      itemEl.controlEl.setAttribute("aria-label", this.manager.translator.t("\u7BA1\u7406\u5668_\u63D2\u4EF6\u64CD\u4F5C_\u6807\u7B7E", { name: ManagerPlugin5.name }));
       if (canEditLayout) {
         itemEl.settingEl.addClass("manager-layout-editable-card");
         itemEl.settingEl.addClass("manager-plugin-card--layout-editing");
-        this.bindPluginLayoutDragHandle(itemEl.settingEl, layoutIndex, ManagerPlugin4.name || plugin.name || plugin.id);
+        this.bindPluginLayoutDragHandle(itemEl.settingEl, layoutIndex, ManagerPlugin5.name || plugin.name || plugin.id);
       }
       if (this.bulkEditMode) {
         const selection = itemEl.settingEl.createDiv("manager-plugin-card__bulk-select");
         const checkbox = selection.createEl("input", { type: "checkbox" });
         checkbox.checked = this.bulkSelectedPluginIds.has(plugin.id);
         checkbox.disabled = isSelf;
-        checkbox.setAttribute("aria-label", t("\u6279\u91CF\u7F16\u8F91_\u9009\u62E9\u63D2\u4EF6", { name: ManagerPlugin4.name || plugin.name || plugin.id }));
+        checkbox.setAttribute("aria-label", t("\u6279\u91CF\u7F16\u8F91_\u9009\u62E9\u63D2\u4EF6", { name: ManagerPlugin5.name || plugin.name || plugin.id }));
         checkbox.addEventListener("click", (event) => event.stopPropagation());
         checkbox.addEventListener("change", () => {
           this.toggleBulkPluginSelection(plugin.id, checkbox.checked);
@@ -7632,8 +7877,8 @@ var ManagerModal = class extends import_obsidian18.Modal {
         if (this.bulkEditMode)
           return;
         event.preventDefault();
-        const currentIsEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin4);
-        const currentIsBpmIgnored = (_a2 = ManagerPlugin4.tags) == null ? void 0 : _a2.includes(BPM_IGNORE_TAG);
+        const currentIsEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin5);
+        const currentIsBpmIgnored = (_a2 = ManagerPlugin5.tags) == null ? void 0 : _a2.includes(BPM_IGNORE_TAG);
         const menu = new import_obsidian18.Menu();
         let hasContextMenuItems = false;
         const addContextSeparator = () => {
@@ -7675,7 +7920,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
         if (hasIgnoredEnableMenuItem)
           menu.addItem(
             (item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u542F\u7528BPM\u5FFD\u7565\u63D2\u4EF6_\u6807\u9898")).setIcon("shield-check").setDisabled(isSelf).onClick(async () => {
-              await this.enableBpmIgnoredPlugin(plugin, ManagerPlugin4);
+              await this.enableBpmIgnoredPlugin(plugin, ManagerPlugin5);
             })
           );
         if (this.isMainPageActionInMenu("hide"))
@@ -7734,7 +7979,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
         if (this.isMainPageActionInMenu("note"))
           menu.addItem(
             (item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u7B14\u8BB0_\u6807\u9898")).setIcon("notebook-pen").onClick(() => {
-              new NoteModal(this.app, this.manager, ManagerPlugin4, this).open();
+              new NoteModal(this.app, this.manager, ManagerPlugin5, this).open();
             })
           );
         if (this.isMainPageActionInMenu("hotkeys"))
@@ -7810,20 +8055,20 @@ var ManagerModal = class extends import_obsidian18.Modal {
       cardIcon.setAttribute("aria-hidden", "true");
       (0, import_obsidian18.setIcon)(cardIcon, isEnabled ? "plug-zap" : "plug");
       itemEl.nameEl.appendChild(cardIcon);
-      if (ManagerPlugin4.group !== "") {
+      if (ManagerPlugin5.group !== "") {
         const group = createSpan({ cls: "manager-item__name-group" });
         itemEl.nameEl.appendChild(group);
-        const item = groupSettingsById.get(ManagerPlugin4.group);
+        const item = groupSettingsById.get(ManagerPlugin5.group);
         if (item) {
           const tag = this.manager.createTag(item.name, item.color, this.settings.GROUP_STYLE);
           tag.addClass("manager-item__group-chip");
           tag.setAttribute("role", "button");
           tag.setAttribute("tabindex", "0");
-          tag.setAttribute("aria-label", this.manager.translator.t("\u5206\u7EC4\u7F16\u8F91_\u6253\u5F00\u5207\u6362", { name: ManagerPlugin4.name || plugin.name || plugin.id }));
+          tag.setAttribute("aria-label", this.manager.translator.t("\u5206\u7EC4\u7F16\u8F91_\u6253\u5F00\u5207\u6362", { name: ManagerPlugin5.name || plugin.name || plugin.id }));
           const openGroupModal = (event) => {
             event == null ? void 0 : event.preventDefault();
             event == null ? void 0 : event.stopPropagation();
-            new GroupModal(this.app, this.manager, this, ManagerPlugin4).open();
+            new GroupModal(this.app, this.manager, this, ManagerPlugin5).open();
           };
           tag.onclick = openGroupModal;
           tag.addEventListener("keydown", (event) => {
@@ -7834,25 +8079,25 @@ var ManagerModal = class extends import_obsidian18.Modal {
           group.appendChild(tag);
         }
       }
-      if (ManagerPlugin4.group === "" && this.editorMode) {
+      if (ManagerPlugin5.group === "" && this.editorMode) {
         const group = createSpan({ cls: "manager-item__name-group" });
         if (this.editorMode)
           itemEl.nameEl.appendChild(group);
         const tag = this.manager.createTag("+", "", "");
         if (this.editorMode)
           tag.onclick = () => {
-            new GroupModal(this.app, this.manager, this, ManagerPlugin4).open();
+            new GroupModal(this.app, this.manager, this, ManagerPlugin5).open();
           };
         if (this.editorMode)
           group.appendChild(tag);
       }
-      const title = createSpan({ text: ManagerPlugin4.name, title: plugin.name, cls: "manager-item__name-title" });
+      const title = createSpan({ text: ManagerPlugin5.name, title: plugin.name, cls: "manager-item__name-title" });
       if (this.editorMode) {
         title.setAttribute("contenteditable", "true");
         title.addEventListener("input", () => {
           void (async () => {
             if (title.textContent) {
-              ManagerPlugin4.name = title.textContent;
+              ManagerPlugin5.name = title.textContent;
               await this.manager.savePluginAndExport(plugin.id);
               command_default(this.app, this.manager);
             }
@@ -7888,42 +8133,58 @@ var ManagerModal = class extends import_obsidian18.Modal {
         }
       }
       itemEl.nameEl.appendChild(versionWrap);
-      if (((_d = ManagerPlugin4.note) == null ? void 0 : _d.length) > 0) {
+      if (((_d = ManagerPlugin5.note) == null ? void 0 : _d.length) > 0) {
         const note = createSpan();
         note.addClass("manager-plugin-card__note");
         note.addEventListener("click", () => {
-          new NoteModal(this.app, this.manager, ManagerPlugin4, this).open();
+          new NoteModal(this.app, this.manager, ManagerPlugin5, this).open();
         });
         itemEl.nameEl.appendChild(note);
         (0, import_obsidian18.setIcon)(note, "notebook-pen");
       }
-      if (this.settings.DELAY && !this.editorMode && !isSelf && ManagerPlugin4.delay !== "") {
-        const d = delaySettingsById.get(ManagerPlugin4.delay);
+      if (this.settings.DELAY && !this.editorMode && !isSelf && ManagerPlugin5.delay !== "") {
+        const d = delaySettingsById.get(ManagerPlugin5.delay);
         if (d) {
           const delay = createSpan({ text: `${d.time}s`, cls: ["manager-item__name-delay"] });
           itemEl.nameEl.appendChild(delay);
         }
       }
-      const hasDescription = ManagerPlugin4.desc.trim().length > 0;
-      const desc = createDiv({ text: ManagerPlugin4.desc, title: plugin.description, cls: ["manager-item__name-desc"] });
+      const hasDescription = ManagerPlugin5.desc.trim().length > 0;
+      const desc = createDiv({ text: ManagerPlugin5.desc, title: plugin.description, cls: ["manager-item__name-desc"] });
       desc.addClass("manager-plugin-card__desc");
       if (this.editorMode) {
         desc.setAttribute("contenteditable", "true");
         desc.addEventListener("input", () => {
           void (async () => {
             if (desc.textContent) {
-              ManagerPlugin4.desc = desc.textContent;
+              ManagerPlugin5.desc = desc.textContent;
               await this.manager.savePluginAndExport(plugin.id);
             }
           })();
         });
       }
       itemEl.descEl.appendChild(desc);
+      const dateMeta = dateMetaById.get(plugin.id);
+      const dateMetaItems = [
+        { icon: "calendar-plus", label: t("\u6392\u5E8F_\u5B89\u88C5\u65E5\u671F_\u6807\u7B7E"), value: this.formatSourceDate(dateMeta == null ? void 0 : dateMeta.installedAt) },
+        { icon: "calendar-clock", label: t("\u6392\u5E8F_\u66F4\u65B0\u65E5\u671F_\u6807\u7B7E"), value: this.formatSourceDate(dateMeta == null ? void 0 : dateMeta.updatedAt) }
+      ].filter((item) => Boolean(item.value));
+      const hasDateMeta = dateMetaItems.length > 0;
+      if (hasDateMeta) {
+        const dateMetaEl = createDiv({ cls: "manager-plugin-card__date-meta" });
+        for (const item of dateMetaItems) {
+          const metaItem = dateMetaEl.createSpan({ cls: "manager-plugin-card__date-meta-item" });
+          const icon = metaItem.createSpan({ cls: "manager-plugin-card__date-meta-icon" });
+          (0, import_obsidian18.setIcon)(icon, item.icon);
+          metaItem.createSpan({ text: `${item.label} ${item.value}` });
+        }
+        itemEl.descEl.appendChild(dateMetaEl);
+      }
       const tags = createDiv();
       tags.addClass("manager-plugin-card__tags");
       itemEl.descEl.appendChild(tags);
       let visibleTagCount = 0;
-      ManagerPlugin4.tags.map((id) => {
+      ManagerPlugin5.tags.map((id) => {
         const item = tagSettingsById.get(id);
         if (item) {
           if ((item.id === BPM_TAG_ID || item.id === BPM_IGNORE_TAG) && this.settings.HIDE_BPM_TAG) {
@@ -7931,7 +8192,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
             const tag = this.manager.createTag(item.name, item.color, this.settings.TAG_STYLE);
             if (this.editorMode && item.id !== BPM_TAG_ID)
               tag.onclick = () => {
-                new TagsModal(this.app, this.manager, this, ManagerPlugin4).open();
+                new TagsModal(this.app, this.manager, this, ManagerPlugin5).open();
               };
             tags.appendChild(tag);
             visibleTagCount++;
@@ -7941,14 +8202,15 @@ var ManagerModal = class extends import_obsidian18.Modal {
       if (this.editorMode) {
         const tag = this.manager.createTag("+", "", "");
         tag.onclick = () => {
-          new TagsModal(this.app, this.manager, this, ManagerPlugin4).open();
+          new TagsModal(this.app, this.manager, this, ManagerPlugin5).open();
         };
         tags.appendChild(tag);
       }
       const hasVisibleTags = this.editorMode || visibleTagCount > 0;
-      const hasExpandedDetails = this.editorMode || hasDescription || hasVisibleTags;
+      const hasExpandedDetails = this.editorMode || hasDescription || hasVisibleTags || hasDateMeta;
       itemEl.settingEl.toggleClass("has-description", hasDescription);
       itemEl.settingEl.toggleClass("has-visible-tags", hasVisibleTags);
+      itemEl.settingEl.toggleClass("has-date-meta", hasDateMeta);
       itemEl.descEl.toggleClass("manager-plugin-card__body--empty", !hasExpandedDetails);
       if (!this.editorMode) {
         const isMobile = import_obsidian18.Platform.isMobileApp;
@@ -7962,7 +8224,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
           "downloadUpdate",
           "singleStart",
           "restart",
-          ...((_e = ManagerPlugin4.tags) == null ? void 0 : _e.includes(BPM_IGNORE_TAG)) ? ["enableIgnored"] : [],
+          ...((_e = ManagerPlugin5.tags) == null ? void 0 : _e.includes(BPM_IGNORE_TAG)) ? ["enableIgnored"] : [],
           "hide",
           "note",
           "hotkeys",
@@ -7981,8 +8243,8 @@ var ManagerModal = class extends import_obsidian18.Modal {
             var _a2, _b2;
             event.preventDefault();
             event.stopPropagation();
-            const currentIsEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin4);
-            const currentIsBpmIgnored = (_a2 = ManagerPlugin4.tags) == null ? void 0 : _a2.includes(BPM_IGNORE_TAG);
+            const currentIsEnabled = this.isPluginEnabledForDisplay(plugin.id, ManagerPlugin5);
+            const currentIsBpmIgnored = (_a2 = ManagerPlugin5.tags) == null ? void 0 : _a2.includes(BPM_IGNORE_TAG);
             const menu = new import_obsidian18.Menu();
             let hasPreviousGroup = false;
             let hasCurrentGroup = false;
@@ -8021,7 +8283,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
               if (hasPreviousGroup && !hasCurrentGroup)
                 menu.addSeparator();
               menu.addItem((item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u542F\u7528BPM\u5FFD\u7565\u63D2\u4EF6_\u6807\u9898")).setIcon("shield-check").setDisabled(isSelf).onClick(async () => {
-                await this.enableBpmIgnoredPlugin(plugin, ManagerPlugin4);
+                await this.enableBpmIgnoredPlugin(plugin, ManagerPlugin5);
               }));
               hasCurrentGroup = true;
             }
@@ -8083,7 +8345,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
               if (hasPreviousGroup && !hasCurrentGroup)
                 menu.addSeparator();
               menu.addItem((item) => item.setTitle(this.manager.translator.t("\u83DC\u5355_\u7B14\u8BB0_\u6807\u9898")).setIcon("notebook-pen").onClick(() => {
-                new NoteModal(this.app, this.manager, ManagerPlugin4, this).open();
+                new NoteModal(this.app, this.manager, ManagerPlugin5, this).open();
               }));
               hasCurrentGroup = true;
             }
@@ -8149,7 +8411,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
           noteButton.setIcon("notebook-pen");
           noteButton.setTooltip(this.manager.translator.t("\u83DC\u5355_\u7B14\u8BB0_\u6807\u9898"));
           noteButton.onClick(() => {
-            new NoteModal(this.app, this.manager, ManagerPlugin4, this).open();
+            new NoteModal(this.app, this.manager, ManagerPlugin5, this).open();
           });
         }
         const hotkeysButton = this.createConfiguredItemAction(itemEl.controlEl, "hotkeys");
@@ -8168,14 +8430,14 @@ var ManagerModal = class extends import_obsidian18.Modal {
             this.copyPluginId(plugin.id);
           });
         }
-        if ((_f = ManagerPlugin4.tags) == null ? void 0 : _f.includes(BPM_IGNORE_TAG)) {
+        if ((_f = ManagerPlugin5.tags) == null ? void 0 : _f.includes(BPM_IGNORE_TAG)) {
           enableIgnoredButton = this.createConfiguredItemAction(itemEl.controlEl, "enableIgnored");
           if (enableIgnoredButton) {
             enableIgnoredButton.setIcon("shield-check");
             enableIgnoredButton.setTooltip(this.manager.translator.t("\u83DC\u5355_\u542F\u7528BPM\u5FFD\u7565\u63D2\u4EF6_\u6807\u9898"));
             enableIgnoredButton.setDisabled(isSelf);
             enableIgnoredButton.onClick(async () => {
-              await this.enableBpmIgnoredPlugin(plugin, ManagerPlugin4);
+              await this.enableBpmIgnoredPlugin(plugin, ManagerPlugin5);
             });
           }
         }
@@ -8244,7 +8506,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
         const stateToggle = toggleSwitch;
         stateToggle.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u5207\u6362\u72B6\u6001_\u63CF\u8FF0"));
         stateToggle.setValue(isEnabled);
-        const managerPluginForToggle = ManagerPlugin4;
+        const managerPluginForToggle = ManagerPlugin5;
         const isBpmIgnored = (_h = managerPluginForToggle.tags) == null ? void 0 : _h.includes(BPM_IGNORE_TAG);
         if (isSelf) {
           stateToggle.setValue(true);
@@ -8272,7 +8534,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
             }
             const statusFilter2 = this.getStatusFilterValues();
             const statusOperator2 = this.getStatusFilterOperator();
-            const removeByFilter = !this.matchesStatusFilter(ManagerPlugin4, plugin, targetEnabled, statusFilter2, statusOperator2, hiddenPluginIds);
+            const removeByFilter = !this.matchesStatusFilter(ManagerPlugin5, plugin, targetEnabled, statusFilter2, statusOperator2, hiddenPluginIds);
             const updateCardUI = () => {
               itemEl.settingEl.toggleClass("is-enabled", targetEnabled);
               itemEl.settingEl.toggleClass("is-disabled", !targetEnabled);
@@ -8359,7 +8621,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
         const hiddenToggle = new import_obsidian18.ToggleComponent(hiddenControl);
         hiddenToggle.setValue(hiddenPluginIds.has(plugin.id));
         hiddenToggle.setDisabled(isSelf);
-        hiddenToggle.toggleEl.setAttribute("aria-label", this.manager.translator.t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u9690\u85CF\u4E8E\u7BA1\u7406\u9875_\u6807\u7B7E", { name: ManagerPlugin4.name }));
+        hiddenToggle.toggleEl.setAttribute("aria-label", this.manager.translator.t("\u7BA1\u7406\u5668_\u5E03\u5C40_\u9690\u85CF\u4E8E\u7BA1\u7406\u9875_\u6807\u7B7E", { name: ManagerPlugin5.name }));
         hiddenToggle.onChange((value) => {
           this.setPluginHidden(plugin.id, value);
         });
@@ -8367,14 +8629,14 @@ var ManagerModal = class extends import_obsidian18.Modal {
         reloadButton.setIcon("refresh-ccw");
         reloadButton.setTooltip(this.manager.translator.t("\u7BA1\u7406\u5668_\u8FD8\u539F\u5185\u5BB9_\u63CF\u8FF0"));
         reloadButton.onClick(async () => {
-          if (!ManagerPlugin4)
+          if (!ManagerPlugin5)
             return;
-          ManagerPlugin4.name = plugin.name;
-          ManagerPlugin4.desc = plugin.description;
-          ManagerPlugin4.group = "";
-          ManagerPlugin4.delay = "";
-          ManagerPlugin4.tags = [];
-          this.manager.applySpecialPluginTags(ManagerPlugin4);
+          ManagerPlugin5.name = plugin.name;
+          ManagerPlugin5.desc = plugin.description;
+          ManagerPlugin5.group = "";
+          ManagerPlugin5.delay = "";
+          ManagerPlugin5.tags = [];
+          this.manager.applySpecialPluginTags(ManagerPlugin5);
           await this.manager.savePluginAndExport(plugin.id);
           this.refreshPluginCard(plugin.id, { allowReload: true });
         });
@@ -8385,23 +8647,23 @@ var ManagerModal = class extends import_obsidian18.Modal {
           ];
           const delaysEl = new import_obsidian18.DropdownComponent(itemEl.controlEl);
           this.addOrderedOptions(delaysEl, delays);
-          delaysEl.setValue((ManagerPlugin4 == null ? void 0 : ManagerPlugin4.delay) || "");
+          delaysEl.setValue((ManagerPlugin5 == null ? void 0 : ManagerPlugin5.delay) || "");
           const pSettings = this.settings.Plugins.find((p) => p.id === plugin.id);
           const isIgnored = (_i = pSettings == null ? void 0 : pSettings.tags) == null ? void 0 : _i.includes(BPM_IGNORE_TAG);
           let isRestoring = false;
           delaysEl.onChange(async (val) => {
-            if (!ManagerPlugin4)
+            if (!ManagerPlugin5)
               return;
             if (isRestoring)
               return;
             if (isIgnored) {
               new import_obsidian18.Notice(this.manager.translator.t("\u63D0\u793A_BPM\u5FFD\u7565_\u64CD\u4F5C\u62E6\u622A"));
               isRestoring = true;
-              delaysEl.setValue(ManagerPlugin4.delay || "");
+              delaysEl.setValue(ManagerPlugin5.delay || "");
               isRestoring = false;
               return;
             }
-            ManagerPlugin4.delay = val;
+            ManagerPlugin5.delay = val;
             await this.manager.savePluginAndExport(plugin.id);
             this.refreshPluginCard(plugin.id, { allowReload: true });
           });
@@ -8516,9 +8778,10 @@ var ManagerModal = class extends import_obsidian18.Modal {
     });
   }
   syncPageChrome() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
     this.ensureAllowedActivePage();
     const isPlugins = this.activePage === "plugins";
+    const isThemes = this.activePage === "themes";
     const isInstall = this.activePage === "install";
     const isSources = this.activePage === "sources";
     const isInstallWorkspace = isInstall || isSources;
@@ -8540,6 +8803,7 @@ var ManagerModal = class extends import_obsidian18.Modal {
     };
     this.installMode = isInstallWorkspace;
     syncTabState(this.pluginTabEl, isPlugins);
+    syncTabState(this.themeTabEl, isThemes);
     syncTabState(this.installTabEl, isInstallWorkspace);
     syncTabState(this.sourcesTabEl, isSources);
     syncTabState(this.transferTabEl, isTransfer);
@@ -8547,21 +8811,23 @@ var ManagerModal = class extends import_obsidian18.Modal {
     syncTabState(this.ribbonTabEl, isRibbon);
     syncTabState(this.troubleshootTabEl, isTroubleshoot);
     (_c = this.desktopActionWrapper) == null ? void 0 : _c.classList.toggle("is-plugin-page", isPlugins);
-    (_d = this.desktopActionWrapper) == null ? void 0 : _d.classList.toggle("is-install-page", isInstall);
-    (_e = this.desktopActionWrapper) == null ? void 0 : _e.classList.toggle("is-sources-page", isSources);
-    (_f = this.desktopActionWrapper) == null ? void 0 : _f.classList.toggle("is-transfer-page", isTransfer);
-    (_g = this.desktopActionWrapper) == null ? void 0 : _g.classList.toggle("is-vaults-page", isVaults);
-    (_h = this.desktopActionWrapper) == null ? void 0 : _h.classList.toggle("is-ribbon-page", isRibbon);
-    (_i = this.desktopActionWrapper) == null ? void 0 : _i.classList.toggle("is-troubleshoot-page", isTroubleshoot);
-    (_j = this.desktopActionWrapper) == null ? void 0 : _j.classList.remove("is-layout-editing");
-    (_k = this.desktopActionWrapper) == null ? void 0 : _k.classList.toggle("is-bulk-editing", isPlugins && this.bulkEditMode);
-    (_l = this.bulkEditButtonEl) == null ? void 0 : _l.classList.toggle("is-active", this.bulkEditMode);
-    (_m = this.editorButtonEl) == null ? void 0 : _m.classList.toggle("is-active", isPlugins && this.editorMode);
+    (_d = this.desktopActionWrapper) == null ? void 0 : _d.classList.toggle("is-theme-page", isThemes);
+    (_e = this.desktopActionWrapper) == null ? void 0 : _e.classList.toggle("is-appearance-profiles-page", isThemes && this.appearanceView === "profiles");
+    (_f = this.desktopActionWrapper) == null ? void 0 : _f.classList.toggle("is-install-page", isInstall);
+    (_g = this.desktopActionWrapper) == null ? void 0 : _g.classList.toggle("is-sources-page", isSources);
+    (_h = this.desktopActionWrapper) == null ? void 0 : _h.classList.toggle("is-transfer-page", isTransfer);
+    (_i = this.desktopActionWrapper) == null ? void 0 : _i.classList.toggle("is-vaults-page", isVaults);
+    (_j = this.desktopActionWrapper) == null ? void 0 : _j.classList.toggle("is-ribbon-page", isRibbon);
+    (_k = this.desktopActionWrapper) == null ? void 0 : _k.classList.toggle("is-troubleshoot-page", isTroubleshoot);
+    (_l = this.desktopActionWrapper) == null ? void 0 : _l.classList.remove("is-layout-editing");
+    (_m = this.desktopActionWrapper) == null ? void 0 : _m.classList.toggle("is-bulk-editing", isPlugins && this.bulkEditMode);
+    (_n = this.bulkEditButtonEl) == null ? void 0 : _n.classList.toggle("is-active", this.bulkEditMode);
+    (_o = this.editorButtonEl) == null ? void 0 : _o.classList.toggle("is-active", isPlugins && this.editorMode);
     if (this.desktopFilterWrapper) {
       this.desktopFilterWrapper.classList.toggle("manager-display-none", !isPlugins);
     }
     if (this.searchBarEl) {
-      if (isPlugins) {
+      if (isPlugins || isThemes) {
         this.searchBarEl.removeClass("manager-display-none");
       } else {
         this.searchBarEl.addClass("manager-display-none");
@@ -8623,6 +8889,112 @@ ${manifest.author || ""}`;
     this.searchIndex.set(plugin.id, { key, text });
     return text;
   }
+  toTimestamp(value) {
+    if (!value)
+      return void 0;
+    const time = typeof value === "number" ? value : new Date(value).getTime();
+    return Number.isFinite(time) && time > 0 ? time : void 0;
+  }
+  pickFirstTimestamp(values) {
+    for (const value of values) {
+      const time = this.toTimestamp(value);
+      if (time)
+        return time;
+    }
+    return void 0;
+  }
+  pickLatestTimestamp(values) {
+    const times = values.map((value) => this.toTimestamp(value)).filter((value) => Boolean(value));
+    return times.length > 0 ? Math.max(...times) : void 0;
+  }
+  getPluginSourceById() {
+    const sources = /* @__PURE__ */ new Map();
+    for (const source of this.getBetaSources()) {
+      if (source.type !== "plugin")
+        continue;
+      const pluginId = this.getPluginIdByRepo(source.repo) || source.id;
+      if (pluginId && !sources.has(pluginId))
+        sources.set(pluginId, source);
+    }
+    return sources;
+  }
+  async statPath(path) {
+    try {
+      return await this.app.vault.adapter.stat(path);
+    } catch (e) {
+      return null;
+    }
+  }
+  async readPluginDateMeta(plugin, sourceById) {
+    const folder = (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/plugins/${plugin.id}`);
+    const [folderStat, manifestStat, mainStat, stylesStat] = await Promise.all([
+      this.statPath(folder),
+      this.statPath((0, import_obsidian19.normalizePath)(`${folder}/manifest.json`)),
+      this.statPath((0, import_obsidian19.normalizePath)(`${folder}/main.js`)),
+      this.statPath((0, import_obsidian19.normalizePath)(`${folder}/styles.css`))
+    ]);
+    const source = sourceById.get(plugin.id);
+    return {
+      installedAt: this.pickFirstTimestamp([folderStat == null ? void 0 : folderStat.ctime, source == null ? void 0 : source.installedAt, manifestStat == null ? void 0 : manifestStat.ctime, folderStat == null ? void 0 : folderStat.mtime]),
+      updatedAt: this.pickLatestTimestamp([
+        manifestStat == null ? void 0 : manifestStat.mtime,
+        mainStat == null ? void 0 : mainStat.mtime,
+        stylesStat == null ? void 0 : stylesStat.mtime,
+        source == null ? void 0 : source.installedReleasePublishedAt,
+        folderStat == null ? void 0 : folderStat.mtime
+      ])
+    };
+  }
+  async getPluginDateMetaMap(plugins) {
+    const sourceById = this.getPluginSourceById();
+    const entries = await Promise.all(plugins.map(async (plugin) => [
+      plugin.id,
+      await this.readPluginDateMeta(plugin, sourceById)
+    ]));
+    return new Map(entries);
+  }
+  comparePluginsByName(a, b, pluginSettingsById, direction = "asc") {
+    var _a, _b;
+    const nameA = ((_a = pluginSettingsById.get(a.id)) == null ? void 0 : _a.name) || a.name || a.id;
+    const nameB = ((_b = pluginSettingsById.get(b.id)) == null ? void 0 : _b.name) || b.name || b.id;
+    const result = nameA.localeCompare(nameB, void 0, { sensitivity: "base" }) || a.id.localeCompare(b.id);
+    return direction === "asc" ? result : -result;
+  }
+  comparePluginsByDate(a, b, pluginSettingsById, dateMetaById, field, direction) {
+    var _a, _b;
+    const valueA = ((_a = dateMetaById.get(a.id)) == null ? void 0 : _a[field]) || 0;
+    const valueB = ((_b = dateMetaById.get(b.id)) == null ? void 0 : _b[field]) || 0;
+    if (valueA && !valueB)
+      return -1;
+    if (!valueA && valueB)
+      return 1;
+    if (valueA !== valueB)
+      return direction === "asc" ? valueA - valueB : valueB - valueA;
+    return this.comparePluginsByName(a, b, pluginSettingsById);
+  }
+  getSortedPluginLayoutItems(layoutItems, manifestById, pluginSettingsById, dateMetaById) {
+    const sort = this.getPluginOverviewSort();
+    if (sort === "layout")
+      return layoutItems;
+    const plugins = layoutItems.filter((item) => item.type === "plugin").map((item) => manifestById.get(item.id)).filter((plugin) => Boolean(plugin));
+    plugins.sort((a, b) => {
+      switch (sort) {
+        case "name-desc":
+          return this.comparePluginsByName(a, b, pluginSettingsById, "desc");
+        case "installed-desc":
+          return this.comparePluginsByDate(a, b, pluginSettingsById, dateMetaById, "installedAt", "desc");
+        case "installed-asc":
+          return this.comparePluginsByDate(a, b, pluginSettingsById, dateMetaById, "installedAt", "asc");
+        case "updated-desc":
+          return this.comparePluginsByDate(a, b, pluginSettingsById, dateMetaById, "updatedAt", "desc");
+        case "updated-asc":
+          return this.comparePluginsByDate(a, b, pluginSettingsById, dateMetaById, "updatedAt", "asc");
+        default:
+          return this.comparePluginsByName(a, b, pluginSettingsById, "asc");
+      }
+    });
+    return plugins.map((plugin) => ({ id: plugin.id, type: "plugin" }));
+  }
   getPluginLayout(manifests = this.getUniquePluginManifests()) {
     if (!Array.isArray(this.manager.settings.PLUGIN_LAYOUT))
       this.manager.settings.PLUGIN_LAYOUT = [];
@@ -8662,7 +9034,7 @@ ${manifest.author || ""}`;
     return this.getPluginLayout(manifests).filter((item) => item.type === "plugin").map((item) => manifestById.get(item.id)).filter((plugin) => Boolean(plugin));
   }
   shouldRenderPluginLayoutSeparators() {
-    return !this.hasActiveStatusFilter() && this.getGroupFilterValues().length === 0 && this.getTagFilterValues().length === 0 && this.getDelayFilterValues().length === 0 && !this.searchText;
+    return this.getPluginOverviewSort() === "layout" && !this.hasActiveStatusFilter() && this.getGroupFilterValues().length === 0 && this.getTagFilterValues().length === 0 && this.getDelayFilterValues().length === 0 && !this.searchText;
   }
   renderPluginLayoutSeparator(title) {
     const separator = this.pageEl.createDiv("manager-plugin-separator");
@@ -9020,6 +9392,539 @@ ${manifest.author || ""}`;
     source.error = "";
     await this.manager.saveSettings();
     return true;
+  }
+  getCustomCss() {
+    return this.app.customCss;
+  }
+  getActiveThemeName() {
+    var _a;
+    const customCss = this.getCustomCss();
+    return (customCss == null ? void 0 : customCss.theme) || ((_a = customCss == null ? void 0 : customCss.getTheme) == null ? void 0 : _a.call(customCss)) || "";
+  }
+  setActiveThemeName(themeName) {
+    var _a, _b;
+    (_b = (_a = this.getCustomCss()) == null ? void 0 : _a.setTheme) == null ? void 0 : _b.call(_a, themeName);
+  }
+  getThemeFolderPath(themeName) {
+    var _a, _b;
+    const getBasePath = (_b = (_a = this.app.vault.adapter).getBasePath) == null ? void 0 : _b.call(_a);
+    const basePath = getBasePath ? (0, import_obsidian19.normalizePath)(getBasePath) : "";
+    const relativePath = (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/themes/${themeName}`);
+    return basePath ? (0, import_obsidian19.normalizePath)(`${basePath}/${relativePath}`) : relativePath;
+  }
+  getSnippetFolderPath() {
+    var _a, _b;
+    const getBasePath = (_b = (_a = this.app.vault.adapter).getBasePath) == null ? void 0 : _b.call(_a);
+    const basePath = getBasePath ? (0, import_obsidian19.normalizePath)(getBasePath) : "";
+    const relativePath = (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/snippets`);
+    return basePath ? (0, import_obsidian19.normalizePath)(`${basePath}/${relativePath}`) : relativePath;
+  }
+  getAppearanceConfigPath() {
+    return (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/appearance.json`);
+  }
+  async readAppearanceJson() {
+    const adapter = this.app.vault.adapter;
+    const path = this.getAppearanceConfigPath();
+    try {
+      if (!await adapter.exists(path))
+        return {};
+      return JSON.parse(await adapter.read(path));
+    } catch (e) {
+      return {};
+    }
+  }
+  getCustomCssEnabledSnippetIds() {
+    var _a;
+    const enabledSnippets = (_a = this.getCustomCss()) == null ? void 0 : _a.enabledSnippets;
+    if (enabledSnippets instanceof Set)
+      return new Set(enabledSnippets);
+    if (Array.isArray(enabledSnippets))
+      return new Set(enabledSnippets);
+    return null;
+  }
+  async getEnabledSnippetIds() {
+    const fromCustomCss = this.getCustomCssEnabledSnippetIds();
+    if (fromCustomCss)
+      return fromCustomCss;
+    const appearance = await this.readAppearanceJson();
+    return new Set(Array.isArray(appearance.enabledCssSnippets) ? appearance.enabledCssSnippets : []);
+  }
+  async collectCssSnippets() {
+    const adapter = this.app.vault.adapter;
+    const snippetsDir = (0, import_obsidian19.normalizePath)(`${this.app.vault.configDir}/snippets`);
+    const enabledIds = await this.getEnabledSnippetIds();
+    try {
+      if (!await adapter.exists(snippetsDir))
+        return [];
+      const listed = await adapter.list(snippetsDir);
+      return (listed.files || []).filter((file) => file.toLowerCase().endsWith(".css")).map((file) => {
+        const fileName = file.split("/").pop() || file;
+        const id = fileName.replace(/\.css$/i, "");
+        return {
+          id,
+          name: id,
+          path: (0, import_obsidian19.normalizePath)(file),
+          enabled: enabledIds.has(id)
+        };
+      }).sort((a, b) => a.name.localeCompare(b.name));
+    } catch (e) {
+      return [];
+    }
+  }
+  async setCssSnippetEnabled(snippetId, enabled) {
+    var _a, _b, _c;
+    const customCss = this.getCustomCss();
+    if (customCss == null ? void 0 : customCss.setCssEnabledStatus) {
+      customCss.setCssEnabledStatus(snippetId, enabled);
+      return;
+    }
+    const adapter = this.app.vault.adapter;
+    const path = this.getAppearanceConfigPath();
+    const appearance = await this.readAppearanceJson();
+    const enabledIds = new Set(Array.isArray(appearance.enabledCssSnippets) ? appearance.enabledCssSnippets : []);
+    if (enabled)
+      enabledIds.add(snippetId);
+    else
+      enabledIds.delete(snippetId);
+    appearance.enabledCssSnippets = [...enabledIds].sort((a, b) => a.localeCompare(b));
+    await adapter.write(path, JSON.stringify(appearance, null, 2));
+    await ((_a = customCss == null ? void 0 : customCss.loadSnippets) == null ? void 0 : _a.call(customCss));
+    (_c = (_b = this.app.workspace).trigger) == null ? void 0 : _c.call(_b, "css-change");
+  }
+  normalizeSnippetIds(ids) {
+    return [...new Set((ids || []).map((id) => id.trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  }
+  getAppearanceProfiles() {
+    if (!Array.isArray(this.manager.settings.APPEARANCE_PROFILES)) {
+      this.manager.settings.APPEARANCE_PROFILES = [];
+    }
+    return this.manager.settings.APPEARANCE_PROFILES;
+  }
+  createAppearanceProfileId() {
+    return `appearance-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+  createCurrentAppearanceProfileDraft(snippets) {
+    const activeTheme = this.getActiveThemeName();
+    return {
+      id: "",
+      name: activeTheme ? `${activeTheme} ${this.manager.translator.t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u9ED8\u8BA4\u540D\u79F0")}` : this.manager.translator.t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u9ED8\u8BA4\u540D\u79F0"),
+      theme: activeTheme,
+      enableSnippets: snippets.filter((snippet) => snippet.enabled).map((snippet) => snippet.id),
+      disableSnippets: [],
+      mode: "merge",
+      autoApplyOnTheme: Boolean(activeTheme)
+    };
+  }
+  async saveAppearanceProfile(profile) {
+    const profiles = this.getAppearanceProfiles();
+    const now = Date.now();
+    const enableSnippets = this.normalizeSnippetIds(profile.enableSnippets || []);
+    const normalized = {
+      id: profile.id || this.createAppearanceProfileId(),
+      name: profile.name.trim(),
+      theme: profile.theme || "",
+      enableSnippets,
+      disableSnippets: this.normalizeSnippetIds(profile.disableSnippets || []).filter((id) => !enableSnippets.includes(id)),
+      mode: profile.mode || "merge",
+      autoApplyOnTheme: Boolean(profile.autoApplyOnTheme && profile.theme),
+      createdAt: profile.createdAt || now,
+      updatedAt: now
+    };
+    const index = profiles.findIndex((item) => item.id === normalized.id);
+    if (index >= 0)
+      profiles[index] = normalized;
+    else
+      profiles.push(normalized);
+    profiles.sort((a, b) => a.name.localeCompare(b.name));
+    await this.manager.saveSettings();
+    await this.reloadShowData();
+  }
+  async deleteAppearanceProfile(profileId) {
+    this.manager.settings.APPEARANCE_PROFILES = this.getAppearanceProfiles().filter((profile) => profile.id !== profileId);
+    await this.manager.saveSettings();
+    await this.reloadShowData();
+  }
+  getAutoAppearanceProfileForTheme(themeName) {
+    if (!themeName)
+      return void 0;
+    return this.getAppearanceProfiles().find((profile) => profile.autoApplyOnTheme && profile.theme === themeName);
+  }
+  openAppearanceProfileModal(profile, themes, snippets) {
+    new AppearanceProfileModal(this.app, this.manager, profile, themes, snippets, async (nextProfile) => {
+      await this.saveAppearanceProfile(nextProfile);
+    }).open();
+  }
+  async writeEnabledSnippetIds(enabledIds) {
+    var _a, _b, _c;
+    const sortedIds = [...enabledIds].sort((a, b) => a.localeCompare(b));
+    const adapter = this.app.vault.adapter;
+    const path = this.getAppearanceConfigPath();
+    const appearance = await this.readAppearanceJson();
+    appearance.enabledCssSnippets = sortedIds;
+    await adapter.write(path, JSON.stringify(appearance, null, 2));
+    const customCss = this.getCustomCss();
+    const customCssEnabledSnippets = customCss == null ? void 0 : customCss.enabledSnippets;
+    if (customCssEnabledSnippets instanceof Set) {
+      customCssEnabledSnippets.clear();
+      sortedIds.forEach((id) => customCssEnabledSnippets.add(id));
+    } else if (customCss && Array.isArray(customCssEnabledSnippets)) {
+      customCss.enabledSnippets = sortedIds;
+    }
+    await ((_a = customCss == null ? void 0 : customCss.loadSnippets) == null ? void 0 : _a.call(customCss));
+    (_c = (_b = this.app.workspace).trigger) == null ? void 0 : _c.call(_b, "css-change");
+  }
+  async applyAppearanceProfile(profile, options = {}) {
+    if (profile.theme)
+      this.setActiveThemeName(profile.theme);
+    const currentEnabled = await this.getEnabledSnippetIds();
+    const nextEnabled = profile.mode === "exact" ? /* @__PURE__ */ new Set() : new Set(currentEnabled);
+    this.normalizeSnippetIds(profile.enableSnippets || []).forEach((id) => nextEnabled.add(id));
+    this.normalizeSnippetIds(profile.disableSnippets || []).forEach((id) => nextEnabled.delete(id));
+    const currentSorted = [...currentEnabled].sort((a, b) => a.localeCompare(b)).join("\n");
+    const nextSorted = [...nextEnabled].sort((a, b) => a.localeCompare(b)).join("\n");
+    if (currentSorted !== nextSorted)
+      await this.writeEnabledSnippetIds(nextEnabled);
+    if (!options.quiet)
+      new import_obsidian18.Notice(this.manager.translator.t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5DF2\u5E94\u7528", { name: profile.name }));
+    await this.reloadShowData();
+  }
+  async activateThemeWithBoundProfile(themeName) {
+    const boundProfile = this.getAutoAppearanceProfileForTheme(themeName);
+    if (boundProfile) {
+      await this.applyAppearanceProfile(boundProfile);
+      return;
+    }
+    this.setActiveThemeName(themeName);
+    new import_obsidian18.Notice(this.manager.translator.t("\u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u4E3B\u9898\u5DF2\u5207\u6362", { name: themeName }));
+    await this.reloadShowData();
+  }
+  renderAppearanceStats(themes, snippets) {
+    if (!this.footEl)
+      return;
+    const activeTheme = this.getActiveThemeName();
+    const trackedCount = themes.filter((theme) => Boolean(theme.repo || theme.source)).length;
+    const enabledSnippetCount = snippets.filter((snippet) => snippet.enabled).length;
+    this.footEl.empty();
+    const t = (key, vars) => this.manager.translator.t(key, vars);
+    [
+      { cls: "bpm-stat-chip--total", icon: "palette", label: t("\u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u4E3B\u9898"), value: themes.length },
+      { cls: "bpm-stat-chip--enabled", icon: "badge-check", label: t("\u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u7247\u6BB5\u542F\u7528"), value: enabledSnippetCount },
+      { cls: "bpm-stat-chip--updates", icon: "radio-tower", label: t("\u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u5DF2\u8FFD\u8E2A"), value: trackedCount },
+      { cls: "bpm-stat-chip--hidden", icon: "monitor", label: t("\u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u5F53\u524D"), value: activeTheme || t("\u5916\u89C2\u603B\u89C8_\u9ED8\u8BA4\u4E3B\u9898") }
+    ].forEach((item) => {
+      const chip = this.footEl.createSpan({ cls: `bpm-stat-chip ${item.cls}` });
+      chip.setAttribute("aria-label", `${item.label} ${item.value}`);
+      const icon = chip.createSpan({ cls: "bpm-stat-chip__icon" });
+      (0, import_obsidian18.setIcon)(icon, item.icon);
+      chip.createSpan({ cls: "bpm-stat-chip__label", text: item.label });
+      chip.createSpan({ cls: "bpm-stat-chip__value", text: `${item.value}` });
+    });
+  }
+  async showThemeOverview(renderGeneration = this.renderGeneration) {
+    const page = "themes";
+    if (!this.isRenderCurrent(renderGeneration, page))
+      return;
+    const t = (key, vars) => this.manager.translator.t(key, vars);
+    this.pageEl.empty();
+    this.pageEl.addClass("manager-theme-overview");
+    const [themes, snippets] = await Promise.all([
+      collectInstalledThemes(this.manager, void 0, false, true),
+      this.collectCssSnippets()
+    ]);
+    if (!this.isRenderCurrent(renderGeneration, page))
+      return;
+    const profiles = this.getAppearanceProfiles();
+    this.renderAppearanceStats(themes, snippets);
+    const lowerSearchText = this.searchText.trim().toLowerCase();
+    const visibleProfiles = lowerSearchText ? profiles.filter((profile) => [
+      profile.name,
+      profile.theme || "",
+      profile.mode,
+      ...profile.enableSnippets || [],
+      ...profile.disableSnippets || []
+    ].join("\n").toLowerCase().includes(lowerSearchText)) : profiles;
+    const visibleThemes = lowerSearchText ? themes.filter((theme) => {
+      var _a, _b;
+      return [
+        theme.name,
+        theme.version || "",
+        theme.author || "",
+        theme.repo || "",
+        ((_a = theme.source) == null ? void 0 : _a.latestVersion) || "",
+        ((_b = theme.source) == null ? void 0 : _b.localVersion) || ""
+      ].join("\n").toLowerCase().includes(lowerSearchText);
+    }) : themes;
+    const visibleSnippets = lowerSearchText ? snippets.filter((snippet) => [
+      snippet.name,
+      snippet.id,
+      snippet.path,
+      snippet.enabled ? t("\u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u542F\u7528") : t("\u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u7981\u7528")
+    ].join("\n").toLowerCase().includes(lowerSearchText)) : snippets;
+    const workspace = this.pageEl.createDiv("manager-repo-page manager-appearance-workspace");
+    const toolbar = workspace.createDiv("manager-repo-page__toolbar manager-appearance-toolbar");
+    const tabs = toolbar.createDiv("manager-repo-page__switcher manager-appearance-tabs");
+    tabs.setAttribute("role", "tablist");
+    tabs.setAttribute("data-slot", "tabs-list");
+    const createAppearanceTab = (view, icon, label, count) => {
+      const button = tabs.createEl("button", { cls: "manager-repo-page__switch manager-appearance-tab" });
+      const selected = this.appearanceView === view;
+      button.type = "button";
+      button.setAttribute("role", "tab");
+      button.setAttribute("data-slot", "tabs-trigger");
+      button.toggleClass("is-active", selected);
+      button.setAttribute("aria-pressed", `${selected}`);
+      button.setAttribute("aria-selected", `${selected}`);
+      button.setAttribute("data-state", selected ? "active" : "inactive");
+      const iconEl = button.createSpan({ cls: "manager-repo-page__switch-icon" });
+      (0, import_obsidian18.setIcon)(iconEl, icon);
+      button.createSpan({ cls: "manager-repo-page__switch-label", text: label });
+      button.createSpan({ cls: "manager-repo-page__switch-count", text: `${count}` });
+      button.addEventListener("click", () => {
+        if (this.appearanceView === view)
+          return;
+        this.appearanceView = view;
+        this.syncPageChrome();
+        this.renderContent();
+      });
+    };
+    createAppearanceTab("profiles", "layers-3", t("\u5916\u89C2\u603B\u89C8_\u5206\u533A_\u5916\u89C2\u65B9\u6848"), visibleProfiles.length);
+    createAppearanceTab("themes", "palette", t("\u5916\u89C2\u603B\u89C8_\u5206\u533A_\u4E3B\u9898"), visibleThemes.length);
+    createAppearanceTab("snippets", "file-code-2", t("\u5916\u89C2\u603B\u89C8_\u5206\u533A_CSS\u7247\u6BB5"), visibleSnippets.length);
+    const body = workspace.createDiv("manager-repo-page__body manager-appearance-body");
+    if (this.appearanceView === "profiles") {
+      const profileSection = body.createDiv("manager-appearance-section manager-appearance-section--profiles");
+      const profileList = profileSection.createDiv("manager-appearance-section__list");
+      if (visibleProfiles.length === 0) {
+        const empty = profileList.createDiv("manager-appearance-inline-empty");
+        empty.createSpan({ text: lowerSearchText ? t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u65E0\u5339\u914D") : t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7A7A") });
+      }
+      for (const profile of visibleProfiles) {
+        if (!this.isRenderCurrent(renderGeneration, page))
+          return;
+        const itemEl = new import_obsidian18.Setting(profileList);
+        itemEl.setClass("manager-item");
+        itemEl.settingEl.addClass("manager-theme-card");
+        itemEl.settingEl.addClass("manager-appearance-profile-card");
+        itemEl.settingEl.toggleClass("is-active-theme", Boolean(profile.theme && profile.theme === this.getActiveThemeName()));
+        itemEl.nameEl.addClass("manager-item__name-container");
+        itemEl.nameEl.addClass("manager-theme-card__header");
+        itemEl.descEl.addClass("manager-item__description-container");
+        itemEl.descEl.addClass("manager-theme-card__body");
+        itemEl.controlEl.addClass("manager-item__controls");
+        itemEl.controlEl.addClass("manager-theme-card__actions");
+        const titleRow = itemEl.nameEl.createDiv("manager-theme-card__title-row");
+        const iconWrap = titleRow.createSpan({ cls: "manager-theme-card__icon" });
+        (0, import_obsidian18.setIcon)(iconWrap, "layers-3");
+        titleRow.createSpan({ cls: "manager-theme-card__name", text: profile.name, title: profile.name });
+        if (profile.theme)
+          titleRow.createSpan({ cls: "manager-theme-card__chip is-source", text: profile.theme });
+        titleRow.createSpan({ cls: "manager-theme-card__chip", text: t(profile.mode === "exact" ? "\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7CBE\u786E\u6A21\u5F0F" : "\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5408\u5E76\u6A21\u5F0F") });
+        if (profile.autoApplyOnTheme)
+          titleRow.createSpan({ cls: "manager-theme-card__chip is-active", text: t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528\u77ED") });
+        const meta = itemEl.descEl.createDiv("manager-theme-card__meta");
+        const addMeta = (iconName, label, value) => {
+          const row = meta.createDiv("manager-theme-card__meta-row");
+          const rowIcon = row.createSpan({ cls: "manager-theme-card__meta-icon" });
+          (0, import_obsidian18.setIcon)(rowIcon, iconName);
+          row.createSpan({ cls: "manager-theme-card__meta-label", text: label });
+          row.createSpan({ cls: "manager-theme-card__meta-value", text: value, title: value });
+        };
+        addMeta("badge-check", t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u542F\u7528\u7247\u6BB5\u6570"), `${profile.enableSnippets.length}`);
+        addMeta("circle-minus", t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7981\u7528\u7247\u6BB5\u6570"), `${profile.disableSnippets.length}`);
+        const applyBtn = new import_obsidian18.ButtonComponent(itemEl.controlEl);
+        applyBtn.setIcon("wand-sparkles");
+        applyBtn.setTooltip(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528"));
+        applyBtn.onClick(async () => {
+          await this.applyAppearanceProfile(profile);
+        });
+        const editBtn = new import_obsidian18.ButtonComponent(itemEl.controlEl);
+        editBtn.setIcon("pencil");
+        editBtn.setTooltip(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7F16\u8F91"));
+        editBtn.onClick(() => {
+          this.openAppearanceProfileModal(profile, themes, snippets);
+        });
+        const deleteBtn = new import_obsidian18.ButtonComponent(itemEl.controlEl);
+        deleteBtn.setIcon("trash-2");
+        deleteBtn.setTooltip(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5220\u9664"));
+        deleteBtn.onClick(async () => {
+          if (!await confirmWithModal(this.app, this.manager, t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5220\u9664\u786E\u8BA4", { name: profile.name })))
+            return;
+          await this.deleteAppearanceProfile(profile.id);
+        });
+      }
+    }
+    if (this.appearanceView === "themes") {
+      const themeSection = body.createDiv("manager-appearance-section manager-appearance-section--themes");
+      const themeList = themeSection.createDiv("manager-appearance-section__list");
+      if (visibleThemes.length === 0) {
+        const empty = themeList.createDiv("manager-appearance-inline-empty");
+        empty.createSpan({ text: lowerSearchText ? t("\u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u4E3B\u9898") : t("\u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u4E3B\u9898") });
+        if (!lowerSearchText) {
+          const installBtn = new import_obsidian18.ButtonComponent(empty);
+          installBtn.setIcon("download");
+          installBtn.setButtonText(t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u5B89\u88C5\u4E3B\u9898"));
+          installBtn.onClick(() => {
+            this.installType = "theme";
+            this.activePage = "install";
+            this.syncPageChrome();
+            this.renderContent();
+          });
+        }
+      }
+      for (const theme of visibleThemes) {
+        if (!this.isRenderCurrent(renderGeneration, page))
+          return;
+        const boundProfile = this.getAutoAppearanceProfileForTheme(theme.name);
+        const itemEl = new import_obsidian18.Setting(themeList);
+        itemEl.setClass("manager-item");
+        itemEl.settingEl.addClass("manager-theme-card");
+        itemEl.settingEl.toggleClass("is-active-theme", theme.active);
+        itemEl.nameEl.addClass("manager-item__name-container");
+        itemEl.nameEl.addClass("manager-theme-card__header");
+        itemEl.descEl.addClass("manager-item__description-container");
+        itemEl.descEl.addClass("manager-theme-card__body");
+        itemEl.controlEl.addClass("manager-item__controls");
+        itemEl.controlEl.addClass("manager-theme-card__actions");
+        itemEl.controlEl.setAttribute("aria-label", t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u4E3B\u9898\u533A\u57DF", { name: theme.name }));
+        const titleRow = itemEl.nameEl.createDiv("manager-theme-card__title-row");
+        const iconWrap = titleRow.createSpan({ cls: "manager-theme-card__icon" });
+        (0, import_obsidian18.setIcon)(iconWrap, theme.active ? "badge-check" : "palette");
+        titleRow.createSpan({ cls: "manager-theme-card__name", text: theme.name, title: theme.name });
+        if (theme.active)
+          titleRow.createSpan({ cls: "manager-theme-card__chip is-active", text: t("\u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5F53\u524D") });
+        if (theme.version)
+          titleRow.createSpan({ cls: "manager-theme-card__chip", text: `v${theme.version}` });
+        if (theme.repo || theme.source)
+          titleRow.createSpan({ cls: "manager-theme-card__chip is-source", text: t("\u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u8FFD\u8E2A") });
+        if (boundProfile)
+          titleRow.createSpan({ cls: "manager-theme-card__chip is-active", text: t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5DF2\u7ED1\u5B9A") });
+        const meta = itemEl.descEl.createDiv("manager-theme-card__meta");
+        const addMeta = (iconName, label, value) => {
+          if (!value)
+            return;
+          const row = meta.createDiv("manager-theme-card__meta-row");
+          const rowIcon = row.createSpan({ cls: "manager-theme-card__meta-icon" });
+          (0, import_obsidian18.setIcon)(rowIcon, iconName);
+          row.createSpan({ cls: "manager-theme-card__meta-label", text: label });
+          row.createSpan({ cls: "manager-theme-card__meta-value", text: value, title: value });
+        };
+        addMeta("user", t("\u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u4F5C\u8005"), theme.author || "");
+        addMeta("tag", t("\u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u7248\u672C"), theme.version || "");
+        addMeta("github", t("\u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u4ED3\u5E93"), theme.repo || "");
+        if (theme.source) {
+          addMeta("clock", t("\u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u5B89\u88C5\u65F6\u95F4"), this.formatSourceDate(theme.source.installedAt));
+          addMeta("radio-tower", t("\u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u6700\u65B0"), theme.source.latestReleaseTag || theme.source.latestVersion || "");
+        }
+        const activateBtn = new import_obsidian18.ButtonComponent(itemEl.controlEl);
+        activateBtn.setIcon(theme.active ? "badge-check" : "paintbrush");
+        activateBtn.setTooltip(boundProfile ? t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u7ED1\u5B9A", { name: boundProfile.name }) : theme.active ? t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u5F53\u524D\u4E3B\u9898") : t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u4F7F\u7528\u4E3B\u9898"));
+        activateBtn.setDisabled(theme.active);
+        activateBtn.onClick(async () => {
+          await this.activateThemeWithBoundProfile(theme.name);
+        });
+        if (boundProfile && theme.active) {
+          const applyBoundBtn = new import_obsidian18.ButtonComponent(itemEl.controlEl);
+          applyBoundBtn.setIcon("wand-sparkles");
+          applyBoundBtn.setTooltip(t("\u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u7ED1\u5B9A", { name: boundProfile.name }));
+          applyBoundBtn.onClick(async () => {
+            await this.applyAppearanceProfile(boundProfile);
+          });
+        }
+        const openDirBtn = new import_obsidian18.ButtonComponent(itemEl.controlEl);
+        openDirBtn.setIcon("folder-open");
+        openDirBtn.setTooltip(t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00\u4E3B\u9898\u76EE\u5F55"));
+        openDirBtn.onClick(() => {
+          managerOpen(this.getThemeFolderPath(theme.name), this.manager);
+        });
+        if (theme.repo) {
+          const githubBtn = new import_obsidian18.ButtonComponent(itemEl.controlEl);
+          githubBtn.setIcon("github");
+          githubBtn.setTooltip(t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00GitHub"));
+          githubBtn.onClick(() => {
+            window.open(`https://github.com/${theme.repo}`);
+          });
+        }
+      }
+    }
+    if (this.appearanceView === "snippets") {
+      const snippetSection = body.createDiv("manager-appearance-section manager-appearance-section--snippets");
+      const snippetList = snippetSection.createDiv("manager-appearance-section__list");
+      if (visibleSnippets.length === 0) {
+        const empty = snippetList.createDiv("manager-appearance-inline-empty");
+        empty.createSpan({ text: lowerSearchText ? t("\u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u7247\u6BB5") : t("\u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0CSS\u7247\u6BB5") });
+        if (!lowerSearchText) {
+          const openBtn = new import_obsidian18.ButtonComponent(empty);
+          openBtn.setIcon("folder-open");
+          openBtn.setButtonText(t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00\u7247\u6BB5\u76EE\u5F55"));
+          openBtn.onClick(() => {
+            managerOpen(this.getSnippetFolderPath(), this.manager);
+          });
+        }
+      }
+      for (const snippet of visibleSnippets) {
+        if (!this.isRenderCurrent(renderGeneration, page))
+          return;
+        const itemEl = new import_obsidian18.Setting(snippetList);
+        itemEl.setClass("manager-item");
+        itemEl.settingEl.addClass("manager-theme-card");
+        itemEl.settingEl.addClass("manager-css-snippet-card");
+        itemEl.settingEl.toggleClass("is-active-theme", snippet.enabled);
+        itemEl.nameEl.addClass("manager-item__name-container");
+        itemEl.nameEl.addClass("manager-theme-card__header");
+        itemEl.descEl.addClass("manager-item__description-container");
+        itemEl.descEl.addClass("manager-theme-card__body");
+        itemEl.controlEl.addClass("manager-item__controls");
+        itemEl.controlEl.addClass("manager-theme-card__actions");
+        itemEl.controlEl.setAttribute("aria-label", t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u7247\u6BB5\u533A\u57DF", { name: snippet.name }));
+        const titleRow = itemEl.nameEl.createDiv("manager-theme-card__title-row");
+        const iconWrap = titleRow.createSpan({ cls: "manager-theme-card__icon" });
+        (0, import_obsidian18.setIcon)(iconWrap, snippet.enabled ? "badge-check" : "file-code-2");
+        titleRow.createSpan({ cls: "manager-theme-card__name", text: snippet.name, title: snippet.name });
+        const statusChip = titleRow.createSpan({
+          cls: `manager-theme-card__chip ${snippet.enabled ? "is-active" : ""}`,
+          text: snippet.enabled ? t("\u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u542F\u7528") : t("\u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u7981\u7528")
+        });
+        const meta = itemEl.descEl.createDiv("manager-theme-card__meta");
+        const row = meta.createDiv("manager-theme-card__meta-row manager-theme-card__meta-row--wide");
+        const rowIcon = row.createSpan({ cls: "manager-theme-card__meta-icon" });
+        (0, import_obsidian18.setIcon)(rowIcon, "file");
+        row.createSpan({ cls: "manager-theme-card__meta-label", text: t("\u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u6587\u4EF6") });
+        row.createSpan({ cls: "manager-theme-card__meta-value", text: `${snippet.id}.css`, title: snippet.path });
+        const toggle = new import_obsidian18.ToggleComponent(itemEl.controlEl);
+        toggle.setTooltip(snippet.enabled ? t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u7981\u7528\u7247\u6BB5") : t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u542F\u7528\u7247\u6BB5"));
+        toggle.setValue(snippet.enabled);
+        const syncSnippetCardState = (enabled) => {
+          snippet.enabled = enabled;
+          itemEl.settingEl.toggleClass("is-active-theme", enabled);
+          statusChip.toggleClass("is-active", enabled);
+          statusChip.setText(enabled ? t("\u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u542F\u7528") : t("\u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u7981\u7528"));
+          (0, import_obsidian18.setIcon)(iconWrap, enabled ? "badge-check" : "file-code-2");
+          toggle.setTooltip(enabled ? t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u7981\u7528\u7247\u6BB5") : t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u542F\u7528\u7247\u6BB5"));
+          this.renderAppearanceStats(themes, snippets);
+        };
+        toggle.onChange(async (enabled) => {
+          const previousEnabled = snippet.enabled;
+          toggle.setDisabled(true);
+          try {
+            await this.setCssSnippetEnabled(snippet.id, enabled);
+            syncSnippetCardState(enabled);
+            new import_obsidian18.Notice(t(enabled ? "\u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u7247\u6BB5\u5DF2\u542F\u7528" : "\u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u7247\u6BB5\u5DF2\u7981\u7528", { name: snippet.name }));
+          } catch (error) {
+            toggle.setValue(previousEnabled);
+            syncSnippetCardState(previousEnabled);
+            throw error;
+          } finally {
+            toggle.setDisabled(false);
+          }
+        });
+        const openDirBtn = new import_obsidian18.ButtonComponent(itemEl.controlEl);
+        openDirBtn.setIcon("folder-open");
+        openDirBtn.setTooltip(t("\u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00\u7247\u6BB5\u76EE\u5F55"));
+        openDirBtn.onClick(() => {
+          managerOpen(this.getSnippetFolderPath(), this.manager);
+        });
+      }
+    }
   }
   showHiddenPanel() {
     const t = (k, vars) => this.manager.translator.t(k, vars);
@@ -11178,6 +12083,8 @@ ${manifest.author || ""}`;
     this.clearPluginOverviewLayoutClass();
     if (this.activePage === "ribbon") {
       void this.showRibbonPanel(renderGeneration);
+    } else if (this.activePage === "themes") {
+      void this.showThemeOverview(renderGeneration);
     } else if (this.activePage === "troubleshoot") {
       this.showTroubleshootPanel();
     } else if (this.activePage === "transfer") {
@@ -11221,6 +12128,11 @@ ${manifest.author || ""}`;
     if (this.activePage === "ribbon") {
       await this.showRibbonPanel(renderGeneration);
       if (!this.isRenderCurrent(renderGeneration, "ribbon"))
+        return;
+      modalElement.scrollTo(0, scrollTop);
+    } else if (this.activePage === "themes") {
+      await this.showThemeOverview(renderGeneration);
+      if (!this.isRenderCurrent(renderGeneration, "themes"))
         return;
       modalElement.scrollTo(0, scrollTop);
     } else if (this.activePage === "troubleshoot") {
@@ -11270,6 +12182,12 @@ ${manifest.author || ""}`;
     this.ensureAllowedActivePage();
     await this.showHead();
     this.renderContent();
+  }
+  async refreshStyleSettings() {
+    if (this.modalContainer && !import_obsidian18.Platform.isMobileApp) {
+      this.modalContainer.toggleClass("manager-container__top", !this.settings.CENTER);
+    }
+    await this.reloadShowData();
   }
   onOpen() {
     void this.openAsync();
@@ -11672,144 +12590,612 @@ var TroubleshootModal = class {
 };
 
 // src/command.ts
-var Commands = (app, manager) => {
-  manager.addCommand({
-    id: "manager-view",
-    name: manager.translator.t("\u547D\u4EE4_\u7BA1\u7406\u9762\u677F_\u63CF\u8FF0"),
-    callback: () => {
-      new ManagerModal(app, manager).open();
+var commandServices = /* @__PURE__ */ new WeakMap();
+var ManagerCommandService = class {
+  constructor(app, manager) {
+    this.staticCommandIds = /* @__PURE__ */ new Set();
+    this.staticLanguage = "";
+    this.dynamicCommandIds = /* @__PURE__ */ new Set();
+    this.running = /* @__PURE__ */ new Set();
+    this.app = app;
+    this.manager = manager;
+  }
+  refresh() {
+    this.refreshStaticCommands();
+    this.refreshDynamicCommands();
+  }
+  openPluginControl() {
+    new PluginControlModal(this.app, this).open();
+  }
+  openProfileNameModal() {
+    new ProfileNameModal(this.app, this).open();
+  }
+  getTranslator() {
+    return this.manager.translator;
+  }
+  getPluginManifests() {
+    return Object.values(this.manager.appPlugins.manifests || {}).filter((plugin) => plugin.id !== this.manager.manifest.id).sort((a, b) => (a.name || a.id).localeCompare(b.name || b.id));
+  }
+  getManagerPlugin(pluginId) {
+    return this.manager.settings.Plugins.find((plugin) => plugin.id === pluginId);
+  }
+  isPluginEnabled(pluginId) {
+    const managerPlugin = this.getManagerPlugin(pluginId);
+    if (this.manager.settings.DELAY && managerPlugin && !managerPlugin.tags.includes(BPM_IGNORE_TAG)) {
+      return managerPlugin.enabled;
     }
-  });
-  manager.addCommand({
-    id: "troubleshoot-conflicts",
-    name: manager.translator.t("\u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0"),
-    callback: () => {
-      new TroubleshootModal(app, manager).open();
+    return this.manager.appPlugins.enabledPlugins.has(pluginId);
+  }
+  isActionablePlugin(pluginId) {
+    var _a;
+    if (pluginId === this.manager.manifest.id)
+      return false;
+    if (!this.manager.appPlugins.manifests[pluginId])
+      return false;
+    const managerPlugin = this.getManagerPlugin(pluginId);
+    return !((_a = managerPlugin == null ? void 0 : managerPlugin.tags) == null ? void 0 : _a.includes(BPM_IGNORE_TAG));
+  }
+  getPluginActions(pluginId) {
+    const enabled = this.isPluginEnabled(pluginId);
+    const isActionable = this.isActionablePlugin(pluginId);
+    return [
+      {
+        id: "toggle",
+        label: enabled ? this.t("command_action_disable") : this.t("command_action_enable"),
+        icon: enabled ? "power-off" : "power",
+        disabled: !isActionable
+      },
+      { id: "enable", label: this.t("command_action_enable"), icon: "power", disabled: !isActionable || enabled },
+      { id: "disable", label: this.t("command_action_disable"), icon: "power-off", disabled: !isActionable || !enabled },
+      {
+        id: "single-start",
+        label: this.t("command_action_single_start"),
+        icon: "repeat-1",
+        disabled: this.manager.settings.DELAY || !isActionable || enabled
+      },
+      {
+        id: "restart",
+        label: this.t("command_action_restart"),
+        icon: "refresh-ccw",
+        disabled: this.manager.settings.DELAY || !isActionable || !enabled
+      },
+      { id: "open-settings", label: this.t("command_action_open_settings"), icon: "settings", disabled: !enabled },
+      { id: "open-dir", label: this.t("command_action_open_dir"), icon: "folder-open" },
+      { id: "open-repo", label: this.t("command_action_open_repo"), icon: "github" },
+      { id: "copy-id", label: this.t("command_action_copy_id"), icon: "copy" }
+    ];
+  }
+  async runPluginAction(pluginId, actionId) {
+    const manifest = this.manager.appPlugins.manifests[pluginId];
+    if (!manifest) {
+      new import_obsidian21.Notice(this.t("command_notice_missing_plugin", { id: pluginId }));
+      return;
     }
-  });
-  if (manager.settings.DELAY) {
-    if (manager.settings.COMMAND_ITEM) {
-      const plugins = Object.values(manager.appPlugins.manifests).filter((pm) => pm.id !== manager.manifest.id);
-      plugins.forEach((plugin) => {
-        const mp = manager.settings.Plugins.find((mp2) => mp2.id === plugin.id);
-        if (mp) {
-          manager.addCommand({
-            id: `manager-${mp.id}`,
-            name: `${mp.enabled ? manager.translator.t("\u901A\u7528_\u5173\u95ED_\u6587\u672C") : manager.translator.t("\u901A\u7528_\u5F00\u542F_\u6587\u672C")} ${mp.name} `,
-            callback: async () => {
-              if (mp.enabled) {
-                mp.enabled = false;
-                await manager.savePluginAndExport(mp.id);
-                await manager.appPlugins.disablePlugin(plugin.id);
-                Commands(app, manager);
-              } else {
-                mp.enabled = true;
-                await manager.savePluginAndExport(mp.id);
-                await manager.appPlugins.enablePlugin(plugin.id);
-                Commands(app, manager);
-              }
-            }
-          });
-        }
-      });
-    }
-    if (manager.settings.COMMAND_GROUP) {
-      manager.settings.GROUPS.forEach((group) => {
-        manager.addCommand({
-          id: `manager-${group.id}-enabled`,
-          name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u542F\u7528_\u6587\u672C")} ${group.name}`,
-          callback: async () => {
-            const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
-            for (const plugin of filteredPlugins) {
-              if (plugin && !plugin.enabled) {
-                await manager.appPlugins.enablePlugin(plugin.id);
-                plugin.enabled = true;
-                await manager.savePluginAndExport(plugin.id);
-              }
-            }
-            Commands(app, manager);
-          }
-        });
-        manager.addCommand({
-          id: `manager-${group.id}-disable`,
-          name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u7981\u7528_\u6587\u672C")} ${group.name}`,
-          callback: async () => {
-            const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
-            for (const plugin of filteredPlugins) {
-              if (plugin && plugin.enabled) {
-                await manager.appPlugins.disablePlugin(plugin.id);
-                plugin.enabled = false;
-                await manager.savePluginAndExport(plugin.id);
-              }
-            }
-            Commands(app, manager);
-          }
-        });
-      });
-    }
-  } else {
-    if (manager.settings.COMMAND_ITEM) {
-      const plugins = Object.values(manager.appPlugins.manifests).filter((pm) => pm.id !== manager.manifest.id);
-      plugins.forEach((plugin) => {
-        const enabled = manager.appPlugins.enabledPlugins.has(plugin.id);
-        manager.addCommand({
-          id: `manager-${plugin.id}`,
-          name: `${enabled ? manager.translator.t("\u547D\u4EE4\u884C_\u7981\u7528_\u6587\u672C") : manager.translator.t("\u547D\u4EE4\u884C_\u542F\u7528_\u6587\u672C")} ${plugin.name} `,
-          callback: async () => {
-            if (enabled) {
-              await manager.appPlugins.disablePluginAndSave(plugin.id);
-              const mp = manager.settings.Plugins.find((p) => p.id === plugin.id);
-              if (mp)
-                mp.enabled = false;
-              await manager.savePluginAndExport(plugin.id);
-              Commands(app, manager);
-            } else {
-              await manager.appPlugins.enablePluginAndSave(plugin.id);
-              const mp = manager.settings.Plugins.find((p) => p.id === plugin.id);
-              if (mp)
-                mp.enabled = true;
-              await manager.savePluginAndExport(plugin.id);
-              Commands(app, manager);
-            }
-          }
-        });
-      });
-    }
-    if (manager.settings.COMMAND_GROUP) {
-      manager.settings.GROUPS.forEach((group) => {
-        manager.addCommand({
-          id: `manager-${group.id}-enabled`,
-          name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u542F\u7528_\u6587\u672C")} ${group.name} ${manager.translator.t("\u547D\u4EE4\u884C_\u5206\u7EC4_\u6587\u672C")}`,
-          callback: async () => {
-            const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
-            for (const plugin of filteredPlugins) {
-              await manager.appPlugins.enablePluginAndSave(plugin.id);
-              const mp = manager.settings.Plugins.find((p) => p.id === plugin.id);
-              if (mp)
-                mp.enabled = true;
-              await manager.savePluginAndExport(plugin.id);
-            }
-            Commands(app, manager);
-          }
-        });
-        manager.addCommand({
-          id: `manager-${group.id}-disable`,
-          name: `${manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u7981\u7528_\u6587\u672C")} ${group.name} ${manager.translator.t("\u547D\u4EE4\u884C_\u5206\u7EC4_\u6587\u672C")}`,
-          callback: async () => {
-            const filteredPlugins = manager.settings.Plugins.filter((plugin) => plugin.group === group.id);
-            for (const plugin of filteredPlugins) {
-              await manager.appPlugins.disablePluginAndSave(plugin.id);
-              const mp = manager.settings.Plugins.find((p) => p.id === plugin.id);
-              if (mp)
-                mp.enabled = false;
-              await manager.savePluginAndExport(plugin.id);
-            }
-            Commands(app, manager);
-          }
-        });
-      });
+    switch (actionId) {
+      case "toggle":
+        await this.togglePlugin(pluginId);
+        break;
+      case "enable":
+        await this.setPluginEnabled(pluginId, true);
+        break;
+      case "disable":
+        await this.setPluginEnabled(pluginId, false);
+        break;
+      case "single-start":
+        await this.singleStartPlugin(pluginId);
+        break;
+      case "restart":
+        await this.restartPlugin(pluginId);
+        break;
+      case "open-settings":
+        await this.openPluginSettings(pluginId);
+        break;
+      case "open-dir":
+        this.openPluginDir(manifest);
+        break;
+      case "open-repo":
+        await this.openPluginRepo(pluginId);
+        break;
+      case "copy-id":
+        this.copyPluginId(pluginId);
+        break;
     }
   }
+  async togglePlugin(pluginId) {
+    await this.setPluginEnabled(pluginId, !this.isPluginEnabled(pluginId));
+  }
+  async setPluginEnabled(pluginId, targetEnabled) {
+    if (!this.isActionablePlugin(pluginId)) {
+      new import_obsidian21.Notice(this.t("command_notice_not_actionable"));
+      return;
+    }
+    await this.runLocked(`plugin:${pluginId}`, async () => {
+      this.capturePreviousState(this.t("command_snapshot_plugin", { name: this.getPluginName(pluginId) }));
+      const changed = await this.setPluginEnabledInternal(pluginId, targetEnabled);
+      await this.manager.saveSettings();
+      if (changed) {
+        this.refreshAfterStatusChange([pluginId]);
+        new import_obsidian21.Notice(targetEnabled ? this.t("command_notice_plugin_enabled", { name: this.getPluginName(pluginId) }) : this.t("command_notice_plugin_disabled", { name: this.getPluginName(pluginId) }));
+      }
+    });
+  }
+  async applyGroup(groupId, targetEnabled) {
+    const group = this.manager.settings.GROUPS.find((item) => item.id === groupId);
+    const label = (group == null ? void 0 : group.name) || groupId;
+    const plugins = this.getActionableManagerPlugins((plugin) => plugin.group === groupId);
+    await this.applyPluginsEnabled(plugins, targetEnabled, this.t("command_snapshot_group", { name: label }));
+  }
+  async applyTag(tagId, targetEnabled) {
+    const tag = this.manager.settings.TAGS.find((item) => item.id === tagId);
+    const label = (tag == null ? void 0 : tag.name) || tagId;
+    const plugins = this.getActionableManagerPlugins((plugin) => plugin.tags.includes(tagId));
+    await this.applyPluginsEnabled(plugins, targetEnabled, this.t("command_snapshot_tag", { name: label }));
+  }
+  async saveCurrentProfile(name) {
+    const profileName = name.trim();
+    if (!profileName) {
+      new import_obsidian21.Notice(this.t("command_notice_profile_name_required"));
+      return;
+    }
+    const now = Date.now();
+    const existing = this.manager.settings.COMMAND_PROFILES.find((profile2) => profile2.name === profileName);
+    const profile = existing || {
+      id: `${this.slugify(profileName)}-${now}`,
+      name: profileName,
+      pluginStates: {},
+      createdAt: now
+    };
+    profile.name = profileName;
+    profile.pluginStates = this.captureCurrentState();
+    profile.updatedAt = now;
+    if (!existing)
+      this.manager.settings.COMMAND_PROFILES.push(profile);
+    await this.manager.saveSettings();
+    this.refresh();
+    new import_obsidian21.Notice(this.t("command_notice_profile_saved", { name: profile.name }));
+  }
+  async applyProfile(profileId) {
+    const profile = this.manager.settings.COMMAND_PROFILES.find((item) => item.id === profileId);
+    if (!profile) {
+      new import_obsidian21.Notice(this.t("command_notice_profile_missing"));
+      return;
+    }
+    await this.applyPluginStateMap(profile.pluginStates, this.t("command_snapshot_profile", { name: profile.name }));
+  }
+  async restorePreviousState() {
+    const snapshot = this.manager.settings.COMMAND_LAST_STATE;
+    if (!snapshot) {
+      new import_obsidian21.Notice(this.t("command_notice_no_snapshot"));
+      return;
+    }
+    await this.applyPluginStateMap(snapshot.pluginStates, this.t("command_snapshot_restore"), true);
+  }
+  refreshStaticCommands() {
+    const language = this.manager.settings.LANGUAGE || "";
+    if (this.staticCommandIds.size > 0 && this.staticLanguage === language)
+      return;
+    this.removeStaticCommands();
+    this.staticLanguage = language;
+    this.registerStaticCommands();
+  }
+  registerStaticCommands() {
+    this.addStaticCommand({
+      id: "manager-view",
+      name: this.manager.translator.t("\u547D\u4EE4_\u7BA1\u7406\u9762\u677F_\u63CF\u8FF0"),
+      callback: () => {
+        this.manager.managerModal = new ManagerModal(this.app, this.manager);
+        this.manager.managerModal.open();
+      }
+    });
+    this.addStaticCommand({
+      id: "control-plugin",
+      name: this.t("command_control_plugin"),
+      callback: () => this.openPluginControl()
+    });
+    this.addStaticCommand({
+      id: "save-command-profile",
+      name: this.t("command_save_profile"),
+      callback: () => this.openProfileNameModal()
+    });
+    this.addStaticCommand({
+      id: "restore-previous-command-state",
+      name: this.t("command_restore_previous_state"),
+      checkCallback: (checking) => {
+        const canRestore = Boolean(this.manager.settings.COMMAND_LAST_STATE);
+        if (checking)
+          return canRestore;
+        if (canRestore)
+          void this.restorePreviousState();
+        return canRestore;
+      }
+    });
+    this.addStaticCommand({
+      id: "troubleshoot-conflicts",
+      name: this.manager.translator.t("\u6392\u67E5_\u6309\u94AE_\u63CF\u8FF0"),
+      callback: () => {
+        new TroubleshootModal(this.app, this.manager).open();
+      }
+    });
+  }
+  refreshDynamicCommands() {
+    this.removeDynamicCommands();
+    if (this.manager.settings.COMMAND_ITEM)
+      this.registerPluginCommands();
+    if (this.manager.settings.COMMAND_GROUP)
+      this.registerGroupCommands();
+    if (this.manager.settings.COMMAND_TAG)
+      this.registerTagCommands();
+    if (this.manager.settings.COMMAND_PROFILE)
+      this.registerProfileCommands();
+  }
+  registerPluginCommands() {
+    this.getPluginManifests().filter((plugin) => this.isActionablePlugin(plugin.id)).forEach((plugin) => {
+      const enabled = this.isPluginEnabled(plugin.id);
+      this.addDynamicCommand({
+        id: `manager-${plugin.id}`,
+        name: `${enabled ? this.manager.translator.t("\u547D\u4EE4\u884C_\u7981\u7528_\u6587\u672C") : this.manager.translator.t("\u547D\u4EE4\u884C_\u542F\u7528_\u6587\u672C")} ${plugin.name || plugin.id}`,
+        callback: () => {
+          void this.togglePlugin(plugin.id);
+        }
+      });
+    });
+  }
+  registerGroupCommands() {
+    this.manager.settings.GROUPS.forEach((group) => {
+      const name = group.name || group.id;
+      this.addDynamicCommand({
+        id: `manager-${group.id}-enabled`,
+        name: `${this.manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u542F\u7528_\u6587\u672C")} ${name} ${this.manager.translator.t("\u547D\u4EE4\u884C_\u5206\u7EC4_\u6587\u672C")}`,
+        callback: () => {
+          void this.applyGroup(group.id, true);
+        }
+      });
+      this.addDynamicCommand({
+        id: `manager-${group.id}-disable`,
+        name: `${this.manager.translator.t("\u547D\u4EE4\u884C_\u4E00\u952E\u7981\u7528_\u6587\u672C")} ${name} ${this.manager.translator.t("\u547D\u4EE4\u884C_\u5206\u7EC4_\u6587\u672C")}`,
+        callback: () => {
+          void this.applyGroup(group.id, false);
+        }
+      });
+    });
+  }
+  registerTagCommands() {
+    this.manager.settings.TAGS.filter((tag) => tag.id !== BPM_IGNORE_TAG).forEach((tag) => {
+      const name = tag.name || tag.id;
+      const commandId = this.safeCommandPart(tag.id);
+      this.addDynamicCommand({
+        id: `manager-tag-${commandId}-enabled`,
+        name: `${this.t("command_enable_tag")} ${name}`,
+        callback: () => {
+          void this.applyTag(tag.id, true);
+        }
+      });
+      this.addDynamicCommand({
+        id: `manager-tag-${commandId}-disable`,
+        name: `${this.t("command_disable_tag")} ${name}`,
+        callback: () => {
+          void this.applyTag(tag.id, false);
+        }
+      });
+    });
+  }
+  registerProfileCommands() {
+    this.manager.settings.COMMAND_PROFILES.forEach((profile) => {
+      this.addDynamicCommand({
+        id: `manager-profile-${this.safeCommandPart(profile.id)}-apply`,
+        name: `${this.t("command_apply_profile")} ${profile.name}`,
+        callback: () => {
+          void this.applyProfile(profile.id);
+        }
+      });
+    });
+  }
+  addDynamicCommand(command) {
+    const registered = this.manager.addCommand(command);
+    this.dynamicCommandIds.add(registered.id);
+    this.dynamicCommandIds.add(this.fullCommandId(command.id));
+  }
+  addStaticCommand(command) {
+    const registered = this.manager.addCommand(command);
+    this.staticCommandIds.add(registered.id);
+    this.staticCommandIds.add(this.fullCommandId(command.id));
+  }
+  removeStaticCommands() {
+    this.removeCommands(this.staticCommandIds);
+  }
+  removeDynamicCommands() {
+    this.removeCommands(this.dynamicCommandIds);
+  }
+  removeCommands(commandIds) {
+    const commandManager = this.app.commands;
+    commandIds.forEach((id) => {
+      var _a;
+      try {
+        (_a = commandManager == null ? void 0 : commandManager.removeCommand) == null ? void 0 : _a.call(commandManager, id);
+      } catch (e) {
+      }
+      if (commandManager == null ? void 0 : commandManager.commands)
+        delete commandManager.commands[id];
+    });
+    commandIds.clear();
+  }
+  async applyPluginsEnabled(plugins, targetEnabled, label) {
+    if (plugins.length === 0) {
+      new import_obsidian21.Notice(this.t("command_notice_no_actionable_plugins"));
+      return;
+    }
+    const states = {};
+    plugins.forEach((plugin) => {
+      states[plugin.id] = targetEnabled;
+    });
+    await this.applyPluginStateMap(states, label);
+  }
+  async applyPluginStateMap(states, label, restoring = false) {
+    const entries = Object.entries(states).filter(([pluginId]) => this.isActionablePlugin(pluginId));
+    if (entries.length === 0) {
+      new import_obsidian21.Notice(this.t("command_notice_no_actionable_plugins"));
+      return;
+    }
+    await this.runLocked(`bulk:${label}`, async () => {
+      this.capturePreviousState(restoring ? this.t("command_snapshot_before_restore") : label);
+      const progress = new import_obsidian21.Notice(`${this.t("command_notice_applying")} 0/${entries.length}`, 0);
+      let changedCount = 0;
+      let processed = 0;
+      const changedIds = [];
+      try {
+        for (const [pluginId, targetEnabled] of entries) {
+          const changed = await this.setPluginEnabledInternal(pluginId, targetEnabled);
+          if (changed) {
+            changedCount++;
+            changedIds.push(pluginId);
+          }
+          processed++;
+          progress.setMessage(`${this.t("command_notice_applying")} ${processed}/${entries.length} \xB7 ${pluginId}`);
+        }
+      } finally {
+        progress.hide();
+      }
+      await this.manager.saveSettings();
+      this.refreshAfterStatusChange(changedIds);
+      new import_obsidian21.Notice(this.t("command_notice_bulk_done", { count: changedCount }));
+    });
+  }
+  async setPluginEnabledInternal(pluginId, targetEnabled) {
+    const current = this.isPluginEnabled(pluginId);
+    const managerPlugin = this.getManagerPlugin(pluginId);
+    if (current === targetEnabled) {
+      if (managerPlugin)
+        managerPlugin.enabled = targetEnabled;
+      return false;
+    }
+    if (this.manager.settings.DELAY && managerPlugin && !managerPlugin.tags.includes(BPM_IGNORE_TAG)) {
+      managerPlugin.enabled = targetEnabled;
+      if (targetEnabled)
+        await this.manager.appPlugins.enablePlugin(pluginId);
+      else
+        await this.manager.appPlugins.disablePlugin(pluginId);
+    } else {
+      if (targetEnabled)
+        await this.manager.appPlugins.enablePluginAndSave(pluginId);
+      else
+        await this.manager.appPlugins.disablePluginAndSave(pluginId);
+      if (managerPlugin)
+        managerPlugin.enabled = targetEnabled;
+    }
+    return true;
+  }
+  async singleStartPlugin(pluginId) {
+    if (this.manager.settings.DELAY || !this.isActionablePlugin(pluginId) || this.isPluginEnabled(pluginId))
+      return;
+    await this.runLocked(`single:${pluginId}`, async () => {
+      this.capturePreviousState(this.t("command_snapshot_single_start", { name: this.getPluginName(pluginId) }));
+      new import_obsidian21.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u5355\u6B21\u542F\u52A8\u4E2D_\u63D0\u793A"));
+      await this.manager.appPlugins.enablePlugin(pluginId);
+      this.refreshAfterStatusChange([pluginId]);
+    });
+  }
+  async restartPlugin(pluginId) {
+    if (this.manager.settings.DELAY || !this.isActionablePlugin(pluginId) || !this.isPluginEnabled(pluginId))
+      return;
+    await this.runLocked(`restart:${pluginId}`, async () => {
+      this.capturePreviousState(this.t("command_snapshot_restart", { name: this.getPluginName(pluginId) }));
+      new import_obsidian21.Notice(this.manager.translator.t("\u7BA1\u7406\u5668_\u91CD\u542F\u4E2D_\u63D0\u793A"));
+      await this.manager.appPlugins.disablePluginAndSave(pluginId);
+      await this.manager.appPlugins.enablePluginAndSave(pluginId);
+      this.refreshAfterStatusChange([pluginId]);
+    });
+  }
+  async openPluginSettings(pluginId) {
+    if (!this.isPluginEnabled(pluginId)) {
+      new import_obsidian21.Notice(this.t("command_notice_enable_before_settings"));
+      return;
+    }
+    const appSetting = this.app.setting;
+    await appSetting.open();
+    await appSetting.openTabById(pluginId);
+  }
+  openPluginDir(plugin) {
+    var _a, _b;
+    const getBasePath = (_b = (_a = this.app.vault.adapter).getBasePath) == null ? void 0 : _b.call(_a);
+    const basePath = getBasePath ? (0, import_obsidian21.normalizePath)(getBasePath) : "";
+    const cfgDir = this.app.vault.configDir;
+    const rawDir = plugin.dir || `plugins/${plugin.id}`;
+    const isAbsolute = new RegExp("^(?:[a-zA-Z]:[\\\\/]|[\\\\/])").test(rawDir);
+    let pluginDir;
+    if (isAbsolute) {
+      pluginDir = (0, import_obsidian21.normalizePath)(rawDir);
+    } else if (rawDir.startsWith(cfgDir) || rawDir.startsWith(".") || rawDir.startsWith("/")) {
+      pluginDir = (0, import_obsidian21.normalizePath)(`${basePath}/${rawDir}`);
+    } else {
+      pluginDir = (0, import_obsidian21.normalizePath)(`${basePath}/${cfgDir}/${rawDir}`);
+    }
+    managerOpen(pluginDir, this.manager);
+  }
+  async openPluginRepo(pluginId) {
+    var _a;
+    const repo = ((_a = this.manager.settings.REPO_MAP) == null ? void 0 : _a[pluginId]) || await this.manager.repoResolver.resolveRepo(pluginId);
+    if (repo) {
+      window.open(`https://github.com/${repo}`);
+      return;
+    }
+    const isBpmInstall = this.manager.settings.BPM_INSTALLED.includes(pluginId);
+    new import_obsidian21.Notice(isBpmInstall ? this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u672A\u8BB0\u5F55_\u63D0\u793A") : this.manager.translator.t("\u7BA1\u7406\u5668_\u4ED3\u5E93\u9700\u624B\u52A8\u6DFB\u52A0_\u63D0\u793A"));
+  }
+  copyPluginId(pluginId) {
+    void navigator.clipboard.writeText(pluginId);
+    new import_obsidian21.Notice(this.manager.translator.t("\u901A\u77E5_ID\u5DF2\u590D\u5236"));
+  }
+  captureCurrentState() {
+    const state = {};
+    this.getPluginManifests().filter((plugin) => this.isActionablePlugin(plugin.id)).forEach((plugin) => {
+      state[plugin.id] = this.isPluginEnabled(plugin.id);
+    });
+    return state;
+  }
+  capturePreviousState(label) {
+    this.manager.settings.COMMAND_LAST_STATE = {
+      pluginStates: this.captureCurrentState(),
+      createdAt: Date.now(),
+      label
+    };
+  }
+  getActionableManagerPlugins(predicate) {
+    return this.manager.settings.Plugins.filter((plugin) => predicate(plugin)).filter((plugin) => this.isActionablePlugin(plugin.id));
+  }
+  refreshAfterStatusChange(pluginIds) {
+    var _a;
+    this.refresh();
+    try {
+      if (pluginIds.length === 0) {
+        void ((_a = this.manager.managerModal) == null ? void 0 : _a.reloadShowData());
+        return;
+      }
+      pluginIds.forEach((pluginId) => {
+        var _a2;
+        return (_a2 = this.manager.managerModal) == null ? void 0 : _a2.refreshPluginCard(pluginId, { allowReload: true });
+      });
+    } catch (e) {
+    }
+  }
+  async runLocked(key, task) {
+    if (this.running.has(key))
+      return;
+    this.running.add(key);
+    try {
+      await task();
+    } catch (error) {
+      console.error("[BPM] command failed", key, error);
+      new import_obsidian21.Notice(this.t("command_notice_failed"));
+    } finally {
+      this.running.delete(key);
+    }
+  }
+  getPluginName(pluginId) {
+    const manifest = this.manager.appPlugins.manifests[pluginId];
+    const managerPlugin = this.getManagerPlugin(pluginId);
+    return (managerPlugin == null ? void 0 : managerPlugin.name) || (manifest == null ? void 0 : manifest.name) || pluginId;
+  }
+  fullCommandId(id) {
+    return `${this.manager.manifest.id}:${id}`;
+  }
+  safeCommandPart(id) {
+    return id.replace(/[^a-zA-Z0-9_-]/g, "-");
+  }
+  slugify(name) {
+    const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    return slug || "profile";
+  }
+  t(key, vars) {
+    return this.manager.translator.t(key, vars);
+  }
+};
+var PluginControlModal = class extends import_obsidian21.SuggestModal {
+  constructor(app, service) {
+    super(app);
+    this.service = service;
+    this.setPlaceholder(service.getTranslator().t("command_control_placeholder"));
+    this.emptyStateText = service.getTranslator().t("command_control_empty");
+  }
+  getSuggestions(query) {
+    const lower = query.trim().toLowerCase();
+    return this.service.getPluginManifests().filter((plugin) => {
+      if (!lower)
+        return true;
+      return `${plugin.name} ${plugin.id} ${plugin.description || ""}`.toLowerCase().includes(lower);
+    }).slice(0, 50);
+  }
+  renderSuggestion(plugin, el) {
+    const row = el.createDiv({ cls: "manager-command-suggestion" });
+    const icon = row.createSpan({ cls: "manager-command-suggestion__icon" });
+    (0, import_obsidian21.setIcon)(icon, this.service.isPluginEnabled(plugin.id) ? "toggle-right" : "toggle-left");
+    const text = row.createDiv({ cls: "manager-command-suggestion__text" });
+    text.createDiv({ cls: "manager-command-suggestion__title", text: plugin.name || plugin.id });
+    text.createDiv({ cls: "manager-command-suggestion__meta", text: plugin.id });
+  }
+  onChooseSuggestion(plugin) {
+    new PluginActionModal(this.app, this.service, plugin).open();
+  }
+};
+var PluginActionModal = class extends import_obsidian21.SuggestModal {
+  constructor(app, service, plugin) {
+    super(app);
+    this.service = service;
+    this.plugin = plugin;
+    this.setPlaceholder(service.getTranslator().t("command_action_placeholder", { name: plugin.name || plugin.id }));
+    this.emptyStateText = service.getTranslator().t("command_control_empty");
+  }
+  getSuggestions(query) {
+    const lower = query.trim().toLowerCase();
+    return this.service.getPluginActions(this.plugin.id).filter((action) => !lower || action.label.toLowerCase().includes(lower));
+  }
+  renderSuggestion(action, el) {
+    const row = el.createDiv({ cls: "manager-command-suggestion" });
+    const icon = row.createSpan({ cls: "manager-command-suggestion__icon" });
+    (0, import_obsidian21.setIcon)(icon, action.icon);
+    const text = row.createDiv({ cls: "manager-command-suggestion__text" });
+    text.createDiv({ cls: "manager-command-suggestion__title", text: action.label });
+    text.createDiv({
+      cls: "manager-command-suggestion__meta",
+      text: action.disabled ? this.service.getTranslator().t("command_action_disabled") : this.plugin.id
+    });
+    if (action.disabled)
+      row.addClass("is-disabled");
+  }
+  onChooseSuggestion(action) {
+    if (action.disabled) {
+      new import_obsidian21.Notice(this.service.getTranslator().t("command_action_disabled"));
+      return;
+    }
+    void this.service.runPluginAction(this.plugin.id, action.id);
+  }
+};
+var ProfileNameModal = class extends import_obsidian21.SuggestModal {
+  constructor(app, service) {
+    super(app);
+    this.service = service;
+    this.setPlaceholder(service.getTranslator().t("command_profile_name_placeholder"));
+    this.emptyStateText = service.getTranslator().t("command_profile_name_empty");
+  }
+  getSuggestions(query) {
+    const value = query.trim();
+    if (!value)
+      return [];
+    return [value];
+  }
+  renderSuggestion(value, el) {
+    el.createDiv({ text: this.service.getTranslator().t("command_profile_save_as", { name: value }) });
+  }
+  onChooseSuggestion(value) {
+    void this.service.saveCurrentProfile(value);
+  }
+};
+var Commands = (app, manager) => {
+  let service = commandServices.get(manager);
+  if (!service) {
+    service = new ManagerCommandService(app, manager);
+    commandServices.set(manager, service);
+  }
+  service.refresh();
 };
 var command_default = Commands;
 
@@ -11817,11 +13203,11 @@ var command_default = Commands;
 var ManagerBasis = class extends BaseSetting {
   main() {
     const heading = (key) => {
-      new import_obsidian21.Setting(this.containerEl).setHeading().setName(this.manager.translator.t(key));
+      new import_obsidian22.Setting(this.containerEl).setHeading().setName(this.manager.translator.t(key));
     };
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u5E38\u89C4");
-    const languageBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u63CF\u8FF0"));
-    const languageDropdown = new import_obsidian21.DropdownComponent(languageBar.controlEl);
+    const languageBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8BED\u8A00_\u63CF\u8FF0"));
+    const languageDropdown = new import_obsidian22.DropdownComponent(languageBar.controlEl);
     languageDropdown.addOptions(this.manager.translator.language);
     languageDropdown.setValue(this.settings.LANGUAGE);
     languageDropdown.onChange((value) => {
@@ -11832,8 +13218,8 @@ var ManagerBasis = class extends BaseSetting {
       this.settingTab.renderSettings();
       this.render();
     });
-    const persistenceBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0"));
-    const persistenceToggle = new import_obsidian21.ToggleComponent(persistenceBar.controlEl);
+    const persistenceBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0"));
+    const persistenceToggle = new import_obsidian22.ToggleComponent(persistenceBar.controlEl);
     persistenceToggle.setValue(this.settings.PERSISTENCE);
     persistenceToggle.onChange((value) => {
       const managerModal = this.manager.managerModal;
@@ -11847,8 +13233,8 @@ var ManagerBasis = class extends BaseSetting {
       void this.manager.saveSettings();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u542F\u52A8\u63A5\u7BA1");
-    const DelayBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u63CF\u8FF0"));
-    const DelayToggle = new import_obsidian21.ToggleComponent(DelayBar.controlEl);
+    const DelayBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5EF6\u65F6\u542F\u52A8_\u63CF\u8FF0"));
+    const DelayToggle = new import_obsidian22.ToggleComponent(DelayBar.controlEl);
     DelayToggle.setValue(this.settings.DELAY);
     DelayToggle.onChange((value) => {
       this.settings.DELAY = value;
@@ -11861,8 +13247,8 @@ var ManagerBasis = class extends BaseSetting {
       this.settingTab.renderSettings();
       this.render();
     });
-    const autoTakeoverBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0"));
-    const autoTakeoverToggle = new import_obsidian21.ToggleComponent(autoTakeoverBar.controlEl);
+    const autoTakeoverBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u81EA\u52A8\u63A5\u7BA1_\u63CF\u8FF0"));
+    const autoTakeoverToggle = new import_obsidian22.ToggleComponent(autoTakeoverBar.controlEl);
     autoTakeoverToggle.setValue(this.settings.AUTO_TAKEOVER);
     autoTakeoverToggle.setDisabled(!this.settings.DELAY);
     autoTakeoverToggle.onChange((value) => {
@@ -11872,30 +13258,30 @@ var ManagerBasis = class extends BaseSetting {
       void this.manager.saveSettings();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u66F4\u65B0\u6765\u6E90");
-    const startupCheckBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
-    const startupCheckToggle = new import_obsidian21.ToggleComponent(startupCheckBar.controlEl);
+    const startupCheckBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
+    const startupCheckToggle = new import_obsidian22.ToggleComponent(startupCheckBar.controlEl);
     startupCheckToggle.setValue(this.settings.STARTUP_CHECK_UPDATES);
     startupCheckToggle.onChange((value) => {
       this.settings.STARTUP_CHECK_UPDATES = value;
       void this.manager.saveSettings();
     });
-    const sourceStartupCheckBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
-    const sourceStartupCheckToggle = new import_obsidian21.ToggleComponent(sourceStartupCheckBar.controlEl);
+    const sourceStartupCheckBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u542F\u52A8\u68C0\u67E5\u66F4\u65B0_\u63CF\u8FF0"));
+    const sourceStartupCheckToggle = new import_obsidian22.ToggleComponent(sourceStartupCheckBar.controlEl);
     sourceStartupCheckToggle.setValue(this.settings.SOURCE_STARTUP_CHECK_UPDATES);
     sourceStartupCheckToggle.onChange((value) => {
       this.settings.SOURCE_STARTUP_CHECK_UPDATES = value;
       void this.manager.saveSettings();
     });
-    const sourceAutoUpdateBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0"));
-    const sourceAutoUpdateToggle = new import_obsidian21.ToggleComponent(sourceAutoUpdateBar.controlEl);
+    const sourceAutoUpdateBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6765\u6E90\u81EA\u52A8\u66F4\u65B0_\u63CF\u8FF0"));
+    const sourceAutoUpdateToggle = new import_obsidian22.ToggleComponent(sourceAutoUpdateBar.controlEl);
     sourceAutoUpdateToggle.setValue(this.settings.SOURCE_AUTO_UPDATE);
     sourceAutoUpdateToggle.onChange((value) => {
       this.settings.SOURCE_AUTO_UPDATE = value;
       void this.manager.saveSettings();
     });
     let tokenBar = null;
-    const githubProxyBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0"));
-    const githubProxyInput = new import_obsidian21.TextComponent(githubProxyBar.controlEl);
+    const githubProxyBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u63CF\u8FF0"));
+    const githubProxyInput = new import_obsidian22.TextComponent(githubProxyBar.controlEl);
     githubProxyInput.setPlaceholder(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_PROXY_\u5360\u4F4D\u7B26"));
     githubProxyInput.setValue(this.settings.GITHUB_PROXY || "");
     githubProxyInput.onChange((value) => {
@@ -11912,8 +13298,8 @@ var ManagerBasis = class extends BaseSetting {
     });
     githubProxyInput.inputEl.addEventListener("blur", () => this.render());
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u754C\u9762\u5C55\u793A");
-    const hideBpmTagBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0"));
-    const hideBpmTagToggle = new import_obsidian21.ToggleComponent(hideBpmTagBar.controlEl);
+    const hideBpmTagBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u9690\u85CFBPM\u6807\u7B7E_\u63CF\u8FF0"));
+    const hideBpmTagToggle = new import_obsidian22.ToggleComponent(hideBpmTagBar.controlEl);
     hideBpmTagToggle.setValue(this.settings.HIDE_BPM_TAG);
     hideBpmTagToggle.onChange((value) => {
       var _a;
@@ -11921,8 +13307,8 @@ var ManagerBasis = class extends BaseSetting {
       void this.manager.saveSettings();
       void ((_a = this.manager.managerModal) == null ? void 0 : _a.reloadShowData());
     });
-    const ribbonManagerBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u63CF\u8FF0"));
-    const ribbonManagerToggle = new import_obsidian21.ToggleComponent(ribbonManagerBar.controlEl);
+    const ribbonManagerBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8FB9\u680F\u7F16\u6392_\u63CF\u8FF0"));
+    const ribbonManagerToggle = new import_obsidian22.ToggleComponent(ribbonManagerBar.controlEl);
     ribbonManagerToggle.setValue(this.settings.RIBBON_MANAGER_ENABLED !== false);
     ribbonManagerToggle.onChange(async (value) => {
       this.settings.RIBBON_MANAGER_ENABLED = value;
@@ -11930,25 +13316,41 @@ var ManagerBasis = class extends BaseSetting {
       await this.manager.refreshRibbonManagerFeature();
     });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u547D\u4EE4");
-    const CommandItemBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0"));
-    const CommandItemToggle = new import_obsidian21.ToggleComponent(CommandItemBar.controlEl);
+    const CommandItemBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0"));
+    const CommandItemToggle = new import_obsidian22.ToggleComponent(CommandItemBar.controlEl);
     CommandItemToggle.setValue(this.settings.COMMAND_ITEM);
     CommandItemToggle.onChange((value) => {
       this.settings.COMMAND_ITEM = value;
       void this.manager.saveSettings();
       command_default(this.app, this.manager);
     });
-    const CommandGroupBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0"));
-    const CommandGroupToggle = new import_obsidian21.ToggleComponent(CommandGroupBar.controlEl);
+    const CommandGroupBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0"));
+    const CommandGroupToggle = new import_obsidian22.ToggleComponent(CommandGroupBar.controlEl);
     CommandGroupToggle.setValue(this.settings.COMMAND_GROUP);
     CommandGroupToggle.onChange((value) => {
       this.settings.COMMAND_GROUP = value;
       void this.manager.saveSettings();
       command_default(this.app, this.manager);
     });
+    const CommandTagBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("command_setting_tag_title")).setDesc(this.manager.translator.t("command_setting_tag_desc"));
+    const CommandTagToggle = new import_obsidian22.ToggleComponent(CommandTagBar.controlEl);
+    CommandTagToggle.setValue(this.settings.COMMAND_TAG);
+    CommandTagToggle.onChange((value) => {
+      this.settings.COMMAND_TAG = value;
+      void this.manager.saveSettings();
+      command_default(this.app, this.manager);
+    });
+    const CommandProfileBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("command_setting_profile_title")).setDesc(this.manager.translator.t("command_setting_profile_desc"));
+    const CommandProfileToggle = new import_obsidian22.ToggleComponent(CommandProfileBar.controlEl);
+    CommandProfileToggle.setValue(this.settings.COMMAND_PROFILE);
+    CommandProfileToggle.onChange((value) => {
+      this.settings.COMMAND_PROFILE = value;
+      void this.manager.saveSettings();
+      command_default(this.app, this.manager);
+    });
     heading("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4_\u5F00\u53D1\u7F51\u7EDC");
-    const debugBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0"));
-    const debugToggle = new import_obsidian21.ToggleComponent(debugBar.controlEl);
+    const debugBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u8C03\u8BD5\u6A21\u5F0F_\u63CF\u8FF0"));
+    const debugToggle = new import_obsidian22.ToggleComponent(debugBar.controlEl);
     debugToggle.setValue(this.settings.DEBUG);
     debugToggle.onChange((value) => {
       this.settings.DEBUG = value;
@@ -11956,18 +13358,18 @@ var ManagerBasis = class extends BaseSetting {
     });
     if (githubProxyEnabled(this.manager))
       return;
-    tokenBar = new import_obsidian21.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6807\u9898")).setDesc(`${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u63CF\u8FF0")} (${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6743\u9650")})`);
+    tokenBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6807\u9898")).setDesc(`${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u63CF\u8FF0")} (${this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6743\u9650")})`);
     tokenBar.settingEl.addClass("manager-secret-token-setting");
     const tokenStatus = tokenBar.descEl.createDiv({
       cls: "manager-secret-token-setting__status",
       text: this.getGithubTokenStatusText()
     });
-    const tokenInput = new import_obsidian21.TextComponent(tokenBar.controlEl);
+    const tokenInput = new import_obsidian22.TextComponent(tokenBar.controlEl);
     tokenInput.inputEl.type = "password";
     tokenInput.inputEl.autocomplete = "off";
     tokenInput.setPlaceholder(this.manager.hasGithubToken() ? "********" : "ghp_xxx");
     let clearTokenButton = null;
-    const saveTokenButton = new import_obsidian21.ButtonComponent(tokenBar.controlEl);
+    const saveTokenButton = new import_obsidian22.ButtonComponent(tokenBar.controlEl);
     saveTokenButton.setButtonText(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u4FDD\u5B58"));
     saveTokenButton.setCta();
     saveTokenButton.onClick(async () => {
@@ -11980,7 +13382,7 @@ var ManagerBasis = class extends BaseSetting {
       tokenStatus.setText(this.getGithubTokenStatusText());
       clearTokenButton == null ? void 0 : clearTokenButton.setDisabled(false);
     });
-    clearTokenButton = new import_obsidian21.ButtonComponent(tokenBar.controlEl);
+    clearTokenButton = new import_obsidian22.ButtonComponent(tokenBar.controlEl);
     clearTokenButton.setButtonText(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_GITHUB_TOKEN_\u6E05\u9664"));
     clearTokenButton.setDisabled(!this.manager.hasGithubToken());
     clearTokenButton.onClick(async () => {
@@ -12004,7 +13406,7 @@ var ManagerBasis = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-style.ts
-var import_obsidian22 = require("obsidian");
+var import_obsidian23 = require("obsidian");
 var ManagerBasis2 = class extends BaseSetting {
   constructor() {
     super(...arguments);
@@ -12031,58 +13433,63 @@ var ManagerBasis2 = class extends BaseSetting {
       "d": this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u9009\u9879_\u56DB")
     };
   }
+  async saveAndRefreshManager() {
+    var _a;
+    await this.manager.saveSettings();
+    await ((_a = this.manager.managerModal) == null ? void 0 : _a.refreshStyleSettings());
+  }
   main() {
-    const overviewLayoutBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u63D2\u4EF6\u603B\u89C8\u5E03\u5C40_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u63D2\u4EF6\u603B\u89C8\u5E03\u5C40_\u63CF\u8FF0"));
-    const overviewLayoutDropdown = new import_obsidian22.DropdownComponent(overviewLayoutBar.controlEl);
+    const overviewLayoutBar = new import_obsidian23.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u63D2\u4EF6\u603B\u89C8\u5E03\u5C40_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u6837\u5F0F\u8BBE\u7F6E_\u63D2\u4EF6\u603B\u89C8\u5E03\u5C40_\u63CF\u8FF0"));
+    const overviewLayoutDropdown = new import_obsidian23.DropdownComponent(overviewLayoutBar.controlEl);
     overviewLayoutDropdown.addOptions(this.PLUGIN_OVERVIEW_LAYOUT);
     overviewLayoutDropdown.setValue(this.settings.PLUGIN_OVERVIEW_LAYOUT || "list");
     overviewLayoutDropdown.onChange((value) => {
       this.settings.PLUGIN_OVERVIEW_LAYOUT = value;
-      void this.manager.saveSettings();
+      void this.saveAndRefreshManager();
     });
-    const itemStyleBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u63CF\u8FF0"));
-    const itemStyleDropdown = new import_obsidian22.DropdownComponent(itemStyleBar.controlEl);
+    const itemStyleBar = new import_obsidian23.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u76EE\u5F55\u6837\u5F0F_\u63CF\u8FF0"));
+    const itemStyleDropdown = new import_obsidian23.DropdownComponent(itemStyleBar.controlEl);
     itemStyleDropdown.addOptions(this.ITEM_STYLE);
     itemStyleDropdown.setValue(this.settings.ITEM_STYLE);
     itemStyleDropdown.onChange((value) => {
       this.settings.ITEM_STYLE = value;
-      void this.manager.saveSettings();
+      void this.saveAndRefreshManager();
     });
-    const groupStyleBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u63CF\u8FF0"));
-    const groupStyleDropdown = new import_obsidian22.DropdownComponent(groupStyleBar.controlEl);
+    const groupStyleBar = new import_obsidian23.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u6837\u5F0F_\u63CF\u8FF0"));
+    const groupStyleDropdown = new import_obsidian23.DropdownComponent(groupStyleBar.controlEl);
     groupStyleDropdown.addOptions(this.GROUP_STYLE);
     groupStyleDropdown.setValue(this.settings.GROUP_STYLE);
     groupStyleDropdown.onChange((value) => {
       this.settings.GROUP_STYLE = value;
-      void this.manager.saveSettings();
+      void this.saveAndRefreshManager();
     });
-    const tagStyleBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u63CF\u8FF0"));
-    const tagStyleDropdown = new import_obsidian22.DropdownComponent(tagStyleBar.controlEl);
+    const tagStyleBar = new import_obsidian23.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6807\u7B7E\u6837\u5F0F_\u63CF\u8FF0"));
+    const tagStyleDropdown = new import_obsidian23.DropdownComponent(tagStyleBar.controlEl);
     tagStyleDropdown.addOptions(this.TAG_STYLE);
     tagStyleDropdown.setValue(this.settings.TAG_STYLE);
     tagStyleDropdown.onChange((value) => {
       this.settings.TAG_STYLE = value;
-      void this.manager.saveSettings();
+      void this.saveAndRefreshManager();
     });
-    const topBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0"));
-    const topToggle = new import_obsidian22.ToggleComponent(topBar.controlEl);
+    const topBar = new import_obsidian23.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u754C\u9762\u5C45\u4E2D_\u63CF\u8FF0"));
+    const topToggle = new import_obsidian23.ToggleComponent(topBar.controlEl);
     topToggle.setValue(this.settings.CENTER);
     topToggle.onChange((value) => {
       this.settings.CENTER = value;
-      void this.manager.saveSettings();
+      void this.saveAndRefreshManager();
     });
-    const fadeOutDisabledPluginsBar = new import_obsidian22.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u63CF\u8FF0"));
-    const fadeOutDisabledPluginsToggle = new import_obsidian22.ToggleComponent(fadeOutDisabledPluginsBar.controlEl);
+    const fadeOutDisabledPluginsBar = new import_obsidian23.Setting(this.containerEl).setName(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u6DE1\u5316\u63D2\u4EF6_\u63CF\u8FF0"));
+    const fadeOutDisabledPluginsToggle = new import_obsidian23.ToggleComponent(fadeOutDisabledPluginsBar.controlEl);
     fadeOutDisabledPluginsToggle.setValue(this.settings.FADE_OUT_DISABLED_PLUGINS);
     fadeOutDisabledPluginsToggle.onChange((value) => {
       this.settings.FADE_OUT_DISABLED_PLUGINS = value;
-      void this.manager.saveSettings();
+      void this.saveAndRefreshManager();
     });
   }
 };
 
 // src/settings/ui/manager-delay.ts
-var import_obsidian23 = require("obsidian");
+var import_obsidian24 = require("obsidian");
 var ManagerDelay = class extends BaseSetting {
   getDelayUsageCount(delayId) {
     return this.settings.Plugins.reduce((count, plugin) => count + (plugin.delay === delayId ? 1 : 0), 0);
@@ -12097,7 +13504,7 @@ var ManagerDelay = class extends BaseSetting {
     const header = page.createDiv("manager-setting-delay__header manager-taxonomy-setting__header");
     const headerMain = header.createDiv("manager-setting-delay__header-main manager-taxonomy-setting__header-main");
     const headerIcon = headerMain.createSpan({ cls: "manager-setting-delay__header-icon manager-taxonomy-setting__header-icon" });
-    (0, import_obsidian23.setIcon)(headerIcon, "timer");
+    (0, import_obsidian24.setIcon)(headerIcon, "timer");
     const headerText = headerMain.createDiv("manager-setting-delay__header-text manager-taxonomy-setting__header-text");
     headerText.createDiv({ cls: "manager-setting-delay__title manager-taxonomy-setting__title", text: t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u6807\u9898") });
     headerText.createDiv({ cls: "manager-setting-delay__desc manager-taxonomy-setting__desc", text: t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u63CF\u8FF0") });
@@ -12105,13 +13512,13 @@ var ManagerDelay = class extends BaseSetting {
     const createStat = (label, value, icon) => {
       const stat = stats.createSpan({ cls: "manager-setting-delay__stat manager-taxonomy-setting__stat" });
       const statIcon = stat.createSpan({ cls: "manager-setting-delay__stat-icon manager-taxonomy-setting__stat-icon" });
-      (0, import_obsidian23.setIcon)(statIcon, icon);
+      (0, import_obsidian24.setIcon)(statIcon, icon);
       stat.createSpan({ cls: "manager-setting-delay__stat-label manager-taxonomy-setting__stat-label", text: label });
       stat.createSpan({ cls: "manager-setting-delay__stat-value manager-taxonomy-setting__stat-value", text: `${value}` });
     };
     createStat(t("\u901A\u7528_\u5168\u90E8_\u6587\u672C"), this.manager.settings.DELAYS.length, "timer");
     createStat(t("\u901A\u7528_\u4F7F\u7528\u4E2D_\u6587\u672C"), usedCount, "check");
-    const createItem = new import_obsidian23.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u65B0\u589E\u63CF\u8FF0"));
+    const createItem = new import_obsidian24.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u65B0\u589E\u63CF\u8FF0"));
     createItem.settingEl.addClass("manager-setting-delay__item");
     createItem.settingEl.addClass("manager-setting-delay__item--create");
     createItem.settingEl.addClass("manager-taxonomy-setting__row");
@@ -12139,15 +13546,15 @@ var ManagerDelay = class extends BaseSetting {
           this.manager.settings.DELAYS.push({ id: nextId, name: nextName, time });
           void this.manager.saveSettings();
           this.settingTab.delayDisplay();
-          new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     const list = page.createDiv("manager-setting-delay__list manager-taxonomy-setting__list");
     this.manager.settings.DELAYS.forEach((delay, index) => {
-      const item = new import_obsidian23.Setting(list);
+      const item = new import_obsidian24.Setting(list);
       const usageCount = this.getDelayUsageCount(delay.id);
       item.settingEl.addClass("manager-setting-delay__item");
       item.settingEl.addClass("manager-taxonomy-setting__row");
@@ -12188,9 +13595,9 @@ var ManagerDelay = class extends BaseSetting {
             this.manager.settings.DELAYS = this.manager.settings.DELAYS.filter((t2) => t2.id !== delay.id);
             void this.manager.saveSettings();
             this.settingTab.delayDisplay();
-            new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian23.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5EF6\u8FDF\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -12199,7 +13606,7 @@ var ManagerDelay = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-tag.ts
-var import_obsidian24 = require("obsidian");
+var import_obsidian25 = require("obsidian");
 var ManagerTag = class extends BaseSetting {
   getTagUsageCount(tagId) {
     return this.settings.Plugins.reduce((count, plugin) => {
@@ -12220,7 +13627,7 @@ var ManagerTag = class extends BaseSetting {
     const header = page.createDiv("manager-setting-tag__header manager-taxonomy-setting__header");
     const headerMain = header.createDiv("manager-setting-tag__header-main manager-taxonomy-setting__header-main");
     const headerIcon = headerMain.createSpan({ cls: "manager-setting-tag__header-icon manager-taxonomy-setting__header-icon" });
-    (0, import_obsidian24.setIcon)(headerIcon, "tags");
+    (0, import_obsidian25.setIcon)(headerIcon, "tags");
     const headerText = headerMain.createDiv("manager-setting-tag__header-text manager-taxonomy-setting__header-text");
     headerText.createDiv({ cls: "manager-setting-tag__title manager-taxonomy-setting__title", text: t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u6807\u9898") });
     headerText.createDiv({ cls: "manager-setting-tag__desc manager-taxonomy-setting__desc", text: t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u63CF\u8FF0") });
@@ -12228,13 +13635,13 @@ var ManagerTag = class extends BaseSetting {
     const createStat = (label, value, icon) => {
       const stat = stats.createSpan({ cls: "manager-setting-tag__stat manager-taxonomy-setting__stat" });
       const statIcon = stat.createSpan({ cls: "manager-setting-tag__stat-icon manager-taxonomy-setting__stat-icon" });
-      (0, import_obsidian24.setIcon)(statIcon, icon);
+      (0, import_obsidian25.setIcon)(statIcon, icon);
       stat.createSpan({ cls: "manager-setting-tag__stat-label manager-taxonomy-setting__stat-label", text: label });
       stat.createSpan({ cls: "manager-setting-tag__stat-value manager-taxonomy-setting__stat-value", text: `${value}` });
     };
     createStat(t("\u901A\u7528_\u5168\u90E8_\u6587\u672C"), this.manager.settings.TAGS.length, "tags");
     createStat(t("\u901A\u7528_\u4F7F\u7528\u4E2D_\u6587\u672C"), usedCount, "check");
-    const createItem = new import_obsidian24.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5206\u7C7B_\u65B0\u589E\u63CF\u8FF0"));
+    const createItem = new import_obsidian25.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5206\u7C7B_\u65B0\u589E\u63CF\u8FF0"));
     createItem.settingEl.addClass("manager-setting-tag__item");
     createItem.settingEl.addClass("manager-setting-tag__item--create");
     createItem.settingEl.addClass("manager-taxonomy-setting__row");
@@ -12269,15 +13676,15 @@ var ManagerTag = class extends BaseSetting {
           void this.manager.saveSettings();
           this.settingTab.tagDisplay();
           command_default(this.app, this.manager);
-          new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     const list = page.createDiv("manager-setting-tag__list manager-taxonomy-setting__list");
     this.manager.settings.TAGS.forEach((tag, index) => {
-      const item = new import_obsidian24.Setting(list);
+      const item = new import_obsidian25.Setting(list);
       const usageCount = this.getTagUsageCount(tag.id);
       const isPreset = this.isPresetTag(tag.id);
       item.setClass("manager-setting-tag__item");
@@ -12318,7 +13725,7 @@ var ManagerTag = class extends BaseSetting {
       item.addExtraButton(
         (cb) => cb.setIcon("trash-2").setTooltip(isPreset ? t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u7CFB\u7EDF\u6807\u7B7E\u4E0D\u53EF\u5220\u9664") : usageCount > 0 ? t("\u8BBE\u7F6E_\u5206\u7C7B_\u4ECD\u6709\u63D2\u4EF6\u4F7F\u7528\u4E0D\u53EF\u5220\u9664") : t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u5220\u9664\u6807\u7B7E")).onClick(() => {
           if (isPreset) {
-            new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664"));
+            new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u9884\u8BBE\u4E0D\u53EF\u5220\u9664"));
             return;
           }
           const hasTestTag = this.settings.Plugins.some((plugin) => plugin.tags && plugin.tags.includes(tag.id));
@@ -12327,9 +13734,9 @@ var ManagerTag = class extends BaseSetting {
             void this.manager.saveSettings();
             this.settingTab.tagDisplay();
             command_default(this.app, this.manager);
-            new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian24.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u6807\u7B7E\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -12338,7 +13745,7 @@ var ManagerTag = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-group.ts
-var import_obsidian25 = require("obsidian");
+var import_obsidian26 = require("obsidian");
 var ManagerGroup = class extends BaseSetting {
   getGroupUsageCount(groupId) {
     return this.settings.Plugins.reduce((count, plugin) => count + (plugin.group === groupId ? 1 : 0), 0);
@@ -12353,7 +13760,7 @@ var ManagerGroup = class extends BaseSetting {
     const header = page.createDiv("manager-taxonomy-setting__header");
     const headerMain = header.createDiv("manager-taxonomy-setting__header-main");
     const headerIcon = headerMain.createSpan({ cls: "manager-taxonomy-setting__header-icon" });
-    (0, import_obsidian25.setIcon)(headerIcon, "folders");
+    (0, import_obsidian26.setIcon)(headerIcon, "folders");
     const headerText = headerMain.createDiv("manager-taxonomy-setting__header-text");
     headerText.createDiv({ cls: "manager-taxonomy-setting__title", text: t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u6807\u9898") });
     headerText.createDiv({ cls: "manager-taxonomy-setting__desc", text: t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u63CF\u8FF0") });
@@ -12361,13 +13768,13 @@ var ManagerGroup = class extends BaseSetting {
     const createStat = (label, value, icon) => {
       const stat = stats.createSpan({ cls: "manager-taxonomy-setting__stat" });
       const statIcon = stat.createSpan({ cls: "manager-taxonomy-setting__stat-icon" });
-      (0, import_obsidian25.setIcon)(statIcon, icon);
+      (0, import_obsidian26.setIcon)(statIcon, icon);
       stat.createSpan({ cls: "manager-taxonomy-setting__stat-label", text: label });
       stat.createSpan({ cls: "manager-taxonomy-setting__stat-value", text: `${value}` });
     };
     createStat(t("\u901A\u7528_\u5168\u90E8_\u6587\u672C"), this.manager.settings.GROUPS.length, "folders");
     createStat(t("\u901A\u7528_\u4F7F\u7528\u4E2D_\u6587\u672C"), usedCount, "check");
-    const createItem = new import_obsidian25.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5206\u7C7B_\u65B0\u589E\u63CF\u8FF0"));
+    const createItem = new import_obsidian26.Setting(page).setName(t("\u901A\u7528_\u65B0\u589E_\u6587\u672C")).setDesc(t("\u8BBE\u7F6E_\u5206\u7C7B_\u65B0\u589E\u63CF\u8FF0"));
     createItem.settingEl.addClass("manager-setting-group__item");
     createItem.settingEl.addClass("manager-taxonomy-setting__row");
     createItem.settingEl.addClass("manager-taxonomy-setting__row--create");
@@ -12396,15 +13803,15 @@ var ManagerGroup = class extends BaseSetting {
           void this.manager.saveSettings();
           this.settingTab.groupDisplay();
           command_default(this.app, this.manager);
-          new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
+          new import_obsidian26.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E00"));
         } else {
-          new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
+          new import_obsidian26.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E8C"));
         }
       })
     );
     const list = page.createDiv("manager-taxonomy-setting__list");
     this.manager.settings.GROUPS.forEach((group, index) => {
-      const item = new import_obsidian25.Setting(list);
+      const item = new import_obsidian26.Setting(list);
       const usageCount = this.getGroupUsageCount(group.id);
       item.settingEl.addClass("manager-setting-group__item");
       item.settingEl.addClass("manager-taxonomy-setting__row");
@@ -12442,9 +13849,9 @@ var ManagerGroup = class extends BaseSetting {
             void this.manager.saveSettings();
             this.settingTab.groupDisplay();
             command_default(this.app, this.manager);
-            new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
+            new import_obsidian26.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u4E09"));
           } else {
-            new import_obsidian25.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
+            new import_obsidian26.Notice(this.manager.translator.t("\u8BBE\u7F6E_\u5206\u7EC4\u8BBE\u7F6E_\u901A\u77E5_\u56DB"));
           }
         })
       );
@@ -12453,7 +13860,7 @@ var ManagerGroup = class extends BaseSetting {
 };
 
 // src/settings/ui/manager-main-page.ts
-var import_obsidian26 = require("obsidian");
+var import_obsidian27 = require("obsidian");
 var ManagerMainPage = class extends BaseSetting {
   constructor() {
     super(...arguments);
@@ -12475,7 +13882,7 @@ var ManagerMainPage = class extends BaseSetting {
     ];
   }
   main() {
-    new import_obsidian26.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u63CF\u8FF0"));
+    new import_obsidian27.Setting(this.containerEl).setHeading().setName(this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u6807\u9898")).setDesc(this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u63CF\u8FF0"));
     this.settings.MAIN_PAGE_ACTION_PLACEMENT = {
       ...DEFAULT_MAIN_PAGE_ACTION_PLACEMENT,
       ...this.settings.MAIN_PAGE_ACTION_PLACEMENT || {}
@@ -12485,7 +13892,7 @@ var ManagerMainPage = class extends BaseSetting {
       menu: this.manager.translator.t("\u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u5B58\u50A8\u5728\u53F3\u952E")
     };
     this.actions.forEach((action) => {
-      const setting = new import_obsidian26.Setting(this.containerEl).setName(this.manager.translator.t(action.labelKey)).setDesc(this.manager.translator.t(action.descKey));
+      const setting = new import_obsidian27.Setting(this.containerEl).setName(this.manager.translator.t(action.labelKey)).setDesc(this.manager.translator.t(action.descKey));
       setting.setClass("manager-main-page-action-setting");
       setting.addExtraButton((button) => {
         var _a;
@@ -12493,7 +13900,7 @@ var ManagerMainPage = class extends BaseSetting {
         button.setDisabled(true);
         (_a = getExtraButtonElement(button)) == null ? void 0 : _a.addClass("manager-main-page-action-setting__icon");
       });
-      const dropdown = new import_obsidian26.DropdownComponent(setting.controlEl);
+      const dropdown = new import_obsidian27.DropdownComponent(setting.controlEl);
       dropdown.addOptions(placementOptions);
       dropdown.setValue(this.getPlacement(action.id));
       dropdown.onChange((value) => {
@@ -12516,7 +13923,7 @@ var ManagerMainPage = class extends BaseSetting {
 };
 
 // src/settings/index.ts
-var ManagerSettingTab = class extends import_obsidian27.PluginSettingTab {
+var ManagerSettingTab = class extends import_obsidian28.PluginSettingTab {
   constructor(app, manager) {
     super(app, manager);
     this.manager = manager;
@@ -12630,6 +14037,78 @@ var zh_cn_default = {
   \u901A\u7528_\u8FD4\u56DE_\u6587\u672C: "\u8FD4\u56DE",
   \u901A\u7528_\u5B8C\u6210_\u6587\u672C: "\u5B8C\u6210",
   \u901A\u7528_\u8DF3\u8FC7_\u6587\u672C: "\u8DF3\u8FC7",
+  \u5916\u89C2\u603B\u89C8_Tab_\u6807\u9898: "\u5916\u89C2\u603B\u89C8",
+  \u5916\u89C2\u603B\u89C8_\u5206\u533A_\u5916\u89C2\u65B9\u6848: "\u5916\u89C2\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u5206\u533A_\u4E3B\u9898: "\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u5206\u533A_CSS\u7247\u6BB5: "CSS \u7247\u6BB5",
+  \u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u4E3B\u9898: "\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u7247\u6BB5\u542F\u7528: "\u7247\u6BB5\u542F\u7528",
+  \u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u5DF2\u8FFD\u8E2A: "\u5DF2\u8FFD\u8E2A",
+  \u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u5F53\u524D: "\u5F53\u524D\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u9ED8\u8BA4\u4E3B\u9898: "\u9ED8\u8BA4\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u6807\u9898: "\u6682\u65E0\u5339\u914D\u5916\u89C2\u9879",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u8BF4\u660E: "\u6362\u4E00\u4E2A\u4E3B\u9898\u3001CSS \u7247\u6BB5\u3001\u4F5C\u8005\u3001\u7248\u672C\u6216\u4ED3\u5E93\u5173\u952E\u8BCD\u8BD5\u8BD5\u3002",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5916\u89C2\u9879\u6807\u9898: "\u6682\u65E0\u5916\u89C2\u9879",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5916\u89C2\u9879\u8BF4\u660E: "\u5B89\u88C5\u4E3B\u9898\u6216\u6DFB\u52A0 CSS \u7247\u6BB5\u540E\uFF0C\u4F1A\u663E\u793A\u5728\u8FD9\u91CC\u3002",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u4E3B\u9898: "\u6682\u65E0\u5339\u914D\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u4E3B\u9898: "\u6682\u65E0\u5DF2\u5B89\u88C5\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u7247\u6BB5: "\u6682\u65E0\u5339\u914D CSS \u7247\u6BB5",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0CSS\u7247\u6BB5: "\u6682\u65E0 CSS \u7247\u6BB5",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u5B89\u88C5\u4E3B\u9898: "\u5B89\u88C5\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u4E3B\u9898\u533A\u57DF: "\u4E3B\u9898\u64CD\u4F5C\uFF1A{name}",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u7247\u6BB5\u533A\u57DF: "CSS \u7247\u6BB5\u64CD\u4F5C\uFF1A{name}",
+  \u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5F53\u524D: "\u5F53\u524D",
+  \u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u8FFD\u8E2A: "\u5DF2\u8FFD\u8E2A",
+  \u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u542F\u7528: "\u5DF2\u542F\u7528",
+  \u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u7981\u7528: "\u5DF2\u7981\u7528",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u4F5C\u8005: "\u4F5C\u8005",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u7248\u672C: "\u7248\u672C",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u4ED3\u5E93: "\u4ED3\u5E93",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u5B89\u88C5\u65F6\u95F4: "\u5B89\u88C5\u65F6\u95F4",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u6700\u65B0: "\u6700\u65B0",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u6587\u4EF6: "\u6587\u4EF6",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u5F53\u524D\u4E3B\u9898: "\u5F53\u524D\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u4F7F\u7528\u4E3B\u9898: "\u4F7F\u7528\u6B64\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00\u4E3B\u9898\u76EE\u5F55: "\u6253\u5F00\u4E3B\u9898\u76EE\u5F55",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00\u7247\u6BB5\u76EE\u5F55: "\u6253\u5F00\u7247\u6BB5\u76EE\u5F55",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00GitHub: "\u6253\u5F00 GitHub",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u542F\u7528\u7247\u6BB5: "\u542F\u7528 CSS \u7247\u6BB5",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u7981\u7528\u7247\u6BB5: "\u7981\u7528 CSS \u7247\u6BB5",
+  \u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u4E3B\u9898\u5DF2\u5207\u6362: "\u5DF2\u5207\u6362\u4E3B\u9898\uFF1A{name}",
+  \u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u7247\u6BB5\u5DF2\u542F\u7528: "\u5DF2\u542F\u7528 CSS \u7247\u6BB5\uFF1A{name}",
+  \u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u7247\u6BB5\u5DF2\u7981\u7528: "\u5DF2\u7981\u7528 CSS \u7247\u6BB5\uFF1A{name}",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u9ED8\u8BA4\u540D\u79F0: "\u5916\u89C2\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u65B0\u5EFA\u6807\u9898: "\u65B0\u5EFA\u5916\u89C2\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7F16\u8F91\u6807\u9898: "\u7F16\u8F91\u5916\u89C2\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u4FDD\u5B58\u5F53\u524D: "\u4FDD\u5B58\u5F53\u524D\u5916\u89C2",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7A7A: "\u6682\u65E0\u5916\u89C2\u65B9\u6848\u3002\u53EF\u4EE5\u628A\u5F53\u524D\u4E3B\u9898\u548C CSS \u7247\u6BB5\u4FDD\u5B58\u4E3A\u4E00\u4E2A\u65B9\u6848\u3002",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u65E0\u5339\u914D: "\u6682\u65E0\u5339\u914D\u5916\u89C2\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u540D\u79F0: "\u65B9\u6848\u540D\u79F0",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A: "\u65B9\u6848\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7ED1\u5B9A\u4E3B\u9898: "\u7ED1\u5B9A\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7ED1\u5B9A\u4E3B\u9898\u8BF4\u660E: "\u5E94\u7528\u65B9\u6848\u65F6\u4F1A\u5207\u6362\u5230\u8FD9\u4E2A\u4E3B\u9898\uFF1B\u5F00\u542F\u81EA\u52A8\u5E94\u7528\u540E\uFF0C\u5207\u6362\u5230\u8BE5\u4E3B\u9898\u65F6\u4F1A\u81EA\u52A8\u5957\u7528\u65B9\u6848\u3002",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u4E0D\u7ED1\u5B9A\u4E3B\u9898: "\u4E0D\u7ED1\u5B9A\u4E3B\u9898",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u6A21\u5F0F: "\u5E94\u7528\u6A21\u5F0F",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u6A21\u5F0F\u8BF4\u660E: "\u5408\u5E76\u6A21\u5F0F\u53EA\u6539\u65B9\u6848\u5185\u7684\u7247\u6BB5\uFF1B\u7CBE\u786E\u6A21\u5F0F\u4F1A\u628A\u542F\u7528\u72B6\u6001\u53D8\u6210\u65B9\u6848\u6307\u5B9A\u7684\u7ED3\u679C\u3002",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5408\u5E76\u6A21\u5F0F: "\u5408\u5E76",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7CBE\u786E\u6A21\u5F0F: "\u7CBE\u786E",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528: "\u5207\u6362\u5230\u7ED1\u5B9A\u4E3B\u9898\u65F6\u81EA\u52A8\u5E94\u7528",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528\u8BF4\u660E: "\u4ECE\u5916\u89C2\u603B\u89C8\u5207\u6362\u4E3B\u9898\u65F6\uFF0C\u4F1A\u81EA\u52A8\u542F\u7528/\u7981\u7528\u8FD9\u4E2A\u65B9\u6848\u91CC\u7684 CSS \u7247\u6BB5\u3002",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528\u77ED: "\u81EA\u52A8",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_CSS\u7247\u6BB5\u89C4\u5219: "CSS \u7247\u6BB5\u89C4\u5219",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_CSS\u7247\u6BB5\u89C4\u5219\u8BF4\u660E: "\u6BCF\u4E2A\u7247\u6BB5\u53EF\u4EE5\u8BBE\u4E3A\u5FFD\u7565\u3001\u542F\u7528\u6216\u7981\u7528\u3002",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u5FFD\u7565: "\u5FFD\u7565",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u542F\u7528: "\u542F\u7528",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u7981\u7528: "\u7981\u7528",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u542F\u7528\u7247\u6BB5\u6570: "\u542F\u7528\u7247\u6BB5",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7981\u7528\u7247\u6BB5\u6570: "\u7981\u7528\u7247\u6BB5",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528: "\u5E94\u7528\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7F16\u8F91: "\u7F16\u8F91\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5220\u9664: "\u5220\u9664\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5220\u9664\u786E\u8BA4: "\u786E\u5B9A\u5220\u9664\u5916\u89C2\u65B9\u6848\u300C{name}\u300D\u5417\uFF1F",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5DF2\u5E94\u7528: "\u5DF2\u5E94\u7528\u5916\u89C2\u65B9\u6848\uFF1A{name}",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5DF2\u7ED1\u5B9A: "\u5DF2\u7ED1\u5B9A\u65B9\u6848",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u7ED1\u5B9A: "\u5E94\u7528\u7ED1\u5B9A\u65B9\u6848\uFF1A{name}",
   \u5BFC\u51FA_\u6B63\u6587\u63D0\u793A: "\u6B63\u6587\u533A\uFF1A\u8FD9\u91CC\u7684\u5185\u5BB9\u53EF\u81EA\u884C\u7F16\u8F91\u6216\u66FF\u6362\u3002",
   \u547D\u4EE4\u884C_\u542F\u7528_\u6587\u672C: "\u542F\u7528",
   \u547D\u4EE4\u884C_\u7981\u7528_\u6587\u672C: "\u7981\u7528",
@@ -12660,6 +14139,7 @@ var zh_cn_default = {
   \u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0: "\u4E00\u952E\u542F\u7528\u6240\u6709\u63D2\u4EF6",
   \u7BA1\u7406\u5668_\u5168\u9009\u53D6\u6D88_\u63CF\u8FF0: "\u5168\u9009/\u5168\u90E8\u53D6\u6D88\u5F53\u524D\u5217\u8868",
   \u7BA1\u7406\u5668_\u63D2\u4EF6\u5E02\u573A_\u63CF\u8FF0: "\u6253\u5F00\u63D2\u4EF6\u5E02\u573A",
+  \u7BA1\u7406\u5668_\u5916\u89C2\u5E02\u573A_\u63CF\u8FF0: "\u6253\u5F00\u5916\u89C2\u5E02\u573A",
   \u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0: "\u7BA1\u7406\u63D2\u4EF6\u8BBE\u7F6E",
   \u7BA1\u7406\u5668_\u4EC5\u542F\u7528_\u63CF\u8FF0: "\u4EC5\u663E\u793A\u5DF2\u542F\u7528\u63D2\u4EF6",
   \u7BA1\u7406\u5668_\u672A\u5206\u7EC4_\u63CF\u8FF0: "\u7B5B\u9009\u6240\u6709\u672A\u5206\u7EC4\u63D2\u4EF6",
@@ -12853,9 +14333,13 @@ var zh_cn_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898: "\u7B5B\u9009\u6301\u4E45\u5316",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0: "\u542F\u7528\u540E\uFF0C\u60A8\u5C06\u5728\u6BCF\u6B21\u6253\u5F00\u7BA1\u7406\u5668\u65F6\u770B\u5230\u76F8\u540C\u7684\u63D2\u4EF6\u5217\u8868\u3002",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898: "\u5355\u72EC\u63A7\u5236\u63D2\u4EF6\u547D\u4EE4",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0: "\u542F\u7528\u6B64\u9009\u9879\u53EF\u4EE5\u5355\u72EC\u63A7\u5236\u6BCF\u4E2A\u63D2\u4EF6\u7684\u542F\u7528\u548C\u7981\u7528\u72B6\u6001\u3002(\u91CD\u542FObsidian\u751F\u6548)",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0: "\u5728\u547D\u4EE4\u9762\u677F\u4E2D\u4E3A\u6BCF\u4E2A\u63D2\u4EF6\u6CE8\u518C\u72EC\u7ACB\u542F\u7528/\u7981\u7528\u547D\u4EE4\u3002",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898: "\u5206\u7EC4\u63A7\u5236\u63D2\u4EF6\u547D\u4EE4",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0: "\u542F\u7528\u6B64\u9009\u9879\u53EF\u4EE5\u4E00\u952E\u542F\u7528\u6216\u7981\u7528\u6307\u5B9A\u5206\u7EC4\u4E2D\u7684\u6240\u6709\u63D2\u4EF6\u3002(\u91CD\u542FObsidian\u751F\u6548)",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0: "\u5728\u547D\u4EE4\u9762\u677F\u4E2D\u4E3A\u6BCF\u4E2A\u5206\u7EC4\u6CE8\u518C\u4E00\u952E\u542F\u7528/\u7981\u7528\u547D\u4EE4\u3002",
+  command_setting_tag_title: "\u6807\u7B7E\u63A7\u5236\u63D2\u4EF6\u547D\u4EE4",
+  command_setting_tag_desc: "\u5728\u547D\u4EE4\u9762\u677F\u4E2D\u6309\u6807\u7B7E\u4E00\u952E\u542F\u7528\u6216\u7981\u7528\u63D2\u4EF6\u3002",
+  command_setting_profile_title: "\u63D2\u4EF6 Profile \u547D\u4EE4",
+  command_setting_profile_desc: "\u4E3A\u5DF2\u4FDD\u5B58\u7684\u63D2\u4EF6\u72B6\u6001\u65B9\u6848\u6CE8\u518C\u4E00\u952E\u5E94\u7528\u547D\u4EE4\u3002",
   \u6807\u7B7E_BPM\u5B89\u88C5_\u540D\u79F0: "BPM \u5B89\u88C5",
   \u6807\u7B7E_Eondr\u63D2\u4EF6_\u540D\u79F0: "Eondr \u51FA\u54C1",
   \u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u6807\u9898: "\u4E3B\u9875\u9762\u529F\u80FD",
@@ -12897,6 +14381,48 @@ var zh_cn_default = {
   \u901A\u77E5_\u6765\u6E90\u53EF\u66F4\u65B0\u6570\u91CF: "\u53D1\u73B0 {count} \u4E2A\u6765\u6E90\u8BA2\u9605\u53EF\u66F4\u65B0",
   \u901A\u77E5_\u83B7\u53D6\u7248\u672C\u4E2D\u6587\u6848: "\u6B63\u5728\u83B7\u53D6\u4E91\u7AEF\u7248\u672C\u4FE1\u606F\u2026",
   \u547D\u4EE4_\u7BA1\u7406\u9762\u677F_\u63CF\u8FF0: "\u5F00\u542F\u63D2\u4EF6\u7BA1\u7406\u5668",
+  command_control_plugin: "\u63A7\u5236\u63D2\u4EF6",
+  command_control_placeholder: "\u641C\u7D22\u8981\u63A7\u5236\u7684\u63D2\u4EF6...",
+  command_control_empty: "\u6CA1\u6709\u5339\u914D\u7684\u63D2\u4EF6",
+  command_action_placeholder: "\u9009\u62E9 {name} \u7684\u64CD\u4F5C",
+  command_action_enable: "\u542F\u7528",
+  command_action_disable: "\u7981\u7528",
+  command_action_single_start: "\u5355\u6B21\u542F\u52A8",
+  command_action_restart: "\u91CD\u542F\u63D2\u4EF6",
+  command_action_open_settings: "\u6253\u5F00\u8BBE\u7F6E",
+  command_action_open_dir: "\u6253\u5F00\u63D2\u4EF6\u76EE\u5F55",
+  command_action_open_repo: "\u6253\u5F00\u4ED3\u5E93",
+  command_action_copy_id: "\u590D\u5236\u63D2\u4EF6 ID",
+  command_action_disabled: "\u5F53\u524D\u63D2\u4EF6\u72B6\u6001\u4E0D\u53EF\u7528",
+  command_enable_tag: "\u542F\u7528\u6807\u7B7E",
+  command_disable_tag: "\u7981\u7528\u6807\u7B7E",
+  command_save_profile: "\u4FDD\u5B58\u5F53\u524D\u63D2\u4EF6\u72B6\u6001\u4E3A Profile",
+  command_restore_previous_state: "\u6062\u590D\u4E0A\u4E00\u6B21\u63D2\u4EF6\u72B6\u6001",
+  command_apply_profile: "\u5E94\u7528\u63D2\u4EF6 Profile",
+  command_profile_name_placeholder: "Profile \u540D\u79F0...",
+  command_profile_name_empty: "\u8F93\u5165\u4E00\u4E2A Profile \u540D\u79F0",
+  command_profile_save_as: "\u4FDD\u5B58 Profile\uFF1A{name}",
+  command_notice_profile_saved: "\u5DF2\u4FDD\u5B58\u63D2\u4EF6 Profile\uFF1A{name}",
+  command_notice_profile_missing: "\u63D2\u4EF6 Profile \u4E0D\u5B58\u5728",
+  command_notice_profile_name_required: "\u8BF7\u8F93\u5165 Profile \u540D\u79F0",
+  command_notice_no_snapshot: "\u6CA1\u6709\u53EF\u6062\u590D\u7684\u4E0A\u4E00\u6B21\u63D2\u4EF6\u72B6\u6001",
+  command_notice_missing_plugin: "\u672A\u627E\u5230\u63D2\u4EF6\uFF1A{id}",
+  command_notice_not_actionable: "\u6B64\u63D2\u4EF6\u4E0D\u7531 BPM \u63A7\u5236",
+  command_notice_no_actionable_plugins: "\u6CA1\u6709\u53EF\u64CD\u4F5C\u7684\u63D2\u4EF6",
+  command_notice_applying: "\u6B63\u5728\u5E94\u7528\u63D2\u4EF6\u53D8\u66F4",
+  command_notice_bulk_done: "\u5DF2\u66F4\u65B0 {count} \u4E2A\u63D2\u4EF6",
+  command_notice_plugin_enabled: "\u5DF2\u542F\u7528 {name}",
+  command_notice_plugin_disabled: "\u5DF2\u7981\u7528 {name}",
+  command_notice_enable_before_settings: "\u8BF7\u5148\u542F\u7528\u6B64\u63D2\u4EF6\u518D\u6253\u5F00\u8BBE\u7F6E",
+  command_notice_failed: "\u547D\u4EE4\u6267\u884C\u5931\u8D25\uFF0C\u8BF7\u67E5\u770B\u63A7\u5236\u53F0\u3002",
+  command_snapshot_plugin: "\u63D2\u4EF6\u547D\u4EE4\uFF1A{name}",
+  command_snapshot_group: "\u5206\u7EC4\u547D\u4EE4\uFF1A{name}",
+  command_snapshot_tag: "\u6807\u7B7E\u547D\u4EE4\uFF1A{name}",
+  command_snapshot_profile: "Profile \u547D\u4EE4\uFF1A{name}",
+  command_snapshot_restore: "\u6062\u590D\u4E0A\u4E00\u6B21\u63D2\u4EF6\u72B6\u6001",
+  command_snapshot_before_restore: "\u6062\u590D\u524D\u72B6\u6001",
+  command_snapshot_single_start: "\u5355\u6B21\u542F\u52A8\uFF1A{name}",
+  command_snapshot_restart: "\u91CD\u542F\uFF1A{name}",
   \u7BA1\u7406\u5668_\u4E0B\u8F7D\u66F4\u65B0_\u63CF\u8FF0: "\u4E0B\u8F7D\u6307\u5B9A\u7248\u672C\u66F4\u65B0\uFF08\u652F\u6301\u9884\u53D1\u5E03\uFF09",
   \u5B89\u88C5_\u6210\u529F_\u63D0\u793A: "\u5DF2\u5B89\u88C5/\u66F4\u65B0\u63D2\u4EF6\uFF1A{name}",
   \u5B89\u88C5_\u9519\u8BEF_\u9650\u901F: "GitHub \u8BF7\u6C42\u53D7\u9650\uFF08403\uFF09\uFF0C\u8BF7\u914D\u7F6E GitHub Token \u540E\u91CD\u8BD5\u3002",
@@ -13142,6 +14668,16 @@ var zh_cn_default = {
   \u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E: "\u5EF6\u8FDF\u5305\u542B\u6216\u6392\u9664",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u5305\u542B: "\u5305\u542B",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u6392\u9664: "\u6392\u9664",
+  \u901A\u7528_\u6392\u5E8F_\u6587\u672C: "\u6392\u5E8F",
+  \u6392\u5E8F_\u81EA\u5B9A\u4E49\u5E03\u5C40: "\u81EA\u5B9A\u4E49\u5E03\u5C40",
+  \u6392\u5E8F_\u540D\u79F0\u5347\u5E8F: "\u540D\u79F0 A-Z",
+  \u6392\u5E8F_\u540D\u79F0\u964D\u5E8F: "\u540D\u79F0 Z-A",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65B0\u5230\u65E7: "\u5B89\u88C5\u65E5\u671F \u65B0\u5230\u65E7",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65E7\u5230\u65B0: "\u5B89\u88C5\u65E5\u671F \u65E7\u5230\u65B0",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65B0\u5230\u65E7: "\u66F4\u65B0\u65E5\u671F \u65B0\u5230\u65E7",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65E7\u5230\u65B0: "\u66F4\u65B0\u65E5\u671F \u65E7\u5230\u65B0",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F_\u6807\u7B7E: "\u5B89\u88C5",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F_\u6807\u7B7E: "\u66F4\u65B0",
   // 布局与隐藏
   \u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF: "\u5206\u5272\u7EBF",
   \u7BA1\u7406\u5668_\u5E03\u5C40_\u6807\u9898: "\u7BA1\u7406\u9875\u5E03\u5C40",
@@ -13462,6 +14998,78 @@ var en_default = {
   \u901A\u7528_\u8FD4\u56DE_\u6587\u672C: "Back",
   \u901A\u7528_\u5B8C\u6210_\u6587\u672C: "Done",
   \u901A\u7528_\u8DF3\u8FC7_\u6587\u672C: "Skipped",
+  \u5916\u89C2\u603B\u89C8_Tab_\u6807\u9898: "Appearance overview",
+  \u5916\u89C2\u603B\u89C8_\u5206\u533A_\u5916\u89C2\u65B9\u6848: "Appearance profiles",
+  \u5916\u89C2\u603B\u89C8_\u5206\u533A_\u4E3B\u9898: "Themes",
+  \u5916\u89C2\u603B\u89C8_\u5206\u533A_CSS\u7247\u6BB5: "CSS snippets",
+  \u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u4E3B\u9898: "Themes",
+  \u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u7247\u6BB5\u542F\u7528: "Snippets enabled",
+  \u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u5DF2\u8FFD\u8E2A: "Tracked",
+  \u5916\u89C2\u603B\u89C8_\u7EDF\u8BA1_\u5F53\u524D: "Current theme",
+  \u5916\u89C2\u603B\u89C8_\u9ED8\u8BA4\u4E3B\u9898: "Default theme",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u6807\u9898: "No matching appearance items",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u8BF4\u660E: "Try a theme, CSS snippet, author, version, or repository keyword.",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5916\u89C2\u9879\u6807\u9898: "No appearance items",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5916\u89C2\u9879\u8BF4\u660E: "Install a theme or add CSS snippets, then they will appear here.",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u4E3B\u9898: "No matching themes",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u4E3B\u9898: "No installed themes",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0\u5339\u914D\u7247\u6BB5: "No matching CSS snippets",
+  \u5916\u89C2\u603B\u89C8_\u7A7A_\u65E0CSS\u7247\u6BB5: "No CSS snippets",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u5B89\u88C5\u4E3B\u9898: "Install theme",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u4E3B\u9898\u533A\u57DF: "Theme actions: {name}",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u7247\u6BB5\u533A\u57DF: "CSS snippet actions: {name}",
+  \u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5F53\u524D: "Active",
+  \u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u8FFD\u8E2A: "Tracked",
+  \u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u542F\u7528: "Enabled",
+  \u5916\u89C2\u603B\u89C8_\u72B6\u6001_\u5DF2\u7981\u7528: "Disabled",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u4F5C\u8005: "Author",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u7248\u672C: "Version",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u4ED3\u5E93: "Repository",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u5B89\u88C5\u65F6\u95F4: "Installed",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u6700\u65B0: "Latest",
+  \u5916\u89C2\u603B\u89C8_\u5B57\u6BB5_\u6587\u4EF6: "File",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u5F53\u524D\u4E3B\u9898: "Current theme",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u4F7F\u7528\u4E3B\u9898: "Use this theme",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00\u4E3B\u9898\u76EE\u5F55: "Open theme folder",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00\u7247\u6BB5\u76EE\u5F55: "Open snippets folder",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u6253\u5F00GitHub: "Open GitHub",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u542F\u7528\u7247\u6BB5: "Enable CSS snippet",
+  \u5916\u89C2\u603B\u89C8_\u64CD\u4F5C_\u7981\u7528\u7247\u6BB5: "Disable CSS snippet",
+  \u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u4E3B\u9898\u5DF2\u5207\u6362: "Theme activated: {name}",
+  \u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u7247\u6BB5\u5DF2\u542F\u7528: "CSS snippet enabled: {name}",
+  \u5916\u89C2\u603B\u89C8_\u63D0\u793A_\u7247\u6BB5\u5DF2\u7981\u7528: "CSS snippet disabled: {name}",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u9ED8\u8BA4\u540D\u79F0: "Appearance profile",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u65B0\u5EFA\u6807\u9898: "New appearance profile",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7F16\u8F91\u6807\u9898: "Edit appearance profile",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u4FDD\u5B58\u5F53\u524D: "Save current appearance",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7A7A: "No appearance profiles yet. Save the current theme and CSS snippets as a profile.",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u65E0\u5339\u914D: "No matching appearance profiles",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u540D\u79F0: "Profile name",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A: "Profile name cannot be empty",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7ED1\u5B9A\u4E3B\u9898: "Bound theme",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7ED1\u5B9A\u4E3B\u9898\u8BF4\u660E: "Applying the profile switches to this theme. With auto apply enabled, switching to this theme applies the profile.",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u4E0D\u7ED1\u5B9A\u4E3B\u9898: "No bound theme",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u6A21\u5F0F: "Apply mode",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u6A21\u5F0F\u8BF4\u660E: "Merge only changes snippets in the profile. Exact makes the final enabled snippets match the profile.",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5408\u5E76\u6A21\u5F0F: "Merge",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7CBE\u786E\u6A21\u5F0F: "Exact",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528: "Auto apply when switching to bound theme",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528\u8BF4\u660E: "When switching themes from the appearance overview, BPM will enable and disable snippets from this profile.",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u81EA\u52A8\u5E94\u7528\u77ED: "Auto",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_CSS\u7247\u6BB5\u89C4\u5219: "CSS snippet rules",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_CSS\u7247\u6BB5\u89C4\u5219\u8BF4\u660E: "Each snippet can be ignored, enabled, or disabled.",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u5FFD\u7565: "Ignore",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u542F\u7528: "Enable",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7247\u6BB5\u7981\u7528: "Disable",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u542F\u7528\u7247\u6BB5\u6570: "Enable snippets",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7981\u7528\u7247\u6BB5\u6570: "Disable snippets",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528: "Apply profile",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u7F16\u8F91: "Edit profile",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5220\u9664: "Delete profile",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5220\u9664\u786E\u8BA4: 'Delete appearance profile "{name}"?',
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5DF2\u5E94\u7528: "Appearance profile applied: {name}",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5DF2\u7ED1\u5B9A: "Profile bound",
+  \u5916\u89C2\u603B\u89C8_\u65B9\u6848_\u5E94\u7528\u7ED1\u5B9A: "Apply bound profile: {name}",
   \u5BFC\u51FA_\u6B63\u6587\u63D0\u793A: "Body section: you can edit or replace this content.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u6807\u9898: "Export directory for plugin info",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5BFC\u51FA\u76EE\u5F55_\u63CF\u8FF0: "Relative vault path to export BPM plugin info (for Base). Changes apply when clicking \u201CSave settings\u201D.",
@@ -13583,6 +15191,7 @@ var en_default = {
   \u7BA1\u7406\u5668_\u4E00\u952E\u542F\u7528_\u63CF\u8FF0: "Enable all plugins at once",
   \u7BA1\u7406\u5668_\u5168\u9009\u53D6\u6D88_\u63CF\u8FF0: "Select all / clear current list",
   \u7BA1\u7406\u5668_\u63D2\u4EF6\u5E02\u573A_\u63CF\u8FF0: "Open plugin market",
+  \u7BA1\u7406\u5668_\u5916\u89C2\u5E02\u573A_\u63CF\u8FF0: "Open appearance market",
   \u7BA1\u7406\u5668_\u63D2\u4EF6\u8BBE\u7F6E_\u63CF\u8FF0: "Manage plugin settings",
   \u7BA1\u7406\u5668_\u4EC5\u542F\u7528_\u63CF\u8FF0: "Only display enabled plugins",
   \u7BA1\u7406\u5668_\u672A\u5206\u7EC4_\u63CF\u8FF0: "Filter all ungrouped plugins",
@@ -13684,9 +15293,13 @@ var en_default = {
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u6807\u9898: "Filter Persistence",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u7B5B\u9009\u6301\u4E45\u5316_\u63CF\u8FF0: "After enabling, you will see the same plugin list every time you open the manager.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u6807\u9898: "Control Plugin Commands Separately",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0: "Enable this option to control the enabled and disabled state of each plugin separately. (Restart Obsidian to take effect)",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5355\u72EC\u547D\u4EE4_\u63CF\u8FF0: "Enable direct command palette toggles for individual plugins.",
   \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u6807\u9898: "Control Plugin Commands by Group",
-  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0: "Enable this option to enable or disable all plugins in a specified group with one click. (Restart Obsidian to take effect)",
+  \u8BBE\u7F6E_\u57FA\u7840\u8BBE\u7F6E_\u5206\u7EC4\u547D\u4EE4_\u63CF\u8FF0: "Enable direct command palette actions for enabling or disabling a whole group.",
+  command_setting_tag_title: "Control Plugin Commands by Tag",
+  command_setting_tag_desc: "Enable direct command palette actions for enabling or disabling plugins by tag.",
+  command_setting_profile_title: "Plugin Profile Commands",
+  command_setting_profile_desc: "Register direct apply commands for saved plugin state profiles.",
   \u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u6807\u9898: "Main Page Actions",
   \u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u63CF\u8FF0: "Choose whether each plugin action on the manager page is shown directly on the item or kept in the context menu.",
   \u8BBE\u7F6E_\u4E3B\u9875\u9762\u529F\u80FD_\u5C55\u793A\u5728Item: "Show on item",
@@ -13726,6 +15339,48 @@ var en_default = {
   \u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25_\u5EFA\u8BAEToken: "Network/API limited. Please configure a GitHub Token (Public repositories scope) and retry.",
   \u901A\u77E5_\u83B7\u53D6\u7248\u672C\u4E2D\u6587\u6848: "Fetching remote version info\u2026",
   \u547D\u4EE4_\u7BA1\u7406\u9762\u677F_\u63CF\u8FF0: "Open the plugin manager",
+  command_control_plugin: "Control a plugin",
+  command_control_placeholder: "Search plugin to control...",
+  command_control_empty: "No matching plugin",
+  command_action_placeholder: "Choose action for {name}",
+  command_action_enable: "Enable",
+  command_action_disable: "Disable",
+  command_action_single_start: "Single start",
+  command_action_restart: "Restart plugin",
+  command_action_open_settings: "Open settings",
+  command_action_open_dir: "Open plugin folder",
+  command_action_open_repo: "Open repository",
+  command_action_copy_id: "Copy plugin ID",
+  command_action_disabled: "Unavailable for the current plugin state",
+  command_enable_tag: "Enable tag",
+  command_disable_tag: "Disable tag",
+  command_save_profile: "Save current plugin state as profile",
+  command_restore_previous_state: "Restore previous plugin state",
+  command_apply_profile: "Apply plugin profile",
+  command_profile_name_placeholder: "Profile name...",
+  command_profile_name_empty: "Type a profile name",
+  command_profile_save_as: "Save profile: {name}",
+  command_notice_profile_saved: "Saved plugin profile: {name}",
+  command_notice_profile_missing: "Plugin profile no longer exists",
+  command_notice_profile_name_required: "Profile name is required",
+  command_notice_no_snapshot: "No previous plugin state to restore",
+  command_notice_missing_plugin: "Plugin not found: {id}",
+  command_notice_not_actionable: "This plugin is not controlled by BPM",
+  command_notice_no_actionable_plugins: "No actionable plugins found",
+  command_notice_applying: "Applying plugin changes",
+  command_notice_bulk_done: "Updated {count} plugins",
+  command_notice_plugin_enabled: "Enabled {name}",
+  command_notice_plugin_disabled: "Disabled {name}",
+  command_notice_enable_before_settings: "Enable this plugin before opening its settings",
+  command_notice_failed: "Command failed. Check the console for details.",
+  command_snapshot_plugin: "Plugin command: {name}",
+  command_snapshot_group: "Group command: {name}",
+  command_snapshot_tag: "Tag command: {name}",
+  command_snapshot_profile: "Profile command: {name}",
+  command_snapshot_restore: "Restore previous plugin state",
+  command_snapshot_before_restore: "Before restore",
+  command_snapshot_single_start: "Single start: {name}",
+  command_snapshot_restart: "Restart: {name}",
   \u6807\u7B7E_BPM\u5B89\u88C5_\u540D\u79F0: "bpm install",
   \u6807\u7B7E_Eondr\u63D2\u4EF6_\u540D\u79F0: "Eondr plugin",
   \u7BA1\u7406\u5668_\u4E0B\u8F7D\u66F4\u65B0_\u63CF\u8FF0: "Download an update (choose version, incl. pre-release)",
@@ -13973,6 +15628,16 @@ var en_default = {
   \u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E: "Include or exclude delay",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u5305\u542B: "Include",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u6392\u9664: "Exclude",
+  \u901A\u7528_\u6392\u5E8F_\u6587\u672C: "Sort",
+  \u6392\u5E8F_\u81EA\u5B9A\u4E49\u5E03\u5C40: "Custom layout",
+  \u6392\u5E8F_\u540D\u79F0\u5347\u5E8F: "Name A-Z",
+  \u6392\u5E8F_\u540D\u79F0\u964D\u5E8F: "Name Z-A",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65B0\u5230\u65E7: "Install date newest first",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65E7\u5230\u65B0: "Install date oldest first",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65B0\u5230\u65E7: "Update date newest first",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65E7\u5230\u65B0: "Update date oldest first",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F_\u6807\u7B7E: "Installed",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F_\u6807\u7B7E: "Updated",
   // Layout and hidden items
   \u7BA1\u7406\u5668_\u5E03\u5C40_\u5206\u5272\u7EBF: "Separator",
   \u7BA1\u7406\u5668_\u5E03\u5C40_\u6807\u9898: "Manager Page Layout",
@@ -14976,6 +16641,16 @@ var ru_default = {
   \u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0438\u043B\u0438 \u0438\u0441\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0437\u0430\u0434\u0435\u0440\u0436\u043A\u0443",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u5305\u542B: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u6392\u9664: "\u0418\u0441\u043A\u043B\u044E\u0447\u0438\u0442\u044C",
+  \u901A\u7528_\u6392\u5E8F_\u6587\u672C: "\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430",
+  \u6392\u5E8F_\u81EA\u5B9A\u4E49\u5E03\u5C40: "\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\u0441\u043A\u0430\u044F \u0440\u0430\u0441\u043A\u043B\u0430\u0434\u043A\u0430",
+  \u6392\u5E8F_\u540D\u79F0\u5347\u5E8F: "\u0418\u043C\u044F A-Z",
+  \u6392\u5E8F_\u540D\u79F0\u964D\u5E8F: "\u0418\u043C\u044F Z-A",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65B0\u5230\u65E7: "\u0414\u0430\u0442\u0430 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0438: \u043D\u043E\u0432\u044B\u0435 \u0441\u043D\u0430\u0447\u0430\u043B\u0430",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65E7\u5230\u65B0: "\u0414\u0430\u0442\u0430 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0438: \u0441\u0442\u0430\u0440\u044B\u0435 \u0441\u043D\u0430\u0447\u0430\u043B\u0430",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65B0\u5230\u65E7: "\u0414\u0430\u0442\u0430 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F: \u043D\u043E\u0432\u044B\u0435 \u0441\u043D\u0430\u0447\u0430\u043B\u0430",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65E7\u5230\u65B0: "\u0414\u0430\u0442\u0430 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F: \u0441\u0442\u0430\u0440\u044B\u0435 \u0441\u043D\u0430\u0447\u0430\u043B\u0430",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F_\u6807\u7B7E: "\u0423\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F_\u6807\u7B7E: "\u041E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u043E",
   \u5206\u7EC4\u7F16\u8F91_\u6253\u5F00\u5207\u6362: "\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u0433\u0440\u0443\u043F\u043F\u0443 \u0434\u043B\u044F {name}",
   \u5171\u4EAB\u5E93_Tab_\u6807\u9898: "\u041E\u0431\u0449\u0438\u0439 \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0445\u0440\u0430\u043D\u0438\u043B\u0438\u0449\u0443",
   \u5171\u4EAB\u5E93_Tab_\u8BF4\u660E: "\u0414\u0435\u043B\u0438\u0442\u0435\u0441\u044C \u043F\u0430\u043F\u043A\u0430\u043C\u0438 \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432/\u0442\u0435\u043C \u043C\u0435\u0436\u0434\u0443 \u0445\u0440\u0430\u043D\u0438\u043B\u0438\u0449\u0430\u043C\u0438 \u0447\u0435\u0440\u0435\u0437 \u0441\u0438\u043C\u0432\u043E\u043B\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u0441\u0441\u044B\u043B\u043A\u0438, \u0441\u043E\u0445\u0440\u0430\u043D\u044F\u044F \u0441\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435 \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u044F \u043E\u0442\u0434\u0435\u043B\u044C\u043D\u043E \u0434\u043B\u044F \u043A\u0430\u0436\u0434\u043E\u0433\u043E \u0445\u0440\u0430\u043D\u0438\u043B\u0438\u0449\u0430.",
@@ -15755,6 +17430,16 @@ var ja_default = {
   \u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E: "\u9045\u5EF6\u3092\u542B\u3081\u308B/\u9664\u5916\u3059\u308B",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u5305\u542B: "\u542B\u3081\u308B",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u6392\u9664: "\u9664\u5916",
+  \u901A\u7528_\u6392\u5E8F_\u6587\u672C: "\u4E26\u3073\u66FF\u3048",
+  \u6392\u5E8F_\u81EA\u5B9A\u4E49\u5E03\u5C40: "\u30AB\u30B9\u30BF\u30E0\u30EC\u30A4\u30A2\u30A6\u30C8",
+  \u6392\u5E8F_\u540D\u79F0\u5347\u5E8F: "\u540D\u524D A-Z",
+  \u6392\u5E8F_\u540D\u79F0\u964D\u5E8F: "\u540D\u524D Z-A",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65B0\u5230\u65E7: "\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u65E5 \u65B0\u3057\u3044\u9806",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65E7\u5230\u65B0: "\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u65E5 \u53E4\u3044\u9806",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65B0\u5230\u65E7: "\u66F4\u65B0\u65E5 \u65B0\u3057\u3044\u9806",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65E7\u5230\u65B0: "\u66F4\u65B0\u65E5 \u53E4\u3044\u9806",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F_\u6807\u7B7E: "\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F_\u6807\u7B7E: "\u66F4\u65B0",
   \u5206\u7EC4\u7F16\u8F91_\u6253\u5F00\u5207\u6362: "{name} \u306E\u30B0\u30EB\u30FC\u30D7\u3092\u5909\u66F4",
   \u5171\u4EAB\u5E93_Tab_\u6807\u9898: "\u4FDD\u7BA1\u5EAB\u5171\u6709",
   \u5171\u4EAB\u5E93_Tab_\u8BF4\u660E: "\u30B7\u30F3\u30DC\u30EA\u30C3\u30AF\u30EA\u30F3\u30AF\u3067\u8907\u6570\u4FDD\u7BA1\u5EAB\u9593\u306E\u30D7\u30E9\u30B0\u30A4\u30F3/\u30C6\u30FC\u30DE\u30D5\u30A9\u30EB\u30C0\u3092\u5171\u6709\u3057\u3064\u3064\u3001\u4FDD\u7BA1\u5EAB\u3054\u3068\u306E\u6709\u52B9\u72B6\u614B\u3092\u7DAD\u6301\u3057\u307E\u3059\u3002",
@@ -16534,6 +18219,16 @@ var ko_default = {
   \u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E: "\uC9C0\uC5F0 \uD3EC\uD568 \uB610\uB294 \uC81C\uC678",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u5305\u542B: "\uD3EC\uD568",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u6392\u9664: "\uC81C\uC678",
+  \u901A\u7528_\u6392\u5E8F_\u6587\u672C: "\uC815\uB82C",
+  \u6392\u5E8F_\u81EA\u5B9A\u4E49\u5E03\u5C40: "\uC0AC\uC6A9\uC790 \uC9C0\uC815 \uB808\uC774\uC544\uC6C3",
+  \u6392\u5E8F_\u540D\u79F0\u5347\u5E8F: "\uC774\uB984 A-Z",
+  \u6392\u5E8F_\u540D\u79F0\u964D\u5E8F: "\uC774\uB984 Z-A",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65B0\u5230\u65E7: "\uC124\uCE58\uC77C \uCD5C\uC2E0\uC21C",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65E7\u5230\u65B0: "\uC124\uCE58\uC77C \uC624\uB798\uB41C\uC21C",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65B0\u5230\u65E7: "\uC5C5\uB370\uC774\uD2B8\uC77C \uCD5C\uC2E0\uC21C",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65E7\u5230\u65B0: "\uC5C5\uB370\uC774\uD2B8\uC77C \uC624\uB798\uB41C\uC21C",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F_\u6807\u7B7E: "\uC124\uCE58",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F_\u6807\u7B7E: "\uC5C5\uB370\uC774\uD2B8",
   \u5206\u7EC4\u7F16\u8F91_\u6253\u5F00\u5207\u6362: "{name}\uC758 \uADF8\uB8F9 \uBCC0\uACBD",
   \u5171\u4EAB\u5E93_Tab_\u6807\u9898: "\uBCF4\uAD00\uC18C \uACF5\uC720",
   \u5171\u4EAB\u5E93_Tab_\u8BF4\u660E: "\uC2EC\uBCFC\uB9AD \uB9C1\uD06C\uB85C \uBCF4\uAD00\uC18C \uAC04 \uD50C\uB7EC\uADF8\uC778/\uD14C\uB9C8 \uD3F4\uB354\uB97C \uACF5\uC720\uD558\uBA74\uC11C \uBCF4\uAD00\uC18C\uBCC4 \uD65C\uC131 \uC0C1\uD0DC\uB97C \uC720\uC9C0\uD569\uB2C8\uB2E4.",
@@ -17313,6 +19008,16 @@ var fr_default = {
   \u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E: "Inclure ou exclure le d\xE9lai",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u5305\u542B: "Inclure",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u6392\u9664: "Exclure",
+  \u901A\u7528_\u6392\u5E8F_\u6587\u672C: "Trier",
+  \u6392\u5E8F_\u81EA\u5B9A\u4E49\u5E03\u5C40: "Disposition personnalis\xE9e",
+  \u6392\u5E8F_\u540D\u79F0\u5347\u5E8F: "Nom A-Z",
+  \u6392\u5E8F_\u540D\u79F0\u964D\u5E8F: "Nom Z-A",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65B0\u5230\u65E7: "Installation r\xE9cente d\u2019abord",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65E7\u5230\u65B0: "Installation ancienne d\u2019abord",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65B0\u5230\u65E7: "Mise \xE0 jour r\xE9cente d\u2019abord",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65E7\u5230\u65B0: "Mise \xE0 jour ancienne d\u2019abord",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F_\u6807\u7B7E: "Install\xE9",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F_\u6807\u7B7E: "Mis \xE0 jour",
   \u5206\u7EC4\u7F16\u8F91_\u6253\u5F00\u5207\u6362: "Changer le groupe de {name}",
   \u5171\u4EAB\u5E93_Tab_\u6807\u9898: "Partage de coffre",
   \u5171\u4EAB\u5E93_Tab_\u8BF4\u660E: "Partage les dossiers de plugins/th\xE8mes entre coffres avec des liens symboliques tout en gardant l\u2019\xE9tat d\u2019activation par coffre.",
@@ -18092,6 +19797,16 @@ var es_default = {
   \u7B5B\u9009_\u5EF6\u8FDF\u53D6\u53CD_\u6807\u7B7E: "Incluir o excluir retraso",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u5305\u542B: "Incluir",
   \u7B5B\u9009_\u64CD\u4F5C\u7B26_\u6392\u9664: "Excluir",
+  \u901A\u7528_\u6392\u5E8F_\u6587\u672C: "Ordenar",
+  \u6392\u5E8F_\u81EA\u5B9A\u4E49\u5E03\u5C40: "Dise\xF1o personalizado",
+  \u6392\u5E8F_\u540D\u79F0\u5347\u5E8F: "Nombre A-Z",
+  \u6392\u5E8F_\u540D\u79F0\u964D\u5E8F: "Nombre Z-A",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65B0\u5230\u65E7: "Fecha de instalaci\xF3n: recientes primero",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F\u65E7\u5230\u65B0: "Fecha de instalaci\xF3n: antiguos primero",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65B0\u5230\u65E7: "Fecha de actualizaci\xF3n: recientes primero",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F\u65E7\u5230\u65B0: "Fecha de actualizaci\xF3n: antiguos primero",
+  \u6392\u5E8F_\u5B89\u88C5\u65E5\u671F_\u6807\u7B7E: "Instalado",
+  \u6392\u5E8F_\u66F4\u65B0\u65E5\u671F_\u6807\u7B7E: "Actualizado",
   \u5206\u7EC4\u7F16\u8F91_\u6253\u5F00\u5207\u6362: "Cambiar grupo de {name}",
   \u5171\u4EAB\u5E93_Tab_\u6807\u9898: "Compartir b\xF3veda",
   \u5171\u4EAB\u5E93_Tab_\u8BF4\u660E: "Comparte carpetas de plugins/temas entre b\xF3vedas con enlaces simb\xF3licos manteniendo el estado de activaci\xF3n por b\xF3veda.",
@@ -18220,7 +19935,7 @@ var Translator = class {
 };
 
 // src/agreement.ts
-var import_obsidian28 = require("obsidian");
+var import_obsidian29 = require("obsidian");
 var Agreement = class {
   /**
    * 构造函数，初始化插件安装器
@@ -18232,7 +19947,7 @@ var Agreement = class {
     // 标记是否已经加载了社区插件列表
     this.loaded = false;
     // 防抖函数，用于定时刷新社区插件列表，每小时执行一次
-    this.debounceFetch = (0, import_obsidian28.debounce)(async () => {
+    this.debounceFetch = (0, import_obsidian29.debounce)(async () => {
       await this.fetchCommunityPlugins();
     }, 1e3 * 60 * 60);
     this.plugin = SMPL;
@@ -18243,7 +19958,7 @@ var Agreement = class {
    */
   async fetchCommunityPlugins() {
     const url = "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugins.json";
-    const res = await (0, import_obsidian28.requestUrl)(resolveGithubUrl(this.plugin, url));
+    const res = await (0, import_obsidian29.requestUrl)(resolveGithubUrl(this.plugin, url));
     const pluginList = res.json;
     const keyedPluginList = {};
     for (const item of pluginList)
@@ -18261,7 +19976,7 @@ var Agreement = class {
     }
     const pluginInfo = this.communityPlugins[id];
     if (!pluginInfo) {
-      new import_obsidian28.Notice(this.plugin.translator.t("\u534F\u8BAE_\u672A\u77E5\u63D2\u4EF6ID_\u63D0\u793A", { id }));
+      new import_obsidian29.Notice(this.plugin.translator.t("\u534F\u8BAE_\u672A\u77E5\u63D2\u4EF6ID_\u63D0\u793A", { id }));
       return null;
     }
     window.open(`https://github.com/${pluginInfo.repo}`);
@@ -18284,11 +19999,11 @@ var Agreement = class {
     const repo = github !== "" ? github : (_a = this.communityPlugins[id]) == null ? void 0 : _a.repo;
     console.log(repo);
     if (!repo) {
-      new import_obsidian28.Notice(this.plugin.translator.t("\u534F\u8BAE_\u672A\u77E5\u63D2\u4EF6ID_\u63D0\u793A", { id }));
+      new import_obsidian29.Notice(this.plugin.translator.t("\u534F\u8BAE_\u672A\u77E5\u63D2\u4EF6ID_\u63D0\u793A", { id }));
       return;
     }
     if (pluginRegistry.manifests[id]) {
-      new import_obsidian28.Notice(this.plugin.translator.t("\u534F\u8BAE_\u63D2\u4EF6\u5DF2\u5B89\u88C5_\u63D0\u793A", { name: pluginRegistry.manifests[id].name }));
+      new import_obsidian29.Notice(this.plugin.translator.t("\u534F\u8BAE_\u63D2\u4EF6\u5DF2\u5B89\u88C5_\u63D0\u793A", { name: pluginRegistry.manifests[id].name }));
       if (version !== "" && version !== ((_b = pluginRegistry.manifests[id]) == null ? void 0 : _b.version))
         installFlag = true;
     } else {
@@ -18296,7 +20011,7 @@ var Agreement = class {
     }
     if (installFlag) {
       const manifestUrl = `https://raw.githubusercontent.com/${repo}/HEAD/manifest.json`;
-      const manifestRes = await (0, import_obsidian28.requestUrl)(resolveGithubUrl(this.plugin, manifestUrl));
+      const manifestRes = await (0, import_obsidian29.requestUrl)(resolveGithubUrl(this.plugin, manifestUrl));
       const manifest = manifestRes.json;
       if (version.toLowerCase() === "latest" || version === "")
         version = manifest.version;
@@ -18335,10 +20050,10 @@ var Agreement = class {
 };
 
 // src/main.ts
-var import_obsidian33 = require("obsidian");
+var import_obsidian34 = require("obsidian");
 
 // src/migrations.ts
-var import_obsidian29 = require("obsidian");
+var import_obsidian30 = require("obsidian");
 var parseVersionParts = (version) => {
   return (version || "0").replace(/^v/i, "").split(".").map((part) => {
     const match = part.match(/^\d+/);
@@ -18369,7 +20084,7 @@ var parseFrontmatter = (content) => {
   const raw = content.slice(3, end).trim();
   let frontmatter = null;
   try {
-    const parsed = (0, import_obsidian29.parseYaml)(raw);
+    const parsed = (0, import_obsidian30.parseYaml)(raw);
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
       frontmatter = parsed;
     }
@@ -18382,14 +20097,14 @@ var parseFrontmatter = (content) => {
   };
 };
 var buildMarkdownWithFrontmatter = (frontmatter, body) => {
-  const yaml = (0, import_obsidian29.stringifyYaml)(frontmatter).trimEnd();
+  const yaml = (0, import_obsidian30.stringifyYaml)(frontmatter).trimEnd();
   return `---
 ${yaml}
 ---${body.startsWith("\n") ? "" : "\n"}${body}`;
 };
 var listMarkdownFilesInFolder = async (manager, folderPath) => {
   const adapter = manager.app.vault.adapter;
-  const normalizedFolder = (0, import_obsidian29.normalizePath)(folderPath);
+  const normalizedFolder = (0, import_obsidian30.normalizePath)(folderPath);
   const result = [];
   let listed;
   try {
@@ -18494,8 +20209,8 @@ var runMigrations = async (manager) => {
 };
 
 // src/self-check.ts
-var import_obsidian30 = require("obsidian");
-var getCommunityPluginsPath = (manager) => (0, import_obsidian30.normalizePath)(`${manager.app.vault.configDir}/community-plugins.json`);
+var import_obsidian31 = require("obsidian");
+var getCommunityPluginsPath = (manager) => (0, import_obsidian31.normalizePath)(`${manager.app.vault.configDir}/community-plugins.json`);
 var uniq = (ids) => {
   const seen = /* @__PURE__ */ new Set();
   return ids.filter((id) => {
@@ -18602,14 +20317,14 @@ async function performSelfCheck(manager) {
     return;
   if (manager.settings.AUTO_TAKEOVER) {
     const success = await execTakeover(manager, takeoverCandidates, communityPlugins);
-    new import_obsidian30.Notice(manager.translator.t(success ? "\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5" : "\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
+    new import_obsidian31.Notice(manager.translator.t(success ? "\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5" : "\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
     return;
   }
   if (manager.settings.SELF_CHECK_IGNORED)
     return;
   new TakeoverModal(manager.app, manager, takeoverCandidates, communityPlugins).open();
 }
-var TakeoverModal = class extends import_obsidian30.Modal {
+var TakeoverModal = class extends import_obsidian31.Modal {
   constructor(app, manager, takeoverCandidates, communityPlugins) {
     super(app);
     this.manager = manager;
@@ -18628,7 +20343,7 @@ var TakeoverModal = class extends import_obsidian30.Modal {
     titleEl.addClass("takeover-title");
     const titleMain = titleEl.createDiv("takeover-title__main");
     const titleIcon = titleMain.createSpan({ cls: "takeover-title__icon" });
-    (0, import_obsidian30.setIcon)(titleIcon, "shield-alert");
+    (0, import_obsidian31.setIcon)(titleIcon, "shield-alert");
     const titleText = titleMain.createDiv("takeover-title__copy");
     titleText.createDiv({ cls: "takeover-title__eyebrow", text: "BPM" });
     titleText.createDiv({ cls: "takeover-title__text", text: this.t("\u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u6807\u9898") });
@@ -18639,14 +20354,14 @@ var TakeoverModal = class extends import_obsidian30.Modal {
       attr: { type: "button", "aria-label": this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE") },
       title: this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE")
     });
-    (0, import_obsidian30.setIcon)(closeButton, "x");
+    (0, import_obsidian31.setIcon)(closeButton, "x");
     closeButton.addEventListener("click", () => {
       void this.ignoreWarning();
     });
     const page = contentEl.createDiv("takeover-page");
     const summary = page.createDiv("takeover-summary");
     const summaryIcon = summary.createSpan({ cls: "takeover-summary__icon" });
-    (0, import_obsidian30.setIcon)(summaryIcon, "route");
+    (0, import_obsidian31.setIcon)(summaryIcon, "route");
     const summaryMain = summary.createDiv("takeover-summary__main");
     summaryMain.createDiv({
       text: this.t("\u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u8BF4\u660E"),
@@ -18655,13 +20370,13 @@ var TakeoverModal = class extends import_obsidian30.Modal {
     const flow = summaryMain.createDiv("takeover-flow");
     this.renderFlowChip(flow, "file-json-2", "community-plugins.json");
     const flowArrow = flow.createSpan({ cls: "takeover-flow__arrow" });
-    (0, import_obsidian30.setIcon)(flowArrow, "arrow-right");
+    (0, import_obsidian31.setIcon)(flowArrow, "arrow-right");
     this.renderFlowChip(flow, "shield-check", "BPM");
     const listContainer = page.createDiv("takeover-plugin-list");
     const listHeader = listContainer.createDiv("takeover-plugin-list__header");
     const listTitle = listHeader.createDiv("takeover-plugin-list__title");
     const listIcon = listTitle.createSpan({ cls: "takeover-plugin-list__icon" });
-    (0, import_obsidian30.setIcon)(listIcon, "blocks");
+    (0, import_obsidian31.setIcon)(listIcon, "blocks");
     listTitle.createEl("h4", { text: this.t("\u81EA\u68C0_\u68C0\u6D4B\u5230\u63D2\u4EF6_\u5217\u8868") });
     listHeader.createSpan({ cls: "takeover-plugin-list__count", text: `${this.takeoverCandidates.length}` });
     const pluginList = listContainer.createDiv({
@@ -18675,7 +20390,7 @@ var TakeoverModal = class extends import_obsidian30.Modal {
         attr: { role: "listitem" }
       });
       const itemIcon = item.createSpan({ cls: "takeover-plugin-item__icon" });
-      (0, import_obsidian30.setIcon)(itemIcon, "plug");
+      (0, import_obsidian31.setIcon)(itemIcon, "plug");
       const itemMain = item.createDiv("takeover-plugin-item__main");
       itemMain.createSpan({ cls: "takeover-plugin-item__name", text: name });
       if (name !== id) {
@@ -18684,24 +20399,24 @@ var TakeoverModal = class extends import_obsidian30.Modal {
     }
     const warning = page.createDiv("takeover-warning");
     const warningIcon = warning.createSpan({ cls: "takeover-warning__icon" });
-    (0, import_obsidian30.setIcon)(warningIcon, "triangle-alert");
+    (0, import_obsidian31.setIcon)(warningIcon, "triangle-alert");
     warning.createDiv({
       text: this.t("\u81EA\u68C0_\u8B66\u544A_\u6587\u672C"),
       cls: "takeover-warning__text"
     });
     const actionContainer = page.createDiv("takeover-actions");
-    const takeoverBtn = new import_obsidian30.ButtonComponent(actionContainer);
+    const takeoverBtn = new import_obsidian31.ButtonComponent(actionContainer);
     takeoverBtn.setButtonText(this.t("\u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE"));
     takeoverBtn.setIcon("shield-check");
     takeoverBtn.setCta();
     takeoverBtn.buttonEl.addClass("takeover-actions__primary");
     takeoverBtn.buttonEl.setAttribute("aria-label", this.t("\u81EA\u68C0_\u63A5\u7BA1_\u6309\u94AE"));
-    const ignoreBtn = new import_obsidian30.ButtonComponent(actionContainer);
+    const ignoreBtn = new import_obsidian31.ButtonComponent(actionContainer);
     ignoreBtn.setButtonText(this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE"));
     ignoreBtn.setIcon("clock");
     ignoreBtn.buttonEl.addClass("takeover-actions__secondary");
     ignoreBtn.buttonEl.setAttribute("aria-label", this.t("\u81EA\u68C0_\u5FFD\u7565_\u6309\u94AE"));
-    const ignoreForeverBtn = new import_obsidian30.ButtonComponent(actionContainer);
+    const ignoreForeverBtn = new import_obsidian31.ButtonComponent(actionContainer);
     ignoreForeverBtn.setButtonText(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A_\u6309\u94AE"));
     ignoreForeverBtn.setIcon("bell-off");
     ignoreForeverBtn.buttonEl.addClass("takeover-actions__secondary");
@@ -18727,7 +20442,7 @@ var TakeoverModal = class extends import_obsidian30.Modal {
   renderFlowChip(container, iconName, text) {
     const chip = container.createSpan({ cls: "takeover-flow__chip" });
     const icon = chip.createSpan({ cls: "takeover-flow__chip-icon" });
-    (0, import_obsidian30.setIcon)(icon, iconName);
+    (0, import_obsidian31.setIcon)(icon, iconName);
     chip.createSpan({ cls: "takeover-flow__chip-text", text });
   }
   getPluginName(id) {
@@ -18737,23 +20452,23 @@ var TakeoverModal = class extends import_obsidian30.Modal {
   async takeoverPlugins() {
     const success = await execTakeover(this.manager, this.takeoverCandidates, this.communityPlugins);
     if (success) {
-      new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5"));
+      new import_obsidian31.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u6210\u529F_\u901A\u77E5"));
       this.close();
-      new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5"), 5e3);
+      new import_obsidian31.Notice(this.t("\u81EA\u68C0_\u9700\u8981\u91CD\u542F_\u901A\u77E5"), 5e3);
       return true;
     } else {
-      new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
+      new import_obsidian31.Notice(this.t("\u81EA\u68C0_\u63A5\u7BA1\u5931\u8D25_\u901A\u77E5"));
       return false;
     }
   }
   async ignoreWarning() {
-    new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5"), 5e3);
+    new import_obsidian31.Notice(this.t("\u81EA\u68C0_\u5FFD\u7565\u8B66\u544A_\u901A\u77E5"), 5e3);
     this.close();
   }
   async ignoreForever() {
     this.manager.settings.SELF_CHECK_IGNORED = true;
     await this.manager.saveSettings();
-    new import_obsidian30.Notice(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5"));
+    new import_obsidian31.Notice(this.t("\u81EA\u68C0_\u4E0D\u518D\u63D0\u793A\u786E\u8BA4_\u901A\u77E5"));
     this.close();
   }
   onClose() {
@@ -18762,7 +20477,7 @@ var TakeoverModal = class extends import_obsidian30.Modal {
 };
 
 // src/manager/system-ribbon-manager.ts
-var import_obsidian31 = require("obsidian");
+var import_obsidian32 = require("obsidian");
 var SystemRibbonManager = class {
   constructor(app, manager) {
     this.isInternalUpdate = false;
@@ -18770,9 +20485,9 @@ var SystemRibbonManager = class {
     this.fileWatcher = null;
     this.app = app;
     this.manager = manager;
-    this.configPath = import_obsidian31.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
+    this.configPath = import_obsidian32.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
     if (this.app.vault.configDir) {
-      this.configPath = import_obsidian31.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
+      this.configPath = import_obsidian32.Platform.isMobile ? `${this.app.vault.configDir}/workspace-mobile.json` : `${this.app.vault.configDir}/workspace.json`;
     }
   }
   /**
@@ -18817,14 +20532,14 @@ var SystemRibbonManager = class {
    */
   startWatch(callback) {
     this.onConfigChange = callback;
-    const debouncedReload = (0, import_obsidian31.debounce)(() => {
+    const debouncedReload = (0, import_obsidian32.debounce)(() => {
       if (this.isInternalUpdate)
         return;
       console.log("[BPM] Detected workspace config change, reloading...");
       this.onConfigChange();
     }, 1e3, true);
     this.fileWatcher = this.app.vault.on("modify", (file) => {
-      if (file instanceof import_obsidian31.TFile && file.path === this.configPath) {
+      if (file instanceof import_obsidian32.TFile && file.path === this.configPath) {
         debouncedReload();
       }
     });
@@ -18843,7 +20558,7 @@ var EONDR_PLUGIN_RULES = [
 ];
 var EONDR_REPO_OWNER = "eondrcode";
 var GITHUB_TOKEN_SECRET_ID = "github-token";
-var Manager = class extends import_obsidian32.Plugin {
+var Manager = class extends import_obsidian33.Plugin {
   constructor() {
     super(...arguments);
     this.managerModal = null;
@@ -19024,7 +20739,7 @@ var Manager = class extends import_obsidian32.Plugin {
       this.reloadIfCurrentModal();
       this.applyRibbonConfigToMemory(orderedIds, hiddenStatus);
       this.updateRibbonStyles();
-      new import_obsidian33.Notice(this.translator.t("Ribbon_\u5DF2\u9690\u85CF_\u901A\u77E5", { name: label }));
+      new import_obsidian34.Notice(this.translator.t("Ribbon_\u5DF2\u9690\u85CF_\u901A\u77E5", { name: label }));
     }
   }
   isRibbonManagerEnabled() {
@@ -19105,7 +20820,7 @@ var Manager = class extends import_obsidian32.Plugin {
     }
     this.ensureSystemRibbonManager();
     this.updateRibbonStyles();
-    if (import_obsidian33.Platform.isMobile) {
+    if (import_obsidian34.Platform.isMobile) {
       this.setupMenuObserver();
     } else {
       this.setupDragToHideObserver();
@@ -19212,7 +20927,7 @@ var Manager = class extends import_obsidian32.Plugin {
     if (this.updateProgressNotice)
       this.updateProgressNotice.hide();
     const baseText = this.translator.t("\u901A\u77E5_\u68C0\u6D4B\u66F4\u65B0\u4E2D\u6587\u6848");
-    const notice = new import_obsidian33.Notice(baseText, 0);
+    const notice = new import_obsidian34.Notice(baseText, 0);
     const update = (p, currentId) => {
       notice.setMessage(`${baseText} ${Math.min(p, total)}/${total}${currentId ? ` \xB7 ${currentId}` : ""}`);
     };
@@ -19280,14 +20995,14 @@ var Manager = class extends import_obsidian32.Plugin {
       const count = Object.values(status || {}).filter((s) => s.hasUpdate).length;
       if (count > 0) {
         const msg = this.translator.t("\u901A\u77E5_\u53EF\u66F4\u65B0\u6570\u91CF").replace("{count}", `${count}`);
-        new import_obsidian33.Notice(msg, 5e3);
+        new import_obsidian34.Notice(msg, 5e3);
       }
       progress.dispose();
     } catch (e) {
       if (this.settings.DEBUG)
         console.error("[BPM] startup check updates failed", e);
       if (!githubProxyEnabled(this) && !this.hasGithubToken()) {
-        new import_obsidian33.Notice(this.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25_\u5EFA\u8BAEToken"));
+        new import_obsidian34.Notice(this.translator.t("\u901A\u77E5_\u68C0\u67E5\u66F4\u65B0\u5931\u8D25_\u5EFA\u8BAEToken"));
       }
     }
   }
@@ -19302,7 +21017,7 @@ var Manager = class extends import_obsidian32.Plugin {
     return mappedId || source.id;
   }
   async refreshBetaSourceInstalledAt(source) {
-    const folder = source.type === "plugin" ? (0, import_obsidian32.normalizePath)(`${this.app.vault.configDir}/plugins/${this.getBetaSourcePluginId(source)}`) : (0, import_obsidian32.normalizePath)(`${this.app.vault.configDir}/themes/${source.id}`);
+    const folder = source.type === "plugin" ? (0, import_obsidian33.normalizePath)(`${this.app.vault.configDir}/plugins/${this.getBetaSourcePluginId(source)}`) : (0, import_obsidian33.normalizePath)(`${this.app.vault.configDir}/themes/${source.id}`);
     try {
       const stat = await this.app.vault.adapter.stat(folder);
       source.installedAt = stat ? stat.ctime || stat.mtime || void 0 : void 0;
@@ -19344,7 +21059,7 @@ var Manager = class extends import_obsidian32.Plugin {
     await this.saveSettings();
     const count = sources.filter((source) => this.sourceHasUpdate(source)).length;
     if (count > 0) {
-      new import_obsidian33.Notice(this.translator.t("\u901A\u77E5_\u6765\u6E90\u53EF\u66F4\u65B0\u6570\u91CF", { count }), 5e3);
+      new import_obsidian34.Notice(this.translator.t("\u901A\u77E5_\u6765\u6E90\u53EF\u66F4\u65B0\u6570\u91CF", { count }), 5e3);
     }
   }
   async startupMaintainBetaSources() {
@@ -19942,7 +21657,7 @@ var Manager = class extends import_obsidian32.Plugin {
   async fetchOfficialStats() {
     const url = "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugin-stats.json";
     try {
-      const res = await (0, import_obsidian33.requestUrl)({ url: resolveGithubUrl(this, url) });
+      const res = await (0, import_obsidian34.requestUrl)({ url: resolveGithubUrl(this, url) });
       const json = res.json;
       const map = {};
       Object.entries(json || {}).forEach(([id, entry]) => {
@@ -19979,11 +21694,11 @@ var Manager = class extends import_obsidian32.Plugin {
       headers["Authorization"] = `Bearer ${token}`;
     try {
       const releaseUrl = `https://api.github.com/repos/${repo}/releases/latest`;
-      const release = await (0, import_obsidian33.requestUrl)({ url: resolveGithubUrl(this, releaseUrl), headers });
+      const release = await (0, import_obsidian34.requestUrl)({ url: resolveGithubUrl(this, releaseUrl), headers });
       const assets = ((_a = release.json) == null ? void 0 : _a.assets) || [];
       const manifestAsset = assets.find((a) => a.name === "manifest.json");
       if (manifestAsset == null ? void 0 : manifestAsset.browser_download_url) {
-        const manifestRes = await (0, import_obsidian33.requestUrl)({ url: resolveGithubUrl(this, manifestAsset.browser_download_url), headers });
+        const manifestRes = await (0, import_obsidian34.requestUrl)({ url: resolveGithubUrl(this, manifestAsset.browser_download_url), headers });
         const manifest = manifestRes.json;
         if (manifest == null ? void 0 : manifest.version)
           return manifest.version;
@@ -19997,7 +21712,7 @@ var Manager = class extends import_obsidian32.Plugin {
     ];
     for (const url of candidates) {
       try {
-        const res = await (0, import_obsidian33.requestUrl)({ url: resolveGithubUrl(this, url), headers });
+        const res = await (0, import_obsidian34.requestUrl)({ url: resolveGithubUrl(this, url), headers });
         const manifest = res.json;
         if (manifest == null ? void 0 : manifest.version)
           return manifest.version;
@@ -20028,7 +21743,7 @@ var Manager = class extends import_obsidian32.Plugin {
       }
     }
     if (!repo) {
-      new import_obsidian33.Notice(this.translator.t("\u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A"));
+      new import_obsidian34.Notice(this.translator.t("\u4E0B\u8F7D\u66F4\u65B0_\u7F3A\u5C11\u4ED3\u5E93\u63D0\u793A"));
       return false;
     }
     const ok = await installPluginFromGithub(this, repo, version, false);
@@ -20094,7 +21809,7 @@ var Manager = class extends import_obsidian32.Plugin {
       this.clearRibbonStyleOverrides();
       return;
     }
-    if (import_obsidian33.Platform.isMobile) {
+    if (import_obsidian34.Platform.isMobile) {
       activeDocument.querySelectorAll(".menu-scroll").forEach((menuScroll) => this.processMenuItems(menuScroll));
       return;
     }
