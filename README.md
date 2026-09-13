@@ -10,10 +10,6 @@ obsidianEditingMode: source
 
 # README
 
-## Overview
-
-![](<Attachments/20260122171605.png>)
-
 ## Settings
 
 - 文件与链接
@@ -36,8 +32,6 @@ obsidianEditingMode: source
 - [x] Attachments/ | 附件
 - [x] Templates/ | 模板
 - [x] Scripts/ | 脚本
-
-## Index
 
 ## Changelog
 

@@ -504,12 +504,12 @@
     },
     {
       "id": "ee42c374-763f-438c-9f25-ca821112fd74",
-      "name": "proxy",
+      "name": "ghproxy",
       "type": "Macro",
       "command": false,
       "runOnStartup": false,
       "macro": {
-        "name": "proxy",
+        "name": "ghproxy",
         "id": "f46d04a1-e993-4d0f-9471-34b3be227f7a",
         "commands": [
           {
@@ -517,7 +517,10 @@
             "type": "UserScript",
             "id": "677ae6a1-2705-498f-8a1f-c5e7637b469a",
             "path": "Scripts/ghproxy.js",
-            "settings": {}
+            "settings": {
+              "config": "{\"default\": \"https://v4.gh-proxy.org/\"}",
+              "transform": "prepend"
+            }
           }
         ]
       }

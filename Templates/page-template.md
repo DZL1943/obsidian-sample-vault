@@ -37,7 +37,7 @@ collapse: true
 
 ## 引言 Introduction
 
-# 参考 References
+## 参考 References
 
 ```dataview
 list
