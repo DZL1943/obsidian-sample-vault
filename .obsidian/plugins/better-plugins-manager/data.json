@@ -40,7 +40,7 @@
   "PLUGIN_UPDATE_DELAY_DAYS": 0,
   "GITHUB_PROXY": "",
   "GITHUB_TOKEN": "",
-  "FILTER_SEARCH": "",
+  "FILTER_SEARCH": "tool",
   "FILTER_STATUS": "all",
   "FILTER_STATUS_VALUES": [],
   "FILTER_STATUS_OPERATOR": "contains",
@@ -724,7 +724,7 @@
         "config",
         "favorite"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "10",
       "note": ""
     },

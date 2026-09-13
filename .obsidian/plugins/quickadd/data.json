@@ -518,7 +518,7 @@
             "id": "677ae6a1-2705-498f-8a1f-c5e7637b469a",
             "path": "Scripts/ghproxy.js",
             "settings": {
-              "config": "{\"default\": \"https://v4.gh-proxy.org/\"}",
+              "config": "{\"default\": \"https://gh-proxy.org/\"}",
               "transform": "prepend"
             }
           }

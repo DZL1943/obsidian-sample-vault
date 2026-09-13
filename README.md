@@ -1,7 +1,8 @@
 ---
 created: 2024-07-30T13:30
-modified: 2026-01-15T23:44
-tags: [excalidraw]
+modified: 2026-09-13T17:00:00
+tags:
+  - excalidraw
 editor-width: 88
 excalidraw-open-md: true
 excalidraw-plugin: parsed
