@@ -12,9 +12,9 @@ sorting-spec: |-
   / Private
   / Tasks
   / Agenda
-  / Journals
-  / Moments
   / Memos
+  / Moments
+  / Journals
   / Jottings
   / Pages
   / Thoughts
