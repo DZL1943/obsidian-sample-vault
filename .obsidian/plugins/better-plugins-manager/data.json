@@ -40,7 +40,7 @@
   "PLUGIN_UPDATE_DELAY_DAYS": 0,
   "GITHUB_PROXY": "",
   "GITHUB_TOKEN": "",
-  "FILTER_SEARCH": "tool",
+  "FILTER_SEARCH": "",
   "FILTER_STATUS": "all",
   "FILTER_STATUS_VALUES": [],
   "FILTER_STATUS_OPERATOR": "contains",
@@ -343,7 +343,7 @@
       "tags": [
         "optional"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "10"
     },
     {
@@ -393,18 +393,6 @@
       ],
       "enabled": true,
       "delay": "15"
-    },
-    {
-      "id": "obsidian-export-image",
-      "name": "Export Image plugin",
-      "desc": "Easily convert your article to image.",
-      "group": "aux",
-      "tags": [
-        "reserved"
-      ],
-      "enabled": false,
-      "delay": "15",
-      "note": ""
     },
     {
       "id": "obsidian-front-matter-title-plugin",
@@ -511,17 +499,6 @@
       "delay": "5"
     },
     {
-      "id": "obsidian-view-mode-by-frontmatter",
-      "name": "Force note view mode",
-      "desc": "This plugin allows to force the view mode and editing mode for a note by using front matter",
-      "group": "main",
-      "tags": [
-        "optional"
-      ],
-      "enabled": true,
-      "delay": "default"
-    },
-    {
       "id": "obsidian-zoom",
       "name": "Zoom",
       "desc": "Zoom into heading and lists.",
@@ -540,7 +517,7 @@
       "tags": [
         "optional"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "default"
     },
     {
@@ -630,18 +607,6 @@
       "delay": "10"
     },
     {
-      "id": "virtual-linker",
-      "name": "Virtual Linker / Glossary",
-      "desc": "Automatically creates virtual links for text within your notes that match the titles or aliases of other notes in your vault. Create a glossary-like functionality, show unlinked mentions and transform them to real links.",
-      "group": "main",
-      "tags": [
-        "required",
-        "favorite"
-      ],
-      "enabled": true,
-      "delay": "5"
-    },
-    {
       "id": "codeblock-customizer",
       "name": "Codeblock Customizer",
       "desc": "This Obsidian plugin lets you customize your codeblocks in editing, and reading mode as well.",
@@ -664,18 +629,6 @@
       ],
       "enabled": true,
       "delay": "",
-      "note": ""
-    },
-    {
-      "id": "paste-link",
-      "name": "Paste Link",
-      "desc": "Intelligently paste Markdown links.",
-      "group": "edit",
-      "tags": [
-        "recommended"
-      ],
-      "enabled": true,
-      "delay": "5",
       "note": ""
     },
     {
@@ -738,7 +691,7 @@
       "tags": [
         "optional"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "",
       "note": ""
     },
@@ -783,7 +736,7 @@
       "id": "obsidian-git",
       "name": "Git",
       "desc": "Integrate Git version control with automatic backup and other advanced features.",
-      "group": "",
+      "group": "ext",
       "tags": [],
       "enabled": false,
       "delay": "",
@@ -793,7 +746,7 @@
       "id": "obsidian-quiet-outline",
       "name": "Quiet Outline",
       "desc": "Make outline quiet and more powerful, including no-auto-expand, rendering heading as markdown, and search support.",
-      "group": "",
+      "group": "ui",
       "tags": [],
       "enabled": false,
       "delay": "",
@@ -803,7 +756,37 @@
       "id": "obsidian-markmind",
       "name": "Markmind",
       "desc": "This is a mindmap , outline tool for obsidian.",
-      "group": "",
+      "group": "ext",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "dragger",
+      "name": "Dragger",
+      "desc": "Drag and drop any block (paragraphs, headings, lists, etc.) to rearrange content like Notion.",
+      "group": "edit",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "flexplorer",
+      "name": "Flexplorer",
+      "desc": "Enhance the file explorer with custom sorting, pinning, and hiding.",
+      "group": "main",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "fakelink",
+      "name": "fakelink",
+      "desc": "Automatically creates virtual links for text within your notes that match the titles or aliases of other notes in your vault. Create a glossary-like functionality, show unlinked mentions and transform them to real links.",
+      "group": "main",
       "tags": [],
       "enabled": false,
       "delay": "",
@@ -837,19 +820,7 @@
       "type": "plugin"
     },
     {
-      "id": "better-export-pdf",
-      "type": "plugin"
-    },
-    {
       "id": "better-markdown-links",
-      "type": "plugin"
-    },
-    {
-      "id": "obsidian42-brat",
-      "type": "plugin"
-    },
-    {
-      "id": "calendar-bases",
       "type": "plugin"
     },
     {
@@ -861,19 +832,11 @@
       "type": "plugin"
     },
     {
-      "id": "css-editor",
-      "type": "plugin"
-    },
-    {
       "id": "custom-sort",
       "type": "plugin"
     },
     {
       "id": "dataview",
-      "type": "plugin"
-    },
-    {
-      "id": "docxer",
       "type": "plugin"
     },
     {
@@ -889,19 +852,11 @@
       "type": "plugin"
     },
     {
-      "id": "obsidian-export-image",
-      "type": "plugin"
-    },
-    {
       "id": "float-search",
       "type": "plugin"
     },
     {
       "id": "floating-toc",
-      "type": "plugin"
-    },
-    {
-      "id": "obsidian-view-mode-by-frontmatter",
       "type": "plugin"
     },
     {
@@ -937,23 +892,11 @@
       "type": "plugin"
     },
     {
-      "id": "obsidian-kanban",
-      "type": "plugin"
-    },
-    {
-      "id": "kanban-bases-view",
-      "type": "plugin"
-    },
-    {
       "id": "keyboard-analyzer",
       "type": "plugin"
     },
     {
       "id": "obsidian-latex-suite",
-      "type": "plugin"
-    },
-    {
-      "id": "links",
       "type": "plugin"
     },
     {
@@ -982,10 +925,6 @@
     },
     {
       "id": "obsidian-outliner",
-      "type": "plugin"
-    },
-    {
-      "id": "paste-link",
       "type": "plugin"
     },
     {
@@ -1037,11 +976,19 @@
       "type": "plugin"
     },
     {
-      "id": "virtual-linker",
+      "id": "obsidian-zoom",
       "type": "plugin"
     },
     {
-      "id": "obsidian-zoom",
+      "id": "dragger",
+      "type": "plugin"
+    },
+    {
+      "id": "fakelink",
+      "type": "plugin"
+    },
+    {
+      "id": "flexplorer",
       "type": "plugin"
     }
   ],
