@@ -54,7 +54,7 @@
   "FILTER_DELAY_VALUES": [],
   "FILTER_DELAY_OPERATOR": "contains",
   "PLUGIN_OVERVIEW_LAYOUT": "list",
-  "PLUGIN_OVERVIEW_SORT": "layout",
+  "PLUGIN_OVERVIEW_SORT": "name-asc",
   "ITEM_STYLE": "clickExpand",
   "GROUP_STYLE": "a",
   "TAG_STYLE": "a",
@@ -717,7 +717,7 @@
         "reserved"
       ],
       "enabled": false,
-      "delay": "",
+      "delay": "5",
       "note": ""
     },
     {
@@ -726,7 +726,7 @@
       "desc": "Collapse sidebars when clicking on the editor/viewer panel",
       "group": "ui",
       "tags": [
-        "reserved"
+        "optional"
       ],
       "enabled": true,
       "delay": "",
@@ -737,9 +737,12 @@
       "name": "Git",
       "desc": "Integrate Git version control with automatic backup and other advanced features.",
       "group": "ext",
-      "tags": [],
+      "tags": [
+        "favorite",
+        "recommended"
+      ],
       "enabled": false,
-      "delay": "",
+      "delay": "5",
       "note": ""
     },
     {
@@ -747,9 +750,11 @@
       "name": "Quiet Outline",
       "desc": "Make outline quiet and more powerful, including no-auto-expand, rendering heading as markdown, and search support.",
       "group": "ui",
-      "tags": [],
+      "tags": [
+        "recommended"
+      ],
       "enabled": false,
-      "delay": "",
+      "delay": "5",
       "note": ""
     },
     {
@@ -757,9 +762,11 @@
       "name": "Markmind",
       "desc": "This is a mindmap , outline tool for obsidian.",
       "group": "ext",
-      "tags": [],
+      "tags": [
+        "recommended"
+      ],
       "enabled": false,
-      "delay": "",
+      "delay": "10",
       "note": ""
     },
     {
@@ -767,9 +774,11 @@
       "name": "Dragger",
       "desc": "Drag and drop any block (paragraphs, headings, lists, etc.) to rearrange content like Notion.",
       "group": "edit",
-      "tags": [],
+      "tags": [
+        "recommended"
+      ],
       "enabled": false,
-      "delay": "",
+      "delay": "5",
       "note": ""
     },
     {
@@ -777,9 +786,12 @@
       "name": "Flexplorer",
       "desc": "Enhance the file explorer with custom sorting, pinning, and hiding.",
       "group": "main",
-      "tags": [],
+      "tags": [
+        "recommended",
+        "bug"
+      ],
       "enabled": false,
-      "delay": "",
+      "delay": "10",
       "note": ""
     },
     {
@@ -787,7 +799,21 @@
       "name": "fakelink",
       "desc": "Automatically creates virtual links for text within your notes that match the titles or aliases of other notes in your vault. Create a glossary-like functionality, show unlinked mentions and transform them to real links.",
       "group": "main",
-      "tags": [],
+      "tags": [
+        "recommended"
+      ],
+      "enabled": false,
+      "delay": "5",
+      "note": ""
+    },
+    {
+      "id": "css-editor",
+      "name": "CSS Editor",
+      "desc": "Edit CSS snippet files.",
+      "group": "main",
+      "tags": [
+        "recommended"
+      ],
       "enabled": false,
       "delay": "",
       "note": ""
@@ -989,6 +1015,10 @@
     },
     {
       "id": "flexplorer",
+      "type": "plugin"
+    },
+    {
+      "id": "css-editor",
       "type": "plugin"
     }
   ],

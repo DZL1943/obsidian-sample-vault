@@ -8,7 +8,6 @@
     "excalidraw-plugin": "text",
     "excalidraw-open-md": "checkbox",
     "categories": "multitext",
-    "author": "multitext",
     "url": "multitext",
     "excalidraw-export-transparent": "checkbox",
     "excalidraw-mask": "checkbox",
