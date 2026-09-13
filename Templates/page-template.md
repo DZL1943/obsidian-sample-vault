@@ -1,18 +1,9 @@
 ---
-id: <tp.date.now("YYYYMMDDHHmmss")>
-title: <% tp.file.title %>
-description:
-author:
-url:
-image:
 modified: <% tp.file.last_modified_date("YYYY-MM-DD[T]HH:mm") %>
 created: <% tp.file.creation_date("YYYY-MM-DD[T]HH:mm") %>
-status:
-type:
 categories:
 tags:
 aliases:
-remark:
 ---
 
 ```ad-abstract

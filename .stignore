@@ -1,31 +1,85 @@
-// syncthing ignore
+//# General
 
-(?d).DS_Store
-(?d).new
+//## dotfiles
+.git
+.DS_Store
+//.nomedia
+.new
+[tT]humbs.db
+
+//## bak
+*.old
+*.tmp
 *.bak
 *.swp
 *~
+~$*
 ~$*.*
-.git
-.trash
+
+//## no-text
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.tgz
+*.bz2
+
+//# Special
+
+//## python
+.venv
+__pycache__
+*.pyc
+
+//## vscode
 .vscode
+
+//## syncthing
+
+//## zettel-notes
 .zettel-notes
 
-(?i)/misc/
-(?i)local/*
-!(?i)/*inbox/*/
-(?i)/*inbox/*
-(?i)temp.*
-(?i)draft.*
-(?i)untitled*
-未命名*
-Drawing-*.md
-/[0-9][0-9][0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9]*
+//## obsidian
+.[tT]rash
+//.obsidian*
+.obsidian*/workspace*.json
+.obsidian*/bookmarks.json
 
+.obsidian*/plugins/obsidian-auto-hide/data.json
+.obsidian*/plugins/various-complements/histories.json
+.obsidian*/plugins/float-search/data.json
+.obsidian*/plugins/recent-files-obsidian/data.json
+.obsidian*/plugins/novel-word-count/data.json
+.obsidian*/plugins/float-search/data.json
+.obsidian*/plugins/image-converter/image-converter-image-alignments.json
+.obsidian*/plugins/better-plugins-manager/community-plugins-cache.json
+.obsidian*/plugins/obsidian-local-rest-api/data.json
+
+cedict_ts.u8
+jieba_rs_wasm_bg.wasm
 broken links output.md
 orphaned files output.md
 files without tags.md
 empty files.md
 
-.obsidian
-.obsidian*/workspace*.json
+.space/
+.makemd/
+.smart-env/
+.vaultexplorer/
+
+//# Main
+
+//## local
+//[mM]isc/*
+//*[aA]rchive?/
+//*[iI]nbox/
+[lL]ocal
+#[tT]est
+[tT]emp
+[tT]emp.*
+[dD]raft*
+[uU]ntitled*
+未命名*
+//#Drawing-*.md
+//#[0-9][0-9][0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9]*

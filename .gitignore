@@ -12,6 +12,7 @@
 *.bak
 *.swp
 *~
+~$*
 ~$*.*
 
 ## no-text
@@ -43,7 +44,7 @@ __pycache__/
 
 ## obsidian
 .[tT]rash/
-.obsidian*
+# .obsidian*
 .obsidian*/workspace*.json
 .obsidian*/bookmarks.json
 
@@ -75,8 +76,8 @@ empty files.md
 # Main
 
 ## local
-#[mM]isc/*
-[aA]rchive?/
+[mM]isc/*
+*[aA]rchive?/
 *[iI]nbox/
 [lL]ocal/
 #[tT]est
@@ -85,14 +86,24 @@ empty files.md
 [dD]raft*
 [uU]ntitled*
 未命名*
-Drawing-*.md
+#Drawing-*.md
 #[0-9][0-9][0-9][0-9][0-1][0-9][0-3][0-9][0-2][0-9][0-5][0-9]*
 
 ## private
-[sS]ecret
 *[pP]rivate/
 *[pP]ersonal/
 *[jJ]ournals/
+[mM]emos/
+[sS]ecret*
+[pP]assword*
+密码
+账号
+Accounts/
 [cC]ontacts/
+通讯录/
+财务/
 [fF]inance/
 NSFW/
+
+## protected
+*[pP]rojects/

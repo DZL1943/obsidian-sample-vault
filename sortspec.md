@@ -1,12 +1,12 @@
 ---
-sorting-spec: |
+sorting-spec: |-
   target-folder: /*
   /folders ...
     < a-z
   index
   /:files. ....md
     sorting: standard
-  
+
   target-folder: /
   / Inbox
   / Private
@@ -14,6 +14,7 @@ sorting-spec: |
   / Agenda
   / Journals
   / Moments
+  / Memos
   / Jottings
   / Pages
   / Thoughts
@@ -25,10 +26,10 @@ sorting-spec: |
   / Projects
   / Areas
   / Resources
-  / Clippings
   / Archives
   / Attachments
   / assets
+  / Clippings
   / Templates
   / Scripts
   / Excalidraw
@@ -39,7 +40,7 @@ sorting-spec: |
   Readme
   /: ...
   sortspec
-  
+
   target-folder: Inbox
   target-folder: Jottings
   target-folder: Archives
