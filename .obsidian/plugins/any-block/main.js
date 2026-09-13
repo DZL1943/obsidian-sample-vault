@@ -54477,7 +54477,8 @@ async function markmap_event(d) {
     if (divEl.tagName === "DIV") {
       markmapId = ((_a3 = divEl.querySelector(".ab-markmap-svg")) == null ? void 0 : _a3.id) || "";
     }
-    script_el = document.createElement("script");
+    const SCRIPT_STR = "script";
+    script_el = document.createElement(SCRIPT_STR);
     document.head.appendChild(script_el);
     script_el.type = "module";
     script_el.setAttribute("script-id", "ab-markmap-script");

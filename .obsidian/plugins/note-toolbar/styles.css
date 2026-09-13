@@ -2622,7 +2622,7 @@ body.is-mobile button.cg-note-toolbar-fab[data-fab-metadata*="mgls"] {
  * Toolbar Container
  */
 
-.cg-note-toolbar-bar-container {
+body .cg-note-toolbar-bar-container {
     border-radius: var(--cg-nt-tbar-border-radius);
     /* fix: (#90) box-shadow appearing over top of text */
     /* box-shadow: 0 0 0 1px var(--cg-nt-tbar-bg-color); */
@@ -2716,7 +2716,7 @@ body.is-mobile button.cg-note-toolbar-fab[data-fab-metadata*="mgls"] {
         }
         /* fix: puts toolbar above popovers + Hover Editor plugin */
         z-index: var(--cg-nt-tbar-text-z-index);
-        & .cg-note-toolbar-callout {
+        & .callout.cg-note-toolbar-callout {
             margin-bottom: 0;
             & a, span.external-link {
                 color: var(--cg-nt-tbar-text-item-text-color);
@@ -2833,6 +2833,11 @@ body.is-tablet .note-toolbar-menu[data-ntb-meta*="mgls"] {
     & .menu-item {
         border-radius: 24px;
     }
+}
+
+/* fix: class to hide editor menu if displaying editor menu as toolbar, as some plugins use it (e.g., Notebook Navigator) */
+.menu.ntb-hide-menu {
+    display: none;
 }
 /*
  * Settings 

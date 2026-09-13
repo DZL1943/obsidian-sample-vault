@@ -184,6 +184,7 @@
   ],
   "macros": [],
   "explorer": [],
+  "textToolbarCommands": [],
   "hide": {
     "statusbar": [
       "word-count",
@@ -216,9 +217,11 @@
       "Export Vault to HTML",
       "Open Timeline",
       "Open Multi-Day View"
-    ]
+    ],
+    "editorMenuItems": [],
+    "fileMenuItems": []
   },
-  "spacing": 8,
+  "spacing": 0,
   "advancedToolbar": {
     "rowHeight": 48,
     "rowCount": 2,
@@ -228,5 +231,6 @@
     "mappedIcons": [],
     "tooltips": false,
     "heightOffset": 26
-  }
+  },
+  "spacingReset": true
 }
