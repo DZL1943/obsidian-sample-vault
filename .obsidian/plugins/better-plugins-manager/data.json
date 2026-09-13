@@ -41,8 +41,10 @@
   "GITHUB_PROXY": "",
   "GITHUB_TOKEN": "",
   "FILTER_SEARCH": "",
-  "FILTER_STATUS": "all",
-  "FILTER_STATUS_VALUES": [],
+  "FILTER_STATUS": "ungrouped",
+  "FILTER_STATUS_VALUES": [
+    "ungrouped"
+  ],
   "FILTER_STATUS_OPERATOR": "contains",
   "FILTER_GROUP": "",
   "FILTER_GROUP_VALUES": [],
@@ -817,6 +819,76 @@
       "enabled": false,
       "delay": "",
       "note": ""
+    },
+    {
+      "id": "block-link-plus",
+      "name": "Block Link Plus",
+      "desc": "Logseq-like outliner for scoped files, block link commands, blp-view query rendering, and inline edit for embeds.",
+      "group": "edit",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "pretty-properties",
+      "name": "Pretty Properties",
+      "desc": "Makes note properties look more fun: adds side image, banners, list property colors and allows to hide specific properties.",
+      "group": "ui",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "datacore",
+      "name": "Datacore",
+      "desc": "Reactive query engine backed by Javascript or a custom query language.",
+      "group": "render",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "obsidian-advanced-uri",
+      "name": "Advanced URI",
+      "desc": "Control various aspects through URIs, including opening files, creating new files, and executing commands.",
+      "group": "main",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "obsidian-importer",
+      "name": "Importer",
+      "desc": "Import data from Airtable, Notion, Evernote, Apple Notes, Apple Journal, Microsoft OneNote, Google Keep, Bear, Roam, Logseq, Tomboy, Textbundle, CSV, and HTML files.",
+      "group": "ext",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "obsidian-memos",
+      "name": "Thino",
+      "desc": "Capturing ideas and save them into daily notes (Closed source).",
+      "group": "ext",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "obsidian-task-progress-bar",
+      "name": "Task Genius",
+      "desc": "Comprehensive task management that includes progress bars, task status cycling, and advanced task tracking features.",
+      "group": "ext",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
     }
   ],
   "HIDES": [],
@@ -1019,6 +1091,34 @@
     },
     {
       "id": "css-editor",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-advanced-uri",
+      "type": "plugin"
+    },
+    {
+      "id": "block-link-plus",
+      "type": "plugin"
+    },
+    {
+      "id": "datacore",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-importer",
+      "type": "plugin"
+    },
+    {
+      "id": "pretty-properties",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-task-progress-bar",
+      "type": "plugin"
+    },
+    {
+      "id": "obsidian-memos",
       "type": "plugin"
     }
   ],
