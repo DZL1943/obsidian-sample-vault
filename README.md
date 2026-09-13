@@ -1,6 +1,6 @@
 ---
 created: 2024-07-30T13:30
-modified: 2026-09-13T17:00:00
+modified: 2026-09-13T17:00
 tags:
   - excalidraw
 editor-width: 88
@@ -22,10 +22,10 @@ obsidianEditingMode: source
 %% 2026-09-13 %%
 
 %%[dir]%%
-- [x] Inbox/ | 草稿箱 & 收集箱
+- [x] Inbox/ | 收集箱
 - [x] Memos/ | 备忘录
-- [x] Journals/ | 生活记录
-- [ ] Jottings/ | 闪念随笔
+- [x] Journals/ | 日记
+- [ ] Jottings/ | 闪念
 - [x] Thoughts/ | 思想认知
 - [x] Pages/ | 个人笔记
 - [x] References/ | 参考知识
