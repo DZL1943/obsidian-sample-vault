@@ -884,7 +884,7 @@
         "required",
         "favorite"
       ],
-      "enabled": false,
+      "enabled": true,
       "delay": "5",
       "note": ""
     }
