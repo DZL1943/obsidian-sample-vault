@@ -261,15 +261,6 @@
       "key": "H"
     }
   ],
-  "editor:toggle-source": [
-    {
-      "modifiers": [
-        "Mod",
-        "Alt"
-      ],
-      "key": "E"
-    }
-  ],
   "hotkey-helper:browse-plugins": [
     {
       "modifiers": [
@@ -493,6 +484,15 @@
         "Alt"
       ],
       "key": "W"
+    }
+  ],
+  "editor:toggle-source": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "E"
     }
   ]
 }
