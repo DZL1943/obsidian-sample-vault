@@ -86,7 +86,9 @@ var zhCN = {
   "When fuzzy matching is on, a word is linked only if its similarity to a normalized keyword is above this percentage. Range 80%-100%. Higher = stricter (fewer but more accurate links).": "\u5F00\u542F\u8BCD\u4E49\u6A21\u7CCA\u5339\u914D\u540E\uFF0C\u53EA\u6709\u5F53\u4E00\u4E2A\u8BCD\u4E0E\u5F52\u4E00\u5316\u5173\u952E\u8BCD\u7684\u76F8\u4F3C\u5EA6\u9AD8\u4E8E\u8BE5\u767E\u5206\u6BD4\u65F6\u624D\u5EFA\u7ACB\u865A\u62DF\u94FE\u63A5\u3002\u8303\u56F4 80%-100%\u3002\u503C\u8D8A\u5927\u8D8A\u4E25\u683C\uFF08\u94FE\u63A5\u66F4\u5C11\u4F46\u66F4\u51C6\u786E\uFF09\u3002",
   "Minimum keyword length for fuzzy matching": "\u8BCD\u4E49\u6A21\u7CCA\u5339\u914D\u7684\u6700\u5C0F\u5173\u952E\u8BCD\u957F\u5EA6",
   "Sliding window for fuzzy matching": "\u6A21\u7CCA\u5339\u914D\u6ED1\u52A8\u7A97\u53E3",
-  "Also try shorter suffixes of the text run, not just the whole run. Chinese has no spaces, so a term is usually glued to the words before it, and those extra characters drag the similarity below the threshold. On by default; turn it off if you notice lag on very long lines.": "\u9664\u6574\u6BB5\u5916\uFF0C\u540C\u65F6\u5C1D\u8BD5\u9010\u6B65\u622A\u53BB\u5F00\u5934\u5B57\u7B26\u540E\u7684\u7247\u6BB5\u3002\u4E2D\u6587\u6CA1\u6709\u7A7A\u683C\uFF0C\u8BCD\u6761\u5E38\u4E0E\u524D\u9762\u7684\u6587\u5B57\u8FDE\u5728\u4E00\u8D77\uFF0C\u591A\u51FA\u7684\u5B57\u7B26\u4F1A\u628A\u76F8\u4F3C\u5EA6\u62C9\u5230\u9608\u503C\u4EE5\u4E0B\u3002\u9ED8\u8BA4\u5F00\u542F\uFF1B\u82E5\u5728\u8D85\u957F\u884C\u4E0A\u611F\u5230\u5361\u987F\u53EF\u5173\u95ED\u3002",
+  "Also try shorter suffixes of the text run, not just the whole run. Chinese has no spaces, so a term is usually glued to the words before it, and those extra characters drag the similarity below the threshold. Off by default; turn it on if you need terms embedded in Chinese text to match, at the cost of slower scrolling on long lines.": "\u9664\u6574\u6BB5\u5916\uFF0C\u540C\u65F6\u5C1D\u8BD5\u9010\u6B65\u622A\u53BB\u5F00\u5934\u5B57\u7B26\u540E\u7684\u7247\u6BB5\u3002\u4E2D\u6587\u6CA1\u6709\u7A7A\u683C\uFF0C\u8BCD\u6761\u5E38\u4E0E\u524D\u9762\u7684\u6587\u5B57\u8FDE\u5728\u4E00\u8D77\uFF0C\u591A\u51FA\u7684\u5B57\u7B26\u4F1A\u628A\u76F8\u4F3C\u5EA6\u62C9\u5230\u9608\u503C\u4EE5\u4E0B\u3002\u9ED8\u8BA4\u5173\u95ED\uFF1B\u5982\u9700\u5339\u914D\u5939\u5728\u4E2D\u6587\u91CC\u7684\u8BCD\u6761\u53EF\u5F00\u542F\uFF0C\u4EE3\u4EF7\u662F\u957F\u884C\u6EDA\u52A8\u53D8\u6162\u3002",
+  "Sliding window max offset": "\u6ED1\u52A8\u7A97\u53E3\u6700\u5927\u504F\u79FB",
+  "Maximum number of characters stripped from the front of a text run while searching for a fuzzy match. Lower values are faster but may miss a term buried more than this many characters after the last punctuation/space. Default 10.": "\u6A21\u7CCA\u5339\u914D\u65F6\uFF0C\u4ECE\u6587\u672C\u6BB5\u5F00\u5934\u6700\u591A\u622A\u53BB\u7684\u5B57\u7B26\u6570\u3002\u503C\u8D8A\u5C0F\u8D8A\u5FEB\uFF0C\u4F46\u53EF\u80FD\u6F0F\u6389\u90A3\u4E9B\u8DDD\u4E0A\u4E00\u4E2A\u6807\u70B9/\u7A7A\u683C\u8D85\u8FC7\u8BE5\u5B57\u7B26\u6570\u7684\u8BCD\u6761\u3002\u9ED8\u8BA4 10\u3002",
   "Titles or note names whose normalized length is longer than this are processed by fuzzy matching; those of this length or shorter are skipped (exact matching still works). This keeps fuzzy matching focused on long titles/notes, where inflected or fuzzy variants are common, and avoids false links on short words. Default 6 (Chinese: only titles longer than 6 characters). Range 1-20.": "\u8BCD\u4E49\u6A21\u7CCA\u5339\u914D\u4EC5\u5904\u7406\u5F52\u4E00\u5316\u540E\u957F\u5EA6\u3010\u5927\u4E8E\u3011\u6B64\u503C\u7684\u6807\u9898\u6216\u7B14\u8BB0\u540D\uFF1B\u957F\u5EA6\u7B49\u4E8E\u6216\u5C0F\u4E8E\u6B64\u503C\u7684\u4F1A\u88AB\u8DF3\u8FC7\uFF08\u7CBE\u786E\u5339\u914D\u4E0D\u53D7\u5F71\u54CD\uFF09\u3002\u8FD9\u6837\u6A21\u7CCA\u5339\u914D\u53EA\u9488\u5BF9\u957F\u6807\u9898/\u957F\u6587\u7AE0\u540D\u2014\u2014\u8BCD\u5F62\u53D8\u4F53\u901A\u5E38\u51FA\u73B0\u5728\u957F\u8BCD\u4E0A\uFF0C\u77ED\u8BCD\u5BB9\u6613\u8BEF\u94FE\u3002\u9ED8\u8BA4 6\uFF0C\u5373\u53EA\u6709\u957F\u4E8E 6 \u4E2A\u6C49\u5B57\u7684\u6807\u9898\u624D\u505A\u6A21\u7CCA\u5904\u7406\u3002\u8303\u56F4 1-20\u3002",
   "Convert all virtual links in note to real links (preview)": "\u5C06\u7B14\u8BB0\u4E2D\u6240\u6709\u865A\u62DF\u94FE\u63A5\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5\uFF08\u9884\u89C8\uFF09",
   "Skip links with multiple targets (batch convert)": "\u6279\u91CF\u8F6C\u6362\u65F6\u8DF3\u8FC7\u591A\u6307\u5411\u7684\u94FE\u63A5",
@@ -140,6 +142,10 @@ var zhCN = {
   "Keywords to exclude from virtual linking (comma separated). Files/aliases or headings matching these keywords will not be linked.": "\u8981\u6392\u9664\u7684\u5173\u952E\u8BCD\uFF08\u9017\u53F7\u5206\u9694\uFF09\u3002\u5339\u914D\u8FD9\u4E9B\u5173\u952E\u8BCD\u7684\u6587\u4EF6\u3001\u522B\u540D\u6216\u6807\u9898\u4E0D\u4F1A\u88AB\u94FE\u63A5\u3002",
   "Excluded file extensions": "\u6392\u9664\u7684\u6587\u4EF6\u6269\u5C55\u540D",
   "File extensions to exclude from virtual linking (one per line or comma separated)": "\u8981\u6392\u9664\u7684\u6587\u4EF6\u6269\u5C55\u540D\uFF08\u6BCF\u884C\u4E00\u4E2A\u6216\u9017\u53F7\u5206\u9694\uFF09",
+  "Auto-exclude renamed duplicates": "\u81EA\u52A8\u6392\u9664\u91CD\u547D\u540D\u526F\u672C",
+  'When enabled, if one note\'s file name fully contains another note\'s file name (e.g. "\u6559\u80B2\u6559\u5B66" and "\u6559\u80B2\u6559\u5B66\u9644\u4EF6") and both notes start with the same first sentence, the longer-named note is automatically excluded from virtual linking (treated like a linker-exclude note). This keeps a copied-and-renamed duplicate from producing links. Off by default.': "\u542F\u7528\u540E\uFF0C\u82E5\u67D0\u7B14\u8BB0\u7684\u6587\u4EF6\u540D\u5B8C\u6574\u5305\u542B\u53E6\u4E00\u4E2A\u7B14\u8BB0\u7684\u6587\u4EF6\u540D\uFF08\u5982\u300C\u6559\u80B2\u6559\u5B66\u300D\u4E0E\u300C\u6559\u80B2\u6559\u5B66\u9644\u4EF6\u300D\uFF09\uFF0C\u4E14\u4E24\u7BC7\u7B14\u8BB0\u7684\u7B2C\u4E00\u53E5\u76F8\u540C\uFF0C\u5219\u81EA\u52A8\u5C06\u6587\u4EF6\u540D\u66F4\u957F\u7684\u90A3\u4E2A\u7B14\u8BB0\u6392\u9664\u51FA\u865A\u62DF\u94FE\u63A5\uFF08\u7B49\u540C\u4E8E\u4E3A\u5176\u6DFB\u52A0 linker-exclude\uFF09\u3002\u8FD9\u6837\u590D\u5236\u5E76\u91CD\u547D\u540D\u7684\u526F\u672C\u5C31\u4E0D\u4F1A\u518D\u4EA7\u751F\u94FE\u63A5\u3002\u9ED8\u8BA4\u5173\u95ED\u3002",
+  "Exclude by file name prefix/suffix": "\u6309\u6587\u4EF6\u540D\u9996\u5C3E\u6392\u9664",
+  "Notes whose file name starts or ends with any of these words or symbols (comma separated) are excluded from virtual linking, like a linker-exclude note.": "\u6587\u4EF6\u540D\u4EE5\u8FD9\u4E9B\u5B57\u8BCD\u6216\u7B26\u53F7\u5F00\u5934\u6216\u7ED3\u5C3E\u7684\u7B14\u8BB0\u5C06\u88AB\u6392\u9664\u51FA\u865A\u62DF\u94FE\u63A5\uFF08\u9017\u53F7\u5206\u9694\uFF09\uFF0C\u7B49\u540C\u4E8E\u4E3A\u5176\u6DFB\u52A0 linker-exclude\u3002",
   "Auto-insert heading lock symbol": "\u81EA\u52A8\u63D2\u5165\u6807\u9898\u9501\u5B9A\u7B26\u53F7",
   "When enabled, a unique symbol is automatically placed at the front of new or modified header text, preventing accidental matching by regular body text.": "\u542F\u7528\u540E\uFF0C\u5C06\u5728\u65B0\u5EFA\u6216\u4FEE\u6539\u7684\u6807\u9898\u6587\u672C\u524D\u81EA\u52A8\u63D2\u5165\u4E00\u4E2A\u72EC\u7279\u7B26\u53F7\uFF0C\u9632\u6B62\u88AB\u6B63\u6587\u610F\u5916\u5339\u914D\u3002",
   "Heading lock symbol": "\u6807\u9898\u9501\u5B9A\u7B26\u53F7",
@@ -809,6 +815,7 @@ var FUZZY_ZH_STOPWORDS = [
   "\u5982\u679C",
   "\u867D\u7136"
 ];
+var FUZZY_ZH_STOPWORD_TEST = new RegExp(FUZZY_ZH_STOPWORDS.map((sw) => sw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"));
 var _ExternalUpdateManager = class {
   constructor() {
     this.registeredCallbacks = /* @__PURE__ */ new Set();
@@ -871,8 +878,14 @@ var _PrefixTree = class {
     this.mapIndexedFilePathsToUpdateTime = /* @__PURE__ */ new Map();
     this.mapFilePathToLeaveNodes = /* @__PURE__ */ new Map();
     this.mapFileHeaderIds = /* @__PURE__ */ new Map();
+    this.autoExcludedPaths = /* @__PURE__ */ new Set();
+    this.firstSentenceCache = /* @__PURE__ */ new Map();
+    this.lastAutoExcludeSignature = "";
     this.fuzzyKeywordMap = /* @__PURE__ */ new Map();
     this.fuzzyBuckets = /* @__PURE__ */ new Map();
+    this.fuzzyKeywordLengths = /* @__PURE__ */ new Set();
+    this.minFuzzyKeywordLen = Infinity;
+    this.maxFuzzyKeywordLen = 0;
     this.fuzzyMinLength = 0;
     var _a2;
     this.fetcher = new LinkerMetaInfoFetcher(this.app, this.settings);
@@ -887,6 +900,9 @@ var _PrefixTree = class {
     this.mapFilePathToLeaveNodes.clear();
     this.fuzzyKeywordMap.clear();
     this.fuzzyBuckets.clear();
+    this.fuzzyKeywordLengths.clear();
+    this.minFuzzyKeywordLen = Infinity;
+    this.maxFuzzyKeywordLen = 0;
   }
   static editDistance(a, b) {
     const m = a.length;
@@ -1173,6 +1189,11 @@ var _PrefixTree = class {
     if (canonicalKeyword) {
       const key = name.toLowerCase();
       if (key.length >= 2) {
+        this.fuzzyKeywordLengths.add(key.length);
+        if (key.length < this.minFuzzyKeywordLen)
+          this.minFuzzyKeywordLen = key.length;
+        if (key.length > this.maxFuzzyKeywordLen)
+          this.maxFuzzyKeywordLen = key.length;
         const entry = { files: node.files, headerId, canonical: canonicalKeyword };
         const list = this.fuzzyKeywordMap.get(key);
         if (list) {
@@ -1192,6 +1213,13 @@ var _PrefixTree = class {
   getFileHeaderId(file, keyword) {
     var _a2;
     return (_a2 = this.mapFileHeaderIds.get(file.path)) == null ? void 0 : _a2.get(keyword);
+  }
+  couldMatchFuzzyLength(length) {
+    for (const len of this.fuzzyKeywordLengths) {
+      if (Math.abs(len - length) <= 2)
+        return true;
+    }
+    return false;
   }
   getNodeValue(node) {
     const chars = [];
@@ -1216,6 +1244,16 @@ var _PrefixTree = class {
   }
   shouldExcludeFile(file) {
     const path = file.path;
+    if (this.settings.autoExcludeContainedCopies && this.autoExcludedPaths.has(path)) {
+      return true;
+    }
+    const affixes = this.settings.filenameAffixExclusions;
+    if (affixes && affixes.length > 0) {
+      const name = file.basename;
+      if (affixes.some((a) => a && (name.startsWith(a) || name.endsWith(a)))) {
+        return true;
+      }
+    }
     if (this.settings.excludedExtensions.some((ext) => path.toLowerCase().endsWith(ext.toLowerCase()))) {
       return true;
     }
@@ -1385,6 +1423,9 @@ var _PrefixTree = class {
       return norm || "";
     }
     if (wantZh && hasCJK && !hasLatin) {
+      if (!FUZZY_ZH_STOPWORD_TEST.test(name)) {
+        return name.trim() || "";
+      }
       let s = name;
       for (const sw of FUZZY_ZH_STOPWORDS) {
         s = s.split(sw).join("");
@@ -1448,6 +1489,86 @@ var _PrefixTree = class {
     }
     const filesToRemove = [...this.setIndexedFilePaths].filter((f) => !currentVaultFiles.has(f));
     filesToRemove.forEach((f) => this.removeFileFromTree(f));
+  }
+  static extractFirstSentence(content) {
+    if (!content)
+      return "";
+    let body = content;
+    const fm = body.match(/^\uFEFF?---\r?\n[\s\S]*?\r?\n---[ \t]*\r?\n?/);
+    if (fm) {
+      body = body.slice(fm[0].length);
+    }
+    for (const rawLine of body.split(/\r?\n/)) {
+      let line = rawLine.trim();
+      if (!line)
+        continue;
+      line = line.replace(/^(?:#{1,6}\s+|[-*+]\s+|>\s*|\d+[.)、]\s*)+/, "").trim();
+      if (line)
+        return line;
+    }
+    return "";
+  }
+  async getFirstSentence(file) {
+    const cached = this.firstSentenceCache.get(file.path);
+    if (cached && cached.mtime === file.stat.mtime) {
+      return cached.sentence;
+    }
+    let content = "";
+    try {
+      content = await this.app.vault.cachedRead(file);
+    } catch (e) {
+      try {
+        content = await this.app.vault.read(file);
+      } catch (e2) {
+        content = "";
+      }
+    }
+    const sentence = _PrefixTree.extractFirstSentence(content);
+    this.firstSentenceCache.set(file.path, { mtime: file.stat.mtime, sentence });
+    return sentence;
+  }
+  async computeAutoExclude() {
+    if (!this.settings.autoExcludeContainedCopies)
+      return false;
+    const allFiles = this.app.vault.getFiles().filter((file) => _PrefixTree.SUPPORTED_EXTENSIONS.includes(file.extension.toLowerCase()));
+    const signature = allFiles.map((f) => `${f.path}:${f.stat.mtime}`).sort().join("|");
+    if (signature === this.lastAutoExcludeSignature)
+      return false;
+    this.lastAutoExcludeSignature = signature;
+    const candidates = [];
+    for (const file of allFiles) {
+      if (this.shouldExcludeFile(file))
+        continue;
+      const name = file.basename;
+      if (name && name.length >= 2)
+        candidates.push({ file, name });
+    }
+    candidates.sort((a, b) => a.name.length - b.name.length);
+    const pairs = [];
+    for (let i = 0; i < candidates.length; i++) {
+      const shorter = candidates[i];
+      for (let j = i + 1; j < candidates.length; j++) {
+        const longer = candidates[j];
+        if (longer.name.length === shorter.name.length)
+          continue;
+        if (longer.name.includes(shorter.name)) {
+          pairs.push({ shorter: shorter.file, longer: longer.file });
+        }
+      }
+    }
+    let changed = false;
+    for (const pair of pairs) {
+      const shortSentence = await this.getFirstSentence(pair.shorter);
+      const longSentence = await this.getFirstSentence(pair.longer);
+      if (shortSentence && longSentence && shortSentence === longSentence) {
+        if (!this.autoExcludedPaths.has(pair.longer.path)) {
+          this.autoExcludedPaths.add(pair.longer.path);
+          this.removeFileFromTree(pair.longer);
+          changed = true;
+        }
+      }
+    }
+    return changed;
   }
   findFiles(prefix) {
     let node = this.root;
@@ -1570,13 +1691,20 @@ var LinkerCache = class {
     }
     this.cache.updateTree(force ? void 0 : [activeFile, this.activeFilePath]);
     this.activeFilePath = activeFile;
+    if (this.settings.autoExcludeContainedCopies) {
+      void this.cache.computeAutoExclude().then((changed) => {
+        var _a3;
+        if (changed)
+          (_a3 = this.onIndexChanged) == null ? void 0 : _a3.call(this);
+      });
+    }
   }
 };
 
 // linker/virtualLinkDom.ts
 var import_obsidian3 = require("obsidian");
 var VirtualMatch = class {
-  constructor(id, originText, from, to, files, type, isSubWord, settings, plugin, headerId, isBoldContext = false, isItalicContext = false, isHighlightContext = false, isTripleStarContext = false, isStrikethroughContext = false, isCommentContext = false, isFuzzy = false) {
+  constructor(id, originText, from, to, files, type, isSubWord, settings, plugin, headerId, isBoldContext = false, isItalicContext = false, isHighlightContext = false, isTripleStarContext = false, isStrikethroughContext = false, isCommentContext = false, isInHeaderContext = false, isFuzzy = false) {
     this.id = id;
     this.originText = originText;
     this.from = from;
@@ -1593,6 +1721,7 @@ var VirtualMatch = class {
     this.isTripleStarContext = isTripleStarContext;
     this.isStrikethroughContext = isStrikethroughContext;
     this.isCommentContext = isCommentContext;
+    this.isInHeaderContext = isInHeaderContext;
     this.isFuzzy = isFuzzy;
     this.fileHeaderIds = /* @__PURE__ */ new Map();
     if (headerId) {
@@ -2720,7 +2849,7 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
                     baseFrom++;
                   const rawWord = text.slice(baseFrom, i);
                   if (rawWord.trim().length > 0) {
-                    const maxOffset = this.settings.fuzzySlidingWindow ? Math.min(rawWord.length - 1, 24) : 0;
+                    const maxOffset = this.settings.fuzzySlidingWindow ? Math.min(rawWord.length - 1, this.settings.fuzzySlidingWindowMaxOffset) : 0;
                     let bestOffset = -1;
                     let bestSim = -1;
                     for (let offset = 0; offset <= maxOffset; offset++) {
@@ -2728,8 +2857,14 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
                       const candidate = rawCandidate.trim();
                       if (!candidate)
                         continue;
+                      if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
+                        continue;
+                      if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
+                        continue;
                       const normWord = this.linkerCache.cache.fuzzyNormalize(candidate, this.settings.stemmingLanguage);
                       if (!normWord)
+                        continue;
+                      if (!this.linkerCache.cache.couldMatchFuzzyLength(normWord.length))
                         continue;
                       const fuzzyResults = this.linkerCache.cache.findFuzzyMatches(normWord, this.settings.fuzzyMatchThreshold, currentFile);
                       if (fuzzyResults.length > 0) {
@@ -2749,8 +2884,14 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
                       const candidate = rawCandidate.trim();
                       if (!candidate)
                         continue;
+                      if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
+                        continue;
+                      if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
+                        continue;
                       const normWord = this.linkerCache.cache.fuzzyNormalize(candidate, this.settings.stemmingLanguage);
                       if (!normWord)
+                        continue;
+                      if (!this.linkerCache.cache.couldMatchFuzzyLength(normWord.length))
                         continue;
                       const fuzzyResults = this.linkerCache.cache.findFuzzyMatches(normWord, this.settings.fuzzyMatchThreshold, currentFile);
                       if (fuzzyResults.length > 0) {
@@ -2937,50 +3078,6 @@ var VirtualLinkWidget = class extends import_view.WidgetType {
     const tableWrapper = view.dom.closest(".table-cell-wrapper");
     const inTableCellEditor = Boolean(cmTableWidget && tableWrapper);
     const element = this.match.getCompleteLinkElement(inTableCellEditor);
-    let inBoldContext = false;
-    let inItalicContext = false;
-    let inHighlightContext = false;
-    let inStrikethroughContext = false;
-    let inCommentContext = false;
-    let inHeaderContext = false;
-    const linkRange = { from: this.match.from, to: this.match.to };
-    const expandRange = 10;
-    const searchFrom = Math.max(0, this.match.from - expandRange);
-    const searchTo = Math.min(view.state.doc.length, this.match.to + expandRange);
-    (0, import_language.syntaxTree)(view.state).iterate({
-      from: searchFrom,
-      to: searchTo,
-      enter(node) {
-        const type = node.type.name;
-        const nodeRange = { from: node.from, to: node.to };
-        if (linkRange.from >= nodeRange.from && linkRange.to <= nodeRange.to) {
-          if (type.includes("strong")) {
-            inBoldContext = true;
-          }
-          if (type.includes("em")) {
-            inItalicContext = true;
-          }
-          if (type.includes("highlight") || type.includes("mark")) {
-            inHighlightContext = true;
-          }
-          if (type.includes("strikethrough") || type.includes("strike") || type.includes("del")) {
-            inStrikethroughContext = true;
-          }
-          if (type.includes("comment")) {
-            inCommentContext = true;
-          }
-          if (type.includes("header")) {
-            inHeaderContext = true;
-          }
-        }
-      }
-    });
-    this.match.isBoldContext = inBoldContext || this.match.isBoldContext;
-    this.match.isItalicContext = inItalicContext;
-    this.match.isHighlightContext = inHighlightContext;
-    this.match.isStrikethroughContext = inStrikethroughContext;
-    this.match.isCommentContext = inCommentContext;
-    this.match.isTripleStarContext = inBoldContext && inItalicContext;
     if (this.match.isBoldContext) {
       element.classList.add("cm-strong");
     }
@@ -2996,7 +3093,7 @@ var VirtualLinkWidget = class extends import_view.WidgetType {
     if (this.match.isCommentContext) {
       element.classList.add("virtual-link-in-comment");
     }
-    if (inHeaderContext) {
+    if (this.match.isInHeaderContext) {
       element.classList.add("virtual-link-in-header");
     }
     if (this.match.isTripleStarContext) {
@@ -3021,6 +3118,8 @@ var AutoLinkerPlugin = class {
     this.lastCursorPos = 0;
     this.lastActiveFile = "";
     this.lastViewUpdate = null;
+    this.scrollDebounceTimer = null;
+    this.pendingScrollBuild = null;
     this.cachedActiveView = void 0;
     this.viewUpdateDomToFileMap = /* @__PURE__ */ new Map();
     this.app = app;
@@ -3064,6 +3163,30 @@ var AutoLinkerPlugin = class {
     const activeFile = (_b2 = this.app.workspace.getActiveFile()) == null ? void 0 : _b2.path;
     const fileChanged = activeFile != this.lastActiveFile;
     if (force || this.lastCursorPos != cursorPos || update.docChanged || fileChanged || update.viewportChanged) {
+      const isPureScroll = update.viewportChanged && !update.docChanged && !fileChanged && !force && this.lastCursorPos === cursorPos;
+      if (isPureScroll) {
+        this.pendingScrollBuild = { view: update.view, viewIsActive: updateIsOnActiveView };
+        this.lastViewUpdate = update;
+        if (this.scrollDebounceTimer !== null) {
+          window.clearTimeout(this.scrollDebounceTimer);
+        }
+        this.scrollDebounceTimer = window.setTimeout(() => {
+          this.scrollDebounceTimer = null;
+          const pending = this.pendingScrollBuild;
+          this.pendingScrollBuild = null;
+          if (pending) {
+            this.linkerCache.updateCache(force);
+            this.decorations = this.buildDecorations(pending.view, pending.viewIsActive);
+            pending.view.dispatch({});
+          }
+        }, 150);
+        return;
+      }
+      if (this.scrollDebounceTimer !== null) {
+        window.clearTimeout(this.scrollDebounceTimer);
+        this.scrollDebounceTimer = null;
+        this.pendingScrollBuild = null;
+      }
       this.lastCursorPos = cursorPos;
       this.linkerCache.updateCache(force);
       this.decorations = this.buildDecorations(update.view, updateIsOnActiveView);
@@ -3072,6 +3195,11 @@ var AutoLinkerPlugin = class {
     this.lastViewUpdate = update;
   }
   destroy() {
+    if (this.scrollDebounceTimer !== null) {
+      window.clearTimeout(this.scrollDebounceTimer);
+      this.scrollDebounceTimer = null;
+      this.pendingScrollBuild = null;
+    }
   }
   getParentElementInfo(element, maxDepth = 5) {
     const parents = [];
@@ -3315,7 +3443,7 @@ var AutoLinkerPlugin = class {
             }
             const rawWord = text.slice(baseFrom, i);
             if (rawWord.trim().length > 0) {
-              const maxOffset = this.settings.fuzzySlidingWindow ? Math.min(rawWord.length - 1, 24) : 0;
+              const maxOffset = this.settings.fuzzySlidingWindow ? Math.min(rawWord.length - 1, this.settings.fuzzySlidingWindowMaxOffset) : 0;
               let bestOffset = -1;
               let bestSim = -1;
               for (let offset = 0; offset <= maxOffset; offset++) {
@@ -3323,8 +3451,14 @@ var AutoLinkerPlugin = class {
                 const candidate = rawCandidate.trim();
                 if (!candidate)
                   continue;
+                if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
+                  continue;
+                if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
+                  continue;
                 const normWord = this.linkerCache.cache.fuzzyNormalize(candidate, this.settings.stemmingLanguage);
                 if (!normWord)
+                  continue;
+                if (!this.linkerCache.cache.couldMatchFuzzyLength(normWord.length))
                   continue;
                 const fuzzyResults = this.linkerCache.cache.findFuzzyMatches(normWord, this.settings.fuzzyMatchThreshold, this.settings.excludeLinksToOwnNote ? mappedFile : null);
                 if (fuzzyResults.length > 0) {
@@ -3344,8 +3478,14 @@ var AutoLinkerPlugin = class {
                 const candidate = rawCandidate.trim();
                 if (!candidate)
                   continue;
+                if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
+                  continue;
+                if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
+                  continue;
                 const normWord = this.linkerCache.cache.fuzzyNormalize(candidate, this.settings.stemmingLanguage);
                 if (!normWord)
+                  continue;
+                if (!this.linkerCache.cache.couldMatchFuzzyLength(normWord.length))
                   continue;
                 const fuzzyResults = this.linkerCache.cache.findFuzzyMatches(normWord, this.settings.fuzzyMatchThreshold, this.settings.excludeLinksToOwnNote ? mappedFile : null);
                 if (fuzzyResults.length > 0) {
@@ -3440,6 +3580,7 @@ var AutoLinkerPlugin = class {
         excludedTypes.push("header-");
       }
       const app = this.app;
+      const formatRanges = [];
       (0, import_language.syntaxTree)(view.state).iterate({
         from,
         to,
@@ -3463,6 +3604,19 @@ var AutoLinkerPlugin = class {
               });
             }
           }
+          const ft = node.type.name;
+          if (ft.includes("strong"))
+            formatRanges.push({ from: node.from, to: node.to, kind: "strong" });
+          if (ft.includes("em"))
+            formatRanges.push({ from: node.from, to: node.to, kind: "em" });
+          if (ft.includes("highlight") || ft.includes("mark"))
+            formatRanges.push({ from: node.from, to: node.to, kind: "highlight" });
+          if (ft.includes("strikethrough") || ft.includes("strike") || ft.includes("del"))
+            formatRanges.push({ from: node.from, to: node.to, kind: "strikethrough" });
+          if (ft.includes("comment"))
+            formatRanges.push({ from: node.from, to: node.to, kind: "comment" });
+          if (ft.includes("header"))
+            formatRanges.push({ from: node.from, to: node.to, kind: "header" });
         }
       });
       if (this.settings.enableSymbolExclusion) {
@@ -3565,17 +3719,31 @@ var AutoLinkerPlugin = class {
         const [from2, to2] = [addition.from, addition.to];
         const cursorNearby = cursorPos >= from2 - 0 && cursorPos <= to2 + 0;
         const additionIsInCurrentLine = from2 >= lineStart && to2 <= lineEnd;
+        for (const fr of formatRanges) {
+          if (from2 >= fr.from && to2 <= fr.to) {
+            if (fr.kind === "strong")
+              addition.isBoldContext = true;
+            else if (fr.kind === "em")
+              addition.isItalicContext = true;
+            else if (fr.kind === "highlight")
+              addition.isHighlightContext = true;
+            else if (fr.kind === "strikethrough")
+              addition.isStrikethroughContext = true;
+            else if (fr.kind === "comment")
+              addition.isCommentContext = true;
+            else if (fr.kind === "header")
+              addition.isInHeaderContext = true;
+          }
+        }
+        addition.isTripleStarContext = addition.isBoldContext && addition.isItalicContext;
         let additionIsInComment = false;
         if (additionIsInCurrentLine) {
-          (0, import_language.syntaxTree)(view.state).iterate({
-            from: from2,
-            to: to2,
-            enter(node) {
-              if (node.name.contains("comment")) {
-                additionIsInComment = true;
-              }
+          for (const fr of formatRanges) {
+            if (fr.kind === "comment" && from2 < fr.to && fr.from < to2) {
+              additionIsInComment = true;
+              break;
             }
-          });
+          }
         }
         if (fixIMEProblem) {
           needImeFix = true;
@@ -4469,7 +4637,8 @@ var DEFAULT_SETTINGS = {
   stemmingLanguage: "auto",
   fuzzyMatchThreshold: 80,
   fuzzyMinLength: 6,
-  fuzzySlidingWindow: true,
+  fuzzySlidingWindow: false,
+  fuzzySlidingWindowMaxOffset: 10,
   skipMultipleTargets: true,
   enableSymbolExclusion: false,
   excludeSymbolStart: "{",
@@ -4479,7 +4648,9 @@ var DEFAULT_SETTINGS = {
   jumpEnabled: true,
   jumpDelayMs: 8e3,
   jumpOpenInNewTab: true,
-  lineLinkSelfHeal: false
+  lineLinkSelfHeal: false,
+  autoExcludeContainedCopies: false,
+  filenameAffixExclusions: []
 };
 var LinkerPlugin = class extends import_obsidian7.Plugin {
   constructor() {
@@ -4614,6 +4785,26 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     view.editor.setCursor({ line: safeLine, ch: 0 });
     const center = safeLine >= 15;
     view.editor.scrollIntoView({ from: { line: safeLine, ch: 0 }, to: { line: safeLine, ch: 0 } }, center);
+    this.alignTallLine(view, safeLine);
+  }
+  alignTallLine(view, line, pass = 0) {
+    const cmEl = view.contentEl.querySelector(".cm-editor");
+    const cm = cmEl ? import_view2.EditorView.findFromDOM(cmEl) : null;
+    if (!cm)
+      return;
+    const scroller = cm.scrollDOM;
+    try {
+      const block = cm.lineBlockAt(cm.state.doc.line(line + 1).from);
+      const tooTall = block.height > scroller.clientHeight * 0.8;
+      const headHidden = block.top < scroller.scrollTop;
+      if (!tooTall && !headHidden)
+        return;
+      scroller.scrollTop = block.top - 16;
+    } catch (e) {
+      return;
+    }
+    if (pass < 1)
+      window.setTimeout(() => this.alignTallLine(view, line, pass + 1), 250);
   }
   mixHexColors(base, target, t2) {
     const parse = (hex) => {
@@ -4659,6 +4850,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     this.updateManager.registerCallback(() => {
       LinkerCache.getInstance(this.app, this.settings).clearCache();
     });
+    LinkerCache.getInstance(this.app, this.settings).onIndexChanged = () => this.updateManager.update();
     this.registerMarkdownPostProcessor((element, context) => {
       context.addChild(new GlossaryLinker(this.app, this.settings, context, element, this));
     });
@@ -5250,6 +5442,8 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
         return s.headingSymbolWhitelist.join(",");
       case "excludedExtensions":
         return s.excludedExtensions.join("\n");
+      case "filenameAffixExclusions":
+        return s.filenameAffixExclusions.join(",");
       default:
         return s[key];
     }
@@ -5285,6 +5479,11 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
       case "excludedExtensions":
         await this.plugin.updateSettings({
           excludedExtensions: value.split(/[\n,]/).map((x) => x.trim()).filter((x) => x.length > 0).map((x) => x.startsWith(".") ? x : `.${x}`)
+        });
+        break;
+      case "filenameAffixExclusions":
+        await this.plugin.updateSettings({
+          filenameAffixExclusions: value.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
         });
         break;
       case "allowLinksInHeaders":
@@ -5354,11 +5553,11 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
     const pm = app.plugins;
 
     try {
-        if (pm.plugins[id]) {
-            await pm.disablePlugin(id);
+        if (pm.enabledPlugins.has(id)) {
+            await pm.disablePluginAndSave(id);
             new Notice('Fake Link: OFF');
         } else {
-            await pm.enablePlugin(id);
+            await pm.enablePluginAndSave(id);
             new Notice('Fake Link: ON');
         }
 
@@ -5494,8 +5693,12 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
           disabled: () => !s.enableStemming
         }),
         toggleDef(t("Sliding window for fuzzy matching"), "fuzzySlidingWindow", {
-          desc: t("Also try shorter suffixes of the text run, not just the whole run. Chinese has no spaces, so a term is usually glued to the words before it, and those extra characters drag the similarity below the threshold. On by default; turn it off if you notice lag on very long lines."),
+          desc: t("Also try shorter suffixes of the text run, not just the whole run. Chinese has no spaces, so a term is usually glued to the words before it, and those extra characters drag the similarity below the threshold. Off by default; turn it on if you need terms embedded in Chinese text to match, at the cost of slower scrolling on long lines."),
           disabled: () => !s.enableStemming
+        }),
+        sliderDef(t("Sliding window max offset"), "fuzzySlidingWindowMaxOffset", 2, 24, 1, {
+          desc: t("Maximum number of characters stripped from the front of a text run while searching for a fuzzy match. Lower values are faster but may miss a term buried more than this many characters after the last punctuation/space. Default 10."),
+          disabled: () => !s.enableStemming || !s.fuzzySlidingWindow
         })
       ]),
       groupDef(t("Case sensitivity"), [
@@ -5559,6 +5762,15 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
         })
       ]),
       groupDef(t("Exclusions"), [
+        toggleDef(t("Auto-exclude renamed duplicates"), "autoExcludeContainedCopies", {
+          desc: t(`When enabled, if one note's file name fully contains another note's file name (e.g. "\u6559\u80B2\u6559\u5B66" and "\u6559\u80B2\u6559\u5B66\u9644\u4EF6") and both notes start with the same first sentence, the longer-named note is automatically excluded from virtual linking (treated like a linker-exclude note). This keeps a copied-and-renamed duplicate from producing links. Off by default.`),
+          visible: adv
+        }),
+        textAreaDef(t("Exclude by file name prefix/suffix"), "filenameAffixExclusions", {
+          desc: t("Notes whose file name starts or ends with any of these words or symbols (comma separated) are excluded from virtual linking, like a linker-exclude note."),
+          placeholder: "e.g. \u526F\u672C, \u8349\u7A3F, _",
+          visible: adv
+        }),
         textAreaDef(t("Excluded keywords"), "excludedKeywords", {
           desc: t("Keywords to exclude from virtual linking (comma separated). Files/aliases or headings matching these keywords will not be linked."),
           visible: adv

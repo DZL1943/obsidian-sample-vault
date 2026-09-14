@@ -3,12 +3,16 @@
     "Ext"
   ],
   "includePaths": [],
+  "isAdvancedRenameAndDeleteHandlerSuggestionDeclined": true,
   "linkConversionMode": "OnEveryModification",
+  "linkStyleMode": "PreserveExisting",
+  "proposedShouldHandleRenames": true,
   "shouldAllowEmptyEmbedAlias": true,
-  "shouldAutomaticallyUpdateLinksOnRenameOrMove": true,
+  "shouldAppendFileNameWhenDemotingEmbeds": false,
+  "shouldCreateMissingNotes": false,
   "shouldIncludeAttachmentExtensionToEmbedAlias": true,
   "shouldNormalizeFileLinks": true,
-  "shouldPreserveExistingLinkStyle": true,
+  "shouldResolveLinksViaAliases": false,
   "shouldUseAngleBrackets": true,
   "shouldUseLeadingDotForRelativePaths": false,
   "shouldUseLeadingSlashForAbsolutePaths": false
