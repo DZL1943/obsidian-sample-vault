@@ -628,7 +628,7 @@
         "config",
         "favorite"
       ],
-      "enabled": false,
+      "enabled": true,
       "delay": "10",
       "note": ""
     },
@@ -884,7 +884,7 @@
         "required",
         "favorite"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "5",
       "note": ""
     }
