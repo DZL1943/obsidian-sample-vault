@@ -1,6 +1,6 @@
 {
   "defaultViewMode": "preview",
-  "livePreview": false,
+  "livePreview": true,
   "readableLineLength": true,
   "strictLineBreaks": true,
   "propertiesInDocument": "visible",
