@@ -1158,7 +1158,8 @@
       "defaultStyles": [
         "even",
         "center",
-        "autohide"
+        "autohide",
+        "inactive"
       ],
       "hasCommand": false,
       "items": [
@@ -1322,7 +1323,7 @@
           }
         }
       },
-      "updated": "2026-09-14T22:01:43.321Z"
+      "updated": "2026-09-14T22:14:42.882Z"
     },
     {
       "uuid": "07bc3340-0ac8-441d-b26f-7bed5155576c",
