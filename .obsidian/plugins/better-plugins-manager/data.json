@@ -40,7 +40,7 @@
   "PLUGIN_UPDATE_DELAY_DAYS": 0,
   "GITHUB_PROXY": "",
   "GITHUB_TOKEN": "",
-  "FILTER_SEARCH": "toolbar",
+  "FILTER_SEARCH": "omni",
   "FILTER_STATUS": "all",
   "FILTER_STATUS_VALUES": [],
   "FILTER_STATUS_OPERATOR": "contains",
@@ -887,6 +887,18 @@
       "enabled": true,
       "delay": "5",
       "note": ""
+    },
+    {
+      "id": "omnisearch",
+      "name": "Omnisearch",
+      "desc": "A search engine that just works.",
+      "group": "main",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": false,
+      "delay": "5",
+      "note": ""
     }
   ],
   "HIDES": [],
@@ -1117,6 +1129,10 @@
     },
     {
       "id": "obsidian-memos",
+      "type": "plugin"
+    },
+    {
+      "id": "omnisearch",
       "type": "plugin"
     }
   ],

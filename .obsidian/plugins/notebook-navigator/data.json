@@ -137,6 +137,10 @@
   "dateFormat": "YYYY-MM-DD",
   "timeFormat": "HH:mm",
   "calendarTemplateFolder": "",
+  "templateEngine": "automatic",
+  "folderTemplates": {},
+  "showFolderTemplateIcons": true,
+  "templateCommands": [],
   "confirmBeforeDelete": true,
   "deleteAttachments": "ask",
   "moveFileConflicts": "ask",
@@ -205,6 +209,7 @@
   "confirmBeforeManualSort": true,
   "revealFileOnListChanges": true,
   "listPaneTitle": "header",
+  "colorListPaneTitle": false,
   "noteGrouping": "folder",
   "showSelectedNavigationPills": false,
   "stickyGroupHeaders": true,
@@ -541,7 +546,7 @@
     "#404040",
     "#404040"
   ],
-  "lastShownVersion": "3.3.7",
+  "lastShownVersion": "3.4.1",
   "rootFolderOrder": [
     "Inbox",
     "Memos",
