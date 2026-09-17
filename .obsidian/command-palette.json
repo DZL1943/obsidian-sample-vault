@@ -1,6 +1,8 @@
 {
   "pinned": [
     "workspaces:open-modal",
-    "zk-prefixer"
+    "zk-prefixer",
+    "insert-current-date",
+    "insert-current-time"
   ]
 }
