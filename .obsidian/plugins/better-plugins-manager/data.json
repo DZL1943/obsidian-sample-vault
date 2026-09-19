@@ -899,6 +899,18 @@
       "enabled": false,
       "delay": "5",
       "note": ""
+    },
+    {
+      "id": "image-captions",
+      "name": "Image Captions",
+      "desc": "Adds captions to images when there is alt-text specified.",
+      "group": "aux",
+      "tags": [
+        "optional"
+      ],
+      "enabled": true,
+      "delay": "",
+      "note": ""
     }
   ],
   "HIDES": [],
@@ -1133,6 +1145,10 @@
     },
     {
       "id": "omnisearch",
+      "type": "plugin"
+    },
+    {
+      "id": "image-captions",
       "type": "plugin"
     }
   ],
