@@ -2251,7 +2251,7 @@ body.is-phone .cg-note-toolbar-container {
             }
         }
     }
-    &[data-tbar-position*="top"]:is([data-ntb-meta*="autohide"], [data-ntb-meta*="mhd"]):not([data-ntb-meta*="mnhd"]) {
+    &:is([data-tbar-position*="top"], [data-tbar-position*="props"]):is([data-ntb-meta*="autohide"], [data-ntb-meta*="mhd"]):not([data-ntb-meta*="mnhd"]) {
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-out;
         body.is-hidden-nav & {
             opacity: 0;
@@ -2319,7 +2319,7 @@ body.is-mobile .callout[data-callout="note-toolbar"][data-callout-metadata*="mgl
 
 /* user feedback that toolbar interaction is not available; workaround for #69 */
 body:not(.is-mobile):not(.is-focused), .workspace-leaf:not(.mod-active) {
-    & .cg-note-toolbar-callout[data-callout="note-toolbar"] {
+    & .cg-note-toolbar-callout[data-callout="note-toolbar"]:not([data-callout-metadata*="autohide"]) {
         opacity: var(--cg-nt-tbar-inactive-opacity-desktop);
         .is-mobile & {
             opacity: var(--cg-nt-tbar-inactive-opacity-mobile);

@@ -146,6 +146,7 @@ var zhCN = {
   'When enabled, if one note\'s file name fully contains another note\'s file name (e.g. "\u6559\u80B2\u6559\u5B66" and "\u6559\u80B2\u6559\u5B66\u9644\u4EF6") and both notes start with the same first sentence, the longer-named note is automatically excluded from virtual linking (treated like a linker-exclude note). This keeps a copied-and-renamed duplicate from producing links. Off by default.': "\u542F\u7528\u540E\uFF0C\u82E5\u67D0\u7B14\u8BB0\u7684\u6587\u4EF6\u540D\u5B8C\u6574\u5305\u542B\u53E6\u4E00\u4E2A\u7B14\u8BB0\u7684\u6587\u4EF6\u540D\uFF08\u5982\u300C\u6559\u80B2\u6559\u5B66\u300D\u4E0E\u300C\u6559\u80B2\u6559\u5B66\u9644\u4EF6\u300D\uFF09\uFF0C\u4E14\u4E24\u7BC7\u7B14\u8BB0\u7684\u7B2C\u4E00\u53E5\u76F8\u540C\uFF0C\u5219\u81EA\u52A8\u5C06\u6587\u4EF6\u540D\u66F4\u957F\u7684\u90A3\u4E2A\u7B14\u8BB0\u6392\u9664\u51FA\u865A\u62DF\u94FE\u63A5\uFF08\u7B49\u540C\u4E8E\u4E3A\u5176\u6DFB\u52A0 linker-exclude\uFF09\u3002\u8FD9\u6837\u590D\u5236\u5E76\u91CD\u547D\u540D\u7684\u526F\u672C\u5C31\u4E0D\u4F1A\u518D\u4EA7\u751F\u94FE\u63A5\u3002\u9ED8\u8BA4\u5173\u95ED\u3002",
   "Exclude by file name prefix/suffix": "\u6309\u6587\u4EF6\u540D\u9996\u5C3E\u6392\u9664",
   "Notes whose file name starts or ends with any of these words or symbols (comma separated) are excluded from virtual linking, like a linker-exclude note.": "\u6587\u4EF6\u540D\u4EE5\u8FD9\u4E9B\u5B57\u8BCD\u6216\u7B26\u53F7\u5F00\u5934\u6216\u7ED3\u5C3E\u7684\u7B14\u8BB0\u5C06\u88AB\u6392\u9664\u51FA\u865A\u62DF\u94FE\u63A5\uFF08\u9017\u53F7\u5206\u9694\uFF09\uFF0C\u7B49\u540C\u4E8E\u4E3A\u5176\u6DFB\u52A0 linker-exclude\u3002",
+  "Open note: {name}": "\u6253\u5F00\u7B14\u8BB0\uFF1A{name}",
   "Auto-insert heading lock symbol": "\u81EA\u52A8\u63D2\u5165\u6807\u9898\u9501\u5B9A\u7B26\u53F7",
   "When enabled, a unique symbol is automatically placed at the front of new or modified header text, preventing accidental matching by regular body text.": "\u542F\u7528\u540E\uFF0C\u5C06\u5728\u65B0\u5EFA\u6216\u4FEE\u6539\u7684\u6807\u9898\u6587\u672C\u524D\u81EA\u52A8\u63D2\u5165\u4E00\u4E2A\u72EC\u7279\u7B26\u53F7\uFF0C\u9632\u6B62\u88AB\u6B63\u6587\u610F\u5916\u5339\u914D\u3002",
   "Heading lock symbol": "\u6807\u9898\u9501\u5B9A\u7B26\u53F7",
@@ -153,8 +154,8 @@ var zhCN = {
   "Heading symbol whitelist": "\u6807\u9898\u7B26\u53F7\u767D\u540D\u5355",
   "Symbols in headings that are stripped from the virtual-link keyword (comma separated). Use this to decorate headings with markers (e.g. \u{1F525}) without those markers affecting matching.": "\u6807\u9898\u4E2D\u9700\u8981\u4ECE\u865A\u62DF\u94FE\u63A5\u5173\u952E\u8BCD\u4E2D\u5254\u9664\u7684\u7B26\u53F7\uFF08\u9017\u53F7\u5206\u9694\uFF09\u3002\u7528\u4E8E\u7ED9\u6807\u9898\u6DFB\u52A0\u6807\u8BB0\uFF08\u5982 \u{1F525}\uFF09\u800C\u4E0D\u5F71\u54CD\u5339\u914D\u3002",
   "Color-only display": "\u7EAF\u989C\u8272\u663E\u793A",
-  "Require Ctrl/Cmd+click to open virtual links": "\u6309 Ctrl/Cmd+\u70B9\u51FB\u624D\u6253\u5F00\u865A\u62DF\u94FE\u63A5",
-  "When enabled, a plain click on a virtual link only places the cursor (so you can keep typing in that line) and Ctrl/Cmd+click is needed to jump. Useful because a virtual link covers its text, which otherwise makes that line unclickable.": "\u542F\u7528\u540E\uFF0C\u666E\u901A\u70B9\u51FB\u865A\u62DF\u94FE\u63A5\u53EA\u4F1A\u5B9A\u4F4D\u5149\u6807\uFF08\u53EF\u7EE7\u7EED\u5728\u8BE5\u884C\u8F93\u5165\uFF09\uFF0C\u9700\u6309 Ctrl/Cmd+\u70B9\u51FB\u624D\u4F1A\u8DF3\u8F6C\u3002\u9002\u7528\u4E8E\u865A\u62DF\u94FE\u63A5\u8986\u76D6\u4E86\u6587\u5B57\u3001\u5BFC\u81F4\u8BE5\u884C\u65E0\u6CD5\u70B9\u51FB\u5B9A\u4F4D\u5149\u6807\u7684\u60C5\u51B5\u3002",
+  "No hover preview for virtual links": "\u865A\u62DF\u94FE\u63A5\u4E0D\u89E6\u53D1\u60AC\u505C\u9884\u89C8",
+  'When enabled, hovering a virtual link no longer opens a page preview / Hover Editor popover. Virtual links are rendered by this plugin rather than written in the note, so the popover can be unwanted while reading; clicking still opens the note. Off by default. Tip: to keep previews but only when you ask for them, turn on "Require Ctrl/Cmd to trigger" in the core Page preview plugin settings instead.': "\u542F\u7528\u540E\uFF0C\u60AC\u505C\u865A\u62DF\u94FE\u63A5\u4E0D\u518D\u5F39\u51FA\u9875\u9762\u9884\u89C8 / Hover Editor \u6D6E\u7A97\u3002\u865A\u62DF\u94FE\u63A5\u662F\u672C\u63D2\u4EF6\u6E32\u67D3\u7684\u3001\u5E76\u975E\u7B14\u8BB0\u91CC\u771F\u5B9E\u5B58\u5728\u7684\u94FE\u63A5\uFF0C\u9605\u8BFB\u65F6\u5F39\u7A97\u53EF\u80FD\u9020\u6210\u6253\u6270\uFF1B\u70B9\u51FB\u8DF3\u8F6C\u4E0D\u53D7\u5F71\u54CD\u3002\u9ED8\u8BA4\u5173\u95ED\u3002\u63D0\u793A\uFF1A\u82E5\u4F60\u60F3\u4FDD\u7559\u9884\u89C8\u3001\u4F46\u53EA\u5728\u9700\u8981\u65F6\u624D\u51FA\u73B0\uFF0C\u53EF\u4EE5\u6539\u4E3A\u5728\u6838\u5FC3\u63D2\u4EF6\u300C\u9875\u9762\u9884\u89C8\u300D\u7684\u8BBE\u7F6E\u91CC\u6253\u5F00\u300C\u9700\u8981\u6309\u4F4F Ctrl/Cmd \u624D\u89E6\u53D1\u300D\u3002",
   "When enabled, virtual links are shown in a custom text color instead of the default background shadow.": "\u542F\u7528\u540E\uFF0C\u865A\u62DF\u94FE\u63A5\u4EE5\u81EA\u5B9A\u4E49\u6587\u672C\u989C\u8272\u663E\u793A\uFF0C\u800C\u975E\u9ED8\u8BA4\u80CC\u666F\u9634\u5F71\u3002",
   "Header link color": "\u6807\u9898\u94FE\u63A5\u989C\u8272",
   "Color for header virtual links (e.g., #517ea0).": "\u6807\u9898\u865A\u62DF\u94FE\u63A5\u7684\u989C\u8272\uFF08\u5982 #517ea0\uFF09\u3002",
@@ -203,8 +204,10 @@ var zhCN = {
   'When enabled, FakeLink registers the obsidian://adv-uri protocol and handles line jumping itself, including links fired from external apps (e.g. a browser or a custom obsidianjump:// handler). Obsidian allows only ONE plugin to handle this protocol, so you must NOT enable the Advanced URI plugin at the same time \u2014 keep it disabled, otherwise one of the two plugins will fail to load. Generate line links via the right-click menu "Copy line link (adv-uri)".': "\u542F\u7528\u540E\uFF0CFakeLink \u5C06\u6CE8\u518C obsidian://adv-uri \u534F\u8BAE\u5E76\u81EA\u884C\u5904\u7406\u884C\u8DF3\u8F6C\uFF0C\u5305\u62EC\u6765\u81EA\u5916\u90E8\u5E94\u7528\u89E6\u53D1\u7684\u94FE\u63A5\uFF08\u5982\u6D4F\u89C8\u5668\u6216\u81EA\u5B9A\u4E49 obsidianjump:// \u5904\u7406\u5668\uFF09\u3002Obsidian \u53EA\u5141\u8BB8\u4E00\u4E2A\u63D2\u4EF6\u5904\u7406\u8BE5\u534F\u8BAE\uFF0C\u56E0\u6B64\u5207\u52FF\u540C\u65F6\u542F\u7528 Advanced URI \u63D2\u4EF6\u2014\u2014\u8BF7\u4FDD\u6301\u5176\u7981\u7528\uFF0C\u5426\u5219\u4E24\u4E2A\u63D2\u4EF6\u4E2D\u4F1A\u6709\u4E00\u4E2A\u65E0\u6CD5\u52A0\u8F7D\u3002\u751F\u6210\u884C\u94FE\u63A5\u8BF7\u4F7F\u7528\u53F3\u952E\u83DC\u5355\u300C\u590D\u5236\u884C\u94FE\u63A5\uFF08adv-uri\uFF09\u300D\u3002",
   "Self-heal line links": "\u884C\u94FE\u63A5\u81EA\u6108",
   "When enabled, copied line links also store the text of the target line. If the note is edited and line numbers drift, the jump re-finds the line by its text instead of landing on the wrong line. Works for both plain and aliased line links. Line links copied before enabling this have no anchor and keep the old behavior.": "\u542F\u7528\u540E\uFF0C\u590D\u5236\u7684\u884C\u94FE\u63A5\u4F1A\u540C\u65F6\u8BB0\u5F55\u76EE\u6807\u884C\u7684\u6587\u672C\u3002\u82E5\u7B14\u8BB0\u88AB\u7F16\u8F91\u5BFC\u81F4\u884C\u53F7\u504F\u79FB\uFF0C\u8DF3\u8F6C\u65F6\u4F1A\u6309\u6587\u672C\u91CD\u65B0\u627E\u5230\u8BE5\u884C\uFF0C\u800C\u4E0D\u662F\u8DF3\u5230\u9519\u8BEF\u7684\u884C\u3002\u884C\u53F7\u5F62\u5F0F\u548C\u522B\u540D\u5F62\u5F0F\u7684\u884C\u94FE\u63A5\u90FD\u9002\u7528\u3002\u542F\u7528\u524D\u590D\u5236\u7684\u884C\u94FE\u63A5\u6CA1\u6709\u951A\u70B9\uFF0C\u4ECD\u6309\u65E7\u884C\u4E3A\u8DF3\u8F6C\u3002",
-  "Jump delay (ms)": "\u8DF3\u8F6C\u5EF6\u65F6\uFF08\u6BEB\u79D2\uFF09",
-  "The maximum time (milliseconds) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. Default 8000.": "\u5B9A\u4F4D\u5149\u6807\u524D\u7B49\u5F85\u76EE\u6807\u6587\u4EF6\u6E32\u67D3\u7684\u6700\u957F\u65F6\u95F4\uFF08\u6BEB\u79D2\uFF09\u3002\u5C0F\u6587\u4EF6\u51E0\u4E4E\u7ACB\u5373\u8DF3\u8F6C\uFF1B\u5927\u6587\u4EF6\u6700\u591A\u7B49\u5F85\u5230\u6B64\u4E0A\u9650\u3002\u9ED8\u8BA4 8000\u3002",
+  "Line jump wait limit (seconds)": "\u884C\u8DF3\u8F6C\u7B49\u5F85\u4E0A\u9650\uFF08\u79D2\uFF09",
+  "Heading align watch window (seconds)": "\u6807\u9898\u5BF9\u9F50\u89C2\u5BDF\u7A97\uFF08\u79D2\uFF09",
+  "How long (in SECONDS) a jumped-to heading keeps being re-aligned. The heading is put back in place the moment the content above it changes height (a PDF or an image finishing, MathJax typesetting) - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60).": "\u8DF3\u5230\u6807\u9898\u540E\uFF0C\u6700\u591A\u6301\u7EED\u8DDF\u968F\u591A\u5C11\u79D2\u3002\u53EA\u8981\u6807\u9898\u4E0A\u65B9\u7684\u5185\u5BB9\u9AD8\u5EA6\u53D1\u751F\u53D8\u5316\uFF08PDF/\u56FE\u7247\u6E32\u67D3\u5B8C\u6210\u3001\u516C\u5F0F\u6392\u7248\u5B8C\u6210\uFF09\uFF0C\u5C31\u4F1A\u7ACB\u523B\u628A\u6807\u9898\u6446\u56DE\u539F\u4F4D\u2014\u2014\u89C2\u5BDF\u662F\u4E8B\u4EF6\u9A71\u52A8\u7684\uFF0C\u9875\u9762\u9759\u6B62\u65F6\u4E0D\u505A\u4EFB\u4F55\u8F6E\u8BE2\u3002\u8D85\u8FC7\u8FD9\u4E2A\u79D2\u6570\u5C31\u5B8C\u5168\u6536\u624B\uFF0C\u56E0\u6B64\u51E0\u5206\u949F\u540E\u624D\u51FA\u73B0\u7684\u53D8\u5316\u4E0D\u4F1A\u518D\u79FB\u52A8\u4F60\u7684\u89C6\u56FE\u3002\u8FD9\u91CC\u586B\u7684\u5C31\u662F\u79D2\u6570\uFF0812 \u21D2 12 \u79D2\uFF09\uFF0C\u4E0D\u9700\u8981\u6362\u7B97\uFF1B\u7B14\u8BB0\u5F88\u5927\u5F88\u6162\u65F6\u53EF\u8C03\u5230 60\u3002",
+  "The maximum time (in SECONDS) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. The number you type is the number of seconds (8 = 8 seconds); 0 means do not wait.": "\u5B9A\u4F4D\u5149\u6807\u524D\u7B49\u5F85\u76EE\u6807\u6587\u4EF6\u6E32\u67D3\u7684\u6700\u957F\u65F6\u95F4\uFF08\u79D2\uFF09\u3002\u5C0F\u6587\u4EF6\u51E0\u4E4E\u7ACB\u5373\u8DF3\u8F6C\uFF1B\u5927\u6587\u4EF6\u6700\u591A\u7B49\u5F85\u5230\u6B64\u4E0A\u9650\u3002\u8FD9\u91CC\u586B\u7684\u5C31\u662F\u79D2\u6570\uFF088 \u21D2 8 \u79D2\uFF09\uFF1B\u586B 0 \u8868\u793A\u4E0D\u7B49\u5F85\u3002",
   "Open in new tab": "\u5728\u65B0\u6807\u7B7E\u9875\u6253\u5F00",
   "When the target file is not already open, open it in a new tab. When off, the current tab is reused.": "\u5F53\u76EE\u6807\u6587\u4EF6\u5C1A\u672A\u6253\u5F00\u65F6\uFF0C\u5728\u65B0\u6807\u7B7E\u9875\u4E2D\u6253\u5F00\u3002\u5173\u95ED\u65F6\u5219\u590D\u7528\u5F53\u524D\u6807\u7B7E\u9875\u3002"
 };
@@ -1308,7 +1311,7 @@ var _PrefixTree = class {
             if (startIndex < endIndex) {
               const keyword = headingText.substring(startIndex + startSymbol.length, endIndex).trim();
               if (keyword) {
-                headerEntries.push({ keyword, headerId: h.heading.replace(/\s+/g, "-").toLowerCase() });
+                headerEntries.push({ keyword, headerId: h.heading });
                 symbolKeywords.add(keyword);
               }
               searchStartIndex = endIndex + endSymbol.length;
@@ -1320,12 +1323,12 @@ var _PrefixTree = class {
         if (!this.settings.headerMatchOnlyBetweenSymbols) {
           for (const h of metadata.headings) {
             if (!symbolKeywords.has(h.heading)) {
-              headerEntries.push({ keyword: this.headingKeyword(h.heading), headerId: h.heading.replace(/\s+/g, "-").toLowerCase() });
+              headerEntries.push({ keyword: this.headingKeyword(h.heading), headerId: h.heading });
             }
           }
         }
       } else {
-        headerEntries = metadata.headings.map((h) => ({ keyword: this.headingKeyword(h.heading), headerId: h.heading.replace(/\s+/g, "-").toLowerCase() }));
+        headerEntries = metadata.headings.map((h) => ({ keyword: this.headingKeyword(h.heading), headerId: h.heading }));
       }
     }
     const aliasesWithMatchCase = new Set((_d = (_c = metadata == null ? void 0 : metadata.frontmatter) == null ? void 0 : _c[this.settings.propertyNameToMatchCase]) != null ? _d : []);
@@ -1485,6 +1488,11 @@ var _PrefixTree = class {
       try {
         this.addFileToTree(file);
       } catch (e) {
+        try {
+          this.addFileToTree(file);
+        } catch (err) {
+          console.error("[fakelink] failed to index", file.path, err);
+        }
       }
     }
     const filesToRemove = [...this.setIndexedFilePaths].filter((f) => !currentVaultFiles.has(f));
@@ -1703,6 +1711,275 @@ var LinkerCache = class {
 
 // linker/virtualLinkDom.ts
 var import_obsidian3 = require("obsidian");
+var ALIGN_MAX_MS = 12e3;
+var ALIGN_DEBOUNCE_MS = 150;
+var ALIGN_SAFETY_MS = 4e3;
+var ALIGN_TOLERANCE_PX = 6;
+var ALIGN_STABLE_MS = 1e3;
+var DOM_WRITE_BUDGET = 6;
+var DOM_WRITE_TOTAL_BUDGET = 30;
+var ALIGN_MIN_GAP = 12;
+function normalizeHeading(s) {
+  return s.replace(/^#+\s*/, "").replace(/[\u200B-\u200D\uFEFF]/g, "").replace(/\s+/g, " ").trim();
+}
+function findScrollableAncestor(node) {
+  let cur = node.parentElement;
+  while (cur) {
+    if (cur.clientHeight > 0 && cur.scrollHeight > cur.clientHeight + 1)
+      return cur;
+    cur = cur.parentElement;
+  }
+  return null;
+}
+function findHeadingElement(scope, headingId) {
+  const want = normalizeHeading(headingId);
+  if (!want)
+    return null;
+  const candidates = Array.from(scope.querySelectorAll(HEADING_SEL));
+  const textOf = (el) => {
+    var _a2, _b2;
+    return normalizeHeading((_b2 = (_a2 = el.getAttribute("data-heading")) != null ? _a2 : el.textContent) != null ? _b2 : "");
+  };
+  for (const el of candidates)
+    if (textOf(el) === want)
+      return el;
+  const wantSlug = want.replace(/\s+/g, "-").toLowerCase();
+  for (const el of candidates)
+    if (textOf(el).replace(/\s+/g, "-").toLowerCase() === wantSlug)
+      return el;
+  for (const el of candidates)
+    if (textOf(el).startsWith(want))
+      return el;
+  return null;
+}
+function centeredOffset(scroller, height) {
+  return Math.max(ALIGN_MIN_GAP, Math.round((scroller.clientHeight - height) / 2));
+}
+function resolveHeadingTarget(app, el, headingText, file) {
+  var _a2;
+  const want = normalizeHeading(headingText);
+  if (!want)
+    return null;
+  const sameHeading = (candidate) => {
+    if (candidate === want)
+      return true;
+    if (candidate.startsWith(want))
+      return true;
+    return want.startsWith(candidate) && want.length - candidate.length <= 12;
+  };
+  const findLine = (file2) => {
+    var _a3, _b2, _c, _d;
+    const headings = (_b2 = (_a3 = app.metadataCache.getFileCache(file2)) == null ? void 0 : _a3.headings) != null ? _b2 : [];
+    const hit = (_d = (_c = headings.find((h) => normalizeHeading(h.heading) === want)) != null ? _c : headings.find((h) => normalizeHeading(h.heading).startsWith(want))) != null ? _d : headings.find((h) => sameHeading(normalizeHeading(h.heading)));
+    return hit ? hit.position.start.line : -1;
+  };
+  const targetFile = file != null ? file : null;
+  const candidates = [];
+  for (const leaf of app.workspace.getLeavesOfType("markdown")) {
+    const view = leaf.view;
+    if (!(view instanceof import_obsidian3.MarkdownView))
+      continue;
+    const shown = view.file;
+    if (!shown)
+      continue;
+    const line = findLine(shown);
+    if (line < 0)
+      continue;
+    const preferred = el ? view.contentEl.contains(el) : !!targetFile && targetFile.path === shown.path;
+    candidates.push({ view, line, preferred });
+  }
+  const pick = (_a2 = candidates.find((c) => c.preferred)) != null ? _a2 : candidates[0];
+  return pick ? { view: pick.view, line: pick.line } : null;
+}
+function findHeadingAtTop(scope) {
+  const search = (root) => {
+    const headings = Array.from(root.querySelectorAll(HEADING_SEL));
+    let best = null;
+    let bestDist = Infinity;
+    for (const h of headings) {
+      const scroller = findScrollableAncestor(h);
+      if (!scroller)
+        continue;
+      const rect = h.getBoundingClientRect();
+      const top = rect.top - scroller.getBoundingClientRect().top;
+      const height = rect.height || 1;
+      if (top < -height - 8 || top > scroller.clientHeight - 24)
+        continue;
+      const dist = Math.abs(top);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = h;
+      }
+    }
+    return best;
+  };
+  if (scope && scope.isConnected) {
+    const inScope = search(scope);
+    if (inScope)
+      return inScope;
+  }
+  return search(document.body);
+}
+var HEADING_SEL = 'h1, h2, h3, h4, h5, h6, [data-heading], [class*="HyperMD-header"]';
+function keepAligned(resolve, label, maxMs, alive, scrollEditor) {
+  const abort = new AbortController();
+  const { signal } = abort;
+  const stop = () => abort.abort();
+  window.addEventListener("wheel", stop, { capture: true, passive: true, signal });
+  window.addEventListener("mousedown", stop, { capture: true, signal });
+  window.addEventListener("keydown", stop, { capture: true, signal });
+  const startedAt = Date.now();
+  let lastSignature = "";
+  let stableSince = Date.now();
+  let settledInMs = -1;
+  let domWrites = 0;
+  let domWritesTotal = 0;
+  let imgs = [];
+  let imgsAt = 0;
+  let observed = null;
+  let ro = null;
+  let debounce = null;
+  let pending = null;
+  let rearm = null;
+  let safety = null;
+  const stopTimers = () => {
+    for (const t2 of [debounce, pending, rearm, safety]) {
+      if (t2 !== null)
+        window.clearTimeout(t2);
+    }
+    debounce = pending = rearm = safety = null;
+    ro == null ? void 0 : ro.disconnect();
+    ro = null;
+  };
+  signal.addEventListener("abort", stopTimers);
+  function schedule(delay) {
+    if (signal.aborted || pending !== null)
+      return;
+    pending = window.setTimeout(() => {
+      pending = null;
+      check();
+    }, delay);
+  }
+  function armSafety() {
+    if (safety !== null)
+      window.clearTimeout(safety);
+    safety = window.setTimeout(() => {
+      safety = null;
+      schedule(0);
+      armSafety();
+    }, ALIGN_SAFETY_MS);
+  }
+  function observe(scroller) {
+    var _a2;
+    const target = scroller ? (_a2 = scroller.firstElementChild) != null ? _a2 : scroller : null;
+    if (target === observed)
+      return;
+    ro == null ? void 0 : ro.disconnect();
+    ro = null;
+    observed = target;
+    if (target) {
+      ro = new ResizeObserver(() => {
+        if (debounce !== null)
+          window.clearTimeout(debounce);
+        debounce = window.setTimeout(() => {
+          debounce = null;
+          schedule(0);
+        }, ALIGN_DEBOUNCE_MS);
+      });
+      ro.observe(target);
+    }
+  }
+  function check() {
+    var _a2, _b2;
+    if (signal.aborted)
+      return;
+    if (!alive()) {
+      stop();
+      return;
+    }
+    if (Date.now() - startedAt > maxMs) {
+      stop();
+      return;
+    }
+    let wrote = false;
+    let moved = false;
+    const found = resolve();
+    if (found) {
+      const scroller = findScrollableAncestor(found);
+      observe(scroller);
+      const headingText = (_b2 = (_a2 = found.getAttribute("data-heading")) != null ? _a2 : found.textContent) != null ? _b2 : "";
+      const inEditor = !!found.closest(".cm-editor");
+      const foundRect = found.getBoundingClientRect();
+      const offset = scroller ? foundRect.top - scroller.getBoundingClientRect().top : 0;
+      const desired = scroller ? centeredOffset(scroller, foundRect.height) : 0;
+      if (scroller) {
+        const signature = scroller.scrollHeight + ":" + Math.round(scroller.scrollTop + offset);
+        if (signature !== lastSignature) {
+          if (Date.now() - stableSince >= ALIGN_STABLE_MS)
+            domWrites = 0;
+          lastSignature = signature;
+          stableSince = Date.now();
+          moved = true;
+        }
+        const miss = Math.abs(offset - desired);
+        if (Date.now() - imgsAt > 1500) {
+          imgs = Array.from(scroller.querySelectorAll("img"));
+          imgsAt = Date.now();
+        }
+        const stillLoading = imgs.some((img) => !img.complete);
+        const settleReady = !stillLoading && Date.now() - stableSince >= ALIGN_STABLE_MS;
+        const impatient = Date.now() - startedAt > 4e3 && miss > 60;
+        if (miss > ALIGN_TOLERANCE_PX && (settleReady || impatient)) {
+          const handled = inEditor && scrollEditor ? scrollEditor(found, headingText) : false;
+          const withinBudget = domWrites < DOM_WRITE_BUDGET && domWritesTotal < DOM_WRITE_TOTAL_BUDGET;
+          if (handled || !inEditor || withinBudget) {
+            if (!handled) {
+              scroller.scrollTop = Math.max(0, scroller.scrollTop + offset - desired);
+              if (inEditor) {
+                domWrites++;
+                domWritesTotal++;
+              }
+            }
+            lastSignature = "";
+            if (settledInMs < 0)
+              settledInMs = Date.now() - startedAt;
+            wrote = true;
+          }
+        }
+      }
+    }
+    if (wrote || moved) {
+      if (rearm !== null)
+        window.clearTimeout(rearm);
+      rearm = window.setTimeout(() => {
+        rearm = null;
+        schedule(0);
+      }, ALIGN_STABLE_MS + 200);
+    }
+  }
+  armSafety();
+  schedule(0);
+}
+function keepScrolledHeadingAligned(scope, label = "", maxMs = ALIGN_MAX_MS, scrollEditor, headingId) {
+  const requestedAt = Date.now();
+  let cached = null;
+  keepAligned(() => {
+    var _a2;
+    if (cached && cached.isConnected)
+      return cached;
+    if (headingId) {
+      const byName = (_a2 = scope && scope.isConnected ? findHeadingElement(scope, headingId) : null) != null ? _a2 : findHeadingElement(document.body, headingId);
+      if (byName) {
+        cached = byName;
+        return cached;
+      }
+      if (Date.now() - requestedAt < 4e3)
+        return null;
+    }
+    cached = findHeadingAtTop(scope);
+    return cached;
+  }, label, maxMs, () => !scope || scope.isConnected, scrollEditor);
+}
 var VirtualMatch = class {
   constructor(id, originText, from, to, files, type, isSubWord, settings, plugin, headerId, isBoldContext = false, isItalicContext = false, isHighlightContext = false, isTripleStarContext = false, isStrikethroughContext = false, isCommentContext = false, isInHeaderContext = false, isFuzzy = false) {
     this.id = id;
@@ -1741,6 +2018,42 @@ var VirtualMatch = class {
   }
   get isHiddenByReferenceLimit() {
     return this.settings.maxReferencesToHideLink > 0 && this.files.length > this.settings.maxReferencesToHideLink;
+  }
+  renderKey() {
+    var _a2, _b2, _c;
+    const s = this.settings;
+    const filePaths = this.files.map((f) => f.path).sort().join("");
+    const headerIds = this.files.map((f) => {
+      var _a3;
+      return `${f.path}=${(_a3 = this.fileHeaderIds.get(f.path)) != null ? _a3 : ""}`;
+    }).sort().join("");
+    return [
+      this.from,
+      this.to,
+      this.originText,
+      this.type,
+      this.isSubWord ? 1 : 0,
+      this.isFuzzy ? 1 : 0,
+      (_a2 = this.headerId) != null ? _a2 : "",
+      this.isBoldContext ? 1 : 0,
+      this.isItalicContext ? 1 : 0,
+      this.isHighlightContext ? 1 : 0,
+      this.isTripleStarContext ? 1 : 0,
+      this.isStrikethroughContext ? 1 : 0,
+      this.isCommentContext ? 1 : 0,
+      this.isInHeaderContext ? 1 : 0,
+      filePaths,
+      headerIds,
+      s.maxReferencesToHideLink,
+      s.maxReferenceCount,
+      s.suppressSuffixForSubWords ? 1 : 0,
+      s.applyDefaultLinkStyling ? 1 : 0,
+      s.disableVirtualLinkPreview ? 1 : 0,
+      s.alwaysShowMultipleReferences ? 1 : 0,
+      (_b2 = s.virtualLinkSuffix) != null ? _b2 : "",
+      (_c = s.virtualLinkAliasSuffix) != null ? _c : "",
+      s.headingAlignWatchSeconds
+    ].join("");
   }
   getCompleteLinkElement(inTableCellEditor = false) {
     if (this.settings.maxReferencesToHideLink > 0 && this.files.length > this.settings.maxReferencesToHideLink) {
@@ -1814,29 +2127,71 @@ var VirtualMatch = class {
     link.setAttribute("from", this.from.toString());
     link.setAttribute("to", this.to.toString());
     link.setAttribute("origin-text", this.originText);
-    link.classList.add("internal-link", "virtual-link-a");
+    link.classList.add("virtual-link-a");
+    if (!this.settings.disableVirtualLinkPreview) {
+      link.classList.add("internal-link");
+    }
+    const titleFile = file || (this.files.length > 0 ? this.files[0] : void 0);
+    if (titleFile) {
+      link.title = t("Open note: {name}").replace("{name}", titleFile.basename);
+    }
     link.onclick = (event) => {
+      var _a2, _b2, _c, _d;
       event.preventDefault();
       event.stopPropagation();
-      if (this.settings.virtualLinkRequireModifier && !(event.ctrlKey || event.metaKey)) {
-        return false;
-      }
       const targetFile = file || (this.files.length > 0 ? this.files[0] : null);
       if (!targetFile)
         return false;
       if (this.plugin && this.plugin.app) {
+        const clicked = event.target;
+        const scope = (_c = (_a2 = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _a2.call(clicked, ".hover-popover")) != null ? _c : (_b2 = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _b2.call(clicked, ".workspace-leaf");
         void this.plugin.app.workspace.openLinkText(fullPath, "", false, { active: true });
         if (headerIdToUse) {
-          const refullPath = fullPath;
-          const base = Math.max(100, this.settings.headerJumpRetryDelay || 500);
-          [base, base * 6, base * 12].forEach((delay) => {
-            window.setTimeout(() => {
-              const activeFile = this.plugin.app.workspace.getActiveFile();
-              if (activeFile && targetFile && activeFile.path === targetFile.path) {
-                void this.plugin.app.workspace.openLinkText(refullPath, "", false, { active: true });
-              }
-            }, delay);
-          });
+          const alignWindow = Math.max(3e3, (this.settings.headingAlignWatchSeconds || 12) * 1e3);
+          const alreadyFramed = () => {
+            const el = findHeadingElement(document.body, headerIdToUse);
+            if (!el)
+              return false;
+            const sc = findScrollableAncestor(el);
+            if (!sc)
+              return false;
+            const r = el.getBoundingClientRect();
+            const sr = sc.getBoundingClientRect();
+            return r.top >= sr.top - 4 && r.bottom <= sr.bottom + 4;
+          };
+          if ((_d = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _d.call(clicked, ".cm-editor")) {
+            const editorScroll = (el, headingText) => {
+              var _a3, _b3;
+              if ((_b3 = (_a3 = this.plugin) == null ? void 0 : _a3.centerHeadingElement) == null ? void 0 : _b3.call(_a3, el, 8e3))
+                return true;
+              const target = resolveHeadingTarget(this.plugin.app, el, headingText, null);
+              if (!target)
+                return false;
+              this.plugin.centerHeadingLine(target.view, target.line, 8e3);
+              return true;
+            };
+            keepScrolledHeadingAligned(scope, "click-editor", alignWindow, editorScroll, headerIdToUse);
+            const abort = new AbortController();
+            const stop = () => abort.abort();
+            window.addEventListener("wheel", stop, { capture: true, passive: true, signal: abort.signal });
+            window.addEventListener("mousedown", stop, { capture: true, signal: abort.signal });
+            window.addEventListener("keydown", stop, { capture: true, signal: abort.signal });
+            for (const delay of [3e3, 8e3]) {
+              if (delay > alignWindow)
+                break;
+              window.setTimeout(() => {
+                if (abort.signal.aborted)
+                  return;
+                if (alreadyFramed())
+                  return;
+                if (findHeadingElement(document.body, headerIdToUse))
+                  return;
+                void this.plugin.app.workspace.openLinkText(fullPath, "", false, { active: true });
+              }, delay);
+            }
+          } else {
+            keepScrolledHeadingAligned(scope, "click", alignWindow, void 0, headerIdToUse);
+          }
         }
       }
       return false;
@@ -3101,18 +3456,23 @@ var VirtualLinkWidget = class extends import_view.WidgetType {
     }
     return element;
   }
+  eq(other) {
+    if (!(other instanceof VirtualLinkWidget))
+      return false;
+    return other.match.renderKey() === this.match.renderKey();
+  }
   ignoreEvent(event) {
     const isMouse = event.type === "mousedown" || event.type === "mouseup" || event.type === "click" || event.type === "dblclick";
     if (!isMouse)
       return true;
     if (this.match.isHiddenByReferenceLimit)
       return false;
-    if (!this.match.settings.virtualLinkRequireModifier)
-      return true;
-    const withModifier = event.ctrlKey || event.metaKey;
-    return withModifier;
+    return true;
   }
 };
+function isInHoverPopover(el) {
+  return Boolean(el == null ? void 0 : el.closest(".hover-popover"));
+}
 var AutoLinkerPlugin = class {
   constructor(view, app, settings, updateManager, plugin) {
     this.lastCursorPos = 0;
@@ -3121,6 +3481,7 @@ var AutoLinkerPlugin = class {
     this.scrollDebounceTimer = null;
     this.pendingScrollBuild = null;
     this.cachedActiveView = void 0;
+    this.lastRealActiveView = null;
     this.viewUpdateDomToFileMap = /* @__PURE__ */ new Map();
     this.app = app;
     this.plugin = plugin;
@@ -3139,9 +3500,13 @@ var AutoLinkerPlugin = class {
     });
   }
   update(update, force = false) {
-    var _a2, _b2;
+    var _a2, _b2, _c, _d;
     if (this.cachedActiveView === void 0) {
-      this.cachedActiveView = (_a2 = this.app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView)) != null ? _a2 : null;
+      const v = (_a2 = this.app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView)) != null ? _a2 : null;
+      this.cachedActiveView = v;
+      if (v && !isInHoverPopover(v.containerEl)) {
+        this.lastRealActiveView = v;
+      }
     }
     const activeView = this.cachedActiveView;
     const cmTableWidget = update.view.dom.closest(".cm-table-widget");
@@ -3152,15 +3517,21 @@ var AutoLinkerPlugin = class {
       const domFromUpdate = update.view.dom;
       const domFromWorkspace = activeView == null ? void 0 : activeView.contentEl;
       updateIsOnActiveView = domFromWorkspace ? isDescendant(domFromWorkspace, domFromUpdate, 3) : false;
+      let activeViewForUpdate = activeView;
+      if (!updateIsOnActiveView && activeView && isInHoverPopover(activeView.containerEl) && this.lastRealActiveView) {
+        updateIsOnActiveView = isDescendant(this.lastRealActiveView.contentEl, domFromUpdate, 3);
+        if (updateIsOnActiveView)
+          activeViewForUpdate = this.lastRealActiveView;
+      }
       if (!updateIsOnActiveView && inTableCellEditor) {
         updateIsOnActiveView = true;
       }
       if (updateIsOnActiveView) {
-        this.viewUpdateDomToFileMap.set(domFromUpdate, activeView == null ? void 0 : activeView.file);
+        this.viewUpdateDomToFileMap.set(domFromUpdate, activeViewForUpdate == null ? void 0 : activeViewForUpdate.file);
       }
     }
     const cursorPos = update.view.state.selection.main.from;
-    const activeFile = (_b2 = this.app.workspace.getActiveFile()) == null ? void 0 : _b2.path;
+    const activeFile = (_d = (_c = (_b2 = this.lastRealActiveView) == null ? void 0 : _b2.file) != null ? _c : this.app.workspace.getActiveFile()) == null ? void 0 : _d.path;
     const fileChanged = activeFile != this.lastActiveFile;
     if (force || this.lastCursorPos != cursorPos || update.docChanged || fileChanged || update.viewportChanged) {
       const isPureScroll = update.viewportChanged && !update.docChanged && !fileChanged && !force && this.lastCursorPos === cursorPos;
@@ -4053,11 +4424,9 @@ var BatchConvertModal = class extends import_obsidian6.Modal {
       contentEl.createEl("p", { text: "\u672A\u68C0\u6D4B\u5230\u53EF\u8F6C\u6362\u7684\u865A\u62DF\u94FE\u63A5\u3002" });
       return;
     }
-    const listEl = contentEl.createEl("div");
-    listEl.addClass("batch-convert-list");
+    const listEl = contentEl.createEl("div", { cls: "batch-convert-list" });
     this.items.forEach((item, idx) => {
-      const row = listEl.createEl("div");
-      row.addClass("batch-convert-row");
+      const row = listEl.createEl("div", { cls: "batch-convert-row" });
       const toggle = new import_obsidian6.Setting(row).setName(item.displayText).setDesc(item.multipleTargets ? "\u591A\u4E2A\u6307\u5411 \u2014 \u5C06\u8F6C\u6362\u4E3A\u7B2C\u4E00\u4E2A\u76EE\u6807" : item.replacement);
       const defaultOn = !(item.multipleTargets && this.settings.skipMultipleTargets);
       toggle.addToggle((tc) => tc.setValue(defaultOn).onChange((v) => {
@@ -4065,10 +4434,8 @@ var BatchConvertModal = class extends import_obsidian6.Modal {
       }));
       this.enabled[idx] = defaultOn;
     });
-    const buttonBar = contentEl.createEl("div");
-    buttonBar.addClass("batch-convert-buttons");
-    const convertBtn = buttonBar.createEl("button", { text: "\u8F6C\u6362" });
-    convertBtn.addClass("mod-cta");
+    const buttonBar = contentEl.createEl("div", { cls: "batch-convert-buttons" });
+    const convertBtn = buttonBar.createEl("button", { text: "\u8F6C\u6362", cls: "mod-cta" });
     convertBtn.onclick = () => this.convert();
     const cancelBtn = buttonBar.createEl("button", { text: "\u53D6\u6D88" });
     cancelBtn.onclick = () => this.close();
@@ -4108,10 +4475,8 @@ var BatchConvertFilesModal = class extends import_obsidian6.Modal {
     contentEl.createEl("p", {
       text: "\u4F7F\u7528\u6B65\u9AA4\uFF1A1) \u70B9\u51FB\u300C\u9009\u62E9\u7B14\u8BB0\u2026\u300D\uFF1B2) \u5728\u5F39\u51FA\u7684\u641C\u7D22\u6846\u4E2D\u9010\u4E2A\u70B9\u51FB\u8981\u5904\u7406\u7684\u7B14\u8BB0\uFF08\u53EF\u591A\u6B21\u70B9\u9009\uFF0C\u5DF2\u9009\u7B14\u8BB0\u4F1A\u5217\u5728\u4E0B\u65B9\uFF09\uFF1B3) \u9009\u597D\u540E\u70B9\u51FB\u300C\u626B\u63CF\u5E76\u8F6C\u6362\u300D\uFF0C\u63D2\u4EF6\u4F1A\u4E00\u6B21\u6027\u628A\u6BCF\u4E2A\u7B14\u8BB0\u91CC\u7684\u865A\u62DF\u94FE\u63A5\u56FA\u5316\u4E3A\u771F\u5B9E\u94FE\u63A5\uFF08\u8868\u683C\u5185\u7684\u865A\u62DF\u94FE\u63A5\u4E0D\u4F1A\u88AB\u5904\u7406\uFF09\u3002"
     });
-    const pickerBar = contentEl.createEl("div");
-    pickerBar.addClass("batch-convert-buttons");
-    const pickBtn = pickerBar.createEl("button", { text: "\u9009\u62E9\u7B14\u8BB0\u2026" });
-    pickBtn.addClass("mod-cta");
+    const pickerBar = contentEl.createEl("div", { cls: "batch-convert-buttons" });
+    const pickBtn = pickerBar.createEl("button", { text: "\u9009\u62E9\u7B14\u8BB0\u2026", cls: "mod-cta" });
     pickBtn.onclick = () => {
       const picker = new FileMultiSuggestModal(this.app);
       picker.onChoose((files) => {
@@ -4127,8 +4492,7 @@ var BatchConvertFilesModal = class extends import_obsidian6.Modal {
     const existing = contentEl.querySelector(".batch-selected-files");
     if (existing)
       existing.remove();
-    const box = contentEl.createEl("div");
-    box.addClass("batch-selected-files");
+    const box = contentEl.createEl("div", { cls: "batch-selected-files" });
     box.createEl("p", { text: `\u5DF2\u9009\u62E9 ${this.selectedFiles.length} \u4E2A\u7B14\u8BB0\uFF1A` });
     const list = box.createEl("ul");
     for (const f of this.selectedFiles) {
@@ -4623,7 +4987,7 @@ var DEFAULT_SETTINGS = {
   headingSymbolWhitelist: [],
   allowLinksInHeaders: false,
   colorOnlyDisplay: true,
-  virtualLinkRequireModifier: false,
+  disableVirtualLinkPreview: false,
   frontmatterExcludeProperty: "fakelink-exclude",
   perNoteExcludeKeywords: false,
   enableFrontmatterExcludeList: false,
@@ -4632,7 +4996,7 @@ var DEFAULT_SETTINGS = {
   noteVirtualLinkColor: "#c0392b",
   fuzzyBaseColor: "#8e44ad",
   fuzzyColorMixRatio: 50,
-  headerJumpRetryDelay: 500,
+  headingAlignWatchSeconds: 12,
   enableStemming: false,
   stemmingLanguage: "auto",
   fuzzyMatchThreshold: 80,
@@ -4646,7 +5010,7 @@ var DEFAULT_SETTINGS = {
   enableInternalLinkSyntax: false,
   enableContextDisambiguation: false,
   jumpEnabled: true,
-  jumpDelayMs: 8e3,
+  lineJumpWaitSeconds: 8,
   jumpOpenInNewTab: true,
   lineLinkSelfHeal: false,
   autoExcludeContainedCopies: false,
@@ -4656,6 +5020,15 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
   constructor() {
     super(...arguments);
     this.updateManager = new ExternalUpdateManager();
+    this.pdfReserveObserver = null;
+    this.imageReserveObserver = null;
+    this.imageSizes = /* @__PURE__ */ new Map();
+    this.imageSizeInflight = /* @__PURE__ */ new Map();
+    this.pdfHeights = /* @__PURE__ */ new Map();
+    this.pdfWidthHeights = /* @__PURE__ */ new Map();
+    this.pdfScaleSamples = /* @__PURE__ */ new Map();
+    this.embedReserveObserver = null;
+    this.embedHeights = /* @__PURE__ */ new Map();
   }
   isInCanvas() {
     const activeView = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView);
@@ -4776,7 +5149,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     if (!(view instanceof import_obsidian7.MarkdownView))
       return;
     const targetLine = await this.resolveLineByAnchor(file, line, anchor);
-    await this.waitForEditor(view, targetLine, this.settings.jumpDelayMs);
+    await this.waitForEditor(view, targetLine, this.settings.lineJumpWaitSeconds * 1e3);
     if (!wasAlreadyOpen) {
       await new Promise((resolve) => window.setTimeout(resolve, 1200));
     }
@@ -4805,6 +5178,82 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     }
     if (pass < 1)
       window.setTimeout(() => this.alignTallLine(view, line, pass + 1), 250);
+  }
+  centerHeadingLine(view, line, maxMs = 1e4) {
+    const cmEl = view.contentEl.querySelector(".cm-editor");
+    const cm = cmEl ? import_view2.EditorView.findFromDOM(cmEl) : null;
+    if (cm)
+      this.centerCmLine(cm, line, maxMs);
+  }
+  centerHeadingElement(el, maxMs = 8e3) {
+    const cmEl = el.closest(".cm-editor");
+    const cm = cmEl ? import_view2.EditorView.findFromDOM(cmEl) : null;
+    if (!cm)
+      return false;
+    let line;
+    try {
+      line = cm.state.doc.lineAt(cm.posAtDOM(el)).number - 1;
+    } catch (e) {
+      return false;
+    }
+    this.centerCmLine(cm, line, maxMs);
+    return true;
+  }
+  centerCmLine(cm, line, maxMs) {
+    const scroller = cm.scrollDOM;
+    const controller = new AbortController();
+    const stop = () => controller.abort();
+    window.addEventListener("wheel", stop, { capture: true, passive: true, signal: controller.signal });
+    window.addEventListener("mousedown", stop, { capture: true, signal: controller.signal });
+    window.addEventListener("keydown", stop, { capture: true, signal: controller.signal });
+    const startedAt = Date.now();
+    let passes = 0;
+    let lastCurrent = Number.NaN;
+    const MIN_FIRST_WRITE_MS = 2e3;
+    const MAX_WRITES = 8;
+    const tick = () => {
+      if (controller.signal.aborted)
+        return;
+      if (Date.now() - startedAt > maxMs || passes > 6)
+        return;
+      let block;
+      try {
+        const pos = cm.state.doc.line(line + 1).from;
+        block = cm.lineBlockAt(pos);
+      } catch (e) {
+        return;
+      }
+      const target = Math.max(6, Math.round((scroller.clientHeight - block.height) / 2));
+      const current = Math.round(block.top - scroller.scrollTop);
+      const tolerance = Math.max(6, Math.round(scroller.clientHeight * 0.04));
+      const unreliable = current < -scroller.clientHeight;
+      const stillLoading = Array.from(scroller.querySelectorAll("img")).some((img) => !img.complete);
+      const settled = current === lastCurrent && !stillLoading;
+      lastCurrent = current;
+      const miss = Math.abs(current - target);
+      const impatient = Date.now() - startedAt > 4e3 && miss > 60;
+      const shouldAct = miss > tolerance && (settled || impatient);
+      const oldEnough = Date.now() - startedAt >= MIN_FIRST_WRITE_MS;
+      if (!unreliable && shouldAct && oldEnough && passes < MAX_WRITES) {
+        try {
+          cm.requestMeasure({
+            read: (view) => {
+              const block2 = view.lineBlockAt(view.state.doc.line(line + 1).from);
+              return { top: block2.top, height: block2.height };
+            },
+            write: (m, view) => {
+              const want = m.top - Math.max(6, Math.round((view.scrollDOM.clientHeight - m.height) / 2));
+              view.scrollDOM.scrollTop = Math.max(0, want);
+            }
+          });
+        } catch (e) {
+          return;
+        }
+        passes++;
+      }
+      window.setTimeout(tick, 700);
+    };
+    window.setTimeout(tick, 400);
   }
   mixHexColors(base, target, t2) {
     const parse = (hex) => {
@@ -4979,6 +5428,528 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       evt.preventDefault();
       evt.stopImmediatePropagation();
       void this.jumpToLine(filepath, line, anchor);
+    }, true);
+    const CACHE_KEY = "__fakelinkSizeCache2";
+    const SIZE_CACHE_LIMIT = 1500;
+    let sizeCacheSaveTimer = null;
+    const persistSizeCache = () => {
+      if (sizeCacheSaveTimer !== null)
+        window.clearTimeout(sizeCacheSaveTimer);
+      sizeCacheSaveTimer = window.setTimeout(() => {
+        sizeCacheSaveTimer = null;
+        void (async () => {
+          try {
+            const loaded = await this.loadData();
+            const stored = loaded != null ? loaded : {};
+            const capMap = (m, n) => {
+              const out = {};
+              for (const [k, v] of Array.from(m.entries()).slice(-n))
+                out[k] = v;
+              return out;
+            };
+            const tailMap = (m, n) => {
+              const out = {};
+              for (const [k, v] of Array.from(m.entries()).slice(-n))
+                out[String(k)] = v;
+              return out;
+            };
+            stored[CACHE_KEY] = {
+              images: capMap(this.imageSizes, SIZE_CACHE_LIMIT),
+              pdf: capMap(this.pdfHeights, 300),
+              embeds: capMap(this.embedHeights, 300),
+              widths: tailMap(this.pdfWidthHeights, 50),
+              scales: tailMap(this.pdfScaleSamples, 50)
+            };
+            await this.saveData(stored);
+          } catch (e) {
+          }
+        })();
+      }, 3e3);
+    };
+    void (async () => {
+      var _a2, _b2, _c, _d, _e;
+      try {
+        const loaded = await this.loadData();
+        const stored = loaded != null ? loaded : {};
+        const c = stored[CACHE_KEY];
+        if (!c)
+          return;
+        const asList = (v) => Array.isArray(v) ? v : null;
+        const images = (_a2 = c.images) != null ? _a2 : {};
+        for (const k of Object.keys(images)) {
+          const v = images[k];
+          if (v && v.w > 0)
+            this.imageSizes.set(k, v);
+        }
+        const pdf = (_b2 = c.pdf) != null ? _b2 : {};
+        for (const k of Object.keys(pdf)) {
+          const list = asList(pdf[k]);
+          if (list)
+            this.pdfHeights.set(k, list);
+        }
+        const embeds = (_c = c.embeds) != null ? _c : {};
+        for (const k of Object.keys(embeds)) {
+          const list = asList(embeds[k]);
+          if (list)
+            this.embedHeights.set(k, list);
+        }
+        const scales = (_d = c.scales) != null ? _d : {};
+        for (const k of Object.keys(scales)) {
+          const list = asList(scales[k]);
+          if (list)
+            this.pdfScaleSamples.set(Number(k), list);
+        }
+        const widths = (_e = c.widths) != null ? _e : {};
+        for (const k of Object.keys(widths)) {
+          const e = widths[k];
+          if (e && typeof e.h === "number" && e.h > 0 && typeof e.r === "number" && e.r > 0) {
+            this.pdfWidthHeights.set(Number(k), { h: e.h, r: e.r });
+          }
+        }
+      } catch (e) {
+      }
+    })();
+    const pdfBucket = (w) => w > 0 ? Math.round(w / 20) * 20 : 0;
+    const rememberPdfHeight = (src, width, height) => {
+      var _a2;
+      const bucket = pdfBucket(width);
+      if (bucket <= 0)
+        return;
+      const list = (_a2 = this.pdfHeights.get(src)) != null ? _a2 : [];
+      const found = list.find((e) => e.w === bucket);
+      if (found)
+        found.h = height;
+      else
+        list.push({ w: bucket, h: height });
+      while (list.length > 4)
+        list.shift();
+      this.pdfHeights.set(src, list);
+      persistSizeCache();
+    };
+    const rememberPdfFallback = (width, height, ratio) => {
+      const bucket = pdfBucket(width);
+      if (bucket > 0)
+        this.pdfWidthHeights.set(bucket, { h: height, r: ratio });
+    };
+    const recallPdfFallback = (width, ratio) => {
+      const bucket = pdfBucket(width);
+      if (bucket <= 0)
+        return null;
+      const entry = this.pdfWidthHeights.get(bucket);
+      if (!entry || !(entry.r > 0) || !(ratio > 0))
+        return null;
+      return Math.abs(entry.r - ratio) / ratio <= 0.06 ? entry.h : null;
+    };
+    const SCALE_SAMPLES_MAX = 8;
+    const rememberPdfSample = (width, cropHeightPt, renderedHeight) => {
+      var _a2;
+      const bucket = pdfBucket(width);
+      if (bucket <= 0 || !(cropHeightPt > 0) || !(renderedHeight > 0))
+        return;
+      const list = (_a2 = this.pdfScaleSamples.get(bucket)) != null ? _a2 : [];
+      list.push({ c: Math.round(cropHeightPt), h: renderedHeight });
+      while (list.length > SCALE_SAMPLES_MAX)
+        list.shift();
+      this.pdfScaleSamples.set(bucket, list);
+      persistSizeCache();
+    };
+    const learnedPdfScale = (width) => {
+      const bucket = pdfBucket(width);
+      const list = bucket > 0 ? this.pdfScaleSamples.get(bucket) : void 0;
+      if (!list || list.length < 2)
+        return null;
+      const scales = list.filter((s) => s.c > 0).map((s) => s.h / s.c).sort((a, b) => a - b);
+      if (scales.length < 2)
+        return null;
+      const median = scales[Math.floor(scales.length / 2)];
+      const spread = scales[scales.length - 1] - scales[0];
+      return spread <= median * 0.12 ? median : null;
+    };
+    const predictPdfHeight = (width, cropHeightPt) => {
+      const scale = learnedPdfScale(width);
+      if (!scale || !(cropHeightPt > 0))
+        return null;
+      return Math.round(scale * cropHeightPt);
+    };
+    const recallPdfHeight = (src, width) => {
+      const list = this.pdfHeights.get(src);
+      if (!list || list.length === 0)
+        return null;
+      const bucket = pdfBucket(width);
+      if (bucket <= 0)
+        return list[list.length - 1].h;
+      let best = list[0];
+      for (const e of list) {
+        if (Math.abs(e.w - bucket) < Math.abs(best.w - bucket))
+          best = e;
+      }
+      return Math.abs(best.w - bucket) <= 80 ? best.h : null;
+    };
+    const reserveEmbedHeight = (el) => {
+      if (el.dataset.fkReserved)
+        return;
+      const src = el.getAttribute("src") || "";
+      const m = /rect=([0-9.]+),([0-9.]+),([0-9.]+),([0-9.]+)/.exec(src);
+      if (!m)
+        return;
+      const w = Math.abs(parseFloat(m[3]) - parseFloat(m[1]));
+      const h = Math.abs(parseFloat(m[4]) - parseFloat(m[2]));
+      if (!(w > 0 && h > 0))
+        return;
+      el.dataset.fkReserved = "1";
+      const apply = () => {
+        var _a2, _b2;
+        if (!el.isConnected)
+          return;
+        const width = el.getBoundingClientRect().width;
+        const cropRatio = w / h;
+        const known = (_b2 = (_a2 = recallPdfHeight(src, width)) != null ? _a2 : predictPdfHeight(width, h)) != null ? _b2 : recallPdfFallback(width, cropRatio);
+        if (known)
+          el.setCssStyles({ minHeight: known + "px" });
+        else
+          el.setCssStyles({ aspectRatio: w + " / " + h });
+      };
+      apply();
+      window.requestAnimationFrame(apply);
+      const release = () => {
+        el.setCssStyles({ aspectRatio: "", minHeight: "" });
+        delete el.dataset.fkReserved;
+      };
+      let timer = null;
+      const measureReal = () => {
+        if (!el.isConnected || el.dataset.fkReserved)
+          return;
+        const rect = el.getBoundingClientRect();
+        if (rect.height > 0) {
+          rememberPdfHeight(src, rect.width, Math.round(rect.height));
+          rememberPdfFallback(rect.width, Math.round(rect.height), w / h);
+          rememberPdfSample(rect.width, h, Math.round(rect.height));
+        }
+      };
+      const ro = new ResizeObserver(() => {
+        if (timer !== null)
+          window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          timer = null;
+          if (el.dataset.fkReserved) {
+            release();
+            return;
+          }
+          measureReal();
+          ro.disconnect();
+        }, 700);
+      });
+      ro.observe(el);
+      window.setTimeout(release, 6e3);
+    };
+    const onInsert = [];
+    const insertObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of Array.from(mutation.addedNodes)) {
+          if (!node.instanceOf(HTMLElement))
+            continue;
+          for (const handler of onInsert)
+            handler(node);
+        }
+      }
+    });
+    this.register(() => insertObserver.disconnect());
+    const RESERVE_SEL = '.internal-embed[src*="rect="]';
+    onInsert.push((node) => {
+      if (node.matches(RESERVE_SEL))
+        reserveEmbedHeight(node);
+      for (const el of Array.from(node.querySelectorAll(RESERVE_SEL))) {
+        reserveEmbedHeight(el);
+      }
+    });
+    for (const el of Array.from(document.querySelectorAll(RESERVE_SEL))) {
+      reserveEmbedHeight(el);
+    }
+    const IMG_EXT = ["png", "jpg", "jpeg", "gif", "webp", "svg"];
+    const readExifOrientation = (d, u, start, len) => {
+      if (len < 14)
+        return 0;
+      if (!(u[start] === 69 && u[start + 1] === 120 && u[start + 2] === 105 && u[start + 3] === 102))
+        return 0;
+      const tiff = start + 6;
+      const le = u[tiff] === 73 && u[tiff + 1] === 73;
+      const rd16 = (p) => le ? d.getUint16(p, true) : d.getUint16(p, false);
+      const rd32 = (p) => le ? d.getUint32(p, true) : d.getUint32(p, false);
+      const ifd = tiff + rd32(tiff + 4);
+      if (ifd + 2 > start + len)
+        return 0;
+      const count = rd16(ifd);
+      for (let i = 0; i < count; i++) {
+        const e = ifd + 2 + i * 12;
+        if (e + 12 > start + len)
+          return 0;
+        if (rd16(e) === 274)
+          return rd16(e + 8);
+      }
+      return 0;
+    };
+    const parseSvgSize = (text) => {
+      const head = text.slice(0, 4e3);
+      const attr = (name) => {
+        const m = new RegExp("\\s" + name + `\\s*=\\s*["']([^"']*)["']`, "i").exec(head);
+        return m ? parseFloat(m[1]) : NaN;
+      };
+      const w = attr("width");
+      const h = attr("height");
+      if (w > 0 && h > 0)
+        return { w, h };
+      const vb = /\sviewBox\s*=\s*["']([^"']+)["']/i.exec(head);
+      if (vb) {
+        const p = vb[1].trim().split(/[\s,]+/).map(parseFloat);
+        if (p.length === 4 && p[2] > 0 && p[3] > 0)
+          return { w: p[2], h: p[3] };
+      }
+      return null;
+    };
+    const parseImageSize = (buf) => {
+      if (buf.byteLength < 32)
+        return null;
+      const d = new DataView(buf);
+      const u = new Uint8Array(buf);
+      if (u[0] === 137 && u[1] === 80 && u[2] === 78 && u[3] === 71) {
+        return { w: d.getUint32(16, false), h: d.getUint32(20, false) };
+      }
+      if (u[0] === 71 && u[1] === 73 && u[2] === 70) {
+        return { w: d.getUint16(6, true), h: d.getUint16(8, true) };
+      }
+      if (u[0] === 255 && u[1] === 216) {
+        let o = 2;
+        let exifOrientation = 0;
+        while (o + 9 < buf.byteLength) {
+          if (u[o] !== 255) {
+            o++;
+            continue;
+          }
+          const marker = u[o + 1];
+          const len = d.getUint16(o + 2, false);
+          if (len < 2)
+            return null;
+          if (marker === 225) {
+            exifOrientation = readExifOrientation(d, u, o + 4, len - 2);
+          }
+          if (marker >= 192 && marker <= 207 && marker !== 196 && marker !== 200 && marker !== 204) {
+            const w = d.getUint16(o + 7, false);
+            const h = d.getUint16(o + 5, false);
+            return exifOrientation >= 5 ? { w: h, h: w } : { w, h };
+          }
+          o += 2 + len;
+        }
+        return null;
+      }
+      if (u[8] === 87 && u[9] === 69 && u[10] === 66 && u[11] === 80) {
+        const fourcc = String.fromCharCode(u[12], u[13], u[14], u[15]);
+        if (fourcc === "VP8X") {
+          return {
+            w: (u[24] | u[25] << 8 | u[26] << 16) + 1,
+            h: (u[27] | u[28] << 8 | u[29] << 16) + 1
+          };
+        }
+        if (fourcc === "VP8 ") {
+          return { w: d.getUint16(26, true) & 16383, h: d.getUint16(28, true) & 16383 };
+        }
+      }
+      return null;
+    };
+    const vaultPathOfImage = (img) => {
+      const wrapper = img.closest(".internal-embed");
+      const raw = (wrapper == null ? void 0 : wrapper.getAttribute("src")) || "";
+      if (raw)
+        return raw.split("#")[0].split("|")[0];
+      const src = img.getAttribute("src") || "";
+      const m = /^app:\/\/[^/]+\/(.+)$/.exec(src);
+      if (!m)
+        return null;
+      try {
+        return decodeURIComponent(m[1]);
+      } catch (e) {
+        return m[1];
+      }
+    };
+    const applyImageSize = (img, dim) => {
+      if (img.dataset.fkSized)
+        return;
+      img.dataset.fkSized = "1";
+      img.setCssStyles({ aspectRatio: dim.w + " / " + dim.h });
+      img.addEventListener("load", () => {
+        img.setCssStyles({ aspectRatio: "" });
+      }, { once: true });
+    };
+    const reserveImage = (img) => {
+      var _a2, _b2;
+      if (img.dataset.fkSized)
+        return;
+      if (img.complete && img.naturalWidth > 0)
+        return;
+      const path = vaultPathOfImage(img);
+      if (!path)
+        return;
+      const ext = (_b2 = (_a2 = path.split(".").pop()) == null ? void 0 : _a2.toLowerCase()) != null ? _b2 : "";
+      if (!IMG_EXT.includes(ext))
+        return;
+      const file = this.app.vault.getAbstractFileByPath(path);
+      if (!(file instanceof import_obsidian7.TFile))
+        return;
+      const key = path + "\0" + file.stat.mtime;
+      const known = this.imageSizes.get(key);
+      if (known) {
+        applyImageSize(img, known);
+        return;
+      }
+      const pending = this.imageSizeInflight.get(key);
+      if (pending) {
+        void pending.then((dim) => {
+          if (dim)
+            applyImageSize(img, dim);
+        });
+        return;
+      }
+      const read = (ext === "svg" ? this.app.vault.adapter.read(path).then((text) => parseSvgSize(text)) : this.app.vault.adapter.readBinary(path).then((buf) => parseImageSize(buf))).then((dim) => {
+        if (dim) {
+          this.imageSizes.set(key, dim);
+          persistSizeCache();
+        }
+        return dim;
+      }).catch(() => null).then((dim) => {
+        this.imageSizeInflight.delete(key);
+        return dim;
+      });
+      this.imageSizeInflight.set(key, read);
+      void read.then((dim) => {
+        if (dim)
+          applyImageSize(img, dim);
+      });
+    };
+    onInsert.push((node) => {
+      if (node.instanceOf(HTMLImageElement))
+        reserveImage(node);
+      for (const img of Array.from(node.querySelectorAll("img"))) {
+        reserveImage(img);
+      }
+    });
+    for (const img of Array.from(document.querySelectorAll("img"))) {
+      reserveImage(img);
+    }
+    const EMBED_SEL = ".internal-embed.markdown-embed";
+    const WIDTH_BUCKET = 20;
+    const bucketOf = (w) => w > 0 ? Math.round(w / WIDTH_BUCKET) * WIDTH_BUCKET : 0;
+    const rememberEmbedHeight = (src, width, height) => {
+      var _a2;
+      const bucket = bucketOf(width);
+      if (bucket <= 0)
+        return;
+      const list = (_a2 = this.embedHeights.get(src)) != null ? _a2 : [];
+      const found = list.find((e) => e.w === bucket);
+      if (found)
+        found.h = height;
+      else
+        list.push({ w: bucket, h: height });
+      while (list.length > 6)
+        list.shift();
+      this.embedHeights.set(src, list);
+      persistSizeCache();
+    };
+    const recallEmbedHeight = (src, width) => {
+      const list = this.embedHeights.get(src);
+      if (!list || list.length === 0)
+        return null;
+      const bucket = bucketOf(width);
+      if (bucket <= 0)
+        return list[list.length - 1].h;
+      let best = list[0];
+      for (const e of list) {
+        if (Math.abs(e.w - bucket) < Math.abs(best.w - bucket))
+          best = e;
+      }
+      return Math.abs(best.w - bucket) <= 80 ? best.h : null;
+    };
+    const reserveEmbed = (el) => {
+      if (el.dataset.fkEmbedSeen)
+        return;
+      el.dataset.fkEmbedSeen = "1";
+      const src = el.getAttribute("src");
+      const apply = () => {
+        if (!src || !el.isConnected)
+          return;
+        if (el.dataset.fkEmbedReserved)
+          return;
+        const known = recallEmbedHeight(src, el.getBoundingClientRect().width);
+        if (known && known > 0) {
+          el.setCssStyles({ minHeight: known + "px" });
+          el.dataset.fkEmbedReserved = "1";
+        }
+      };
+      apply();
+      window.requestAnimationFrame(apply);
+      let timer = null;
+      let waited = 0;
+      const measure = () => {
+        timer = null;
+        const rect = el.getBoundingClientRect();
+        if (!el.isConnected || rect.height <= 0) {
+          ro.disconnect();
+          return;
+        }
+        if (!el.classList.contains("is-loaded") && waited < 4e3) {
+          waited += 400;
+          timer = window.setTimeout(measure, 400);
+          return;
+        }
+        if (el.dataset.fkEmbedReserved) {
+          el.setCssStyles({ minHeight: "" });
+          delete el.dataset.fkEmbedReserved;
+          timer = window.setTimeout(measure, 400);
+          return;
+        }
+        if (src)
+          rememberEmbedHeight(src, rect.width, Math.round(rect.height));
+        ro.disconnect();
+      };
+      const ro = new ResizeObserver(() => {
+        if (timer !== null)
+          window.clearTimeout(timer);
+        timer = window.setTimeout(measure, 400);
+      });
+      ro.observe(el);
+    };
+    onInsert.push((node) => {
+      if (node.matches(EMBED_SEL))
+        reserveEmbed(node);
+      for (const el of Array.from(node.querySelectorAll(EMBED_SEL))) {
+        reserveEmbed(el);
+      }
+    });
+    for (const el of Array.from(document.querySelectorAll(EMBED_SEL))) {
+      reserveEmbed(el);
+    }
+    const alignWindow = () => Math.max(3e3, (this.settings.headingAlignWatchSeconds || 12) * 1e3);
+    const scrollEditor = (el, headingText) => {
+      if (this.centerHeadingElement(el, 8e3))
+        return true;
+      const target = resolveHeadingTarget(this.app, el, headingText, null);
+      if (!target)
+        return false;
+      this.centerHeadingLine(target.view, target.line, 8e3);
+      return true;
+    };
+    onInsert.push((node) => {
+      const pops = node.matches(".hover-popover") ? [node] : Array.from(node.querySelectorAll(".hover-popover"));
+      for (const pop of pops)
+        keepScrolledHeadingAligned(pop, "popover", alignWindow());
+    });
+    insertObserver.observe(document.body, { childList: true, subtree: true });
+    this.registerDomEvent(document, "click", (evt) => {
+      const el = evt.target;
+      if (!el || el.closest(".cm-editor"))
+        return;
+      if (!el.closest(".virtual-link, a.virtual-link-a"))
+        return;
+      const scope = el.closest(".hover-popover, .workspace-leaf");
+      window.setTimeout(() => keepScrolledHeadingAligned(scope, "dom-click", alignWindow(), scrollEditor), 60);
     }, true);
     window.setTimeout(() => {
       var _a2, _b2;
@@ -5351,11 +6322,23 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     multipleRefs.forEach((ref) => ref.remove());
   }
   onunload() {
+    var _a2, _b2, _c;
+    (_a2 = this.pdfReserveObserver) == null ? void 0 : _a2.disconnect();
+    (_b2 = this.imageReserveObserver) == null ? void 0 : _b2.disconnect();
+    (_c = this.embedReserveObserver) == null ? void 0 : _c.disconnect();
     this.cleanupVirtualLinks();
   }
   async loadSettings() {
     var _a2, _b2;
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    const stored = await this.loadData();
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, stored);
+    if (stored.headingAlignWatchSeconds == null && typeof stored.headerJumpRetryDelay === "number") {
+      const migrated = Math.round(stored.headerJumpRetryDelay * 24 / 1e3);
+      this.settings.headingAlignWatchSeconds = Math.min(120, Math.max(3, migrated || DEFAULT_SETTINGS.headingAlignWatchSeconds));
+    }
+    if (stored.lineJumpWaitSeconds == null && typeof stored.jumpDelayMs === "number") {
+      this.settings.lineJumpWaitSeconds = Math.min(60, Math.max(0, Math.round(stored.jumpDelayMs / 1e3)));
+    }
     try {
       const fileContent = await this.app.vault.adapter.read(this.app.vault.configDir + "/app.json");
       const appSettings = JSON.parse(fileContent);
@@ -5667,9 +6650,10 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
         textAreaDef(t("Heading symbol whitelist"), "headingSymbolWhitelist", {
           desc: t("Symbols in headings that are stripped from the virtual-link keyword (comma separated). Use this to decorate headings with markers (e.g. \u{1F525}) without those markers affecting matching.")
         }),
-        numberDef(t("Header jump retry delay (ms)"), "headerJumpRetryDelay", {
-          desc: t("When you click a virtual link pointing to a heading, the plugin jumps again after a short delay to correct position drift in large files. This is the base delay in milliseconds; it retries 3 times with increasing intervals. Minimum 100."),
-          min: 100
+        numberDef(t("Heading align watch window (seconds)"), "headingAlignWatchSeconds", {
+          desc: t("How long (in SECONDS) a jumped-to heading keeps being re-aligned. The heading is put back in place the moment the content above it changes height (a PDF or an image finishing, MathJax typesetting) - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60)."),
+          min: 3,
+          max: 120
         })
       ]),
       groupDef(t("Fuzzy matching"), [
@@ -5819,10 +6803,10 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
           desc: t("When enabled, copied line links also store the text of the target line. If the note is edited and line numbers drift, the jump re-finds the line by its text instead of landing on the wrong line. Works for both plain and aliased line links. Line links copied before enabling this have no anchor and keep the old behavior."),
           visible: () => s.jumpEnabled
         }),
-        numberDef(t("Jump delay (ms)"), "jumpDelayMs", {
-          desc: t("The maximum time (milliseconds) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. Default 8000."),
+        numberDef(t("Line jump wait limit (seconds)"), "lineJumpWaitSeconds", {
+          desc: t("The maximum time (in SECONDS) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. The number you type is the number of seconds (8 = 8 seconds); 0 means do not wait."),
           min: 0,
-          max: 6e4,
+          max: 60,
           visible: () => s.jumpEnabled
         }),
         toggleDef(t("Open in new tab"), "jumpOpenInNewTab", {
@@ -5869,8 +6853,8 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
         toggleDef(t("Color-only display"), "colorOnlyDisplay", {
           desc: t("When enabled, virtual links are shown in a custom text color instead of the default background shadow.")
         }),
-        toggleDef(t("Require Ctrl/Cmd+click to open virtual links"), "virtualLinkRequireModifier", {
-          desc: t("When enabled, a plain click on a virtual link only places the cursor (so you can keep typing in that line) and Ctrl/Cmd+click is needed to jump. Useful because a virtual link covers its text, which otherwise makes that line unclickable.")
+        toggleDef(t("No hover preview for virtual links"), "disableVirtualLinkPreview", {
+          desc: t('When enabled, hovering a virtual link no longer opens a page preview / Hover Editor popover. Virtual links are rendered by this plugin rather than written in the note, so the popover can be unwanted while reading; clicking still opens the note. Off by default. Tip: to keep previews but only when you ask for them, turn on "Require Ctrl/Cmd to trigger" in the core Page preview plugin settings instead.')
         }),
         colorDef(t("Header link color"), "headerVirtualLinkColor", {
           desc: t("Color for header virtual links (e.g., #517ea0).")
