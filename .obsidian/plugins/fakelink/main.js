@@ -47,6 +47,8 @@ var zhCN = {
   "References": "\u5F15\u7528\u663E\u793A",
   "Conversion": "\u8F6C\u6362",
   "Appearance": "\u5916\u89C2",
+  "Background": "\u80CC\u666F",
+  "One switch for the whole look: a very faint tint, a light blue background on list lines, on tab-indented lines (and the line above them), on tables and callouts, a warm orange highlight on the cursor line with a dark brown caret, accent styling for the active tab header, and a gentle mask while the window is unfocused. Off by default; every colour is a CSS variable (--fakelink-...).": "\u4E00\u4E2A\u5F00\u5173\u63A7\u5236\u6574\u5957\u5916\u89C2\uFF1A\u5F88\u6DE1\u7684\u6574\u4F53\u5E95\u8272\uFF1B\u5217\u8868\u884C\u3001Tab \u7F29\u8FDB\u884C\uFF08\u8FDE\u540C\u5B83\u4E0A\u9762\u7684\u4E00\u884C\uFF09\u3001\u8868\u683C\u884C\u4E0E\u8C03\u7528\u5757\u7684\u6DE1\u84DD\u80CC\u666F\uFF1B\u5149\u6807\u884C\u7684\u6696\u6A59\u9AD8\u4EAE\u4E0E\u6DF1\u68D5\u8272\u5149\u6807\uFF1B\u6FC0\u6D3B\u6807\u7B7E\u9875\u7684\u5F3A\u8C03\u6837\u5F0F\uFF1B\u4EE5\u53CA\u7A97\u53E3\u5931\u7126\u65F6\u7684\u4E00\u5C42\u8F7B\u8499\u7248\u3002\u9ED8\u8BA4\u5173\u95ED\u3002\u6240\u6709\u989C\u8272\u90FD\u662F CSS \u53D8\u91CF\uFF08--fakelink-...\uFF09\uFF0C\u53EF\u81EA\u884C\u8C03\u6574\u3002",
   "Auto-toggle activation status by mode": "\u6309\u6A21\u5F0F\u81EA\u52A8\u5207\u6362\u6FC0\u6D3B\u72B6\u6001",
   "When enabled, the plugin will automatically activate in edit mode if inactive, and automatically deactivate in read mode if active": "\u542F\u7528\u540E\uFF0C\u63D2\u4EF6\u5C06\u5728\u7F16\u8F91\u6A21\u5F0F\u4E2D\u81EA\u52A8\u6FC0\u6D3B\uFF0C\u5728\u9605\u8BFB\u6A21\u5F0F\u4E2D\u81EA\u52A8\u505C\u7528",
   "Activate virtual linker": "\u6FC0\u6D3B\u865A\u62DF\u94FE\u63A5",
@@ -885,6 +887,7 @@ var _PrefixTree = class {
     this.firstSentenceCache = /* @__PURE__ */ new Map();
     this.lastAutoExcludeSignature = "";
     this.fuzzyKeywordMap = /* @__PURE__ */ new Map();
+    this.derivedKeywords = /* @__PURE__ */ new Set();
     this.fuzzyBuckets = /* @__PURE__ */ new Map();
     this.fuzzyKeywordLengths = /* @__PURE__ */ new Set();
     this.minFuzzyKeywordLen = Infinity;
@@ -904,6 +907,7 @@ var _PrefixTree = class {
     this.fuzzyKeywordMap.clear();
     this.fuzzyBuckets.clear();
     this.fuzzyKeywordLengths.clear();
+    this.derivedKeywords.clear();
     this.minFuzzyKeywordLen = Infinity;
     this.maxFuzzyKeywordLen = 0;
   }
@@ -1160,10 +1164,16 @@ var _PrefixTree = class {
     matchNodes.sort((a, b) => b.length - a.length);
     return matchNodes;
   }
+  isDerivedKeyword(name) {
+    return this.derivedKeywords.has(name.toLowerCase());
+  }
   addFileWithName(name, file, matchCase, headerId, canonicalKeyword, canonicalHeaderId) {
     var _a2, _b2, _c, _d;
     if (name.length < 2)
       return;
+    if (canonicalKeyword && canonicalKeyword.toLowerCase() !== name.toLowerCase()) {
+      this.derivedKeywords.add(name.toLowerCase());
+    }
     let node = this.root;
     for (const char of name) {
       let child = node.children.get(char);
@@ -1630,13 +1640,18 @@ var _PrefixTree = class {
     return m ? heading.slice(m[0].length) : heading;
   }
   headingKeyword(heading) {
-    let s = _PrefixTree.stripHeadingNumber(heading);
+    const withoutNumber = _PrefixTree.stripHeadingNumber(heading);
+    const numberStripped = withoutNumber.trim().toLowerCase() !== heading.trim().toLowerCase();
+    let s = withoutNumber;
     const symbols = this.settings.headingSymbolWhitelist;
     if (symbols && symbols.length > 0) {
       for (const sym of symbols) {
         if (sym)
           s = s.split(sym).join("");
       }
+    }
+    if (numberStripped) {
+      this.derivedKeywords.add(s.toLowerCase());
     }
     return s;
   }
@@ -3170,6 +3185,9 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
                     }
                     const headerId = node.type === 2 /* Header */ ? node.headerId : void 0;
                     const match = new VirtualMatch(id++, name, nFrom, nTo, files, node.type, !isWordBoundary, this.settings, this.plugin, headerId);
+                    if (this.linkerCache.cache.isDerivedKeyword(name)) {
+                      match.isFuzzy = true;
+                    }
                     if (node.files.size > 1) {
                       node.files.forEach((file) => {
                         const ownHeaderId = this.linkerCache.cache.getFileHeaderId(file, name);
@@ -3533,7 +3551,8 @@ var AutoLinkerPlugin = class {
     const cursorPos = update.view.state.selection.main.from;
     const activeFile = (_d = (_c = (_b2 = this.lastRealActiveView) == null ? void 0 : _b2.file) != null ? _c : this.app.workspace.getActiveFile()) == null ? void 0 : _d.path;
     const fileChanged = activeFile != this.lastActiveFile;
-    if (force || this.lastCursorPos != cursorPos || update.docChanged || fileChanged || update.viewportChanged) {
+    const treeChanged = (0, import_language.syntaxTree)(update.startState) !== (0, import_language.syntaxTree)(update.state);
+    if (force || this.lastCursorPos != cursorPos || update.docChanged || fileChanged || update.viewportChanged || treeChanged) {
       const isPureScroll = update.viewportChanged && !update.docChanged && !fileChanged && !force && this.lastCursorPos === cursorPos;
       if (isPureScroll) {
         this.pendingScrollBuild = { view: update.view, viewIsActive: updateIsOnActiveView };
@@ -3788,6 +3807,9 @@ var AutoLinkerPlugin = class {
               }
               if (filteredFiles.length > 0) {
                 const virtualMatch = new VirtualMatch(id++, name, aFrom, aTo, filteredFiles, node.type, !isWordBoundary, this.settings, this.plugin, node.headerId);
+                if (this.linkerCache.cache.isDerivedKeyword(name)) {
+                  virtualMatch.isFuzzy = true;
+                }
                 if (filteredFiles.length > 1) {
                   filteredFiles.forEach((file, index) => {
                     if (index === 0)
@@ -4988,6 +5010,7 @@ var DEFAULT_SETTINGS = {
   allowLinksInHeaders: false,
   colorOnlyDisplay: true,
   disableVirtualLinkPreview: false,
+  backgroundHighlight: false,
   frontmatterExcludeProperty: "fakelink-exclude",
   perNoteExcludeKeywords: false,
   enableFrontmatterExcludeList: false,
@@ -5286,6 +5309,9 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     if (this.settings.colorOnlyDisplay) {
       activeWindow.document.body.classList.add("virtual-link-color-only");
     }
+    if (this.settings.backgroundHighlight) {
+      activeWindow.document.body.classList.add("virtual-link-bg");
+    }
     activeWindow.document.body.style.setProperty("--virtual-link-color", this.settings.noteVirtualLinkColor);
     activeWindow.document.body.style.setProperty("--virtual-link-header-color", this.settings.headerVirtualLinkColor);
     activeWindow.document.body.style.setProperty("--virtual-link-note-color", this.settings.noteVirtualLinkColor);
@@ -5304,6 +5330,14 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       context.addChild(new GlossaryLinker(this.app, this.settings, context, element, this));
     });
     this.registerEditorExtension(liveLinkerPlugin(this.app, this.settings, this.updateManager, this));
+    this.registerEditorExtension(import_view2.ViewPlugin.fromClass(class {
+      constructor(view) {
+        this.decorations = buildIndentBackground(view);
+      }
+      update(update) {
+        this.decorations = buildIndentBackground(update.view);
+      }
+    }, { decorations: (v) => v.decorations }));
     this.registerEditorExtension(import_view2.EditorView.updateListener.of((update) => {
       if (!this.settings.alternativeDisplayStyle || !update.docChanged)
         return;
@@ -6329,8 +6363,13 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     this.cleanupVirtualLinks();
   }
   async loadSettings() {
-    var _a2, _b2;
-    const stored = await this.loadData();
+    var _a2, _b2, _c;
+    let stored = {};
+    try {
+      stored = (_a2 = await this.loadData()) != null ? _a2 : {};
+    } catch (error) {
+      console.error("[fakelink] failed to read data.json - falling back to the defaults", error);
+    }
     this.settings = Object.assign({}, DEFAULT_SETTINGS, stored);
     if (stored.headingAlignWatchSeconds == null && typeof stored.headerJumpRetryDelay === "number") {
       const migrated = Math.round(stored.headerJumpRetryDelay * 24 / 1e3);
@@ -6342,8 +6381,8 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     try {
       const fileContent = await this.app.vault.adapter.read(this.app.vault.configDir + "/app.json");
       const appSettings = JSON.parse(fileContent);
-      this.settings.defaultUseMarkdownLinks = (_a2 = appSettings.useMarkdownLinks) != null ? _a2 : false;
-      this.settings.defaultLinkFormat = (_b2 = appSettings.newLinkFormat) != null ? _b2 : "shortest";
+      this.settings.defaultUseMarkdownLinks = (_b2 = appSettings.useMarkdownLinks) != null ? _b2 : false;
+      this.settings.defaultLinkFormat = (_c = appSettings.newLinkFormat) != null ? _c : "shortest";
     } catch (e) {
       this.settings.defaultUseMarkdownLinks = false;
       this.settings.defaultLinkFormat = "shortest";
@@ -6397,6 +6436,27 @@ function actionDef(name, action, opts = {}) {
 }
 function groupDef(heading, items, visible) {
   return { type: "group", heading, items, visible };
+}
+function buildIndentBackground(view) {
+  const doc = view.state.doc;
+  const marks = [];
+  const isIndented = (text) => text.startsWith("	") || /^ {2,}/.test(text);
+  for (const { from, to } of view.visibleRanges) {
+    const last = doc.lineAt(to).number;
+    for (let n = doc.lineAt(from).number; n <= last; n++) {
+      const line = doc.line(n);
+      if (!isIndented(line.text))
+        continue;
+      marks.push(import_view2.Decoration.line({ class: "fakelink-indent-line" }).range(line.from));
+      if (n <= 1)
+        continue;
+      const above = doc.line(n - 1);
+      if (above.text.trim().length === 0 || isIndented(above.text))
+        continue;
+      marks.push(import_view2.Decoration.line({ class: "fakelink-indent-above" }).range(above.from));
+    }
+  }
+  return import_view2.Decoration.set(marks, true);
 }
 var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
   constructor(app, plugin) {
@@ -6483,6 +6543,10 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
       case "colorOnlyDisplay":
         await this.plugin.updateSettings({ colorOnlyDisplay: value });
         this.applyBodyClass("virtual-link-color-only", value);
+        break;
+      case "backgroundHighlight":
+        await this.plugin.updateSettings({ backgroundHighlight: value });
+        this.applyBodyClass("virtual-link-bg", value);
         break;
       case "alternativeDisplayStyle":
         await this.plugin.updateSettings({ alternativeDisplayStyle: value });
@@ -6850,6 +6914,9 @@ var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
         })
       ]),
       groupDef(t("Appearance"), [
+        toggleDef(t("Background"), "backgroundHighlight", {
+          desc: t("One switch for the whole look: a very faint tint, a light blue background on list lines, on tab-indented lines (and the line above them), on tables and callouts, a warm orange highlight on the cursor line with a dark brown caret, accent styling for the active tab header, and a gentle mask while the window is unfocused. Off by default; every colour is a CSS variable (--fakelink-...).")
+        }),
         toggleDef(t("Color-only display"), "colorOnlyDisplay", {
           desc: t("When enabled, virtual links are shown in a custom text color instead of the default background shadow.")
         }),
