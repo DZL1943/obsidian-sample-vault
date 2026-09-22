@@ -41,8 +41,10 @@
   "GITHUB_PROXY": "",
   "GITHUB_TOKEN": "",
   "FILTER_SEARCH": "",
-  "FILTER_STATUS": "all",
-  "FILTER_STATUS_VALUES": [],
+  "FILTER_STATUS": "ungrouped",
+  "FILTER_STATUS_VALUES": [
+    "ungrouped"
+  ],
   "FILTER_STATUS_OPERATOR": "contains",
   "FILTER_GROUP": "",
   "FILTER_GROUP_VALUES": [],
@@ -911,6 +913,26 @@
       "enabled": true,
       "delay": "",
       "note": ""
+    },
+    {
+      "id": "continuous-mode",
+      "name": "Continuous Mode",
+      "desc": "Displays all open notes in a tab group as if they were a continuous scrollable document (sometimes called \"Scrivenings mode\"). Open all notes in Continuous Mode from a folder, search results, or links in a file or Dataview/query block; use arrow keys to navigate between notes; display notes in “Compact Mode” similar to Evernote or Bear; reorder notes via tab header drag-and-drop, sorting, more.",
+      "group": "ui",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
+    },
+    {
+      "id": "vertical-tabs",
+      "name": "Vertical Tabs",
+      "desc": "Offer an alternative view that displays open tabs vertically, allowing users to group and organize tabs for a better navigation experience.",
+      "group": "ui",
+      "tags": [],
+      "enabled": false,
+      "delay": "",
+      "note": ""
     }
   ],
   "HIDES": [],
@@ -1149,6 +1171,14 @@
     },
     {
       "id": "image-captions",
+      "type": "plugin"
+    },
+    {
+      "id": "continuous-mode",
+      "type": "plugin"
+    },
+    {
+      "id": "vertical-tabs",
       "type": "plugin"
     }
   ],
