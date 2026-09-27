@@ -5,6 +5,7 @@
   "includePaths": [],
   "isAdvancedRenameAndDeleteHandlerSuggestionDeclined": true,
   "linkConversionMode": "OnEveryModification",
+  "linkPathStyleMode": "ObsidianSettingsDefault",
   "linkStyleMode": "PreserveExisting",
   "proposedShouldHandleRenames": true,
   "shouldAllowEmptyEmbedAlias": true,

@@ -41,10 +41,8 @@
   "GITHUB_PROXY": "",
   "GITHUB_TOKEN": "",
   "FILTER_SEARCH": "",
-  "FILTER_STATUS": "ungrouped",
-  "FILTER_STATUS_VALUES": [
-    "ungrouped"
-  ],
+  "FILTER_STATUS": "all",
+  "FILTER_STATUS_VALUES": [],
   "FILTER_STATUS_OPERATOR": "contains",
   "FILTER_GROUP": "",
   "FILTER_GROUP_VALUES": [],
@@ -531,7 +529,7 @@
         "optional",
         "dev"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "default"
     },
     {

@@ -27,8 +27,8 @@ __export(main_exports, {
   default: () => LinkerPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian7 = require("obsidian");
-var import_view2 = require("@codemirror/view");
+var import_obsidian9 = require("obsidian");
+var import_view3 = require("@codemirror/view");
 var import_state2 = require("@codemirror/state");
 
 // src/lang/helpers.ts
@@ -48,15 +48,26 @@ var zhCN = {
   "Conversion": "\u8F6C\u6362",
   "Appearance": "\u5916\u89C2",
   "Background": "\u80CC\u666F",
-  "One switch for the whole look: a very faint tint, a light blue background on list lines, on tab-indented lines (and the line above them), on tables and callouts, a warm orange highlight on the cursor line with a dark brown caret, accent styling for the active tab header, and a gentle mask while the window is unfocused. Off by default; every colour is a CSS variable (--fakelink-...).": "\u4E00\u4E2A\u5F00\u5173\u63A7\u5236\u6574\u5957\u5916\u89C2\uFF1A\u5F88\u6DE1\u7684\u6574\u4F53\u5E95\u8272\uFF1B\u5217\u8868\u884C\u3001Tab \u7F29\u8FDB\u884C\uFF08\u8FDE\u540C\u5B83\u4E0A\u9762\u7684\u4E00\u884C\uFF09\u3001\u8868\u683C\u884C\u4E0E\u8C03\u7528\u5757\u7684\u6DE1\u84DD\u80CC\u666F\uFF1B\u5149\u6807\u884C\u7684\u6696\u6A59\u9AD8\u4EAE\u4E0E\u6DF1\u68D5\u8272\u5149\u6807\uFF1B\u6FC0\u6D3B\u6807\u7B7E\u9875\u7684\u5F3A\u8C03\u6837\u5F0F\uFF1B\u4EE5\u53CA\u7A97\u53E3\u5931\u7126\u65F6\u7684\u4E00\u5C42\u8F7B\u8499\u7248\u3002\u9ED8\u8BA4\u5173\u95ED\u3002\u6240\u6709\u989C\u8272\u90FD\u662F CSS \u53D8\u91CF\uFF08--fakelink-...\uFF09\uFF0C\u53EF\u81EA\u884C\u8C03\u6574\u3002",
+  "Failed to save settings. The change may be lost when Obsidian reloads.": "\u8BBE\u7F6E\u4FDD\u5B58\u5931\u8D25\uFF0C\u66F4\u6539\u53EF\u80FD\u5728\u91CD\u542F Obsidian \u540E\u4E22\u5931\u3002",
+  "Background tint strength": "\u80CC\u666F\u7740\u8272\u5F3A\u5EA6",
+  "Opacity of the light blue tint on list / indented / table / callout lines. 10 is the default.": "\u5217\u8868 / \u7F29\u8FDB / \u8868\u683C / \u8C03\u7528\u5757\u884C\u7684\u6DE1\u84DD\u5E95\u8272\u7684\u4E0D\u900F\u660E\u5EA6\u3002\u9ED8\u8BA4 10\u3002",
+  "Cursor line strength": "\u5149\u6807\u884C\u5F3A\u5EA6",
+  "Opacity of the warm orange highlight on the line the cursor is on. 35 is the default.": "\u5149\u6807\u6240\u5728\u884C\u6696\u6A59\u9AD8\u4EAE\u7684\u4E0D\u900F\u660E\u5EA6\u3002\u9ED8\u8BA4 35\u3002",
+  "Master switch for the look below. Each part of it can then be switched off separately with the toggles under it, so you keep only what you want instead of getting everything at once. Off by default; every colour is a CSS variable (--fakelink-...).": "\u4E0B\u65B9\u6574\u5957\u5916\u89C2\u7684\u603B\u5F00\u5173\u3002\u5176\u4E2D\u6BCF\u4E00\u90E8\u5206\u90FD\u53EF\u4EE5\u7528\u4E0B\u9762\u7684\u5F00\u5173\u5355\u72EC\u5173\u6389\uFF0C\u53EA\u4FDD\u7559\u60F3\u8981\u7684\u6548\u679C\uFF0C\u4E0D\u4F1A\u88AB\u5F3A\u5236\u5957\u7528\u5168\u5957\u3002\u9ED8\u8BA4\u5173\u95ED\u3002\u6240\u6709\u989C\u8272\u90FD\u662F CSS \u53D8\u91CF\uFF08--fakelink-...\uFF09\uFF0C\u53EF\u81EA\u884C\u8C03\u6574\u3002",
+  "Overall tint": "\u6574\u4F53\u5E95\u8272",
+  "The very faint background colour of the app surfaces (aliceblue in light themes, dark grey in dark ones). Also feeds Obsidian own --background-* variables, so themes that read them follow along.": "\u5E94\u7528\u5404\u5C42\u754C\u9762\u6781\u6DE1\u7684\u5E95\u8272\uFF08\u6D45\u8272\u4E3B\u9898\u4E3A aliceblue\uFF0C\u6DF1\u8272\u4E3B\u9898\u4E3A\u6DF1\u7070\uFF09\u3002\u540C\u65F6\u6539\u5199 Obsidian \u81EA\u8EAB\u7684 --background-* \u53D8\u91CF\uFF0C\u8BFB\u53D6\u8FD9\u4E9B\u53D8\u91CF\u7684\u4E3B\u9898\u4E5F\u4F1A\u968F\u4E4B\u53D8\u5316\u3002",
+  "Line and block tint": "\u884C\u4E0E\u5757\u5E95\u8272",
+  'Light blue background on list lines, on tab-indented lines (and the line above them), on tables and on callouts. All four use one colour - set its opacity with the strength slider below. Every callout type gets it, not just "note".': "\u5217\u8868\u884C\u3001Tab \u7F29\u8FDB\u884C\uFF08\u8FDE\u540C\u5B83\u4E0A\u9762\u7684\u4E00\u884C\uFF09\u3001\u8868\u683C\u4E0E\u8C03\u7528\u5757\u7684\u6DE1\u84DD\u80CC\u666F\u3002\u56DB\u8005\u5171\u7528\u540C\u4E00\u4E2A\u989C\u8272\uFF0C\u900F\u660E\u5EA6\u7531\u4E0B\u65B9\u7684\u5F3A\u5EA6\u6ED1\u5757\u63A7\u5236\u3002\u6240\u6709\u7C7B\u578B\u7684\u8C03\u7528\u5757\u90FD\u4F1A\u751F\u6548\uFF0C\u4E0D\u9650\u4E8E note\u3002",
+  "Cursor line": "\u5149\u6807\u884C",
+  "Warm orange highlight on the line the cursor is on, together with the caret colour.": "\u5149\u6807\u6240\u5728\u884C\u7684\u6696\u6A59\u9AD8\u4EAE\uFF0C\u4EE5\u53CA\u5149\u6807\u672C\u8EAB\u7684\u989C\u8272\u3002",
+  "Tab accent": "\u6807\u7B7E\u9875\u5F3A\u8C03",
+  "Makes the active tab header stand out: a raised background, an accent-coloured underline and label, a bolder label and a soft shadow.": "\u8BA9\u6FC0\u6D3B\u7684\u6807\u7B7E\u9875\u5934\u90E8\u66F4\u7A81\u51FA\uFF1A\u52A0\u9AD8\u7684\u80CC\u666F\u3001\u5F3A\u8C03\u8272\u7684\u4E0B\u5212\u7EBF\u4E0E\u6807\u9898\u3001\u66F4\u7C97\u7684\u6807\u9898\u5B57\u91CD\uFF0C\u4EE5\u53CA\u67D4\u548C\u6295\u5F71\u3002",
+  "Unfocused mask": "\u5931\u7126\u8499\u7248",
+  "Dims the workspace with a gentle mask while the Obsidian window is not focused, so it stays obvious which window you are typing into.": "\u5F53 Obsidian \u7A97\u53E3\u672A\u83B7\u5F97\u7126\u70B9\u65F6\uFF0C\u7528\u4E00\u5C42\u8F7B\u8499\u7248\u538B\u6697\u5DE5\u4F5C\u533A\uFF0C\u4FBF\u4E8E\u5206\u8FA8\u5F53\u524D\u6B63\u5728\u8F93\u5165\u7684\u662F\u54EA\u4E2A\u7A97\u53E3\u3002",
   "Auto-toggle activation status by mode": "\u6309\u6A21\u5F0F\u81EA\u52A8\u5207\u6362\u6FC0\u6D3B\u72B6\u6001",
   "When enabled, the plugin will automatically activate in edit mode if inactive, and automatically deactivate in read mode if active": "\u542F\u7528\u540E\uFF0C\u63D2\u4EF6\u5C06\u5728\u7F16\u8F91\u6A21\u5F0F\u4E2D\u81EA\u52A8\u6FC0\u6D3B\uFF0C\u5728\u9605\u8BFB\u6A21\u5F0F\u4E2D\u81EA\u52A8\u505C\u7528",
   "Activate virtual linker": "\u6FC0\u6D3B\u865A\u62DF\u94FE\u63A5",
   "To show/hide virtual links in the body of regular notes (paragraphs, lists, etc.), please turn on/off this toggle. Note: This toggle cannot control virtual links inside tables and Canvas (due to different rendering mechanisms). If virtual links in tables or Canvas are not displayed or show rendering glitches, do not toggle this switch \u2014 simply restart the plugin (via QuickAdd or other means).": "\u5982\u9700\u3010\u663E\u793A/\u5173\u95ED\u3011\u666E\u901A\u7B14\u8BB0\u6B63\u6587\uFF08\u6BB5\u843D\u3001\u5217\u8868\u7B49\uFF09\u4E2D\u7684\u865A\u62DF\u94FE\u63A5\uFF0C\u8BF7\u3010\u6253\u5F00/\u5173\u95ED\u3011\u6B64\u5F00\u5173\u3002\n\u6CE8\uFF1A\u6B64\u5F00\u5173\u3010\u65E0\u6CD5\u63A7\u5236\u3011\u8868\u683C\u548C Canvas \u4E2D\u7684\u865A\u62DF\u94FE\u63A5\uFF08\u7531\u4E8E\u6E32\u67D3\u673A\u5236\u4E0D\u540C\uFF09\u3002\u82E5\u8868\u683C\u6216 Canvas \u4E2D\u7684\u865A\u62DF\u94FE\u63A5\u4E0D\u663E\u793A\u6216\u51FA\u73B0\u6E32\u67D3\u5F02\u5E38\uFF0C\u8BF7\u52FF\u64CD\u4F5C\u6B64\u5F00\u5173\uFF0C\u76F4\u63A5\u91CD\u542F\u672C\u63D2\u4EF6\uFF08\u901A\u8FC7 QuickAdd \u6216\u5176\u4ED6\u65B9\u5F0F\uFF09\u5373\u53EF\u3002",
-  "Copy Quick Add script": "\u590D\u5236 Quick Add \u811A\u672C",
-  "Quick Add script copied to clipboard!": "Quick Add \u811A\u672C\u5DF2\u590D\u5236\u5230\u526A\u8D34\u677F\uFF01",
-  "Copy EasyTyping template": "\u590D\u5236 EasyTyping \u6A21\u677F",
-  "EasyTyping template copied to clipboard!": "EasyTyping \u6A21\u677F\u5DF2\u590D\u5236\u5230\u526A\u8D34\u677F\uFF01",
   "Show advanced settings": "\u663E\u793A\u9AD8\u7EA7\u8BBE\u7F6E",
   "Include aliases": "\u5305\u542B\u522B\u540D",
   "If enabled, the virtual linker will also match file aliases.": "\u542F\u7528\u540E\uFF0C\u865A\u62DF\u94FE\u63A5\u4E5F\u4F1A\u5339\u914D\u6587\u4EF6\u7684\u522B\u540D\u3002",
@@ -211,7 +222,16 @@ var zhCN = {
   "How long (in SECONDS) a jumped-to heading keeps being re-aligned. The heading is put back in place the moment the content above it changes height (a PDF or an image finishing, MathJax typesetting) - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60).": "\u8DF3\u5230\u6807\u9898\u540E\uFF0C\u6700\u591A\u6301\u7EED\u8DDF\u968F\u591A\u5C11\u79D2\u3002\u53EA\u8981\u6807\u9898\u4E0A\u65B9\u7684\u5185\u5BB9\u9AD8\u5EA6\u53D1\u751F\u53D8\u5316\uFF08PDF/\u56FE\u7247\u6E32\u67D3\u5B8C\u6210\u3001\u516C\u5F0F\u6392\u7248\u5B8C\u6210\uFF09\uFF0C\u5C31\u4F1A\u7ACB\u523B\u628A\u6807\u9898\u6446\u56DE\u539F\u4F4D\u2014\u2014\u89C2\u5BDF\u662F\u4E8B\u4EF6\u9A71\u52A8\u7684\uFF0C\u9875\u9762\u9759\u6B62\u65F6\u4E0D\u505A\u4EFB\u4F55\u8F6E\u8BE2\u3002\u8D85\u8FC7\u8FD9\u4E2A\u79D2\u6570\u5C31\u5B8C\u5168\u6536\u624B\uFF0C\u56E0\u6B64\u51E0\u5206\u949F\u540E\u624D\u51FA\u73B0\u7684\u53D8\u5316\u4E0D\u4F1A\u518D\u79FB\u52A8\u4F60\u7684\u89C6\u56FE\u3002\u8FD9\u91CC\u586B\u7684\u5C31\u662F\u79D2\u6570\uFF0812 \u21D2 12 \u79D2\uFF09\uFF0C\u4E0D\u9700\u8981\u6362\u7B97\uFF1B\u7B14\u8BB0\u5F88\u5927\u5F88\u6162\u65F6\u53EF\u8C03\u5230 60\u3002",
   "The maximum time (in SECONDS) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. The number you type is the number of seconds (8 = 8 seconds); 0 means do not wait.": "\u5B9A\u4F4D\u5149\u6807\u524D\u7B49\u5F85\u76EE\u6807\u6587\u4EF6\u6E32\u67D3\u7684\u6700\u957F\u65F6\u95F4\uFF08\u79D2\uFF09\u3002\u5C0F\u6587\u4EF6\u51E0\u4E4E\u7ACB\u5373\u8DF3\u8F6C\uFF1B\u5927\u6587\u4EF6\u6700\u591A\u7B49\u5F85\u5230\u6B64\u4E0A\u9650\u3002\u8FD9\u91CC\u586B\u7684\u5C31\u662F\u79D2\u6570\uFF088 \u21D2 8 \u79D2\uFF09\uFF1B\u586B 0 \u8868\u793A\u4E0D\u7B49\u5F85\u3002",
   "Open in new tab": "\u5728\u65B0\u6807\u7B7E\u9875\u6253\u5F00",
-  "When the target file is not already open, open it in a new tab. When off, the current tab is reused.": "\u5F53\u76EE\u6807\u6587\u4EF6\u5C1A\u672A\u6253\u5F00\u65F6\uFF0C\u5728\u65B0\u6807\u7B7E\u9875\u4E2D\u6253\u5F00\u3002\u5173\u95ED\u65F6\u5219\u590D\u7528\u5F53\u524D\u6807\u7B7E\u9875\u3002"
+  "When the target file is not already open, open it in a new tab. When off, the current tab is reused.": "\u5F53\u76EE\u6807\u6587\u4EF6\u5C1A\u672A\u6253\u5F00\u65F6\uFF0C\u5728\u65B0\u6807\u7B7E\u9875\u4E2D\u6253\u5F00\u3002\u5173\u95ED\u65F6\u5219\u590D\u7528\u5F53\u524D\u6807\u7B7E\u9875\u3002",
+  "Single-note opt-out": "\u5355\u7BC7\u7981\u7528\u865A\u62DF\u94FE\u63A5",
+  'Lets one note switch off virtual links inside itself (the opposite of "linker-exclude", which stops it being linked from elsewhere). Pick one method; the matching field below is used.': "\u5141\u8BB8\u5355\u7BC7\u7B14\u8BB0\u5173\u95ED\u81EA\u8EAB\u5185\u90E8\u7684\u865A\u62DF\u94FE\u63A5\u6E32\u67D3\uFF08\u4E0E linker-exclude \u76F8\u53CD\u2014\u2014\u540E\u8005\u662F\u8BA9\u8BE5\u7B14\u8BB0\u4E0D\u88AB\u522B\u5904\u94FE\u63A5\u5230\uFF09\u3002\u9009\u62E9\u4E00\u79CD\u65B9\u5F0F\uFF0C\u4E0B\u65B9\u5BF9\u5E94\u7684\u8F93\u5165\u6846\u751F\u6548\u3002",
+  "Off \u2014 no note can opt out": "\u5173\u95ED\uFF08\u4E0D\u5141\u8BB8\u5355\u7BC7\u7981\u7528\uFF09",
+  "By tag": "\u6309\u6807\u7B7E",
+  "By frontmatter property": "\u6309 Frontmatter \u5C5E\u6027",
+  "Opt-out tag name": "\u7981\u7528\u6807\u7B7E\u540D",
+  'Used when the method is "By tag": a note carrying this tag renders no virtual links at all. Put it in the frontmatter (tags: [linker-ignore]) or anywhere in the note as #linker-ignore.': "\u5F53\u65B9\u5F0F\u4E3A\u300C\u6309\u6807\u7B7E\u300D\u65F6\uFF0C\u5E26\u6709\u8BE5\u6807\u7B7E\u7684\u7B14\u8BB0\u5B8C\u5168\u4E0D\u6E32\u67D3\u865A\u62DF\u94FE\u63A5\u3002\u53EF\u5199\u5728 frontmatter\uFF08tags: [linker-ignore]\uFF09\u6216\u6B63\u6587\u4EFB\u610F\u5904\uFF08#linker-ignore\uFF09\uFF0C\u4E5F\u652F\u6301\u5C42\u7EA7\u6807\u7B7E\uFF08\u5982 #linker-ignore/xxx\uFF09\u3002",
+  "Opt-out property name": "\u7981\u7528\u5C5E\u6027\u540D",
+  'Used when the method is "By frontmatter property": a note with this property set to true renders no virtual links at all. Usage: add "linker-ignore: true" to the note frontmatter.': '\u5F53\u65B9\u5F0F\u4E3A\u300C\u6309 Frontmatter \u5C5E\u6027\u300D\u65F6\uFF0C\u8BE5\u5C5E\u6027\u8BBE\u4E3A true \u7684\u7B14\u8BB0\u5B8C\u5168\u4E0D\u6E32\u67D3\u865A\u62DF\u94FE\u63A5\u3002\u7528\u6CD5\uFF1A\u5728\u7B14\u8BB0 frontmatter \u6DFB\u52A0 "linker-ignore: true"\u3002'
 };
 function t(text) {
   if (lang && lang.toLowerCase().startsWith("zh")) {
@@ -221,7 +241,7 @@ function t(text) {
 }
 
 // linker/readModeLinker.ts
-var import_obsidian4 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 
 // linker/linkerCache.ts
 var import_obsidian2 = require("obsidian");
@@ -266,12 +286,9 @@ var step1ab = (s) => {
   const adj = (n) => {
     k = n;
   };
-  if (s.endsWith("sses")) {
-    adj(s.length - 4);
-    s = s.slice(0, k + 1) + "ss";
-  } else if (s.endsWith("ies")) {
-    adj(s.length - 4);
-    s = s.slice(0, k + 1) + "i";
+  if (s.endsWith("sses") || s.endsWith("ies")) {
+    s = s.slice(0, -2);
+    adj(s.length - 1);
   } else if (s.endsWith("ss")) {
     adj(s.length - 1);
   } else if (s.endsWith("s") && s.length > 2) {
@@ -824,12 +841,20 @@ var FUZZY_ZH_STOPWORD_TEST = new RegExp(FUZZY_ZH_STOPWORDS.map((sw) => sw.replac
 var _ExternalUpdateManager = class {
   constructor() {
     this.registeredCallbacks = /* @__PURE__ */ new Set();
+    this.pendingTimer = null;
   }
   registerCallback(callback) {
     this.registeredCallbacks.add(callback);
+    return () => this.unregisterCallback(callback);
+  }
+  unregisterCallback(callback) {
+    this.registeredCallbacks.delete(callback);
   }
   update() {
-    window.setTimeout(() => {
+    if (this.pendingTimer !== null)
+      window.clearTimeout(this.pendingTimer);
+    this.pendingTimer = window.setTimeout(() => {
+      this.pendingTimer = null;
       for (const callback of this.registeredCallbacks) {
         callback();
       }
@@ -893,10 +918,21 @@ var _PrefixTree = class {
     this.minFuzzyKeywordLen = Infinity;
     this.maxFuzzyKeywordLen = 0;
     this.fuzzyMinLength = 0;
+    this.isReady = false;
+    this.readyResolve = null;
     var _a2;
     this.fetcher = new LinkerMetaInfoFetcher(this.app, this.settings);
     this.fuzzyMinLength = (_a2 = settings.fuzzyMinLength) != null ? _a2 : 4;
-    this.updateTree();
+    this.readyPromise = new Promise((resolve) => {
+      this.readyResolve = resolve;
+    });
+  }
+  markReady() {
+    var _a2;
+    if (!this.isReady) {
+      this.isReady = true;
+      (_a2 = this.readyResolve) == null ? void 0 : _a2.call(this);
+    }
   }
   clear() {
     this.root = new PrefixNode();
@@ -1477,7 +1513,7 @@ var _PrefixTree = class {
     const path = file.path;
     return this.mapIndexedFilePathsToUpdateTime.has(path) && this.mapIndexedFilePathsToUpdateTime.get(path) === mtime;
   }
-  updateTree(updateFiles) {
+  async updateTree(updateFiles) {
     this.fetcher.refreshSettings();
     const currentVaultFiles = /* @__PURE__ */ new Set();
     let files = new Array();
@@ -1491,7 +1527,8 @@ var _PrefixTree = class {
     } else {
       files = updateFiles.map((f) => f ? this.app.vault.getAbstractFileByPath(f) : null).filter((f) => f instanceof import_obsidian2.TFile);
     }
-    for (const file of files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       if (this.fileIsUpToDate(file)) {
         continue;
       }
@@ -1503,6 +1540,9 @@ var _PrefixTree = class {
         } catch (err) {
           console.error("[fakelink] failed to index", file.path, err);
         }
+      }
+      if ((i & 255) === 0) {
+        await new Promise((resolve) => window.setTimeout(resolve, 0));
       }
     }
     const filesToRemove = [...this.setIndexedFilePaths].filter((f) => !currentVaultFiles.has(f));
@@ -1628,10 +1668,6 @@ var _PrefixTree = class {
     const pattern = /[^\p{L}\p{N}]/u;
     return pattern.test(char);
   }
-  static isFormattingChar(char) {
-    const pattern = /[^\p{L}\p{N}]/u;
-    return pattern.test(char);
-  }
   static stripHeadingNumber(heading) {
     const num = "(?:[0-9]+|[\u96F6\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\u767E\u5343]+)";
     const sep = "[.\u3001)\uFF09]";
@@ -1712,7 +1748,7 @@ var LinkerCache = class {
     if (activeFile === this.activeFilePath && !force) {
       return;
     }
-    this.cache.updateTree(force ? void 0 : [activeFile, this.activeFilePath]);
+    void this.cache.updateTree(force ? void 0 : [activeFile, this.activeFilePath]).then(() => this.cache.markReady());
     this.activeFilePath = activeFile;
     if (this.settings.autoExcludeContainedCopies) {
       void this.cache.computeAutoExclude().then((changed) => {
@@ -1725,7 +1761,306 @@ var LinkerCache = class {
 };
 
 // linker/virtualLinkDom.ts
+var import_obsidian4 = require("obsidian");
+
+// linker/convertLink.ts
 var import_obsidian3 = require("obsidian");
+function dirname(filePath) {
+  const lastSlashIndex = filePath.lastIndexOf("/");
+  return lastSlashIndex === -1 ? "" : filePath.substring(0, lastSlashIndex);
+}
+function basename(filePath) {
+  const lastSlashIndex = filePath.lastIndexOf("/");
+  return lastSlashIndex === -1 ? filePath : filePath.substring(lastSlashIndex + 1);
+}
+function relative(from, to) {
+  if (from === to)
+    return "";
+  const fromParts = from.split("/").filter((part) => part !== "");
+  const toParts = to.split("/").filter((part) => part !== "");
+  let commonLength = 0;
+  while (commonLength < fromParts.length && commonLength < toParts.length && fromParts[commonLength] === toParts[commonLength]) {
+    commonLength++;
+  }
+  const upLevels = fromParts.length - commonLength;
+  const downParts = toParts.slice(commonLength);
+  const upPath = upLevels > 0 ? "../".repeat(upLevels) : "./";
+  const downPath = downParts.join("/");
+  return downPath ? upPath + downPath : upPath.slice(0, -1);
+}
+function isSeparatorRow(line) {
+  return /^\|[\s\-:|]+\|$/.test(line.trim());
+}
+function splitTableRow(line) {
+  const cells = [];
+  let cur = "";
+  let inLink = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    const n = line[i + 1];
+    if (c === "[" && n === "[") {
+      inLink = true;
+      cur += c;
+    } else if (c === "]" && n === "]" && inLink) {
+      inLink = false;
+      cur += c;
+    } else if (c === "|" && !inLink) {
+      cells.push(cur);
+      cur = "";
+    } else
+      cur += c;
+  }
+  cells.push(cur);
+  return cells;
+}
+function normalizeForCompare(s) {
+  return s.replace(/!\[\[[^\]]*\]\]/g, "").replace(/!\[[^\]]*\]\([^)]*\)/g, "").replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2").replace(/\[\[([^\]]+)\]\]/g, "$1").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/<br\s*\/?>/gi, "\n").replace(/\*\*/g, "").replace(/==/g, "").replace(/~~/g, "").replace(/`+/g, "").replace(/\\\|/g, "|").replace(/\s+/g, " ").trim();
+}
+function getCellPlainText(td) {
+  let result = "";
+  const collect = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      result += node.textContent || "";
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const el = node;
+      if (el.classList.contains("multiple-files-references") || el.classList.contains("multiple-files-indicator") || el.classList.contains("linker-suffix-icon")) {
+        return;
+      }
+      if (el.tagName === "BR") {
+        result += "\n";
+        return;
+      }
+      for (const child of Array.from(el.childNodes)) {
+        collect(child);
+      }
+    }
+  };
+  collect(td);
+  const firstSpace = result.search(/\s/);
+  const markEnd = firstSpace > 0 ? firstSpace : Math.min(16, result.length);
+  const mark = result.slice(0, markEnd);
+  if (mark.length >= 8) {
+    const second = result.indexOf(mark, mark.length);
+    if (second > 0 && second >= result.length / 2 - mark.length) {
+      result = result.slice(0, second);
+    }
+  }
+  return normalizeForCompare(result);
+}
+function getRowSignature(tr) {
+  return Array.from(tr.children).map((child) => getCellPlainText(child)).filter(Boolean).join("|");
+}
+function getSourceRowSignature(cells) {
+  return cells.map((c) => normalizeForCompare(c)).filter(Boolean).join("|");
+}
+function locateTableCellPosition(linkElement, editor) {
+  var _a2, _b2;
+  const td = linkElement.closest("td, th");
+  const originText = linkElement.getAttribute("origin-text") || "";
+  const tr = (_a2 = td == null ? void 0 : td.closest("tr")) != null ? _a2 : null;
+  const table = (_b2 = td == null ? void 0 : td.closest("table")) != null ? _b2 : null;
+  if (!td || !originText || !tr || !table)
+    return null;
+  const cellIndex = Array.from(tr.children).indexOf(td);
+  const allRows = Array.from(table.querySelectorAll("tr"));
+  const domRowIndex = allRows.indexOf(tr);
+  if (domRowIndex < 0)
+    return null;
+  const lines = editor.getValue().split("\n");
+  const domCellText = getCellPlainText(td);
+  const cellLinks = Array.from(td.querySelectorAll(".virtual-link-a")).filter((a) => a.getAttribute("origin-text") === originText);
+  let occurrence = cellLinks.indexOf(linkElement);
+  if (occurrence < 0)
+    occurrence = 0;
+  const blocks = [];
+  let inBlock = false;
+  let start = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const isRow = lines[i].trim().startsWith("|");
+    if (isRow && !inBlock) {
+      inBlock = true;
+      start = i;
+    } else if (!isRow && inBlock) {
+      inBlock = false;
+      blocks.push({ start, end: i });
+    }
+  }
+  if (inBlock)
+    blocks.push({ start, end: lines.length });
+  const headerTr = table.querySelector("tr");
+  const tableSignature = headerTr ? getRowSignature(headerTr) : "";
+  for (const block of blocks) {
+    let headerLine = -1;
+    for (let i = block.start; i < block.end; i++) {
+      if (!isSeparatorRow(lines[i])) {
+        headerLine = i;
+        break;
+      }
+    }
+    if (headerLine < 0)
+      continue;
+    const headerCells = splitTableRow(lines[headerLine]);
+    if (getSourceRowSignature(headerCells) !== tableSignature)
+      continue;
+    const pos = locateInTableBlock(lines, block, domRowIndex, cellIndex, originText, domCellText, occurrence);
+    if (pos)
+      return pos;
+  }
+  return null;
+}
+function locateInTableBlock(lines, block, domRowIndex, cellIndex, originText, domCellText, occurrence) {
+  let rowCounter = 0;
+  let targetDocLine = -1;
+  for (let i = block.start; i < block.end; i++) {
+    if (!isSeparatorRow(lines[i])) {
+      if (rowCounter === domRowIndex) {
+        targetDocLine = i;
+        break;
+      }
+      rowCounter++;
+    }
+  }
+  if (targetDocLine < 0)
+    return null;
+  const targetLine = lines[targetDocLine];
+  const cells = splitTableRow(targetLine);
+  const mdCellIndex = cellIndex + 1;
+  if (mdCellIndex >= cells.length)
+    return null;
+  const rawCell = cells[mdCellIndex];
+  const cellContent = rawCell.trim();
+  let cellTextIndex = -1;
+  let searchFrom = 0;
+  for (let k = 0; k <= occurrence; k++) {
+    const idx = cellContent.indexOf(originText, searchFrom);
+    if (idx < 0)
+      break;
+    cellTextIndex = idx;
+    searchFrom = idx + 1;
+  }
+  if (cellTextIndex < 0)
+    return null;
+  let cellStartCh = 0;
+  let pipeCount = 0;
+  let inLink = false;
+  for (let c = 0; c < targetLine.length; c++) {
+    const ch = targetLine[c];
+    const nx = targetLine[c + 1];
+    if (ch === "[" && nx === "[") {
+      inLink = true;
+    } else if (ch === "]" && nx === "]" && inLink) {
+      inLink = false;
+    } else if (ch === "\\" && nx === "|") {
+      c++;
+      continue;
+    } else if (ch === "|" && !inLink) {
+      pipeCount++;
+      if (pipeCount === mdCellIndex) {
+        cellStartCh = c + 1;
+        while (cellStartCh < targetLine.length && targetLine[cellStartCh] === " ")
+          cellStartCh++;
+        break;
+      }
+    }
+  }
+  const fromCh = cellStartCh + cellTextIndex;
+  return {
+    from: { line: targetDocLine, ch: fromCh },
+    to: { line: targetDocLine, ch: fromCh + originText.length }
+  };
+}
+function convertVirtualLinkToReal(linkElement, target, app, settings) {
+  var _a2, _b2;
+  let from = parseInt(linkElement.getAttribute("from") || "-1");
+  let to = parseInt(linkElement.getAttribute("to") || "-1");
+  if (from === -1 || to === -1) {
+    return;
+  }
+  const text = linkElement.getAttribute("origin-text") || "";
+  const activeFile = app.workspace.getActiveFile();
+  const activeFilePath = (_a2 = activeFile == null ? void 0 : activeFile.path) != null ? _a2 : "";
+  if (!activeFile) {
+    return;
+  }
+  if (!(target instanceof import_obsidian3.TFile)) {
+    return;
+  }
+  let absolutePath = target.path;
+  let relativePath = relative(dirname(activeFile.path), dirname(absolutePath)) + "/" + basename(absolutePath);
+  relativePath = relativePath.replace(/\\/g, "/");
+  const replacementPath = app.metadataCache.fileToLinktext(target, activeFilePath);
+  const headerId = linkElement.getAttribute("data-heading-id");
+  const lastPart = replacementPath.split("/").pop();
+  const shortestFile = app.metadataCache.getFirstLinkpathDest(lastPart || "", "");
+  let shortestPath = (shortestFile == null ? void 0 : shortestFile.path) == target.path ? lastPart : absolutePath;
+  const pathSuffix = headerId ? `#${headerId}` : "";
+  if (!replacementPath.endsWith(".md")) {
+    if (absolutePath.endsWith(".md")) {
+      absolutePath = absolutePath.slice(0, -3);
+    }
+    if (shortestPath && shortestPath.endsWith(".md")) {
+      shortestPath = shortestPath.slice(0, -3);
+    }
+    if (relativePath.endsWith(".md")) {
+      relativePath = relativePath.slice(0, -3);
+    }
+    absolutePath += pathSuffix;
+    shortestPath += pathSuffix;
+    relativePath += pathSuffix;
+  }
+  const useMarkdownLinks = settings.useDefaultLinkStyleForConversion ? settings.defaultUseMarkdownLinks : settings.useMarkdownLinks;
+  const linkFormat = settings.useDefaultLinkStyleForConversion ? settings.defaultLinkFormat : settings.linkFormat;
+  const createLink = (replacementPath2, text2, markdownStyle) => {
+    if (markdownStyle) {
+      return `[${text2}](${replacementPath2})`;
+    } else {
+      return `[[${replacementPath2}|${text2}]]`;
+    }
+  };
+  let replacement = "";
+  if (replacementPath === text && linkFormat === "shortest") {
+    replacement = `[[${replacementPath}]]`;
+  } else {
+    if (linkFormat === "shortest") {
+      replacement = createLink(shortestPath || absolutePath, text, useMarkdownLinks);
+    } else if (linkFormat === "relative") {
+      replacement = createLink(relativePath, text, useMarkdownLinks);
+    } else if (linkFormat === "absolute") {
+      replacement = createLink(absolutePath, text, useMarkdownLinks);
+    }
+  }
+  const editor = (_b2 = app.workspace.getActiveViewOfType(import_obsidian3.MarkdownView)) == null ? void 0 : _b2.editor;
+  let fromEditorPos;
+  let toEditorPos;
+  if (linkElement.closest("td, th") && editor) {
+    const pos = locateTableCellPosition(linkElement, editor);
+    if (!pos) {
+      return;
+    }
+    fromEditorPos = pos.from;
+    toEditorPos = pos.to;
+  }
+  if (!fromEditorPos || !toEditorPos) {
+    fromEditorPos = editor == null ? void 0 : editor.offsetToPos(from);
+    toEditorPos = editor == null ? void 0 : editor.offsetToPos(to);
+  }
+  if (!fromEditorPos || !toEditorPos) {
+    return;
+  }
+  if (linkElement.closest("td, th") && activeFile && editor) {
+    const doc = editor.getValue();
+    const fromOffset = editor.posToOffset(fromEditorPos);
+    const toOffset = editor.posToOffset(toEditorPos);
+    const escapedReplacement = replacement.replace(/\|/g, "\\|");
+    const newDoc = doc.slice(0, fromOffset) + escapedReplacement + doc.slice(toOffset);
+    void app.vault.modify(activeFile, newDoc);
+    return;
+  }
+  editor == null ? void 0 : editor.replaceRange(replacement, fromEditorPos, toEditorPos);
+}
+
+// linker/virtualLinkDom.ts
+var import_view = require("@codemirror/view");
 var ALIGN_MAX_MS = 12e3;
 var ALIGN_DEBOUNCE_MS = 150;
 var ALIGN_SAFETY_MS = 4e3;
@@ -1765,6 +2100,11 @@ function findHeadingElement(scope, headingId) {
   for (const el of candidates)
     if (textOf(el).startsWith(want))
       return el;
+  for (const el of candidates) {
+    const t2 = textOf(el);
+    if (t2 && want.endsWith(t2) && want.length - t2.length <= 8)
+      return el;
+  }
   return null;
 }
 function centeredOffset(scroller, height) {
@@ -1780,7 +2120,9 @@ function resolveHeadingTarget(app, el, headingText, file) {
       return true;
     if (candidate.startsWith(want))
       return true;
-    return want.startsWith(candidate) && want.length - candidate.length <= 12;
+    if (want.startsWith(candidate) && want.length - candidate.length <= 12)
+      return true;
+    return want.endsWith(candidate) && want.length - candidate.length <= 8;
   };
   const findLine = (file2) => {
     var _a3, _b2, _c, _d;
@@ -1792,7 +2134,7 @@ function resolveHeadingTarget(app, el, headingText, file) {
   const candidates = [];
   for (const leaf of app.workspace.getLeavesOfType("markdown")) {
     const view = leaf.view;
-    if (!(view instanceof import_obsidian3.MarkdownView))
+    if (!(view instanceof import_obsidian4.MarkdownView))
       continue;
     const shown = view.file;
     if (!shown)
@@ -1806,7 +2148,7 @@ function resolveHeadingTarget(app, el, headingText, file) {
   const pick = (_a2 = candidates.find((c) => c.preferred)) != null ? _a2 : candidates[0];
   return pick ? { view: pick.view, line: pick.line } : null;
 }
-function findHeadingAtTop(scope) {
+function findHeadingAtTop(scope, allowGlobalFallback = true) {
   const search = (root) => {
     const headings = Array.from(root.querySelectorAll(HEADING_SEL));
     let best = null;
@@ -1833,9 +2175,22 @@ function findHeadingAtTop(scope) {
     if (inScope)
       return inScope;
   }
-  return search(document.body);
+  return allowGlobalFallback ? search(document.body) : null;
 }
 var HEADING_SEL = 'h1, h2, h3, h4, h5, h6, [data-heading], [class*="HyperMD-header"]';
+var MULTI_REFERENCE_HOVER_GRACE_MS = 400;
+var hoverUnlockTimers = /* @__PURE__ */ new WeakMap();
+var contextLockedLinks = /* @__PURE__ */ new Set();
+function clearContextLock(key) {
+  contextLockedLinks.delete(key);
+}
+var lastHoveredHeadingId = null;
+function setHoveredHeadingId(id) {
+  lastHoveredHeadingId = id;
+}
+function getHoveredHeadingId() {
+  return lastHoveredHeadingId;
+}
 function keepAligned(resolve, label, maxMs, alive, scrollEditor) {
   const abort = new AbortController();
   const { signal } = abort;
@@ -1943,7 +2298,7 @@ function keepAligned(resolve, label, maxMs, alive, scrollEditor) {
         }
         const stillLoading = imgs.some((img) => !img.complete);
         const settleReady = !stillLoading && Date.now() - stableSince >= ALIGN_STABLE_MS;
-        const impatient = Date.now() - startedAt > 4e3 && miss > 60;
+        const impatient = Date.now() - startedAt > 1200 && miss > 60;
         if (miss > ALIGN_TOLERANCE_PX && (settleReady || impatient)) {
           const handled = inEditor && scrollEditor ? scrollEditor(found, headingText) : false;
           const withinBudget = domWrites < DOM_WRITE_BUDGET && domWritesTotal < DOM_WRITE_TOTAL_BUDGET;
@@ -1978,22 +2333,176 @@ function keepAligned(resolve, label, maxMs, alive, scrollEditor) {
 function keepScrolledHeadingAligned(scope, label = "", maxMs = ALIGN_MAX_MS, scrollEditor, headingId) {
   const requestedAt = Date.now();
   let cached = null;
+  let pinnedId = null;
   keepAligned(() => {
-    var _a2;
+    var _a2, _b2, _c;
     if (cached && cached.isConnected)
       return cached;
-    if (headingId) {
-      const byName = (_a2 = scope && scope.isConnected ? findHeadingElement(scope, headingId) : null) != null ? _a2 : findHeadingElement(document.body, headingId);
+    const lookupId = headingId != null ? headingId : pinnedId;
+    if (lookupId) {
+      const byName = (_a2 = scope && scope.isConnected ? findHeadingElement(scope, lookupId) : null) != null ? _a2 : findHeadingElement(document.body, lookupId);
       if (byName) {
         cached = byName;
         return cached;
       }
       if (Date.now() - requestedAt < 4e3)
         return null;
+      if (pinnedId)
+        return null;
     }
-    cached = findHeadingAtTop(scope);
+    const top = findHeadingAtTop(scope, false);
+    if (top && !headingId && !pinnedId) {
+      pinnedId = normalizeHeading((_c = (_b2 = top.getAttribute("data-heading")) != null ? _b2 : top.textContent) != null ? _c : "");
+    }
+    cached = top;
     return cached;
   }, label, maxMs, () => !scope || scope.isConnected, scrollEditor);
+}
+function buildIndentBackground(view) {
+  const doc = view.state.doc;
+  const marks = [];
+  const done = /* @__PURE__ */ new Set();
+  const isIndented = (text) => text.startsWith("	") || /^ {2,}/.test(text);
+  for (const { from, to } of view.visibleRanges) {
+    const last = doc.lineAt(to).number;
+    for (let n = doc.lineAt(from).number; n <= last; n++) {
+      if (done.has(n))
+        continue;
+      done.add(n);
+      const line = doc.line(n);
+      if (!isIndented(line.text))
+        continue;
+      marks.push(import_view.Decoration.line({ class: "fakelink-indent-line" }).range(line.from));
+      if (n <= 1)
+        continue;
+      const above = doc.line(n - 1);
+      if (above.text.trim().length === 0 || isIndented(above.text))
+        continue;
+      marks.push(import_view.Decoration.line({ class: "fakelink-indent-above" }).range(above.from));
+    }
+  }
+  return import_view.Decoration.set(marks, true);
+}
+function isInTableCellEditor(el) {
+  return Boolean((el == null ? void 0 : el.closest(".cm-table-widget")) && (el == null ? void 0 : el.closest(".table-cell-wrapper")));
+}
+function isLinkingDisabledInNote(file, app, settings) {
+  var _a2, _b2;
+  const mode = (_a2 = settings.linkIgnoreMode) != null ? _a2 : "off";
+  if (mode === "off" || !file)
+    return false;
+  const cache = app.metadataCache.getFileCache(file);
+  if (!cache)
+    return false;
+  const fm = cache.frontmatter;
+  if (mode === "property") {
+    const prop = settings.linkIgnoreProperty;
+    if (!prop || !fm)
+      return false;
+    const raw = fm[prop];
+    return raw === true || typeof raw === "string" && raw.trim().toLowerCase() === "true";
+  }
+  const tag = settings.linkIgnoreTag;
+  if (!tag)
+    return false;
+  const want = tag.replace(/^#/, "").toLowerCase();
+  const candidates = [];
+  for (const t2 of (_b2 = cache.tags) != null ? _b2 : [])
+    candidates.push(t2.tag);
+  const fmTags = fm == null ? void 0 : fm.tags;
+  if (Array.isArray(fmTags)) {
+    for (const t2 of fmTags)
+      if (typeof t2 === "string")
+        candidates.push(t2);
+  } else if (typeof fmTags === "string") {
+    candidates.push(...fmTags.split(/[,\s]+/));
+  }
+  for (const raw of candidates) {
+    const name = raw.replace(/^#/, "").toLowerCase();
+    if (name === want || name.startsWith(want + "/"))
+      return true;
+  }
+  return false;
+}
+function patchDispatchClamp(cm) {
+  const cmAny = cm;
+  if (cmAny.__fkDispatchPatched)
+    return;
+  cmAny.__fkDispatchPatched = true;
+  const origDispatch = cm.dispatch.bind(cm);
+  cmAny.dispatch = (...args) => {
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
+    try {
+      return origDispatch(...args);
+    } catch (e) {
+      const msg = String((_a2 = e == null ? void 0 : e.message) != null ? _a2 : "");
+      if (!msg.includes("outside of document"))
+        throw e;
+      const docLen = cm.state.doc.length;
+      const spec = (_b2 = args[0]) != null ? _b2 : {};
+      const sel = spec.selection;
+      if (!sel)
+        throw e;
+      const clamp = (v) => Math.min(Math.max(Number(v) || 0, 0), docLen);
+      const rawAnchor = (_g = (_f = (_e = (_d = (_c = sel.ranges) == null ? void 0 : _c[0]) == null ? void 0 : _d.from) != null ? _e : sel.anchor) != null ? _f : sel.from) != null ? _g : 0;
+      const rawHead = (_n = (_m = (_l = (_k = (_j = (_i = (_h = sel.ranges) == null ? void 0 : _h[0]) == null ? void 0 : _i.to) != null ? _j : sel.head) != null ? _k : sel.to) != null ? _l : sel.anchor) != null ? _m : sel.from) != null ? _n : 0;
+      return origDispatch({
+        ...spec,
+        selection: { anchor: clamp(rawAnchor), head: clamp(rawHead) }
+      });
+    }
+  };
+}
+function patchAllEditorsDispatchClamp() {
+  const doc = typeof activeDocument !== "undefined" ? activeDocument : document;
+  Array.from(doc.querySelectorAll(".cm-editor")).forEach((el) => {
+    const cm = import_view.EditorView.findFromDOM(el);
+    if (cm)
+      patchDispatchClamp(cm);
+  });
+}
+function attachTableCellContextMenu(span, match) {
+  span.classList.add("no-context-menu");
+  span.addEventListener("contextmenu", (e) => {
+    var _a2, _b2, _c;
+    e.preventDefault();
+    e.stopPropagation();
+    const holder = (_a2 = span.closest(".virtual-link-span")) != null ? _a2 : span;
+    holder.classList.add("virtual-link-hover-lock");
+    holder.dataset.fkContextLock = "1";
+    const lockKey = match.getLockKey();
+    contextLockedLinks.add(lockKey);
+    const unlock = () => {
+      contextLockedLinks.delete(lockKey);
+      delete holder.dataset.fkContextLock;
+      holder.classList.remove("virtual-link-hover-lock");
+    };
+    const menu = new import_obsidian4.Menu();
+    menu.addItem((item) => {
+      item.setTitle("Add to excluded keywords").setIcon("ban").onClick(async () => {
+        if (match.originText) {
+          const newExcludedKeywords = [.../* @__PURE__ */ new Set([...match.settings.excludedKeywords, match.originText])];
+          await match.plugin.updateSettings({ excludedKeywords: newExcludedKeywords });
+          match.plugin.updateManager.update();
+        }
+      });
+    });
+    const hit = (_c = (_b2 = e.target) == null ? void 0 : _b2.closest) == null ? void 0 : _c.call(_b2, ".virtual-link-a");
+    const anchor = hit && span.contains(hit) ? hit : span.querySelector(".virtual-link-a");
+    if (anchor) {
+      const href = anchor.getAttribute("href") || "";
+      const targetFile = match.plugin.app.vault.getAbstractFileByPath(href.split("#")[0]);
+      if (targetFile instanceof import_obsidian4.TFile) {
+        menu.addItem((item) => {
+          item.setTitle("Convert to real link").setIcon("link").onClick(() => {
+            convertVirtualLinkToReal(anchor, targetFile, match.plugin.app, match.settings);
+          });
+        });
+      }
+    }
+    menu.onHide(unlock);
+    menu.showAtMouseEvent(e);
+  }, true);
 }
 var VirtualMatch = class {
   constructor(id, originText, from, to, files, type, isSubWord, settings, plugin, headerId, isBoldContext = false, isItalicContext = false, isHighlightContext = false, isTripleStarContext = false, isStrikethroughContext = false, isCommentContext = false, isInHeaderContext = false, isFuzzy = false) {
@@ -2016,11 +2525,27 @@ var VirtualMatch = class {
     this.isInHeaderContext = isInHeaderContext;
     this.isFuzzy = isFuzzy;
     this.fileHeaderIds = /* @__PURE__ */ new Map();
+    this.fileContextDistances = /* @__PURE__ */ new Map();
     if (headerId) {
       for (const file of files) {
         this.fileHeaderIds.set(file.path, headerId);
       }
     }
+  }
+  setFileContextDistance(path, distance) {
+    this.fileContextDistances.set(path, distance);
+  }
+  getFileContextDistance(path) {
+    return this.fileContextDistances.get(path);
+  }
+  setAlreadyLinkedFiles(files) {
+    this.alreadyLinkedFiles = files;
+  }
+  isMentioned(file) {
+    var _a2;
+    if ((_a2 = this.alreadyLinkedFiles) == null ? void 0 : _a2.has(file))
+      return true;
+    return this.fileContextDistances.has(file.path);
   }
   setFileHeaderId(file, headerId) {
     this.fileHeaderIds.set(file.path, headerId);
@@ -2034,6 +2559,9 @@ var VirtualMatch = class {
   get isHiddenByReferenceLimit() {
     return this.settings.maxReferencesToHideLink > 0 && this.files.length > this.settings.maxReferencesToHideLink;
   }
+  getLockKey() {
+    return this.originText;
+  }
   renderKey() {
     var _a2, _b2, _c;
     const s = this.settings;
@@ -2041,6 +2569,14 @@ var VirtualMatch = class {
     const headerIds = this.files.map((f) => {
       var _a3;
       return `${f.path}=${(_a3 = this.fileHeaderIds.get(f.path)) != null ? _a3 : ""}`;
+    }).sort().join("");
+    const ctxDistances = this.files.map((f) => {
+      var _a3;
+      return `${f.path}=${(_a3 = this.fileContextDistances.get(f.path)) != null ? _a3 : ""}`;
+    }).sort().join("");
+    const linkedFlags = this.files.map((f) => {
+      var _a3;
+      return `${f.path}=${((_a3 = this.alreadyLinkedFiles) == null ? void 0 : _a3.has(f)) ? 1 : 0}`;
     }).sort().join("");
     return [
       this.from,
@@ -2059,6 +2595,8 @@ var VirtualMatch = class {
       this.isInHeaderContext ? 1 : 0,
       filePaths,
       headerIds,
+      ctxDistances,
+      linkedFlags,
       s.maxReferencesToHideLink,
       s.maxReferenceCount,
       s.suppressSuffixForSubWords ? 1 : 0,
@@ -2079,9 +2617,25 @@ var VirtualMatch = class {
       return emptySpan;
     }
     const sortedFiles = [...this.files].sort((a, b) => {
-      const typeA = this.getFileTypeOrder(a);
-      const typeB = this.getFileTypeOrder(b);
-      return typeA - typeB;
+      var _a2, _b2, _c, _d;
+      const mentionedA = this.isMentioned(a);
+      const mentionedB = this.isMentioned(b);
+      if (mentionedA !== mentionedB)
+        return mentionedA ? -1 : 1;
+      const byType = this.getFileTypeOrder(a) - this.getFileTypeOrder(b);
+      if (byType !== 0)
+        return byType;
+      const da = this.fileContextDistances.get(a.path);
+      const db = this.fileContextDistances.get(b.path);
+      if (da !== void 0 && db !== void 0) {
+        if (da !== db)
+          return da - db;
+      } else if (da !== void 0) {
+        return -1;
+      } else if (db !== void 0) {
+        return 1;
+      }
+      return ((_b2 = (_a2 = b.stat) == null ? void 0 : _a2.mtime) != null ? _b2 : 0) - ((_d = (_c = a.stat) == null ? void 0 : _c.mtime) != null ? _d : 0);
     });
     let visibleFiles = sortedFiles;
     let hasMore = false;
@@ -2091,7 +2645,7 @@ var VirtualMatch = class {
     }
     const span = this.getLinkRootSpan(inTableCellEditor);
     const firstFile = visibleFiles.length > 0 ? visibleFiles[0] : void 0;
-    const firstPath = firstFile ? (0, import_obsidian3.getLinkpath)(firstFile.path) : "";
+    const firstPath = firstFile ? (0, import_obsidian4.getLinkpath)(firstFile.path) : "";
     span.appendChild(this.getLinkAnchorElement(this.originText, firstPath, firstFile));
     if (visibleFiles.length > 1) {
       if (!this.isSubWord) {
@@ -2109,14 +2663,30 @@ var VirtualMatch = class {
     return span;
   }
   getFileTypeOrder(file) {
-    if (this.fileHeaderIds.has(file.path))
-      return 2;
-    const keyword = this.originText;
-    if (file.basename.toLowerCase() === keyword.toLowerCase())
+    const key = this.originText.toLowerCase();
+    const base = file.basename.toLowerCase();
+    if (base === key)
       return 0;
-    if (file.basename.includes(keyword))
-      return 0;
-    return 1;
+    if (base.includes(key))
+      return 1;
+    const headerId = this.fileHeaderIds.get(file.path);
+    if (headerId) {
+      let hk = headerId.trim();
+      const ss = this.settings.headerMatchStartSymbol;
+      const es = this.settings.headerMatchEndSymbol;
+      if (ss && es && hk.startsWith(ss) && hk.endsWith(es)) {
+        const inner = hk.slice(ss.length, hk.length - es.length).trim();
+        if (inner)
+          hk = inner;
+      }
+      hk = hk.toLowerCase();
+      if (hk === key)
+        return 3;
+      if (PrefixTree.stripHeadingNumber(hk).trim().toLowerCase() === key)
+        return 4;
+      return 5;
+    }
+    return 2;
   }
   getLinkAnchorElement(linkText, href, file) {
     const link = activeDocument.createElement("a");
@@ -2151,63 +2721,76 @@ var VirtualMatch = class {
       link.title = t("Open note: {name}").replace("{name}", titleFile.basename);
     }
     link.onclick = (event) => {
-      var _a2, _b2, _c, _d;
+      var _a2, _b2;
       event.preventDefault();
       event.stopPropagation();
       const targetFile = file || (this.files.length > 0 ? this.files[0] : null);
       if (!targetFile)
         return false;
-      if (this.plugin && this.plugin.app) {
-        const clicked = event.target;
-        const scope = (_c = (_a2 = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _a2.call(clicked, ".hover-popover")) != null ? _c : (_b2 = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _b2.call(clicked, ".workspace-leaf");
-        void this.plugin.app.workspace.openLinkText(fullPath, "", false, { active: true });
-        if (headerIdToUse) {
-          const alignWindow = Math.max(3e3, (this.settings.headingAlignWatchSeconds || 12) * 1e3);
-          const alreadyFramed = () => {
-            const el = findHeadingElement(document.body, headerIdToUse);
-            if (!el)
-              return false;
-            const sc = findScrollableAncestor(el);
-            if (!sc)
-              return false;
-            const r = el.getBoundingClientRect();
-            const sr = sc.getBoundingClientRect();
-            return r.top >= sr.top - 4 && r.bottom <= sr.bottom + 4;
-          };
-          if ((_d = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _d.call(clicked, ".cm-editor")) {
-            const editorScroll = (el, headingText) => {
-              var _a3, _b3;
-              if ((_b3 = (_a3 = this.plugin) == null ? void 0 : _a3.centerHeadingElement) == null ? void 0 : _b3.call(_a3, el, 8e3))
-                return true;
-              const target = resolveHeadingTarget(this.plugin.app, el, headingText, null);
-              if (!target)
+      const active = activeDocument.activeElement;
+      const inCellEditor = Boolean(active && active.closest(".table-cell-wrapper"));
+      const doNav = () => {
+        var _a3, _b3, _c, _d;
+        if (this.plugin && this.plugin.app) {
+          const clicked = event.target;
+          const scope = (_c = (_a3 = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _a3.call(clicked, ".hover-popover")) != null ? _c : (_b3 = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _b3.call(clicked, ".workspace-leaf");
+          patchAllEditorsDispatchClamp();
+          void this.plugin.app.workspace.openLinkText(fullPath, "", false, { active: true });
+          if (headerIdToUse) {
+            const alignWindow = Math.max(3e3, (this.settings.headingAlignWatchSeconds || 12) * 1e3);
+            const alreadyFramed = () => {
+              const el = findHeadingElement(document.body, headerIdToUse);
+              if (!el)
                 return false;
-              this.plugin.centerHeadingLine(target.view, target.line, 8e3);
-              return true;
+              const sc = findScrollableAncestor(el);
+              if (!sc)
+                return false;
+              const r = el.getBoundingClientRect();
+              const sr = sc.getBoundingClientRect();
+              return r.top >= sr.top - 4 && r.bottom <= sr.bottom + 4;
             };
-            keepScrolledHeadingAligned(scope, "click-editor", alignWindow, editorScroll, headerIdToUse);
-            const abort = new AbortController();
-            const stop = () => abort.abort();
-            window.addEventListener("wheel", stop, { capture: true, passive: true, signal: abort.signal });
-            window.addEventListener("mousedown", stop, { capture: true, signal: abort.signal });
-            window.addEventListener("keydown", stop, { capture: true, signal: abort.signal });
-            for (const delay of [3e3, 8e3]) {
-              if (delay > alignWindow)
-                break;
-              window.setTimeout(() => {
-                if (abort.signal.aborted)
-                  return;
-                if (alreadyFramed())
-                  return;
-                if (findHeadingElement(document.body, headerIdToUse))
-                  return;
-                void this.plugin.app.workspace.openLinkText(fullPath, "", false, { active: true });
-              }, delay);
+            if ((_d = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _d.call(clicked, ".cm-editor")) {
+              const editorScroll = (el, headingText) => {
+                var _a4, _b4;
+                if ((_b4 = (_a4 = this.plugin) == null ? void 0 : _a4.centerHeadingElement) == null ? void 0 : _b4.call(_a4, el, alignWindow))
+                  return true;
+                const target = resolveHeadingTarget(this.plugin.app, el, headingText, null);
+                if (!target)
+                  return false;
+                this.plugin.centerHeadingLine(target.view, target.line, alignWindow);
+                return true;
+              };
+              keepScrolledHeadingAligned(scope, "click-editor", alignWindow, editorScroll, headerIdToUse);
+              const abort = new AbortController();
+              const stop = () => abort.abort();
+              window.addEventListener("wheel", stop, { capture: true, passive: true, signal: abort.signal });
+              window.addEventListener("mousedown", stop, { capture: true, signal: abort.signal });
+              window.addEventListener("keydown", stop, { capture: true, signal: abort.signal });
+              for (const delay of [3e3, 8e3]) {
+                if (delay > alignWindow)
+                  break;
+                window.setTimeout(() => {
+                  if (abort.signal.aborted)
+                    return;
+                  if (alreadyFramed())
+                    return;
+                  if (findHeadingElement(document.body, headerIdToUse))
+                    return;
+                  void this.plugin.app.workspace.openLinkText(fullPath, "", false, { active: true });
+                }, delay);
+              }
+            } else {
+              keepScrolledHeadingAligned(scope, "click", alignWindow, void 0, headerIdToUse);
             }
-          } else {
-            keepScrolledHeadingAligned(scope, "click", alignWindow, void 0, headerIdToUse);
           }
         }
+      };
+      if (inCellEditor) {
+        active.blur();
+        (_b2 = (_a2 = this.plugin) == null ? void 0 : _a2.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView)) == null ? void 0 : _b2.editor.focus();
+        window.setTimeout(doNav, 250);
+      } else {
+        doNav();
       }
       return false;
     };
@@ -2216,6 +2799,10 @@ var VirtualMatch = class {
   getLinkRootSpan(inTableCellEditor = false) {
     const span = activeDocument.createElement("span");
     span.classList.add("virtual-link", "virtual-link-span");
+    if (contextLockedLinks.has(this.getLockKey())) {
+      span.classList.add("virtual-link-hover-lock");
+      span.dataset.fkContextLock = "1";
+    }
     if (this.settings.applyDefaultLinkStyling) {
       span.classList.add("virtual-link-default");
     }
@@ -2224,6 +2811,36 @@ var VirtualMatch = class {
     } else if (this.type === 2 /* Header */) {
       span.classList.add("virtual-link-type-header");
     }
+    span.addEventListener("mouseenter", () => {
+      const pending = hoverUnlockTimers.get(span);
+      if (pending !== void 0) {
+        window.clearTimeout(pending);
+        hoverUnlockTimers.delete(span);
+      }
+      span.classList.add("virtual-link-hover-lock");
+      const anchor = span.querySelector(".virtual-link-a");
+      const hid = anchor == null ? void 0 : anchor.getAttribute("data-heading-id");
+      if (hid)
+        setHoveredHeadingId(hid);
+    });
+    span.addEventListener("mouseleave", () => {
+      const pending = hoverUnlockTimers.get(span);
+      if (pending !== void 0)
+        window.clearTimeout(pending);
+      if (span.dataset.fkContextLock)
+        return;
+      hoverUnlockTimers.set(span, window.setTimeout(() => {
+        hoverUnlockTimers.delete(span);
+        span.classList.remove("virtual-link-hover-lock");
+      }, MULTI_REFERENCE_HOVER_GRACE_MS));
+    });
+    span.addEventListener("mousedown", (e) => {
+      if (e.button !== 2)
+        return;
+      contextLockedLinks.add(this.getLockKey());
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
     if (this.isBoldContext) {
       span.classList.add("virtual-link-in-bold");
     }
@@ -2248,20 +2865,8 @@ var VirtualMatch = class {
     if (this.isStrikethroughContext) {
       span.classList.add("virtual-link-in-strikethrough");
     }
-    if (inTableCellEditor === true) {
-      span.classList.add("no-context-menu");
-      span.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }, true);
-      span.addEventListener("mouseup", (e) => {
-        if (e.button === 2) {
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        }
-      }, true);
+    if (inTableCellEditor) {
+      attachTableCellContextMenu(span, this);
     }
     return span;
   }
@@ -2943,7 +3548,7 @@ var IntervalTree = class {
 };
 
 // linker/readModeLinker.ts
-var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
+var _GlossaryLinker = class extends import_obsidian5.MarkdownRenderChild {
   constructor(app, settings, context, containerEl, plugin) {
     super(containerEl);
     this.plugin = plugin;
@@ -2952,6 +3557,27 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
     this.ctx = context;
     this.linkerCache = LinkerCache.getInstance(app, settings);
     this.load();
+  }
+  sharedFor(sourcePath) {
+    const now = Date.now();
+    for (const [key, entry] of _GlossaryLinker.sharedSets) {
+      if (now - entry.at > _GlossaryLinker.sharedTtlMs)
+        _GlossaryLinker.sharedSets.delete(key);
+    }
+    const fresh = () => {
+      const entry = {
+        at: now,
+        linkedFiles: /* @__PURE__ */ new Set(),
+        explicitlyLinkedFiles: /* @__PURE__ */ new Set()
+      };
+      _GlossaryLinker.sharedSets.set(sourcePath, entry);
+      return entry;
+    };
+    const existing = _GlossaryLinker.sharedSets.get(sourcePath);
+    if (!existing)
+      return fresh();
+    existing.at = now;
+    return existing;
   }
   clearExistingLinks() {
     const virtualLinks = this.containerEl.querySelectorAll(".virtual-link");
@@ -2970,12 +3596,12 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
     var _a2, _b2;
     const destName = this.ctx.sourcePath.replace(/(.*).md/, "$1");
     let currentDestName = destName;
-    let currentPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian4.getLinkpath)(glossaryName), currentDestName);
+    let currentPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(glossaryName), currentDestName);
     if (currentPath == null)
       return null;
     while (currentDestName.includes("/")) {
       currentDestName = currentDestName.replace(/\/[^/]*?$/, "");
-      const newPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian4.getLinkpath)(glossaryName), currentDestName);
+      const newPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(glossaryName), currentDestName);
       if ((((_a2 = newPath == null ? void 0 : newPath.path) == null ? void 0 : _a2.length) || 0) > ((_b2 = currentPath == null ? void 0 : currentPath.path) == null ? void 0 : _b2.length)) {
         currentPath = newPath;
         break;
@@ -3007,12 +3633,12 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
         continue;
       let notePart = targetPart.slice(0, hashIdx);
       const anchorPart = targetPart.slice(hashIdx + 1);
-      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian4.getLinkpath)(notePart), currentFile.path);
+      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(notePart), currentFile.path);
       let prefixCut = 0;
       if (!dest && notePart.length > 1) {
         for (let cut = 1; cut < notePart.length; cut++) {
           const candidate = notePart.slice(cut);
-          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian4.getLinkpath)(candidate), currentFile.path);
+          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(candidate), currentFile.path);
           if (d) {
             dest = d;
             notePart = candidate;
@@ -3048,17 +3674,12 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
     return matches;
   }
   disambiguateFilesByContextReadMode(files, textNode, offset) {
+    const distances = /* @__PURE__ */ new Map();
     if (files.length <= 1 || !textNode)
-      return files;
-    let blockEl = textNode.parentElement;
-    while (blockEl && !["P", "LI", "TD", "TH"].includes(blockEl.tagName)) {
-      blockEl = blockEl.parentElement;
-    }
-    if (!blockEl)
-      return files;
-    const context = this.getTextBeforeNode(blockEl, textNode, offset).toLowerCase();
+      return { files, distances };
+    const context = this.getTextBeforeNode(this.containerEl, textNode, offset).toLowerCase();
     if (context.trim().length === 0)
-      return files;
+      return { files, distances };
     const scored = files.map((file) => {
       var _a2;
       let closestDistance = Number.POSITIVE_INFINITY;
@@ -3083,15 +3704,19 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
       }
       return { file, distance: closestDistance };
     });
+    for (const s of scored) {
+      if (Number.isFinite(s.distance))
+        distances.set(s.file.path, s.distance);
+    }
     const hits = scored.filter((s) => Number.isFinite(s.distance));
     if (hits.length === 0)
-      return files;
+      return { files, distances };
     const minDist = Math.min(...hits.map((s) => s.distance));
     const winners = hits.filter((s) => s.distance === minDist);
     if (winners.length === 1) {
-      return [winners[0].file];
+      return { files: [winners[0].file], distances };
     }
-    return files;
+    return { files, distances };
   }
   getTextBeforeNode(blockEl, targetNode, targetOffset) {
     let result = "";
@@ -3107,7 +3732,7 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
     return result;
   }
   onload() {
-    var _a2, _b2, _c;
+    var _a2, _b2, _c, _d;
     if (!this.settings.linkerActivated) {
       this.clearExistingLinks();
       return;
@@ -3121,25 +3746,38 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
         return;
       }
     }
+    const ignoreFile = this.app.vault.getAbstractFileByPath(this.ctx.sourcePath);
+    if (ignoreFile instanceof import_obsidian5.TFile && isLinkingDisabledInNote(ignoreFile, this.app, this.settings)) {
+      this.clearExistingLinks();
+      return;
+    }
+    if (!this.linkerCache.cache.isReady) {
+      void ((_c = this.linkerCache.cache.readyPromise) == null ? void 0 : _c.then(() => {
+        this.clearExistingLinks();
+        this.onload();
+      }));
+      return;
+    }
     const tags = ["p", "li", "td", "th", "span", "em", "strong", "mark", "del", "s"];
     if (this.settings.allowLinksInHeaders) {
       tags.push("h1", "h2", "h3", "h4", "h5", "h6");
     }
-    const linkedFiles = /* @__PURE__ */ new Set();
-    const explicitlyLinkedFiles = /* @__PURE__ */ new Set();
+    const shared = this.sharedFor(this.ctx.sourcePath);
+    const linkedFiles = shared.linkedFiles;
+    const explicitlyLinkedFiles = shared.explicitlyLinkedFiles;
     const realLinks = this.containerEl.querySelectorAll("a.internal-link");
     realLinks.forEach((a) => {
       const href = a.getAttribute("href") || "";
       if (!href)
         return;
-      const target = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian4.getLinkpath)(href), this.ctx.sourcePath);
+      const target = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(href), this.ctx.sourcePath);
       if (target)
         explicitlyLinkedFiles.add(target);
     });
     for (const tag of tags) {
       const nodeList = Array.from(this.containerEl.getElementsByTagName(tag));
       for (let index = 0; index <= nodeList.length; index++) {
-        const item = index === nodeList.length ? this.containerEl : (_c = nodeList[index]) != null ? _c : null;
+        const item = index === nodeList.length ? this.containerEl : (_d = nodeList[index]) != null ? _d : null;
         if (!item || item.closest(".virtual-link")) {
           continue;
         }
@@ -3163,7 +3801,7 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
               const isWordBoundary = PrefixTree.checkWordBoundary(char);
               if (this.settings.matchAnyPartsOfWords || this.settings.matchBeginningOfWords || isWordBoundary) {
                 const sourceFile = this.app.vault.getAbstractFileByPath(this.ctx.sourcePath);
-                const currentFile = this.settings.excludeLinksToOwnNote && sourceFile instanceof import_obsidian4.TFile ? sourceFile : null;
+                const currentFile = this.settings.excludeLinksToOwnNote && sourceFile instanceof import_obsidian5.TFile ? sourceFile : null;
                 const currentNodes = this.linkerCache.cache.getCurrentMatchNodes(i, currentFile);
                 if (currentNodes.length > 0) {
                   currentNodes.forEach((node) => {
@@ -3180,11 +3818,18 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
                     });
                     if (files.length === 0)
                       return;
+                    let ctxDistances;
                     if (this.settings.enableContextDisambiguation && node.type === 2 /* Header */ && files.length > 1) {
-                      files = this.disambiguateFilesByContextReadMode(files, childNode, nFrom);
+                      const ctx = this.disambiguateFilesByContextReadMode(files, childNode, nFrom);
+                      files = ctx.files;
+                      ctxDistances = ctx.distances;
                     }
                     const headerId = node.type === 2 /* Header */ ? node.headerId : void 0;
                     const match = new VirtualMatch(id++, name, nFrom, nTo, files, node.type, !isWordBoundary, this.settings, this.plugin, headerId);
+                    if (ctxDistances) {
+                      for (const [p, d] of ctxDistances)
+                        match.setFileContextDistance(p, d);
+                    }
                     if (this.linkerCache.cache.isDerivedKeyword(name)) {
                       match.isFuzzy = true;
                     }
@@ -3348,7 +3993,7 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
             let internalMatches = [];
             if (this.settings.enableInternalLinkSyntax) {
               const sourceFile = this.app.vault.getAbstractFileByPath(this.ctx.sourcePath);
-              if (sourceFile instanceof import_obsidian4.TFile) {
+              if (sourceFile instanceof import_obsidian5.TFile) {
                 internalMatches = this.findInternalLinkSyntaxMatches(text, sourceFile, id);
                 id += internalMatches.length;
               }
@@ -3396,8 +4041,9 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
             const parent = childNode.parentElement;
             let lastTo = 0;
             matches.forEach((match) => {
-              match.files.forEach((f) => linkedFiles.add(f));
+              match.setAlreadyLinkedFiles(new Set(linkedFiles));
               const span = match.getCompleteLinkElement();
+              match.files.forEach((f) => linkedFiles.add(f));
               if (match.from > 0) {
                 parent == null ? void 0 : parent.insertBefore(activeDocument.createTextNode(text.slice(lastTo, match.from)), childNode);
               }
@@ -3423,12 +4069,15 @@ var GlossaryLinker = class extends import_obsidian4.MarkdownRenderChild {
     }
   }
 };
+var GlossaryLinker = _GlossaryLinker;
+GlossaryLinker.sharedTtlMs = 250;
+GlossaryLinker.sharedSets = /* @__PURE__ */ new Map();
 
 // linker/liveLinker.ts
 var import_language = require("@codemirror/language");
 var import_state = require("@codemirror/state");
-var import_view = require("@codemirror/view");
-var import_obsidian5 = require("obsidian");
+var import_view2 = require("@codemirror/view");
+var import_obsidian6 = require("obsidian");
 function isDescendant(parent, child, maxDepth = 10) {
   let node = child.parentNode;
   let depth = 0;
@@ -3441,16 +4090,18 @@ function isDescendant(parent, child, maxDepth = 10) {
   }
   return false;
 }
-var VirtualLinkWidget = class extends import_view.WidgetType {
+var VirtualLinkWidget = class extends import_view2.WidgetType {
   constructor(match) {
     super();
     this.match = match;
   }
   toDOM(view) {
-    const cmTableWidget = view.dom.closest(".cm-table-widget");
-    const tableWrapper = view.dom.closest(".table-cell-wrapper");
-    const inTableCellEditor = Boolean(cmTableWidget && tableWrapper);
-    const element = this.match.getCompleteLinkElement(inTableCellEditor);
+    const element = this.match.getCompleteLinkElement(false);
+    window.requestAnimationFrame(() => {
+      if (isInTableCellEditor(element)) {
+        attachTableCellContextMenu(element, this.match);
+      }
+    });
     if (this.match.isBoldContext) {
       element.classList.add("cm-strong");
     }
@@ -3493,6 +4144,7 @@ function isInHoverPopover(el) {
 }
 var AutoLinkerPlugin = class {
   constructor(view, app, settings, updateManager, plugin) {
+    this.unsubscribeUpdate = null;
     this.lastCursorPos = 0;
     this.lastActiveFile = "";
     this.lastViewUpdate = null;
@@ -3501,6 +4153,7 @@ var AutoLinkerPlugin = class {
     this.cachedActiveView = void 0;
     this.lastRealActiveView = null;
     this.viewUpdateDomToFileMap = /* @__PURE__ */ new Map();
+    var _a2;
     this.app = app;
     this.plugin = plugin;
     this.settings = settings;
@@ -3511,7 +4164,19 @@ var AutoLinkerPlugin = class {
       this.cachedActiveView = void 0;
     }));
     this.decorations = this.buildDecorations(view);
-    updateManager.registerCallback(() => {
+    void ((_a2 = this.linkerCache.cache.readyPromise) == null ? void 0 : _a2.then(() => {
+      let tries = 0;
+      const attempt = () => {
+        if (view.visibleRanges.length > 0 || ++tries > 30) {
+          this.decorations = this.buildDecorations(view, true);
+          view.dispatch({});
+        } else {
+          window.requestAnimationFrame(attempt);
+        }
+      };
+      attempt();
+    }));
+    this.unsubscribeUpdate = updateManager.registerCallback(() => {
       if (this.lastViewUpdate) {
         this.update(this.lastViewUpdate, true);
       }
@@ -3520,16 +4185,13 @@ var AutoLinkerPlugin = class {
   update(update, force = false) {
     var _a2, _b2, _c, _d;
     if (this.cachedActiveView === void 0) {
-      const v = (_a2 = this.app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView)) != null ? _a2 : null;
+      const v = (_a2 = this.app.workspace.getActiveViewOfType(import_obsidian6.MarkdownView)) != null ? _a2 : null;
       this.cachedActiveView = v;
       if (v && !isInHoverPopover(v.containerEl)) {
         this.lastRealActiveView = v;
       }
     }
     const activeView = this.cachedActiveView;
-    const cmTableWidget = update.view.dom.closest(".cm-table-widget");
-    const tableWrapper = update.view.dom.closest(".table-cell-wrapper");
-    const inTableCellEditor = Boolean(cmTableWidget && tableWrapper);
     let updateIsOnActiveView = false;
     if (this.settings.fixIMEProblem || this.settings.excludeLinksInCurrentLine || this.settings.excludeLinksToOwnNote) {
       const domFromUpdate = update.view.dom;
@@ -3541,19 +4203,19 @@ var AutoLinkerPlugin = class {
         if (updateIsOnActiveView)
           activeViewForUpdate = this.lastRealActiveView;
       }
-      if (!updateIsOnActiveView && inTableCellEditor) {
-        updateIsOnActiveView = true;
-      }
       if (updateIsOnActiveView) {
         this.viewUpdateDomToFileMap.set(domFromUpdate, activeViewForUpdate == null ? void 0 : activeViewForUpdate.file);
       }
     }
     const cursorPos = update.view.state.selection.main.from;
+    const cursorMoved = this.lastCursorPos !== cursorPos;
+    this.lastCursorPos = cursorPos;
+    const cursorMatters = this.settings.excludeLinksInCurrentLine || this.settings.fixIMEProblem;
     const activeFile = (_d = (_c = (_b2 = this.lastRealActiveView) == null ? void 0 : _b2.file) != null ? _c : this.app.workspace.getActiveFile()) == null ? void 0 : _d.path;
     const fileChanged = activeFile != this.lastActiveFile;
     const treeChanged = (0, import_language.syntaxTree)(update.startState) !== (0, import_language.syntaxTree)(update.state);
-    if (force || this.lastCursorPos != cursorPos || update.docChanged || fileChanged || update.viewportChanged || treeChanged) {
-      const isPureScroll = update.viewportChanged && !update.docChanged && !fileChanged && !force && this.lastCursorPos === cursorPos;
+    if (force || cursorMoved && cursorMatters || update.docChanged || fileChanged || update.viewportChanged || treeChanged) {
+      const isPureScroll = update.viewportChanged && !update.docChanged && !fileChanged && !force && !cursorMoved;
       if (isPureScroll) {
         this.pendingScrollBuild = { view: update.view, viewIsActive: updateIsOnActiveView };
         this.lastViewUpdate = update;
@@ -3577,7 +4239,6 @@ var AutoLinkerPlugin = class {
         this.scrollDebounceTimer = null;
         this.pendingScrollBuild = null;
       }
-      this.lastCursorPos = cursorPos;
       this.linkerCache.updateCache(force);
       this.decorations = this.buildDecorations(update.view, updateIsOnActiveView);
       this.lastActiveFile = activeFile != null ? activeFile : "";
@@ -3585,11 +4246,14 @@ var AutoLinkerPlugin = class {
     this.lastViewUpdate = update;
   }
   destroy() {
+    var _a2;
     if (this.scrollDebounceTimer !== null) {
       window.clearTimeout(this.scrollDebounceTimer);
       this.scrollDebounceTimer = null;
       this.pendingScrollBuild = null;
     }
+    (_a2 = this.unsubscribeUpdate) == null ? void 0 : _a2.call(this);
+    this.unsubscribeUpdate = null;
   }
   getParentElementInfo(element, maxDepth = 5) {
     const parents = [];
@@ -3605,52 +4269,14 @@ var AutoLinkerPlugin = class {
     }
     return parents;
   }
-  findTableCellLineBoundary(view, cursorPos, findStart) {
-    const doc = view.state.doc;
-    if (findStart) {
-      for (let pos = cursorPos; pos >= 0; pos--) {
-        if (pos === 0) {
-          return 0;
-        }
-        const char = doc.sliceString(pos - 1, pos);
-        if (char === "\n") {
-          return pos;
-        }
-      }
-      return 0;
-    } else {
-      for (let pos = cursorPos; pos <= doc.length; pos++) {
-        if (pos === doc.length) {
-          return doc.length;
-        }
-        const char = doc.sliceString(pos, pos + 1);
-        if (char === "\n") {
-          return pos;
-        }
-      }
-      return doc.length;
-    }
-  }
   disambiguateFilesByContext(files, docPos, view) {
+    const distances = /* @__PURE__ */ new Map();
     if (files.length <= 1)
-      return files;
+      return { files, distances };
     const doc = view.state.doc;
-    let paraStart = 0;
-    const line = doc.lineAt(docPos);
-    paraStart = line.from;
-    let prevLine = line;
-    for (let l = line.number - 1; l >= 1; l--) {
-      const candidate = doc.line(l);
-      if (candidate.text.trim().length === 0) {
-        paraStart = prevLine.from;
-        break;
-      }
-      paraStart = candidate.from;
-      prevLine = candidate;
-    }
-    const context = doc.sliceString(paraStart, docPos).toLowerCase();
+    const context = doc.sliceString(0, docPos).toLowerCase();
     if (context.trim().length === 0)
-      return files;
+      return { files, distances };
     const scored = files.map((file) => {
       var _a2;
       let closestDistance = Number.POSITIVE_INFINITY;
@@ -3675,15 +4301,19 @@ var AutoLinkerPlugin = class {
       }
       return { file, distance: closestDistance };
     });
+    for (const s of scored) {
+      if (Number.isFinite(s.distance))
+        distances.set(s.file.path, s.distance);
+    }
     const hits = scored.filter((s) => Number.isFinite(s.distance));
     if (hits.length === 0)
-      return files;
+      return { files, distances };
     const minDist = Math.min(...hits.map((s) => s.distance));
     const winners = hits.filter((s) => s.distance === minDist);
     if (winners.length === 1) {
-      return [winners[0].file];
+      return { files: [winners[0].file], distances };
     }
-    return files;
+    return { files, distances };
   }
   findInternalLinkSyntaxMatches(text, rangeFrom, currentFile, startId = 0) {
     var _a2, _b2;
@@ -3709,12 +4339,12 @@ var AutoLinkerPlugin = class {
         continue;
       let notePart = targetPart.slice(0, hashIdx);
       const anchorPart = targetPart.slice(hashIdx + 1);
-      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(notePart), currentFile.path);
+      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(notePart), currentFile.path);
       let prefixCut = 0;
       if (!dest && notePart.length > 1) {
         for (let cut = 1; cut < notePart.length; cut++) {
           const candidate = notePart.slice(cut);
-          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(candidate), currentFile.path);
+          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(candidate), currentFile.path);
           if (d) {
             dest = d;
             notePart = candidate;
@@ -3765,6 +4395,9 @@ var AutoLinkerPlugin = class {
       if (excludedFolders.includes(path != null ? path : ""))
         return builder.finish();
     }
+    const ignoreFile = mappedFile != null ? mappedFile : this.app.workspace.getActiveFile();
+    if (isLinkingDisabledInNote(ignoreFile, this.app, this.settings))
+      return builder.finish();
     const explicitlyLinkedFiles = /* @__PURE__ */ new Set();
     const alreadyLinkedFiles = /* @__PURE__ */ new Set();
     for (const { from, to } of view.visibleRanges) {
@@ -3802,11 +4435,18 @@ var AutoLinkerPlugin = class {
               let filteredFiles = Array.from(node.files).filter((file) => {
                 return !this.settings.excludedExtensions.some((ext) => file.path.toLowerCase().endsWith(ext.toLowerCase()));
               });
+              let ctxDistances;
               if (this.settings.enableContextDisambiguation && node.type === 2 /* Header */ && filteredFiles.length > 1) {
-                filteredFiles = this.disambiguateFilesByContext(filteredFiles, from + actualFrom, view);
+                const ctx = this.disambiguateFilesByContext(filteredFiles, from + actualFrom, view);
+                filteredFiles = ctx.files;
+                ctxDistances = ctx.distances;
               }
               if (filteredFiles.length > 0) {
                 const virtualMatch = new VirtualMatch(id++, name, aFrom, aTo, filteredFiles, node.type, !isWordBoundary, this.settings, this.plugin, node.headerId);
+                if (ctxDistances) {
+                  for (const [p, d] of ctxDistances)
+                    virtualMatch.setFileContextDistance(p, d);
+                }
                 if (this.linkerCache.cache.isDerivedKeyword(name)) {
                   virtualMatch.isFuzzy = true;
                 }
@@ -4047,56 +4687,26 @@ var AutoLinkerPlugin = class {
         matches = matches.concat(internalMatches);
         matches = VirtualMatch.sort(matches);
       }
-      matches.forEach((addition) => addition.files.forEach((f) => alreadyLinkedFiles.add(f)));
+      matches.forEach((addition) => {
+        addition.setAlreadyLinkedFiles(new Set(alreadyLinkedFiles));
+        addition.files.forEach((f) => alreadyLinkedFiles.add(f));
+      });
       const cursorPos = view.state.selection.main.from;
       const excludeLine = viewIsActive && this.settings.excludeLinksInCurrentLine;
       const fixIMEProblem = viewIsActive && this.settings.fixIMEProblem;
       let needImeFix = false;
-      let inTableCellEditor = false;
-      const tableIndicators = [
-        ".cm-table-widget",
-        ".table-cell-wrapper",
-        ".cm-table",
-        ".cm-table-cell",
-        '[class*="table"]',
-        '[class*="cell"]',
-        ".markdown-table",
-        ".markdown-table-cell"
-      ];
-      for (const indicator of tableIndicators) {
-        if (view.dom.closest(indicator)) {
-          inTableCellEditor = true;
-          break;
-        }
-      }
-      if (!inTableCellEditor) {
-        let parent = view.dom.parentElement;
-        while (parent && parent !== activeDocument.body) {
-          const parentClasses = Array.from(parent.classList);
-          if (parentClasses.some((cls) => cls.includes("table") || cls.includes("cell"))) {
-            inTableCellEditor = true;
-            break;
-          }
-          parent = parent.parentElement;
-        }
-      }
       let lineStart, lineEnd;
-      if (inTableCellEditor) {
-        lineStart = this.findTableCellLineBoundary(view, cursorPos, true);
-        lineEnd = this.findTableCellLineBoundary(view, cursorPos, false);
-      } else {
-        const line = view.state.doc.lineAt(cursorPos);
-        lineStart = line.from;
-        lineEnd = line.to;
-      }
+      const line = view.state.doc.lineAt(cursorPos);
+      lineStart = line.from;
+      lineEnd = line.to;
       matches = matches.filter((addition) => {
         if (addition.from > addition.to)
           return false;
         const slice = view.state.sliceDoc(addition.from, addition.to);
         if (slice.includes("\n"))
           return false;
-        const line = view.state.doc.lineAt(addition.from);
-        const isHeaderLine = /^#{1,6}\s/.test(line.text);
+        const line2 = view.state.doc.lineAt(addition.from);
+        const isHeaderLine = /^#{1,6}\s/.test(line2.text);
         if (isHeaderLine) {
           if (!this.settings.allowLinksInHeaders)
             return false;
@@ -4157,7 +4767,7 @@ var AutoLinkerPlugin = class {
           }
         }
         if (!cursorNearby && !needImeFix && !(excludeLine && additionIsInCurrentLine && !additionIsInComment)) {
-          builder.add(from2, to2, import_view.Decoration.replace({
+          builder.add(from2, to2, import_view2.Decoration.replace({
             widget: new VirtualLinkWidget(addition)
           }));
         }
@@ -4170,19 +4780,19 @@ var pluginSpec = {
   decorations: (value) => value.decorations
 };
 var liveLinkerPlugin = (app, settings, updateManager, plugin) => {
-  return import_view.ViewPlugin.define((editorView) => {
+  return import_view2.ViewPlugin.define((editorView) => {
     return new AutoLinkerPlugin(editorView, app, settings, updateManager, plugin);
   }, pluginSpec);
 };
 
 // src/batchConvert.ts
-var import_obsidian6 = require("obsidian");
-function dirname(filePath) {
+var import_obsidian7 = require("obsidian");
+function dirname2(filePath) {
   const normalized = filePath.replace(/\\/g, "/");
   const lastSlash = normalized.lastIndexOf("/");
   return lastSlash === -1 ? "" : normalized.slice(0, lastSlash);
 }
-function basename(filePath) {
+function basename2(filePath) {
   const normalized = filePath.replace(/\\/g, "/");
   const lastSlash = normalized.lastIndexOf("/");
   return lastSlash === -1 ? normalized : normalized.slice(lastSlash + 1);
@@ -4317,7 +4927,7 @@ function buildReplacement(app, settings, match, sourcePath) {
   const useMarkdownLinks = settings.useDefaultLinkStyleForConversion ? settings.defaultUseMarkdownLinks : settings.useMarkdownLinks;
   const linkFormat = settings.useDefaultLinkStyleForConversion ? settings.defaultLinkFormat : settings.linkFormat;
   let absolutePath = targetFile.path;
-  let relativePath = dirname(sourcePath) + "/" + basename(targetFile.path);
+  let relativePath = dirname2(sourcePath) + "/" + basename2(targetFile.path);
   relativePath = relativePath.replace(/\\/g, "/");
   const replacementPath = app.metadataCache.fileToLinktext(targetFile, sourcePath);
   const lastPart = (_b2 = replacementPath.split("/").pop()) != null ? _b2 : "";
@@ -4388,7 +4998,7 @@ function applyReplacementsToString(text, items) {
   }
   return result;
 }
-var BatchConvertModal = class extends import_obsidian6.Modal {
+var BatchConvertModal = class extends import_obsidian7.Modal {
   constructor(app, settings, plugin, range) {
     super(app);
     this.items = [];
@@ -4403,7 +5013,7 @@ var BatchConvertModal = class extends import_obsidian6.Modal {
   onOpen() {
     var _a2, _b2, _c;
     const { contentEl } = this;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian6.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView);
     const editor = (_a2 = view == null ? void 0 : view.editor) != null ? _a2 : null;
     if (!editor) {
       contentEl.createEl("p", { text: "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A Markdown \u7B14\u8BB0\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002" });
@@ -4449,7 +5059,7 @@ var BatchConvertModal = class extends import_obsidian6.Modal {
     const listEl = contentEl.createEl("div", { cls: "batch-convert-list" });
     this.items.forEach((item, idx) => {
       const row = listEl.createEl("div", { cls: "batch-convert-row" });
-      const toggle = new import_obsidian6.Setting(row).setName(item.displayText).setDesc(item.multipleTargets ? "\u591A\u4E2A\u6307\u5411 \u2014 \u5C06\u8F6C\u6362\u4E3A\u7B2C\u4E00\u4E2A\u76EE\u6807" : item.replacement);
+      const toggle = new import_obsidian7.Setting(row).setName(item.displayText).setDesc(item.multipleTargets ? "\u591A\u4E2A\u6307\u5411 \u2014 \u5C06\u8F6C\u6362\u4E3A\u7B2C\u4E00\u4E2A\u76EE\u6807" : item.replacement);
       const defaultOn = !(item.multipleTargets && this.settings.skipMultipleTargets);
       toggle.addToggle((tc) => tc.setValue(defaultOn).onChange((v) => {
         this.enabled[idx] = v;
@@ -4464,7 +5074,7 @@ var BatchConvertModal = class extends import_obsidian6.Modal {
   }
   convert() {
     var _a2;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian6.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView);
     const editor = (_a2 = view == null ? void 0 : view.editor) != null ? _a2 : null;
     if (!editor)
       return;
@@ -4479,11 +5089,11 @@ var BatchConvertModal = class extends import_obsidian6.Modal {
       editor.replaceRange(item.replacement, editor.offsetToPos(item.from), editor.offsetToPos(item.to));
       applied++;
     }
-    new import_obsidian6.Notice(`\u5DF2\u56FA\u5316 ${applied} \u4E2A\u865A\u62DF\u94FE\u63A5\u4E3A\u771F\u5B9E\u94FE\u63A5\u3002`);
+    new import_obsidian7.Notice(`\u5DF2\u56FA\u5316 ${applied} \u4E2A\u865A\u62DF\u94FE\u63A5\u4E3A\u771F\u5B9E\u94FE\u63A5\u3002`);
     this.close();
   }
 };
-var BatchConvertFilesModal = class extends import_obsidian6.Modal {
+var BatchConvertFilesModal = class extends import_obsidian7.Modal {
   constructor(app, settings, plugin) {
     super(app);
     this.selectedFiles = [];
@@ -4523,11 +5133,11 @@ var BatchConvertFilesModal = class extends import_obsidian6.Modal {
   }
   async scanAndConvert() {
     if (this.selectedFiles.length === 0) {
-      new import_obsidian6.Notice("\u8BF7\u5148\u9009\u62E9\u81F3\u5C11\u4E00\u4E2A\u7B14\u8BB0\u3002");
+      new import_obsidian7.Notice("\u8BF7\u5148\u9009\u62E9\u81F3\u5C11\u4E00\u4E2A\u7B14\u8BB0\u3002");
       return;
     }
     if (!this.settings.linkerActivated) {
-      new import_obsidian6.Notice("\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u3002");
+      new import_obsidian7.Notice("\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u3002");
       return;
     }
     let totalApplied = 0;
@@ -4542,7 +5152,7 @@ var BatchConvertFilesModal = class extends import_obsidian6.Modal {
         const newContent = applyReplacementsToString(content, activeItems);
         const openView = this.app.workspace.getLeavesOfType("markdown").map((l) => l.view).find((v) => {
           var _a2;
-          return v instanceof import_obsidian6.MarkdownView && ((_a2 = v.file) == null ? void 0 : _a2.path) === file.path;
+          return v instanceof import_obsidian7.MarkdownView && ((_a2 = v.file) == null ? void 0 : _a2.path) === file.path;
         });
         if (openView && openView.editor) {
           const editor = openView.editor;
@@ -4562,10 +5172,10 @@ var BatchConvertFilesModal = class extends import_obsidian6.Modal {
       }
     }
     if (errors.length > 0) {
-      new import_obsidian6.Notice(`\u5B8C\u6210\u3002${totalApplied} \u4E2A\u94FE\u63A5\u5DF2\u56FA\u5316\uFF08${errors.length} \u4E2A\u6587\u4EF6\u51FA\u9519\uFF0C\u8BE6\u89C1\u63A7\u5236\u53F0\uFF09\u3002`);
+      new import_obsidian7.Notice(`\u5B8C\u6210\u3002${totalApplied} \u4E2A\u94FE\u63A5\u5DF2\u56FA\u5316\uFF08${errors.length} \u4E2A\u6587\u4EF6\u51FA\u9519\uFF0C\u8BE6\u89C1\u63A7\u5236\u53F0\uFF09\u3002`);
       console.error("Batch convert files errors:", errors);
     } else {
-      new import_obsidian6.Notice(`\u5DF2\u5B8C\u6210\u3002\u5728 ${this.selectedFiles.length} \u4E2A\u7B14\u8BB0\u4E2D\u56FA\u5316\u4E86 ${totalApplied} \u4E2A\u865A\u62DF\u94FE\u63A5\u3002`);
+      new import_obsidian7.Notice(`\u5DF2\u5B8C\u6210\u3002\u5728 ${this.selectedFiles.length} \u4E2A\u7B14\u8BB0\u4E2D\u56FA\u5316\u4E86 ${totalApplied} \u4E2A\u865A\u62DF\u94FE\u63A5\u3002`);
     }
     this.close();
   }
@@ -4574,7 +5184,7 @@ var BatchConvertFilesModal = class extends import_obsidian6.Modal {
     this.contentEl.empty();
   }
 };
-var FileMultiSuggestModal = class extends import_obsidian6.FuzzySuggestModal {
+var FileMultiSuggestModal = class extends import_obsidian7.FuzzySuggestModal {
   constructor() {
     super(...arguments);
     this.chosen = [];
@@ -4593,372 +5203,588 @@ var FileMultiSuggestModal = class extends import_obsidian6.FuzzySuggestModal {
   onChooseItem(file) {
     if (!this.chosen.includes(file))
       this.chosen.push(file);
-    new import_obsidian6.Notice(`\u5DF2\u6DFB\u52A0\uFF1A${file.path}\uFF08\u5171 ${this.chosen.length} \u4E2A\uFF09`);
+    new import_obsidian7.Notice(`\u5DF2\u6DFB\u52A0\uFF1A${file.path}\uFF08\u5171 ${this.chosen.length} \u4E2A\uFF09`);
     this.cb([...this.chosen]);
   }
 };
 
-// main.ts
-function dirname2(filePath) {
-  const lastSlashIndex = filePath.lastIndexOf("/");
-  return lastSlashIndex === -1 ? "" : filePath.substring(0, lastSlashIndex);
+// src/settingsTab.ts
+var import_obsidian8 = require("obsidian");
+function toggleDef(name, key, opts = {}) {
+  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "toggle", key, disabled: opts.disabled } };
 }
-function basename2(filePath) {
-  const lastSlashIndex = filePath.lastIndexOf("/");
-  return lastSlashIndex === -1 ? filePath : filePath.substring(lastSlashIndex + 1);
+function textDef(name, key, opts = {}) {
+  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "text", key, placeholder: opts.placeholder, disabled: opts.disabled } };
 }
-function relative(from, to) {
-  if (from === to)
-    return "";
-  const fromParts = from.split("/").filter((part) => part !== "");
-  const toParts = to.split("/").filter((part) => part !== "");
-  let commonLength = 0;
-  while (commonLength < fromParts.length && commonLength < toParts.length && fromParts[commonLength] === toParts[commonLength]) {
-    commonLength++;
-  }
-  const upLevels = fromParts.length - commonLength;
-  const downParts = toParts.slice(commonLength);
-  const upPath = upLevels > 0 ? "../".repeat(upLevels) : "./";
-  const downPath = downParts.join("/");
-  return downPath ? upPath + downPath : upPath.slice(0, -1);
+function textAreaDef(name, key, opts = {}) {
+  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "textarea", key, placeholder: opts.placeholder, disabled: opts.disabled } };
 }
-function handleTableCellConversion(targetElement, app, settings, updateManager) {
-  var _a2;
-  const from = parseInt(targetElement.getAttribute("from") || "-1");
-  const to = parseInt(targetElement.getAttribute("to") || "-1");
-  const text = targetElement.getAttribute("origin-text") || "";
-  const headerId = targetElement.getAttribute("data-heading-id");
-  if (from === -1 || to === -1) {
-    return;
+function dropdownDef(name, key, options, opts = {}) {
+  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "dropdown", key, options, disabled: opts.disabled } };
+}
+function sliderDef(name, key, min, max, step, opts = {}) {
+  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "slider", key, min, max, step, disabled: opts.disabled } };
+}
+function numberDef(name, key, opts = {}) {
+  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "number", key, min: opts.min, max: opts.max, step: opts.step, placeholder: opts.placeholder, disabled: opts.disabled } };
+}
+function colorDef(name, key, opts = {}) {
+  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "color", key, disabled: opts.disabled } };
+}
+function groupDef(heading, items, visible) {
+  return { type: "group", heading, items, visible };
+}
+var LinkerSettingTab = class extends import_obsidian8.PluginSettingTab {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
   }
-  const activeFile = app.workspace.getActiveFile();
-  if (!activeFile) {
-    return;
+  get s() {
+    return this.plugin.settings;
   }
-  const href = targetElement.getAttribute("href");
-  if (!href) {
-    return;
-  }
-  let targetPath = href;
-  let finalHeaderId = headerId;
-  if (href.includes("#")) {
-    const parts = href.split("#");
-    targetPath = parts[0];
-    finalHeaderId = parts[1] || headerId;
-  }
-  const activeFilePath = activeFile.path;
-  const targetFile = app.metadataCache.getFirstLinkpathDest(targetPath, activeFilePath);
-  if (!targetFile) {
-    return;
-  }
-  const linkPath = app.metadataCache.fileToLinktext(targetFile, activeFilePath);
-  const finalPath = finalHeaderId ? `${linkPath}#${finalHeaderId}` : linkPath;
-  const useMarkdownLinks = settings.useDefaultLinkStyleForConversion ? settings.defaultUseMarkdownLinks : settings.useMarkdownLinks;
-  let replacement = "";
-  if (useMarkdownLinks) {
-    const escapedText = text.replace(/[\\|]/g, "\\$&");
-    replacement = `[${escapedText}](${finalPath})`;
-  } else {
-    const escapedText = text.replace(/[\\|]/g, "\\$&");
-    replacement = `[[${finalPath}\\|${escapedText}]]`;
-  }
-  const editor = (_a2 = app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView)) == null ? void 0 : _a2.editor;
-  if (editor) {
-    let fromPos = editor.offsetToPos(from);
-    let toPos = editor.offsetToPos(to);
-    if (fromPos && toPos) {
-      const tableCellElement = targetElement.closest("td, th");
-      if (tableCellElement) {
-        const cellText = tableCellElement.textContent || "";
-        const originText = targetElement.getAttribute("origin-text") || "";
-        let textIndex = cellText.indexOf(originText);
-        if (textIndex === -1) {
-          const escapedOriginText = originText.replace(/[\\|]/g, "\\$&");
-          textIndex = cellText.indexOf(escapedOriginText);
-        }
-        if (textIndex !== -1) {
-          const docText = editor.getValue();
-          const lines = docText.split("\n");
-          let targetLine = -1;
-          let preciseOffset = -1;
-          const tableRowElement = tableCellElement.closest("tr");
-          if (tableRowElement) {
-            const cellIndex = Array.from(tableRowElement.children).indexOf(tableCellElement);
-            const tableElement = tableRowElement.closest("table");
-            let domRowIndex = -1;
-            if (tableElement) {
-              const allRows = tableElement.querySelectorAll("tr");
-              allRows.forEach((row, idx) => {
-                if (row === tableRowElement) {
-                  domRowIndex = idx;
-                }
-              });
-            }
-            const isSeparatorRow = (rowLine) => {
-              const trimmed = rowLine.trim();
-              return /^\|[\s\-:]+\|$/.test(trimmed) || /^\|[\s\-:|]+\|$/.test(trimmed);
-            };
-            const splitTableRow = (rowLine) => {
-              const cells = [];
-              let currentCell = "";
-              let inLink = false;
-              for (let i = 0; i < rowLine.length; i++) {
-                const char = rowLine[i];
-                const nextChar = rowLine[i + 1];
-                if (char === "[" && nextChar === "[") {
-                  inLink = true;
-                  currentCell += char;
-                } else if (char === "]" && nextChar === "]" && inLink) {
-                  inLink = false;
-                  currentCell += char;
-                } else if (char === "|" && !inLink) {
-                  cells.push(currentCell);
-                  currentCell = "";
-                } else {
-                  currentCell += char;
-                }
-              }
-              cells.push(currentCell);
-              return cells;
-            };
-            const nonSeparatorRows = [];
-            let domRowCounter = 0;
-            for (let i = 0; i < lines.length; i++) {
-              const line = lines[i];
-              if (!line.trim().startsWith("|"))
-                continue;
-              if (isSeparatorRow(line))
-                continue;
-              nonSeparatorRows.push({
-                docLineIndex: i,
-                domRowIndex: domRowCounter
-              });
-              domRowCounter++;
-            }
-            let targetDocLine = -1;
-            for (const row of nonSeparatorRows) {
-              if (row.domRowIndex === domRowIndex) {
-                targetDocLine = row.docLineIndex;
-                break;
-              }
-            }
-            if (targetDocLine >= 0 && targetDocLine < lines.length) {
-              const line = lines[targetDocLine];
-              const cells = splitTableRow(line);
-              const mdCellIndex = cellIndex + 1;
-              if (mdCellIndex < cells.length) {
-                const cellContent = cells[mdCellIndex].trim();
-                const cellTextIndex = cellContent.indexOf(originText);
-                if (cellTextIndex !== -1) {
-                  let offset = 0;
-                  let pipeCount = 0;
-                  for (let c = 0; c < line.length; c++) {
-                    const char = line[c];
-                    const isInWikiLink = () => {
-                      let depth = 0;
-                      for (let j = c - 1; j >= 0; j--) {
-                        if (line[j] === "]" && line[j - 1] === "]") {
-                          depth++;
-                          j--;
-                        } else if (line[j] === "[" && line[j - 1] === "[") {
-                          depth--;
-                          j--;
-                          if (depth < 0)
-                            return true;
-                        }
-                      }
-                      return false;
-                    };
-                    if (char === "|" && !isInWikiLink()) {
-                      pipeCount++;
-                      if (pipeCount === mdCellIndex) {
-                        offset = c + 1;
-                        while (offset < line.length && line[offset] === " ") {
-                          offset++;
-                        }
-                        break;
-                      }
-                    }
-                  }
-                  targetLine = targetDocLine;
-                  preciseOffset = offset + cellTextIndex;
-                }
-              }
-            }
-          }
-          if (targetLine === -1 || preciseOffset === -1) {
-            for (let i = 0; i < lines.length; i++) {
-              const line = lines[i];
-              if (line.includes("|") && line.includes(originText)) {
-                const lineTextIndex = line.indexOf(originText);
-                if (lineTextIndex !== -1) {
-                  targetLine = i;
-                  preciseOffset = lineTextIndex;
-                  break;
-                }
-              }
-            }
-          }
-          if (targetLine !== -1 && preciseOffset !== -1) {
-            fromPos = { line: targetLine, ch: preciseOffset };
-            toPos = { line: targetLine, ch: preciseOffset + originText.length };
-          }
-        }
-      }
-      const currentLineText = editor.getLine(fromPos.line);
-      const originalTextAtPosition = currentLineText.substring(fromPos.ch, toPos.ch);
-      const expectedText = targetElement.getAttribute("origin-text") || "";
-      if (originalTextAtPosition === expectedText) {
-        editor.replaceRange(replacement, fromPos, toPos);
-        updateManager.update();
-        window.setTimeout(() => {
-          editor.getLine(fromPos.line);
-        }, 100);
-      } else {
-        const tableCellElement2 = targetElement.closest("td, th");
-        if (tableCellElement2) {
-          const cellText = tableCellElement2.textContent || "";
-          let textIndex = cellText.indexOf(expectedText);
-          if (textIndex === -1) {
-            const escapedExpectedText = expectedText.replace(/[\\|]/g, "\\$&");
-            textIndex = cellText.indexOf(escapedExpectedText);
-          }
-          if (textIndex !== -1) {
-            const docText = editor.getValue();
-            const lines = docText.split("\n");
-            let targetLine = -1;
-            let preciseOffset = -1;
-            const tableRowElement = tableCellElement2.closest("tr");
-            if (tableRowElement) {
-              const cellIndex = Array.from(tableRowElement.children).indexOf(tableCellElement2);
-              const tableElement = tableRowElement.closest("table");
-              let domRowIndex = -1;
-              if (tableElement) {
-                const allRows = tableElement.querySelectorAll("tr");
-                allRows.forEach((row, idx) => {
-                  if (row === tableRowElement) {
-                    domRowIndex = idx;
-                  }
-                });
-              }
-              const isSeparatorRow = (rowLine) => {
-                const trimmed = rowLine.trim();
-                return /^\|[\s\-:]+\|$/.test(trimmed) || /^\|[\s\-:|]+\|$/.test(trimmed);
-              };
-              const splitTableRow = (rowLine) => {
-                const cells = [];
-                let currentCell = "";
-                let inLink = false;
-                for (let k = 0; k < rowLine.length; k++) {
-                  const char = rowLine[k];
-                  const nextChar = rowLine[k + 1];
-                  if (char === "[" && nextChar === "[") {
-                    inLink = true;
-                    currentCell += char;
-                  } else if (char === "]" && nextChar === "]" && inLink) {
-                    inLink = false;
-                    currentCell += char;
-                  } else if (char === "|" && !inLink) {
-                    cells.push(currentCell);
-                    currentCell = "";
-                  } else {
-                    currentCell += char;
-                  }
-                }
-                cells.push(currentCell);
-                return cells;
-              };
-              const nonSeparatorRows = [];
-              let domRowCounter = 0;
-              for (let i = 0; i < lines.length; i++) {
-                const line = lines[i];
-                if (!line.trim().startsWith("|"))
-                  continue;
-                if (isSeparatorRow(line))
-                  continue;
-                nonSeparatorRows.push({
-                  docLineIndex: i,
-                  domRowIndex: domRowCounter
-                });
-                domRowCounter++;
-              }
-              let targetDocLine = -1;
-              for (const row of nonSeparatorRows) {
-                if (row.domRowIndex === domRowIndex) {
-                  targetDocLine = row.docLineIndex;
-                  break;
-                }
-              }
-              if (targetDocLine >= 0 && targetDocLine < lines.length) {
-                const line = lines[targetDocLine];
-                const cells = splitTableRow(line);
-                const mdCellIndex = cellIndex + 1;
-                if (mdCellIndex < cells.length) {
-                  const cellContent = cells[mdCellIndex].trim();
-                  const cellTextIndex = cellContent.indexOf(expectedText);
-                  if (cellTextIndex !== -1) {
-                    let offset = 0;
-                    let pipeCount = 0;
-                    for (let c = 0; c < line.length; c++) {
-                      const char = line[c];
-                      const isInWikiLink = () => {
-                        let depth = 0;
-                        for (let j = c - 1; j >= 0; j--) {
-                          if (line[j] === "]" && line[j - 1] === "]") {
-                            depth++;
-                            j--;
-                          } else if (line[j] === "[" && line[j - 1] === "[") {
-                            depth--;
-                            j--;
-                            if (depth < 0)
-                              return true;
-                          }
-                        }
-                        return false;
-                      };
-                      if (char === "|" && !isInWikiLink()) {
-                        pipeCount++;
-                        if (pipeCount === mdCellIndex) {
-                          offset = c + 1;
-                          while (offset < line.length && line[offset] === " ") {
-                            offset++;
-                          }
-                          break;
-                        }
-                      }
-                    }
-                    targetLine = targetDocLine;
-                    preciseOffset = offset + cellTextIndex;
-                  }
-                }
-              }
-            }
-            if (targetLine === -1 || preciseOffset === -1) {
-              for (let i = 0; i < lines.length; i++) {
-                const line = lines[i];
-                if (line.includes("|") && line.includes(expectedText)) {
-                  const lineTextIndex = line.indexOf(expectedText);
-                  if (lineTextIndex !== -1) {
-                    targetLine = i;
-                    preciseOffset = lineTextIndex;
-                    break;
-                  }
-                }
-              }
-            }
-            if (targetLine !== -1 && preciseOffset !== -1) {
-              fromPos = { line: targetLine, ch: preciseOffset };
-              toPos = { line: targetLine, ch: preciseOffset + expectedText.length };
-              editor.replaceRange(replacement, fromPos, toPos);
-              updateManager.update();
-              return;
-            }
-          }
-        }
-      }
+  getControlValue(key) {
+    const s = this.s;
+    switch (key) {
+      case "useWikilinks":
+        return !s.useMarkdownLinks;
+      case "capitalLetterProportionForAutomaticMatchCase":
+        return Math.round(s.capitalLetterProportionForAutomaticMatchCase * 1e3) / 10;
+      case "linkerDirectories":
+        return s.linkerDirectories.join("\n");
+      case "excludedDirectories":
+        return s.excludedDirectories.join("\n");
+      case "excludedDirectoriesForLinking":
+        return s.excludedDirectoriesForLinking.join("\n");
+      case "excludedKeywords":
+        return s.excludedKeywords.join(",");
+      case "headingSymbolWhitelist":
+        return s.headingSymbolWhitelist.join(",");
+      case "excludedExtensions":
+        return s.excludedExtensions.join("\n");
+      case "filenameAffixExclusions":
+        return s.filenameAffixExclusions.join(",");
+      default:
+        return s[key];
     }
   }
-}
+  async setControlValue(key, value) {
+    let needsFullUpdate = false;
+    switch (key) {
+      case "useWikilinks":
+        await this.plugin.updateSettings({ useMarkdownLinks: !value });
+        break;
+      case "capitalLetterProportionForAutomaticMatchCase":
+        await this.plugin.updateSettings({ capitalLetterProportionForAutomaticMatchCase: value / 100 });
+        break;
+      case "linkerDirectories":
+        await this.plugin.updateSettings({ linkerDirectories: this.splitLines(value) });
+        break;
+      case "excludedDirectories":
+        await this.plugin.updateSettings({ excludedDirectories: this.splitLines(value) });
+        break;
+      case "excludedDirectoriesForLinking":
+        await this.plugin.updateSettings({ excludedDirectoriesForLinking: this.splitLines(value) });
+        break;
+      case "excludedKeywords":
+        await this.plugin.updateSettings({
+          excludedKeywords: value.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
+        });
+        break;
+      case "headingSymbolWhitelist":
+        await this.plugin.updateSettings({
+          headingSymbolWhitelist: value.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
+        });
+        break;
+      case "excludedExtensions":
+        await this.plugin.updateSettings({
+          excludedExtensions: value.split(/[\n,]/).map((x) => x.trim()).filter((x) => x.length > 0).map((x) => x.startsWith(".") ? x : `.${x}`)
+        });
+        break;
+      case "filenameAffixExclusions":
+        await this.plugin.updateSettings({
+          filenameAffixExclusions: value.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
+        });
+        break;
+      case "allowLinksInHeaders":
+        await this.plugin.updateSettings({
+          allowLinksInHeaders: value,
+          ...value ? { excludeLinksToOwnNote: true } : {}
+        });
+        needsFullUpdate = true;
+        break;
+      case "autoToggleByMode":
+        await this.plugin.updateSettings({ autoToggleByMode: value });
+        void this.plugin.handleLayoutChange();
+        break;
+      case "colorOnlyDisplay":
+        await this.plugin.updateSettings({ colorOnlyDisplay: value });
+        this.applyBodyClass("virtual-link-color-only", value);
+        break;
+      case "backgroundHighlight":
+        await this.plugin.updateSettings({ backgroundHighlight: value });
+        this.applyBackgroundClasses();
+        break;
+      case "backgroundTint":
+        await this.plugin.updateSettings({ backgroundTint: value });
+        this.applyBackgroundClasses();
+        break;
+      case "backgroundLines":
+        await this.plugin.updateSettings({ backgroundLines: value });
+        this.applyBackgroundClasses();
+        break;
+      case "backgroundCursorLine":
+        await this.plugin.updateSettings({ backgroundCursorLine: value });
+        this.applyBackgroundClasses();
+        break;
+      case "backgroundTabAccent":
+        await this.plugin.updateSettings({ backgroundTabAccent: value });
+        this.applyBackgroundClasses();
+        break;
+      case "backgroundUnfocusedMask":
+        await this.plugin.updateSettings({ backgroundUnfocusedMask: value });
+        this.applyBackgroundClasses();
+        break;
+      case "backgroundLineOpacity":
+        await this.plugin.updateSettings({ backgroundLineOpacity: value });
+        this.applyCssVar("--fakelink-line-alpha", String(value / 100));
+        break;
+      case "cursorLineOpacity":
+        await this.plugin.updateSettings({ cursorLineOpacity: value });
+        this.applyCssVar("--fakelink-cursor-line-alpha", String(value / 100));
+        break;
+      case "alternativeDisplayStyle":
+        await this.plugin.updateSettings({ alternativeDisplayStyle: value });
+        this.applyBodyClass("virtual-linker-alt-style", value);
+        break;
+      case "headerVirtualLinkColor":
+        await this.plugin.updateSettings({ headerVirtualLinkColor: value });
+        this.applyCssVar("--virtual-link-header-color", value);
+        this.plugin.applyFuzzyColors();
+        break;
+      case "noteVirtualLinkColor":
+        await this.plugin.updateSettings({ noteVirtualLinkColor: value });
+        this.applyCssVar("--virtual-link-note-color", value);
+        this.plugin.applyFuzzyColors();
+        break;
+      case "fuzzyBaseColor":
+        await this.plugin.updateSettings({ fuzzyBaseColor: value });
+        this.plugin.applyFuzzyColors();
+        break;
+      case "fuzzyColorMixRatio":
+        await this.plugin.updateSettings({ fuzzyColorMixRatio: value });
+        this.plugin.applyFuzzyColors();
+        break;
+      default:
+        await this.plugin.updateSettings({ [key]: value });
+    }
+    if (needsFullUpdate) {
+      this.update();
+    } else {
+      this.refreshDomState();
+    }
+  }
+  splitLines(value) {
+    return value.split("\n").map((x) => x.trim()).filter((x) => x.length > 0);
+  }
+  eachBody(fn) {
+    const done = /* @__PURE__ */ new Set();
+    const visit = (ownerDoc) => {
+      if (done.has(ownerDoc))
+        return;
+      done.add(ownerDoc);
+      fn(ownerDoc.body);
+    };
+    visit(this.app.workspace.containerEl.ownerDocument);
+    this.app.workspace.iterateAllLeaves((leaf) => {
+      var _a2;
+      const el = (_a2 = leaf.view) == null ? void 0 : _a2.containerEl;
+      if (el)
+        visit(el.ownerDocument);
+    });
+  }
+  applyBodyClass(cls, on) {
+    this.eachBody((body) => {
+      if (on)
+        body.classList.add(cls);
+      else
+        body.classList.remove(cls);
+    });
+  }
+  applyCssVar(name, value) {
+    this.eachBody((body) => body.style.setProperty(name, value));
+  }
+  applyBackgroundClasses() {
+    this.plugin.applyBackgroundStyles();
+  }
+  getSettingDefinitions() {
+    const s = this.s;
+    const adv = () => s.advancedSettings;
+    return [
+      groupDef(t("General"), [
+        toggleDef(t("Activate virtual linker"), "linkerActivated", {
+          desc: t("To show/hide virtual links in the body of regular notes (paragraphs, lists, etc.), please turn on/off this toggle. Note: This toggle cannot control virtual links inside tables and Canvas (due to different rendering mechanisms). If virtual links in tables or Canvas are not displayed or show rendering glitches, do not toggle this switch \u2014 simply restart the plugin (via QuickAdd or other means).")
+        }),
+        toggleDef(t("Auto-toggle activation status by mode"), "autoToggleByMode", {
+          desc: t("When enabled, the plugin will automatically activate in edit mode if inactive, and automatically deactivate in read mode if active")
+        })
+      ]),
+      groupDef(t("Matching behavior"), [
+        toggleDef(t("Include aliases"), "includeAliases", {
+          desc: t("If enabled, the virtual linker will also match file aliases.")
+        }),
+        toggleDef(t("Match any part of a word"), "matchAnyPartsOfWords", {
+          desc: t("When disabled, only complete word matches are linked. When enabled, any substring match will be linked.")
+        }),
+        toggleDef(t("Match the beginning of words"), "matchBeginningOfWords", {
+          desc: t("When enabled, word prefixes will be linked even without complete word matches."),
+          visible: () => !s.matchAnyPartsOfWords
+        }),
+        toggleDef(t("Match the end of words"), "matchEndOfWords", {
+          desc: t("When enabled, word suffixes will be linked even without complete word matches."),
+          visible: () => !s.matchAnyPartsOfWords
+        }),
+        toggleDef(t("Suppress suffix for sub words"), "suppressSuffixForSubWords", {
+          desc: t("When enabled, the link suffix will only be shown for complete word matches, not partial matches."),
+          visible: () => s.matchAnyPartsOfWords || s.matchBeginningOfWords
+        }),
+        toggleDef(t("Only link once"), "onlyLinkOnce", {
+          desc: t("When enabled, identical terms in the same note will only be linked once."),
+          visible: adv
+        }),
+        toggleDef(t("Exclude links to real linked files"), "excludeLinksToRealLinkedFiles", {
+          desc: t("When enabled, terms that are already manually linked in the note will not be auto-linked."),
+          visible: adv
+        }),
+        toggleDef(t("Exclude self-links to the current note"), "excludeLinksToOwnNote", {
+          desc: t('If toggled, links to the note itself are excluded from the linker. Enabling "Allow virtual links in headers" also turns this on automatically.'),
+          visible: adv
+        }),
+        toggleDef(t("Fix ime typing issues"), "fixIMEProblem", {
+          desc: t("This option is recommended when using ime for typing non-latin scripts such as chinese, japanese, or korean and prevents virtual linking from interfering with ime composition at the start of lines."),
+          visible: adv
+        }),
+        toggleDef(t("Avoid linking in current line"), "excludeLinksInCurrentLine", {
+          desc: t("If activated, there will be no links in the current line."),
+          visible: adv
+        })
+      ]),
+      groupDef(t("Headers"), [
+        toggleDef(t("Include headers"), "includeHeaders", {
+          desc: t("When enabled, Markdown headings (lines starting with #) will also be included for virtual linking.")
+        }),
+        toggleDef(t("Allow virtual links in headers"), "allowLinksInHeaders", {
+          desc: t("When enabled, virtual links will be displayed inside Markdown headings. Tip: use with Quick Switcher++ for header navigation.")
+        }),
+        toggleDef(t("Enable header symbol keywords"), "headerMatchSymbols", {
+          desc: t("When enabled, text between start and end symbols in headers will be used as virtual link keywords. Tip: use EasyTyping to select text and add symbols.")
+        }),
+        textDef(t("Start symbol"), "headerMatchStartSymbol", {
+          desc: t("Symbol marking the start of the keyword in headers. Must be different from end symbol."),
+          visible: () => s.headerMatchSymbols
+        }),
+        textDef(t("End symbol"), "headerMatchEndSymbol", {
+          desc: t("Symbol marking the end of the keyword in headers. Must be different from start symbol."),
+          visible: () => s.headerMatchSymbols
+        }),
+        toggleDef(t("Only match headers between symbols"), "headerMatchOnlyBetweenSymbols", {
+          desc: t("When enabled, only headers containing start and end symbols will produce virtual links. Unmarked headers will not produce virtual links."),
+          visible: () => s.headerMatchSymbols
+        }),
+        toggleDef(t("Auto-insert heading lock symbol"), "headerAutoAppendSuffix", {
+          desc: t("When enabled, a unique symbol is automatically placed at the front of new or modified header text, preventing accidental matching by regular body text.")
+        }),
+        textDef(t("Heading lock symbol"), "headerAutoAppendSymbol", {
+          desc: t("The symbol placed at the front of header text (after # but before content). Use a rare character not found in normal text."),
+          visible: () => s.headerAutoAppendSuffix
+        }),
+        textAreaDef(t("Heading symbol whitelist"), "headingSymbolWhitelist", {
+          desc: t("Symbols in headings that are stripped from the virtual-link keyword (comma separated). Use this to decorate headings with markers (e.g. \u{1F525}) without those markers affecting matching.")
+        }),
+        numberDef(t("Heading align watch window (seconds)"), "headingAlignWatchSeconds", {
+          desc: t("How long (in SECONDS) a jumped-to heading keeps being re-aligned. The heading is put back in place the moment the content above it changes height (a PDF or an image finishing, MathJax typesetting) - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60)."),
+          min: 3,
+          max: 120
+        })
+      ]),
+      groupDef(t("Fuzzy matching"), [
+        toggleDef(t("Fuzzy meaning matching"), "enableStemming", {
+          desc: t('When enabled, keywords are normalized before matching so related forms link to the same note or heading. English: each word is reduced to its stem and irregular verbs are aligned (e.g. "He ran to the store" matches "he runs to the store"). Chinese: common function words are stripped (e.g. "\u6211\u7684\u9879\u76EE\u8BA1\u5212" matches "\u9879\u76EE\u8BA1\u5212"). Off by default.')
+        }),
+        dropdownDef(t("Fuzzy matching language"), "stemmingLanguage", {
+          "auto": "Auto (by script)",
+          "en": "English",
+          "zh": "Chinese"
+        }, {
+          desc: t(`Language used for fuzzy matching. "en" = English stemming + irregular verbs; "zh" = Chinese function-word stripping. Choose "auto" to apply both based on each keyword's script.`),
+          disabled: () => !s.enableStemming
+        }),
+        sliderDef(t("Fuzzy match similarity threshold"), "fuzzyMatchThreshold", 80, 100, 1, {
+          desc: t("When fuzzy matching is on, a word is linked only if its similarity to a normalized keyword is above this percentage. Range 80%-100%. Higher = stricter (fewer but more accurate links)."),
+          disabled: () => !s.enableStemming
+        }),
+        sliderDef(t("Minimum keyword length for fuzzy matching"), "fuzzyMinLength", 1, 20, 1, {
+          desc: t("Titles or note names whose normalized length is longer than this are processed by fuzzy matching; those of this length or shorter are skipped (exact matching still works). This keeps fuzzy matching focused on long titles/notes, where inflected or fuzzy variants are common, and avoids false links on short words. Default 6 (Chinese: only titles longer than 6 characters). Range 1-20."),
+          disabled: () => !s.enableStemming
+        }),
+        toggleDef(t("Sliding window for fuzzy matching"), "fuzzySlidingWindow", {
+          desc: t("Also try shorter suffixes of the text run, not just the whole run. Chinese has no spaces, so a term is usually glued to the words before it, and those extra characters drag the similarity below the threshold. Off by default; turn it on if you need terms embedded in Chinese text to match, at the cost of slower scrolling on long lines."),
+          disabled: () => !s.enableStemming
+        }),
+        sliderDef(t("Sliding window max offset"), "fuzzySlidingWindowMaxOffset", 2, 24, 1, {
+          desc: t("Maximum number of characters stripped from the front of a text run while searching for a fuzzy match. Lower values are faster but may miss a term buried more than this many characters after the last punctuation/space. Default 10."),
+          disabled: () => !s.enableStemming || !s.fuzzySlidingWindow
+        })
+      ]),
+      groupDef(t("Case sensitivity"), [
+        toggleDef(t("Case sensitive"), "matchCaseSensitive", {
+          desc: t("If activated, the matching is case sensitive.")
+        }),
+        numberDef(t("Capital letter percentage for automatic match case"), "capitalLetterProportionForAutomaticMatchCase", {
+          desc: t("The percentage (0 - 100) of capital letters in a file name or alias to be automatically considered as case sensitive."),
+          min: 0,
+          max: 100,
+          step: 0.1,
+          visible: adv
+        }),
+        textDef(t("Tag to ignore case"), "tagToIgnoreCase", {
+          desc: t("By adding this tag to a file, the linker will ignore the case for the file."),
+          visible: () => s.advancedSettings && s.matchCaseSensitive
+        }),
+        textDef(t("Tag to match case"), "tagToMatchCase", {
+          desc: t("By adding this tag to a file, the linker will match the case for the file."),
+          visible: () => s.advancedSettings && !s.matchCaseSensitive
+        }),
+        textDef(t("Property name to ignore case"), "propertyNameToIgnoreCase", {
+          desc: t("By adding this property to a note, containing a list of names, the linker will ignore the case for the specified names / aliases. This way you can decide, which alias should be insensitive."),
+          visible: adv
+        }),
+        textDef(t("Property name to match case"), "propertyNameToMatchCase", {
+          desc: t("By adding this property to a note, containing a list of names, the linker will match the case for the specified names / aliases. This way you can decide, which alias should be case sensitive."),
+          visible: adv
+        })
+      ]),
+      groupDef(t("Files"), [
+        toggleDef(t("Include all files"), "includeAllFiles", {
+          desc: t("Include all files for the virtual linker.")
+        }),
+        textAreaDef(t("Glossary linker directories"), "linkerDirectories", {
+          desc: t("Directories to include for the virtual linker (separated by new lines)."),
+          placeholder: "List of directory names (separated by new line)",
+          visible: () => !s.includeAllFiles
+        }),
+        textAreaDef(t("Excluded directories"), "excludedDirectories", {
+          desc: t("Directories from which files are to be excluded for the virtual linker (separated by new lines). Files in these directories will not create any virtual links in other files."),
+          placeholder: "List of directory names (separated by new line)",
+          visible: () => s.advancedSettings && s.includeAllFiles
+        }),
+        textAreaDef(t("Excluded directories for generating virtual links"), "excludedDirectoriesForLinking", {
+          desc: t("Directories in which the plugin will not create virtual links (separated by new lines)."),
+          placeholder: "List of directory names (separated by new line)",
+          visible: adv
+        }),
+        dropdownDef(t("Single-note opt-out"), "linkIgnoreMode", {
+          off: t("Off \u2014 no note can opt out"),
+          tag: t("By tag"),
+          property: t("By frontmatter property")
+        }, {
+          desc: t('Lets one note switch off virtual links inside itself (the opposite of "linker-exclude", which stops it being linked from elsewhere). Pick one method; the matching field below is used.')
+        }),
+        textDef(t("Opt-out tag name"), "linkIgnoreTag", {
+          desc: t('Used when the method is "By tag": a note carrying this tag renders no virtual links at all. Put it in the frontmatter (tags: [linker-ignore]) or anywhere in the note as #linker-ignore.'),
+          placeholder: "linker-ignore",
+          visible: () => s.linkIgnoreMode === "tag"
+        }),
+        textDef(t("Opt-out property name"), "linkIgnoreProperty", {
+          desc: t('Used when the method is "By frontmatter property": a note with this property set to true renders no virtual links at all. Usage: add "linker-ignore: true" to the note frontmatter.'),
+          placeholder: "linker-ignore",
+          visible: () => s.linkIgnoreMode === "property"
+        }),
+        textDef(t("Tag to include file"), "tagToIncludeFile", {
+          desc: t("Tag to explicitly include the file for the linker."),
+          visible: adv
+        }),
+        textDef(t("Tag to ignore file"), "tagToExcludeFile", {
+          desc: t("Tag to ignore the file for the linker."),
+          visible: adv
+        }),
+        textAreaDef(t("Excluded file extensions"), "excludedExtensions", {
+          desc: t("File extensions to exclude from virtual linking (one per line or comma separated)"),
+          visible: adv
+        })
+      ]),
+      groupDef(t("Exclusions"), [
+        toggleDef(t("Auto-exclude renamed duplicates"), "autoExcludeContainedCopies", {
+          desc: t(`When enabled, if one note's file name fully contains another note's file name (e.g. "\u6559\u80B2\u6559\u5B66" and "\u6559\u80B2\u6559\u5B66\u9644\u4EF6") and both notes start with the same first sentence, the longer-named note is automatically excluded from virtual linking (treated like a linker-exclude note). This keeps a copied-and-renamed duplicate from producing links. Off by default.`),
+          visible: adv
+        }),
+        textAreaDef(t("Exclude by file name prefix/suffix"), "filenameAffixExclusions", {
+          desc: t("Notes whose file name starts or ends with any of these words or symbols (comma separated) are excluded from virtual linking, like a linker-exclude note."),
+          placeholder: "e.g. \u526F\u672C, \u8349\u7A3F, _",
+          visible: adv
+        }),
+        textAreaDef(t("Excluded keywords"), "excludedKeywords", {
+          desc: t("Keywords to exclude from virtual linking (comma separated). Files/aliases or headings matching these keywords will not be linked."),
+          visible: adv
+        }),
+        toggleDef(t("Per-note excluded keywords"), "perNoteExcludeKeywords", {
+          desc: t(`When enabled, the global excluded keywords only apply to notes that opt in via a frontmatter property. When disabled, excluded keywords apply to all notes. Usage: add "fakelink-exclude: true" to a note's frontmatter to opt in for that note.`),
+          visible: () => !s.includeAllFiles || s.advancedSettings
+        }),
+        textDef(t("Frontmatter exclusion property"), "frontmatterExcludeProperty", {
+          desc: t("The frontmatter property name to check. Only notes with this property set to true will have the global excluded keywords applied. Default: fakelink-exclude."),
+          visible: () => s.perNoteExcludeKeywords
+        }),
+        toggleDef(t("Enable frontmatter exclude list"), "enableFrontmatterExcludeList", {
+          desc: t(`When enabled, each note can define excluded keywords in its frontmatter. These keywords will not be linked anywhere (added on top of the global excluded keywords). Usage: add "fakelink-exclude-keywords: [keyword1, keyword2]" or "fakelink-exclude-keywords: keyword1, keyword2" to a note's frontmatter.`),
+          visible: adv
+        }),
+        textDef(t("Frontmatter exclude list property"), "frontmatterExcludeListProperty", {
+          desc: t("The frontmatter property name for per-note excluded keyword lists. Default: fakelink-exclude-keywords."),
+          visible: () => s.enableFrontmatterExcludeList
+        })
+      ]),
+      groupDef(t("Special syntax"), [
+        toggleDef(t("Bare internal link syntax"), "enableInternalLinkSyntax", {
+          desc: t('When enabled, plain text like "note#heading", "note#^block-id", or "note#heading|alias" is treated as a virtual link. Append "|alias" to set a custom display name. Links end at a space or punctuation; letters/digits directly after the alias become part of it, so add a space before them if needed.')
+        }),
+        toggleDef(t("Context-aware header disambiguation"), "enableContextDisambiguation", {
+          desc: t("When a heading name exists in multiple notes, prefer the note whose file name (or alias) appears closest to the match in the current paragraph. This keeps links pointing to the most relevant note instead of listing all of them.")
+        }),
+        toggleDef(t("Exclude text between symbols"), "enableSymbolExclusion", {
+          desc: t('When enabled, text between the configured start and end symbols (e.g. { ... }) will not produce virtual links. Separate multiple symbol pairs with commas (e.g. start "{,\uFF08" end "},\uFF09"). Useful for pandoc citations or other special syntax.')
+        }),
+        textDef(t("Exclusion start symbol"), "excludeSymbolStart", {
+          desc: t("Symbol marking the start of the excluded text. Separate multiple symbols with commas (matched positionally with the end symbols). Each must differ from its corresponding end symbol."),
+          visible: () => s.enableSymbolExclusion
+        }),
+        textDef(t("Exclusion end symbol"), "excludeSymbolEnd", {
+          desc: t("Symbol marking the end of the excluded text. Separate multiple symbols with commas (matched positionally with the start symbols). Each must differ from its corresponding start symbol."),
+          visible: () => s.enableSymbolExclusion
+        })
+      ]),
+      groupDef(t("Line jumping"), [
+        toggleDef(t("Jump to line on adv-uri click"), "jumpEnabled", {
+          desc: t('When enabled, FakeLink registers the obsidian://adv-uri protocol and handles line jumping itself, including links fired from external apps (e.g. a browser or a custom obsidianjump:// handler). Obsidian allows only ONE plugin to handle this protocol, so you must NOT enable the Advanced URI plugin at the same time \u2014 keep it disabled, otherwise one of the two plugins will fail to load. Generate line links via the right-click menu "Copy line link (adv-uri)".')
+        }),
+        toggleDef(t("Self-heal line links"), "lineLinkSelfHeal", {
+          desc: t("When enabled, copied line links also store the text of the target line. If the note is edited and line numbers drift, the jump re-finds the line by its text instead of landing on the wrong line. Works for both plain and aliased line links. Line links copied before enabling this have no anchor and keep the old behavior."),
+          visible: () => s.jumpEnabled
+        }),
+        numberDef(t("Line jump wait limit (seconds)"), "lineJumpWaitSeconds", {
+          desc: t("The maximum time (in SECONDS) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. The number you type is the number of seconds (8 = 8 seconds); 0 means do not wait."),
+          min: 0,
+          max: 60,
+          visible: () => s.jumpEnabled
+        }),
+        toggleDef(t("Open in new tab"), "jumpOpenInNewTab", {
+          desc: t("When the target file is not already open, open it in a new tab. When off, the current tab is reused."),
+          visible: () => s.jumpEnabled
+        })
+      ]),
+      groupDef(t("References"), [
+        numberDef(t("Maximum references to show"), "maxReferenceCount", {
+          desc: t('The maximum number of reference markers [1][2]... shown after a virtual link. When a link has more references, a "..." indicator is shown.'),
+          min: 1,
+          max: 20
+        }),
+        numberDef(t("Hide link when references exceed"), "maxReferencesToHideLink", {
+          desc: t("When the total number of matching files (names + aliases + headers) exceeds this threshold, the virtual link will not be displayed."),
+          min: 1,
+          max: 50
+        }),
+        toggleDef(t("Always show multiple references"), "alwaysShowMultipleReferences", {
+          desc: t("If toggled, if there are multiple matching notes, all references are shown behind the match. If not toggled, the references are only shown if hovering over the match.")
+        })
+      ]),
+      groupDef(t("Conversion"), [
+        toggleDef(t("Skip links with multiple targets (batch convert)"), "skipMultipleTargets", {
+          desc: t('When using "Convert all virtual links to real links (preview)", virtual links that point to more than one note are skipped so you can convert them one by one manually. When off, they are included but unchecked by default and only the first target is converted.')
+        }),
+        toggleDef(t("Use default link style for conversion"), "useDefaultLinkStyleForConversion", {
+          desc: t("If toggled, the default link style will be used for the conversion of virtual links to real links.")
+        }),
+        toggleDef(t("Use [[wikilinks]]"), "useWikilinks", {
+          desc: t("If toggled, the virtual links will be created as wikilinks instead of Markdown links."),
+          visible: () => !s.useDefaultLinkStyleForConversion
+        }),
+        dropdownDef(t("Link format"), "linkFormat", {
+          "shortest": "Shortest",
+          "relative": "Relative",
+          "absolute": "Absolute"
+        }, {
+          desc: t("The format of the generated links."),
+          visible: () => !s.useDefaultLinkStyleForConversion
+        })
+      ]),
+      groupDef(t("Appearance"), [
+        toggleDef(t("Background"), "backgroundHighlight", {
+          desc: t("Master switch for the look below. Each part of it can then be switched off separately with the toggles under it, so you keep only what you want instead of getting everything at once. Off by default; every colour is a CSS variable (--fakelink-...).")
+        }),
+        toggleDef(t("Overall tint"), "backgroundTint", {
+          desc: t("The very faint background colour of the app surfaces (aliceblue in light themes, dark grey in dark ones). Also feeds Obsidian own --background-* variables, so themes that read them follow along."),
+          visible: () => s.backgroundHighlight
+        }),
+        toggleDef(t("Line and block tint"), "backgroundLines", {
+          desc: t('Light blue background on list lines, on tab-indented lines (and the line above them), on tables and on callouts. All four use one colour - set its opacity with the strength slider below. Every callout type gets it, not just "note".'),
+          visible: () => s.backgroundHighlight
+        }),
+        sliderDef(t("Background tint strength"), "backgroundLineOpacity", 0, 60, 1, {
+          desc: t("Opacity of the light blue tint on list / indented / table / callout lines. 10 is the default."),
+          visible: () => s.backgroundHighlight && s.backgroundLines
+        }),
+        toggleDef(t("Cursor line"), "backgroundCursorLine", {
+          desc: t("Warm orange highlight on the line the cursor is on, together with the caret colour."),
+          visible: () => s.backgroundHighlight
+        }),
+        sliderDef(t("Cursor line strength"), "cursorLineOpacity", 0, 100, 1, {
+          desc: t("Opacity of the warm orange highlight on the line the cursor is on. 35 is the default."),
+          visible: () => s.backgroundHighlight && s.backgroundCursorLine
+        }),
+        toggleDef(t("Tab accent"), "backgroundTabAccent", {
+          desc: t("Makes the active tab header stand out: a raised background, an accent-coloured underline and label, a bolder label and a soft shadow."),
+          visible: () => s.backgroundHighlight
+        }),
+        toggleDef(t("Unfocused mask"), "backgroundUnfocusedMask", {
+          desc: t("Dims the workspace with a gentle mask while the Obsidian window is not focused, so it stays obvious which window you are typing into."),
+          visible: () => s.backgroundHighlight
+        }),
+        toggleDef(t("Color-only display"), "colorOnlyDisplay", {
+          desc: t("When enabled, virtual links are shown in a custom text color instead of the default background shadow.")
+        }),
+        toggleDef(t("No hover preview for virtual links"), "disableVirtualLinkPreview", {
+          desc: t('When enabled, hovering a virtual link no longer opens a page preview / Hover Editor popover. Virtual links are rendered by this plugin rather than written in the note, so the popover can be unwanted while reading; clicking still opens the note. Off by default. Tip: to keep previews but only when you ask for them, turn on "Require Ctrl/Cmd to trigger" in the core Page preview plugin settings instead.')
+        }),
+        colorDef(t("Header link color"), "headerVirtualLinkColor", {
+          desc: t("Color for header virtual links (e.g., #517ea0).")
+        }),
+        colorDef(t("Note link color"), "noteVirtualLinkColor", {
+          desc: t("Color for note and alias virtual links (e.g., #c0392b).")
+        }),
+        colorDef(t("Fuzzy link base color"), "fuzzyBaseColor", {
+          desc: t("Base color for fuzzy (\u8BCD\u4E49\u6A21\u7CCA) matches. It is mixed with the header / note color, so a fuzzy link looks like a tinted version of its exact-match counterpart.")
+        }),
+        sliderDef(t("Fuzzy color mix"), "fuzzyColorMixRatio", 0, 100, 5, {
+          desc: t("How much of the fuzzy base color is mixed in. 0% = fuzzy links use the normal colors (feature off); 100% = fuzzy links use the base color only; 50% = an even blend, keeping the header/note hue while tinting it.")
+        }),
+        toggleDef(t("Alternative display style"), "alternativeDisplayStyle", {
+          desc: t("When enabled, strikethrough is replaced with underline, and %%comments%% are collapsed into small dots that expand on the active line.")
+        }),
+        toggleDef(t("Apply default link styling"), "applyDefaultLinkStyling", {
+          desc: t("If toggled, the default link styling will be applied to virtual links. Furthermore, you can style the links yourself with a CSS-snippet affecting the class `virtual-link`. (Find the CSS snippet directory at Appearance -> CSS Snippets -> Open snippets folder)")
+        }),
+        textDef(t("Virtual link suffix"), "virtualLinkSuffix", {
+          desc: t("The suffix to add to auto generated virtual links.")
+        }),
+        textDef(t("Virtual link suffix for aliases"), "virtualLinkAliasSuffix", {
+          desc: t("The suffix to add to auto generated virtual links for aliases.")
+        })
+      ])
+    ];
+  }
+};
+
+// main.ts
+var activeCenterLoops = /* @__PURE__ */ new WeakMap();
 var DEFAULT_SETTINGS = {
   autoToggleByMode: false,
   advancedSettings: true,
@@ -5011,10 +5837,21 @@ var DEFAULT_SETTINGS = {
   colorOnlyDisplay: true,
   disableVirtualLinkPreview: false,
   backgroundHighlight: false,
+  backgroundTint: true,
+  backgroundLines: true,
+  backgroundCursorLine: true,
+  backgroundTabAccent: true,
+  backgroundUnfocusedMask: true,
+  backgroundTabs: true,
+  backgroundLineOpacity: 10,
+  cursorLineOpacity: 35,
   frontmatterExcludeProperty: "fakelink-exclude",
   perNoteExcludeKeywords: false,
   enableFrontmatterExcludeList: false,
   frontmatterExcludeListProperty: "fakelink-exclude-keywords",
+  linkIgnoreMode: "tag",
+  linkIgnoreTag: "linker-ignore",
+  linkIgnoreProperty: "linker-ignore",
   headerVirtualLinkColor: "#517ea0",
   noteVirtualLinkColor: "#c0392b",
   fuzzyBaseColor: "#8e44ad",
@@ -5039,7 +5876,7 @@ var DEFAULT_SETTINGS = {
   autoExcludeContainedCopies: false,
   filenameAffixExclusions: []
 };
-var LinkerPlugin = class extends import_obsidian7.Plugin {
+var LinkerPlugin = class extends import_obsidian9.Plugin {
   constructor() {
     super(...arguments);
     this.updateManager = new ExternalUpdateManager();
@@ -5052,9 +5889,10 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     this.pdfScaleSamples = /* @__PURE__ */ new Map();
     this.embedReserveObserver = null;
     this.embedHeights = /* @__PURE__ */ new Map();
+    this.bgSyncTimer = null;
   }
   isInCanvas() {
-    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView);
+    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian9.MarkdownView);
     if (activeView && activeView.getViewType() === "canvas") {
       return true;
     }
@@ -5069,7 +5907,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       }
       return;
     }
-    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView);
+    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian9.MarkdownView);
     if (!activeView)
       return;
     const isPreviewMode = activeView.getMode() === "preview";
@@ -5093,9 +5931,9 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     }
     try {
       await navigator.clipboard.writeText(`[${line}](${uri})`);
-      new import_obsidian7.Notice(t("Line link copied"));
+      new import_obsidian9.Notice(t("Line link copied"));
     } catch (e) {
-      new import_obsidian7.Notice(t("Failed to copy line link"));
+      new import_obsidian9.Notice(t("Failed to copy line link"));
     }
   }
   async getLineAnchor(file, lineZeroBased) {
@@ -5159,7 +5997,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
   }
   async jumpToLine(filepath, line, anchor) {
     const file = this.app.vault.getAbstractFileByPath(filepath);
-    if (!(file instanceof import_obsidian7.TFile))
+    if (!(file instanceof import_obsidian9.TFile))
       return;
     const wasAlreadyOpen = this.app.workspace.getLeavesOfType("markdown").some((l) => {
       var _a2;
@@ -5169,7 +6007,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     if (!leaf)
       return;
     const view = leaf.view;
-    if (!(view instanceof import_obsidian7.MarkdownView))
+    if (!(view instanceof import_obsidian9.MarkdownView))
       return;
     const targetLine = await this.resolveLineByAnchor(file, line, anchor);
     await this.waitForEditor(view, targetLine, this.settings.lineJumpWaitSeconds * 1e3);
@@ -5185,7 +6023,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
   }
   alignTallLine(view, line, pass = 0) {
     const cmEl = view.contentEl.querySelector(".cm-editor");
-    const cm = cmEl ? import_view2.EditorView.findFromDOM(cmEl) : null;
+    const cm = cmEl ? import_view3.EditorView.findFromDOM(cmEl) : null;
     if (!cm)
       return;
     const scroller = cm.scrollDOM;
@@ -5204,27 +6042,60 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
   }
   centerHeadingLine(view, line, maxMs = 1e4) {
     const cmEl = view.contentEl.querySelector(".cm-editor");
-    const cm = cmEl ? import_view2.EditorView.findFromDOM(cmEl) : null;
+    const cm = cmEl ? import_view3.EditorView.findFromDOM(cmEl) : null;
     if (cm)
       this.centerCmLine(cm, line, maxMs);
   }
   centerHeadingElement(el, maxMs = 8e3) {
+    var _a2;
     const cmEl = el.closest(".cm-editor");
-    const cm = cmEl ? import_view2.EditorView.findFromDOM(cmEl) : null;
+    const cm = cmEl ? import_view3.EditorView.findFromDOM(cmEl) : null;
     if (!cm)
       return false;
-    let line;
-    try {
-      line = cm.state.doc.lineAt(cm.posAtDOM(el)).number - 1;
-    } catch (e) {
-      return false;
-    }
-    this.centerCmLine(cm, line, maxMs);
+    const scroller = cm.scrollDOM;
+    (_a2 = activeCenterLoops.get(cm)) == null ? void 0 : _a2.abort();
+    const controller = new AbortController();
+    activeCenterLoops.set(cm, controller);
+    const stop = () => controller.abort();
+    window.addEventListener("wheel", stop, { capture: true, passive: true, signal: controller.signal });
+    window.addEventListener("mousedown", stop, { capture: true, signal: controller.signal });
+    window.addEventListener("keydown", stop, { capture: true, signal: controller.signal });
+    const startedAt = Date.now();
+    let passes = 0;
+    const tick = () => {
+      if (controller.signal.aborted)
+        return;
+      if (Date.now() - startedAt > maxMs || passes > 12)
+        return;
+      if (!el.isConnected)
+        return;
+      const r = el.getBoundingClientRect();
+      const sr = scroller.getBoundingClientRect();
+      const current = r.top - sr.top;
+      const height = Math.max(1, r.height);
+      const target = Math.max(6, Math.round((scroller.clientHeight - height) / 2));
+      const delta = Math.round(current - target);
+      if (Math.abs(delta) <= 6)
+        return;
+      cm.requestMeasure({
+        read: () => delta,
+        write: (d, view) => {
+          view.scrollDOM.scrollTop = Math.max(0, view.scrollDOM.scrollTop + d);
+        }
+      });
+      passes++;
+      window.setTimeout(tick, 500);
+    };
+    window.setTimeout(tick, 200);
     return true;
   }
   centerCmLine(cm, line, maxMs) {
-    const scroller = cm.scrollDOM;
+    var _a2;
+    patchDispatchClamp(cm);
+    (_a2 = activeCenterLoops.get(cm)) == null ? void 0 : _a2.abort();
     const controller = new AbortController();
+    activeCenterLoops.set(cm, controller);
+    const scroller = cm.scrollDOM;
     const stop = () => controller.abort();
     window.addEventListener("wheel", stop, { capture: true, passive: true, signal: controller.signal });
     window.addEventListener("mousedown", stop, { capture: true, signal: controller.signal });
@@ -5232,22 +6103,43 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     const startedAt = Date.now();
     let passes = 0;
     let lastCurrent = Number.NaN;
-    const MIN_FIRST_WRITE_MS = 2e3;
-    const MAX_WRITES = 8;
+    const MIN_FIRST_WRITE_MS = 800;
+    const MAX_WRITES = 24;
+    const measure = (view) => {
+      let pos;
+      try {
+        pos = view.state.doc.line(line + 1).from;
+      } catch (e) {
+        return null;
+      }
+      const sr = view.scrollDOM.getBoundingClientRect();
+      const coords = view.coordsAtPos(pos);
+      if (coords) {
+        return { current: coords.top - sr.top, height: Math.max(1, coords.bottom - coords.top) };
+      }
+      try {
+        const b = view.lineBlockAt(pos);
+        const ct = view.contentDOM.getBoundingClientRect().top;
+        return {
+          current: b.top - view.scrollDOM.scrollTop + (ct - sr.top + view.scrollDOM.scrollTop),
+          height: Math.max(1, b.height)
+        };
+      } catch (e) {
+        return null;
+      }
+    };
     const tick = () => {
       if (controller.signal.aborted)
         return;
-      if (Date.now() - startedAt > maxMs || passes > 6)
+      if (Date.now() - startedAt > maxMs || passes > 24)
         return;
-      let block;
-      try {
-        const pos = cm.state.doc.line(line + 1).from;
-        block = cm.lineBlockAt(pos);
-      } catch (e) {
+      const m = measure(cm);
+      if (!m) {
+        window.setTimeout(tick, 700);
         return;
       }
-      const target = Math.max(6, Math.round((scroller.clientHeight - block.height) / 2));
-      const current = Math.round(block.top - scroller.scrollTop);
+      const target = Math.max(6, Math.round((scroller.clientHeight - m.height) / 2));
+      const current = Math.round(m.current);
       const tolerance = Math.max(6, Math.round(scroller.clientHeight * 0.04));
       const unreliable = current < -scroller.clientHeight;
       const stillLoading = Array.from(scroller.querySelectorAll("img")).some((img) => !img.complete);
@@ -5260,13 +6152,12 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       if (!unreliable && shouldAct && oldEnough && passes < MAX_WRITES) {
         try {
           cm.requestMeasure({
-            read: (view) => {
-              const block2 = view.lineBlockAt(view.state.doc.line(line + 1).from);
-              return { top: block2.top, height: block2.height };
-            },
-            write: (m, view) => {
-              const want = m.top - Math.max(6, Math.round((view.scrollDOM.clientHeight - m.height) / 2));
-              view.scrollDOM.scrollTop = Math.max(0, want);
+            read: (view) => measure(view),
+            write: (mm, view) => {
+              if (!mm)
+                return;
+              const delta = mm.current - Math.max(6, Math.round((view.scrollDOM.clientHeight - mm.height) / 2));
+              view.scrollDOM.scrollTop = Math.max(0, view.scrollDOM.scrollTop + delta);
             }
           });
         } catch (e) {
@@ -5309,15 +6200,14 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     if (this.settings.colorOnlyDisplay) {
       activeWindow.document.body.classList.add("virtual-link-color-only");
     }
-    if (this.settings.backgroundHighlight) {
-      activeWindow.document.body.classList.add("virtual-link-bg");
-    }
+    this.applyBackgroundStyles();
     activeWindow.document.body.style.setProperty("--virtual-link-color", this.settings.noteVirtualLinkColor);
     activeWindow.document.body.style.setProperty("--virtual-link-header-color", this.settings.headerVirtualLinkColor);
     activeWindow.document.body.style.setProperty("--virtual-link-note-color", this.settings.noteVirtualLinkColor);
     this.applyFuzzyColors();
     this.registerEvent(this.app.workspace.on("layout-change", () => {
       void this.handleLayoutChange();
+      this.scheduleBackgroundSync();
     }));
     this.registerEvent(this.app.workspace.on("active-leaf-change", () => {
       void this.handleLayoutChange();
@@ -5330,15 +6220,17 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       context.addChild(new GlossaryLinker(this.app, this.settings, context, element, this));
     });
     this.registerEditorExtension(liveLinkerPlugin(this.app, this.settings, this.updateManager, this));
-    this.registerEditorExtension(import_view2.ViewPlugin.fromClass(class {
+    this.registerEditorExtension(import_view3.ViewPlugin.fromClass(class {
       constructor(view) {
         this.decorations = buildIndentBackground(view);
       }
       update(update) {
-        this.decorations = buildIndentBackground(update.view);
+        if (update.docChanged || update.viewportChanged) {
+          this.decorations = buildIndentBackground(update.view);
+        }
       }
     }, { decorations: (v) => v.decorations }));
-    this.registerEditorExtension(import_view2.EditorView.updateListener.of((update) => {
+    this.registerEditorExtension(import_view3.EditorView.updateListener.of((update) => {
       if (!this.settings.alternativeDisplayStyle || !update.docChanged)
         return;
       let minFrom = Infinity;
@@ -5404,7 +6296,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
         }
       }
     }));
-    this.registerEditorExtension(import_view2.EditorView.updateListener.of((update) => {
+    this.registerEditorExtension(import_view3.EditorView.updateListener.of((update) => {
       if (!this.settings.headerAutoAppendSuffix || !update.docChanged)
         return;
       const symbol = this.settings.headerAutoAppendSymbol;
@@ -5826,7 +6718,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       if (!IMG_EXT.includes(ext))
         return;
       const file = this.app.vault.getAbstractFileByPath(path);
-      if (!(file instanceof import_obsidian7.TFile))
+      if (!(file instanceof import_obsidian9.TFile))
         return;
       const key = path + "\0" + file.stat.mtime;
       const known = this.imageSizes.get(key);
@@ -5971,9 +6863,11 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       return true;
     };
     onInsert.push((node) => {
+      var _a2;
       const pops = node.matches(".hover-popover") ? [node] : Array.from(node.querySelectorAll(".hover-popover"));
-      for (const pop of pops)
-        keepScrolledHeadingAligned(pop, "popover", alignWindow());
+      for (const pop of pops) {
+        keepScrolledHeadingAligned(pop, "popover", alignWindow(), scrollEditor, (_a2 = getHoveredHeadingId()) != null ? _a2 : void 0);
+      }
     });
     insertObserver.observe(document.body, { childList: true, subtree: true });
     this.registerDomEvent(document, "click", (evt) => {
@@ -6005,7 +6899,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
           return;
         if (!line || line < 1) {
           const file = this.app.vault.getAbstractFileByPath(filepath);
-          if (file instanceof import_obsidian7.TFile)
+          if (file instanceof import_obsidian9.TFile)
             void this.openFileOnly(file);
           return;
         }
@@ -6039,11 +6933,11 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       name: "Convert all virtual links in selection to real links",
       editorCallback: (editor, view) => {
         if (!editor.somethingSelected()) {
-          new import_obsidian7.Notice("\u8BF7\u5148\u9009\u62E9\u4E00\u6BB5\u6587\u672C\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002");
+          new import_obsidian9.Notice("\u8BF7\u5148\u9009\u62E9\u4E00\u6BB5\u6587\u672C\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002");
           return;
         }
         if (!this.settings.linkerActivated) {
-          new import_obsidian7.Notice("\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u3002");
+          new import_obsidian9.Notice("\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u3002");
           return;
         }
         const fromPos = editor.getCursor("from");
@@ -6102,7 +6996,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     const updateManager = this.updateManager;
     const settings = this.settings;
     const fetcher = new LinkerMetaInfoFetcher(app, settings);
-    const isDirectory = app.vault.getAbstractFileByPath(file.path) instanceof import_obsidian7.TFolder;
+    const isDirectory = app.vault.getAbstractFileByPath(file.path) instanceof import_obsidian9.TFolder;
     if (!isDirectory) {
       const metaInfo = fetcher.getMetaInfo(file);
       const contextMenuHandler = (event) => {
@@ -6115,14 +7009,20 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
           const virtualLinkSpan = targetElement.closest(".virtual-link-span") || targetElement.closest(".virtual-link");
           if (virtualLinkSpan) {
             virtualLinkSpan.classList.add("virtual-link-hover-lock");
-            window.setTimeout(() => {
+            const spanEl = virtualLinkSpan;
+            spanEl.dataset.fkContextLock = "1";
+            menu.onHide(() => {
+              var _a2;
               virtualLinkSpan.classList.remove("virtual-link-hover-lock");
-            }, 3e3);
+              delete spanEl.dataset.fkContextLock;
+              const key = ((_a2 = virtualLinkSpan.querySelector(".virtual-link-a")) == null ? void 0 : _a2.getAttribute("origin-text")) || "";
+              if (key)
+                clearContextLock(key);
+            });
           }
         }
         const virtualLinkElement = targetElement.closest(".virtual-link-a");
         const isVirtualLink = virtualLinkElement !== null;
-        const isInTableCell = targetElement.closest("td, th") !== null;
         const linkElement = virtualLinkElement || targetElement;
         const from = parseInt(linkElement.getAttribute("from") || "-1");
         const to = parseInt(linkElement.getAttribute("to") || "-1");
@@ -6141,91 +7041,11 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
               }
             });
           });
-          if (isInTableCell) {
-            menu.addItem((item) => {
-              item.setTitle("Convert to real link (table mode)").setIcon("table").onClick(() => {
-                handleTableCellConversion(linkElement, app, settings, updateManager);
-              });
+          menu.addItem((item) => {
+            item.setTitle("Convert to real link").setIcon("link").onClick(() => {
+              convertVirtualLinkToReal(linkElement, file, app, settings);
             });
-          } else {
-            menu.addItem((item) => {
-              item.setTitle("Convert to real link").setIcon("link").onClick(() => {
-                var _a2, _b2;
-                const from2 = parseInt(linkElement.getAttribute("from") || "-1");
-                const to2 = parseInt(linkElement.getAttribute("to") || "-1");
-                if (from2 === -1 || to2 === -1) {
-                  return;
-                }
-                const text = linkElement.getAttribute("origin-text") || "";
-                const target = file;
-                const activeFile = app.workspace.getActiveFile();
-                const activeFilePath = (_a2 = activeFile == null ? void 0 : activeFile.path) != null ? _a2 : "";
-                if (!activeFile) {
-                  return;
-                }
-                if (!(target instanceof import_obsidian7.TFile)) {
-                  return;
-                }
-                let absolutePath = target.path;
-                let relativePath = relative(dirname2(activeFile.path), dirname2(absolutePath)) + "/" + basename2(absolutePath);
-                relativePath = relativePath.replace(/\\/g, "/");
-                const replacementPath = app.metadataCache.fileToLinktext(target, activeFilePath);
-                const headerId = linkElement.getAttribute("data-heading-id");
-                const lastPart = replacementPath.split("/").pop();
-                const shortestFile = app.metadataCache.getFirstLinkpathDest(lastPart || "", "");
-                let shortestPath = (shortestFile == null ? void 0 : shortestFile.path) == target.path ? lastPart : absolutePath;
-                const pathSuffix = headerId ? `#${headerId}` : "";
-                if (!replacementPath.endsWith(".md")) {
-                  if (absolutePath.endsWith(".md")) {
-                    absolutePath = absolutePath.slice(0, -3);
-                  }
-                  if (shortestPath && shortestPath.endsWith(".md")) {
-                    shortestPath = shortestPath.slice(0, -3);
-                  }
-                  if (relativePath.endsWith(".md")) {
-                    relativePath = relativePath.slice(0, -3);
-                  }
-                  absolutePath += pathSuffix;
-                  shortestPath += pathSuffix;
-                  relativePath += pathSuffix;
-                }
-                const useMarkdownLinks = settings.useDefaultLinkStyleForConversion ? settings.defaultUseMarkdownLinks : settings.useMarkdownLinks;
-                const linkFormat = settings.useDefaultLinkStyleForConversion ? settings.defaultLinkFormat : settings.linkFormat;
-                const createLink = (replacementPath2, text2, markdownStyle) => {
-                  if (markdownStyle) {
-                    return `[${text2}](${replacementPath2})`;
-                  } else {
-                    const tableCellElement = targetElement.closest("td, th");
-                    if (tableCellElement) {
-                      const escapedText = text2.replace(/[\\|]/g, "\\$&");
-                      return `[[${replacementPath2}\\|${escapedText}]]`;
-                    } else {
-                      return `[[${replacementPath2}|${text2}]]`;
-                    }
-                  }
-                };
-                let replacement = "";
-                if (replacementPath === text && linkFormat === "shortest") {
-                  replacement = `[[${replacementPath}]]`;
-                } else {
-                  if (linkFormat === "shortest") {
-                    replacement = createLink(shortestPath || absolutePath, text, useMarkdownLinks);
-                  } else if (linkFormat === "relative") {
-                    replacement = createLink(relativePath, text, useMarkdownLinks);
-                  } else if (linkFormat === "absolute") {
-                    replacement = createLink(absolutePath, text, useMarkdownLinks);
-                  }
-                }
-                const editor = (_b2 = app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView)) == null ? void 0 : _b2.editor;
-                const fromEditorPos = editor == null ? void 0 : editor.offsetToPos(from2);
-                const toEditorPos = editor == null ? void 0 : editor.offsetToPos(to2);
-                if (!fromEditorPos || !toEditorPos) {
-                  return;
-                }
-                editor == null ? void 0 : editor.replaceRange(replacement, fromEditorPos, toEditorPos);
-              });
-            });
-          }
+          });
         }
         activeDocument.removeEventListener("contextmenu", contextMenuHandler);
       };
@@ -6312,7 +7132,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
           item.setTitle("Exclude this directory").setIcon("trash").onClick(async () => {
             const target = file;
             const targetFolder = app.vault.getAbstractFileByPath(target.path);
-            if (!targetFolder || !(targetFolder instanceof import_obsidian7.TFolder)) {
+            if (!targetFolder || !(targetFolder instanceof import_obsidian9.TFolder)) {
               return;
             }
             const newExcludedDirs = Array.from(/* @__PURE__ */ new Set([...settings.excludedDirectories, targetFolder.name]));
@@ -6327,7 +7147,7 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
           item.setTitle("Include this directory").setIcon("plus").onClick(async () => {
             const target = file;
             const targetFolder = app.vault.getAbstractFileByPath(target.path);
-            if (!targetFolder || !(targetFolder instanceof import_obsidian7.TFolder)) {
+            if (!targetFolder || !(targetFolder instanceof import_obsidian9.TFolder)) {
               return;
             }
             const newExcludedDirs = settings.excludedDirectories.filter((dir) => dir !== targetFolder.name);
@@ -6371,6 +7191,14 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
       console.error("[fakelink] failed to read data.json - falling back to the defaults", error);
     }
     this.settings = Object.assign({}, DEFAULT_SETTINGS, stored);
+    if (typeof stored.backgroundTabs === "boolean") {
+      if (stored.backgroundTabAccent == null) {
+        this.settings.backgroundTabAccent = stored.backgroundTabs;
+      }
+      if (stored.backgroundUnfocusedMask == null) {
+        this.settings.backgroundUnfocusedMask = stored.backgroundTabs;
+      }
+    }
     if (stored.headingAlignWatchSeconds == null && typeof stored.headerJumpRetryDelay === "number") {
       const migrated = Math.round(stored.headerJumpRetryDelay * 24 / 1e3);
       this.settings.headingAlignWatchSeconds = Math.min(120, Math.max(3, migrated || DEFAULT_SETTINGS.headingAlignWatchSeconds));
@@ -6395,560 +7223,80 @@ var LinkerPlugin = class extends import_obsidian7.Plugin {
     try {
       await this.saveData(settingsToSave);
     } catch (e) {
+      try {
+        await this.saveData(settingsToSave);
+      } catch (e2) {
+        new import_obsidian9.Notice(t("Failed to save settings. The change may be lost when Obsidian reloads."));
+      }
     }
     this.updateManager.update();
+    this.applyBackgroundStyles();
     if (!this.settings.linkerActivated) {
       this.cleanupVirtualLinks();
     }
     this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
       const view = leaf.view;
-      if (view instanceof import_obsidian7.MarkdownView && view.previewMode) {
+      if (view instanceof import_obsidian9.MarkdownView && view.previewMode) {
         view.previewMode.rerender(true);
       }
     });
   }
-};
-function toggleDef(name, key, opts = {}) {
-  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "toggle", key, disabled: opts.disabled } };
-}
-function textDef(name, key, opts = {}) {
-  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "text", key, placeholder: opts.placeholder, disabled: opts.disabled } };
-}
-function textAreaDef(name, key, opts = {}) {
-  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "textarea", key, placeholder: opts.placeholder, disabled: opts.disabled } };
-}
-function dropdownDef(name, key, options, opts = {}) {
-  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "dropdown", key, options, disabled: opts.disabled } };
-}
-function sliderDef(name, key, min, max, step, opts = {}) {
-  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "slider", key, min, max, step, disabled: opts.disabled } };
-}
-function numberDef(name, key, opts = {}) {
-  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "number", key, min: opts.min, max: opts.max, step: opts.step, placeholder: opts.placeholder, disabled: opts.disabled } };
-}
-function colorDef(name, key, opts = {}) {
-  return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "color", key, disabled: opts.disabled } };
-}
-function actionDef(name, action, opts = {}) {
-  return { name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, action: () => {
-    void action();
-  } };
-}
-function groupDef(heading, items, visible) {
-  return { type: "group", heading, items, visible };
-}
-function buildIndentBackground(view) {
-  const doc = view.state.doc;
-  const marks = [];
-  const isIndented = (text) => text.startsWith("	") || /^ {2,}/.test(text);
-  for (const { from, to } of view.visibleRanges) {
-    const last = doc.lineAt(to).number;
-    for (let n = doc.lineAt(from).number; n <= last; n++) {
-      const line = doc.line(n);
-      if (!isIndented(line.text))
-        continue;
-      marks.push(import_view2.Decoration.line({ class: "fakelink-indent-line" }).range(line.from));
-      if (n <= 1)
-        continue;
-      const above = doc.line(n - 1);
-      if (above.text.trim().length === 0 || isIndented(above.text))
-        continue;
-      marks.push(import_view2.Decoration.line({ class: "fakelink-indent-above" }).range(above.from));
+  applyBackgroundStyles() {
+    const s = this.settings;
+    const wanted = [];
+    if (s.backgroundHighlight) {
+      wanted.push("virtual-link-bg");
+      if (s.backgroundTint)
+        wanted.push("virtual-link-bg-tint");
+      if (s.backgroundLines)
+        wanted.push("virtual-link-bg-lines");
+      if (s.backgroundCursorLine)
+        wanted.push("virtual-link-bg-cursor");
+      if (s.backgroundTabAccent)
+        wanted.push("virtual-link-bg-tab-accent");
+      if (s.backgroundUnfocusedMask)
+        wanted.push("virtual-link-bg-unfocused-mask");
     }
-  }
-  return import_view2.Decoration.set(marks, true);
-}
-var LinkerSettingTab = class extends import_obsidian7.PluginSettingTab {
-  constructor(app, plugin) {
-    super(app, plugin);
-    this.plugin = plugin;
-  }
-  get s() {
-    return this.plugin.settings;
-  }
-  getControlValue(key) {
-    const s = this.s;
-    switch (key) {
-      case "useWikilinks":
-        return !s.useMarkdownLinks;
-      case "capitalLetterProportionForAutomaticMatchCase":
-        return Math.round(s.capitalLetterProportionForAutomaticMatchCase * 1e3) / 10;
-      case "linkerDirectories":
-        return s.linkerDirectories.join("\n");
-      case "excludedDirectories":
-        return s.excludedDirectories.join("\n");
-      case "excludedDirectoriesForLinking":
-        return s.excludedDirectoriesForLinking.join("\n");
-      case "excludedKeywords":
-        return s.excludedKeywords.join(",");
-      case "headingSymbolWhitelist":
-        return s.headingSymbolWhitelist.join(",");
-      case "excludedExtensions":
-        return s.excludedExtensions.join("\n");
-      case "filenameAffixExclusions":
-        return s.filenameAffixExclusions.join(",");
-      default:
-        return s[key];
-    }
-  }
-  async setControlValue(key, value) {
-    let needsFullUpdate = false;
-    switch (key) {
-      case "useWikilinks":
-        await this.plugin.updateSettings({ useMarkdownLinks: !value });
-        break;
-      case "capitalLetterProportionForAutomaticMatchCase":
-        await this.plugin.updateSettings({ capitalLetterProportionForAutomaticMatchCase: value / 100 });
-        break;
-      case "linkerDirectories":
-        await this.plugin.updateSettings({ linkerDirectories: this.splitLines(value) });
-        break;
-      case "excludedDirectories":
-        await this.plugin.updateSettings({ excludedDirectories: this.splitLines(value) });
-        break;
-      case "excludedDirectoriesForLinking":
-        await this.plugin.updateSettings({ excludedDirectoriesForLinking: this.splitLines(value) });
-        break;
-      case "excludedKeywords":
-        await this.plugin.updateSettings({
-          excludedKeywords: value.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
-        });
-        break;
-      case "headingSymbolWhitelist":
-        await this.plugin.updateSettings({
-          headingSymbolWhitelist: value.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
-        });
-        break;
-      case "excludedExtensions":
-        await this.plugin.updateSettings({
-          excludedExtensions: value.split(/[\n,]/).map((x) => x.trim()).filter((x) => x.length > 0).map((x) => x.startsWith(".") ? x : `.${x}`)
-        });
-        break;
-      case "filenameAffixExclusions":
-        await this.plugin.updateSettings({
-          filenameAffixExclusions: value.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
-        });
-        break;
-      case "allowLinksInHeaders":
-        await this.plugin.updateSettings({
-          allowLinksInHeaders: value,
-          ...value ? { excludeLinksToOwnNote: true } : {}
-        });
-        needsFullUpdate = true;
-        break;
-      case "autoToggleByMode":
-        await this.plugin.updateSettings({ autoToggleByMode: value });
-        void this.plugin.handleLayoutChange();
-        break;
-      case "colorOnlyDisplay":
-        await this.plugin.updateSettings({ colorOnlyDisplay: value });
-        this.applyBodyClass("virtual-link-color-only", value);
-        break;
-      case "backgroundHighlight":
-        await this.plugin.updateSettings({ backgroundHighlight: value });
-        this.applyBodyClass("virtual-link-bg", value);
-        break;
-      case "alternativeDisplayStyle":
-        await this.plugin.updateSettings({ alternativeDisplayStyle: value });
-        this.applyBodyClass("virtual-linker-alt-style", value);
-        break;
-      case "headerVirtualLinkColor":
-        await this.plugin.updateSettings({ headerVirtualLinkColor: value });
-        this.applyCssVar("--virtual-link-header-color", value);
-        this.plugin.applyFuzzyColors();
-        break;
-      case "noteVirtualLinkColor":
-        await this.plugin.updateSettings({ noteVirtualLinkColor: value });
-        this.applyCssVar("--virtual-link-note-color", value);
-        this.plugin.applyFuzzyColors();
-        break;
-      case "fuzzyBaseColor":
-        await this.plugin.updateSettings({ fuzzyBaseColor: value });
-        this.plugin.applyFuzzyColors();
-        break;
-      case "fuzzyColorMixRatio":
-        await this.plugin.updateSettings({ fuzzyColorMixRatio: value });
-        this.plugin.applyFuzzyColors();
-        break;
-      default:
-        await this.plugin.updateSettings({ [key]: value });
-    }
-    if (needsFullUpdate) {
-      this.update();
-    } else {
-      this.refreshDomState();
-    }
-  }
-  splitLines(value) {
-    return value.split("\n").map((x) => x.trim()).filter((x) => x.length > 0);
-  }
-  applyBodyClass(cls, on) {
-    const doc = this.containerEl.ownerDocument;
-    if (on)
-      doc.body.classList.add(cls);
-    else
-      doc.body.classList.remove(cls);
-  }
-  applyCssVar(name, value) {
-    this.containerEl.ownerDocument.body.style.setProperty(name, value);
-  }
-  getSettingDefinitions() {
-    const s = this.s;
-    const adv = () => s.advancedSettings;
-    const quickAddCode = `module.exports = async (params) => {
-    const id = 'fakelink';
-    const pm = app.plugins;
-
-    try {
-        if (pm.enabledPlugins.has(id)) {
-            await pm.disablePluginAndSave(id);
-            new Notice('Fake Link: OFF');
-        } else {
-            await pm.enablePluginAndSave(id);
-            new Notice('Fake Link: ON');
-        }
-
-        // Force refresh views first, then reload plugins
-        const types = ['markdown', 'canvas'];
-        const leaves = types.flatMap(t => app.workspace.getLeavesOfType(t));
-        for (const leaf of leaves) {
-            try {
-                const s = leaf.getViewState();
-                await leaf.setViewState({ ...s, state: { ...s.state, forceRefresh: true } });
-            } catch (_) {}
-        }
-        app.workspace.trigger('layout-change');
-        app.workspace.activeLeaf?.rebuildView();
-
-        app.commands.executeCommandById('app:reload-plugins');
-    } catch (e) {
-        new Notice('Fake Link: toggle failed, check console');
-    }
-};`;
-    return [
-      groupDef(t("General"), [
-        toggleDef(t("Activate virtual linker"), "linkerActivated", {
-          desc: t("To show/hide virtual links in the body of regular notes (paragraphs, lists, etc.), please turn on/off this toggle. Note: This toggle cannot control virtual links inside tables and Canvas (due to different rendering mechanisms). If virtual links in tables or Canvas are not displayed or show rendering glitches, do not toggle this switch \u2014 simply restart the plugin (via QuickAdd or other means).")
-        }),
-        actionDef(t("Copy Quick Add script"), async () => {
-          await navigator.clipboard.writeText(quickAddCode);
-          new import_obsidian7.Notice(t("Quick Add script copied to clipboard!"));
-        }),
-        toggleDef(t("Auto-toggle activation status by mode"), "autoToggleByMode", {
-          desc: t("When enabled, the plugin will automatically activate in edit mode if inactive, and automatically deactivate in read mode if active")
-        })
-      ]),
-      groupDef(t("Matching behavior"), [
-        toggleDef(t("Include aliases"), "includeAliases", {
-          desc: t("If enabled, the virtual linker will also match file aliases.")
-        }),
-        toggleDef(t("Match any part of a word"), "matchAnyPartsOfWords", {
-          desc: t("When disabled, only complete word matches are linked. When enabled, any substring match will be linked.")
-        }),
-        toggleDef(t("Match the beginning of words"), "matchBeginningOfWords", {
-          desc: t("When enabled, word prefixes will be linked even without complete word matches."),
-          visible: () => !s.matchAnyPartsOfWords
-        }),
-        toggleDef(t("Match the end of words"), "matchEndOfWords", {
-          desc: t("When enabled, word suffixes will be linked even without complete word matches."),
-          visible: () => !s.matchAnyPartsOfWords
-        }),
-        toggleDef(t("Suppress suffix for sub words"), "suppressSuffixForSubWords", {
-          desc: t("When enabled, the link suffix will only be shown for complete word matches, not partial matches."),
-          visible: () => s.matchAnyPartsOfWords || s.matchBeginningOfWords
-        }),
-        toggleDef(t("Only link once"), "onlyLinkOnce", {
-          desc: t("When enabled, identical terms in the same note will only be linked once."),
-          visible: adv
-        }),
-        toggleDef(t("Exclude links to real linked files"), "excludeLinksToRealLinkedFiles", {
-          desc: t("When enabled, terms that are already manually linked in the note will not be auto-linked."),
-          visible: adv
-        }),
-        toggleDef(t("Exclude self-links to the current note"), "excludeLinksToOwnNote", {
-          desc: t('If toggled, links to the note itself are excluded from the linker. Enabling "Allow virtual links in headers" also turns this on automatically.'),
-          visible: adv
-        }),
-        toggleDef(t("Fix ime typing issues"), "fixIMEProblem", {
-          desc: t("This option is recommended when using ime for typing non-latin scripts such as chinese, japanese, or korean and prevents virtual linking from interfering with ime composition at the start of lines."),
-          visible: adv
-        }),
-        toggleDef(t("Avoid linking in current line"), "excludeLinksInCurrentLine", {
-          desc: t("If activated, there will be no links in the current line."),
-          visible: adv
-        })
-      ]),
-      groupDef(t("Headers"), [
-        toggleDef(t("Include headers"), "includeHeaders", {
-          desc: t("When enabled, Markdown headings (lines starting with #) will also be included for virtual linking.")
-        }),
-        toggleDef(t("Allow virtual links in headers"), "allowLinksInHeaders", {
-          desc: t("When enabled, virtual links will be displayed inside Markdown headings. Tip: use with Quick Switcher++ for header navigation.")
-        }),
-        toggleDef(t("Enable header symbol keywords"), "headerMatchSymbols", {
-          desc: t("When enabled, text between start and end symbols in headers will be used as virtual link keywords. Tip: use EasyTyping to select text and add symbols.")
-        }),
-        actionDef(t("Copy EasyTyping template"), async () => {
-          await navigator.clipboard.writeText("\u27E6${0:${SEL}}\u27E7");
-          new import_obsidian7.Notice(t("EasyTyping template copied to clipboard!"));
-        }, { visible: () => s.headerMatchSymbols }),
-        textDef(t("Start symbol"), "headerMatchStartSymbol", {
-          desc: t("Symbol marking the start of the keyword in headers. Must be different from end symbol."),
-          visible: () => s.headerMatchSymbols
-        }),
-        textDef(t("End symbol"), "headerMatchEndSymbol", {
-          desc: t("Symbol marking the end of the keyword in headers. Must be different from start symbol."),
-          visible: () => s.headerMatchSymbols
-        }),
-        toggleDef(t("Only match headers between symbols"), "headerMatchOnlyBetweenSymbols", {
-          desc: t("When enabled, only headers containing start and end symbols will produce virtual links. Unmarked headers will not produce virtual links."),
-          visible: () => s.headerMatchSymbols
-        }),
-        toggleDef(t("Auto-insert heading lock symbol"), "headerAutoAppendSuffix", {
-          desc: t("When enabled, a unique symbol is automatically placed at the front of new or modified header text, preventing accidental matching by regular body text.")
-        }),
-        textDef(t("Heading lock symbol"), "headerAutoAppendSymbol", {
-          desc: t("The symbol placed at the front of header text (after # but before content). Use a rare character not found in normal text."),
-          visible: () => s.headerAutoAppendSuffix
-        }),
-        textAreaDef(t("Heading symbol whitelist"), "headingSymbolWhitelist", {
-          desc: t("Symbols in headings that are stripped from the virtual-link keyword (comma separated). Use this to decorate headings with markers (e.g. \u{1F525}) without those markers affecting matching.")
-        }),
-        numberDef(t("Heading align watch window (seconds)"), "headingAlignWatchSeconds", {
-          desc: t("How long (in SECONDS) a jumped-to heading keeps being re-aligned. The heading is put back in place the moment the content above it changes height (a PDF or an image finishing, MathJax typesetting) - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60)."),
-          min: 3,
-          max: 120
-        })
-      ]),
-      groupDef(t("Fuzzy matching"), [
-        toggleDef(t("Fuzzy meaning matching"), "enableStemming", {
-          desc: t('When enabled, keywords are normalized before matching so related forms link to the same note or heading. English: each word is reduced to its stem and irregular verbs are aligned (e.g. "He ran to the store" matches "he runs to the store"). Chinese: common function words are stripped (e.g. "\u6211\u7684\u9879\u76EE\u8BA1\u5212" matches "\u9879\u76EE\u8BA1\u5212"). Off by default.')
-        }),
-        dropdownDef(t("Fuzzy matching language"), "stemmingLanguage", {
-          "auto": "Auto (by script)",
-          "en": "English",
-          "zh": "Chinese"
-        }, {
-          desc: t(`Language used for fuzzy matching. "en" = English stemming + irregular verbs; "zh" = Chinese function-word stripping. Choose "auto" to apply both based on each keyword's script.`),
-          disabled: () => !s.enableStemming
-        }),
-        sliderDef(t("Fuzzy match similarity threshold"), "fuzzyMatchThreshold", 80, 100, 1, {
-          desc: t("When fuzzy matching is on, a word is linked only if its similarity to a normalized keyword is above this percentage. Range 80%-100%. Higher = stricter (fewer but more accurate links)."),
-          disabled: () => !s.enableStemming
-        }),
-        sliderDef(t("Minimum keyword length for fuzzy matching"), "fuzzyMinLength", 1, 20, 1, {
-          desc: t("Titles or note names whose normalized length is longer than this are processed by fuzzy matching; those of this length or shorter are skipped (exact matching still works). This keeps fuzzy matching focused on long titles/notes, where inflected or fuzzy variants are common, and avoids false links on short words. Default 6 (Chinese: only titles longer than 6 characters). Range 1-20."),
-          disabled: () => !s.enableStemming
-        }),
-        toggleDef(t("Sliding window for fuzzy matching"), "fuzzySlidingWindow", {
-          desc: t("Also try shorter suffixes of the text run, not just the whole run. Chinese has no spaces, so a term is usually glued to the words before it, and those extra characters drag the similarity below the threshold. Off by default; turn it on if you need terms embedded in Chinese text to match, at the cost of slower scrolling on long lines."),
-          disabled: () => !s.enableStemming
-        }),
-        sliderDef(t("Sliding window max offset"), "fuzzySlidingWindowMaxOffset", 2, 24, 1, {
-          desc: t("Maximum number of characters stripped from the front of a text run while searching for a fuzzy match. Lower values are faster but may miss a term buried more than this many characters after the last punctuation/space. Default 10."),
-          disabled: () => !s.enableStemming || !s.fuzzySlidingWindow
-        })
-      ]),
-      groupDef(t("Case sensitivity"), [
-        toggleDef(t("Case sensitive"), "matchCaseSensitive", {
-          desc: t("If activated, the matching is case sensitive.")
-        }),
-        numberDef(t("Capital letter percentage for automatic match case"), "capitalLetterProportionForAutomaticMatchCase", {
-          desc: t("The percentage (0 - 100) of capital letters in a file name or alias to be automatically considered as case sensitive."),
-          min: 0,
-          max: 100,
-          step: 0.1,
-          visible: adv
-        }),
-        textDef(t("Tag to ignore case"), "tagToIgnoreCase", {
-          desc: t("By adding this tag to a file, the linker will ignore the case for the file."),
-          visible: () => s.advancedSettings && s.matchCaseSensitive
-        }),
-        textDef(t("Tag to match case"), "tagToMatchCase", {
-          desc: t("By adding this tag to a file, the linker will match the case for the file."),
-          visible: () => s.advancedSettings && !s.matchCaseSensitive
-        }),
-        textDef(t("Property name to ignore case"), "propertyNameToIgnoreCase", {
-          desc: t("By adding this property to a note, containing a list of names, the linker will ignore the case for the specified names / aliases. This way you can decide, which alias should be insensitive."),
-          visible: adv
-        }),
-        textDef(t("Property name to match case"), "propertyNameToMatchCase", {
-          desc: t("By adding this property to a note, containing a list of names, the linker will match the case for the specified names / aliases. This way you can decide, which alias should be case sensitive."),
-          visible: adv
-        })
-      ]),
-      groupDef(t("Files"), [
-        toggleDef(t("Include all files"), "includeAllFiles", {
-          desc: t("Include all files for the virtual linker.")
-        }),
-        textAreaDef(t("Glossary linker directories"), "linkerDirectories", {
-          desc: t("Directories to include for the virtual linker (separated by new lines)."),
-          placeholder: "List of directory names (separated by new line)",
-          visible: () => !s.includeAllFiles
-        }),
-        textAreaDef(t("Excluded directories"), "excludedDirectories", {
-          desc: t("Directories from which files are to be excluded for the virtual linker (separated by new lines). Files in these directories will not create any virtual links in other files."),
-          placeholder: "List of directory names (separated by new line)",
-          visible: () => s.advancedSettings && s.includeAllFiles
-        }),
-        textAreaDef(t("Excluded directories for generating virtual links"), "excludedDirectoriesForLinking", {
-          desc: t("Directories in which the plugin will not create virtual links (separated by new lines)."),
-          placeholder: "List of directory names (separated by new line)",
-          visible: adv
-        }),
-        textDef(t("Tag to include file"), "tagToIncludeFile", {
-          desc: t("Tag to explicitly include the file for the linker."),
-          visible: adv
-        }),
-        textDef(t("Tag to ignore file"), "tagToExcludeFile", {
-          desc: t("Tag to ignore the file for the linker."),
-          visible: adv
-        }),
-        textAreaDef(t("Excluded file extensions"), "excludedExtensions", {
-          desc: t("File extensions to exclude from virtual linking (one per line or comma separated)"),
-          visible: adv
-        })
-      ]),
-      groupDef(t("Exclusions"), [
-        toggleDef(t("Auto-exclude renamed duplicates"), "autoExcludeContainedCopies", {
-          desc: t(`When enabled, if one note's file name fully contains another note's file name (e.g. "\u6559\u80B2\u6559\u5B66" and "\u6559\u80B2\u6559\u5B66\u9644\u4EF6") and both notes start with the same first sentence, the longer-named note is automatically excluded from virtual linking (treated like a linker-exclude note). This keeps a copied-and-renamed duplicate from producing links. Off by default.`),
-          visible: adv
-        }),
-        textAreaDef(t("Exclude by file name prefix/suffix"), "filenameAffixExclusions", {
-          desc: t("Notes whose file name starts or ends with any of these words or symbols (comma separated) are excluded from virtual linking, like a linker-exclude note."),
-          placeholder: "e.g. \u526F\u672C, \u8349\u7A3F, _",
-          visible: adv
-        }),
-        textAreaDef(t("Excluded keywords"), "excludedKeywords", {
-          desc: t("Keywords to exclude from virtual linking (comma separated). Files/aliases or headings matching these keywords will not be linked."),
-          visible: adv
-        }),
-        toggleDef(t("Per-note excluded keywords"), "perNoteExcludeKeywords", {
-          desc: t(`When enabled, the global excluded keywords only apply to notes that opt in via a frontmatter property. When disabled, excluded keywords apply to all notes. Usage: add "fakelink-exclude: true" to a note's frontmatter to opt in for that note.`),
-          visible: () => !s.includeAllFiles || s.advancedSettings
-        }),
-        textDef(t("Frontmatter exclusion property"), "frontmatterExcludeProperty", {
-          desc: t("The frontmatter property name to check. Only notes with this property set to true will have the global excluded keywords applied. Default: fakelink-exclude."),
-          visible: () => s.perNoteExcludeKeywords
-        }),
-        toggleDef(t("Enable frontmatter exclude list"), "enableFrontmatterExcludeList", {
-          desc: t(`When enabled, each note can define excluded keywords in its frontmatter. These keywords will not be linked anywhere (added on top of the global excluded keywords). Usage: add "fakelink-exclude-keywords: [keyword1, keyword2]" or "fakelink-exclude-keywords: keyword1, keyword2" to a note's frontmatter.`),
-          visible: adv
-        }),
-        textDef(t("Frontmatter exclude list property"), "frontmatterExcludeListProperty", {
-          desc: t("The frontmatter property name for per-note excluded keyword lists. Default: fakelink-exclude-keywords."),
-          visible: () => s.enableFrontmatterExcludeList
-        })
-      ]),
-      groupDef(t("Special syntax"), [
-        toggleDef(t("Bare internal link syntax"), "enableInternalLinkSyntax", {
-          desc: t('When enabled, plain text like "note#heading", "note#^block-id", or "note#heading|alias" is treated as a virtual link. Append "|alias" to set a custom display name. Links end at a space or punctuation; letters/digits directly after the alias become part of it, so add a space before them if needed.')
-        }),
-        toggleDef(t("Context-aware header disambiguation"), "enableContextDisambiguation", {
-          desc: t("When a heading name exists in multiple notes, prefer the note whose file name (or alias) appears closest to the match in the current paragraph. This keeps links pointing to the most relevant note instead of listing all of them.")
-        }),
-        toggleDef(t("Exclude text between symbols"), "enableSymbolExclusion", {
-          desc: t('When enabled, text between the configured start and end symbols (e.g. { ... }) will not produce virtual links. Separate multiple symbol pairs with commas (e.g. start "{,\uFF08" end "},\uFF09"). Useful for pandoc citations or other special syntax.')
-        }),
-        textDef(t("Exclusion start symbol"), "excludeSymbolStart", {
-          desc: t("Symbol marking the start of the excluded text. Separate multiple symbols with commas (matched positionally with the end symbols). Each must differ from its corresponding end symbol."),
-          visible: () => s.enableSymbolExclusion
-        }),
-        textDef(t("Exclusion end symbol"), "excludeSymbolEnd", {
-          desc: t("Symbol marking the end of the excluded text. Separate multiple symbols with commas (matched positionally with the start symbols). Each must differ from its corresponding start symbol."),
-          visible: () => s.enableSymbolExclusion
-        })
-      ]),
-      groupDef(t("Line jumping"), [
-        toggleDef(t("Jump to line on adv-uri click"), "jumpEnabled", {
-          desc: t('When enabled, FakeLink registers the obsidian://adv-uri protocol and handles line jumping itself, including links fired from external apps (e.g. a browser or a custom obsidianjump:// handler). Obsidian allows only ONE plugin to handle this protocol, so you must NOT enable the Advanced URI plugin at the same time \u2014 keep it disabled, otherwise one of the two plugins will fail to load. Generate line links via the right-click menu "Copy line link (adv-uri)".')
-        }),
-        toggleDef(t("Self-heal line links"), "lineLinkSelfHeal", {
-          desc: t("When enabled, copied line links also store the text of the target line. If the note is edited and line numbers drift, the jump re-finds the line by its text instead of landing on the wrong line. Works for both plain and aliased line links. Line links copied before enabling this have no anchor and keep the old behavior."),
-          visible: () => s.jumpEnabled
-        }),
-        numberDef(t("Line jump wait limit (seconds)"), "lineJumpWaitSeconds", {
-          desc: t("The maximum time (in SECONDS) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. The number you type is the number of seconds (8 = 8 seconds); 0 means do not wait."),
-          min: 0,
-          max: 60,
-          visible: () => s.jumpEnabled
-        }),
-        toggleDef(t("Open in new tab"), "jumpOpenInNewTab", {
-          desc: t("When the target file is not already open, open it in a new tab. When off, the current tab is reused."),
-          visible: () => s.jumpEnabled
-        })
-      ]),
-      groupDef(t("References"), [
-        numberDef(t("Maximum references to show"), "maxReferenceCount", {
-          desc: t('The maximum number of reference markers [1][2]... shown after a virtual link. When a link has more references, a "..." indicator is shown.'),
-          min: 1,
-          max: 20
-        }),
-        numberDef(t("Hide link when references exceed"), "maxReferencesToHideLink", {
-          desc: t("When the total number of matching files (names + aliases + headers) exceeds this threshold, the virtual link will not be displayed."),
-          min: 1,
-          max: 50
-        }),
-        toggleDef(t("Always show multiple references"), "alwaysShowMultipleReferences", {
-          desc: t("If toggled, if there are multiple matching notes, all references are shown behind the match. If not toggled, the references are only shown if hovering over the match.")
-        })
-      ]),
-      groupDef(t("Conversion"), [
-        toggleDef(t("Skip links with multiple targets (batch convert)"), "skipMultipleTargets", {
-          desc: t('When using "Convert all virtual links to real links (preview)", virtual links that point to more than one note are skipped so you can convert them one by one manually. When off, they are included but unchecked by default and only the first target is converted.')
-        }),
-        toggleDef(t("Use default link style for conversion"), "useDefaultLinkStyleForConversion", {
-          desc: t("If toggled, the default link style will be used for the conversion of virtual links to real links.")
-        }),
-        toggleDef(t("Use [[wikilinks]]"), "useWikilinks", {
-          desc: t("If toggled, the virtual links will be created as wikilinks instead of Markdown links."),
-          visible: () => !s.useDefaultLinkStyleForConversion
-        }),
-        dropdownDef(t("Link format"), "linkFormat", {
-          "shortest": "Shortest",
-          "relative": "Relative",
-          "absolute": "Absolute"
-        }, {
-          desc: t("The format of the generated links."),
-          visible: () => !s.useDefaultLinkStyleForConversion
-        })
-      ]),
-      groupDef(t("Appearance"), [
-        toggleDef(t("Background"), "backgroundHighlight", {
-          desc: t("One switch for the whole look: a very faint tint, a light blue background on list lines, on tab-indented lines (and the line above them), on tables and callouts, a warm orange highlight on the cursor line with a dark brown caret, accent styling for the active tab header, and a gentle mask while the window is unfocused. Off by default; every colour is a CSS variable (--fakelink-...).")
-        }),
-        toggleDef(t("Color-only display"), "colorOnlyDisplay", {
-          desc: t("When enabled, virtual links are shown in a custom text color instead of the default background shadow.")
-        }),
-        toggleDef(t("No hover preview for virtual links"), "disableVirtualLinkPreview", {
-          desc: t('When enabled, hovering a virtual link no longer opens a page preview / Hover Editor popover. Virtual links are rendered by this plugin rather than written in the note, so the popover can be unwanted while reading; clicking still opens the note. Off by default. Tip: to keep previews but only when you ask for them, turn on "Require Ctrl/Cmd to trigger" in the core Page preview plugin settings instead.')
-        }),
-        colorDef(t("Header link color"), "headerVirtualLinkColor", {
-          desc: t("Color for header virtual links (e.g., #517ea0).")
-        }),
-        colorDef(t("Note link color"), "noteVirtualLinkColor", {
-          desc: t("Color for note and alias virtual links (e.g., #c0392b).")
-        }),
-        colorDef(t("Fuzzy link base color"), "fuzzyBaseColor", {
-          desc: t("Base color for fuzzy (\u8BCD\u4E49\u6A21\u7CCA) matches. It is mixed with the header / note color, so a fuzzy link looks like a tinted version of its exact-match counterpart.")
-        }),
-        sliderDef(t("Fuzzy color mix"), "fuzzyColorMixRatio", 0, 100, 5, {
-          desc: t("How much of the fuzzy base color is mixed in. 0% = fuzzy links use the normal colors (feature off); 100% = fuzzy links use the base color only; 50% = an even blend, keeping the header/note hue while tinting it.")
-        }),
-        toggleDef(t("Alternative display style"), "alternativeDisplayStyle", {
-          desc: t("When enabled, strikethrough is replaced with underline, and %%comments%% are collapsed into small dots that expand on the active line.")
-        }),
-        toggleDef(t("Apply default link styling"), "applyDefaultLinkStyling", {
-          desc: t("If toggled, the default link styling will be applied to virtual links. Furthermore, you can style the links yourself with a CSS-snippet affecting the class `virtual-link`. (Find the CSS snippet directory at Appearance -> CSS Snippets -> Open snippets folder)")
-        }),
-        textDef(t("Virtual link suffix"), "virtualLinkSuffix", {
-          desc: t("The suffix to add to auto generated virtual links.")
-        }),
-        textDef(t("Virtual link suffix for aliases"), "virtualLinkAliasSuffix", {
-          desc: t("The suffix to add to auto generated virtual links for aliases.")
-        })
-      ])
+    const known = [
+      "virtual-link-bg",
+      "virtual-link-bg-tint",
+      "virtual-link-bg-lines",
+      "virtual-link-bg-cursor",
+      "virtual-link-bg-tab-accent",
+      "virtual-link-bg-unfocused-mask"
     ];
+    const vars = [
+      ["--fakelink-line-alpha", String(s.backgroundLineOpacity / 100)],
+      ["--fakelink-cursor-line-alpha", String(s.cursorLineOpacity / 100)]
+    ];
+    const seen = /* @__PURE__ */ new Set();
+    const visit = (ownerDoc) => {
+      if (seen.has(ownerDoc))
+        return;
+      seen.add(ownerDoc);
+      const body = ownerDoc.body;
+      if (!body)
+        return;
+      for (const cls of known)
+        body.classList.toggle(cls, wanted.indexOf(cls) !== -1);
+      for (const [name, value] of vars)
+        body.style.setProperty(name, value);
+    };
+    visit(activeWindow.document);
+    this.app.workspace.iterateAllLeaves((leaf) => {
+      var _a2;
+      const el = (_a2 = leaf.view) == null ? void 0 : _a2.containerEl;
+      if (el)
+        visit(el.ownerDocument);
+    });
+  }
+  scheduleBackgroundSync() {
+    if (this.bgSyncTimer !== null)
+      return;
+    this.bgSyncTimer = window.setTimeout(() => {
+      this.bgSyncTimer = null;
+      this.applyBackgroundStyles();
+    }, 200);
   }
 };
 
