@@ -27,8 +27,8 @@ __export(main_exports, {
   default: () => LinkerPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian9 = require("obsidian");
-var import_view3 = require("@codemirror/view");
+var import_obsidian14 = require("obsidian");
+var import_view4 = require("@codemirror/view");
 var import_state2 = require("@codemirror/state");
 
 // src/lang/helpers.ts
@@ -49,6 +49,8 @@ var zhCN = {
   "Appearance": "\u5916\u89C2",
   "Background": "\u80CC\u666F",
   "Failed to save settings. The change may be lost when Obsidian reloads.": "\u8BBE\u7F6E\u4FDD\u5B58\u5931\u8D25\uFF0C\u66F4\u6539\u53EF\u80FD\u5728\u91CD\u542F Obsidian \u540E\u4E22\u5931\u3002",
+  "No links in the cell being edited": "\u7F16\u8F91\u4E2D\u7684\u5355\u5143\u683C\u4E0D\u663E\u793A\u94FE\u63A5",
+  "While a table cell is open for editing, no virtual links are rendered inside that cell, so the text stays plain and can be typed into normally. The other cells keep their links. Everything comes back when you leave the cell. Live Preview tables only.": "\u5F53\u67D0\u4E2A\u8868\u683C\u5355\u5143\u683C\u5904\u4E8E\u7F16\u8F91\u72B6\u6001\u65F6\uFF0C\u8FD9\u4E00\u683C\u5185\u4E0D\u6E32\u67D3\u865A\u62DF\u94FE\u63A5\uFF0C\u6587\u5B57\u4FDD\u6301\u7EAF\u6587\u672C\u3001\u53EF\u6B63\u5E38\u8F93\u5165\uFF1B\u5176\u4ED6\u5355\u5143\u683C\u7684\u94FE\u63A5\u4E0D\u53D7\u5F71\u54CD\uFF0C\u9000\u51FA\u7F16\u8F91\u540E\u5168\u90E8\u6062\u590D\u3002\u4EC5\u5BF9\u5B9E\u65F6\u9884\u89C8\uFF08Live Preview\uFF09\u4E2D\u7684\u8868\u683C\u751F\u6548\u3002",
   "Background tint strength": "\u80CC\u666F\u7740\u8272\u5F3A\u5EA6",
   "Opacity of the light blue tint on list / indented / table / callout lines. 10 is the default.": "\u5217\u8868 / \u7F29\u8FDB / \u8868\u683C / \u8C03\u7528\u5757\u884C\u7684\u6DE1\u84DD\u5E95\u8272\u7684\u4E0D\u900F\u660E\u5EA6\u3002\u9ED8\u8BA4 10\u3002",
   "Cursor line strength": "\u5149\u6807\u884C\u5F3A\u5EA6",
@@ -147,6 +149,8 @@ var zhCN = {
   "Tag to explicitly include the file for the linker.": "\u7ED9\u6587\u4EF6\u6DFB\u52A0\u6B64\u6807\u7B7E\u540E\uFF0C\u8BE5\u6587\u4EF6\u5C06\u88AB\u663E\u5F0F\u5305\u542B\u3002",
   "Tag to ignore file": "\u6392\u9664\u6587\u4EF6\u7684\u6807\u7B7E",
   "Tag to ignore the file for the linker.": "\u7ED9\u6587\u4EF6\u6DFB\u52A0\u6B64\u6807\u7B7E\u540E\uFF0C\u8BE5\u6587\u4EF6\u5C06\u88AB\u6392\u9664\u3002",
+  "Align heading (jump and preview)": "\u5BF9\u9F50\u6807\u9898\uFF08\u8DF3\u8F6C\u4E0E\u9884\u89C8\uFF09",
+  "Centres the target heading after a jump, and inside hover previews. Jump: Obsidian already centres the heading when it navigates - clicking a real link shows this - so this only puts it back when content that finishes rendering later (a PDF embed, a page of display math) pushes it away. Preview: a popover opens at the position of the LINK, so the heading is often nowhere near the middle and is centred outright. Off by default: a real link jump is already correct, and most notes render without drifting.": "\u8BA9\u76EE\u6807\u6807\u9898\u5728\u8DF3\u8F6C\u4E4B\u540E\u3001\u4EE5\u53CA\u60AC\u6D6E\u9884\u89C8\u4E2D\u4FDD\u6301\u5728\u4E2D\u95F4\u3002\u8DF3\u8F6C\uFF1AObsidian \u8DF3\u8F6C\u65F6\u672C\u6765\u5C31\u4F1A\u628A\u6807\u9898\u5C45\u4E2D\uFF08\u70B9\u51FB\u771F\u5B9E\u94FE\u63A5\u5373\u53EF\u9A8C\u8BC1\uFF09\uFF0C\u6240\u4EE5\u8FD9\u91CC\u53EA\u5728\u5185\u5BB9\u5EF6\u8FDF\u6E32\u67D3\u5B8C\u6210\uFF08PDF \u5D4C\u5165\u3001\u6574\u9875\u516C\u5F0F\uFF09\u628A\u6807\u9898\u63A8\u8D70\u65F6\uFF0C\u624D\u628A\u5B83\u653E\u56DE\u539F\u6765\u7684\u4F4D\u7F6E\u3002\u9884\u89C8\uFF1A\u5F39\u7A97\u662F\u6309\u300C\u94FE\u63A5\u300D\u6240\u5728\u4F4D\u7F6E\u6253\u5F00\u7684\uFF0C\u6807\u9898\u5E38\u5E38\u5E76\u4E0D\u5728\u4E2D\u95F4\uFF0C\u56E0\u6B64\u8FD9\u91CC\u76F4\u63A5\u628A\u5B83\u5C45\u4E2D\u3002\u9ED8\u8BA4\u5173\u95ED\uFF1A\u771F\u5B9E\u94FE\u63A5\u7684\u8DF3\u8F6C\u672C\u6765\u5C31\u6B63\u786E\uFF0C\u591A\u6570\u7B14\u8BB0\u6E32\u67D3\u65F6\u4E5F\u4E0D\u4F1A\u6F02\u79FB\u3002",
   "Exclude self-links to the current note": "\u6392\u9664\u6307\u5411\u81EA\u8EAB\u7684\u94FE\u63A5",
   'If toggled, links to the note itself are excluded from the linker. Enabling "Allow virtual links in headers" also turns this on automatically.': "\u542F\u7528\u540E\uFF0C\u6307\u5411\u5F53\u524D\u7B14\u8BB0\u81EA\u8EAB\u7684\u94FE\u63A5\u5C06\u88AB\u6392\u9664\u3002\u5F00\u542F\u300C\u5141\u8BB8\u5728\u6807\u9898\u4E2D\u663E\u793A\u865A\u62DF\u94FE\u63A5\u300D\u65F6\u4F1A\u81EA\u52A8\u5F00\u542F\u6B64\u9879\u3002",
   "Excluded directories for generating virtual links": "\u4E0D\u751F\u6210\u94FE\u63A5\u7684\u76EE\u5F55",
@@ -175,7 +179,7 @@ var zhCN = {
   "Note link color": "\u7B14\u8BB0\u94FE\u63A5\u989C\u8272",
   "Color for note and alias virtual links (e.g., #c0392b).": "\u7B14\u8BB0\u548C\u522B\u540D\u865A\u62DF\u94FE\u63A5\u7684\u989C\u8272\uFF08\u5982 #c0392b\uFF09\u3002",
   "Fuzzy link base color": "\u6A21\u7CCA\u94FE\u63A5\u57FA\u8272",
-  "Base color for fuzzy (\u8BCD\u4E49\u6A21\u7CCA) matches. It is mixed with the header / note color, so a fuzzy link looks like a tinted version of its exact-match counterpart.": "\u8BCD\u4E49\u6A21\u7CCA\u5339\u914D\u94FE\u63A5\u7684\u57FA\u8272\u3002\u5B83\u4F1A\u4E0E\u6807\u9898\u8272/\u7B14\u8BB0\u8272\u6DF7\u5408\uFF0C\u4F7F\u6A21\u7CCA\u94FE\u63A5\u5448\u73B0\u4E3A\u5BF9\u5E94\u7CBE\u786E\u5339\u914D\u989C\u8272\u7684\u300C\u67D3\u8272\u7248\u300D\u3002",
+  "Base color for fuzzy matches. It is mixed with the header / note color, so a fuzzy link looks like a tinted version of its exact-match counterpart.": "\u8BCD\u4E49\u6A21\u7CCA\u5339\u914D\u94FE\u63A5\u7684\u57FA\u8272\u3002\u5B83\u4F1A\u4E0E\u6807\u9898\u8272/\u7B14\u8BB0\u8272\u6DF7\u5408\uFF0C\u4F7F\u6A21\u7CCA\u94FE\u63A5\u5448\u73B0\u4E3A\u5BF9\u5E94\u7CBE\u786E\u5339\u914D\u989C\u8272\u7684\u300C\u67D3\u8272\u7248\u300D\u3002",
   "Fuzzy color mix": "\u6A21\u7CCA\u914D\u8272\u6DF7\u5408\u5EA6",
   "How much of the fuzzy base color is mixed in. 0% = fuzzy links use the normal colors (feature off); 100% = fuzzy links use the base color only; 50% = an even blend, keeping the header/note hue while tinting it.": "\u6A21\u7CCA\u57FA\u8272\u7684\u6DF7\u5165\u6BD4\u4F8B\u30020% = \u6A21\u7CCA\u94FE\u63A5\u4F7F\u7528\u5E38\u89C4\u989C\u8272\uFF08\u76F8\u5F53\u4E8E\u5173\u95ED\u6B64\u529F\u80FD\uFF09\uFF1B100% = \u6A21\u7CCA\u94FE\u63A5\u7EAF\u7528\u57FA\u8272\uFF1B50% = \u5747\u5300\u6DF7\u5408\uFF0C\u4FDD\u7559\u6807\u9898/\u7B14\u8BB0\u7684\u8272\u76F8\u540C\u65F6\u67D3\u4E0A\u57FA\u8272\u8C03\u3002",
   "Per-note excluded keywords": "\u6309\u7B14\u8BB0\u6392\u9664\u5173\u952E\u8BCD",
@@ -219,7 +223,7 @@ var zhCN = {
   "When enabled, copied line links also store the text of the target line. If the note is edited and line numbers drift, the jump re-finds the line by its text instead of landing on the wrong line. Works for both plain and aliased line links. Line links copied before enabling this have no anchor and keep the old behavior.": "\u542F\u7528\u540E\uFF0C\u590D\u5236\u7684\u884C\u94FE\u63A5\u4F1A\u540C\u65F6\u8BB0\u5F55\u76EE\u6807\u884C\u7684\u6587\u672C\u3002\u82E5\u7B14\u8BB0\u88AB\u7F16\u8F91\u5BFC\u81F4\u884C\u53F7\u504F\u79FB\uFF0C\u8DF3\u8F6C\u65F6\u4F1A\u6309\u6587\u672C\u91CD\u65B0\u627E\u5230\u8BE5\u884C\uFF0C\u800C\u4E0D\u662F\u8DF3\u5230\u9519\u8BEF\u7684\u884C\u3002\u884C\u53F7\u5F62\u5F0F\u548C\u522B\u540D\u5F62\u5F0F\u7684\u884C\u94FE\u63A5\u90FD\u9002\u7528\u3002\u542F\u7528\u524D\u590D\u5236\u7684\u884C\u94FE\u63A5\u6CA1\u6709\u951A\u70B9\uFF0C\u4ECD\u6309\u65E7\u884C\u4E3A\u8DF3\u8F6C\u3002",
   "Line jump wait limit (seconds)": "\u884C\u8DF3\u8F6C\u7B49\u5F85\u4E0A\u9650\uFF08\u79D2\uFF09",
   "Heading align watch window (seconds)": "\u6807\u9898\u5BF9\u9F50\u89C2\u5BDF\u7A97\uFF08\u79D2\uFF09",
-  "How long (in SECONDS) a jumped-to heading keeps being re-aligned. The heading is put back in place the moment the content above it changes height (a PDF or an image finishing, MathJax typesetting) - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60).": "\u8DF3\u5230\u6807\u9898\u540E\uFF0C\u6700\u591A\u6301\u7EED\u8DDF\u968F\u591A\u5C11\u79D2\u3002\u53EA\u8981\u6807\u9898\u4E0A\u65B9\u7684\u5185\u5BB9\u9AD8\u5EA6\u53D1\u751F\u53D8\u5316\uFF08PDF/\u56FE\u7247\u6E32\u67D3\u5B8C\u6210\u3001\u516C\u5F0F\u6392\u7248\u5B8C\u6210\uFF09\uFF0C\u5C31\u4F1A\u7ACB\u523B\u628A\u6807\u9898\u6446\u56DE\u539F\u4F4D\u2014\u2014\u89C2\u5BDF\u662F\u4E8B\u4EF6\u9A71\u52A8\u7684\uFF0C\u9875\u9762\u9759\u6B62\u65F6\u4E0D\u505A\u4EFB\u4F55\u8F6E\u8BE2\u3002\u8D85\u8FC7\u8FD9\u4E2A\u79D2\u6570\u5C31\u5B8C\u5168\u6536\u624B\uFF0C\u56E0\u6B64\u51E0\u5206\u949F\u540E\u624D\u51FA\u73B0\u7684\u53D8\u5316\u4E0D\u4F1A\u518D\u79FB\u52A8\u4F60\u7684\u89C6\u56FE\u3002\u8FD9\u91CC\u586B\u7684\u5C31\u662F\u79D2\u6570\uFF0812 \u21D2 12 \u79D2\uFF09\uFF0C\u4E0D\u9700\u8981\u6362\u7B97\uFF1B\u7B14\u8BB0\u5F88\u5927\u5F88\u6162\u65F6\u53EF\u8C03\u5230 60\u3002",
+  "How long (in SECONDS) the heading keeps being watched after a jump, and while a hover preview stays open. Whenever the content above it changes height (a PDF or an image finishing, MathJax typesetting) the heading is put back - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60).": "\u8DF3\u8F6C\u4E4B\u540E\u3001\u4EE5\u53CA\u60AC\u6D6E\u9884\u89C8\u6253\u5F00\u671F\u95F4\uFF0C\u6700\u591A\u6301\u7EED\u8DDF\u968F\u591A\u5C11\u79D2\u3002\u53EA\u8981\u6807\u9898\u4E0A\u65B9\u7684\u5185\u5BB9\u9AD8\u5EA6\u53D1\u751F\u53D8\u5316\uFF08PDF/\u56FE\u7247\u6E32\u67D3\u5B8C\u6210\u3001\u516C\u5F0F\u6392\u7248\u5B8C\u6210\uFF09\uFF0C\u5C31\u4F1A\u7ACB\u523B\u628A\u6807\u9898\u6446\u56DE\u539F\u4F4D\u2014\u2014\u89C2\u5BDF\u662F\u4E8B\u4EF6\u9A71\u52A8\u7684\uFF0C\u9875\u9762\u9759\u6B62\u65F6\u4E0D\u505A\u4EFB\u4F55\u8F6E\u8BE2\u3002\u8D85\u8FC7\u8FD9\u4E2A\u79D2\u6570\u5C31\u5B8C\u5168\u6536\u624B\uFF0C\u56E0\u6B64\u51E0\u5206\u949F\u540E\u624D\u51FA\u73B0\u7684\u53D8\u5316\u4E0D\u4F1A\u518D\u79FB\u52A8\u4F60\u7684\u89C6\u56FE\u3002\u8FD9\u91CC\u586B\u7684\u5C31\u662F\u79D2\u6570\uFF0812 \u21D2 12 \u79D2\uFF09\uFF0C\u4E0D\u9700\u8981\u6362\u7B97\uFF1B\u7B14\u8BB0\u5F88\u5927\u5F88\u6162\u65F6\u53EF\u8C03\u5230 60\u3002",
   "The maximum time (in SECONDS) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. The number you type is the number of seconds (8 = 8 seconds); 0 means do not wait.": "\u5B9A\u4F4D\u5149\u6807\u524D\u7B49\u5F85\u76EE\u6807\u6587\u4EF6\u6E32\u67D3\u7684\u6700\u957F\u65F6\u95F4\uFF08\u79D2\uFF09\u3002\u5C0F\u6587\u4EF6\u51E0\u4E4E\u7ACB\u5373\u8DF3\u8F6C\uFF1B\u5927\u6587\u4EF6\u6700\u591A\u7B49\u5F85\u5230\u6B64\u4E0A\u9650\u3002\u8FD9\u91CC\u586B\u7684\u5C31\u662F\u79D2\u6570\uFF088 \u21D2 8 \u79D2\uFF09\uFF1B\u586B 0 \u8868\u793A\u4E0D\u7B49\u5F85\u3002",
   "Open in new tab": "\u5728\u65B0\u6807\u7B7E\u9875\u6253\u5F00",
   "When the target file is not already open, open it in a new tab. When off, the current tab is reused.": "\u5F53\u76EE\u6807\u6587\u4EF6\u5C1A\u672A\u6253\u5F00\u65F6\uFF0C\u5728\u65B0\u6807\u7B7E\u9875\u4E2D\u6253\u5F00\u3002\u5173\u95ED\u65F6\u5219\u590D\u7528\u5F53\u524D\u6807\u7B7E\u9875\u3002",
@@ -231,7 +235,32 @@ var zhCN = {
   "Opt-out tag name": "\u7981\u7528\u6807\u7B7E\u540D",
   'Used when the method is "By tag": a note carrying this tag renders no virtual links at all. Put it in the frontmatter (tags: [linker-ignore]) or anywhere in the note as #linker-ignore.': "\u5F53\u65B9\u5F0F\u4E3A\u300C\u6309\u6807\u7B7E\u300D\u65F6\uFF0C\u5E26\u6709\u8BE5\u6807\u7B7E\u7684\u7B14\u8BB0\u5B8C\u5168\u4E0D\u6E32\u67D3\u865A\u62DF\u94FE\u63A5\u3002\u53EF\u5199\u5728 frontmatter\uFF08tags: [linker-ignore]\uFF09\u6216\u6B63\u6587\u4EFB\u610F\u5904\uFF08#linker-ignore\uFF09\uFF0C\u4E5F\u652F\u6301\u5C42\u7EA7\u6807\u7B7E\uFF08\u5982 #linker-ignore/xxx\uFF09\u3002",
   "Opt-out property name": "\u7981\u7528\u5C5E\u6027\u540D",
-  'Used when the method is "By frontmatter property": a note with this property set to true renders no virtual links at all. Usage: add "linker-ignore: true" to the note frontmatter.': '\u5F53\u65B9\u5F0F\u4E3A\u300C\u6309 Frontmatter \u5C5E\u6027\u300D\u65F6\uFF0C\u8BE5\u5C5E\u6027\u8BBE\u4E3A true \u7684\u7B14\u8BB0\u5B8C\u5168\u4E0D\u6E32\u67D3\u865A\u62DF\u94FE\u63A5\u3002\u7528\u6CD5\uFF1A\u5728\u7B14\u8BB0 frontmatter \u6DFB\u52A0 "linker-ignore: true"\u3002'
+  'Used when the method is "By frontmatter property": a note with this property set to true renders no virtual links at all. Usage: add "linker-ignore: true" to the note frontmatter.': '\u5F53\u65B9\u5F0F\u4E3A\u300C\u6309 Frontmatter \u5C5E\u6027\u300D\u65F6\uFF0C\u8BE5\u5C5E\u6027\u8BBE\u4E3A true \u7684\u7B14\u8BB0\u5B8C\u5168\u4E0D\u6E32\u67D3\u865A\u62DF\u94FE\u63A5\u3002\u7528\u6CD5\uFF1A\u5728\u7B14\u8BB0 frontmatter \u6DFB\u52A0 "linker-ignore: true"\u3002',
+  "What is new": "\u66F4\u65B0\u4E86\u4EC0\u4E48",
+  "See the full release notes": "\u67E5\u770B\u5B8C\u6574\u66F4\u65B0\u8BF4\u660E",
+  'Fix: exact matches against numbered headings (e.g. "1. Title") no longer show the fuzzy-match colour. Also: the batch-convert dialogs now follow the app language instead of hardcoded Chinese.': "\u4FEE\u590D\uFF1A\u5339\u914D\u5E26\u7F16\u53F7\u6807\u9898\uFF08\u5982\u300C1. \u6807\u9898\u300D\uFF09\u65F6\u4E0D\u518D\u663E\u793A\u6A21\u7CCA\u5339\u914D\u7684\u989C\u8272\u3002\u53E6\u5916\uFF1A\u6279\u91CF\u8F6C\u6362\u5BF9\u8BDD\u6846\u73B0\u5728\u8DDF\u968F\u5E94\u7528\u8BED\u8A00\u663E\u793A\uFF0C\u4E0D\u518D\u786C\u7F16\u7801\u4E2D\u6587\u3002",
+  "Open a Markdown note first, then run this command.": "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A Markdown \u7B14\u8BB0\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002",
+  "Virtual links are currently disabled. Enable them in the settings before running the batch conversion.": "\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u540E\u518D\u8FD0\u884C\u6279\u91CF\u8F6C\u6362\u3002",
+  "Select some text first, then run this command.": "\u8BF7\u5148\u9009\u62E9\u4E00\u6BB5\u6587\u672C\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002",
+  "in the selection": "\u9009\u4E2D\u5185\u5BB9\u4E2D",
+  "in this note": "\u5F53\u524D\u7B14\u8BB0\u4E2D",
+  "Convert virtual links to real links": "\u6279\u91CF\u56FA\u5316\u865A\u62DF\u94FE\u63A5\u4E3A\u771F\u5B9E\u94FE\u63A5",
+  'Found {n} virtual links {scope}. Check the ones to convert, then click "Convert".': "\u5728{scope}\u5171\u627E\u5230 {n} \u4E2A\u865A\u62DF\u94FE\u63A5\u3002\u52FE\u9009\u9700\u8981\u8F6C\u6362\u7684\u9879\uFF0C\u70B9\u51FB\u300C\u8F6C\u6362\u300D\u3002",
+  "No convertible virtual links found.": "\u672A\u68C0\u6D4B\u5230\u53EF\u8F6C\u6362\u7684\u865A\u62DF\u94FE\u63A5\u3002",
+  "Multiple targets - will convert to the first target": "\u591A\u4E2A\u6307\u5411 \u2014 \u5C06\u8F6C\u6362\u4E3A\u7B2C\u4E00\u4E2A\u76EE\u6807",
+  "Convert": "\u8F6C\u6362",
+  "Cancel": "\u53D6\u6D88",
+  "Converted {n} virtual links to real links.": "\u5DF2\u56FA\u5316 {n} \u4E2A\u865A\u62DF\u94FE\u63A5\u4E3A\u771F\u5B9E\u94FE\u63A5\u3002",
+  "Convert virtual links in multiple notes": "\u6279\u91CF\u56FA\u5316\u591A\u4E2A\u7B14\u8BB0\u4E2D\u7684\u865A\u62DF\u94FE\u63A5",
+  'Steps: 1) click "Choose notes..."; 2) click each note to process in the search box (you can pick several - the chosen ones are listed below); 3) click "Scan and convert" to convert every virtual link in each note (links inside tables are not processed).': "\u4F7F\u7528\u6B65\u9AA4\uFF1A1) \u70B9\u51FB\u300C\u9009\u62E9\u7B14\u8BB0\u2026\u300D\uFF1B2) \u5728\u5F39\u51FA\u7684\u641C\u7D22\u6846\u4E2D\u9010\u4E2A\u70B9\u51FB\u8981\u5904\u7406\u7684\u7B14\u8BB0\uFF08\u53EF\u591A\u6B21\u70B9\u9009\uFF0C\u5DF2\u9009\u7B14\u8BB0\u4F1A\u5217\u5728\u4E0B\u65B9\uFF09\uFF1B3) \u9009\u597D\u540E\u70B9\u51FB\u300C\u626B\u63CF\u5E76\u8F6C\u6362\u300D\uFF0C\u63D2\u4EF6\u4F1A\u4E00\u6B21\u6027\u628A\u6BCF\u4E2A\u7B14\u8BB0\u91CC\u7684\u865A\u62DF\u94FE\u63A5\u56FA\u5316\u4E3A\u771F\u5B9E\u94FE\u63A5\uFF08\u8868\u683C\u5185\u7684\u865A\u62DF\u94FE\u63A5\u4E0D\u4F1A\u88AB\u5904\u7406\uFF09\u3002",
+  "Choose notes...": "\u9009\u62E9\u7B14\u8BB0\u2026",
+  "Scan and convert": "\u626B\u63CF\u5E76\u8F6C\u6362",
+  "Selected {n} notes:": "\u5DF2\u9009\u62E9 {n} \u4E2A\u7B14\u8BB0\uFF1A",
+  "Select at least one note first.": "\u8BF7\u5148\u9009\u62E9\u81F3\u5C11\u4E00\u4E2A\u7B14\u8BB0\u3002",
+  "Virtual links are currently disabled. Enable them in the settings first.": "\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u3002",
+  "Done. {n} links converted ({errors} files failed, see the console).": "\u5B8C\u6210\u3002{n} \u4E2A\u94FE\u63A5\u5DF2\u56FA\u5316\uFF08{errors} \u4E2A\u6587\u4EF6\u51FA\u9519\uFF0C\u8BE6\u89C1\u63A7\u5236\u53F0\uFF09\u3002",
+  "Done. Converted {n} virtual links across {files} notes.": "\u5DF2\u5B8C\u6210\u3002\u5728 {files} \u4E2A\u7B14\u8BB0\u4E2D\u56FA\u5316\u4E86 {n} \u4E2A\u865A\u62DF\u94FE\u63A5\u3002",
+  "Added: {path} ({n} total)": "\u5DF2\u6DFB\u52A0\uFF1A{path}\uFF08\u5171 {n} \u4E2A\uFF09"
 };
 function t(text) {
   if (lang && lang.toLowerCase().startsWith("zh")) {
@@ -241,7 +270,7 @@ function t(text) {
 }
 
 // linker/readModeLinker.ts
-var import_obsidian5 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // linker/linkerCache.ts
 var import_obsidian2 = require("obsidian");
@@ -1677,7 +1706,6 @@ var _PrefixTree = class {
   }
   headingKeyword(heading) {
     const withoutNumber = _PrefixTree.stripHeadingNumber(heading);
-    const numberStripped = withoutNumber.trim().toLowerCase() !== heading.trim().toLowerCase();
     let s = withoutNumber;
     const symbols = this.settings.headingSymbolWhitelist;
     if (symbols && symbols.length > 0) {
@@ -1685,9 +1713,6 @@ var _PrefixTree = class {
         if (sym)
           s = s.split(sym).join("");
       }
-    }
-    if (numberStripped) {
-      this.derivedKeywords.add(s.toLowerCase());
     }
     return s;
   }
@@ -1761,7 +1786,7 @@ var LinkerCache = class {
 };
 
 // linker/virtualLinkDom.ts
-var import_obsidian4 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 
 // linker/convertLink.ts
 var import_obsidian3 = require("obsidian");
@@ -2061,449 +2086,9 @@ function convertVirtualLinkToReal(linkElement, target, app, settings) {
 
 // linker/virtualLinkDom.ts
 var import_view = require("@codemirror/view");
-var ALIGN_MAX_MS = 12e3;
-var ALIGN_DEBOUNCE_MS = 150;
-var ALIGN_SAFETY_MS = 4e3;
-var ALIGN_TOLERANCE_PX = 6;
-var ALIGN_STABLE_MS = 1e3;
-var DOM_WRITE_BUDGET = 6;
-var DOM_WRITE_TOTAL_BUDGET = 30;
-var ALIGN_MIN_GAP = 12;
-function normalizeHeading(s) {
-  return s.replace(/^#+\s*/, "").replace(/[\u200B-\u200D\uFEFF]/g, "").replace(/\s+/g, " ").trim();
-}
-function findScrollableAncestor(node) {
-  let cur = node.parentElement;
-  while (cur) {
-    if (cur.clientHeight > 0 && cur.scrollHeight > cur.clientHeight + 1)
-      return cur;
-    cur = cur.parentElement;
-  }
-  return null;
-}
-function findHeadingElement(scope, headingId) {
-  const want = normalizeHeading(headingId);
-  if (!want)
-    return null;
-  const candidates = Array.from(scope.querySelectorAll(HEADING_SEL));
-  const textOf = (el) => {
-    var _a2, _b2;
-    return normalizeHeading((_b2 = (_a2 = el.getAttribute("data-heading")) != null ? _a2 : el.textContent) != null ? _b2 : "");
-  };
-  for (const el of candidates)
-    if (textOf(el) === want)
-      return el;
-  const wantSlug = want.replace(/\s+/g, "-").toLowerCase();
-  for (const el of candidates)
-    if (textOf(el).replace(/\s+/g, "-").toLowerCase() === wantSlug)
-      return el;
-  for (const el of candidates)
-    if (textOf(el).startsWith(want))
-      return el;
-  for (const el of candidates) {
-    const t2 = textOf(el);
-    if (t2 && want.endsWith(t2) && want.length - t2.length <= 8)
-      return el;
-  }
-  return null;
-}
-function centeredOffset(scroller, height) {
-  return Math.max(ALIGN_MIN_GAP, Math.round((scroller.clientHeight - height) / 2));
-}
-function resolveHeadingTarget(app, el, headingText, file) {
-  var _a2;
-  const want = normalizeHeading(headingText);
-  if (!want)
-    return null;
-  const sameHeading = (candidate) => {
-    if (candidate === want)
-      return true;
-    if (candidate.startsWith(want))
-      return true;
-    if (want.startsWith(candidate) && want.length - candidate.length <= 12)
-      return true;
-    return want.endsWith(candidate) && want.length - candidate.length <= 8;
-  };
-  const findLine = (file2) => {
-    var _a3, _b2, _c, _d;
-    const headings = (_b2 = (_a3 = app.metadataCache.getFileCache(file2)) == null ? void 0 : _a3.headings) != null ? _b2 : [];
-    const hit = (_d = (_c = headings.find((h) => normalizeHeading(h.heading) === want)) != null ? _c : headings.find((h) => normalizeHeading(h.heading).startsWith(want))) != null ? _d : headings.find((h) => sameHeading(normalizeHeading(h.heading)));
-    return hit ? hit.position.start.line : -1;
-  };
-  const targetFile = file != null ? file : null;
-  const candidates = [];
-  for (const leaf of app.workspace.getLeavesOfType("markdown")) {
-    const view = leaf.view;
-    if (!(view instanceof import_obsidian4.MarkdownView))
-      continue;
-    const shown = view.file;
-    if (!shown)
-      continue;
-    const line = findLine(shown);
-    if (line < 0)
-      continue;
-    const preferred = el ? view.contentEl.contains(el) : !!targetFile && targetFile.path === shown.path;
-    candidates.push({ view, line, preferred });
-  }
-  const pick = (_a2 = candidates.find((c) => c.preferred)) != null ? _a2 : candidates[0];
-  return pick ? { view: pick.view, line: pick.line } : null;
-}
-function findHeadingAtTop(scope, allowGlobalFallback = true) {
-  const search = (root) => {
-    const headings = Array.from(root.querySelectorAll(HEADING_SEL));
-    let best = null;
-    let bestDist = Infinity;
-    for (const h of headings) {
-      const scroller = findScrollableAncestor(h);
-      if (!scroller)
-        continue;
-      const rect = h.getBoundingClientRect();
-      const top = rect.top - scroller.getBoundingClientRect().top;
-      const height = rect.height || 1;
-      if (top < -height - 8 || top > scroller.clientHeight - 24)
-        continue;
-      const dist = Math.abs(top);
-      if (dist < bestDist) {
-        bestDist = dist;
-        best = h;
-      }
-    }
-    return best;
-  };
-  if (scope && scope.isConnected) {
-    const inScope = search(scope);
-    if (inScope)
-      return inScope;
-  }
-  return allowGlobalFallback ? search(document.body) : null;
-}
-var HEADING_SEL = 'h1, h2, h3, h4, h5, h6, [data-heading], [class*="HyperMD-header"]';
-var MULTI_REFERENCE_HOVER_GRACE_MS = 400;
-var hoverUnlockTimers = /* @__PURE__ */ new WeakMap();
-var contextLockedLinks = /* @__PURE__ */ new Set();
-function clearContextLock(key) {
-  contextLockedLinks.delete(key);
-}
-var lastHoveredHeadingId = null;
-function setHoveredHeadingId(id) {
-  lastHoveredHeadingId = id;
-}
-function getHoveredHeadingId() {
-  return lastHoveredHeadingId;
-}
-function keepAligned(resolve, label, maxMs, alive, scrollEditor) {
-  const abort = new AbortController();
-  const { signal } = abort;
-  const stop = () => abort.abort();
-  window.addEventListener("wheel", stop, { capture: true, passive: true, signal });
-  window.addEventListener("mousedown", stop, { capture: true, signal });
-  window.addEventListener("keydown", stop, { capture: true, signal });
-  const startedAt = Date.now();
-  let lastSignature = "";
-  let stableSince = Date.now();
-  let settledInMs = -1;
-  let domWrites = 0;
-  let domWritesTotal = 0;
-  let imgs = [];
-  let imgsAt = 0;
-  let observed = null;
-  let ro = null;
-  let debounce = null;
-  let pending = null;
-  let rearm = null;
-  let safety = null;
-  const stopTimers = () => {
-    for (const t2 of [debounce, pending, rearm, safety]) {
-      if (t2 !== null)
-        window.clearTimeout(t2);
-    }
-    debounce = pending = rearm = safety = null;
-    ro == null ? void 0 : ro.disconnect();
-    ro = null;
-  };
-  signal.addEventListener("abort", stopTimers);
-  function schedule(delay) {
-    if (signal.aborted || pending !== null)
-      return;
-    pending = window.setTimeout(() => {
-      pending = null;
-      check();
-    }, delay);
-  }
-  function armSafety() {
-    if (safety !== null)
-      window.clearTimeout(safety);
-    safety = window.setTimeout(() => {
-      safety = null;
-      schedule(0);
-      armSafety();
-    }, ALIGN_SAFETY_MS);
-  }
-  function observe(scroller) {
-    var _a2;
-    const target = scroller ? (_a2 = scroller.firstElementChild) != null ? _a2 : scroller : null;
-    if (target === observed)
-      return;
-    ro == null ? void 0 : ro.disconnect();
-    ro = null;
-    observed = target;
-    if (target) {
-      ro = new ResizeObserver(() => {
-        if (debounce !== null)
-          window.clearTimeout(debounce);
-        debounce = window.setTimeout(() => {
-          debounce = null;
-          schedule(0);
-        }, ALIGN_DEBOUNCE_MS);
-      });
-      ro.observe(target);
-    }
-  }
-  function check() {
-    var _a2, _b2;
-    if (signal.aborted)
-      return;
-    if (!alive()) {
-      stop();
-      return;
-    }
-    if (Date.now() - startedAt > maxMs) {
-      stop();
-      return;
-    }
-    let wrote = false;
-    let moved = false;
-    const found = resolve();
-    if (found) {
-      const scroller = findScrollableAncestor(found);
-      observe(scroller);
-      const headingText = (_b2 = (_a2 = found.getAttribute("data-heading")) != null ? _a2 : found.textContent) != null ? _b2 : "";
-      const inEditor = !!found.closest(".cm-editor");
-      const foundRect = found.getBoundingClientRect();
-      const offset = scroller ? foundRect.top - scroller.getBoundingClientRect().top : 0;
-      const desired = scroller ? centeredOffset(scroller, foundRect.height) : 0;
-      if (scroller) {
-        const signature = scroller.scrollHeight + ":" + Math.round(scroller.scrollTop + offset);
-        if (signature !== lastSignature) {
-          if (Date.now() - stableSince >= ALIGN_STABLE_MS)
-            domWrites = 0;
-          lastSignature = signature;
-          stableSince = Date.now();
-          moved = true;
-        }
-        const miss = Math.abs(offset - desired);
-        if (Date.now() - imgsAt > 1500) {
-          imgs = Array.from(scroller.querySelectorAll("img"));
-          imgsAt = Date.now();
-        }
-        const stillLoading = imgs.some((img) => !img.complete);
-        const settleReady = !stillLoading && Date.now() - stableSince >= ALIGN_STABLE_MS;
-        const impatient = Date.now() - startedAt > 1200 && miss > 60;
-        if (miss > ALIGN_TOLERANCE_PX && (settleReady || impatient)) {
-          const handled = inEditor && scrollEditor ? scrollEditor(found, headingText) : false;
-          const withinBudget = domWrites < DOM_WRITE_BUDGET && domWritesTotal < DOM_WRITE_TOTAL_BUDGET;
-          if (handled || !inEditor || withinBudget) {
-            if (!handled) {
-              scroller.scrollTop = Math.max(0, scroller.scrollTop + offset - desired);
-              if (inEditor) {
-                domWrites++;
-                domWritesTotal++;
-              }
-            }
-            lastSignature = "";
-            if (settledInMs < 0)
-              settledInMs = Date.now() - startedAt;
-            wrote = true;
-          }
-        }
-      }
-    }
-    if (wrote || moved) {
-      if (rearm !== null)
-        window.clearTimeout(rearm);
-      rearm = window.setTimeout(() => {
-        rearm = null;
-        schedule(0);
-      }, ALIGN_STABLE_MS + 200);
-    }
-  }
-  armSafety();
-  schedule(0);
-}
-function keepScrolledHeadingAligned(scope, label = "", maxMs = ALIGN_MAX_MS, scrollEditor, headingId) {
-  const requestedAt = Date.now();
-  let cached = null;
-  let pinnedId = null;
-  keepAligned(() => {
-    var _a2, _b2, _c;
-    if (cached && cached.isConnected)
-      return cached;
-    const lookupId = headingId != null ? headingId : pinnedId;
-    if (lookupId) {
-      const byName = (_a2 = scope && scope.isConnected ? findHeadingElement(scope, lookupId) : null) != null ? _a2 : findHeadingElement(document.body, lookupId);
-      if (byName) {
-        cached = byName;
-        return cached;
-      }
-      if (Date.now() - requestedAt < 4e3)
-        return null;
-      if (pinnedId)
-        return null;
-    }
-    const top = findHeadingAtTop(scope, false);
-    if (top && !headingId && !pinnedId) {
-      pinnedId = normalizeHeading((_c = (_b2 = top.getAttribute("data-heading")) != null ? _b2 : top.textContent) != null ? _c : "");
-    }
-    cached = top;
-    return cached;
-  }, label, maxMs, () => !scope || scope.isConnected, scrollEditor);
-}
-function buildIndentBackground(view) {
-  const doc = view.state.doc;
-  const marks = [];
-  const done = /* @__PURE__ */ new Set();
-  const isIndented = (text) => text.startsWith("	") || /^ {2,}/.test(text);
-  for (const { from, to } of view.visibleRanges) {
-    const last = doc.lineAt(to).number;
-    for (let n = doc.lineAt(from).number; n <= last; n++) {
-      if (done.has(n))
-        continue;
-      done.add(n);
-      const line = doc.line(n);
-      if (!isIndented(line.text))
-        continue;
-      marks.push(import_view.Decoration.line({ class: "fakelink-indent-line" }).range(line.from));
-      if (n <= 1)
-        continue;
-      const above = doc.line(n - 1);
-      if (above.text.trim().length === 0 || isIndented(above.text))
-        continue;
-      marks.push(import_view.Decoration.line({ class: "fakelink-indent-above" }).range(above.from));
-    }
-  }
-  return import_view.Decoration.set(marks, true);
-}
-function isInTableCellEditor(el) {
-  return Boolean((el == null ? void 0 : el.closest(".cm-table-widget")) && (el == null ? void 0 : el.closest(".table-cell-wrapper")));
-}
-function isLinkingDisabledInNote(file, app, settings) {
-  var _a2, _b2;
-  const mode = (_a2 = settings.linkIgnoreMode) != null ? _a2 : "off";
-  if (mode === "off" || !file)
-    return false;
-  const cache = app.metadataCache.getFileCache(file);
-  if (!cache)
-    return false;
-  const fm = cache.frontmatter;
-  if (mode === "property") {
-    const prop = settings.linkIgnoreProperty;
-    if (!prop || !fm)
-      return false;
-    const raw = fm[prop];
-    return raw === true || typeof raw === "string" && raw.trim().toLowerCase() === "true";
-  }
-  const tag = settings.linkIgnoreTag;
-  if (!tag)
-    return false;
-  const want = tag.replace(/^#/, "").toLowerCase();
-  const candidates = [];
-  for (const t2 of (_b2 = cache.tags) != null ? _b2 : [])
-    candidates.push(t2.tag);
-  const fmTags = fm == null ? void 0 : fm.tags;
-  if (Array.isArray(fmTags)) {
-    for (const t2 of fmTags)
-      if (typeof t2 === "string")
-        candidates.push(t2);
-  } else if (typeof fmTags === "string") {
-    candidates.push(...fmTags.split(/[,\s]+/));
-  }
-  for (const raw of candidates) {
-    const name = raw.replace(/^#/, "").toLowerCase();
-    if (name === want || name.startsWith(want + "/"))
-      return true;
-  }
-  return false;
-}
-function patchDispatchClamp(cm) {
-  const cmAny = cm;
-  if (cmAny.__fkDispatchPatched)
-    return;
-  cmAny.__fkDispatchPatched = true;
-  const origDispatch = cm.dispatch.bind(cm);
-  cmAny.dispatch = (...args) => {
-    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
-    try {
-      return origDispatch(...args);
-    } catch (e) {
-      const msg = String((_a2 = e == null ? void 0 : e.message) != null ? _a2 : "");
-      if (!msg.includes("outside of document"))
-        throw e;
-      const docLen = cm.state.doc.length;
-      const spec = (_b2 = args[0]) != null ? _b2 : {};
-      const sel = spec.selection;
-      if (!sel)
-        throw e;
-      const clamp = (v) => Math.min(Math.max(Number(v) || 0, 0), docLen);
-      const rawAnchor = (_g = (_f = (_e = (_d = (_c = sel.ranges) == null ? void 0 : _c[0]) == null ? void 0 : _d.from) != null ? _e : sel.anchor) != null ? _f : sel.from) != null ? _g : 0;
-      const rawHead = (_n = (_m = (_l = (_k = (_j = (_i = (_h = sel.ranges) == null ? void 0 : _h[0]) == null ? void 0 : _i.to) != null ? _j : sel.head) != null ? _k : sel.to) != null ? _l : sel.anchor) != null ? _m : sel.from) != null ? _n : 0;
-      return origDispatch({
-        ...spec,
-        selection: { anchor: clamp(rawAnchor), head: clamp(rawHead) }
-      });
-    }
-  };
-}
-function patchAllEditorsDispatchClamp() {
-  const doc = typeof activeDocument !== "undefined" ? activeDocument : document;
-  Array.from(doc.querySelectorAll(".cm-editor")).forEach((el) => {
-    const cm = import_view.EditorView.findFromDOM(el);
-    if (cm)
-      patchDispatchClamp(cm);
-  });
-}
-function attachTableCellContextMenu(span, match) {
-  span.classList.add("no-context-menu");
-  span.addEventListener("contextmenu", (e) => {
-    var _a2, _b2, _c;
-    e.preventDefault();
-    e.stopPropagation();
-    const holder = (_a2 = span.closest(".virtual-link-span")) != null ? _a2 : span;
-    holder.classList.add("virtual-link-hover-lock");
-    holder.dataset.fkContextLock = "1";
-    const lockKey = match.getLockKey();
-    contextLockedLinks.add(lockKey);
-    const unlock = () => {
-      contextLockedLinks.delete(lockKey);
-      delete holder.dataset.fkContextLock;
-      holder.classList.remove("virtual-link-hover-lock");
-    };
-    const menu = new import_obsidian4.Menu();
-    menu.addItem((item) => {
-      item.setTitle("Add to excluded keywords").setIcon("ban").onClick(async () => {
-        if (match.originText) {
-          const newExcludedKeywords = [.../* @__PURE__ */ new Set([...match.settings.excludedKeywords, match.originText])];
-          await match.plugin.updateSettings({ excludedKeywords: newExcludedKeywords });
-          match.plugin.updateManager.update();
-        }
-      });
-    });
-    const hit = (_c = (_b2 = e.target) == null ? void 0 : _b2.closest) == null ? void 0 : _c.call(_b2, ".virtual-link-a");
-    const anchor = hit && span.contains(hit) ? hit : span.querySelector(".virtual-link-a");
-    if (anchor) {
-      const href = anchor.getAttribute("href") || "";
-      const targetFile = match.plugin.app.vault.getAbstractFileByPath(href.split("#")[0]);
-      if (targetFile instanceof import_obsidian4.TFile) {
-        menu.addItem((item) => {
-          item.setTitle("Convert to real link").setIcon("link").onClick(() => {
-            convertVirtualLinkToReal(anchor, targetFile, match.plugin.app, match.settings);
-          });
-        });
-      }
-    }
-    menu.onHide(unlock);
-    menu.showAtMouseEvent(e);
-  }, true);
-}
+
+// linker/virtualLinkMatch.ts
+var import_obsidian4 = require("obsidian");
 var VirtualMatch = class {
   constructor(id, originText, from, to, files, type, isSubWord, settings, plugin, headerId, isBoldContext = false, isItalicContext = false, isHighlightContext = false, isTripleStarContext = false, isStrikethroughContext = false, isCommentContext = false, isInHeaderContext = false, isFuzzy = false) {
     this.id = id;
@@ -2750,17 +2335,24 @@ var VirtualMatch = class {
               return r.top >= sr.top - 4 && r.bottom <= sr.bottom + 4;
             };
             if ((_d = clicked == null ? void 0 : clicked.closest) == null ? void 0 : _d.call(clicked, ".cm-editor")) {
+              let alignmentWorking = false;
+              let targetViewport;
               const editorScroll = (el, headingText) => {
                 var _a4, _b4;
-                if ((_b4 = (_a4 = this.plugin) == null ? void 0 : _a4.centerHeadingElement) == null ? void 0 : _b4.call(_a4, el, alignWindow))
+                alignmentWorking = true;
+                if ((_b4 = (_a4 = this.plugin) == null ? void 0 : _a4.centerHeadingElement) == null ? void 0 : _b4.call(_a4, el, alignWindow, targetViewport))
                   return true;
                 const target = resolveHeadingTarget(this.plugin.app, el, headingText, null);
                 if (!target)
                   return false;
-                this.plugin.centerHeadingLine(target.view, target.line, alignWindow);
+                this.plugin.centerHeadingLine(target.view, target.line, alignWindow, targetViewport);
                 return true;
               };
-              keepScrolledHeadingAligned(scope, "click-editor", alignWindow, editorScroll, headerIdToUse);
+              if (this.settings.alignHeadingAfterJump) {
+                keepScrolledHeadingAligned(scope, "click-editor", alignWindow, editorScroll, headerIdToUse, (o) => {
+                  targetViewport = o;
+                }, "centre", (id) => this.plugin ? headingElementByLine(this.plugin.app, scope, id) : null);
+              }
               const abort = new AbortController();
               const stop = () => abort.abort();
               window.addEventListener("wheel", stop, { capture: true, passive: true, signal: abort.signal });
@@ -2772,7 +2364,11 @@ var VirtualMatch = class {
                 window.setTimeout(() => {
                   if (abort.signal.aborted)
                     return;
+                  if (!this.settings.alignHeadingAfterJump)
+                    return;
                   if (alreadyFramed())
+                    return;
+                  if (alignmentWorking)
                     return;
                   if (findHeadingElement(document.body, headerIdToUse))
                     return;
@@ -2780,7 +2376,9 @@ var VirtualMatch = class {
                 }, delay);
               }
             } else {
-              keepScrolledHeadingAligned(scope, "click", alignWindow, void 0, headerIdToUse);
+              if (this.settings.alignHeadingAfterJump) {
+                keepScrolledHeadingAligned(scope, "click", alignWindow, void 0, headerIdToUse, void 0, "centre", (id) => this.plugin ? headingElementByLine(this.plugin.app, scope, id) : null);
+              }
             }
           }
         }
@@ -2820,8 +2418,7 @@ var VirtualMatch = class {
       span.classList.add("virtual-link-hover-lock");
       const anchor = span.querySelector(".virtual-link-a");
       const hid = anchor == null ? void 0 : anchor.getAttribute("data-heading-id");
-      if (hid)
-        setHoveredHeadingId(hid);
+      setHoveredHeadingId(hid != null ? hid : null);
     });
     span.addEventListener("mouseleave", () => {
       const pending = hoverUnlockTimers.get(span);
@@ -3008,6 +2605,519 @@ var VirtualMatch = class {
     return matches.filter((match) => !matchesToDelete.has(match.id));
   }
 };
+
+// linker/virtualLinkDom.ts
+var ALIGN_MAX_MS = 12e3;
+var ALIGN_DEBOUNCE_MS = 150;
+var ALIGN_SAFETY_MS = 4e3;
+var ALIGN_TOLERANCE_PX = 24;
+function centeredOffset(scroller, height) {
+  return Math.max(12, Math.round((scroller.clientHeight - height) / 2));
+}
+var ALIGN_STABLE_MS = 1e3;
+var DOM_WRITE_BUDGET = 6;
+var DOM_WRITE_TOTAL_BUDGET = 30;
+var selfInflictedUntil = 0;
+function markSelfInflictedLayout(ms = 500) {
+  selfInflictedUntil = Math.max(selfInflictedUntil, Date.now() + ms);
+}
+function isSelfInflictedLayout() {
+  return Date.now() < selfInflictedUntil;
+}
+function createMathBusyWatcher(scroller) {
+  let lastCount = -1;
+  let changedAt = 0;
+  return () => {
+    const now = Date.now();
+    if (now - changedAt > 800) {
+      const n = scroller.querySelectorAll("mjx-container").length;
+      if (lastCount >= 0 && n !== lastCount)
+        changedAt = now;
+      lastCount = n;
+    }
+    return now - changedAt < 1200;
+  };
+}
+function headingRowElement(el) {
+  var _a2;
+  return (_a2 = el.closest(".cm-line, h1, h2, h3, h4, h5, h6")) != null ? _a2 : el;
+}
+function normalizeHeading(s) {
+  return s.replace(/^#+\s*/, "").replace(/[\u200B-\u200D\uFEFF]/g, "").replace(/\s+/g, " ").trim();
+}
+function findScrollableAncestor(node) {
+  let cur = node.parentElement;
+  while (cur) {
+    if (cur.clientHeight > 0 && cur.scrollHeight > cur.clientHeight + 1)
+      return cur;
+    cur = cur.parentElement;
+  }
+  return null;
+}
+function findHeadingElement(scope, headingId) {
+  const want = normalizeHeading(headingId);
+  if (!want)
+    return null;
+  const candidates = Array.from(scope.querySelectorAll(HEADING_SEL));
+  const textOf = (el) => {
+    var _a2, _b2;
+    return normalizeHeading((_b2 = (_a2 = el.getAttribute("data-heading")) != null ? _a2 : el.textContent) != null ? _b2 : "");
+  };
+  for (const el of candidates)
+    if (textOf(el) === want)
+      return el;
+  const wantSlug = want.replace(/\s+/g, "-").toLowerCase();
+  for (const el of candidates)
+    if (textOf(el).replace(/\s+/g, "-").toLowerCase() === wantSlug)
+      return el;
+  for (const el of candidates)
+    if (textOf(el).startsWith(want))
+      return el;
+  for (const el of candidates) {
+    const t2 = textOf(el);
+    if (t2 && want.endsWith(t2) && want.length - t2.length <= 8)
+      return el;
+  }
+  return null;
+}
+function resolveHeadingTarget(app, el, headingText, file) {
+  var _a2;
+  const want = normalizeHeading(headingText);
+  if (!want)
+    return null;
+  const sameHeading = (candidate) => {
+    if (candidate === want)
+      return true;
+    if (candidate.startsWith(want))
+      return true;
+    if (want.startsWith(candidate) && want.length - candidate.length <= 12)
+      return true;
+    return want.endsWith(candidate) && want.length - candidate.length <= 8;
+  };
+  const findLine = (file2) => {
+    var _a3, _b2, _c, _d;
+    const headings = (_b2 = (_a3 = app.metadataCache.getFileCache(file2)) == null ? void 0 : _a3.headings) != null ? _b2 : [];
+    const hit = (_d = (_c = headings.find((h) => normalizeHeading(h.heading) === want)) != null ? _c : headings.find((h) => normalizeHeading(h.heading).startsWith(want))) != null ? _d : headings.find((h) => sameHeading(normalizeHeading(h.heading)));
+    return hit ? hit.position.start.line : -1;
+  };
+  const targetFile = file != null ? file : null;
+  const candidates = [];
+  for (const leaf of app.workspace.getLeavesOfType("markdown")) {
+    const view = leaf.view;
+    if (!(view instanceof import_obsidian5.MarkdownView))
+      continue;
+    const shown = view.file;
+    if (!shown)
+      continue;
+    const line = findLine(shown);
+    if (line < 0)
+      continue;
+    const preferred = el ? view.contentEl.contains(el) : !!targetFile && targetFile.path === shown.path;
+    candidates.push({ view, line, preferred });
+  }
+  const pick = (_a2 = candidates.find((c) => c.preferred)) != null ? _a2 : candidates[0];
+  return pick ? { view: pick.view, line: pick.line } : null;
+}
+function headingElementByLine(app, scope, headingId) {
+  var _a2;
+  const want = normalizeHeading(headingId);
+  if (!want)
+    return null;
+  const target = resolveHeadingTarget(app, scope, headingId, null);
+  if (!target)
+    return null;
+  const root = scope != null ? scope : activeDocument.body;
+  const cmEl = root.querySelector(".cm-editor");
+  const cm = cmEl ? import_view.EditorView.findFromDOM(cmEl) : null;
+  if (!cm)
+    return null;
+  const lineNumber = Math.min(target.line + 1, cm.state.doc.lines);
+  const source = normalizeHeading(cm.state.doc.line(lineNumber).text);
+  if (!source || source !== want && !source.startsWith(want) && !want.endsWith(source))
+    return null;
+  const pos = cm.state.doc.line(lineNumber).from;
+  const at = cm.domAtPos(pos);
+  const node = at.node.nodeType === Node.TEXT_NODE ? at.node.parentElement : at.node;
+  const row = (_a2 = node == null ? void 0 : node.closest(".cm-line")) != null ? _a2 : null;
+  if (!row)
+    return null;
+  try {
+    if (cm.state.doc.lineAt(cm.posAtDOM(row)).number !== lineNumber)
+      return null;
+  } catch (e) {
+    return null;
+  }
+  if (scope && scope.isConnected && !scope.contains(row))
+    return null;
+  return row;
+}
+function findHeadingAtTop(scope, allowGlobalFallback = true) {
+  const search = (root) => {
+    const headings = Array.from(root.querySelectorAll(HEADING_SEL));
+    let best = null;
+    let bestDist = Infinity;
+    for (const h of headings) {
+      const scroller = findScrollableAncestor(h);
+      if (!scroller)
+        continue;
+      const rect = h.getBoundingClientRect();
+      const top = rect.top - scroller.getBoundingClientRect().top;
+      const height = rect.height || 1;
+      if (top < -height - 8 || top > scroller.clientHeight - 24)
+        continue;
+      const dist = Math.abs(top);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = h;
+      }
+    }
+    return best;
+  };
+  if (scope && scope.isConnected) {
+    const inScope = search(scope);
+    if (inScope)
+      return inScope;
+  }
+  return allowGlobalFallback ? search(document.body) : null;
+}
+var HEADING_SEL = 'h1, h2, h3, h4, h5, h6, [data-heading], [class*="HyperMD-header"]';
+var MULTI_REFERENCE_HOVER_GRACE_MS = 400;
+var hoverUnlockTimers = /* @__PURE__ */ new WeakMap();
+var contextLockedLinks = /* @__PURE__ */ new Set();
+function clearContextLock(key) {
+  contextLockedLinks.delete(key);
+}
+var lastHoveredHeadingId = null;
+function setHoveredHeadingId(id) {
+  lastHoveredHeadingId = id;
+}
+function getHoveredHeadingId() {
+  return lastHoveredHeadingId;
+}
+function keepAligned(resolve, label, maxMs, alive, scrollEditor, onBaseline, mode = "hold") {
+  const abort = new AbortController();
+  const { signal } = abort;
+  const stop = () => abort.abort();
+  window.addEventListener("wheel", stop, { capture: true, passive: true, signal });
+  window.addEventListener("mousedown", stop, { capture: true, signal });
+  window.addEventListener("keydown", stop, { capture: true, signal });
+  const startedAt = Date.now();
+  let lastSignature = "";
+  let baseline = Number.NaN;
+  let stableSince = Date.now();
+  let settledInMs = -1;
+  let domWrites = 0;
+  let domWritesTotal = 0;
+  let imgs = [];
+  let imgsAt = 0;
+  let observed = null;
+  let ro = null;
+  let mathBusy = null;
+  let debounce = null;
+  let pending = null;
+  let rearm = null;
+  let safety = null;
+  const stopTimers = () => {
+    for (const t2 of [debounce, pending, rearm, safety]) {
+      if (t2 !== null)
+        window.clearTimeout(t2);
+    }
+    debounce = pending = rearm = safety = null;
+    ro == null ? void 0 : ro.disconnect();
+    ro = null;
+  };
+  signal.addEventListener("abort", stopTimers);
+  function schedule(delay) {
+    if (signal.aborted || pending !== null)
+      return;
+    pending = window.setTimeout(() => {
+      pending = null;
+      check();
+    }, delay);
+  }
+  function armSafety() {
+    if (safety !== null)
+      window.clearTimeout(safety);
+    safety = window.setTimeout(() => {
+      safety = null;
+      schedule(0);
+      armSafety();
+    }, ALIGN_SAFETY_MS);
+  }
+  function observe(scroller) {
+    var _a2;
+    const target = scroller ? (_a2 = scroller.firstElementChild) != null ? _a2 : scroller : null;
+    if (target === observed)
+      return;
+    ro == null ? void 0 : ro.disconnect();
+    ro = null;
+    observed = target;
+    mathBusy = scroller ? createMathBusyWatcher(scroller) : null;
+    if (target) {
+      ro = new ResizeObserver(() => {
+        if (debounce !== null)
+          window.clearTimeout(debounce);
+        debounce = window.setTimeout(() => {
+          debounce = null;
+          schedule(0);
+        }, ALIGN_DEBOUNCE_MS);
+      });
+      ro.observe(target);
+    }
+  }
+  function check() {
+    var _a2, _b2;
+    if (signal.aborted)
+      return;
+    if (!alive()) {
+      stop();
+      return;
+    }
+    if (Date.now() - startedAt > maxMs) {
+      stop();
+      return;
+    }
+    if (isSelfInflictedLayout()) {
+      schedule(ALIGN_DEBOUNCE_MS);
+      return;
+    }
+    let wrote = false;
+    let moved = false;
+    const found = resolve();
+    if (found) {
+      const scroller = findScrollableAncestor(found);
+      observe(scroller);
+      const headingText = (_b2 = (_a2 = found.getAttribute("data-heading")) != null ? _a2 : found.textContent) != null ? _b2 : "";
+      const inEditor = !!found.closest(".cm-editor");
+      const foundRect = headingRowElement(found).getBoundingClientRect();
+      const offset = scroller ? foundRect.top - scroller.getBoundingClientRect().top : 0;
+      if (scroller) {
+        const signature = scroller.scrollHeight + ":" + Math.round(scroller.scrollTop + offset);
+        if (signature !== lastSignature) {
+          if (Date.now() - stableSince >= ALIGN_STABLE_MS)
+            domWrites = 0;
+          lastSignature = signature;
+          stableSince = Date.now();
+          moved = true;
+        }
+        if (Date.now() - imgsAt > 1500) {
+          imgs = Array.from(scroller.querySelectorAll("img"));
+          imgsAt = Date.now();
+        }
+        const stillLoading = imgs.some((img) => !img.complete);
+        const settleReady = !stillLoading && !(mathBusy == null ? void 0 : mathBusy()) && Date.now() - stableSince >= ALIGN_STABLE_MS;
+        if (mode === "hold" && Number.isNaN(baseline) && (settleReady || Date.now() - startedAt > 3e3)) {
+          baseline = offset;
+          onBaseline == null ? void 0 : onBaseline(offset);
+        }
+        const desired = mode === "centre" ? centeredOffset(scroller, foundRect.height) : baseline;
+        const miss = Math.abs(offset - desired);
+        const impatient = Date.now() - startedAt > 2500;
+        if (miss > ALIGN_TOLERANCE_PX && (settleReady || impatient)) {
+          const handled = inEditor && scrollEditor ? scrollEditor(found, headingText) : false;
+          const withinBudget = domWrites < DOM_WRITE_BUDGET && domWritesTotal < DOM_WRITE_TOTAL_BUDGET;
+          if (handled || !inEditor || withinBudget) {
+            if (!handled) {
+              const maxTop = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+              const want = Math.min(Math.max(0, scroller.scrollTop + offset - desired), maxTop);
+              if (Math.abs(want - scroller.scrollTop) >= 2) {
+                scroller.scrollTop = want;
+                if (inEditor) {
+                  domWrites++;
+                  domWritesTotal++;
+                }
+              }
+            }
+            lastSignature = "";
+            if (settledInMs < 0)
+              settledInMs = Date.now() - startedAt;
+            wrote = true;
+          }
+        }
+      }
+    }
+    if (wrote || moved) {
+      if (rearm !== null)
+        window.clearTimeout(rearm);
+      rearm = window.setTimeout(() => {
+        rearm = null;
+        schedule(0);
+      }, ALIGN_STABLE_MS + 200);
+    }
+  }
+  armSafety();
+  schedule(0);
+}
+function keepScrolledHeadingAligned(scope, label = "", maxMs = ALIGN_MAX_MS, scrollEditor, headingId, onBaseline, mode = "hold", resolveByName) {
+  let cached = null;
+  let pinnedId = null;
+  keepAligned(() => {
+    var _a2, _b2, _c, _d, _e;
+    if (cached && cached.isConnected)
+      return cached;
+    const lookupId = headingId != null ? headingId : pinnedId;
+    if (lookupId) {
+      const byName = (_c = (_b2 = (_a2 = scope && scope.isConnected ? findHeadingElement(scope, lookupId) : null) != null ? _a2 : findHeadingElement(document.body, lookupId)) != null ? _b2 : resolveByName == null ? void 0 : resolveByName(lookupId)) != null ? _c : null;
+      if (byName) {
+        cached = byName;
+        return cached;
+      }
+      return null;
+    }
+    const top = findHeadingAtTop(scope, false);
+    if (top && !headingId && !pinnedId) {
+      pinnedId = normalizeHeading((_e = (_d = top.getAttribute("data-heading")) != null ? _d : top.textContent) != null ? _e : "");
+    }
+    cached = top;
+    return cached;
+  }, label, maxMs, () => !scope || scope.isConnected, scrollEditor, onBaseline, mode);
+}
+function buildIndentBackground(view) {
+  const doc = view.state.doc;
+  const marks = [];
+  const done = /* @__PURE__ */ new Set();
+  const isIndented = (text) => text.startsWith("	") || /^ {2,}/.test(text);
+  for (const { from, to } of view.visibleRanges) {
+    const last = doc.lineAt(to).number;
+    for (let n = doc.lineAt(from).number; n <= last; n++) {
+      if (done.has(n))
+        continue;
+      done.add(n);
+      const line = doc.line(n);
+      if (!isIndented(line.text))
+        continue;
+      marks.push(import_view.Decoration.line({ class: "fakelink-indent-line" }).range(line.from));
+      if (n <= 1)
+        continue;
+      const above = doc.line(n - 1);
+      if (above.text.trim().length === 0 || isIndented(above.text))
+        continue;
+      marks.push(import_view.Decoration.line({ class: "fakelink-indent-above" }).range(above.from));
+    }
+  }
+  return import_view.Decoration.set(marks, true);
+}
+function isInTableCellEditor(el) {
+  return Boolean((el == null ? void 0 : el.closest(".cm-table-widget")) && (el == null ? void 0 : el.closest(".table-cell-wrapper")));
+}
+function isLinkingDisabledInNote(file, app, settings) {
+  var _a2, _b2;
+  const mode = (_a2 = settings.linkIgnoreMode) != null ? _a2 : "off";
+  if (mode === "off" || !file)
+    return false;
+  const cache = app.metadataCache.getFileCache(file);
+  if (!cache)
+    return false;
+  const fm = cache.frontmatter;
+  if (mode === "property") {
+    const prop = settings.linkIgnoreProperty;
+    if (!prop || !fm)
+      return false;
+    const raw = fm[prop];
+    return raw === true || typeof raw === "string" && raw.trim().toLowerCase() === "true";
+  }
+  const tag = settings.linkIgnoreTag;
+  if (!tag)
+    return false;
+  const want = tag.replace(/^#/, "").toLowerCase();
+  const candidates = [];
+  for (const t2 of (_b2 = cache.tags) != null ? _b2 : [])
+    candidates.push(t2.tag);
+  const fmTags = fm == null ? void 0 : fm.tags;
+  if (Array.isArray(fmTags)) {
+    for (const t2 of fmTags)
+      if (typeof t2 === "string")
+        candidates.push(t2);
+  } else if (typeof fmTags === "string") {
+    candidates.push(...fmTags.split(/[,\s]+/));
+  }
+  for (const raw of candidates) {
+    const name = raw.replace(/^#/, "").toLowerCase();
+    if (name === want || name.startsWith(want + "/"))
+      return true;
+  }
+  return false;
+}
+function patchDispatchClamp(cm) {
+  const cmAny = cm;
+  if (cmAny.__fkDispatchPatched)
+    return;
+  cmAny.__fkDispatchPatched = true;
+  const origDispatch = cm.dispatch.bind(cm);
+  cmAny.dispatch = (...args) => {
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
+    try {
+      return origDispatch(...args);
+    } catch (e) {
+      const msg = String((_a2 = e == null ? void 0 : e.message) != null ? _a2 : "");
+      if (!msg.includes("outside of document"))
+        throw e;
+      const docLen = cm.state.doc.length;
+      const spec = (_b2 = args[0]) != null ? _b2 : {};
+      const sel = spec.selection;
+      if (!sel)
+        throw e;
+      const clamp = (v) => Math.min(Math.max(Number(v) || 0, 0), docLen);
+      const rawAnchor = (_g = (_f = (_e = (_d = (_c = sel.ranges) == null ? void 0 : _c[0]) == null ? void 0 : _d.from) != null ? _e : sel.anchor) != null ? _f : sel.from) != null ? _g : 0;
+      const rawHead = (_n = (_m = (_l = (_k = (_j = (_i = (_h = sel.ranges) == null ? void 0 : _h[0]) == null ? void 0 : _i.to) != null ? _j : sel.head) != null ? _k : sel.to) != null ? _l : sel.anchor) != null ? _m : sel.from) != null ? _n : 0;
+      return origDispatch({
+        ...spec,
+        selection: { anchor: clamp(rawAnchor), head: clamp(rawHead) }
+      });
+    }
+  };
+}
+function patchAllEditorsDispatchClamp() {
+  const doc = typeof activeDocument !== "undefined" ? activeDocument : document;
+  Array.from(doc.querySelectorAll(".cm-editor")).forEach((el) => {
+    const cm = import_view.EditorView.findFromDOM(el);
+    if (cm)
+      patchDispatchClamp(cm);
+  });
+}
+function attachTableCellContextMenu(span, match) {
+  span.classList.add("no-context-menu");
+  span.addEventListener("contextmenu", (e) => {
+    var _a2, _b2, _c;
+    e.preventDefault();
+    e.stopPropagation();
+    const holder = (_a2 = span.closest(".virtual-link-span")) != null ? _a2 : span;
+    holder.classList.add("virtual-link-hover-lock");
+    holder.dataset.fkContextLock = "1";
+    const lockKey = match.getLockKey();
+    contextLockedLinks.add(lockKey);
+    const unlock = () => {
+      contextLockedLinks.delete(lockKey);
+      delete holder.dataset.fkContextLock;
+      holder.classList.remove("virtual-link-hover-lock");
+    };
+    const menu = new import_obsidian5.Menu();
+    menu.addItem((item) => {
+      item.setTitle("Add to excluded keywords").setIcon("ban").onClick(async () => {
+        if (match.originText) {
+          const newExcludedKeywords = [.../* @__PURE__ */ new Set([...match.settings.excludedKeywords, match.originText])];
+          await match.plugin.updateSettings({ excludedKeywords: newExcludedKeywords });
+          match.plugin.updateManager.update();
+        }
+      });
+    });
+    const hit = (_c = (_b2 = e.target) == null ? void 0 : _b2.closest) == null ? void 0 : _c.call(_b2, ".virtual-link-a");
+    const anchor = hit && span.contains(hit) ? hit : span.querySelector(".virtual-link-a");
+    if (anchor) {
+      const href = anchor.getAttribute("href") || "";
+      const targetFile = match.plugin.app.vault.getAbstractFileByPath(href.split("#")[0]);
+      if (targetFile instanceof import_obsidian5.TFile) {
+        menu.addItem((item) => {
+          item.setTitle("Convert to real link").setIcon("link").onClick(() => {
+            convertVirtualLinkToReal(anchor, targetFile, match.plugin.app, match.settings);
+          });
+        });
+      }
+    }
+    menu.onHide(unlock);
+    menu.showAtMouseEvent(e);
+  }, true);
+}
 
 // node_modules/@flatten-js/interval-tree/dist/main.mjs
 var Interval = class Interval2 {
@@ -3548,7 +3658,7 @@ var IntervalTree = class {
 };
 
 // linker/readModeLinker.ts
-var _GlossaryLinker = class extends import_obsidian5.MarkdownRenderChild {
+var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
   constructor(app, settings, context, containerEl, plugin) {
     super(containerEl);
     this.plugin = plugin;
@@ -3596,12 +3706,12 @@ var _GlossaryLinker = class extends import_obsidian5.MarkdownRenderChild {
     var _a2, _b2;
     const destName = this.ctx.sourcePath.replace(/(.*).md/, "$1");
     let currentDestName = destName;
-    let currentPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(glossaryName), currentDestName);
+    let currentPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(glossaryName), currentDestName);
     if (currentPath == null)
       return null;
     while (currentDestName.includes("/")) {
       currentDestName = currentDestName.replace(/\/[^/]*?$/, "");
-      const newPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(glossaryName), currentDestName);
+      const newPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(glossaryName), currentDestName);
       if ((((_a2 = newPath == null ? void 0 : newPath.path) == null ? void 0 : _a2.length) || 0) > ((_b2 = currentPath == null ? void 0 : currentPath.path) == null ? void 0 : _b2.length)) {
         currentPath = newPath;
         break;
@@ -3633,12 +3743,12 @@ var _GlossaryLinker = class extends import_obsidian5.MarkdownRenderChild {
         continue;
       let notePart = targetPart.slice(0, hashIdx);
       const anchorPart = targetPart.slice(hashIdx + 1);
-      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(notePart), currentFile.path);
+      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(notePart), currentFile.path);
       let prefixCut = 0;
       if (!dest && notePart.length > 1) {
         for (let cut = 1; cut < notePart.length; cut++) {
           const candidate = notePart.slice(cut);
-          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(candidate), currentFile.path);
+          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(candidate), currentFile.path);
           if (d) {
             dest = d;
             notePart = candidate;
@@ -3747,7 +3857,7 @@ var _GlossaryLinker = class extends import_obsidian5.MarkdownRenderChild {
       }
     }
     const ignoreFile = this.app.vault.getAbstractFileByPath(this.ctx.sourcePath);
-    if (ignoreFile instanceof import_obsidian5.TFile && isLinkingDisabledInNote(ignoreFile, this.app, this.settings)) {
+    if (ignoreFile instanceof import_obsidian6.TFile && isLinkingDisabledInNote(ignoreFile, this.app, this.settings)) {
       this.clearExistingLinks();
       return;
     }
@@ -3770,7 +3880,7 @@ var _GlossaryLinker = class extends import_obsidian5.MarkdownRenderChild {
       const href = a.getAttribute("href") || "";
       if (!href)
         return;
-      const target = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian5.getLinkpath)(href), this.ctx.sourcePath);
+      const target = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(href), this.ctx.sourcePath);
       if (target)
         explicitlyLinkedFiles.add(target);
     });
@@ -3801,7 +3911,7 @@ var _GlossaryLinker = class extends import_obsidian5.MarkdownRenderChild {
               const isWordBoundary = PrefixTree.checkWordBoundary(char);
               if (this.settings.matchAnyPartsOfWords || this.settings.matchBeginningOfWords || isWordBoundary) {
                 const sourceFile = this.app.vault.getAbstractFileByPath(this.ctx.sourcePath);
-                const currentFile = this.settings.excludeLinksToOwnNote && sourceFile instanceof import_obsidian5.TFile ? sourceFile : null;
+                const currentFile = this.settings.excludeLinksToOwnNote && sourceFile instanceof import_obsidian6.TFile ? sourceFile : null;
                 const currentNodes = this.linkerCache.cache.getCurrentMatchNodes(i, currentFile);
                 if (currentNodes.length > 0) {
                   currentNodes.forEach((node) => {
@@ -3993,7 +4103,7 @@ var _GlossaryLinker = class extends import_obsidian5.MarkdownRenderChild {
             let internalMatches = [];
             if (this.settings.enableInternalLinkSyntax) {
               const sourceFile = this.app.vault.getAbstractFileByPath(this.ctx.sourcePath);
-              if (sourceFile instanceof import_obsidian5.TFile) {
+              if (sourceFile instanceof import_obsidian6.TFile) {
                 internalMatches = this.findInternalLinkSyntaxMatches(text, sourceFile, id);
                 id += internalMatches.length;
               }
@@ -4077,7 +4187,7 @@ GlossaryLinker.sharedSets = /* @__PURE__ */ new Map();
 var import_language = require("@codemirror/language");
 var import_state = require("@codemirror/state");
 var import_view2 = require("@codemirror/view");
-var import_obsidian6 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 function isDescendant(parent, child, maxDepth = 10) {
   let node = child.parentNode;
   let depth = 0;
@@ -4185,7 +4295,7 @@ var AutoLinkerPlugin = class {
   update(update, force = false) {
     var _a2, _b2, _c, _d;
     if (this.cachedActiveView === void 0) {
-      const v = (_a2 = this.app.workspace.getActiveViewOfType(import_obsidian6.MarkdownView)) != null ? _a2 : null;
+      const v = (_a2 = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView)) != null ? _a2 : null;
       this.cachedActiveView = v;
       if (v && !isInHoverPopover(v.containerEl)) {
         this.lastRealActiveView = v;
@@ -4339,12 +4449,12 @@ var AutoLinkerPlugin = class {
         continue;
       let notePart = targetPart.slice(0, hashIdx);
       const anchorPart = targetPart.slice(hashIdx + 1);
-      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(notePart), currentFile.path);
+      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian7.getLinkpath)(notePart), currentFile.path);
       let prefixCut = 0;
       if (!dest && notePart.length > 1) {
         for (let cut = 1; cut < notePart.length; cut++) {
           const candidate = notePart.slice(cut);
-          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(candidate), currentFile.path);
+          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian7.getLinkpath)(candidate), currentFile.path);
           if (d) {
             dest = d;
             notePart = candidate;
@@ -4382,16 +4492,22 @@ var AutoLinkerPlugin = class {
     return matches;
   }
   buildDecorations(view, viewIsActive = true) {
-    var _a2, _b2, _c, _d;
+    var _a2, _b2, _c, _d, _e, _f;
     const builder = new import_state.RangeSetBuilder();
     if (!this.settings.linkerActivated) {
       return builder.finish();
     }
+    if (this.settings.tableLinkSuppression && isInTableCellEditor(view.dom)) {
+      return builder.finish();
+    }
     const dom = view.dom;
-    const mappedFile = this.viewUpdateDomToFileMap.get(dom);
+    let mappedFile = this.viewUpdateDomToFileMap.get(dom);
+    if (mappedFile === void 0 && !isInHoverPopover(dom)) {
+      mappedFile = (_b2 = (_a2 = this.lastRealActiveView) == null ? void 0 : _a2.file) != null ? _b2 : null;
+    }
     const excludedFolders = this.settings.excludedDirectoriesForLinking;
     if (excludedFolders.length > 0) {
-      const path = (_d = (_a2 = mappedFile == null ? void 0 : mappedFile.parent) == null ? void 0 : _a2.path) != null ? _d : (_c = (_b2 = this.app.workspace.getActiveFile()) == null ? void 0 : _b2.parent) == null ? void 0 : _c.path;
+      const path = (_f = (_c = mappedFile == null ? void 0 : mappedFile.parent) == null ? void 0 : _c.path) != null ? _f : (_e = (_d = this.app.workspace.getActiveFile()) == null ? void 0 : _d.parent) == null ? void 0 : _e.path;
       if (excludedFolders.includes(path != null ? path : ""))
         return builder.finish();
     }
@@ -4786,7 +4902,7 @@ var liveLinkerPlugin = (app, settings, updateManager, plugin) => {
 };
 
 // src/batchConvert.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian8 = require("obsidian");
 function dirname2(filePath) {
   const normalized = filePath.replace(/\\/g, "/");
   const lastSlash = normalized.lastIndexOf("/");
@@ -4998,7 +5114,7 @@ function applyReplacementsToString(text, items) {
   }
   return result;
 }
-var BatchConvertModal = class extends import_obsidian7.Modal {
+var BatchConvertModal = class extends import_obsidian8.Modal {
   constructor(app, settings, plugin, range) {
     super(app);
     this.items = [];
@@ -5013,14 +5129,14 @@ var BatchConvertModal = class extends import_obsidian7.Modal {
   onOpen() {
     var _a2, _b2, _c;
     const { contentEl } = this;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
     const editor = (_a2 = view == null ? void 0 : view.editor) != null ? _a2 : null;
     if (!editor) {
-      contentEl.createEl("p", { text: "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A Markdown \u7B14\u8BB0\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002" });
+      contentEl.createEl("p", { text: t("Open a Markdown note first, then run this command.") });
       return;
     }
     if (!this.settings.linkerActivated) {
-      contentEl.createEl("p", { text: "\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u540E\u518D\u8FD0\u884C\u6279\u91CF\u8F6C\u6362\u3002" });
+      contentEl.createEl("p", { text: t("Virtual links are currently disabled. Enable them in the settings before running the batch conversion.") });
       return;
     }
     this.text = editor.getValue();
@@ -5028,7 +5144,7 @@ var BatchConvertModal = class extends import_obsidian7.Modal {
     if (this.range) {
       const [from, to] = this.range;
       if (from >= to) {
-        contentEl.createEl("p", { text: "\u8BF7\u5148\u9009\u62E9\u4E00\u6BB5\u6587\u672C\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002" });
+        contentEl.createEl("p", { text: t("Select some text first, then run this command.") });
         return;
       }
     }
@@ -5047,19 +5163,19 @@ var BatchConvertModal = class extends import_obsidian7.Modal {
     const [rangeFrom, rangeTo] = (_a2 = this.range) != null ? _a2 : [void 0, void 0];
     this.items = scanVirtualLinks(this.app, this.settings, this.plugin, this.text, this.sourcePath, rangeFrom, rangeTo);
     this.enabled = this.items.map(() => true);
-    const scopeLabel = this.range ? "\u9009\u4E2D\u5185\u5BB9\u4E2D" : "\u5F53\u524D\u7B14\u8BB0\u4E2D";
-    contentEl.createEl("h2", { text: "\u6279\u91CF\u56FA\u5316\u865A\u62DF\u94FE\u63A5\u4E3A\u771F\u5B9E\u94FE\u63A5" });
+    const scopeLabel = this.range ? t("in the selection") : t("in this note");
+    contentEl.createEl("h2", { text: t("Convert virtual links to real links") });
     contentEl.createEl("p", {
-      text: `${scopeLabel}\u5171\u627E\u5230 ${this.items.length} \u4E2A\u865A\u62DF\u94FE\u63A5\u3002\u52FE\u9009\u9700\u8981\u8F6C\u6362\u7684\u9879\uFF0C\u70B9\u51FB"\u8F6C\u6362"\u3002`
+      text: t('Found {n} virtual links {scope}. Check the ones to convert, then click "Convert".').replace("{n}", String(this.items.length)).replace("{scope}", scopeLabel)
     });
     if (this.items.length === 0) {
-      contentEl.createEl("p", { text: "\u672A\u68C0\u6D4B\u5230\u53EF\u8F6C\u6362\u7684\u865A\u62DF\u94FE\u63A5\u3002" });
+      contentEl.createEl("p", { text: t("No convertible virtual links found.") });
       return;
     }
     const listEl = contentEl.createEl("div", { cls: "batch-convert-list" });
     this.items.forEach((item, idx) => {
       const row = listEl.createEl("div", { cls: "batch-convert-row" });
-      const toggle = new import_obsidian7.Setting(row).setName(item.displayText).setDesc(item.multipleTargets ? "\u591A\u4E2A\u6307\u5411 \u2014 \u5C06\u8F6C\u6362\u4E3A\u7B2C\u4E00\u4E2A\u76EE\u6807" : item.replacement);
+      const toggle = new import_obsidian8.Setting(row).setName(item.displayText).setDesc(item.multipleTargets ? t("Multiple targets - will convert to the first target") : item.replacement);
       const defaultOn = !(item.multipleTargets && this.settings.skipMultipleTargets);
       toggle.addToggle((tc) => tc.setValue(defaultOn).onChange((v) => {
         this.enabled[idx] = v;
@@ -5067,14 +5183,14 @@ var BatchConvertModal = class extends import_obsidian7.Modal {
       this.enabled[idx] = defaultOn;
     });
     const buttonBar = contentEl.createEl("div", { cls: "batch-convert-buttons" });
-    const convertBtn = buttonBar.createEl("button", { text: "\u8F6C\u6362", cls: "mod-cta" });
+    const convertBtn = buttonBar.createEl("button", { text: t("Convert"), cls: "mod-cta" });
     convertBtn.onclick = () => this.convert();
-    const cancelBtn = buttonBar.createEl("button", { text: "\u53D6\u6D88" });
+    const cancelBtn = buttonBar.createEl("button", { text: t("Cancel") });
     cancelBtn.onclick = () => this.close();
   }
   convert() {
     var _a2;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian7.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
     const editor = (_a2 = view == null ? void 0 : view.editor) != null ? _a2 : null;
     if (!editor)
       return;
@@ -5089,11 +5205,11 @@ var BatchConvertModal = class extends import_obsidian7.Modal {
       editor.replaceRange(item.replacement, editor.offsetToPos(item.from), editor.offsetToPos(item.to));
       applied++;
     }
-    new import_obsidian7.Notice(`\u5DF2\u56FA\u5316 ${applied} \u4E2A\u865A\u62DF\u94FE\u63A5\u4E3A\u771F\u5B9E\u94FE\u63A5\u3002`);
+    new import_obsidian8.Notice(t("Converted {n} virtual links to real links.").replace("{n}", String(applied)));
     this.close();
   }
 };
-var BatchConvertFilesModal = class extends import_obsidian7.Modal {
+var BatchConvertFilesModal = class extends import_obsidian8.Modal {
   constructor(app, settings, plugin) {
     super(app);
     this.selectedFiles = [];
@@ -5103,12 +5219,12 @@ var BatchConvertFilesModal = class extends import_obsidian7.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    contentEl.createEl("h2", { text: "\u6279\u91CF\u56FA\u5316\u591A\u4E2A\u7B14\u8BB0\u4E2D\u7684\u865A\u62DF\u94FE\u63A5" });
+    contentEl.createEl("h2", { text: t("Convert virtual links in multiple notes") });
     contentEl.createEl("p", {
-      text: "\u4F7F\u7528\u6B65\u9AA4\uFF1A1) \u70B9\u51FB\u300C\u9009\u62E9\u7B14\u8BB0\u2026\u300D\uFF1B2) \u5728\u5F39\u51FA\u7684\u641C\u7D22\u6846\u4E2D\u9010\u4E2A\u70B9\u51FB\u8981\u5904\u7406\u7684\u7B14\u8BB0\uFF08\u53EF\u591A\u6B21\u70B9\u9009\uFF0C\u5DF2\u9009\u7B14\u8BB0\u4F1A\u5217\u5728\u4E0B\u65B9\uFF09\uFF1B3) \u9009\u597D\u540E\u70B9\u51FB\u300C\u626B\u63CF\u5E76\u8F6C\u6362\u300D\uFF0C\u63D2\u4EF6\u4F1A\u4E00\u6B21\u6027\u628A\u6BCF\u4E2A\u7B14\u8BB0\u91CC\u7684\u865A\u62DF\u94FE\u63A5\u56FA\u5316\u4E3A\u771F\u5B9E\u94FE\u63A5\uFF08\u8868\u683C\u5185\u7684\u865A\u62DF\u94FE\u63A5\u4E0D\u4F1A\u88AB\u5904\u7406\uFF09\u3002"
+      text: t('Steps: 1) click "Choose notes..."; 2) click each note to process in the search box (you can pick several - the chosen ones are listed below); 3) click "Scan and convert" to convert every virtual link in each note (links inside tables are not processed).')
     });
     const pickerBar = contentEl.createEl("div", { cls: "batch-convert-buttons" });
-    const pickBtn = pickerBar.createEl("button", { text: "\u9009\u62E9\u7B14\u8BB0\u2026", cls: "mod-cta" });
+    const pickBtn = pickerBar.createEl("button", { text: t("Choose notes..."), cls: "mod-cta" });
     pickBtn.onclick = () => {
       const picker = new FileMultiSuggestModal(this.app);
       picker.onChoose((files) => {
@@ -5117,7 +5233,7 @@ var BatchConvertFilesModal = class extends import_obsidian7.Modal {
       });
       picker.open();
     };
-    const scanBtn = pickerBar.createEl("button", { text: "\u626B\u63CF\u5E76\u8F6C\u6362" });
+    const scanBtn = pickerBar.createEl("button", { text: t("Scan and convert") });
     scanBtn.onclick = () => this.scanAndConvert();
   }
   renderSelected(contentEl) {
@@ -5125,7 +5241,7 @@ var BatchConvertFilesModal = class extends import_obsidian7.Modal {
     if (existing)
       existing.remove();
     const box = contentEl.createEl("div", { cls: "batch-selected-files" });
-    box.createEl("p", { text: `\u5DF2\u9009\u62E9 ${this.selectedFiles.length} \u4E2A\u7B14\u8BB0\uFF1A` });
+    box.createEl("p", { text: t("Selected {n} notes:").replace("{n}", String(this.selectedFiles.length)) });
     const list = box.createEl("ul");
     for (const f of this.selectedFiles) {
       list.createEl("li", { text: f.path });
@@ -5133,11 +5249,11 @@ var BatchConvertFilesModal = class extends import_obsidian7.Modal {
   }
   async scanAndConvert() {
     if (this.selectedFiles.length === 0) {
-      new import_obsidian7.Notice("\u8BF7\u5148\u9009\u62E9\u81F3\u5C11\u4E00\u4E2A\u7B14\u8BB0\u3002");
+      new import_obsidian8.Notice(t("Select at least one note first."));
       return;
     }
     if (!this.settings.linkerActivated) {
-      new import_obsidian7.Notice("\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u3002");
+      new import_obsidian8.Notice(t("Virtual links are currently disabled. Enable them in the settings first."));
       return;
     }
     let totalApplied = 0;
@@ -5152,7 +5268,7 @@ var BatchConvertFilesModal = class extends import_obsidian7.Modal {
         const newContent = applyReplacementsToString(content, activeItems);
         const openView = this.app.workspace.getLeavesOfType("markdown").map((l) => l.view).find((v) => {
           var _a2;
-          return v instanceof import_obsidian7.MarkdownView && ((_a2 = v.file) == null ? void 0 : _a2.path) === file.path;
+          return v instanceof import_obsidian8.MarkdownView && ((_a2 = v.file) == null ? void 0 : _a2.path) === file.path;
         });
         if (openView && openView.editor) {
           const editor = openView.editor;
@@ -5172,10 +5288,10 @@ var BatchConvertFilesModal = class extends import_obsidian7.Modal {
       }
     }
     if (errors.length > 0) {
-      new import_obsidian7.Notice(`\u5B8C\u6210\u3002${totalApplied} \u4E2A\u94FE\u63A5\u5DF2\u56FA\u5316\uFF08${errors.length} \u4E2A\u6587\u4EF6\u51FA\u9519\uFF0C\u8BE6\u89C1\u63A7\u5236\u53F0\uFF09\u3002`);
+      new import_obsidian8.Notice(t("Done. {n} links converted ({errors} files failed, see the console).").replace("{n}", String(totalApplied)).replace("{errors}", String(errors.length)));
       console.error("Batch convert files errors:", errors);
     } else {
-      new import_obsidian7.Notice(`\u5DF2\u5B8C\u6210\u3002\u5728 ${this.selectedFiles.length} \u4E2A\u7B14\u8BB0\u4E2D\u56FA\u5316\u4E86 ${totalApplied} \u4E2A\u865A\u62DF\u94FE\u63A5\u3002`);
+      new import_obsidian8.Notice(t("Done. Converted {n} virtual links across {files} notes.").replace("{n}", String(totalApplied)).replace("{files}", String(this.selectedFiles.length)));
     }
     this.close();
   }
@@ -5184,7 +5300,7 @@ var BatchConvertFilesModal = class extends import_obsidian7.Modal {
     this.contentEl.empty();
   }
 };
-var FileMultiSuggestModal = class extends import_obsidian7.FuzzySuggestModal {
+var FileMultiSuggestModal = class extends import_obsidian8.FuzzySuggestModal {
   constructor() {
     super(...arguments);
     this.chosen = [];
@@ -5203,13 +5319,13 @@ var FileMultiSuggestModal = class extends import_obsidian7.FuzzySuggestModal {
   onChooseItem(file) {
     if (!this.chosen.includes(file))
       this.chosen.push(file);
-    new import_obsidian7.Notice(`\u5DF2\u6DFB\u52A0\uFF1A${file.path}\uFF08\u5171 ${this.chosen.length} \u4E2A\uFF09`);
+    new import_obsidian8.Notice(t("Added: {path} ({n} total)").replace("{path}", file.path).replace("{n}", String(this.chosen.length)));
     this.cb([...this.chosen]);
   }
 };
 
 // src/settingsTab.ts
-var import_obsidian8 = require("obsidian");
+var import_obsidian9 = require("obsidian");
 function toggleDef(name, key, opts = {}) {
   return { id: key, name, desc: opts.desc, visible: opts.visible, aliases: opts.aliases, control: { type: "toggle", key, disabled: opts.disabled } };
 }
@@ -5234,7 +5350,7 @@ function colorDef(name, key, opts = {}) {
 function groupDef(heading, items, visible) {
   return { type: "group", heading, items, visible };
 }
-var LinkerSettingTab = class extends import_obsidian8.PluginSettingTab {
+var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -5500,10 +5616,14 @@ var LinkerSettingTab = class extends import_obsidian8.PluginSettingTab {
         textAreaDef(t("Heading symbol whitelist"), "headingSymbolWhitelist", {
           desc: t("Symbols in headings that are stripped from the virtual-link keyword (comma separated). Use this to decorate headings with markers (e.g. \u{1F525}) without those markers affecting matching.")
         }),
+        toggleDef(t("Align heading (jump and preview)"), "alignHeadingAfterJump", {
+          desc: t("Centres the target heading after a jump, and inside hover previews. Jump: Obsidian already centres the heading when it navigates - clicking a real link shows this - so this only puts it back when content that finishes rendering later (a PDF embed, a page of display math) pushes it away. Preview: a popover opens at the position of the LINK, so the heading is often nowhere near the middle and is centred outright. Off by default: a real link jump is already correct, and most notes render without drifting.")
+        }),
         numberDef(t("Heading align watch window (seconds)"), "headingAlignWatchSeconds", {
-          desc: t("How long (in SECONDS) a jumped-to heading keeps being re-aligned. The heading is put back in place the moment the content above it changes height (a PDF or an image finishing, MathJax typesetting) - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60)."),
+          desc: t("How long (in SECONDS) the heading keeps being watched after a jump, and while a hover preview stays open. Whenever the content above it changes height (a PDF or an image finishing, MathJax typesetting) the heading is put back - the watch is event-driven, so nothing polls while the page is quiet. After this many seconds the plugin stops following, so a change minutes later never moves your view. The number you type is the number of seconds (12 = 12 seconds); there is no conversion. Raise it for very slow notes (e.g. 60)."),
           min: 3,
-          max: 120
+          max: 120,
+          visible: () => s.alignHeadingAfterJump
         })
       ]),
       groupDef(t("Fuzzy matching"), [
@@ -5641,6 +5761,9 @@ var LinkerSettingTab = class extends import_obsidian8.PluginSettingTab {
         textDef(t("Frontmatter exclude list property"), "frontmatterExcludeListProperty", {
           desc: t("The frontmatter property name for per-note excluded keyword lists. Default: fakelink-exclude-keywords."),
           visible: () => s.enableFrontmatterExcludeList
+        }),
+        toggleDef(t("No links in the cell being edited"), "tableLinkSuppression", {
+          desc: t("While a table cell is open for editing, no virtual links are rendered inside that cell, so the text stays plain and can be typed into normally. The other cells keep their links. Everything comes back when you leave the cell. Live Preview tables only.")
         })
       ]),
       groupDef(t("Special syntax"), [
@@ -5761,7 +5884,7 @@ var LinkerSettingTab = class extends import_obsidian8.PluginSettingTab {
           desc: t("Color for note and alias virtual links (e.g., #c0392b).")
         }),
         colorDef(t("Fuzzy link base color"), "fuzzyBaseColor", {
-          desc: t("Base color for fuzzy (\u8BCD\u4E49\u6A21\u7CCA) matches. It is mixed with the header / note color, so a fuzzy link looks like a tinted version of its exact-match counterpart.")
+          desc: t("Base color for fuzzy matches. It is mixed with the header / note color, so a fuzzy link looks like a tinted version of its exact-match counterpart.")
         }),
         sliderDef(t("Fuzzy color mix"), "fuzzyColorMixRatio", 0, 100, 5, {
           desc: t("How much of the fuzzy base color is mixed in. 0% = fuzzy links use the normal colors (feature off); 100% = fuzzy links use the base color only; 50% = an even blend, keeping the header/note hue while tinting it.")
@@ -5783,8 +5906,891 @@ var LinkerSettingTab = class extends import_obsidian8.PluginSettingTab {
   }
 };
 
+// src/whatsNew.ts
+var import_obsidian10 = require("obsidian");
+var WHATS_NEW_VERSION = "1.24.2";
+var WHATS_NEW = [
+  'Fix: exact matches against numbered headings (e.g. "1. Title") no longer show the fuzzy-match colour. Also: the batch-convert dialogs now follow the app language instead of hardcoded Chinese.'
+];
+var WhatsNewModal = class extends import_obsidian10.Modal {
+  constructor(app, version) {
+    super(app);
+    this.version = version;
+  }
+  onOpen() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.addClass("fakelink-whats-new");
+    contentEl.createEl("h2", { text: `${t("What is new")} \xB7 ${this.version}` });
+    const list = contentEl.createEl("ul");
+    list.addClass("fakelink-whats-new-list");
+    for (const item of WHATS_NEW) {
+      list.createEl("li", { text: t(item) });
+    }
+    new import_obsidian10.Setting(contentEl).addButton((b) => b.setButtonText(t("See the full release notes")).setCta().onClick(() => {
+      window.open(`https://github.com/godfatherlg/fakelink/releases/tag/${this.version}`, "_blank");
+    }));
+  }
+  onClose() {
+    this.contentEl.empty();
+  }
+};
+
+// src/lineJump.ts
+var import_obsidian11 = require("obsidian");
+var import_view3 = require("@codemirror/view");
+async function getLineAnchor(app, file, lineZeroBased) {
+  var _a2;
+  try {
+    const content = await app.vault.cachedRead(file);
+    const lines = content.split("\n");
+    const text = ((_a2 = lines[lineZeroBased]) != null ? _a2 : "").trim();
+    const maxLen = 40;
+    return text.length > maxLen ? text.slice(0, maxLen) : text;
+  } catch (e) {
+    return "";
+  }
+}
+async function copyLineUri(app, settings, file, lineZeroBased) {
+  var _a2, _b2, _c;
+  const line = lineZeroBased + 1;
+  const vaultId = (_c = (_b2 = (_a2 = app.vault).getId) == null ? void 0 : _b2.call(_a2)) != null ? _c : app.vault.getName();
+  let uri = `obsidian://adv-uri?vault=${encodeURIComponent(vaultId)}&filepath=${encodeURIComponent(file.path)}&line=${line}&column=1&openmode=true&view-mode=source`;
+  if (settings.lineLinkSelfHeal) {
+    const anchor = await getLineAnchor(app, file, lineZeroBased);
+    if (anchor) {
+      uri += `&anchor=${encodeURIComponent(anchor)}`;
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(`[${line}](${uri})`);
+    new import_obsidian11.Notice(t("Line link copied"));
+  } catch (e) {
+    new import_obsidian11.Notice(t("Failed to copy line link"));
+  }
+}
+async function resolveLineByAnchor(app, settings, file, line, anchor) {
+  if (!settings.lineLinkSelfHeal || !anchor)
+    return line;
+  try {
+    const content = await app.vault.cachedRead(file);
+    const lines = content.split("\n");
+    const idx = line - 1;
+    if (idx >= 0 && idx < lines.length && lines[idx].trim().startsWith(anchor)) {
+      return line;
+    }
+    const exact = lines.findIndex((l) => l.trim().startsWith(anchor));
+    if (exact >= 0)
+      return exact + 1;
+    const loose = lines.findIndex((l) => l.trim().includes(anchor));
+    if (loose >= 0)
+      return loose + 1;
+    return line;
+  } catch (e) {
+    return line;
+  }
+}
+async function waitForEditor(view, targetLine, timeoutMs) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    if (view.editor && view.editor.lineCount() >= targetLine) {
+      return true;
+    }
+    await new Promise((resolve) => window.setTimeout(resolve, 200));
+  }
+  return view.editor != null;
+}
+async function openFileOnly(app, settings, file) {
+  const existing = app.workspace.getLeavesOfType("markdown").find((l) => {
+    var _a2;
+    return ((_a2 = l.getViewState().state) == null ? void 0 : _a2.file) === file.path;
+  });
+  let leaf;
+  if (existing) {
+    app.workspace.setActiveLeaf(existing, { focus: true });
+    leaf = existing;
+  } else {
+    leaf = settings.jumpOpenInNewTab ? app.workspace.getLeaf(true) : app.workspace.getLeaf(false);
+    await leaf.openFile(file);
+    app.workspace.setActiveLeaf(leaf, { focus: true });
+  }
+  return leaf;
+}
+function alignTallLine(view, line, pass = 0) {
+  const cmEl = view.contentEl.querySelector(".cm-editor");
+  const cm = cmEl ? import_view3.EditorView.findFromDOM(cmEl) : null;
+  if (!cm)
+    return;
+  const scroller = cm.scrollDOM;
+  try {
+    const block = cm.lineBlockAt(cm.state.doc.line(line + 1).from);
+    const tooTall = block.height > scroller.clientHeight * 0.8;
+    const headHidden = block.top < scroller.scrollTop;
+    if (!tooTall && !headHidden)
+      return;
+    scroller.scrollTop = block.top - 16;
+  } catch (e) {
+    return;
+  }
+  if (pass < 1)
+    window.setTimeout(() => alignTallLine(view, line, pass + 1), 250);
+}
+async function jumpToLine(app, settings, filepath, line, anchor) {
+  const file = app.vault.getAbstractFileByPath(filepath);
+  if (!(file instanceof import_obsidian11.TFile))
+    return;
+  const wasAlreadyOpen = app.workspace.getLeavesOfType("markdown").some((l) => {
+    var _a2;
+    return ((_a2 = l.getViewState().state) == null ? void 0 : _a2.file) === file.path;
+  });
+  const leaf = await openFileOnly(app, settings, file);
+  if (!leaf)
+    return;
+  const view = leaf.view;
+  if (!(view instanceof import_obsidian11.MarkdownView))
+    return;
+  const targetLine = await resolveLineByAnchor(app, settings, file, line, anchor);
+  await waitForEditor(view, targetLine, settings.lineJumpWaitSeconds * 1e3);
+  if (!wasAlreadyOpen) {
+    await new Promise((resolve) => window.setTimeout(resolve, 1200));
+  }
+  const safeLine = Math.min(targetLine - 1, Math.max(0, view.editor.lineCount() - 1));
+  view.editor.focus();
+  view.editor.setCursor({ line: safeLine, ch: 0 });
+  const center = safeLine >= 15;
+  view.editor.scrollIntoView({ from: { line: safeLine, ch: 0 }, to: { line: safeLine, ch: 0 } }, center);
+  alignTallLine(view, safeLine);
+}
+
+// src/contextMenu.ts
+var import_obsidian12 = require("obsidian");
+function addContextMenuItem(plugin, menu, file, _source) {
+  if (!file) {
+    return;
+  }
+  const app = plugin.app;
+  const updateManager = plugin.updateManager;
+  const settings = plugin.settings;
+  const fetcher = new LinkerMetaInfoFetcher(app, settings);
+  const isDirectory = app.vault.getAbstractFileByPath(file.path) instanceof import_obsidian12.TFolder;
+  if (!isDirectory) {
+    const metaInfo = fetcher.getMetaInfo(file);
+    const contextMenuHandler = (event) => {
+      const targetElement = event.target;
+      if (!targetElement || !(targetElement instanceof HTMLElement)) {
+        return;
+      }
+      const isMultipleReferences = targetElement.classList.contains("multiple-files-references") || targetElement.closest(".multiple-files-references") !== null;
+      if (isMultipleReferences) {
+        const virtualLinkSpan = targetElement.closest(".virtual-link-span") || targetElement.closest(".virtual-link");
+        if (virtualLinkSpan) {
+          virtualLinkSpan.classList.add("virtual-link-hover-lock");
+          const spanEl = virtualLinkSpan;
+          spanEl.dataset.fkContextLock = "1";
+          menu.onHide(() => {
+            var _a2;
+            virtualLinkSpan.classList.remove("virtual-link-hover-lock");
+            delete spanEl.dataset.fkContextLock;
+            const key = ((_a2 = virtualLinkSpan.querySelector(".virtual-link-a")) == null ? void 0 : _a2.getAttribute("origin-text")) || "";
+            if (key)
+              clearContextLock(key);
+          });
+        }
+      }
+      const virtualLinkElement = targetElement.closest(".virtual-link-a");
+      const isVirtualLink = virtualLinkElement !== null;
+      const linkElement = virtualLinkElement || targetElement;
+      const from = parseInt(linkElement.getAttribute("from") || "-1");
+      const to = parseInt(linkElement.getAttribute("to") || "-1");
+      if (from === -1 || to === -1) {
+        menu.addItem((item) => {
+          item.setTitle("Converting link is not here").setIcon("link");
+        });
+      } else if (isVirtualLink) {
+        menu.addItem((item) => {
+          item.setTitle("Add to excluded keywords").setIcon("ban").onClick(async () => {
+            const text = linkElement.getAttribute("origin-text") || "";
+            if (text) {
+              const newExcludedKeywords = [.../* @__PURE__ */ new Set([...settings.excludedKeywords, text])];
+              await plugin.updateSettings({ excludedKeywords: newExcludedKeywords });
+              updateManager.update();
+            }
+          });
+        });
+        menu.addItem((item) => {
+          item.setTitle("Convert to real link").setIcon("link").onClick(() => {
+            convertVirtualLinkToReal(linkElement, file, app, settings);
+          });
+        });
+      }
+      activeDocument.removeEventListener("contextmenu", contextMenuHandler);
+    };
+    if (!metaInfo.excludeFile && (metaInfo.includeAllFiles || metaInfo.includeFile || metaInfo.isInIncludedDir)) {
+      menu.addItem((item) => {
+        item.setTitle("Exclude this file").setIcon("trash").onClick(async () => {
+          var _a2;
+          const target = file;
+          const targetFile = app.vault.getFileByPath(target.path);
+          if (!targetFile) {
+            return;
+          }
+          const fileCache = app.metadataCache.getFileCache(targetFile);
+          const frontmatter = (_a2 = fileCache == null ? void 0 : fileCache.frontmatter) != null ? _a2 : {};
+          const tag = settings.tagToExcludeFile;
+          let tags = frontmatter["tags"];
+          if (typeof tags === "string") {
+            tags = [tags];
+          }
+          if (!Array.isArray(tags)) {
+            tags = [];
+          }
+          if (!tags.includes(tag)) {
+            await app.fileManager.processFrontMatter(targetFile, (frontMatter) => {
+              if (!frontMatter.tags) {
+                frontMatter.tags = /* @__PURE__ */ new Set();
+              }
+              const currentTags = [...frontMatter.tags];
+              frontMatter.tags = /* @__PURE__ */ new Set([...currentTags, tag]);
+              const includeTag = settings.tagToIncludeFile;
+              if (frontMatter.tags instanceof Set && frontMatter.tags.has(includeTag)) {
+                frontMatter.tags.delete(includeTag);
+              }
+            }).catch(() => {
+            });
+            updateManager.update();
+          }
+        });
+      });
+    } else if (!metaInfo.includeFile && (!metaInfo.includeAllFiles || metaInfo.excludeFile || metaInfo.isInExcludedDir)) {
+      menu.addItem((item) => {
+        item.setTitle("Include this file").setIcon("plus").onClick(async () => {
+          var _a2;
+          const target = file;
+          const targetFile = app.vault.getFileByPath(target.path);
+          if (!targetFile) {
+            return;
+          }
+          const fileCache = app.metadataCache.getFileCache(targetFile);
+          const frontmatter = (_a2 = fileCache == null ? void 0 : fileCache.frontmatter) != null ? _a2 : {};
+          const tag = settings.tagToIncludeFile;
+          let tags = frontmatter["tags"];
+          if (typeof tags === "string") {
+            tags = [tags];
+          }
+          if (!Array.isArray(tags)) {
+            tags = [];
+          }
+          if (!tags.includes(tag)) {
+            await app.fileManager.processFrontMatter(targetFile, (frontMatter) => {
+              if (!frontMatter.tags) {
+                frontMatter.tags = /* @__PURE__ */ new Set();
+              }
+              const currentTags = [...frontMatter.tags];
+              frontMatter.tags = /* @__PURE__ */ new Set([...currentTags, tag]);
+              const excludeTag = settings.tagToExcludeFile;
+              if (frontMatter.tags instanceof Set && frontMatter.tags.has(excludeTag)) {
+                frontMatter.tags.delete(excludeTag);
+              }
+            }).catch(() => {
+            });
+            updateManager.update();
+          }
+        });
+      });
+    }
+    activeDocument.addEventListener("contextmenu", contextMenuHandler, { once: true });
+  } else {
+    const path = file.path + "/";
+    const isInIncludedDir = fetcher.includeDirPattern.test(path);
+    const isInExcludedDir = fetcher.excludeDirPattern.test(path);
+    if (fetcher.includeAllFiles && !isInExcludedDir || isInIncludedDir) {
+      menu.addItem((item) => {
+        item.setTitle("Exclude this directory").setIcon("trash").onClick(async () => {
+          const target = file;
+          const targetFolder = app.vault.getAbstractFileByPath(target.path);
+          if (!targetFolder || !(targetFolder instanceof import_obsidian12.TFolder)) {
+            return;
+          }
+          const newExcludedDirs = Array.from(/* @__PURE__ */ new Set([...settings.excludedDirectories, targetFolder.name]));
+          const newIncludedDirs = settings.linkerDirectories.filter((dir) => dir !== targetFolder.name);
+          await plugin.updateSettings({ linkerDirectories: newIncludedDirs, excludedDirectories: newExcludedDirs }).catch(() => {
+          });
+          updateManager.update();
+        });
+      });
+    } else if (!fetcher.includeAllFiles && !isInIncludedDir || isInExcludedDir) {
+      menu.addItem((item) => {
+        item.setTitle("Include this directory").setIcon("plus").onClick(async () => {
+          const target = file;
+          const targetFolder = app.vault.getAbstractFileByPath(target.path);
+          if (!targetFolder || !(targetFolder instanceof import_obsidian12.TFolder)) {
+            return;
+          }
+          const newExcludedDirs = settings.excludedDirectories.filter((dir) => dir !== targetFolder.name);
+          const newIncludedDirs = Array.from(/* @__PURE__ */ new Set([...settings.linkerDirectories, targetFolder.name]));
+          await plugin.updateSettings({ linkerDirectories: newIncludedDirs, excludedDirectories: newExcludedDirs }).catch(() => {
+          });
+          updateManager.update();
+        });
+      });
+    }
+  }
+}
+
+// src/embedReserve.ts
+var import_obsidian13 = require("obsidian");
+function registerEmbedReservation(plugin) {
+  const CACHE_KEY = "__fakelinkSizeCache2";
+  const SIZE_CACHE_LIMIT = 1500;
+  let sizeCacheSaveTimer = null;
+  const persistSizeCache = () => {
+    if (sizeCacheSaveTimer !== null)
+      window.clearTimeout(sizeCacheSaveTimer);
+    sizeCacheSaveTimer = window.setTimeout(() => {
+      sizeCacheSaveTimer = null;
+      void (async () => {
+        try {
+          const loaded = await plugin.loadData();
+          const stored = loaded != null ? loaded : {};
+          const capMap = (m, n) => {
+            const out = {};
+            for (const [k, v] of Array.from(m.entries()).slice(-n))
+              out[k] = v;
+            return out;
+          };
+          const tailMap = (m, n) => {
+            const out = {};
+            for (const [k, v] of Array.from(m.entries()).slice(-n))
+              out[String(k)] = v;
+            return out;
+          };
+          stored[CACHE_KEY] = {
+            images: capMap(plugin.imageSizes, SIZE_CACHE_LIMIT),
+            pdf: capMap(plugin.pdfHeights, 300),
+            embeds: capMap(plugin.embedHeights, 300),
+            widths: tailMap(plugin.pdfWidthHeights, 50),
+            scales: tailMap(plugin.pdfScaleSamples, 50)
+          };
+          await plugin.saveData(stored);
+        } catch (e) {
+        }
+      })();
+    }, 3e3);
+  };
+  void (async () => {
+    var _a2, _b2, _c, _d, _e;
+    try {
+      const loaded = await plugin.loadData();
+      const stored = loaded != null ? loaded : {};
+      const c = stored[CACHE_KEY];
+      if (!c)
+        return;
+      const asList = (v) => Array.isArray(v) ? v : null;
+      const images = (_a2 = c.images) != null ? _a2 : {};
+      for (const k of Object.keys(images)) {
+        const v = images[k];
+        if (v && v.w > 0)
+          plugin.imageSizes.set(k, v);
+      }
+      const pdf = (_b2 = c.pdf) != null ? _b2 : {};
+      for (const k of Object.keys(pdf)) {
+        const list = asList(pdf[k]);
+        if (list)
+          plugin.pdfHeights.set(k, list);
+      }
+      const embeds = (_c = c.embeds) != null ? _c : {};
+      for (const k of Object.keys(embeds)) {
+        const list = asList(embeds[k]);
+        if (list)
+          plugin.embedHeights.set(k, list);
+      }
+      const scales = (_d = c.scales) != null ? _d : {};
+      for (const k of Object.keys(scales)) {
+        const list = asList(scales[k]);
+        if (list)
+          plugin.pdfScaleSamples.set(Number(k), list);
+      }
+      const widths = (_e = c.widths) != null ? _e : {};
+      for (const k of Object.keys(widths)) {
+        const e = widths[k];
+        if (e && typeof e.h === "number" && e.h > 0 && typeof e.r === "number" && e.r > 0) {
+          plugin.pdfWidthHeights.set(Number(k), { h: e.h, r: e.r });
+        }
+      }
+    } catch (e) {
+    }
+  })();
+  const pdfBucket = (w) => w > 0 ? Math.round(w / 20) * 20 : 0;
+  const rememberPdfHeight = (src, width, height) => {
+    var _a2;
+    const bucket = pdfBucket(width);
+    if (bucket <= 0)
+      return;
+    const list = (_a2 = plugin.pdfHeights.get(src)) != null ? _a2 : [];
+    const found = list.find((e) => e.w === bucket);
+    if (found)
+      found.h = height;
+    else
+      list.push({ w: bucket, h: height });
+    while (list.length > 4)
+      list.shift();
+    plugin.pdfHeights.set(src, list);
+    persistSizeCache();
+  };
+  const rememberPdfFallback = (width, height, ratio) => {
+    const bucket = pdfBucket(width);
+    if (bucket > 0)
+      plugin.pdfWidthHeights.set(bucket, { h: height, r: ratio });
+  };
+  const recallPdfFallback = (width, ratio) => {
+    const bucket = pdfBucket(width);
+    if (bucket <= 0)
+      return null;
+    const entry = plugin.pdfWidthHeights.get(bucket);
+    if (!entry || !(entry.r > 0) || !(ratio > 0))
+      return null;
+    return Math.abs(entry.r - ratio) / ratio <= 0.06 ? entry.h : null;
+  };
+  const SCALE_SAMPLES_MAX = 8;
+  const rememberPdfSample = (width, cropHeightPt, renderedHeight) => {
+    var _a2;
+    const bucket = pdfBucket(width);
+    if (bucket <= 0 || !(cropHeightPt > 0) || !(renderedHeight > 0))
+      return;
+    const list = (_a2 = plugin.pdfScaleSamples.get(bucket)) != null ? _a2 : [];
+    list.push({ c: Math.round(cropHeightPt), h: renderedHeight });
+    while (list.length > SCALE_SAMPLES_MAX)
+      list.shift();
+    plugin.pdfScaleSamples.set(bucket, list);
+    persistSizeCache();
+  };
+  const learnedPdfScale = (width) => {
+    const bucket = pdfBucket(width);
+    const list = bucket > 0 ? plugin.pdfScaleSamples.get(bucket) : void 0;
+    if (!list || list.length < 2)
+      return null;
+    const scales = list.filter((s) => s.c > 0).map((s) => s.h / s.c).sort((a, b) => a - b);
+    if (scales.length < 2)
+      return null;
+    const median = scales[Math.floor(scales.length / 2)];
+    const spread = scales[scales.length - 1] - scales[0];
+    return spread <= median * 0.12 ? median : null;
+  };
+  const predictPdfHeight = (width, cropHeightPt) => {
+    const scale = learnedPdfScale(width);
+    if (!scale || !(cropHeightPt > 0))
+      return null;
+    return Math.round(scale * cropHeightPt);
+  };
+  const recallPdfHeight = (src, width) => {
+    const list = plugin.pdfHeights.get(src);
+    if (!list || list.length === 0)
+      return null;
+    const bucket = pdfBucket(width);
+    if (bucket <= 0)
+      return list[list.length - 1].h;
+    let best = list[0];
+    for (const e of list) {
+      if (Math.abs(e.w - bucket) < Math.abs(best.w - bucket))
+        best = e;
+    }
+    return Math.abs(best.w - bucket) <= 80 ? best.h : null;
+  };
+  const reserveEmbedHeight = (el) => {
+    if (el.dataset.fkReserved)
+      return;
+    const src = el.getAttribute("src") || "";
+    const m = /rect=([0-9.]+),([0-9.]+),([0-9.]+),([0-9.]+)/.exec(src);
+    if (!m)
+      return;
+    const w = Math.abs(parseFloat(m[3]) - parseFloat(m[1]));
+    const h = Math.abs(parseFloat(m[4]) - parseFloat(m[2]));
+    if (!(w > 0 && h > 0))
+      return;
+    el.dataset.fkReserved = "1";
+    const apply = () => {
+      var _a2, _b2;
+      if (!el.isConnected)
+        return;
+      const width = el.getBoundingClientRect().width;
+      const cropRatio = w / h;
+      const known = (_b2 = (_a2 = recallPdfHeight(src, width)) != null ? _a2 : predictPdfHeight(width, h)) != null ? _b2 : recallPdfFallback(width, cropRatio);
+      if (known)
+        el.setCssStyles({ minHeight: known + "px" });
+      else
+        el.setCssStyles({ aspectRatio: w + " / " + h });
+    };
+    apply();
+    window.requestAnimationFrame(apply);
+    const release = () => {
+      el.setCssStyles({ aspectRatio: "", minHeight: "" });
+      delete el.dataset.fkReserved;
+    };
+    let timer = null;
+    const measureReal = () => {
+      if (!el.isConnected || el.dataset.fkReserved)
+        return;
+      const rect = el.getBoundingClientRect();
+      if (rect.height > 0) {
+        rememberPdfHeight(src, rect.width, Math.round(rect.height));
+        rememberPdfFallback(rect.width, Math.round(rect.height), w / h);
+        rememberPdfSample(rect.width, h, Math.round(rect.height));
+      }
+    };
+    const ro = new ResizeObserver(() => {
+      if (timer !== null)
+        window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        timer = null;
+        if (el.dataset.fkReserved) {
+          release();
+          return;
+        }
+        measureReal();
+        ro.disconnect();
+      }, 700);
+    });
+    ro.observe(el);
+    window.setTimeout(release, 6e3);
+  };
+  const onInsert = [];
+  const insertObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      for (const node of Array.from(mutation.addedNodes)) {
+        if (!node.instanceOf(HTMLElement))
+          continue;
+        for (const handler of onInsert)
+          handler(node);
+      }
+    }
+  });
+  plugin.register(() => insertObserver.disconnect());
+  const RESERVE_SEL = '.internal-embed[src*="rect="]';
+  onInsert.push((node) => {
+    if (node.matches(RESERVE_SEL))
+      reserveEmbedHeight(node);
+    for (const el of Array.from(node.querySelectorAll(RESERVE_SEL))) {
+      reserveEmbedHeight(el);
+    }
+  });
+  for (const el of Array.from(document.querySelectorAll(RESERVE_SEL))) {
+    reserveEmbedHeight(el);
+  }
+  const IMG_EXT = ["png", "jpg", "jpeg", "gif", "webp", "svg"];
+  const readExifOrientation = (d, u, start, len) => {
+    if (len < 14)
+      return 0;
+    if (!(u[start] === 69 && u[start + 1] === 120 && u[start + 2] === 105 && u[start + 3] === 102))
+      return 0;
+    const tiff = start + 6;
+    const le = u[tiff] === 73 && u[tiff + 1] === 73;
+    const rd16 = (p) => le ? d.getUint16(p, true) : d.getUint16(p, false);
+    const rd32 = (p) => le ? d.getUint32(p, true) : d.getUint32(p, false);
+    const ifd = tiff + rd32(tiff + 4);
+    if (ifd + 2 > start + len)
+      return 0;
+    const count = rd16(ifd);
+    for (let i = 0; i < count; i++) {
+      const e = ifd + 2 + i * 12;
+      if (e + 12 > start + len)
+        return 0;
+      if (rd16(e) === 274)
+        return rd16(e + 8);
+    }
+    return 0;
+  };
+  const parseSvgSize = (text) => {
+    const head = text.slice(0, 4e3);
+    const attr = (name) => {
+      const m = new RegExp("\\s" + name + `\\s*=\\s*["']([^"']*)["']`, "i").exec(head);
+      return m ? parseFloat(m[1]) : NaN;
+    };
+    const w = attr("width");
+    const h = attr("height");
+    if (w > 0 && h > 0)
+      return { w, h };
+    const vb = /\sviewBox\s*=\s*["']([^"']+)["']/i.exec(head);
+    if (vb) {
+      const p = vb[1].trim().split(/[\s,]+/).map(parseFloat);
+      if (p.length === 4 && p[2] > 0 && p[3] > 0)
+        return { w: p[2], h: p[3] };
+    }
+    return null;
+  };
+  const parseImageSize = (buf) => {
+    if (buf.byteLength < 32)
+      return null;
+    const d = new DataView(buf);
+    const u = new Uint8Array(buf);
+    if (u[0] === 137 && u[1] === 80 && u[2] === 78 && u[3] === 71) {
+      return { w: d.getUint32(16, false), h: d.getUint32(20, false) };
+    }
+    if (u[0] === 71 && u[1] === 73 && u[2] === 70) {
+      return { w: d.getUint16(6, true), h: d.getUint16(8, true) };
+    }
+    if (u[0] === 255 && u[1] === 216) {
+      let o = 2;
+      let exifOrientation = 0;
+      while (o + 9 < buf.byteLength) {
+        if (u[o] !== 255) {
+          o++;
+          continue;
+        }
+        const marker = u[o + 1];
+        const len = d.getUint16(o + 2, false);
+        if (len < 2)
+          return null;
+        if (marker === 225) {
+          exifOrientation = readExifOrientation(d, u, o + 4, len - 2);
+        }
+        if (marker >= 192 && marker <= 207 && marker !== 196 && marker !== 200 && marker !== 204) {
+          const w = d.getUint16(o + 7, false);
+          const h = d.getUint16(o + 5, false);
+          return exifOrientation >= 5 ? { w: h, h: w } : { w, h };
+        }
+        o += 2 + len;
+      }
+      return null;
+    }
+    if (u[8] === 87 && u[9] === 69 && u[10] === 66 && u[11] === 80) {
+      const fourcc = String.fromCharCode(u[12], u[13], u[14], u[15]);
+      if (fourcc === "VP8X") {
+        return {
+          w: (u[24] | u[25] << 8 | u[26] << 16) + 1,
+          h: (u[27] | u[28] << 8 | u[29] << 16) + 1
+        };
+      }
+      if (fourcc === "VP8 ") {
+        return { w: d.getUint16(26, true) & 16383, h: d.getUint16(28, true) & 16383 };
+      }
+    }
+    return null;
+  };
+  const vaultPathOfImage = (img) => {
+    const wrapper = img.closest(".internal-embed");
+    const raw = (wrapper == null ? void 0 : wrapper.getAttribute("src")) || "";
+    if (raw)
+      return raw.split("#")[0].split("|")[0];
+    const src = img.getAttribute("src") || "";
+    const m = /^app:\/\/[^/]+\/(.+)$/.exec(src);
+    if (!m)
+      return null;
+    try {
+      return decodeURIComponent(m[1]);
+    } catch (e) {
+      return m[1];
+    }
+  };
+  const applyImageSize = (img, dim) => {
+    if (img.dataset.fkSized)
+      return;
+    img.dataset.fkSized = "1";
+    img.setCssStyles({ aspectRatio: dim.w + " / " + dim.h });
+    img.addEventListener("load", () => {
+      img.setCssStyles({ aspectRatio: "" });
+    }, { once: true });
+  };
+  const reserveImage = (img) => {
+    var _a2, _b2;
+    if (img.dataset.fkSized)
+      return;
+    if (img.complete && img.naturalWidth > 0)
+      return;
+    const path = vaultPathOfImage(img);
+    if (!path)
+      return;
+    const ext = (_b2 = (_a2 = path.split(".").pop()) == null ? void 0 : _a2.toLowerCase()) != null ? _b2 : "";
+    if (!IMG_EXT.includes(ext))
+      return;
+    const file = plugin.app.vault.getAbstractFileByPath(path);
+    if (!(file instanceof import_obsidian13.TFile))
+      return;
+    const key = path + "\0" + file.stat.mtime;
+    const known = plugin.imageSizes.get(key);
+    if (known) {
+      applyImageSize(img, known);
+      return;
+    }
+    const pending = plugin.imageSizeInflight.get(key);
+    if (pending) {
+      void pending.then((dim) => {
+        if (dim)
+          applyImageSize(img, dim);
+      });
+      return;
+    }
+    const read = (ext === "svg" ? plugin.app.vault.adapter.read(path).then((text) => parseSvgSize(text)) : plugin.app.vault.adapter.readBinary(path).then((buf) => parseImageSize(buf))).then((dim) => {
+      if (dim) {
+        plugin.imageSizes.set(key, dim);
+        persistSizeCache();
+      }
+      return dim;
+    }).catch(() => null).then((dim) => {
+      plugin.imageSizeInflight.delete(key);
+      return dim;
+    });
+    plugin.imageSizeInflight.set(key, read);
+    void read.then((dim) => {
+      if (dim)
+        applyImageSize(img, dim);
+    });
+  };
+  onInsert.push((node) => {
+    if (node.instanceOf(HTMLImageElement))
+      reserveImage(node);
+    for (const img of Array.from(node.querySelectorAll("img"))) {
+      reserveImage(img);
+    }
+  });
+  for (const img of Array.from(document.querySelectorAll("img"))) {
+    reserveImage(img);
+  }
+  const EMBED_SEL = ".internal-embed.markdown-embed";
+  const WIDTH_BUCKET = 20;
+  const bucketOf = (w) => w > 0 ? Math.round(w / WIDTH_BUCKET) * WIDTH_BUCKET : 0;
+  const rememberEmbedHeight = (src, width, height) => {
+    var _a2;
+    const bucket = bucketOf(width);
+    if (bucket <= 0)
+      return;
+    const list = (_a2 = plugin.embedHeights.get(src)) != null ? _a2 : [];
+    const found = list.find((e) => e.w === bucket);
+    if (found)
+      found.h = height;
+    else
+      list.push({ w: bucket, h: height });
+    while (list.length > 6)
+      list.shift();
+    plugin.embedHeights.set(src, list);
+    persistSizeCache();
+  };
+  const recallEmbedHeight = (src, width) => {
+    const list = plugin.embedHeights.get(src);
+    if (!list || list.length === 0)
+      return null;
+    const bucket = bucketOf(width);
+    if (bucket <= 0)
+      return list[list.length - 1].h;
+    let best = list[0];
+    for (const e of list) {
+      if (Math.abs(e.w - bucket) < Math.abs(best.w - bucket))
+        best = e;
+    }
+    return Math.abs(best.w - bucket) <= 80 ? best.h : null;
+  };
+  const reserveEmbed = (el) => {
+    if (el.dataset.fkEmbedSeen)
+      return;
+    el.dataset.fkEmbedSeen = "1";
+    const src = el.getAttribute("src");
+    const apply = () => {
+      if (!src || !el.isConnected)
+        return;
+      if (el.dataset.fkEmbedReserved)
+        return;
+      const known = recallEmbedHeight(src, el.getBoundingClientRect().width);
+      if (known && known > 0) {
+        el.setCssStyles({ minHeight: known + "px" });
+        el.dataset.fkEmbedReserved = "1";
+        markSelfInflictedLayout();
+      }
+    };
+    apply();
+    window.requestAnimationFrame(apply);
+    let timer = null;
+    let waited = 0;
+    const measure = () => {
+      timer = null;
+      const rect = el.getBoundingClientRect();
+      if (!el.isConnected || rect.height <= 0) {
+        ro.disconnect();
+        return;
+      }
+      if (!el.classList.contains("is-loaded") && waited < 4e3) {
+        waited += 400;
+        timer = window.setTimeout(measure, 400);
+        return;
+      }
+      if (el.dataset.fkEmbedReserved) {
+        el.setCssStyles({ minHeight: "" });
+        delete el.dataset.fkEmbedReserved;
+        markSelfInflictedLayout();
+        timer = window.setTimeout(measure, 400);
+        return;
+      }
+      if (src)
+        rememberEmbedHeight(src, rect.width, Math.round(rect.height));
+      ro.disconnect();
+    };
+    const ro = new ResizeObserver(() => {
+      if (timer !== null)
+        window.clearTimeout(timer);
+      timer = window.setTimeout(measure, 400);
+    });
+    ro.observe(el);
+  };
+  onInsert.push((node) => {
+    if (node.matches(EMBED_SEL))
+      reserveEmbed(node);
+    for (const el of Array.from(node.querySelectorAll(EMBED_SEL))) {
+      reserveEmbed(el);
+    }
+  });
+  for (const el of Array.from(document.querySelectorAll(EMBED_SEL))) {
+    reserveEmbed(el);
+  }
+  const alignWindow = () => Math.max(3e3, (plugin.settings.headingAlignWatchSeconds || 12) * 1e3);
+  const scrollEditor = (el, headingText, targetViewport) => {
+    if (plugin.centerHeadingElement(el, 8e3, targetViewport))
+      return true;
+    const target = resolveHeadingTarget(plugin.app, el, headingText, null);
+    if (!target)
+      return false;
+    plugin.centerHeadingLine(target.view, target.line, 8e3, targetViewport);
+    return true;
+  };
+  onInsert.push((node) => {
+    const pops = node.matches(".hover-popover") ? [node] : Array.from(node.querySelectorAll(".hover-popover"));
+    for (const pop of pops) {
+      if (!plugin.settings.alignHeadingAfterJump)
+        continue;
+      const startPopoverAlign = () => {
+        var _a2;
+        if (!pop.isConnected)
+          return;
+        keepScrolledHeadingAligned(pop, "popover", alignWindow(), scrollEditor, (_a2 = getHoveredHeadingId()) != null ? _a2 : void 0, void 0, "centre", (id) => headingElementByLine(plugin.app, pop, id));
+      };
+      const cache = LinkerCache.getInstance(plugin.app, plugin.settings);
+      if (cache.cache.isReady) {
+        startPopoverAlign();
+      } else {
+        void cache.cache.readyPromise.then(startPopoverAlign);
+      }
+    }
+  });
+  insertObserver.observe(document.body, { childList: true, subtree: true });
+  plugin.registerDomEvent(document, "click", (evt) => {
+    const el = evt.target;
+    if (!el || el.closest(".cm-editor"))
+      return;
+    if (!el.closest(".virtual-link, a.virtual-link-a"))
+      return;
+    const anchor = el.closest("a.virtual-link-a");
+    if (anchor == null ? void 0 : anchor.onclick)
+      return;
+    const scope = el.closest(".hover-popover, .workspace-leaf");
+    if (!plugin.settings.alignHeadingAfterJump)
+      return;
+    let domTarget;
+    window.setTimeout(() => keepScrolledHeadingAligned(scope, "dom-click", alignWindow(), (el2, h) => scrollEditor(el2, h, domTarget), void 0, (o) => {
+      domTarget = o;
+    }, "centre"), 60);
+  }, true);
+}
+
 // main.ts
 var activeCenterLoops = /* @__PURE__ */ new WeakMap();
+var HEADING_EPSILON_PX = 24;
 var DEFAULT_SETTINGS = {
   autoToggleByMode: false,
   advancedSettings: true,
@@ -5823,6 +6829,8 @@ var DEFAULT_SETTINGS = {
   excludeLinksToOwnNote: false,
   fixIMEProblem: true,
   excludeLinksInCurrentLine: true,
+  tableLinkSuppression: true,
+  lastSeenVersion: "",
   onlyLinkOnce: false,
   excludeLinksToRealLinkedFiles: false,
   includeAliases: true,
@@ -5857,6 +6865,7 @@ var DEFAULT_SETTINGS = {
   fuzzyBaseColor: "#8e44ad",
   fuzzyColorMixRatio: 50,
   headingAlignWatchSeconds: 12,
+  alignHeadingAfterJump: false,
   enableStemming: false,
   stemmingLanguage: "auto",
   fuzzyMatchThreshold: 80,
@@ -5876,7 +6885,7 @@ var DEFAULT_SETTINGS = {
   autoExcludeContainedCopies: false,
   filenameAffixExclusions: []
 };
-var LinkerPlugin = class extends import_obsidian9.Plugin {
+var LinkerPlugin = class extends import_obsidian14.Plugin {
   constructor() {
     super(...arguments);
     this.updateManager = new ExternalUpdateManager();
@@ -5892,7 +6901,7 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
     this.bgSyncTimer = null;
   }
   isInCanvas() {
-    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian9.MarkdownView);
+    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian14.MarkdownView);
     if (activeView && activeView.getViewType() === "canvas") {
       return true;
     }
@@ -5907,7 +6916,7 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
       }
       return;
     }
-    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian9.MarkdownView);
+    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian14.MarkdownView);
     if (!activeView)
       return;
     const isPreviewMode = activeView.getMode() === "preview";
@@ -5919,140 +6928,16 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
     }
   }
   async copyLineUri(file, lineZeroBased) {
-    var _a2, _b2, _c;
-    const line = lineZeroBased + 1;
-    const vaultId = (_c = (_b2 = (_a2 = this.app.vault).getId) == null ? void 0 : _b2.call(_a2)) != null ? _c : this.app.vault.getName();
-    let uri = `obsidian://adv-uri?vault=${encodeURIComponent(vaultId)}&filepath=${encodeURIComponent(file.path)}&line=${line}&column=1&openmode=true&view-mode=source`;
-    if (this.settings.lineLinkSelfHeal) {
-      const anchor = await this.getLineAnchor(file, lineZeroBased);
-      if (anchor) {
-        uri += `&anchor=${encodeURIComponent(anchor)}`;
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(`[${line}](${uri})`);
-      new import_obsidian9.Notice(t("Line link copied"));
-    } catch (e) {
-      new import_obsidian9.Notice(t("Failed to copy line link"));
-    }
-  }
-  async getLineAnchor(file, lineZeroBased) {
-    var _a2;
-    try {
-      const content = await this.app.vault.cachedRead(file);
-      const lines = content.split("\n");
-      const text = ((_a2 = lines[lineZeroBased]) != null ? _a2 : "").trim();
-      const maxLen = 40;
-      return text.length > maxLen ? text.slice(0, maxLen) : text;
-    } catch (e) {
-      return "";
-    }
-  }
-  async resolveLineByAnchor(file, line, anchor) {
-    if (!this.settings.lineLinkSelfHeal || !anchor)
-      return line;
-    try {
-      const content = await this.app.vault.cachedRead(file);
-      const lines = content.split("\n");
-      const idx = line - 1;
-      if (idx >= 0 && idx < lines.length && lines[idx].trim().startsWith(anchor)) {
-        return line;
-      }
-      const exact = lines.findIndex((l) => l.trim().startsWith(anchor));
-      if (exact >= 0)
-        return exact + 1;
-      const loose = lines.findIndex((l) => l.trim().includes(anchor));
-      if (loose >= 0)
-        return loose + 1;
-      return line;
-    } catch (e) {
-      return line;
-    }
-  }
-  async waitForEditor(view, targetLine, timeoutMs) {
-    const start = Date.now();
-    while (Date.now() - start < timeoutMs) {
-      if (view.editor && view.editor.lineCount() >= targetLine) {
-        return true;
-      }
-      await new Promise((resolve) => window.setTimeout(resolve, 200));
-    }
-    return view.editor != null;
-  }
-  async openFileOnly(file) {
-    const existing = this.app.workspace.getLeavesOfType("markdown").find((l) => {
-      var _a2;
-      return ((_a2 = l.getViewState().state) == null ? void 0 : _a2.file) === file.path;
-    });
-    let leaf;
-    if (existing) {
-      this.app.workspace.setActiveLeaf(existing, { focus: true });
-      leaf = existing;
-    } else {
-      leaf = this.settings.jumpOpenInNewTab ? this.app.workspace.getLeaf(true) : this.app.workspace.getLeaf(false);
-      await leaf.openFile(file);
-      this.app.workspace.setActiveLeaf(leaf, { focus: true });
-    }
-    return leaf;
+    return copyLineUri(this.app, this.settings, file, lineZeroBased);
   }
   async jumpToLine(filepath, line, anchor) {
-    const file = this.app.vault.getAbstractFileByPath(filepath);
-    if (!(file instanceof import_obsidian9.TFile))
-      return;
-    const wasAlreadyOpen = this.app.workspace.getLeavesOfType("markdown").some((l) => {
-      var _a2;
-      return ((_a2 = l.getViewState().state) == null ? void 0 : _a2.file) === file.path;
-    });
-    const leaf = await this.openFileOnly(file);
-    if (!leaf)
-      return;
-    const view = leaf.view;
-    if (!(view instanceof import_obsidian9.MarkdownView))
-      return;
-    const targetLine = await this.resolveLineByAnchor(file, line, anchor);
-    await this.waitForEditor(view, targetLine, this.settings.lineJumpWaitSeconds * 1e3);
-    if (!wasAlreadyOpen) {
-      await new Promise((resolve) => window.setTimeout(resolve, 1200));
-    }
-    const safeLine = Math.min(targetLine - 1, Math.max(0, view.editor.lineCount() - 1));
-    view.editor.focus();
-    view.editor.setCursor({ line: safeLine, ch: 0 });
-    const center = safeLine >= 15;
-    view.editor.scrollIntoView({ from: { line: safeLine, ch: 0 }, to: { line: safeLine, ch: 0 } }, center);
-    this.alignTallLine(view, safeLine);
+    return jumpToLine(this.app, this.settings, filepath, line, anchor);
   }
-  alignTallLine(view, line, pass = 0) {
-    const cmEl = view.contentEl.querySelector(".cm-editor");
-    const cm = cmEl ? import_view3.EditorView.findFromDOM(cmEl) : null;
-    if (!cm)
-      return;
-    const scroller = cm.scrollDOM;
-    try {
-      const block = cm.lineBlockAt(cm.state.doc.line(line + 1).from);
-      const tooTall = block.height > scroller.clientHeight * 0.8;
-      const headHidden = block.top < scroller.scrollTop;
-      if (!tooTall && !headHidden)
-        return;
-      scroller.scrollTop = block.top - 16;
-    } catch (e) {
-      return;
-    }
-    if (pass < 1)
-      window.setTimeout(() => this.alignTallLine(view, line, pass + 1), 250);
+  async openFileOnly(file) {
+    return openFileOnly(this.app, this.settings, file);
   }
-  centerHeadingLine(view, line, maxMs = 1e4) {
-    const cmEl = view.contentEl.querySelector(".cm-editor");
-    const cm = cmEl ? import_view3.EditorView.findFromDOM(cmEl) : null;
-    if (cm)
-      this.centerCmLine(cm, line, maxMs);
-  }
-  centerHeadingElement(el, maxMs = 8e3) {
+  startCentring(cm) {
     var _a2;
-    const cmEl = el.closest(".cm-editor");
-    const cm = cmEl ? import_view3.EditorView.findFromDOM(cmEl) : null;
-    if (!cm)
-      return false;
-    const scroller = cm.scrollDOM;
     (_a2 = activeCenterLoops.get(cm)) == null ? void 0 : _a2.abort();
     const controller = new AbortController();
     activeCenterLoops.set(cm, controller);
@@ -6060,49 +6945,112 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
     window.addEventListener("wheel", stop, { capture: true, passive: true, signal: controller.signal });
     window.addEventListener("mousedown", stop, { capture: true, signal: controller.signal });
     window.addEventListener("keydown", stop, { capture: true, signal: controller.signal });
+    return controller;
+  }
+  centerHeadingLine(view, line, maxMs = 1e4, targetViewport) {
+    const cmEl = view.contentEl.querySelector(".cm-editor");
+    const cm = cmEl ? import_view4.EditorView.findFromDOM(cmEl) : null;
+    if (cm)
+      this.centerCmLine(cm, line, maxMs, targetViewport);
+  }
+  centerHeadingElement(el, maxMs = 8e3, targetViewport) {
+    const cmEl = el.closest(".cm-editor");
+    const cm = cmEl ? import_view4.EditorView.findFromDOM(cmEl) : null;
+    if (!cm)
+      return false;
+    const scroller = cm.scrollDOM;
+    const controller = this.startCentring(cm);
     const startedAt = Date.now();
     let passes = 0;
+    let lastTop = Number.NaN;
+    let fails = 0;
+    let lastMiss = Number.NaN;
+    const measureWrite = () => {
+      cm.requestMeasure({
+        read: (view) => {
+          if (!el.isConnected)
+            return null;
+          const rr = headingRowElement(el).getBoundingClientRect();
+          const sr = view.scrollDOM.getBoundingClientRect();
+          const h = Math.max(1, rr.height);
+          const t2 = targetViewport != null ? targetViewport : Math.max(12, Math.round((view.scrollDOM.clientHeight - h) / 2));
+          return Math.round(rr.top - sr.top - t2);
+        },
+        write: (d, view) => {
+          if (d === null)
+            return;
+          const dom = view.scrollDOM;
+          const maxTop = Math.max(0, dom.scrollHeight - dom.clientHeight);
+          const want = Math.min(Math.max(0, dom.scrollTop + d), maxTop);
+          if (Math.abs(want - dom.scrollTop) < 2)
+            return;
+          dom.scrollTop = want;
+        }
+      });
+    };
     const tick = () => {
       if (controller.signal.aborted)
         return;
-      if (Date.now() - startedAt > maxMs || passes > 12)
+      if (Date.now() - startedAt > maxMs || passes > 6)
         return;
       if (!el.isConnected)
         return;
-      const r = el.getBoundingClientRect();
+      const r = headingRowElement(el).getBoundingClientRect();
       const sr = scroller.getBoundingClientRect();
       const current = r.top - sr.top;
       const height = Math.max(1, r.height);
-      const target = Math.max(6, Math.round((scroller.clientHeight - height) / 2));
+      const target = targetViewport != null ? targetViewport : Math.max(12, Math.round((scroller.clientHeight - height) / 2));
       const delta = Math.round(current - target);
-      if (Math.abs(delta) <= 6)
+      const topNow = Math.round(current);
+      const stable = Number.isNaN(lastTop) || Math.abs(topNow - lastTop) <= 2;
+      lastTop = topNow;
+      if (Math.abs(delta) <= HEADING_EPSILON_PX)
         return;
-      cm.requestMeasure({
-        read: () => delta,
-        write: (d, view) => {
-          view.scrollDOM.scrollTop = Math.max(0, view.scrollDOM.scrollTop + d);
-        }
-      });
+      const maxTop = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+      const wantTop = Math.min(Math.max(0, scroller.scrollTop + delta), maxTop);
+      if (Math.abs(wantTop - scroller.scrollTop) < 2)
+        return;
+      if (stable) {
+        if (!Number.isNaN(lastMiss) && Math.abs(delta) >= lastMiss - 2)
+          fails++;
+        else
+          fails = 0;
+        lastMiss = Math.abs(delta);
+        if (fails >= 2)
+          return;
+      }
+      if (!stable && Date.now() - startedAt < 1200) {
+        window.setTimeout(tick, 500);
+        return;
+      }
+      measureWrite();
       passes++;
       window.setTimeout(tick, 500);
     };
     window.setTimeout(tick, 200);
     return true;
   }
-  centerCmLine(cm, line, maxMs) {
-    var _a2;
+  centerCmLine(cm, line, maxMs, targetViewport) {
     patchDispatchClamp(cm);
-    (_a2 = activeCenterLoops.get(cm)) == null ? void 0 : _a2.abort();
-    const controller = new AbortController();
-    activeCenterLoops.set(cm, controller);
+    const controller = this.startCentring(cm);
     const scroller = cm.scrollDOM;
-    const stop = () => controller.abort();
-    window.addEventListener("wheel", stop, { capture: true, passive: true, signal: controller.signal });
-    window.addEventListener("mousedown", stop, { capture: true, signal: controller.signal });
-    window.addEventListener("keydown", stop, { capture: true, signal: controller.signal });
     const startedAt = Date.now();
+    let deadline = startedAt + maxMs;
+    let extensions = 0;
     let passes = 0;
     let lastCurrent = Number.NaN;
+    let imgs = [];
+    let imgsAt = 0;
+    const mathBusy = createMathBusyWatcher(scroller);
+    const stillLoading = () => {
+      const now = Date.now();
+      if (now - imgsAt > 1500) {
+        imgs = Array.from(scroller.querySelectorAll("img"));
+        imgsAt = now;
+      }
+      return imgs.some((img) => !img.complete) || mathBusy();
+    };
+    let settledPasses = 0;
     const MIN_FIRST_WRITE_MS = 800;
     const MAX_WRITES = 24;
     const measure = (view) => {
@@ -6131,23 +7079,34 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
     const tick = () => {
       if (controller.signal.aborted)
         return;
-      if (Date.now() - startedAt > maxMs || passes > 24)
+      if (passes > 24)
         return;
+      if (Date.now() > deadline) {
+        if (extensions < 2 && settledPasses === 0) {
+          extensions++;
+          deadline = Date.now() + 5e3;
+        } else {
+          return;
+        }
+      }
       const m = measure(cm);
       if (!m) {
         window.setTimeout(tick, 700);
         return;
       }
-      const target = Math.max(6, Math.round((scroller.clientHeight - m.height) / 2));
+      const target = targetViewport != null ? targetViewport : Math.max(12, Math.round((scroller.clientHeight - m.height) / 2));
       const current = Math.round(m.current);
       const tolerance = Math.max(6, Math.round(scroller.clientHeight * 0.04));
       const unreliable = current < -scroller.clientHeight;
-      const stillLoading = Array.from(scroller.querySelectorAll("img")).some((img) => !img.complete);
-      const settled = current === lastCurrent && !stillLoading;
+      const settled = Math.abs(current - lastCurrent) <= 2 && !stillLoading();
       lastCurrent = current;
       const miss = Math.abs(current - target);
-      const impatient = Date.now() - startedAt > 4e3 && miss > 60;
+      const impatient = Date.now() - startedAt > 4e3;
       const shouldAct = miss > tolerance && (settled || impatient);
+      if (settled && miss <= tolerance)
+        settledPasses++;
+      else
+        settledPasses = 0;
       const oldEnough = Date.now() - startedAt >= MIN_FIRST_WRITE_MS;
       if (!unreliable && shouldAct && oldEnough && passes < MAX_WRITES) {
         try {
@@ -6156,8 +7115,13 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
             write: (mm, view) => {
               if (!mm)
                 return;
-              const delta = mm.current - Math.max(6, Math.round((view.scrollDOM.clientHeight - mm.height) / 2));
-              view.scrollDOM.scrollTop = Math.max(0, view.scrollDOM.scrollTop + delta);
+              const delta = mm.current - (targetViewport != null ? targetViewport : Math.max(12, Math.round((view.scrollDOM.clientHeight - mm.height) / 2)));
+              const dom = view.scrollDOM;
+              const maxTop = Math.max(0, dom.scrollHeight - dom.clientHeight);
+              const want = Math.min(Math.max(0, dom.scrollTop + delta), maxTop);
+              if (Math.abs(want - dom.scrollTop) < 2)
+                return;
+              dom.scrollTop = want;
             }
           });
         } catch (e) {
@@ -6165,7 +7129,7 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
         }
         passes++;
       }
-      window.setTimeout(tick, 700);
+      window.setTimeout(tick, settledPasses >= 2 ? 2e3 : 700);
     };
     window.setTimeout(tick, 400);
   }
@@ -6194,33 +7158,21 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
   }
   async onload() {
     await this.loadSettings();
-    if (this.settings.alternativeDisplayStyle) {
-      activeWindow.document.body.classList.add("virtual-linker-alt-style");
-    }
-    if (this.settings.colorOnlyDisplay) {
-      activeWindow.document.body.classList.add("virtual-link-color-only");
-    }
-    this.applyBackgroundStyles();
-    activeWindow.document.body.style.setProperty("--virtual-link-color", this.settings.noteVirtualLinkColor);
-    activeWindow.document.body.style.setProperty("--virtual-link-header-color", this.settings.headerVirtualLinkColor);
-    activeWindow.document.body.style.setProperty("--virtual-link-note-color", this.settings.noteVirtualLinkColor);
-    this.applyFuzzyColors();
-    this.registerEvent(this.app.workspace.on("layout-change", () => {
-      void this.handleLayoutChange();
-      this.scheduleBackgroundSync();
-    }));
-    this.registerEvent(this.app.workspace.on("active-leaf-change", () => {
-      void this.handleLayoutChange();
-    }));
-    this.updateManager.registerCallback(() => {
-      LinkerCache.getInstance(this.app, this.settings).clearCache();
-    });
-    LinkerCache.getInstance(this.app, this.settings).onIndexChanged = () => this.updateManager.update();
-    this.registerMarkdownPostProcessor((element, context) => {
-      context.addChild(new GlossaryLinker(this.app, this.settings, context, element, this));
-    });
-    this.registerEditorExtension(liveLinkerPlugin(this.app, this.settings, this.updateManager, this));
-    this.registerEditorExtension(import_view3.ViewPlugin.fromClass(class {
+    this.applyStartupAppearance();
+    this.registerWorkspaceEvents();
+    this.registerIndexWatchers();
+    this.registerLinkers();
+    this.registerIndentBackground();
+    this.registerCommentSpaceTrim();
+    this.addSettingTab(new LinkerSettingTab(this.app, this));
+    this.registerAdvUriLinkClicks();
+    registerEmbedReservation(this);
+    this.registerAdvUriProtocol();
+    this.registerContextMenus();
+    this.registerCommands();
+  }
+  registerIndentBackground() {
+    this.registerEditorExtension(import_view4.ViewPlugin.fromClass(class {
       constructor(view) {
         this.decorations = buildIndentBackground(view);
       }
@@ -6230,7 +7182,9 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
         }
       }
     }, { decorations: (v) => v.decorations }));
-    this.registerEditorExtension(import_view3.EditorView.updateListener.of((update) => {
+  }
+  registerCommentSpaceTrim() {
+    this.registerEditorExtension(import_view4.EditorView.updateListener.of((update) => {
       if (!this.settings.alternativeDisplayStyle || !update.docChanged)
         return;
       let minFrom = Infinity;
@@ -6296,7 +7250,7 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
         }
       }
     }));
-    this.registerEditorExtension(import_view3.EditorView.updateListener.of((update) => {
+    this.registerEditorExtension(import_view4.EditorView.updateListener.of((update) => {
       if (!this.settings.headerAutoAppendSuffix || !update.docChanged)
         return;
       const symbol = this.settings.headerAutoAppendSymbol;
@@ -6335,7 +7289,8 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
         update.view.dispatch({ changes });
       }
     }));
-    this.addSettingTab(new LinkerSettingTab(this.app, this));
+  }
+  registerAdvUriLinkClicks() {
     this.registerDomEvent(this.app.workspace.containerEl, "click", (evt) => {
       if (!this.settings.jumpEnabled)
         return;
@@ -6355,530 +7310,72 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
       evt.stopImmediatePropagation();
       void this.jumpToLine(filepath, line, anchor);
     }, true);
-    const CACHE_KEY = "__fakelinkSizeCache2";
-    const SIZE_CACHE_LIMIT = 1500;
-    let sizeCacheSaveTimer = null;
-    const persistSizeCache = () => {
-      if (sizeCacheSaveTimer !== null)
-        window.clearTimeout(sizeCacheSaveTimer);
-      sizeCacheSaveTimer = window.setTimeout(() => {
-        sizeCacheSaveTimer = null;
-        void (async () => {
-          try {
-            const loaded = await this.loadData();
-            const stored = loaded != null ? loaded : {};
-            const capMap = (m, n) => {
-              const out = {};
-              for (const [k, v] of Array.from(m.entries()).slice(-n))
-                out[k] = v;
-              return out;
-            };
-            const tailMap = (m, n) => {
-              const out = {};
-              for (const [k, v] of Array.from(m.entries()).slice(-n))
-                out[String(k)] = v;
-              return out;
-            };
-            stored[CACHE_KEY] = {
-              images: capMap(this.imageSizes, SIZE_CACHE_LIMIT),
-              pdf: capMap(this.pdfHeights, 300),
-              embeds: capMap(this.embedHeights, 300),
-              widths: tailMap(this.pdfWidthHeights, 50),
-              scales: tailMap(this.pdfScaleSamples, 50)
-            };
-            await this.saveData(stored);
-          } catch (e) {
-          }
-        })();
-      }, 3e3);
-    };
-    void (async () => {
-      var _a2, _b2, _c, _d, _e;
-      try {
-        const loaded = await this.loadData();
-        const stored = loaded != null ? loaded : {};
-        const c = stored[CACHE_KEY];
-        if (!c)
-          return;
-        const asList = (v) => Array.isArray(v) ? v : null;
-        const images = (_a2 = c.images) != null ? _a2 : {};
-        for (const k of Object.keys(images)) {
-          const v = images[k];
-          if (v && v.w > 0)
-            this.imageSizes.set(k, v);
-        }
-        const pdf = (_b2 = c.pdf) != null ? _b2 : {};
-        for (const k of Object.keys(pdf)) {
-          const list = asList(pdf[k]);
-          if (list)
-            this.pdfHeights.set(k, list);
-        }
-        const embeds = (_c = c.embeds) != null ? _c : {};
-        for (const k of Object.keys(embeds)) {
-          const list = asList(embeds[k]);
-          if (list)
-            this.embedHeights.set(k, list);
-        }
-        const scales = (_d = c.scales) != null ? _d : {};
-        for (const k of Object.keys(scales)) {
-          const list = asList(scales[k]);
-          if (list)
-            this.pdfScaleSamples.set(Number(k), list);
-        }
-        const widths = (_e = c.widths) != null ? _e : {};
-        for (const k of Object.keys(widths)) {
-          const e = widths[k];
-          if (e && typeof e.h === "number" && e.h > 0 && typeof e.r === "number" && e.r > 0) {
-            this.pdfWidthHeights.set(Number(k), { h: e.h, r: e.r });
-          }
-        }
-      } catch (e) {
-      }
-    })();
-    const pdfBucket = (w) => w > 0 ? Math.round(w / 20) * 20 : 0;
-    const rememberPdfHeight = (src, width, height) => {
-      var _a2;
-      const bucket = pdfBucket(width);
-      if (bucket <= 0)
-        return;
-      const list = (_a2 = this.pdfHeights.get(src)) != null ? _a2 : [];
-      const found = list.find((e) => e.w === bucket);
-      if (found)
-        found.h = height;
-      else
-        list.push({ w: bucket, h: height });
-      while (list.length > 4)
-        list.shift();
-      this.pdfHeights.set(src, list);
-      persistSizeCache();
-    };
-    const rememberPdfFallback = (width, height, ratio) => {
-      const bucket = pdfBucket(width);
-      if (bucket > 0)
-        this.pdfWidthHeights.set(bucket, { h: height, r: ratio });
-    };
-    const recallPdfFallback = (width, ratio) => {
-      const bucket = pdfBucket(width);
-      if (bucket <= 0)
-        return null;
-      const entry = this.pdfWidthHeights.get(bucket);
-      if (!entry || !(entry.r > 0) || !(ratio > 0))
-        return null;
-      return Math.abs(entry.r - ratio) / ratio <= 0.06 ? entry.h : null;
-    };
-    const SCALE_SAMPLES_MAX = 8;
-    const rememberPdfSample = (width, cropHeightPt, renderedHeight) => {
-      var _a2;
-      const bucket = pdfBucket(width);
-      if (bucket <= 0 || !(cropHeightPt > 0) || !(renderedHeight > 0))
-        return;
-      const list = (_a2 = this.pdfScaleSamples.get(bucket)) != null ? _a2 : [];
-      list.push({ c: Math.round(cropHeightPt), h: renderedHeight });
-      while (list.length > SCALE_SAMPLES_MAX)
-        list.shift();
-      this.pdfScaleSamples.set(bucket, list);
-      persistSizeCache();
-    };
-    const learnedPdfScale = (width) => {
-      const bucket = pdfBucket(width);
-      const list = bucket > 0 ? this.pdfScaleSamples.get(bucket) : void 0;
-      if (!list || list.length < 2)
-        return null;
-      const scales = list.filter((s) => s.c > 0).map((s) => s.h / s.c).sort((a, b) => a - b);
-      if (scales.length < 2)
-        return null;
-      const median = scales[Math.floor(scales.length / 2)];
-      const spread = scales[scales.length - 1] - scales[0];
-      return spread <= median * 0.12 ? median : null;
-    };
-    const predictPdfHeight = (width, cropHeightPt) => {
-      const scale = learnedPdfScale(width);
-      if (!scale || !(cropHeightPt > 0))
-        return null;
-      return Math.round(scale * cropHeightPt);
-    };
-    const recallPdfHeight = (src, width) => {
-      const list = this.pdfHeights.get(src);
-      if (!list || list.length === 0)
-        return null;
-      const bucket = pdfBucket(width);
-      if (bucket <= 0)
-        return list[list.length - 1].h;
-      let best = list[0];
-      for (const e of list) {
-        if (Math.abs(e.w - bucket) < Math.abs(best.w - bucket))
-          best = e;
-      }
-      return Math.abs(best.w - bucket) <= 80 ? best.h : null;
-    };
-    const reserveEmbedHeight = (el) => {
-      if (el.dataset.fkReserved)
-        return;
-      const src = el.getAttribute("src") || "";
-      const m = /rect=([0-9.]+),([0-9.]+),([0-9.]+),([0-9.]+)/.exec(src);
-      if (!m)
-        return;
-      const w = Math.abs(parseFloat(m[3]) - parseFloat(m[1]));
-      const h = Math.abs(parseFloat(m[4]) - parseFloat(m[2]));
-      if (!(w > 0 && h > 0))
-        return;
-      el.dataset.fkReserved = "1";
-      const apply = () => {
-        var _a2, _b2;
-        if (!el.isConnected)
-          return;
-        const width = el.getBoundingClientRect().width;
-        const cropRatio = w / h;
-        const known = (_b2 = (_a2 = recallPdfHeight(src, width)) != null ? _a2 : predictPdfHeight(width, h)) != null ? _b2 : recallPdfFallback(width, cropRatio);
-        if (known)
-          el.setCssStyles({ minHeight: known + "px" });
-        else
-          el.setCssStyles({ aspectRatio: w + " / " + h });
-      };
-      apply();
-      window.requestAnimationFrame(apply);
-      const release = () => {
-        el.setCssStyles({ aspectRatio: "", minHeight: "" });
-        delete el.dataset.fkReserved;
-      };
-      let timer = null;
-      const measureReal = () => {
-        if (!el.isConnected || el.dataset.fkReserved)
-          return;
-        const rect = el.getBoundingClientRect();
-        if (rect.height > 0) {
-          rememberPdfHeight(src, rect.width, Math.round(rect.height));
-          rememberPdfFallback(rect.width, Math.round(rect.height), w / h);
-          rememberPdfSample(rect.width, h, Math.round(rect.height));
-        }
-      };
-      const ro = new ResizeObserver(() => {
-        if (timer !== null)
-          window.clearTimeout(timer);
-        timer = window.setTimeout(() => {
-          timer = null;
-          if (el.dataset.fkReserved) {
-            release();
-            return;
-          }
-          measureReal();
-          ro.disconnect();
-        }, 700);
-      });
-      ro.observe(el);
-      window.setTimeout(release, 6e3);
-    };
-    const onInsert = [];
-    const insertObserver = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of Array.from(mutation.addedNodes)) {
-          if (!node.instanceOf(HTMLElement))
-            continue;
-          for (const handler of onInsert)
-            handler(node);
-        }
-      }
-    });
-    this.register(() => insertObserver.disconnect());
-    const RESERVE_SEL = '.internal-embed[src*="rect="]';
-    onInsert.push((node) => {
-      if (node.matches(RESERVE_SEL))
-        reserveEmbedHeight(node);
-      for (const el of Array.from(node.querySelectorAll(RESERVE_SEL))) {
-        reserveEmbedHeight(el);
-      }
-    });
-    for (const el of Array.from(document.querySelectorAll(RESERVE_SEL))) {
-      reserveEmbedHeight(el);
+  }
+  applyStartupAppearance() {
+    if (this.settings.alternativeDisplayStyle) {
+      activeWindow.document.body.classList.add("virtual-linker-alt-style");
     }
-    const IMG_EXT = ["png", "jpg", "jpeg", "gif", "webp", "svg"];
-    const readExifOrientation = (d, u, start, len) => {
-      if (len < 14)
-        return 0;
-      if (!(u[start] === 69 && u[start + 1] === 120 && u[start + 2] === 105 && u[start + 3] === 102))
-        return 0;
-      const tiff = start + 6;
-      const le = u[tiff] === 73 && u[tiff + 1] === 73;
-      const rd16 = (p) => le ? d.getUint16(p, true) : d.getUint16(p, false);
-      const rd32 = (p) => le ? d.getUint32(p, true) : d.getUint32(p, false);
-      const ifd = tiff + rd32(tiff + 4);
-      if (ifd + 2 > start + len)
-        return 0;
-      const count = rd16(ifd);
-      for (let i = 0; i < count; i++) {
-        const e = ifd + 2 + i * 12;
-        if (e + 12 > start + len)
-          return 0;
-        if (rd16(e) === 274)
-          return rd16(e + 8);
-      }
-      return 0;
-    };
-    const parseSvgSize = (text) => {
-      const head = text.slice(0, 4e3);
-      const attr = (name) => {
-        const m = new RegExp("\\s" + name + `\\s*=\\s*["']([^"']*)["']`, "i").exec(head);
-        return m ? parseFloat(m[1]) : NaN;
-      };
-      const w = attr("width");
-      const h = attr("height");
-      if (w > 0 && h > 0)
-        return { w, h };
-      const vb = /\sviewBox\s*=\s*["']([^"']+)["']/i.exec(head);
-      if (vb) {
-        const p = vb[1].trim().split(/[\s,]+/).map(parseFloat);
-        if (p.length === 4 && p[2] > 0 && p[3] > 0)
-          return { w: p[2], h: p[3] };
-      }
-      return null;
-    };
-    const parseImageSize = (buf) => {
-      if (buf.byteLength < 32)
-        return null;
-      const d = new DataView(buf);
-      const u = new Uint8Array(buf);
-      if (u[0] === 137 && u[1] === 80 && u[2] === 78 && u[3] === 71) {
-        return { w: d.getUint32(16, false), h: d.getUint32(20, false) };
-      }
-      if (u[0] === 71 && u[1] === 73 && u[2] === 70) {
-        return { w: d.getUint16(6, true), h: d.getUint16(8, true) };
-      }
-      if (u[0] === 255 && u[1] === 216) {
-        let o = 2;
-        let exifOrientation = 0;
-        while (o + 9 < buf.byteLength) {
-          if (u[o] !== 255) {
-            o++;
-            continue;
-          }
-          const marker = u[o + 1];
-          const len = d.getUint16(o + 2, false);
-          if (len < 2)
-            return null;
-          if (marker === 225) {
-            exifOrientation = readExifOrientation(d, u, o + 4, len - 2);
-          }
-          if (marker >= 192 && marker <= 207 && marker !== 196 && marker !== 200 && marker !== 204) {
-            const w = d.getUint16(o + 7, false);
-            const h = d.getUint16(o + 5, false);
-            return exifOrientation >= 5 ? { w: h, h: w } : { w, h };
-          }
-          o += 2 + len;
-        }
-        return null;
-      }
-      if (u[8] === 87 && u[9] === 69 && u[10] === 66 && u[11] === 80) {
-        const fourcc = String.fromCharCode(u[12], u[13], u[14], u[15]);
-        if (fourcc === "VP8X") {
-          return {
-            w: (u[24] | u[25] << 8 | u[26] << 16) + 1,
-            h: (u[27] | u[28] << 8 | u[29] << 16) + 1
-          };
-        }
-        if (fourcc === "VP8 ") {
-          return { w: d.getUint16(26, true) & 16383, h: d.getUint16(28, true) & 16383 };
-        }
-      }
-      return null;
-    };
-    const vaultPathOfImage = (img) => {
-      const wrapper = img.closest(".internal-embed");
-      const raw = (wrapper == null ? void 0 : wrapper.getAttribute("src")) || "";
-      if (raw)
-        return raw.split("#")[0].split("|")[0];
-      const src = img.getAttribute("src") || "";
-      const m = /^app:\/\/[^/]+\/(.+)$/.exec(src);
-      if (!m)
-        return null;
-      try {
-        return decodeURIComponent(m[1]);
-      } catch (e) {
-        return m[1];
-      }
-    };
-    const applyImageSize = (img, dim) => {
-      if (img.dataset.fkSized)
-        return;
-      img.dataset.fkSized = "1";
-      img.setCssStyles({ aspectRatio: dim.w + " / " + dim.h });
-      img.addEventListener("load", () => {
-        img.setCssStyles({ aspectRatio: "" });
-      }, { once: true });
-    };
-    const reserveImage = (img) => {
-      var _a2, _b2;
-      if (img.dataset.fkSized)
-        return;
-      if (img.complete && img.naturalWidth > 0)
-        return;
-      const path = vaultPathOfImage(img);
-      if (!path)
-        return;
-      const ext = (_b2 = (_a2 = path.split(".").pop()) == null ? void 0 : _a2.toLowerCase()) != null ? _b2 : "";
-      if (!IMG_EXT.includes(ext))
-        return;
-      const file = this.app.vault.getAbstractFileByPath(path);
-      if (!(file instanceof import_obsidian9.TFile))
-        return;
-      const key = path + "\0" + file.stat.mtime;
-      const known = this.imageSizes.get(key);
-      if (known) {
-        applyImageSize(img, known);
-        return;
-      }
-      const pending = this.imageSizeInflight.get(key);
-      if (pending) {
-        void pending.then((dim) => {
-          if (dim)
-            applyImageSize(img, dim);
-        });
-        return;
-      }
-      const read = (ext === "svg" ? this.app.vault.adapter.read(path).then((text) => parseSvgSize(text)) : this.app.vault.adapter.readBinary(path).then((buf) => parseImageSize(buf))).then((dim) => {
-        if (dim) {
-          this.imageSizes.set(key, dim);
-          persistSizeCache();
-        }
-        return dim;
-      }).catch(() => null).then((dim) => {
-        this.imageSizeInflight.delete(key);
-        return dim;
-      });
-      this.imageSizeInflight.set(key, read);
-      void read.then((dim) => {
-        if (dim)
-          applyImageSize(img, dim);
-      });
-    };
-    onInsert.push((node) => {
-      if (node.instanceOf(HTMLImageElement))
-        reserveImage(node);
-      for (const img of Array.from(node.querySelectorAll("img"))) {
-        reserveImage(img);
-      }
-    });
-    for (const img of Array.from(document.querySelectorAll("img"))) {
-      reserveImage(img);
+    if (this.settings.colorOnlyDisplay) {
+      activeWindow.document.body.classList.add("virtual-link-color-only");
     }
-    const EMBED_SEL = ".internal-embed.markdown-embed";
-    const WIDTH_BUCKET = 20;
-    const bucketOf = (w) => w > 0 ? Math.round(w / WIDTH_BUCKET) * WIDTH_BUCKET : 0;
-    const rememberEmbedHeight = (src, width, height) => {
-      var _a2;
-      const bucket = bucketOf(width);
-      if (bucket <= 0)
-        return;
-      const list = (_a2 = this.embedHeights.get(src)) != null ? _a2 : [];
-      const found = list.find((e) => e.w === bucket);
-      if (found)
-        found.h = height;
-      else
-        list.push({ w: bucket, h: height });
-      while (list.length > 6)
-        list.shift();
-      this.embedHeights.set(src, list);
-      persistSizeCache();
-    };
-    const recallEmbedHeight = (src, width) => {
-      const list = this.embedHeights.get(src);
-      if (!list || list.length === 0)
-        return null;
-      const bucket = bucketOf(width);
-      if (bucket <= 0)
-        return list[list.length - 1].h;
-      let best = list[0];
-      for (const e of list) {
-        if (Math.abs(e.w - bucket) < Math.abs(best.w - bucket))
-          best = e;
-      }
-      return Math.abs(best.w - bucket) <= 80 ? best.h : null;
-    };
-    const reserveEmbed = (el) => {
-      if (el.dataset.fkEmbedSeen)
-        return;
-      el.dataset.fkEmbedSeen = "1";
-      const src = el.getAttribute("src");
-      const apply = () => {
-        if (!src || !el.isConnected)
-          return;
-        if (el.dataset.fkEmbedReserved)
-          return;
-        const known = recallEmbedHeight(src, el.getBoundingClientRect().width);
-        if (known && known > 0) {
-          el.setCssStyles({ minHeight: known + "px" });
-          el.dataset.fkEmbedReserved = "1";
-        }
-      };
-      apply();
-      window.requestAnimationFrame(apply);
-      let timer = null;
-      let waited = 0;
-      const measure = () => {
-        timer = null;
-        const rect = el.getBoundingClientRect();
-        if (!el.isConnected || rect.height <= 0) {
-          ro.disconnect();
-          return;
-        }
-        if (!el.classList.contains("is-loaded") && waited < 4e3) {
-          waited += 400;
-          timer = window.setTimeout(measure, 400);
-          return;
-        }
-        if (el.dataset.fkEmbedReserved) {
-          el.setCssStyles({ minHeight: "" });
-          delete el.dataset.fkEmbedReserved;
-          timer = window.setTimeout(measure, 400);
-          return;
-        }
-        if (src)
-          rememberEmbedHeight(src, rect.width, Math.round(rect.height));
-        ro.disconnect();
-      };
-      const ro = new ResizeObserver(() => {
-        if (timer !== null)
-          window.clearTimeout(timer);
-        timer = window.setTimeout(measure, 400);
-      });
-      ro.observe(el);
-    };
-    onInsert.push((node) => {
-      if (node.matches(EMBED_SEL))
-        reserveEmbed(node);
-      for (const el of Array.from(node.querySelectorAll(EMBED_SEL))) {
-        reserveEmbed(el);
-      }
-    });
-    for (const el of Array.from(document.querySelectorAll(EMBED_SEL))) {
-      reserveEmbed(el);
+    this.applyBackgroundStyles();
+    const currentVersion = this.manifest.version;
+    if (this.settings.lastSeenVersion && this.settings.lastSeenVersion !== currentVersion && WHATS_NEW_VERSION === currentVersion) {
+      window.setTimeout(() => new WhatsNewModal(this.app, currentVersion).open(), 1500);
     }
-    const alignWindow = () => Math.max(3e3, (this.settings.headingAlignWatchSeconds || 12) * 1e3);
-    const scrollEditor = (el, headingText) => {
-      if (this.centerHeadingElement(el, 8e3))
-        return true;
-      const target = resolveHeadingTarget(this.app, el, headingText, null);
-      if (!target)
-        return false;
-      this.centerHeadingLine(target.view, target.line, 8e3);
-      return true;
-    };
-    onInsert.push((node) => {
-      var _a2;
-      const pops = node.matches(".hover-popover") ? [node] : Array.from(node.querySelectorAll(".hover-popover"));
-      for (const pop of pops) {
-        keepScrolledHeadingAligned(pop, "popover", alignWindow(), scrollEditor, (_a2 = getHoveredHeadingId()) != null ? _a2 : void 0);
-      }
+    if (this.settings.lastSeenVersion !== currentVersion) {
+      this.settings.lastSeenVersion = currentVersion;
+      void this.saveData(this.settings);
+    }
+    activeWindow.document.body.style.setProperty("--virtual-link-color", this.settings.noteVirtualLinkColor);
+    activeWindow.document.body.style.setProperty("--virtual-link-header-color", this.settings.headerVirtualLinkColor);
+    activeWindow.document.body.style.setProperty("--virtual-link-note-color", this.settings.noteVirtualLinkColor);
+    this.applyFuzzyColors();
+  }
+  registerWorkspaceEvents() {
+    this.registerEvent(this.app.workspace.on("layout-change", () => {
+      void this.handleLayoutChange();
+      this.scheduleBackgroundSync();
+    }));
+    this.registerEvent(this.app.workspace.on("active-leaf-change", () => {
+      void this.handleLayoutChange();
+    }));
+  }
+  registerIndexWatchers() {
+    this.updateManager.registerCallback(() => {
+      LinkerCache.getInstance(this.app, this.settings).clearCache();
     });
-    insertObserver.observe(document.body, { childList: true, subtree: true });
-    this.registerDomEvent(document, "click", (evt) => {
-      const el = evt.target;
-      if (!el || el.closest(".cm-editor"))
-        return;
-      if (!el.closest(".virtual-link, a.virtual-link-a"))
-        return;
-      const scope = el.closest(".hover-popover, .workspace-leaf");
-      window.setTimeout(() => keepScrolledHeadingAligned(scope, "dom-click", alignWindow(), scrollEditor), 60);
-    }, true);
+    LinkerCache.getInstance(this.app, this.settings).onIndexChanged = () => this.updateManager.update();
+    let indexRefreshTimer = null;
+    const scheduleIndexRefresh = () => {
+      if (indexRefreshTimer !== null)
+        window.clearTimeout(indexRefreshTimer);
+      indexRefreshTimer = window.setTimeout(() => {
+        indexRefreshTimer = null;
+        this.updateManager.update();
+      }, 800);
+    };
+    const isNote = (file) => file instanceof import_obsidian14.TFile && file.extension === "md";
+    this.registerEvent(this.app.vault.on("create", (file) => {
+      if (isNote(file))
+        scheduleIndexRefresh();
+    }));
+    this.registerEvent(this.app.vault.on("delete", (file) => {
+      if (isNote(file))
+        scheduleIndexRefresh();
+    }));
+    this.registerEvent(this.app.vault.on("rename", (file) => {
+      if (isNote(file))
+        scheduleIndexRefresh();
+    }));
+  }
+  registerLinkers() {
+    this.registerMarkdownPostProcessor((element, context) => {
+      context.addChild(new GlossaryLinker(this.app, this.settings, context, element, this));
+    });
+    this.registerEditorExtension(liveLinkerPlugin(this.app, this.settings, this.updateManager, this));
+  }
+  registerAdvUriProtocol() {
     window.setTimeout(() => {
       var _a2, _b2;
       const advancedUriLoaded = ((_b2 = (_a2 = this.app.plugins) == null ? void 0 : _a2.plugins) == null ? void 0 : _b2["obsidian-advanced-uri"]) != null;
@@ -6899,13 +7396,15 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
           return;
         if (!line || line < 1) {
           const file = this.app.vault.getAbstractFileByPath(filepath);
-          if (file instanceof import_obsidian9.TFile)
+          if (file instanceof import_obsidian14.TFile)
             void this.openFileOnly(file);
           return;
         }
         void this.jumpToLine(filepath, line, anchor);
       });
     }, 500);
+  }
+  registerContextMenus() {
     this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor, info) => {
       const file = info.file;
       if (!file)
@@ -6913,6 +7412,8 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
       menu.addItem((item) => item.setTitle(t("Copy line link (adv-uri)")).setIcon("link").onClick(() => this.copyLineUri(file, editor.getCursor().line)));
     }));
     this.registerEvent(this.app.workspace.on("file-menu", (menu, file, source) => this.addContextMenuItem(menu, file, source)));
+  }
+  registerCommands() {
     this.addCommand({
       id: "toggle-virtual-linker",
       name: "Toggle virtual linker",
@@ -6933,11 +7434,11 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
       name: "Convert all virtual links in selection to real links",
       editorCallback: (editor, view) => {
         if (!editor.somethingSelected()) {
-          new import_obsidian9.Notice("\u8BF7\u5148\u9009\u62E9\u4E00\u6BB5\u6587\u672C\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002");
+          new import_obsidian14.Notice(t("Select some text first, then run this command."));
           return;
         }
         if (!this.settings.linkerActivated) {
-          new import_obsidian9.Notice("\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u3002");
+          new import_obsidian14.Notice(t("Virtual links are currently disabled. Enable them in the settings first."));
           return;
         }
         const fromPos = editor.getCursor("from");
@@ -6965,200 +7466,8 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
       }
     });
   }
-  isInTableEnvironment(editor, _fromOffset, _toOffset) {
-    try {
-      const fromPos = editor.offsetToPos(_fromOffset);
-      const line = editor.getLine(fromPos.line);
-      const isTableLine = line.trim().startsWith("|") || line.includes("|");
-      if (isTableLine) {
-        return true;
-      }
-      const contextLines = 3;
-      for (let i = Math.max(0, fromPos.line - contextLines); i <= Math.min(editor.lineCount() - 1, fromPos.line + contextLines); i++) {
-        const contextLine = editor.getLine(i);
-        if (contextLine.trim().startsWith("|") || contextLine.includes("|")) {
-          return true;
-        }
-      }
-      return false;
-    } catch (e) {
-      return false;
-    }
-  }
-  isPosWithinRange(linkFrom, linkTo, selectionFrom, selectionTo) {
-    return (linkFrom.line > selectionFrom.line || linkFrom.line === selectionFrom.line && linkFrom.ch >= selectionFrom.ch) && (linkTo.line < selectionTo.line || linkTo.line === selectionTo.line && linkTo.ch <= selectionTo.ch);
-  }
   addContextMenuItem(menu, file, _source) {
-    if (!file) {
-      return;
-    }
-    const app = this.app;
-    const updateManager = this.updateManager;
-    const settings = this.settings;
-    const fetcher = new LinkerMetaInfoFetcher(app, settings);
-    const isDirectory = app.vault.getAbstractFileByPath(file.path) instanceof import_obsidian9.TFolder;
-    if (!isDirectory) {
-      const metaInfo = fetcher.getMetaInfo(file);
-      const contextMenuHandler = (event) => {
-        const targetElement = event.target;
-        if (!targetElement || !(targetElement instanceof HTMLElement)) {
-          return;
-        }
-        const isMultipleReferences = targetElement.classList.contains("multiple-files-references") || targetElement.closest(".multiple-files-references") !== null;
-        if (isMultipleReferences) {
-          const virtualLinkSpan = targetElement.closest(".virtual-link-span") || targetElement.closest(".virtual-link");
-          if (virtualLinkSpan) {
-            virtualLinkSpan.classList.add("virtual-link-hover-lock");
-            const spanEl = virtualLinkSpan;
-            spanEl.dataset.fkContextLock = "1";
-            menu.onHide(() => {
-              var _a2;
-              virtualLinkSpan.classList.remove("virtual-link-hover-lock");
-              delete spanEl.dataset.fkContextLock;
-              const key = ((_a2 = virtualLinkSpan.querySelector(".virtual-link-a")) == null ? void 0 : _a2.getAttribute("origin-text")) || "";
-              if (key)
-                clearContextLock(key);
-            });
-          }
-        }
-        const virtualLinkElement = targetElement.closest(".virtual-link-a");
-        const isVirtualLink = virtualLinkElement !== null;
-        const linkElement = virtualLinkElement || targetElement;
-        const from = parseInt(linkElement.getAttribute("from") || "-1");
-        const to = parseInt(linkElement.getAttribute("to") || "-1");
-        if (from === -1 || to === -1) {
-          menu.addItem((item) => {
-            item.setTitle("Converting link is not here").setIcon("link");
-          });
-        } else if (isVirtualLink) {
-          menu.addItem((item) => {
-            item.setTitle("Add to excluded keywords").setIcon("ban").onClick(async () => {
-              const text = linkElement.getAttribute("origin-text") || "";
-              if (text) {
-                const newExcludedKeywords = [.../* @__PURE__ */ new Set([...settings.excludedKeywords, text])];
-                await this.updateSettings({ excludedKeywords: newExcludedKeywords });
-                updateManager.update();
-              }
-            });
-          });
-          menu.addItem((item) => {
-            item.setTitle("Convert to real link").setIcon("link").onClick(() => {
-              convertVirtualLinkToReal(linkElement, file, app, settings);
-            });
-          });
-        }
-        activeDocument.removeEventListener("contextmenu", contextMenuHandler);
-      };
-      if (!metaInfo.excludeFile && (metaInfo.includeAllFiles || metaInfo.includeFile || metaInfo.isInIncludedDir)) {
-        menu.addItem((item) => {
-          item.setTitle("Exclude this file").setIcon("trash").onClick(async () => {
-            var _a2;
-            const target = file;
-            const targetFile = app.vault.getFileByPath(target.path);
-            if (!targetFile) {
-              return;
-            }
-            const fileCache = app.metadataCache.getFileCache(targetFile);
-            const frontmatter = (_a2 = fileCache == null ? void 0 : fileCache.frontmatter) != null ? _a2 : {};
-            const tag = settings.tagToExcludeFile;
-            let tags = frontmatter["tags"];
-            if (typeof tags === "string") {
-              tags = [tags];
-            }
-            if (!Array.isArray(tags)) {
-              tags = [];
-            }
-            if (!tags.includes(tag)) {
-              await app.fileManager.processFrontMatter(targetFile, (frontMatter) => {
-                if (!frontMatter.tags) {
-                  frontMatter.tags = /* @__PURE__ */ new Set();
-                }
-                const currentTags = [...frontMatter.tags];
-                frontMatter.tags = /* @__PURE__ */ new Set([...currentTags, tag]);
-                const includeTag = settings.tagToIncludeFile;
-                if (frontMatter.tags instanceof Set && frontMatter.tags.has(includeTag)) {
-                  frontMatter.tags.delete(includeTag);
-                }
-              }).catch(() => {
-              });
-              updateManager.update();
-            }
-          });
-        });
-      } else if (!metaInfo.includeFile && (!metaInfo.includeAllFiles || metaInfo.excludeFile || metaInfo.isInExcludedDir)) {
-        menu.addItem((item) => {
-          item.setTitle("Include this file").setIcon("plus").onClick(async () => {
-            var _a2;
-            const target = file;
-            const targetFile = app.vault.getFileByPath(target.path);
-            if (!targetFile) {
-              return;
-            }
-            const fileCache = app.metadataCache.getFileCache(targetFile);
-            const frontmatter = (_a2 = fileCache == null ? void 0 : fileCache.frontmatter) != null ? _a2 : {};
-            const tag = settings.tagToIncludeFile;
-            let tags = frontmatter["tags"];
-            if (typeof tags === "string") {
-              tags = [tags];
-            }
-            if (!Array.isArray(tags)) {
-              tags = [];
-            }
-            if (!tags.includes(tag)) {
-              await app.fileManager.processFrontMatter(targetFile, (frontMatter) => {
-                if (!frontMatter.tags) {
-                  frontMatter.tags = /* @__PURE__ */ new Set();
-                }
-                const currentTags = [...frontMatter.tags];
-                frontMatter.tags = /* @__PURE__ */ new Set([...currentTags, tag]);
-                const excludeTag = settings.tagToExcludeFile;
-                if (frontMatter.tags instanceof Set && frontMatter.tags.has(excludeTag)) {
-                  frontMatter.tags.delete(excludeTag);
-                }
-              }).catch(() => {
-              });
-              updateManager.update();
-            }
-          });
-        });
-      }
-      activeDocument.addEventListener("contextmenu", contextMenuHandler, { once: true });
-    } else {
-      const path = file.path + "/";
-      const isInIncludedDir = fetcher.includeDirPattern.test(path);
-      const isInExcludedDir = fetcher.excludeDirPattern.test(path);
-      if (fetcher.includeAllFiles && !isInExcludedDir || isInIncludedDir) {
-        menu.addItem((item) => {
-          item.setTitle("Exclude this directory").setIcon("trash").onClick(async () => {
-            const target = file;
-            const targetFolder = app.vault.getAbstractFileByPath(target.path);
-            if (!targetFolder || !(targetFolder instanceof import_obsidian9.TFolder)) {
-              return;
-            }
-            const newExcludedDirs = Array.from(/* @__PURE__ */ new Set([...settings.excludedDirectories, targetFolder.name]));
-            const newIncludedDirs = settings.linkerDirectories.filter((dir) => dir !== targetFolder.name);
-            await this.updateSettings({ linkerDirectories: newIncludedDirs, excludedDirectories: newExcludedDirs }).catch(() => {
-            });
-            updateManager.update();
-          });
-        });
-      } else if (!fetcher.includeAllFiles && !isInIncludedDir || isInExcludedDir) {
-        menu.addItem((item) => {
-          item.setTitle("Include this directory").setIcon("plus").onClick(async () => {
-            const target = file;
-            const targetFolder = app.vault.getAbstractFileByPath(target.path);
-            if (!targetFolder || !(targetFolder instanceof import_obsidian9.TFolder)) {
-              return;
-            }
-            const newExcludedDirs = settings.excludedDirectories.filter((dir) => dir !== targetFolder.name);
-            const newIncludedDirs = Array.from(/* @__PURE__ */ new Set([...settings.linkerDirectories, targetFolder.name]));
-            await this.updateSettings({ linkerDirectories: newIncludedDirs, excludedDirectories: newExcludedDirs }).catch(() => {
-            });
-            updateManager.update();
-          });
-        });
-      }
-    }
+    addContextMenuItem(this, menu, file, _source);
   }
   cleanupVirtualLinks() {
     const virtualLinks = activeDocument.querySelectorAll(".virtual-link, .virtual-link-span, .virtual-link-a");
@@ -7226,7 +7535,7 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
       try {
         await this.saveData(settingsToSave);
       } catch (e2) {
-        new import_obsidian9.Notice(t("Failed to save settings. The change may be lost when Obsidian reloads."));
+        new import_obsidian14.Notice(t("Failed to save settings. The change may be lost when Obsidian reloads."));
       }
     }
     this.updateManager.update();
@@ -7236,7 +7545,7 @@ var LinkerPlugin = class extends import_obsidian9.Plugin {
     }
     this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
       const view = leaf.view;
-      if (view instanceof import_obsidian9.MarkdownView && view.previewMode) {
+      if (view instanceof import_obsidian14.MarkdownView && view.previewMode) {
         view.previewMode.rerender(true);
       }
     });

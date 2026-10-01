@@ -55,8 +55,8 @@ var CUSTOM_ICONS = {
   "path-dotted": `<path stroke="currentColor" fill="none" stroke-width="8.5" stroke-dasharray="8.8" d="M37.5 79.1667h35.4167a14.5833 14.5833 90 000-29.1667h-45.8333a14.5833 14.5833 90 010-29.1667H62.5"/>`,
   "path-short-dashed": `<path stroke="currentColor" fill="none" stroke-width="8.5" stroke-dasharray="15" d="M37.5 79.1667h35.4167a14.5833 14.5833 90 000-29.1667h-45.8333a14.5833 14.5833 90 010-29.1667H62.5"/>`,
   "path-long-dashed": `<path stroke="currentColor" fill="none" stroke-width="8.5" stroke-dasharray="23" d="M37.5 79.1667h35.4167a14.5833 14.5833 90 000-29.1667h-45.8333a14.5833 14.5833 90 010-29.1667H62.5"/>`,
-  "arrow-triangle": `<path stroke="currentColor" fill="currentColor" d="M 15 10 L 85 50 L 15 90 Z"/>`,
-  "arrow-triangle-outline": `<path stroke="currentColor" stroke-width="8.5" fill="none" d="M 15 10 L 85 50 L 15 90 Z"/>`,
+  "arrow-triangle": `<path stroke="currentColor" fill="currentColor" d="M20.833 20.833a8.333 8.333 0 0 1 12.533-7.203l49.988 29.158a8.333 8.333 0 0 1 .012 14.408l-50 29.167A8.333 8.333 0 0 1 20.833 79.167z"/>`,
+  "arrow-triangle-outline": `<path stroke="currentColor" fill="none" stroke-width="8.5" d="M20.833 20.833a8.333 8.333 0 0 1 12.533-7.203l49.988 29.158a8.333 8.333 0 0 1 .012 14.408l-50 29.167A8.333 8.333 0 0 1 20.833 79.167z"/>`,
   "arrow-thin-triangle": `<path stroke="currentColor" stroke-width="8.5" fill="none" d="M 15 10 L 85 50 L 15 90"/>`,
   "arrow-halved-triangle": `<path stroke="currentColor" fill="currentColor" d="M 15 50 L 85 50 L 15 90 Z"/>`,
   "arrow-diamond": `<path stroke="currentColor" fill="currentColor" d="M 50 0 L 100 50 L 50 100 L 0 50 Z"/>`,
@@ -428,24 +428,26 @@ var _CanvasHelper = class _CanvasHelper {
     else this.addStyleAttributesDropdownMenu(canvas, styleAttributes, currentStyleAttributes, setStyleAttribute);
   }
   static addStyleAttributesButtons(canvas, stylableAttributes, currentStyleAttributes, setStyleAttribute) {
-    var _a;
+    var _a, _b;
     for (const stylableAttribute of stylableAttributes) {
       const selectedStyle = (_a = stylableAttribute.options.find((option) => currentStyleAttributes[stylableAttribute.key] === option.value)) != null ? _a : stylableAttribute.options.find((value) => value.value === null);
       if (!selectedStyle) {
         console.warn(`No "null" style option found for stylable attribute "${stylableAttribute.key}"`);
         continue;
       }
+      const icon = (_b = stylableAttribute.icon) != null ? _b : selectedStyle.icon;
       const menuOption = _CanvasHelper.createExpandablePopupMenuOption({
         id: `menu-option-${stylableAttribute.key}`,
         label: stylableAttribute.label,
-        icon: selectedStyle.icon
+        icon
       }, stylableAttribute.options.map((styleOption) => ({
         label: styleOption.label,
         icon: styleOption.icon,
         callback: () => {
           setStyleAttribute(stylableAttribute, styleOption.value);
           currentStyleAttributes[stylableAttribute.key] = styleOption.value;
-          (0, import_obsidian2.setIcon)(menuOption, styleOption.icon);
+          if (!stylableAttribute.icon)
+            (0, import_obsidian2.setIcon)(menuOption, styleOption.icon);
           menuOption.dispatchEvent(new Event("click"));
         }
       })));
@@ -466,7 +468,7 @@ var _CanvasHelper = class _CanvasHelper {
     (0, import_obsidian2.setIcon)(styleMenuButtonElement, "paintbrush");
     (0, import_obsidian2.setTooltip)(styleMenuButtonElement, "Style", { placement: "top" });
     styleMenuButtonElement.addEventListener("click", () => {
-      var _a2, _b2, _c;
+      var _a2, _b2, _c, _d;
       const isOpen = styleMenuButtonElement.classList.toggle("has-active-menu");
       if (!isOpen) {
         (_a2 = popupMenuElement.querySelector(`#${STYLE_MENU_DROPDOWN_ID}`)) == null ? void 0 : _a2.remove();
@@ -480,12 +482,13 @@ var _CanvasHelper = class _CanvasHelper {
       styleMenuDropdownScrollElement.classList.add("menu-scroll");
       const styleMenuDropdownGroupElement = styleMenuDropdownScrollElement.createDiv();
       styleMenuDropdownGroupElement.classList.add("menu-group");
+      const popupMenuElementRect = popupMenuElement.getBoundingClientRect();
       styleMenuDropdownElement.setCssStyles({ position: "absolute", maxHeight: "initial" });
-      styleMenuDropdownElement.setCssStyles({ top: `${popupMenuElement.getBoundingClientRect().height}px` });
+      styleMenuDropdownElement.setCssStyles({ top: `${popupMenuElementRect.height}px` });
       const canvasWrapperCenterX = canvas.wrapperEl.getBoundingClientRect().left + canvas.wrapperEl.getBoundingClientRect().width / 2;
-      const leftPosition = styleMenuButtonElement.getBoundingClientRect().left - popupMenuElement.getBoundingClientRect().left;
-      const rightPosition = popupMenuElement.getBoundingClientRect().right - styleMenuButtonElement.getBoundingClientRect().right;
-      if (popupMenuElement.getBoundingClientRect().left + leftPosition < canvasWrapperCenterX)
+      const leftPosition = styleMenuButtonElement.getBoundingClientRect().left - popupMenuElementRect.left;
+      const rightPosition = popupMenuElementRect.right - styleMenuButtonElement.getBoundingClientRect().right;
+      if (popupMenuElementRect.left + leftPosition < canvasWrapperCenterX)
         styleMenuDropdownElement.setCssStyles({ left: `${leftPosition}px` });
       else styleMenuDropdownElement.setCssStyles({ right: `${rightPosition}px` });
       for (const stylableAttribute of stylableAttributes) {
@@ -495,8 +498,12 @@ var _CanvasHelper = class _CanvasHelper {
         const iconElement = stylableAttributeElement.createDiv();
         iconElement.classList.add("menu-item-icon");
         let selectedStyle = (_c = stylableAttribute.options.find((option) => currentStyleAttributes[stylableAttribute.key] === option.value)) != null ? _c : stylableAttribute.options.find((value) => value.value === null);
-        if (!selectedStyle) continue;
-        (0, import_obsidian2.setIcon)(iconElement, selectedStyle.icon);
+        if (!selectedStyle) {
+          console.warn(`No "null" style option found for stylable attribute "${stylableAttribute.key}"`);
+          continue;
+        }
+        const icon = (_d = stylableAttribute.icon) != null ? _d : selectedStyle.icon;
+        (0, import_obsidian2.setIcon)(iconElement, icon);
         const labelElement = stylableAttributeElement.createDiv();
         labelElement.classList.add("menu-item-title");
         labelElement.textContent = stylableAttribute.label;
@@ -535,7 +542,8 @@ var _CanvasHelper = class _CanvasHelper {
                 setStyleAttribute(stylableAttribute, styleOption.value);
                 currentStyleAttributes[stylableAttribute.key] = styleOption.value;
                 selectedStyle = styleOption;
-                (0, import_obsidian2.setIcon)(iconElement, styleOption.icon);
+                if (!stylableAttribute.icon)
+                  (0, import_obsidian2.setIcon)(iconElement, styleOption.icon);
                 styleMenuDropdownSubmenuElement.remove();
               }
             });
@@ -1204,6 +1212,7 @@ function styleAttributeValidator(json) {
 var BUILTIN_NODE_STYLE_ATTRIBUTES = [
   {
     key: "textAlign",
+    icon: "align-left",
     label: "Text Alignment",
     nodeTypes: ["text"],
     options: [
@@ -1226,6 +1235,7 @@ var BUILTIN_NODE_STYLE_ATTRIBUTES = [
   },
   {
     key: "shape",
+    icon: "shapes",
     label: "Shape",
     nodeTypes: ["text"],
     options: [
@@ -1273,6 +1283,7 @@ var BUILTIN_NODE_STYLE_ATTRIBUTES = [
   },
   {
     key: "border",
+    icon: "square-dashed-bottom",
     label: "Border",
     options: [
       {
@@ -1301,6 +1312,7 @@ var BUILTIN_NODE_STYLE_ATTRIBUTES = [
 var BUILTIN_EDGE_STYLE_ATTRIBUTES = [
   {
     key: "path",
+    icon: "path-solid",
     label: "Path Style",
     options: [
       {
@@ -1327,6 +1339,7 @@ var BUILTIN_EDGE_STYLE_ATTRIBUTES = [
   },
   {
     key: "arrow",
+    icon: "play",
     label: "Arrow Style",
     options: [
       {
@@ -1378,6 +1391,7 @@ var BUILTIN_EDGE_STYLE_ATTRIBUTES = [
   },
   {
     key: "pathfindingMethod",
+    icon: "pathfinding-method-square",
     label: "Pathfinding Method",
     options: [
       {
@@ -3734,7 +3748,7 @@ async function computeCanvasFileMetadataAsync(file) {
   if (!cache2) this.saveFileCache(file.path, { mtime: 0, size: 0, hash: "" });
   else {
     const unchanged = cache2.mtime === file.stat.mtime && cache2.size === file.stat.size;
-    const hasMetadataCache = cache2.hash && Object.prototype.hasOwnProperty.call(this.metadataCache, cache2.hash);
+    const hasMetadataCache = !!(cache2.hash && Object.prototype.hasOwnProperty.call(this.metadataCache, cache2.hash));
     if (unchanged && hasMetadataCache)
       isStale = false;
   }
@@ -4474,6 +4488,14 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
     return true;
   }
   init() {
+    this.plugin.registerEvent(this.plugin.app.workspace.on(
+      "canvas:node-menu",
+      (menu, node) => {
+        menu.addItem(
+          (item) => item.setTitle("Save node as template").setIcon("book-plus").onClick(() => void this.saveNodeAsTemplate(node.canvas))
+        );
+      }
+    ));
     this.plugin.addCommand({
       id: "save-node-as-template",
       name: "Save node as template",
@@ -4497,10 +4519,11 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
     const templates = this.plugin.settings.getSetting("nodeTemplates");
     for (let i = 0; i < templates.length; i++) {
       const template = templates[i];
-      const commandId = `create-template-node-${i}`;
+      const label = template.label ? `"${template.label}"` : i + 1;
+      const createCommandId = `create-template-node-${i}`;
       this.plugin.addCommand({
-        id: commandId,
-        name: "Create template node " + (template.label ? `"${template.label}"` : i + 1),
+        id: createCommandId,
+        name: `Create template node ${label}`,
         checkCallback: CanvasHelper.canvasCommand(
           this.plugin,
           (_) => true,
@@ -4517,7 +4540,26 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
           }
         )
       });
-      this.registeredNodeTemplateCommandIds.push(commandId);
+      this.registeredNodeTemplateCommandIds.push(createCommandId);
+      const applyCommandId = `apply-template-${i}-to-node`;
+      this.plugin.addCommand({
+        id: applyCommandId,
+        name: `Apply template ${label} to selected node(s)`,
+        checkCallback: CanvasHelper.canvasCommand(
+          this.plugin,
+          (canvas) => canvas.getSelectionData().nodes.length > 0,
+          (canvas) => {
+            const selectedNodesData = canvas.getSelectionData().nodes;
+            for (const nodeData of selectedNodesData) {
+              const node = canvas.nodes.get(nodeData.id);
+              if (node) this.applyTemplateToNode(node, template);
+            }
+            if (selectedNodesData.length > 0)
+              canvas.pushHistory(canvas.getData());
+          }
+        )
+      });
+      this.registeredNodeTemplateCommandIds.push(applyCommandId);
     }
   }
   onCardMenuCreated(canvas) {
@@ -4544,7 +4586,6 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
     }
   }
   async createNodeFromTemplate(canvas, template, pos) {
-    var _a;
     const creationOptions = {
       pos,
       size: {
@@ -4565,7 +4606,12 @@ var NodeTemplatesCanvasExtension = class extends CanvasExtension {
     } else if (template.type === "group") node = canvas.createGroupNode(creationOptions);
     else if (template.type === "link") node = canvas.createLinkNode({ ...creationOptions, url: template.url });
     else throw new Error(`Unknown template type: ${template.type}`);
+    this.applyTemplateToNode(node, template);
+  }
+  applyTemplateToNode(node, template) {
+    var _a;
     const data = node.getData();
+    if (data.type !== template.type) return;
     node.setData(
       {
         ...data,
@@ -5825,7 +5871,7 @@ var AutoResizeNodeCanvasExtension = class extends CanvasExtension {
     const maxHeight = this.plugin.settings.getSetting("autoResizeNodeMaxHeight");
     if (maxHeight != -1 && height > maxHeight) height = maxHeight;
     const nodeData = node.getData();
-    height = Math.max(height, node.canvas.config.minContainerDimension);
+    height = Math.max(height + 4, node.canvas.config.minContainerDimension);
     if (this.plugin.settings.getSetting("autoResizeNodeSnapToGrid"))
       height = Math.ceil(height / CanvasHelper.GRID_SIZE) * CanvasHelper.GRID_SIZE;
     if (height === nodeData.height) return;
