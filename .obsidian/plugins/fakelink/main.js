@@ -29,7 +29,6 @@ __export(main_exports, {
 module.exports = __toCommonJS(main_exports);
 var import_obsidian14 = require("obsidian");
 var import_view4 = require("@codemirror/view");
-var import_state2 = require("@codemirror/state");
 
 // src/lang/helpers.ts
 var _a, _b;
@@ -91,8 +90,6 @@ var zhCN = {
   "When enabled, only headers containing start and end symbols will produce virtual links. Unmarked headers will not produce virtual links.": "\u542F\u7528\u540E\uFF0C\u53EA\u6709\u5305\u542B\u8D77\u6B62\u7B26\u53F7\u7684\u6807\u9898\u624D\u4F1A\u4EA7\u751F\u865A\u62DF\u94FE\u63A5\u3002\u65E0\u6807\u8BB0\u7684\u6807\u9898\u4E0D\u4F1A\u4EA7\u751F\u865A\u62DF\u94FE\u63A5\u3002",
   "Allow virtual links in headers": "\u5141\u8BB8\u6807\u9898\u4E2D\u7684\u865A\u62DF\u94FE\u63A5",
   "When enabled, virtual links will be displayed inside Markdown headings. Tip: use with Quick Switcher++ for header navigation.": "\u542F\u7528\u540E\uFF0C\u865A\u62DF\u94FE\u63A5\u5C06\u663E\u793A\u5728 Markdown \u6807\u9898\u4E2D\u3002\u53EF\u4EE5\u914D\u5408 Quick Switcher++ \u8FDB\u884C\u6807\u9898\u7684\u68C0\u7D22\u4F7F\u7528\u3002",
-  "Header jump retry delay (ms)": "\u6807\u9898\u8DF3\u8F6C\u91CD\u8BD5\u5EF6\u65F6\uFF08\u6BEB\u79D2\uFF09",
-  "When you click a virtual link pointing to a heading, the plugin jumps again after a short delay to correct position drift in large files. This is the base delay in milliseconds; it retries 3 times with increasing intervals. Minimum 100.": "\u70B9\u51FB\u6307\u5411\u6807\u9898\u7684\u865A\u62DF\u94FE\u63A5\u65F6\uFF0C\u63D2\u4EF6\u4F1A\u5728\u77ED\u6682\u5EF6\u65F6\u540E\u518D\u6B21\u8DF3\u8F6C\uFF0C\u4EE5\u4FEE\u6B63\u5927\u6587\u4EF6\u4E2D\u7684\u5B9A\u4F4D\u6F02\u79FB\u3002\u8FD9\u662F\u57FA\u7840\u5EF6\u65F6\uFF08\u6BEB\u79D2\uFF09\uFF0C\u5171\u91CD\u8BD5 3 \u6B21\u4E14\u95F4\u9694\u9012\u589E\u3002\u6700\u5C0F\u503C\u4E3A 100\u3002",
   "Fuzzy meaning matching": "\u8BCD\u4E49\u6A21\u7CCA\u5339\u914D",
   'When enabled, keywords are normalized before matching so related forms link to the same note or heading. English: each word is reduced to its stem and irregular verbs are aligned (e.g. "He ran to the store" matches "he runs to the store"). Chinese: common function words are stripped (e.g. "\u6211\u7684\u9879\u76EE\u8BA1\u5212" matches "\u9879\u76EE\u8BA1\u5212"). Off by default.': '\u542F\u7528\u540E\uFF0C\u5173\u952E\u8BCD\u5728\u5339\u914D\u524D\u4F1A\u88AB\u5F52\u4E00\u5316\uFF0C\u4F7F\u76F8\u5173\u5F62\u5F0F\u94FE\u5230\u540C\u4E00\u4E2A\u7B14\u8BB0\u6216\u6807\u9898\u3002\u82F1\u6587\uFF1A\u6BCF\u4E2A\u8BCD\u8FD8\u539F\u4E3A\u8BCD\u6839\u5E76\u5BF9\u9F50\u4E0D\u89C4\u5219\u52A8\u8BCD\uFF08\u5982 "He ran to the store" \u53EF\u94FE "he runs to the store"\uFF09\u3002\u4E2D\u6587\uFF1A\u53BB\u9664\u5E38\u89C1\u865A\u8BCD\uFF08\u5982 "\u6211\u7684\u9879\u76EE\u8BA1\u5212" \u53EF\u94FE "\u9879\u76EE\u8BA1\u5212"\uFF09\u3002\u9ED8\u8BA4\u5173\u95ED\u3002',
   "Fuzzy matching language": "\u8BCD\u4E49\u6A21\u7CCA\u5339\u914D\u8BED\u8A00",
@@ -106,6 +103,18 @@ var zhCN = {
   "Maximum number of characters stripped from the front of a text run while searching for a fuzzy match. Lower values are faster but may miss a term buried more than this many characters after the last punctuation/space. Default 10.": "\u6A21\u7CCA\u5339\u914D\u65F6\uFF0C\u4ECE\u6587\u672C\u6BB5\u5F00\u5934\u6700\u591A\u622A\u53BB\u7684\u5B57\u7B26\u6570\u3002\u503C\u8D8A\u5C0F\u8D8A\u5FEB\uFF0C\u4F46\u53EF\u80FD\u6F0F\u6389\u90A3\u4E9B\u8DDD\u4E0A\u4E00\u4E2A\u6807\u70B9/\u7A7A\u683C\u8D85\u8FC7\u8BE5\u5B57\u7B26\u6570\u7684\u8BCD\u6761\u3002\u9ED8\u8BA4 10\u3002",
   "Titles or note names whose normalized length is longer than this are processed by fuzzy matching; those of this length or shorter are skipped (exact matching still works). This keeps fuzzy matching focused on long titles/notes, where inflected or fuzzy variants are common, and avoids false links on short words. Default 6 (Chinese: only titles longer than 6 characters). Range 1-20.": "\u8BCD\u4E49\u6A21\u7CCA\u5339\u914D\u4EC5\u5904\u7406\u5F52\u4E00\u5316\u540E\u957F\u5EA6\u3010\u5927\u4E8E\u3011\u6B64\u503C\u7684\u6807\u9898\u6216\u7B14\u8BB0\u540D\uFF1B\u957F\u5EA6\u7B49\u4E8E\u6216\u5C0F\u4E8E\u6B64\u503C\u7684\u4F1A\u88AB\u8DF3\u8FC7\uFF08\u7CBE\u786E\u5339\u914D\u4E0D\u53D7\u5F71\u54CD\uFF09\u3002\u8FD9\u6837\u6A21\u7CCA\u5339\u914D\u53EA\u9488\u5BF9\u957F\u6807\u9898/\u957F\u6587\u7AE0\u540D\u2014\u2014\u8BCD\u5F62\u53D8\u4F53\u901A\u5E38\u51FA\u73B0\u5728\u957F\u8BCD\u4E0A\uFF0C\u77ED\u8BCD\u5BB9\u6613\u8BEF\u94FE\u3002\u9ED8\u8BA4 6\uFF0C\u5373\u53EA\u6709\u957F\u4E8E 6 \u4E2A\u6C49\u5B57\u7684\u6807\u9898\u624D\u505A\u6A21\u7CCA\u5904\u7406\u3002\u8303\u56F4 1-20\u3002",
   "Convert all virtual links in note to real links (preview)": "\u5C06\u7B14\u8BB0\u4E2D\u6240\u6709\u865A\u62DF\u94FE\u63A5\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5\uFF08\u9884\u89C8\uFF09",
+  "Toggle virtual linker": "\u5207\u6362\u865A\u62DF\u94FE\u63A5",
+  "Toggle header marker symbol": "\u5207\u6362\u6807\u9898\u6807\u8BB0\u7B26\u53F7",
+  "Convert all virtual links in selection to real links": "\u5C06\u9009\u4E2D\u5185\u5BB9\u4E2D\u7684\u865A\u62DF\u94FE\u63A5\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5",
+  "Convert all virtual links in multiple notes to real links": "\u5C06\u591A\u7BC7\u7B14\u8BB0\u4E2D\u7684\u865A\u62DF\u94FE\u63A5\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5",
+  "Auto (by script)": "\u81EA\u52A8\uFF08\u6309\u6587\u5B57\uFF09",
+  "English": "\u82F1\u6587",
+  "Chinese": "\u4E2D\u6587",
+  "Shortest": "\u6700\u77ED\u8DEF\u5F84",
+  "Relative": "\u76F8\u5BF9\u8DEF\u5F84",
+  "Absolute": "\u7EDD\u5BF9\u8DEF\u5F84",
+  "List of directory names (separated by new line)": "\u76EE\u5F55\u540D\u5217\u8868\uFF08\u6BCF\u884C\u4E00\u4E2A\uFF09",
+  "{count} more reference(s)": "{count} \u4E2A\u66F4\u591A\u5F15\u7528",
   "Skip links with multiple targets (batch convert)": "\u6279\u91CF\u8F6C\u6362\u65F6\u8DF3\u8FC7\u591A\u6307\u5411\u7684\u94FE\u63A5",
   'When using "Convert all virtual links to real links (preview)", virtual links that point to more than one note are skipped so you can convert them one by one manually. When off, they are included but unchecked by default and only the first target is converted.': "\u4F7F\u7528\u300C\u5C06\u7B14\u8BB0\u4E2D\u6240\u6709\u865A\u62DF\u94FE\u63A5\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5\uFF08\u9884\u89C8\uFF09\u300D\u65F6\uFF0C\u6307\u5411\u591A\u4E2A\u7B14\u8BB0\u7684\u865A\u62DF\u94FE\u63A5\u4F1A\u88AB\u8DF3\u8FC7\uFF0C\u65B9\u4FBF\u4F60\u624B\u52A8\u9010\u4E00\u8F6C\u6362\u3002\u5173\u95ED\u540E\u5B83\u4EEC\u4F1A\u5305\u542B\u5728\u5217\u8868\u4E2D\uFF0C\u4F46\u9ED8\u8BA4\u4E0D\u52FE\u9009\uFF0C\u8F6C\u6362\u65F6\u4EC5\u53D6\u7B2C\u4E00\u4E2A\u76EE\u6807\u3002",
   "Match any part of a word": "\u5339\u914D\u5355\u8BCD\u7684\u4EFB\u610F\u90E8\u5206",
@@ -238,8 +247,21 @@ var zhCN = {
   'Used when the method is "By frontmatter property": a note with this property set to true renders no virtual links at all. Usage: add "linker-ignore: true" to the note frontmatter.': '\u5F53\u65B9\u5F0F\u4E3A\u300C\u6309 Frontmatter \u5C5E\u6027\u300D\u65F6\uFF0C\u8BE5\u5C5E\u6027\u8BBE\u4E3A true \u7684\u7B14\u8BB0\u5B8C\u5168\u4E0D\u6E32\u67D3\u865A\u62DF\u94FE\u63A5\u3002\u7528\u6CD5\uFF1A\u5728\u7B14\u8BB0 frontmatter \u6DFB\u52A0 "linker-ignore: true"\u3002',
   "What is new": "\u66F4\u65B0\u4E86\u4EC0\u4E48",
   "See the full release notes": "\u67E5\u770B\u5B8C\u6574\u66F4\u65B0\u8BF4\u660E",
-  'Fix: exact matches against numbered headings (e.g. "1. Title") no longer show the fuzzy-match colour. Also: the batch-convert dialogs now follow the app language instead of hardcoded Chinese.': "\u4FEE\u590D\uFF1A\u5339\u914D\u5E26\u7F16\u53F7\u6807\u9898\uFF08\u5982\u300C1. \u6807\u9898\u300D\uFF09\u65F6\u4E0D\u518D\u663E\u793A\u6A21\u7CCA\u5339\u914D\u7684\u989C\u8272\u3002\u53E6\u5916\uFF1A\u6279\u91CF\u8F6C\u6362\u5BF9\u8BDD\u6846\u73B0\u5728\u8DDF\u968F\u5E94\u7528\u8BED\u8A00\u663E\u793A\uFF0C\u4E0D\u518D\u786C\u7F16\u7801\u4E2D\u6587\u3002",
+  "Fixed: in a split view the non-focused pane now renders against its own note; folder exclusions, per-note keyword exclusions and the self-link rule no longer read the focused note.": "\u4FEE\u590D\uFF1A\u5206\u5C4F\u89C6\u56FE\u4E0B\u672A\u6FC0\u6D3B\u7684\u7A97\u683C\u73B0\u5728\u6309\u81EA\u8EAB\u7684\u7B14\u8BB0\u6E32\u67D3\uFF1B\u6587\u4EF6\u5939\u6392\u9664\u3001\u6309\u7B14\u8BB0\u5173\u952E\u8BCD\u6392\u9664\u4E0E\u81EA\u94FE\u63A5\u89C4\u5219\u4E0D\u518D\u8BFB\u53D6\u6FC0\u6D3B\u7684\u7B14\u8BB0\u3002",
+  "Fixed: case-sensitive keywords no longer receive fuzzy or stemmed links, which used to bypass the case rule.": "\u4FEE\u590D\uFF1A\u533A\u5206\u5927\u5C0F\u5199\u7684\u5173\u952E\u8BCD\u4E0D\u518D\u4EA7\u751F\u6A21\u7CCA\u6216\u8BCD\u5E72\u94FE\u63A5\uFF0C\u6B64\u524D\u8FD9\u4E9B\u8DEF\u5F84\u4F1A\u7ED5\u8FC7\u5927\u5C0F\u5199\u89C4\u5219\u3002",
+  "Fixed: notes deleted or renamed no longer linger in the fuzzy index, per-view listeners are released on close, and converting a link in an unfocused pane edits that pane.": "\u4FEE\u590D\uFF1A\u88AB\u5220\u9664\u6216\u91CD\u547D\u540D\u7684\u7B14\u8BB0\u4E0D\u518D\u6B8B\u7559\u5728\u6A21\u7CCA\u7D22\u5F15\u4E2D\uFF0C\u5404\u89C6\u56FE\u7684\u76D1\u542C\u5728\u5173\u95ED\u65F6\u91CA\u653E\uFF0C\u5728\u672A\u6FC0\u6D3B\u7A97\u683C\u4E2D\u8F6C\u6362\u94FE\u63A5\u73B0\u5728\u7F16\u8F91\u7684\u662F\u8BE5\u7A97\u683C\u3002",
+  "Faster and stricter: per-note exclusion lists and file metadata are cached, saving a note no longer rebuilds the whole vault index, and fuzzy matching now respects the word-boundary settings and the fuzzy minimum length without a reload.": "\u66F4\u5FEB\u66F4\u4E25\u683C\uFF1A\u6309\u7B14\u8BB0\u6392\u9664\u5217\u8868\u4E0E\u6587\u4EF6\u5143\u6570\u636E\u5DF2\u7F13\u5B58\uFF0C\u4FDD\u5B58\u7B14\u8BB0\u4E0D\u518D\u91CD\u5EFA\u6574\u4E2A\u5E93\u7D22\u5F15\uFF0C\u6A21\u7CCA\u5339\u914D\u73B0\u5728\u5373\u65F6\u9075\u5FAA\u8BCD\u8FB9\u754C\u8BBE\u7F6E\u4E0E\u6A21\u7CCA\u6700\u5C0F\u957F\u5EA6\uFF0C\u65E0\u9700\u91CD\u8F7D\u3002",
+  "Fixed: timers now use window.setTimeout, so hover previews keep working in popout windows.": "\u4FEE\u590D\uFF1A\u5B9A\u65F6\u5668\u6539\u7528 window.setTimeout\uFF0C\u5F39\u51FA\u7A97\u53E3\uFF08popout\uFF09\u4E2D\u7684\u60AC\u505C\u9884\u89C8\u53EF\u6B63\u5E38\u5DE5\u4F5C\u3002",
+  "Fixed: the deprecated activeLeaf is replaced with getMostRecentLeaf(), and the file-exclusion check narrows the type with instanceof TFile instead of a cast.": "\u4FEE\u590D\uFF1A\u5F03\u7528\u7684 activeLeaf \u5DF2\u66FF\u6362\u4E3A getMostRecentLeaf()\uFF0C\u6587\u4EF6\u6392\u9664\u68C0\u67E5\u6539\u7528 instanceof TFile \u7C7B\u578B\u7A84\u5316\uFF0C\u66FF\u4EE3\u7C7B\u578B\u5F3A\u8F6C\u3002",
   "Open a Markdown note first, then run this command.": "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A Markdown \u7B14\u8BB0\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002",
+  "Add to excluded keywords": "\u52A0\u5165\u6392\u9664\u5173\u952E\u8BCD",
+  "Convert to real link": "\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5",
+  "Exclude this file": "\u6392\u9664\u6B64\u6587\u4EF6",
+  "Include this file": "\u5305\u542B\u6B64\u6587\u4EF6",
+  "Exclude this directory": "\u6392\u9664\u6B64\u6587\u4EF6\u5939",
+  "Include this directory": "\u5305\u542B\u6B64\u6587\u4EF6\u5939",
+  "The note changed while the dialog was open. Please run the command again.": "\u5BF9\u8BDD\u6846\u6253\u5F00\u671F\u95F4\u7B14\u8BB0\u5DF2\u5207\u6362\uFF0C\u8BF7\u91CD\u65B0\u8FD0\u884C\u8BE5\u547D\u4EE4\u3002",
+  "When enabled, advanced options are shown throughout the settings tab. Turn it off for a simpler view.": "\u542F\u7528\u540E\uFF0C\u8BBE\u7F6E\u9762\u677F\u5404\u5904\u4F1A\u663E\u793A\u9AD8\u7EA7\u9009\u9879\uFF1B\u5173\u95ED\u53EF\u83B7\u5F97\u66F4\u7B80\u6D01\u7684\u89C6\u56FE\u3002",
   "Virtual links are currently disabled. Enable them in the settings before running the batch conversion.": "\u865A\u62DF\u94FE\u63A5\u529F\u80FD\u5F53\u524D\u5DF2\u5173\u95ED\uFF0C\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u542F\u7528\u540E\u518D\u8FD0\u884C\u6279\u91CF\u8F6C\u6362\u3002",
   "Select some text first, then run this command.": "\u8BF7\u5148\u9009\u62E9\u4E00\u6BB5\u6587\u672C\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002",
   "in the selection": "\u9009\u4E2D\u5185\u5BB9\u4E2D",
@@ -292,20 +314,35 @@ var LinkerFileMetaInfo = class {
     this.isInExcludedDir = fetcher.excludeDirPattern.test(this.file.path);
   }
 };
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 var LinkerMetaInfoFetcher = class {
   constructor(app, settings) {
     this.app = app;
     this.settings = settings;
+    this.metaCache = /* @__PURE__ */ new Map();
     this.refreshSettings();
+  }
+  clearCache() {
+    this.metaCache.clear();
   }
   refreshSettings(settings) {
     this.settings = settings != null ? settings : this.settings;
     this.includeAllFiles = this.settings.includeAllFiles;
-    this.includeDirPattern = new RegExp(`(^|/)(${this.settings.linkerDirectories.join("|")})/`);
-    this.excludeDirPattern = new RegExp(`(^|/)(${this.settings.excludedDirectories.join("|")})/`);
+    this.includeDirPattern = new RegExp(`(^|/)(${this.settings.linkerDirectories.map(escapeRegExp).join("|")})/`);
+    this.excludeDirPattern = new RegExp(`(^|/)(${this.settings.excludedDirectories.map(escapeRegExp).join("|")})/`);
   }
   getMetaInfo(file) {
-    return new LinkerFileMetaInfo(this, file);
+    const path = file.path;
+    const mtime = file instanceof import_obsidian.TFile ? file.stat.mtime : 0;
+    const cached = this.metaCache.get(path);
+    if (cached && cached.mtime === mtime) {
+      return cached.info;
+    }
+    const info = new LinkerFileMetaInfo(this, file);
+    this.metaCache.set(path, { mtime, info });
+    return info;
   }
 };
 
@@ -320,7 +357,7 @@ var step1ab = (s) => {
     adj(s.length - 1);
   } else if (s.endsWith("ss")) {
     adj(s.length - 1);
-  } else if (s.endsWith("s") && s.length > 2) {
+  } else if (s.endsWith("s") && s.slice(0, -1).split("").some((c) => "aeiou".includes(c))) {
     adj(s.length - 2);
   }
   s = s.slice(0, k + 1);
@@ -579,7 +616,7 @@ var registry = {
   en: porterStem
 };
 function stem(word, language) {
-  const fn = registry[language];
+  const fn = registry[language === "auto" ? "en" : language];
   if (!fn)
     return word.toLowerCase();
   return fn(word);
@@ -871,6 +908,7 @@ var _ExternalUpdateManager = class {
   constructor() {
     this.registeredCallbacks = /* @__PURE__ */ new Set();
     this.pendingTimer = null;
+    this.pendingIndexRebuild = false;
   }
   registerCallback(callback) {
     this.registeredCallbacks.add(callback);
@@ -879,15 +917,25 @@ var _ExternalUpdateManager = class {
   unregisterCallback(callback) {
     this.registeredCallbacks.delete(callback);
   }
-  update() {
+  update(rebuildIndex = true) {
+    this.pendingIndexRebuild = this.pendingIndexRebuild || rebuildIndex;
     if (this.pendingTimer !== null)
       window.clearTimeout(this.pendingTimer);
     this.pendingTimer = window.setTimeout(() => {
       this.pendingTimer = null;
+      const rebuild = this.pendingIndexRebuild;
+      this.pendingIndexRebuild = false;
       for (const callback of this.registeredCallbacks) {
-        callback();
+        callback(rebuild);
       }
     }, _ExternalUpdateManager.UPDATE_DELAY_MS);
+  }
+  dispose() {
+    if (this.pendingTimer !== null)
+      window.clearTimeout(this.pendingTimer);
+    this.pendingTimer = null;
+    this.pendingIndexRebuild = false;
+    this.registeredCallbacks.clear();
   }
 };
 var ExternalUpdateManager = _ExternalUpdateManager;
@@ -939,7 +987,9 @@ var _PrefixTree = class {
     this.mapFileHeaderIds = /* @__PURE__ */ new Map();
     this.autoExcludedPaths = /* @__PURE__ */ new Set();
     this.firstSentenceCache = /* @__PURE__ */ new Map();
-    this.lastAutoExcludeSignature = "";
+    this.autoExcludePairs = [];
+    this.autoExcludeNameSig = "";
+    this.autoExcludeContentSig = "";
     this.fuzzyKeywordMap = /* @__PURE__ */ new Map();
     this.derivedKeywords = /* @__PURE__ */ new Set();
     this.fuzzyBuckets = /* @__PURE__ */ new Map();
@@ -947,8 +997,14 @@ var _PrefixTree = class {
     this.minFuzzyKeywordLen = Infinity;
     this.maxFuzzyKeywordLen = 0;
     this.fuzzyMinLength = 0;
+    this.treeUpdateInFlight = null;
+    this.treeUpdateInFlightKey = "";
+    this.generation = 0;
+    this.frontmatterExcludeCache = /* @__PURE__ */ new Map();
     this.isReady = false;
     this.readyResolve = null;
+    this.cachedExcludedKeywordsRef = null;
+    this.cachedExcludedKeywordsSet = /* @__PURE__ */ new Set();
     var _a2;
     this.fetcher = new LinkerMetaInfoFetcher(this.app, this.settings);
     this.fuzzyMinLength = (_a2 = settings.fuzzyMinLength) != null ? _a2 : 4;
@@ -963,13 +1019,22 @@ var _PrefixTree = class {
       (_a2 = this.readyResolve) == null ? void 0 : _a2.call(this);
     }
   }
+  resetReady() {
+    this.isReady = false;
+    this.readyPromise = new Promise((resolve) => {
+      this.readyResolve = resolve;
+    });
+  }
   clear() {
+    this.generation++;
     this.root = new PrefixNode();
     this._currentNodes = [];
     this.setIndexedFilePaths.clear();
     this.mapIndexedFilePathsToUpdateTime.clear();
     this.mapFilePathToLeaveNodes.clear();
+    this.mapFileHeaderIds.clear();
     this.fuzzyKeywordMap.clear();
+    this.frontmatterExcludeCache.clear();
     this.fuzzyBuckets.clear();
     this.fuzzyKeywordLengths.clear();
     this.derivedKeywords.clear();
@@ -983,8 +1048,12 @@ var _PrefixTree = class {
       return n;
     if (n === 0)
       return m;
-    let prev = new Array(n + 1);
-    let curr = new Array(n + 1);
+    let prev = _PrefixTree.editRowA;
+    let curr = _PrefixTree.editRowB;
+    if (prev.length < n + 1)
+      prev = _PrefixTree.editRowA = new Array(n + 1);
+    if (curr.length < n + 1)
+      curr = _PrefixTree.editRowB = new Array(n + 1);
     for (let j = 0; j <= n; j++)
       prev[j] = j;
     for (let i = 1; i <= m; i++) {
@@ -1003,8 +1072,8 @@ var _PrefixTree = class {
       return 1;
     return 1 - this.editDistance(a, b) / maxLen;
   }
-  findFuzzyMatches(word, threshold, excludeFile) {
-    var _a2, _b2;
+  findFuzzyMatches(word, threshold, excludeFile, renderedFile) {
+    var _a2, _b2, _c;
     const w = word.toLowerCase();
     if (!w || !this.settings.enableStemming)
       return [];
@@ -1016,6 +1085,8 @@ var _PrefixTree = class {
     if (!bucket || bucket.length === 0)
       return [];
     const minSim = threshold / 100;
+    const hasExcludedKeywords = this.settings.excludedKeywords.length > 0;
+    const activeExcludeList = this.settings.enableFrontmatterExcludeList ? this.getFrontmatterExcludeList(renderedFile) : null;
     const maxLenDiff = threshold >= 80 ? 2 : Math.max(1, Math.ceil(w.length * (1 - minSim)));
     const results = [];
     for (const key of bucket) {
@@ -1025,6 +1096,25 @@ var _PrefixTree = class {
       if (sim >= minSim) {
         const entries = this.fuzzyKeywordMap.get(key);
         for (const e of entries) {
+          if (hasExcludedKeywords && (e.canonical !== void 0 && this.isExcluded(e.canonical, renderedFile) || this.isExcluded(key, renderedFile))) {
+            continue;
+          }
+          if (activeExcludeList) {
+            const lowerKey = key.toLowerCase();
+            const lowerCanonical = (_c = e.canonical) == null ? void 0 : _c.toLowerCase();
+            const hit = (list) => list.has(lowerKey) || lowerCanonical !== void 0 && list.has(lowerCanonical);
+            if (hit(activeExcludeList))
+              continue;
+            let excludedByTarget = false;
+            for (const f of e.files) {
+              if (hit(this.getFrontmatterExcludeListForFile(f))) {
+                excludedByTarget = true;
+                break;
+              }
+            }
+            if (excludedByTarget)
+              continue;
+          }
           let files = e.files;
           if (excludeFile) {
             files = new Set([...e.files].filter((f) => f.path !== excludeFile.path));
@@ -1040,33 +1130,47 @@ var _PrefixTree = class {
     }
     return results.sort((a, b) => b.similarity - a.similarity);
   }
-  isExcluded(value) {
+  getExcludedKeywordSet() {
+    if (this.cachedExcludedKeywordsRef !== this.settings.excludedKeywords) {
+      this.cachedExcludedKeywordsRef = this.settings.excludedKeywords;
+      this.cachedExcludedKeywordsSet = new Set(this.settings.excludedKeywords.map((kw) => kw.toLowerCase()));
+    }
+    return this.cachedExcludedKeywordsSet;
+  }
+  isExcluded(value, renderedFile) {
     var _a2;
     const valueLower = value.toLowerCase();
     if (this.settings.perNoteExcludeKeywords) {
-      const activeFile = this.app.workspace.getActiveFile();
-      if (!activeFile)
+      const target = renderedFile === void 0 ? this.app.workspace.getActiveFile() : renderedFile;
+      if (!target)
         return false;
-      const metadata = this.app.metadataCache.getFileCache(activeFile);
+      const metadata = this.app.metadataCache.getFileCache(target);
       const propValue = (_a2 = metadata == null ? void 0 : metadata.frontmatter) == null ? void 0 : _a2[this.settings.frontmatterExcludeProperty];
       if (!propValue)
         return false;
     }
-    return this.settings.excludedKeywords.some((kw) => kw.toLowerCase() === valueLower);
+    return this.getExcludedKeywordSet().has(valueLower);
   }
   isGloballyExcluded(value) {
     if (this.settings.perNoteExcludeKeywords)
       return false;
     const valueLower = value.toLowerCase();
-    return this.settings.excludedKeywords.some((kw) => kw.toLowerCase() === valueLower);
+    return this.getExcludedKeywordSet().has(valueLower);
   }
   getFrontmatterExcludeListForFile(file) {
-    var _a2;
+    var _a2, _b2, _c;
     const excluded = /* @__PURE__ */ new Set();
     if (!this.settings.enableFrontmatterExcludeList)
       return excluded;
+    const mtime = (_b2 = (_a2 = file.stat) == null ? void 0 : _a2.mtime) != null ? _b2 : 0;
+    const cacheKey = file.path + "|" + this.settings.frontmatterExcludeListProperty;
+    const cached = this.frontmatterExcludeCache.get(cacheKey);
+    if (cached && cached.mtime === mtime)
+      return cached.excluded;
     const metadata = this.app.metadataCache.getFileCache(file);
-    const propValue = (_a2 = metadata == null ? void 0 : metadata.frontmatter) == null ? void 0 : _a2[this.settings.frontmatterExcludeListProperty];
+    if (!metadata)
+      return excluded;
+    const propValue = (_c = metadata.frontmatter) == null ? void 0 : _c[this.settings.frontmatterExcludeListProperty];
     if (Array.isArray(propValue)) {
       for (const item of propValue) {
         if (typeof item === "string" && item.trim().length > 0) {
@@ -1083,30 +1187,31 @@ var _PrefixTree = class {
         }
       }
     }
+    this.frontmatterExcludeCache.set(cacheKey, { mtime, excluded });
     return excluded;
   }
-  getFrontmatterExcludeList() {
+  getFrontmatterExcludeList(renderedFile) {
     const excluded = /* @__PURE__ */ new Set();
     if (!this.settings.enableFrontmatterExcludeList)
       return excluded;
-    const activeFile = this.app.workspace.getActiveFile();
-    if (activeFile) {
-      for (const kw of this.getFrontmatterExcludeListForFile(activeFile)) {
+    const target = renderedFile === void 0 ? this.app.workspace.getActiveFile() : renderedFile;
+    if (target) {
+      for (const kw of this.getFrontmatterExcludeListForFile(target)) {
         excluded.add(kw);
       }
     }
     return excluded;
   }
-  getCurrentMatchNodes(index, excludedNote, specificFile) {
+  getCurrentMatchNodes(index, excludedNote, specificFile, renderedFile) {
     var _a2;
     const matchNodes = [];
     if (excludedNote === void 0 && this.settings.excludeLinksToOwnNote) {
       excludedNote = this.app.workspace.getActiveFile();
     }
-    const frontmatterExcluded = this.getFrontmatterExcludeList();
+    const frontmatterExcluded = this.getFrontmatterExcludeList(renderedFile);
     for (const node of this._currentNodes) {
       const valueString = this.getNodeValue(node.node);
-      if (node.node.files.size === 0 || this.isExcluded(valueString)) {
+      if (node.node.files.size === 0 || this.isExcluded(valueString, renderedFile)) {
         continue;
       }
       if (frontmatterExcluded.size > 0 && frontmatterExcluded.has(valueString.toLowerCase())) {
@@ -1193,23 +1298,16 @@ var _PrefixTree = class {
           matchNode.type = 1 /* Alias */;
         }
       }
-      let currentNode = node.node;
-      while (currentNode) {
-        if (!node.caseIsMatched) {
-          matchNode.caseIsMatched = false;
-          break;
-        }
-        currentNode = currentNode.parent;
-      }
+      matchNode.caseIsMatched = node.caseIsMatched;
       matchNode.startsAtWordBoundary = node.startedAtWordBeginning;
       if (matchNode.requiresCaseMatch && !matchNode.caseIsMatched) {
         continue;
       }
       if (matchNode.files.size > 0) {
         if (matchNode.type === 2 /* Header */) {
-          const activeFile = this.app.workspace.getActiveFile();
-          if (activeFile) {
-            matchNode.files = new Set(Array.from(matchNode.files).filter((f) => f.path !== activeFile.path));
+          const ownFile = renderedFile === void 0 ? this.app.workspace.getActiveFile() : renderedFile;
+          if (ownFile) {
+            matchNode.files = new Set(Array.from(matchNode.files).filter((f) => f.path !== ownFile.path));
           }
         }
         if (matchNode.files.size > 0) {
@@ -1252,7 +1350,7 @@ var _PrefixTree = class {
       node = child;
     }
     node.files.add(file);
-    node.requiresCaseMatch = matchCase;
+    node.requiresCaseMatch = node.requiresCaseMatch || matchCase;
     if (canonicalKeyword) {
       node.canonicalKeyword = canonicalKeyword;
     }
@@ -1275,7 +1373,9 @@ var _PrefixTree = class {
         const entry = { files: node.files, headerId, canonical: canonicalKeyword };
         const list = this.fuzzyKeywordMap.get(key);
         if (list) {
-          list.push(entry);
+          const kept = list.filter((e) => e.files.size > 0 && !(e.files === node.files && e.headerId === headerId && e.canonical === canonicalKeyword));
+          kept.push(entry);
+          this.fuzzyKeywordMap.set(key, kept);
         } else {
           this.fuzzyKeywordMap.set(key, [entry]);
           const bucketKey = (_b2 = key[0]) != null ? _b2 : "";
@@ -1300,6 +1400,8 @@ var _PrefixTree = class {
     return false;
   }
   getNodeValue(node) {
+    if (node.fullValue !== void 0)
+      return node.fullValue;
     const chars = [];
     let current = node;
     while (current && current !== this.root) {
@@ -1307,7 +1409,9 @@ var _PrefixTree = class {
         chars.push(current.charValue);
       current = current.parent;
     }
-    return chars.reverse().join("");
+    const value = chars.reverse().join("");
+    node.fullValue = value;
+    return value;
   }
   static isNoneEmptyString(value) {
     return value !== null && value !== void 0 && typeof value === "string" && value.trim().length > 0;
@@ -1319,6 +1423,9 @@ var _PrefixTree = class {
     const length = value.length;
     const upperCaseChars = [...value].filter((char) => char.toLowerCase() !== char.toUpperCase() && char === char.toUpperCase()).length;
     return upperCaseChars / length >= upperCasePart;
+  }
+  isFileExcluded(file) {
+    return this.shouldExcludeFile(file);
   }
   shouldExcludeFile(file) {
     const path = file.path;
@@ -1332,7 +1439,7 @@ var _PrefixTree = class {
         return true;
       }
     }
-    if (this.settings.excludedExtensions.some((ext) => path.toLowerCase().endsWith(ext.toLowerCase()))) {
+    if (hasExcludedExtension(path, this.settings.excludedExtensions)) {
       return true;
     }
     const metaInfo = this.fetcher.getMetaInfo(file);
@@ -1355,15 +1462,15 @@ var _PrefixTree = class {
       return;
     }
     if (this.shouldExcludeFile(file)) {
+      this.removeFileFromTree(file);
       return;
     }
-    this.removeFileFromTree(file);
-    this.setIndexedFilePaths.add(path);
-    this.mapIndexedFilePathsToUpdateTime.set(path, file.stat.mtime);
     const fileCache = this.app.metadataCache.getFileCache(file);
     const tagsArray = fileCache ? (0, import_obsidian2.getAllTags)(fileCache) : null;
     const tags = (tagsArray != null ? tagsArray : []).filter((s) => _PrefixTree.isNoneEmptyString(s)).map((tag) => tag.startsWith("#") ? tag.slice(1) : tag);
     const metadata = this.app.metadataCache.getFileCache(file);
+    if (!metadata)
+      return;
     let aliases = (_b2 = (_a2 = metadata == null ? void 0 : metadata.frontmatter) == null ? void 0 : _a2.aliases) != null ? _b2 : [];
     let headerEntries = [];
     if (this.settings.includeHeaders && (metadata == null ? void 0 : metadata.headings)) {
@@ -1415,6 +1522,9 @@ var _PrefixTree = class {
       aliases = aliases.filter((s) => _PrefixTree.isNoneEmptyString(s));
     } catch (e) {
     }
+    this.removeFileFromTree(file);
+    this.setIndexedFilePaths.add(path);
+    this.mapIndexedFilePathsToUpdateTime.set(path, file.stat.mtime);
     let names = [file.basename];
     if (aliases && this.settings.includeAliases) {
       names.push(...aliases);
@@ -1426,14 +1536,11 @@ var _PrefixTree = class {
     let namesWithCaseIgnore = new Array();
     let namesWithCaseMatch = new Array();
     if (this.settings.matchCaseSensitive) {
-      let lowerCaseNames = new Array();
       if (tags.includes(this.settings.tagToIgnoreCase)) {
         namesWithCaseIgnore = [...names];
       } else {
         namesWithCaseMatch = [...names];
       }
-      lowerCaseNames = lowerCaseNames.map((name) => name.toLowerCase());
-      names.push(...lowerCaseNames);
     } else {
       if (tags.includes(this.settings.tagToMatchCase)) {
         namesWithCaseMatch = [...names];
@@ -1469,7 +1576,6 @@ var _PrefixTree = class {
         this.addFileWithName(fuzzy, file, false, headerEntry == null ? void 0 : headerEntry.headerId, name, headerEntry == null ? void 0 : headerEntry.headerId);
       };
       namesWithCaseIgnore.forEach(addStem);
-      namesWithCaseMatch.forEach(addStem);
     }
     for (const entry of headerEntries) {
       if (entry.headerId) {
@@ -1518,17 +1624,23 @@ var _PrefixTree = class {
     const path = typeof file === "string" ? file : file.path;
     const nodes = (_a2 = this.mapFilePathToLeaveNodes.get(path)) != null ? _a2 : [];
     for (const node of nodes) {
-      node.files = new Set([...node.files].filter((f) => f.path !== path));
+      for (const f of node.files) {
+        if (f.path === path)
+          node.files.delete(f);
+      }
     }
     for (let i = nodes.length - 1; i >= 0; i--) {
       const node = nodes[i];
       let currentNode = node;
       while (currentNode.files.size === 0 && currentNode.children.size === 0) {
         const parent = currentNode.parent;
-        if (!parent || parent === this.root) {
+        if (!parent) {
           break;
         }
         parent.children.delete(currentNode.charValue);
+        if (parent === this.root) {
+          break;
+        }
         currentNode = parent;
       }
     }
@@ -1543,6 +1655,26 @@ var _PrefixTree = class {
     return this.mapIndexedFilePathsToUpdateTime.has(path) && this.mapIndexedFilePathsToUpdateTime.get(path) === mtime;
   }
   async updateTree(updateFiles) {
+    const key = `${this.generation}\0${(updateFiles == null ? void 0 : updateFiles.length) ? updateFiles.join("\0") : "*"}`;
+    for (; ; ) {
+      if (this.treeUpdateInFlight && this.treeUpdateInFlightKey === key) {
+        return this.treeUpdateInFlight;
+      }
+      if (!this.treeUpdateInFlight)
+        break;
+      await this.treeUpdateInFlight;
+    }
+    const run = this.doUpdateTree(updateFiles);
+    this.treeUpdateInFlight = run;
+    this.treeUpdateInFlightKey = key;
+    try {
+      await run;
+    } finally {
+      this.treeUpdateInFlight = null;
+      this.treeUpdateInFlightKey = "";
+    }
+  }
+  async doUpdateTree(updateFiles) {
     this.fetcher.refreshSettings();
     const currentVaultFiles = /* @__PURE__ */ new Set();
     let files = new Array();
@@ -1551,7 +1683,7 @@ var _PrefixTree = class {
       return _PrefixTree.SUPPORTED_EXTENSIONS.includes(ext);
     });
     allFiles.forEach((f) => currentVaultFiles.add(f.path));
-    if (allFiles.length !== this.setIndexedFilePaths.size || !(updateFiles == null ? void 0 : updateFiles.length)) {
+    if (!(updateFiles == null ? void 0 : updateFiles.length)) {
       files = allFiles;
     } else {
       files = updateFiles.map((f) => f ? this.app.vault.getAbstractFileByPath(f) : null).filter((f) => f instanceof import_obsidian2.TFile);
@@ -1618,86 +1750,109 @@ var _PrefixTree = class {
     if (!this.settings.autoExcludeContainedCopies)
       return false;
     const allFiles = this.app.vault.getFiles().filter((file) => _PrefixTree.SUPPORTED_EXTENSIONS.includes(file.extension.toLowerCase()));
-    const signature = allFiles.map((f) => `${f.path}:${f.stat.mtime}`).sort().join("|");
-    if (signature === this.lastAutoExcludeSignature)
+    const nameSig = allFiles.map((f) => `${f.path}\0${f.basename}`).sort().join("|");
+    const contentSig = allFiles.map((f) => `${f.path}:${f.stat.mtime}`).sort().join("|");
+    if (nameSig === this.autoExcludeNameSig && contentSig === this.autoExcludeContentSig) {
       return false;
-    this.lastAutoExcludeSignature = signature;
-    const candidates = [];
-    for (const file of allFiles) {
-      if (this.shouldExcludeFile(file))
-        continue;
-      const name = file.basename;
-      if (name && name.length >= 2)
-        candidates.push({ file, name });
     }
-    candidates.sort((a, b) => a.name.length - b.name.length);
-    const pairs = [];
-    for (let i = 0; i < candidates.length; i++) {
-      const shorter = candidates[i];
-      for (let j = i + 1; j < candidates.length; j++) {
-        const longer = candidates[j];
-        if (longer.name.length === shorter.name.length)
+    if (nameSig !== this.autoExcludeNameSig) {
+      this.autoExcludeNameSig = nameSig;
+      const candidates = [];
+      for (const file of allFiles) {
+        if (this.shouldExcludeFile(file))
           continue;
-        if (longer.name.includes(shorter.name)) {
-          pairs.push({ shorter: shorter.file, longer: longer.file });
+        const name = file.basename;
+        if (name && name.length >= 2)
+          candidates.push({ file, name });
+      }
+      candidates.sort((a, b) => a.name.length - b.name.length);
+      const pairs = [];
+      for (let i = 0; i < candidates.length; i++) {
+        const shorter = candidates[i];
+        if (i % 200 === 199)
+          await new Promise((resolve) => window.setTimeout(resolve, 0));
+        for (let j = i + 1; j < candidates.length; j++) {
+          const longer = candidates[j];
+          if (longer.name.length === shorter.name.length)
+            continue;
+          if (longer.name.includes(shorter.name)) {
+            pairs.push({ shorterPath: shorter.file.path, longerPath: longer.file.path });
+          }
         }
       }
+      this.autoExcludePairs = pairs;
     }
+    this.autoExcludeContentSig = contentSig;
     let changed = false;
-    for (const pair of pairs) {
-      const shortSentence = await this.getFirstSentence(pair.shorter);
-      const longSentence = await this.getFirstSentence(pair.longer);
+    const stillMatching = /* @__PURE__ */ new Set();
+    for (const pair of this.autoExcludePairs) {
+      const shorter = this.app.vault.getFileByPath(pair.shorterPath);
+      const longer = this.app.vault.getFileByPath(pair.longerPath);
+      if (!shorter || !longer)
+        continue;
+      const shortSentence = await this.getFirstSentence(shorter);
+      const longSentence = await this.getFirstSentence(longer);
       if (shortSentence && longSentence && shortSentence === longSentence) {
-        if (!this.autoExcludedPaths.has(pair.longer.path)) {
-          this.autoExcludedPaths.add(pair.longer.path);
-          this.removeFileFromTree(pair.longer);
+        stillMatching.add(pair.longerPath);
+        if (!this.autoExcludedPaths.has(pair.longerPath)) {
+          this.autoExcludedPaths.add(pair.longerPath);
+          this.removeFileFromTree(longer);
           changed = true;
         }
       }
     }
-    return changed;
-  }
-  findFiles(prefix) {
-    let node = this.root;
-    for (const char of prefix) {
-      node = node.children.get(char.toLowerCase());
-      if (!node) {
-        return /* @__PURE__ */ new Set();
+    for (const path of [...this.autoExcludedPaths]) {
+      if (stillMatching.has(path))
+        continue;
+      this.autoExcludedPaths.delete(path);
+      const file = this.app.vault.getFileByPath(path);
+      if (file) {
+        this.addFileToTree(file);
       }
+      changed = true;
     }
-    return node.files;
+    return changed;
   }
   resetSearch() {
     this._currentNodes = [new VisitedPrefixNode(this.root)];
   }
   pushChar(char) {
     const newNodes = [];
+    const queued = /* @__PURE__ */ new Set();
     const chars = [char, char.toLowerCase()];
     chars.forEach((c) => {
       const isBoundary = _PrefixTree.checkWordBoundary(c);
-      if (this.settings.matchAnyPartsOfWords || isBoundary || this.settings.matchEndOfWords) {
+      if ((this.settings.matchAnyPartsOfWords || isBoundary || this.settings.matchEndOfWords) && !queued.has(this.root)) {
         newNodes.push(new VisitedPrefixNode(this.root, true, isBoundary));
+        queued.add(this.root);
       }
       for (const node of this._currentNodes) {
         const child = node.node.children.get(c);
         const startedAtBoundary = node.startedAtWordBeginning;
-        if (child) {
-          const newPrefixNodes = newNodes.map((n) => n.node);
-          if (!newPrefixNodes.includes(child)) {
-            const newVisited = new VisitedPrefixNode(child, char == c, startedAtBoundary);
-            newVisited.formattingDelta = node.formattingDelta;
-            newNodes.push(newVisited);
-          }
+        if (child && !queued.has(child)) {
+          const newVisited = new VisitedPrefixNode(child, char === c, startedAtBoundary);
+          newVisited.formattingDelta = node.formattingDelta;
+          newNodes.push(newVisited);
+          queued.add(child);
         }
       }
     });
     this._currentNodes = newNodes;
+  }
+  hasWordEnd() {
+    for (const n of this._currentNodes) {
+      if (n.node.files.size > 0)
+        return true;
+    }
+    return false;
   }
   static checkWordBoundary(char) {
     const pattern = /[^\p{L}\p{N}]/u;
     return pattern.test(char);
   }
   static stripHeadingNumber(heading) {
+    if (typeof heading !== "string" || heading.length === 0)
+      return heading;
     const num = "(?:[0-9]+|[\u96F6\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\u767E\u5343]+)";
     const sep = "[.\u3001)\uFF09]";
     const re = new RegExp("^[\\s]*[\uFF08(]?" + num + sep + "[\\s]*(?:" + num + sep + "[\\s]*)*(?=\\S)");
@@ -1705,6 +1860,8 @@ var _PrefixTree = class {
     return m ? heading.slice(m[0].length) : heading;
   }
   headingKeyword(heading) {
+    if (typeof heading !== "string" || heading.length === 0)
+      return "";
     const withoutNumber = _PrefixTree.stripHeadingNumber(heading);
     let s = withoutNumber;
     const symbols = this.settings.headingSymbolWhitelist;
@@ -1738,8 +1895,66 @@ PrefixTree.SUPPORTED_EXTENSIONS = [
   "avi",
   "webm"
 ];
+PrefixTree.editRowA = [];
+PrefixTree.editRowB = [];
 PrefixTree.IRREGULAR_VERBS = FUZZY_IRREGULAR_VERBS;
 PrefixTree.ZH_STOPWORDS = FUZZY_ZH_STOPWORDS;
+function scoreFuzzyWindow(opts) {
+  var _a2, _b2;
+  const { cache, settings, text, baseFrom, endPos, rawWord, maxOffset, isWordBoundary, excludeFile, renderedFile, isCovered } = opts;
+  let bestOffset = -1;
+  let bestSim = -1;
+  let bestResults = null;
+  for (let offset = 0; offset <= maxOffset; offset++) {
+    const rawCandidate = rawWord.slice(offset);
+    const leadWs = rawCandidate.length - rawCandidate.replace(/^\s+/, "").length;
+    const candidate = rawCandidate.trim();
+    if (!candidate)
+      continue;
+    if (!settings.matchAnyPartsOfWords && settings.matchBeginningOfWords && settings.matchEndOfWords && !isWordBoundary) {
+      const candidateStart = baseFrom + offset + leadWs;
+      const startBoundary = candidateStart === 0 ? PrefixTree.checkWordBoundary((_a2 = text[0]) != null ? _a2 : "") : PrefixTree.checkWordBoundary((_b2 = text[candidateStart - 1]) != null ? _b2 : "");
+      if (!startBoundary)
+        continue;
+    }
+    if (candidate.length < cache.minFuzzyKeywordLen - 2)
+      continue;
+    if (candidate.length > cache.maxFuzzyKeywordLen * 2 + 4)
+      continue;
+    const normWord = cache.fuzzyNormalize(candidate, settings.stemmingLanguage);
+    if (!normWord)
+      continue;
+    if (!cache.couldMatchFuzzyLength(normWord.length))
+      continue;
+    const fuzzyResults = cache.findFuzzyMatches(normWord, settings.fuzzyMatchThreshold, excludeFile, renderedFile);
+    if (fuzzyResults.length > 0) {
+      if (isCovered(baseFrom + offset + leadWs, endPos))
+        continue;
+      const usable = fuzzyResults.some((fr) => [...fr.files].some((f) => !hasExcludedExtension(f.path, settings.excludedExtensions)));
+      if (!usable)
+        continue;
+      const sim = fuzzyResults[0].similarity;
+      if (sim > bestSim) {
+        bestSim = sim;
+        bestOffset = offset;
+        bestResults = fuzzyResults;
+        if (sim >= 0.9999)
+          break;
+      }
+    }
+  }
+  if (bestOffset < 0)
+    return null;
+  return { bestOffset, bestResults: bestResults != null ? bestResults : [] };
+}
+function normalizeExtensionSuffix(ext) {
+  const trimmed = ext.trim();
+  return (trimmed.startsWith(".") ? trimmed : "." + trimmed).toLowerCase();
+}
+function hasExcludedExtension(path, extensions) {
+  const lower = path.toLowerCase();
+  return extensions.some((ext) => lower.endsWith(normalizeExtensionSuffix(ext)));
+}
 var LinkerCache = class {
   constructor(app, settings) {
     this.app = app;
@@ -1756,7 +1971,11 @@ var LinkerCache = class {
     return LinkerCache.instance;
   }
   clearCache() {
+    var _a2;
+    this.cache.fuzzyMinLength = (_a2 = this.settings.fuzzyMinLength) != null ? _a2 : 4;
+    this.cache.fetcher.clearCache();
     this.cache.clear();
+    this.cache.resetReady();
     this.activeFilePath = void 0;
   }
   reset() {
@@ -1766,14 +1985,19 @@ var LinkerCache = class {
     var _a2, _b2, _c;
     if (!this.settings.linkerActivated)
       return;
-    if (!((_b2 = (_a2 = this.app) == null ? void 0 : _a2.workspace) == null ? void 0 : _b2.getActiveFile())) {
+    const activeFile = (_c = (_b2 = (_a2 = this.app) == null ? void 0 : _a2.workspace) == null ? void 0 : _b2.getActiveFile()) == null ? void 0 : _c.path;
+    if (!this.cache.isReady)
+      force = true;
+    if (activeFile && activeFile === this.activeFilePath && !force) {
       return;
     }
-    const activeFile = (_c = this.app.workspace.getActiveFile()) == null ? void 0 : _c.path;
-    if (activeFile === this.activeFilePath && !force) {
-      return;
-    }
-    void this.cache.updateTree(force ? void 0 : [activeFile, this.activeFilePath]).then(() => this.cache.markReady());
+    const full = force || !activeFile;
+    void this.cache.updateTree(full ? void 0 : [activeFile, this.activeFilePath]).then(() => {
+      if (full && this.cache.setIndexedFilePaths.size > 0) {
+        this.cache.markReady();
+      }
+    }).catch(() => {
+    });
     this.activeFilePath = activeFile;
     if (this.settings.autoExcludeContainedCopies) {
       void this.cache.computeAutoExclude().then((changed) => {
@@ -1823,7 +2047,10 @@ function splitTableRow(line) {
   for (let i = 0; i < line.length; i++) {
     const c = line[i];
     const n = line[i + 1];
-    if (c === "[" && n === "[") {
+    if (c === "\\" && n !== void 0) {
+      cur += c + n;
+      i++;
+    } else if (c === "[" && n === "[") {
       inLink = true;
       cur += c;
     } else if (c === "]" && n === "]" && inLink) {
@@ -1994,16 +2221,29 @@ function locateInTableBlock(lines, block, domRowIndex, cellIndex, originText, do
     to: { line: targetDocLine, ch: fromCh + originText.length }
   };
 }
+function findMarkdownViewForElement(el, app) {
+  var _a2;
+  for (const leaf of app.workspace.getLeavesOfType("markdown")) {
+    const view = leaf.view;
+    if ((_a2 = view == null ? void 0 : view.contentEl) == null ? void 0 : _a2.contains(el)) {
+      return view;
+    }
+  }
+  return null;
+}
 function convertVirtualLinkToReal(linkElement, target, app, settings) {
-  var _a2, _b2;
-  let from = parseInt(linkElement.getAttribute("from") || "-1");
-  let to = parseInt(linkElement.getAttribute("to") || "-1");
+  var _a2, _b2, _c;
+  const from = parseInt(linkElement.getAttribute("from") || "-1");
+  const to = parseInt(linkElement.getAttribute("to") || "-1");
   if (from === -1 || to === -1) {
     return;
   }
   const text = linkElement.getAttribute("origin-text") || "";
-  const activeFile = app.workspace.getActiveFile();
-  const activeFilePath = (_a2 = activeFile == null ? void 0 : activeFile.path) != null ? _a2 : "";
+  const ownerView = findMarkdownViewForElement(linkElement, app);
+  const view = ownerView != null ? ownerView : app.workspace.getActiveViewOfType(import_obsidian3.MarkdownView);
+  const usedFallbackView = !ownerView;
+  const activeFile = (_a2 = view == null ? void 0 : view.file) != null ? _a2 : null;
+  const activeFilePath = (_b2 = activeFile == null ? void 0 : activeFile.path) != null ? _b2 : "";
   if (!activeFile) {
     return;
   }
@@ -2011,13 +2251,14 @@ function convertVirtualLinkToReal(linkElement, target, app, settings) {
     return;
   }
   let absolutePath = target.path;
-  let relativePath = relative(dirname(activeFile.path), dirname(absolutePath)) + "/" + basename(absolutePath);
+  const relDir = relative(dirname(activeFile.path), dirname(absolutePath));
+  let relativePath = (relDir ? relDir + "/" : "") + basename(absolutePath);
   relativePath = relativePath.replace(/\\/g, "/");
   const replacementPath = app.metadataCache.fileToLinktext(target, activeFilePath);
   const headerId = linkElement.getAttribute("data-heading-id");
   const lastPart = replacementPath.split("/").pop();
   const shortestFile = app.metadataCache.getFirstLinkpathDest(lastPart || "", "");
-  let shortestPath = (shortestFile == null ? void 0 : shortestFile.path) == target.path ? lastPart : absolutePath;
+  let shortestPath = (shortestFile == null ? void 0 : shortestFile.path) === target.path ? lastPart : absolutePath;
   const pathSuffix = headerId ? `#${headerId}` : "";
   if (!replacementPath.endsWith(".md")) {
     if (absolutePath.endsWith(".md")) {
@@ -2029,10 +2270,10 @@ function convertVirtualLinkToReal(linkElement, target, app, settings) {
     if (relativePath.endsWith(".md")) {
       relativePath = relativePath.slice(0, -3);
     }
-    absolutePath += pathSuffix;
-    shortestPath += pathSuffix;
-    relativePath += pathSuffix;
   }
+  absolutePath += pathSuffix;
+  shortestPath += pathSuffix;
+  relativePath += pathSuffix;
   const useMarkdownLinks = settings.useDefaultLinkStyleForConversion ? settings.defaultUseMarkdownLinks : settings.useMarkdownLinks;
   const linkFormat = settings.useDefaultLinkStyleForConversion ? settings.defaultLinkFormat : settings.linkFormat;
   const createLink = (replacementPath2, text2, markdownStyle) => {
@@ -2044,17 +2285,17 @@ function convertVirtualLinkToReal(linkElement, target, app, settings) {
   };
   let replacement = "";
   if (replacementPath === text && linkFormat === "shortest") {
-    replacement = `[[${replacementPath}]]`;
+    replacement = useMarkdownLinks ? `[${text}](${replacementPath + pathSuffix})` : `[[${replacementPath + pathSuffix}]]`;
   } else {
-    if (linkFormat === "shortest") {
-      replacement = createLink(shortestPath || absolutePath, text, useMarkdownLinks);
-    } else if (linkFormat === "relative") {
+    if (linkFormat === "relative") {
       replacement = createLink(relativePath, text, useMarkdownLinks);
     } else if (linkFormat === "absolute") {
       replacement = createLink(absolutePath, text, useMarkdownLinks);
+    } else {
+      replacement = createLink(shortestPath || absolutePath, text, useMarkdownLinks);
     }
   }
-  const editor = (_b2 = app.workspace.getActiveViewOfType(import_obsidian3.MarkdownView)) == null ? void 0 : _b2.editor;
+  const editor = (_c = view == null ? void 0 : view.editor) != null ? _c : null;
   let fromEditorPos;
   let toEditorPos;
   if (linkElement.closest("td, th") && editor) {
@@ -2072,6 +2313,14 @@ function convertVirtualLinkToReal(linkElement, target, app, settings) {
   if (!fromEditorPos || !toEditorPos) {
     return;
   }
+  if (usedFallbackView && editor && text) {
+    const doc = editor.getValue();
+    const start = editor.posToOffset(fromEditorPos);
+    const end = editor.posToOffset(toEditorPos);
+    if (start < 0 || end > doc.length || doc.slice(start, end) !== text) {
+      return;
+    }
+  }
   if (linkElement.closest("td, th") && activeFile && editor) {
     const doc = editor.getValue();
     const fromOffset = editor.posToOffset(fromEditorPos);
@@ -2084,11 +2333,71 @@ function convertVirtualLinkToReal(linkElement, target, app, settings) {
   editor == null ? void 0 : editor.replaceRange(replacement, fromEditorPos, toEditorPos);
 }
 
-// linker/virtualLinkDom.ts
-var import_view = require("@codemirror/view");
-
 // linker/virtualLinkMatch.ts
 var import_obsidian4 = require("obsidian");
+function parseInternalLinkSyntax(app, text, currentFile) {
+  var _a2, _b2;
+  const tokens = [];
+  const regex = /(?:^|(?<![[\w]))((?:(?!\[\[)[^\s[\]|#\p{P}])+)(#(?:[^\s[\]|\p{P}]+)?)+(?:\|([^\s[\]|\p{P}]+))?/gu;
+  let m;
+  while ((m = regex.exec(text)) !== null) {
+    const full = m[0];
+    if (full.startsWith("[["))
+      continue;
+    let targetPart = full;
+    let aliasPart;
+    const pipeIdx = full.indexOf("|");
+    if (pipeIdx > 0) {
+      targetPart = full.slice(0, pipeIdx);
+      const alias = full.slice(pipeIdx + 1);
+      if (alias)
+        aliasPart = alias;
+    }
+    const hashIdx = targetPart.indexOf("#");
+    if (hashIdx <= 0)
+      continue;
+    let notePart = targetPart.slice(0, hashIdx);
+    const anchorPart = targetPart.slice(hashIdx + 1);
+    let dest = app.metadataCache.getFirstLinkpathDest((0, import_obsidian4.getLinkpath)(notePart), currentFile.path);
+    let prefixCut = 0;
+    if (!dest && notePart.length > 1) {
+      for (let cut = 1; cut < notePart.length; cut++) {
+        const candidate = notePart.slice(cut);
+        const d = app.metadataCache.getFirstLinkpathDest((0, import_obsidian4.getLinkpath)(candidate), currentFile.path);
+        if (d) {
+          dest = d;
+          notePart = candidate;
+          prefixCut = cut;
+          break;
+        }
+      }
+    }
+    if (!dest)
+      continue;
+    const displayText = aliasPart || notePart + "#" + anchorPart;
+    const blockIdx = anchorPart.indexOf("^");
+    const headingPath = blockIdx === -1 ? anchorPart : anchorPart.slice(0, blockIdx);
+    const blockId = blockIdx === -1 ? void 0 : anchorPart.slice(blockIdx + 1);
+    let headerId;
+    const headings = (_b2 = (_a2 = app.metadataCache.getFileCache(dest)) == null ? void 0 : _a2.headings) != null ? _b2 : [];
+    if (blockId) {
+      headerId = "^" + blockId;
+    } else if (headingPath && headings.length > 0) {
+      const segments = headingPath.split("#");
+      const lastSegment = segments[segments.length - 1].trim();
+      const heading = headings.find((h) => h.heading.trim().toLowerCase() === lastSegment.toLowerCase());
+      if (heading) {
+        headerId = heading.heading.trim();
+      } else {
+        continue;
+      }
+    } else {
+      continue;
+    }
+    tokens.push({ dest, displayText, headerId, index: m.index, prefixCut, length: full.length });
+  }
+  return tokens;
+}
 var VirtualMatch = class {
   constructor(id, originText, from, to, files, type, isSubWord, settings, plugin, headerId, isBoldContext = false, isItalicContext = false, isHighlightContext = false, isTripleStarContext = false, isStrikethroughContext = false, isCommentContext = false, isInHeaderContext = false, isFuzzy = false) {
     this.id = id;
@@ -2193,6 +2502,30 @@ var VirtualMatch = class {
       s.headingAlignWatchSeconds
     ].join("");
   }
+  sortedFiles() {
+    return [...this.files].sort((a, b) => this.compareFiles(a, b));
+  }
+  compareFiles(a, b) {
+    var _a2, _b2, _c, _d;
+    const mentionedA = this.isMentioned(a);
+    const mentionedB = this.isMentioned(b);
+    if (mentionedA !== mentionedB)
+      return mentionedA ? -1 : 1;
+    const byType = this.getFileTypeOrder(a) - this.getFileTypeOrder(b);
+    if (byType !== 0)
+      return byType;
+    const da = this.fileContextDistances.get(a.path);
+    const db = this.fileContextDistances.get(b.path);
+    if (da !== void 0 && db !== void 0) {
+      if (da !== db)
+        return da - db;
+    } else if (da !== void 0) {
+      return -1;
+    } else if (db !== void 0) {
+      return 1;
+    }
+    return ((_b2 = (_a2 = b.stat) == null ? void 0 : _a2.mtime) != null ? _b2 : 0) - ((_d = (_c = a.stat) == null ? void 0 : _c.mtime) != null ? _d : 0);
+  }
   getCompleteLinkElement(inTableCellEditor = false) {
     if (this.settings.maxReferencesToHideLink > 0 && this.files.length > this.settings.maxReferencesToHideLink) {
       const emptySpan = activeDocument.createElement("span");
@@ -2201,27 +2534,7 @@ var VirtualMatch = class {
       emptySpan.setAttribute("title", tip.replace("{count}", String(this.files.length)).replace("{limit}", String(this.settings.maxReferencesToHideLink)));
       return emptySpan;
     }
-    const sortedFiles = [...this.files].sort((a, b) => {
-      var _a2, _b2, _c, _d;
-      const mentionedA = this.isMentioned(a);
-      const mentionedB = this.isMentioned(b);
-      if (mentionedA !== mentionedB)
-        return mentionedA ? -1 : 1;
-      const byType = this.getFileTypeOrder(a) - this.getFileTypeOrder(b);
-      if (byType !== 0)
-        return byType;
-      const da = this.fileContextDistances.get(a.path);
-      const db = this.fileContextDistances.get(b.path);
-      if (da !== void 0 && db !== void 0) {
-        if (da !== db)
-          return da - db;
-      } else if (da !== void 0) {
-        return -1;
-      } else if (db !== void 0) {
-        return 1;
-      }
-      return ((_b2 = (_a2 = b.stat) == null ? void 0 : _a2.mtime) != null ? _b2 : 0) - ((_d = (_c = a.stat) == null ? void 0 : _c.mtime) != null ? _d : 0);
-    });
+    const sortedFiles = this.sortedFiles();
     let visibleFiles = sortedFiles;
     let hasMore = false;
     if (this.settings.maxReferenceCount > 0 && sortedFiles.length > this.settings.maxReferenceCount) {
@@ -2291,6 +2604,7 @@ var VirtualMatch = class {
     } else {
       link.href = href;
     }
+    link.setAttribute("data-href", fullPath);
     link.textContent = linkText;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
@@ -2489,11 +2803,11 @@ var VirtualMatch = class {
       const linkHref = file.path;
       const link = this.getLinkAnchorElement(linkText, linkHref, file);
       spanReferences.appendChild(link);
-      if (index == fileList.length - 1) {
+      if (index === fileList.length - 1) {
         if (overflowCount > 0) {
           const overflow = activeDocument.createElement("span");
           overflow.textContent = "|...";
-          overflow.setAttribute("title", `${overflowCount} more reference(s)`);
+          overflow.setAttribute("title", t("{count} more reference(s)").replace("{count}", String(overflowCount)));
           spanReferences.appendChild(overflow);
         }
         const bracket = activeDocument.createElement("span");
@@ -2515,7 +2829,7 @@ var VirtualMatch = class {
     if (!this.settings.alwaysShowMultipleReferences) {
       spanIndicator.classList.add("multiple-files-references");
     }
-    spanIndicator.setAttribute("title", `${hiddenCount} more reference(s)`);
+    spanIndicator.setAttribute("title", t("{count} more reference(s)").replace("{count}", String(hiddenCount)));
     return spanIndicator;
   }
   getIconSpan() {
@@ -2534,7 +2848,7 @@ var VirtualMatch = class {
       if (a.isFuzzy !== b.isFuzzy) {
         return a.isFuzzy ? 1 : -1;
       }
-      if (b.to == a.to) {
+      if (b.to === a.to) {
         return b.files.length - a.files.length;
       }
       return b.to - a.to;
@@ -2555,6 +2869,7 @@ var VirtualMatch = class {
   }
   static filterOverlapping(matches, onlyLinkOnce = true, excludedIntervalTree) {
     const matchesToDelete = /* @__PURE__ */ new Map();
+    const survivorIdsByFile = /* @__PURE__ */ new Map();
     for (let i = 0; i < matches.length; i++) {
       const addition = matches[i];
       if (matchesToDelete.has(addition.id)) {
@@ -2591,22 +2906,53 @@ var VirtualMatch = class {
         matchesToDelete.set(otherAddition.id, true);
       }
       if (onlyLinkOnce) {
-        for (let j = i + 1; j < matches.length; j++) {
-          const otherAddition = matches[j];
-          if (matchesToDelete.has(otherAddition.id)) {
-            continue;
+        const paths = addition.files.map((f) => f.path);
+        let covered = false;
+        if (paths.length > 0) {
+          const survivorSets = paths.map((p) => survivorIdsByFile.get(p));
+          if (survivorSets.every((s) => s !== void 0)) {
+            const first = survivorSets[0];
+            const rest = survivorSets.slice(1);
+            for (const id of first) {
+              if (rest.every((s) => s.has(id))) {
+                covered = true;
+                break;
+              }
+            }
           }
-          if (otherAddition.files.every((f) => addition.files.contains(f))) {
-            matchesToDelete.set(otherAddition.id, true);
+        }
+        if (covered) {
+          matchesToDelete.set(addition.id, true);
+          continue;
+        }
+        for (const p of paths) {
+          let s = survivorIdsByFile.get(p);
+          if (!s) {
+            s = /* @__PURE__ */ new Set();
+            survivorIdsByFile.set(p, s);
           }
+          s.add(addition.id);
         }
       }
     }
     return matches.filter((match) => !matchesToDelete.has(match.id));
   }
 };
+function getVirtualLinkRawPath(anchor) {
+  if (!anchor)
+    return "";
+  const raw = anchor.getAttribute("data-href");
+  if (raw)
+    return raw;
+  try {
+    return decodeURIComponent(anchor.getAttribute("href") || "");
+  } catch (e) {
+    return anchor.getAttribute("href") || "";
+  }
+}
 
 // linker/virtualLinkDom.ts
+var import_view = require("@codemirror/view");
 var ALIGN_MAX_MS = 12e3;
 var ALIGN_DEBOUNCE_MS = 150;
 var ALIGN_SAFETY_MS = 4e3;
@@ -3060,6 +3406,9 @@ function patchDispatchClamp(cm) {
       const clamp = (v) => Math.min(Math.max(Number(v) || 0, 0), docLen);
       const rawAnchor = (_g = (_f = (_e = (_d = (_c = sel.ranges) == null ? void 0 : _c[0]) == null ? void 0 : _d.from) != null ? _e : sel.anchor) != null ? _f : sel.from) != null ? _g : 0;
       const rawHead = (_n = (_m = (_l = (_k = (_j = (_i = (_h = sel.ranges) == null ? void 0 : _h[0]) == null ? void 0 : _i.to) != null ? _j : sel.head) != null ? _k : sel.to) != null ? _l : sel.anchor) != null ? _m : sel.from) != null ? _n : 0;
+      if (rawAnchor >= 0 && rawAnchor <= docLen && rawHead >= 0 && rawHead <= docLen) {
+        throw e;
+      }
       return origDispatch({
         ...spec,
         selection: { anchor: clamp(rawAnchor), head: clamp(rawHead) }
@@ -3076,6 +3425,9 @@ function patchAllEditorsDispatchClamp() {
   });
 }
 function attachTableCellContextMenu(span, match) {
+  if (span.dataset.fkCellMenu === "1")
+    return;
+  span.dataset.fkCellMenu = "1";
   span.classList.add("no-context-menu");
   span.addEventListener("contextmenu", (e) => {
     var _a2, _b2, _c;
@@ -3093,7 +3445,7 @@ function attachTableCellContextMenu(span, match) {
     };
     const menu = new import_obsidian5.Menu();
     menu.addItem((item) => {
-      item.setTitle("Add to excluded keywords").setIcon("ban").onClick(async () => {
+      item.setTitle(t("Add to excluded keywords")).setIcon("ban").onClick(async () => {
         if (match.originText) {
           const newExcludedKeywords = [.../* @__PURE__ */ new Set([...match.settings.excludedKeywords, match.originText])];
           await match.plugin.updateSettings({ excludedKeywords: newExcludedKeywords });
@@ -3104,11 +3456,11 @@ function attachTableCellContextMenu(span, match) {
     const hit = (_c = (_b2 = e.target) == null ? void 0 : _b2.closest) == null ? void 0 : _c.call(_b2, ".virtual-link-a");
     const anchor = hit && span.contains(hit) ? hit : span.querySelector(".virtual-link-a");
     if (anchor) {
-      const href = anchor.getAttribute("href") || "";
-      const targetFile = match.plugin.app.vault.getAbstractFileByPath(href.split("#")[0]);
+      const rawHref = getVirtualLinkRawPath(anchor);
+      const targetFile = match.plugin.app.vault.getAbstractFileByPath(rawHref.split("#")[0]);
       if (targetFile instanceof import_obsidian5.TFile) {
         menu.addItem((item) => {
-          item.setTitle("Convert to real link").setIcon("link").onClick(() => {
+          item.setTitle(t("Convert to real link")).setIcon("link").onClick(() => {
             convertVirtualLinkToReal(anchor, targetFile, match.plugin.app, match.settings);
           });
         });
@@ -3662,6 +4014,7 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
   constructor(app, settings, context, containerEl, plugin) {
     super(containerEl);
     this.plugin = plugin;
+    this.contextPrefixCache = /* @__PURE__ */ new Map();
     this.settings = settings;
     this.app = app;
     this.ctx = context;
@@ -3702,84 +4055,11 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
       }
     });
   }
-  getClosestLinkPath(glossaryName) {
-    var _a2, _b2;
-    const destName = this.ctx.sourcePath.replace(/(.*).md/, "$1");
-    let currentDestName = destName;
-    let currentPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(glossaryName), currentDestName);
-    if (currentPath == null)
-      return null;
-    while (currentDestName.includes("/")) {
-      currentDestName = currentDestName.replace(/\/[^/]*?$/, "");
-      const newPath = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(glossaryName), currentDestName);
-      if ((((_a2 = newPath == null ? void 0 : newPath.path) == null ? void 0 : _a2.length) || 0) > ((_b2 = currentPath == null ? void 0 : currentPath.path) == null ? void 0 : _b2.length)) {
-        currentPath = newPath;
-        break;
-      }
-    }
-    return currentPath;
-  }
   findInternalLinkSyntaxMatches(text, currentFile, startId) {
-    var _a2, _b2;
     const matches = [];
-    const regex = /(?:^|(?<![[\w]))((?:(?!\[\[)[^\s[\]|#\p{P}])+)(#(?:[^\s[\]|\p{P}]+)?)+(?:\|([^\s[\]|\p{P}]+))?/gu;
-    let m;
     let id = startId;
-    while ((m = regex.exec(text)) !== null) {
-      const full = m[0];
-      if (full.startsWith("[["))
-        continue;
-      let targetPart = full;
-      let aliasPart;
-      const pipeIdx = full.indexOf("|");
-      if (pipeIdx > 0) {
-        targetPart = full.slice(0, pipeIdx);
-        const alias = full.slice(pipeIdx + 1);
-        if (alias)
-          aliasPart = alias;
-      }
-      const hashIdx = targetPart.indexOf("#");
-      if (hashIdx <= 0)
-        continue;
-      let notePart = targetPart.slice(0, hashIdx);
-      const anchorPart = targetPart.slice(hashIdx + 1);
-      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(notePart), currentFile.path);
-      let prefixCut = 0;
-      if (!dest && notePart.length > 1) {
-        for (let cut = 1; cut < notePart.length; cut++) {
-          const candidate = notePart.slice(cut);
-          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian6.getLinkpath)(candidate), currentFile.path);
-          if (d) {
-            dest = d;
-            notePart = candidate;
-            prefixCut = cut;
-            break;
-          }
-        }
-      }
-      if (!dest)
-        continue;
-      const displayText = aliasPart || notePart + "#" + anchorPart;
-      const blockIdx = anchorPart.indexOf("^");
-      const headingPath = blockIdx === -1 ? anchorPart : anchorPart.slice(0, blockIdx);
-      const blockId = blockIdx === -1 ? void 0 : anchorPart.slice(blockIdx + 1);
-      let headerId;
-      const headings = (_b2 = (_a2 = this.app.metadataCache.getFileCache(dest)) == null ? void 0 : _a2.headings) != null ? _b2 : [];
-      if (blockId) {
-        headerId = "^" + blockId;
-      } else if (headingPath && headings.length > 0) {
-        const segments = headingPath.split("#");
-        const lastSegment = segments[segments.length - 1].trim();
-        const heading = headings.find((h) => h.heading.trim().toLowerCase() === lastSegment.toLowerCase());
-        if (heading) {
-          headerId = heading.heading.trim();
-        } else {
-          continue;
-        }
-      } else {
-        continue;
-      }
-      matches.push(new VirtualMatch(id++, displayText, m.index + prefixCut, m.index + full.length, [dest], 2 /* Header */, false, this.settings, this.plugin, headerId));
+    for (const tok of parseInternalLinkSyntax(this.app, text, currentFile)) {
+      matches.push(new VirtualMatch(id++, tok.displayText, tok.index + tok.prefixCut, tok.index + tok.length, [tok.dest], 2 /* Header */, false, this.settings, this.plugin, tok.headerId));
     }
     return matches;
   }
@@ -3829,20 +4109,28 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
     return { files, distances };
   }
   getTextBeforeNode(blockEl, targetNode, targetOffset) {
-    let result = "";
-    const walker = activeDocument.createTreeWalker(blockEl, NodeFilter.SHOW_TEXT);
-    let node;
-    while (node = walker.nextNode()) {
-      if (node === targetNode) {
-        result += (node.textContent || "").slice(0, targetOffset);
-        break;
+    let entry = this.contextPrefixCache.get(targetNode);
+    if (!entry) {
+      let prefix = "";
+      let found = false;
+      const walker = activeDocument.createTreeWalker(blockEl, NodeFilter.SHOW_TEXT);
+      let node;
+      while (node = walker.nextNode()) {
+        if (node === targetNode) {
+          found = true;
+          break;
+        }
+        prefix += node.textContent || "";
       }
-      result += node.textContent || "";
+      entry = { prefix, found };
+      this.contextPrefixCache.set(targetNode, entry);
     }
-    return result;
+    if (!entry.found)
+      return entry.prefix;
+    return entry.prefix + (targetNode.textContent || "").slice(0, targetOffset);
   }
   onload() {
-    var _a2, _b2, _c, _d;
+    var _a2, _b2, _c, _d, _e, _f;
     if (!this.settings.linkerActivated) {
       this.clearExistingLinks();
       return;
@@ -3909,10 +4197,10 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
               const codePoint = text.codePointAt(i);
               const char = i < text.length ? String.fromCodePoint(codePoint) : "\n";
               const isWordBoundary = PrefixTree.checkWordBoundary(char);
-              if (this.settings.matchAnyPartsOfWords || this.settings.matchBeginningOfWords || isWordBoundary) {
+              if (this.settings.matchAnyPartsOfWords || this.settings.matchBeginningOfWords || isWordBoundary || this.linkerCache.cache.hasWordEnd()) {
                 const sourceFile = this.app.vault.getAbstractFileByPath(this.ctx.sourcePath);
                 const currentFile = this.settings.excludeLinksToOwnNote && sourceFile instanceof import_obsidian6.TFile ? sourceFile : null;
-                const currentNodes = this.linkerCache.cache.getCurrentMatchNodes(i, currentFile);
+                const currentNodes = this.linkerCache.cache.getCurrentMatchNodes(i, currentFile, void 0, sourceFile instanceof import_obsidian6.TFile ? sourceFile : null);
                 if (currentNodes.length > 0) {
                   currentNodes.forEach((node) => {
                     if (!this.settings.matchAnyPartsOfWords) {
@@ -3924,7 +4212,7 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
                     const nTo = node.end;
                     const name = text.slice(nFrom, nTo);
                     let files = Array.from(node.files).filter((file) => {
-                      return !this.settings.excludedExtensions.some((ext) => file.path.toLowerCase().endsWith(ext.toLowerCase()));
+                      return !hasExcludedExtension(file.path, this.settings.excludedExtensions);
                     });
                     if (files.length === 0)
                       return;
@@ -3950,7 +4238,7 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
                           match.setFileHeaderId(file, ownHeaderId);
                           return;
                         }
-                        const fileNodes = this.linkerCache.cache.getCurrentMatchNodes(i, null, file);
+                        const fileNodes = this.linkerCache.cache.getCurrentMatchNodes(i, null, file, null);
                         if (fileNodes.length > 0 && fileNodes[0].headerId) {
                           match.setFileHeaderId(file, fileNodes[0].headerId);
                         }
@@ -3978,117 +4266,112 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
                   const rawWord = text.slice(baseFrom, i);
                   if (rawWord.trim().length > 0) {
                     const maxOffset = this.settings.fuzzySlidingWindow ? Math.min(rawWord.length - 1, this.settings.fuzzySlidingWindowMaxOffset) : 0;
-                    let bestOffset = -1;
-                    let bestSim = -1;
-                    for (let offset = 0; offset <= maxOffset; offset++) {
-                      const rawCandidate = rawWord.slice(offset);
-                      const candidate = rawCandidate.trim();
-                      if (!candidate)
-                        continue;
-                      if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
-                        continue;
-                      if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
-                        continue;
-                      const normWord = this.linkerCache.cache.fuzzyNormalize(candidate, this.settings.stemmingLanguage);
-                      if (!normWord)
-                        continue;
-                      if (!this.linkerCache.cache.couldMatchFuzzyLength(normWord.length))
-                        continue;
-                      const fuzzyResults = this.linkerCache.cache.findFuzzyMatches(normWord, this.settings.fuzzyMatchThreshold, currentFile);
-                      if (fuzzyResults.length > 0) {
-                        const sim = fuzzyResults[0].similarity;
-                        if (sim > bestSim) {
-                          bestSim = sim;
-                          bestOffset = offset;
-                          if (sim >= 0.9999)
-                            break;
-                        }
-                      }
-                    }
-                    let handled = false;
-                    for (let offset = bestOffset; bestOffset >= 0 && offset <= bestOffset && !handled; offset++) {
-                      const rawCandidate = rawWord.slice(offset);
-                      const leadWs = rawCandidate.length - rawCandidate.replace(/^\s+/, "").length;
-                      const candidate = rawCandidate.trim();
-                      if (!candidate)
-                        continue;
-                      if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
-                        continue;
-                      if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
-                        continue;
-                      const normWord = this.linkerCache.cache.fuzzyNormalize(candidate, this.settings.stemmingLanguage);
-                      if (!normWord)
-                        continue;
-                      if (!this.linkerCache.cache.couldMatchFuzzyLength(normWord.length))
-                        continue;
-                      const fuzzyResults = this.linkerCache.cache.findFuzzyMatches(normWord, this.settings.fuzzyMatchThreshold, currentFile);
-                      if (fuzzyResults.length > 0) {
-                        const topSim = fuzzyResults[0].similarity;
-                        const mergedFiles = [];
-                        const seenPaths = /* @__PURE__ */ new Set();
-                        const fuzzyFileHeaderIds = /* @__PURE__ */ new Map();
-                        for (const fr of fuzzyResults) {
-                          if (fr.similarity < topSim)
-                            break;
-                          for (const f of fr.files) {
-                            if (seenPaths.has(f.path))
-                              continue;
-                            seenPaths.add(f.path);
-                            mergedFiles.push(f);
-                            if (fr.headerId)
-                              fuzzyFileHeaderIds.set(f.path, fr.headerId);
-                          }
-                        }
-                        const fFrom = baseFrom + offset + leadWs;
-                        const fTo = i;
-                        const fName = text.slice(fFrom, fTo);
-                        let coveredByExact = false;
+                    const scored = scoreFuzzyWindow({
+                      cache: this.linkerCache.cache,
+                      settings: this.settings,
+                      text,
+                      baseFrom,
+                      endPos: i,
+                      rawWord,
+                      maxOffset,
+                      isWordBoundary,
+                      excludeFile: currentFile,
+                      renderedFile: sourceFile instanceof import_obsidian6.TFile ? sourceFile : null,
+                      isCovered: (checkFrom, checkTo) => {
                         for (let k = matches.length - 1; k >= 0; k--) {
                           const prev = matches[k];
                           if (prev.isFuzzy)
                             continue;
-                          if (prev.to <= fFrom)
+                          if (prev.to <= checkFrom)
                             break;
-                          if (prev.from < fTo) {
-                            coveredByExact = true;
-                            break;
-                          }
+                          if (prev.from < checkTo)
+                            return true;
                         }
-                        if (coveredByExact)
-                          continue;
-                        const filteredFiles = mergedFiles.filter((file) => {
-                          return !this.settings.excludedExtensions.some((ext) => file.path.toLowerCase().endsWith(ext.toLowerCase()));
-                        });
-                        if (filteredFiles.length > 0) {
-                          const topFr = fuzzyResults[0];
-                          let fuzzyMatchType = 0 /* Note */;
-                          if (topFr.headerId) {
-                            fuzzyMatchType = 2 /* Header */;
-                          } else if (topFr.canonical) {
-                            const hasNoteMatch = filteredFiles.some((f) => f.basename.toLowerCase() === topFr.canonical.toLowerCase());
-                            if (!hasNoteMatch)
-                              fuzzyMatchType = 1 /* Alias */;
+                        return false;
+                      }
+                    });
+                    const bestOffset = (_e = scored == null ? void 0 : scored.bestOffset) != null ? _e : -1;
+                    const bestResults = (_f = scored == null ? void 0 : scored.bestResults) != null ? _f : null;
+                    if (bestOffset >= 0) {
+                      emitWinner: {
+                        const offset = bestOffset;
+                        const rawCandidate = rawWord.slice(offset);
+                        const leadWs = rawCandidate.length - rawCandidate.replace(/^\s+/, "").length;
+                        const candidate = rawCandidate.trim();
+                        if (!candidate)
+                          break emitWinner;
+                        if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
+                          break emitWinner;
+                        if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
+                          break emitWinner;
+                        const fuzzyResults = bestResults != null ? bestResults : [];
+                        if (fuzzyResults.length > 0) {
+                          const topSim = fuzzyResults[0].similarity;
+                          const mergedFiles = [];
+                          const seenPaths = /* @__PURE__ */ new Set();
+                          const fuzzyFileHeaderIds = /* @__PURE__ */ new Map();
+                          for (const fr of fuzzyResults) {
+                            if (fr.similarity < topSim)
+                              break;
+                            for (const f of fr.files) {
+                              if (seenPaths.has(f.path))
+                                continue;
+                              seenPaths.add(f.path);
+                              mergedFiles.push(f);
+                              if (fr.headerId)
+                                fuzzyFileHeaderIds.set(f.path, fr.headerId);
+                            }
                           }
-                          const virtualMatch = new VirtualMatch(id++, fName, fFrom, fTo, filteredFiles, fuzzyMatchType, false, this.settings, this.plugin, topFr.headerId);
-                          virtualMatch.isFuzzy = true;
-                          if (filteredFiles.length > 1) {
-                            filteredFiles.forEach((file, index2) => {
-                              if (index2 === 0)
-                                return;
-                              const ownHeaderId = fuzzyFileHeaderIds.get(file.path);
-                              if (ownHeaderId) {
-                                virtualMatch.setFileHeaderId(file, ownHeaderId);
-                                return;
-                              }
-                              const fileNodes = this.linkerCache.cache.getCurrentMatchNodes(i, null, file);
-                              if (fileNodes && fileNodes.length > 0 && fileNodes[0].headerId) {
-                                virtualMatch.setFileHeaderId(file, fileNodes[0].headerId);
-                              }
-                            });
+                          const fFrom = baseFrom + offset + leadWs;
+                          const fTo = i;
+                          const fName = text.slice(fFrom, fTo);
+                          let coveredByExact = false;
+                          for (let k = matches.length - 1; k >= 0; k--) {
+                            const prev = matches[k];
+                            if (prev.isFuzzy)
+                              continue;
+                            if (prev.to <= fFrom)
+                              break;
+                            if (prev.from < fTo) {
+                              coveredByExact = true;
+                              break;
+                            }
                           }
-                          matches.push(virtualMatch);
-                          handled = true;
-                          break;
+                          if (coveredByExact)
+                            break emitWinner;
+                          const filteredFiles = mergedFiles.filter((file) => {
+                            return !hasExcludedExtension(file.path, this.settings.excludedExtensions);
+                          });
+                          if (filteredFiles.length > 0) {
+                            const topFr = fuzzyResults[0];
+                            let fuzzyMatchType = 0 /* Note */;
+                            if (topFr.headerId) {
+                              fuzzyMatchType = 2 /* Header */;
+                            } else if (topFr.canonical) {
+                              const hasNoteMatch = filteredFiles.some((f) => f.basename.toLowerCase() === topFr.canonical.toLowerCase());
+                              if (!hasNoteMatch)
+                                fuzzyMatchType = 1 /* Alias */;
+                            }
+                            const virtualMatch = new VirtualMatch(id++, fName, fFrom, fTo, filteredFiles, fuzzyMatchType, false, this.settings, this.plugin, topFr.headerId);
+                            virtualMatch.isFuzzy = true;
+                            if (filteredFiles.length > 1) {
+                              filteredFiles.forEach((file, index2) => {
+                                if (index2 === 0)
+                                  return;
+                                const ownHeaderId = fuzzyFileHeaderIds.get(file.path);
+                                if (ownHeaderId) {
+                                  virtualMatch.setFileHeaderId(file, ownHeaderId);
+                                  return;
+                                }
+                                const fileNodes = this.linkerCache.cache.getCurrentMatchNodes(i, null, file, null);
+                                if (fileNodes && fileNodes.length > 0 && fileNodes[0].headerId) {
+                                  virtualMatch.setFileHeaderId(file, fileNodes[0].headerId);
+                                }
+                              });
+                            }
+                            matches.push(virtualMatch);
+                            break emitWinner;
+                          }
                         }
                       }
                     }
@@ -4154,7 +4437,7 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
               match.setAlreadyLinkedFiles(new Set(linkedFiles));
               const span = match.getCompleteLinkElement();
               match.files.forEach((f) => linkedFiles.add(f));
-              if (match.from > 0) {
+              if (match.from > lastTo) {
                 parent == null ? void 0 : parent.insertBefore(activeDocument.createTextNode(text.slice(lastTo, match.from)), childNode);
               }
               parent == null ? void 0 : parent.insertBefore(span, childNode);
@@ -4263,6 +4546,8 @@ var AutoLinkerPlugin = class {
     this.cachedActiveView = void 0;
     this.lastRealActiveView = null;
     this.viewUpdateDomToFileMap = /* @__PURE__ */ new Map();
+    this.activeLeafChangeRef = null;
+    this.destroyed = false;
     var _a2;
     this.app = app;
     this.plugin = plugin;
@@ -4270,13 +4555,16 @@ var AutoLinkerPlugin = class {
     const { vault } = this.app;
     this.vault = vault;
     this.linkerCache = LinkerCache.getInstance(app, this.settings);
-    this.plugin.registerEvent(this.app.workspace.on("active-leaf-change", () => {
+    this.activeLeafChangeRef = this.app.workspace.on("active-leaf-change", () => {
       this.cachedActiveView = void 0;
-    }));
+    });
+    this.plugin.registerEvent(this.activeLeafChangeRef);
     this.decorations = this.buildDecorations(view);
     void ((_a2 = this.linkerCache.cache.readyPromise) == null ? void 0 : _a2.then(() => {
       let tries = 0;
       const attempt = () => {
+        if (this.destroyed)
+          return;
         if (view.visibleRanges.length > 0 || ++tries > 30) {
           this.decorations = this.buildDecorations(view, true);
           view.dispatch({});
@@ -4357,6 +4645,7 @@ var AutoLinkerPlugin = class {
   }
   destroy() {
     var _a2;
+    this.destroyed = true;
     if (this.scrollDebounceTimer !== null) {
       window.clearTimeout(this.scrollDebounceTimer);
       this.scrollDebounceTimer = null;
@@ -4364,20 +4653,21 @@ var AutoLinkerPlugin = class {
     }
     (_a2 = this.unsubscribeUpdate) == null ? void 0 : _a2.call(this);
     this.unsubscribeUpdate = null;
-  }
-  getParentElementInfo(element, maxDepth = 5) {
-    const parents = [];
-    let current = element.parentElement;
-    let depth = 0;
-    while (current && depth < maxDepth) {
-      parents.push({
-        tag: current.tagName,
-        classes: Array.from(current.classList).join(" ")
-      });
-      current = current.parentElement;
-      depth++;
+    if (this.activeLeafChangeRef) {
+      this.app.workspace.offref(this.activeLeafChangeRef);
+      this.activeLeafChangeRef = null;
     }
-    return parents;
+  }
+  fileForEditorView(view) {
+    var _a2;
+    for (const leaf of this.app.workspace.getLeavesOfType("markdown")) {
+      const markdownView = leaf.view;
+      const contentEl = markdownView == null ? void 0 : markdownView.contentEl;
+      if (contentEl && isDescendant(contentEl, view.dom, 20)) {
+        return (_a2 = markdownView.file) != null ? _a2 : null;
+      }
+    }
+    return null;
   }
   disambiguateFilesByContext(files, docPos, view) {
     const distances = /* @__PURE__ */ new Map();
@@ -4426,73 +4716,15 @@ var AutoLinkerPlugin = class {
     return { files, distances };
   }
   findInternalLinkSyntaxMatches(text, rangeFrom, currentFile, startId = 0) {
-    var _a2, _b2;
     const matches = [];
-    const regex = /(?:^|(?<![[\w]))((?:(?!\[\[)[^\s[\]|#\p{P}])+)(#(?:[^\s[\]|\p{P}]+)?)+(?:\|([^\s[\]|\p{P}]+))?/gu;
-    let m;
     let id = startId;
-    while ((m = regex.exec(text)) !== null) {
-      const full = m[0];
-      if (full.startsWith("[["))
-        continue;
-      let targetPart = full;
-      let aliasPart;
-      const pipeIdx = full.indexOf("|");
-      if (pipeIdx > 0) {
-        targetPart = full.slice(0, pipeIdx);
-        const alias = full.slice(pipeIdx + 1);
-        if (alias)
-          aliasPart = alias;
-      }
-      const hashIdx = targetPart.indexOf("#");
-      if (hashIdx <= 0)
-        continue;
-      let notePart = targetPart.slice(0, hashIdx);
-      const anchorPart = targetPart.slice(hashIdx + 1);
-      let dest = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian7.getLinkpath)(notePart), currentFile.path);
-      let prefixCut = 0;
-      if (!dest && notePart.length > 1) {
-        for (let cut = 1; cut < notePart.length; cut++) {
-          const candidate = notePart.slice(cut);
-          const d = this.app.metadataCache.getFirstLinkpathDest((0, import_obsidian7.getLinkpath)(candidate), currentFile.path);
-          if (d) {
-            dest = d;
-            notePart = candidate;
-            prefixCut = cut;
-            break;
-          }
-        }
-      }
-      if (!dest)
-        continue;
-      const displayText = aliasPart || notePart + "#" + anchorPart;
-      const blockIdx = anchorPart.indexOf("^");
-      const headingPath = blockIdx === -1 ? anchorPart : anchorPart.slice(0, blockIdx);
-      const blockId = blockIdx === -1 ? void 0 : anchorPart.slice(blockIdx + 1);
-      let headerId;
-      const headings = (_b2 = (_a2 = this.app.metadataCache.getFileCache(dest)) == null ? void 0 : _a2.headings) != null ? _b2 : [];
-      if (blockId) {
-        headerId = "^" + blockId;
-      } else if (headingPath && headings.length > 0) {
-        const segments = headingPath.split("#");
-        const lastSegment = segments[segments.length - 1].trim();
-        const heading = headings.find((h) => h.heading.trim().toLowerCase() === lastSegment.toLowerCase());
-        if (heading) {
-          headerId = heading.heading.trim();
-        } else {
-          continue;
-        }
-      } else {
-        continue;
-      }
-      const aFrom = rangeFrom + m.index + prefixCut;
-      const aTo = rangeFrom + m.index + full.length;
-      matches.push(new VirtualMatch(id++, displayText, aFrom, aTo, [dest], 2 /* Header */, false, this.settings, this.plugin, headerId));
+    for (const tok of parseInternalLinkSyntax(this.app, text, currentFile)) {
+      matches.push(new VirtualMatch(id++, tok.displayText, rangeFrom + tok.index + tok.prefixCut, rangeFrom + tok.index + tok.length, [tok.dest], 2 /* Header */, false, this.settings, this.plugin, tok.headerId));
     }
     return matches;
   }
   buildDecorations(view, viewIsActive = true) {
-    var _a2, _b2, _c, _d, _e, _f;
+    var _a2, _b2, _c, _d, _e, _f, _g;
     const builder = new import_state.RangeSetBuilder();
     if (!this.settings.linkerActivated) {
       return builder.finish();
@@ -4502,16 +4734,16 @@ var AutoLinkerPlugin = class {
     }
     const dom = view.dom;
     let mappedFile = this.viewUpdateDomToFileMap.get(dom);
-    if (mappedFile === void 0 && !isInHoverPopover(dom)) {
-      mappedFile = (_b2 = (_a2 = this.lastRealActiveView) == null ? void 0 : _a2.file) != null ? _b2 : null;
+    if (mappedFile === void 0) {
+      mappedFile = (_c = this.fileForEditorView(view)) != null ? _c : isInHoverPopover(dom) ? this.app.workspace.getActiveFile() : (_b2 = (_a2 = this.lastRealActiveView) == null ? void 0 : _a2.file) != null ? _b2 : this.app.workspace.getActiveFile();
     }
     const excludedFolders = this.settings.excludedDirectoriesForLinking;
     if (excludedFolders.length > 0) {
-      const path = (_f = (_c = mappedFile == null ? void 0 : mappedFile.parent) == null ? void 0 : _c.path) != null ? _f : (_e = (_d = this.app.workspace.getActiveFile()) == null ? void 0 : _d.parent) == null ? void 0 : _e.path;
-      if (excludedFolders.includes(path != null ? path : ""))
+      const path = (_e = (_d = mappedFile == null ? void 0 : mappedFile.parent) == null ? void 0 : _d.path) != null ? _e : "";
+      if (excludedFolders.includes(path))
         return builder.finish();
     }
-    const ignoreFile = mappedFile != null ? mappedFile : this.app.workspace.getActiveFile();
+    const ignoreFile = mappedFile;
     if (isLinkingDisabledInNote(ignoreFile, this.app, this.settings))
       return builder.finish();
     const explicitlyLinkedFiles = /* @__PURE__ */ new Set();
@@ -4527,8 +4759,8 @@ var AutoLinkerPlugin = class {
         const char = i < text.length ? String.fromCodePoint(codePoint) : "\n";
         const isWordBoundary = PrefixTree.checkWordBoundary(char);
         let currentNodes = [];
-        if (this.settings.matchAnyPartsOfWords || this.settings.matchBeginningOfWords || isWordBoundary) {
-          currentNodes = this.linkerCache.cache.getCurrentMatchNodes(i, this.settings.excludeLinksToOwnNote ? mappedFile : null);
+        if (this.settings.matchAnyPartsOfWords || this.settings.matchBeginningOfWords || isWordBoundary || this.linkerCache.cache.hasWordEnd()) {
+          currentNodes = this.linkerCache.cache.getCurrentMatchNodes(i, this.settings.excludeLinksToOwnNote ? mappedFile : null, void 0, mappedFile != null ? mappedFile : null);
           if (currentNodes.length > 0) {
             for (const node of currentNodes) {
               if (!this.settings.matchAnyPartsOfWords) {
@@ -4549,7 +4781,7 @@ var AutoLinkerPlugin = class {
               const aFrom = from + actualFrom;
               const aTo = from + nTo;
               let filteredFiles = Array.from(node.files).filter((file) => {
-                return !this.settings.excludedExtensions.some((ext) => file.path.toLowerCase().endsWith(ext.toLowerCase()));
+                return !hasExcludedExtension(file.path, this.settings.excludedExtensions);
               });
               let ctxDistances;
               if (this.settings.enableContextDisambiguation && node.type === 2 /* Header */ && filteredFiles.length > 1) {
@@ -4575,7 +4807,7 @@ var AutoLinkerPlugin = class {
                       virtualMatch.setFileHeaderId(file, ownHeaderId);
                       return;
                     }
-                    const fileNodes = this.linkerCache.cache.getCurrentMatchNodes(i, null, file);
+                    const fileNodes = this.linkerCache.cache.getCurrentMatchNodes(i, null, file, null);
                     if (fileNodes && fileNodes.length > 0 && fileNodes[0].headerId) {
                       virtualMatch.setFileHeaderId(file, fileNodes[0].headerId);
                     }
@@ -4593,119 +4825,116 @@ var AutoLinkerPlugin = class {
             const rawWord = text.slice(baseFrom, i);
             if (rawWord.trim().length > 0) {
               const maxOffset = this.settings.fuzzySlidingWindow ? Math.min(rawWord.length - 1, this.settings.fuzzySlidingWindowMaxOffset) : 0;
-              let bestOffset = -1;
-              let bestSim = -1;
-              for (let offset = 0; offset <= maxOffset; offset++) {
-                const rawCandidate = rawWord.slice(offset);
-                const candidate = rawCandidate.trim();
-                if (!candidate)
-                  continue;
-                if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
-                  continue;
-                if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
-                  continue;
-                const normWord = this.linkerCache.cache.fuzzyNormalize(candidate, this.settings.stemmingLanguage);
-                if (!normWord)
-                  continue;
-                if (!this.linkerCache.cache.couldMatchFuzzyLength(normWord.length))
-                  continue;
-                const fuzzyResults = this.linkerCache.cache.findFuzzyMatches(normWord, this.settings.fuzzyMatchThreshold, this.settings.excludeLinksToOwnNote ? mappedFile : null);
-                if (fuzzyResults.length > 0) {
-                  const sim = fuzzyResults[0].similarity;
-                  if (sim > bestSim) {
-                    bestSim = sim;
-                    bestOffset = offset;
-                    if (sim >= 0.9999)
-                      break;
-                  }
-                }
-              }
-              let handled = false;
-              for (let offset = bestOffset; bestOffset >= 0 && offset <= bestOffset && !handled; offset++) {
-                const rawCandidate = rawWord.slice(offset);
-                const leadWs = rawCandidate.length - rawCandidate.replace(/^\s+/, "").length;
-                const candidate = rawCandidate.trim();
-                if (!candidate)
-                  continue;
-                if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
-                  continue;
-                if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
-                  continue;
-                const normWord = this.linkerCache.cache.fuzzyNormalize(candidate, this.settings.stemmingLanguage);
-                if (!normWord)
-                  continue;
-                if (!this.linkerCache.cache.couldMatchFuzzyLength(normWord.length))
-                  continue;
-                const fuzzyResults = this.linkerCache.cache.findFuzzyMatches(normWord, this.settings.fuzzyMatchThreshold, this.settings.excludeLinksToOwnNote ? mappedFile : null);
-                if (fuzzyResults.length > 0) {
-                  const topSim = fuzzyResults[0].similarity;
-                  const mergedFiles = [];
-                  const seenPaths = /* @__PURE__ */ new Set();
-                  const fuzzyFileHeaderIds = /* @__PURE__ */ new Map();
-                  for (const fr of fuzzyResults) {
-                    if (fr.similarity < topSim)
-                      break;
-                    for (const f of fr.files) {
-                      if (seenPaths.has(f.path))
-                        continue;
-                      seenPaths.add(f.path);
-                      mergedFiles.push(f);
-                      if (fr.headerId)
-                        fuzzyFileHeaderIds.set(f.path, fr.headerId);
-                    }
-                  }
-                  const fFromRel = baseFrom + offset + leadWs;
-                  const fToRel = i;
-                  const fName = text.slice(fFromRel, fToRel);
-                  const aFrom = from + fFromRel;
-                  const aTo = from + fToRel;
-                  let coveredByExact = false;
+              const scored = scoreFuzzyWindow({
+                cache: this.linkerCache.cache,
+                settings: this.settings,
+                text,
+                baseFrom,
+                endPos: i,
+                rawWord,
+                maxOffset,
+                isWordBoundary,
+                excludeFile: this.settings.excludeLinksToOwnNote ? mappedFile : null,
+                renderedFile: mappedFile != null ? mappedFile : null,
+                isCovered: (checkFrom, checkTo) => {
+                  const aFrom = from + checkFrom;
+                  const aTo = from + checkTo;
                   for (let k = matches.length - 1; k >= 0; k--) {
                     const prev = matches[k];
                     if (prev.isFuzzy)
                       continue;
                     if (prev.to <= aFrom)
                       break;
-                    if (prev.from < aTo) {
-                      coveredByExact = true;
-                      break;
-                    }
+                    if (prev.from < aTo)
+                      return true;
                   }
-                  if (coveredByExact)
-                    continue;
-                  const filteredFiles = mergedFiles.filter((file) => {
-                    return !this.settings.excludedExtensions.some((ext) => file.path.toLowerCase().endsWith(ext.toLowerCase()));
-                  });
-                  if (filteredFiles.length > 0) {
-                    const topFr = fuzzyResults[0];
-                    let fuzzyMatchType = 0 /* Note */;
-                    if (topFr.headerId) {
-                      fuzzyMatchType = 2 /* Header */;
-                    } else if (topFr.canonical) {
-                      const hasNoteMatch = filteredFiles.some((f) => f.basename.toLowerCase() === topFr.canonical.toLowerCase());
-                      if (!hasNoteMatch)
-                        fuzzyMatchType = 1 /* Alias */;
+                  return false;
+                }
+              });
+              const bestOffset = (_f = scored == null ? void 0 : scored.bestOffset) != null ? _f : -1;
+              const bestResults = (_g = scored == null ? void 0 : scored.bestResults) != null ? _g : null;
+              if (bestOffset >= 0) {
+                emitWinner: {
+                  const offset = bestOffset;
+                  const rawCandidate = rawWord.slice(offset);
+                  const leadWs = rawCandidate.length - rawCandidate.replace(/^\s+/, "").length;
+                  const candidate = rawCandidate.trim();
+                  if (!candidate)
+                    break emitWinner;
+                  if (candidate.length < this.linkerCache.cache.minFuzzyKeywordLen - 2)
+                    break emitWinner;
+                  if (candidate.length > this.linkerCache.cache.maxFuzzyKeywordLen * 2 + 4)
+                    break emitWinner;
+                  const fuzzyResults = bestResults != null ? bestResults : [];
+                  if (fuzzyResults.length > 0) {
+                    const topSim = fuzzyResults[0].similarity;
+                    const mergedFiles = [];
+                    const seenPaths = /* @__PURE__ */ new Set();
+                    const fuzzyFileHeaderIds = /* @__PURE__ */ new Map();
+                    for (const fr of fuzzyResults) {
+                      if (fr.similarity < topSim)
+                        break;
+                      for (const f of fr.files) {
+                        if (seenPaths.has(f.path))
+                          continue;
+                        seenPaths.add(f.path);
+                        mergedFiles.push(f);
+                        if (fr.headerId)
+                          fuzzyFileHeaderIds.set(f.path, fr.headerId);
+                      }
                     }
-                    const virtualMatch = new VirtualMatch(id++, fName, aFrom, aTo, filteredFiles, fuzzyMatchType, false, this.settings, this.plugin, topFr.headerId);
-                    virtualMatch.isFuzzy = true;
-                    if (filteredFiles.length > 1) {
-                      filteredFiles.forEach((file, index) => {
-                        if (index === 0)
-                          return;
-                        const ownHeaderId = fuzzyFileHeaderIds.get(file.path);
-                        if (ownHeaderId) {
-                          virtualMatch.setFileHeaderId(file, ownHeaderId);
-                          return;
-                        }
-                        const fileNodes = this.linkerCache.cache.getCurrentMatchNodes(i, null, file);
-                        if (fileNodes && fileNodes.length > 0 && fileNodes[0].headerId) {
-                          virtualMatch.setFileHeaderId(file, fileNodes[0].headerId);
-                        }
-                      });
+                    const fFromRel = baseFrom + offset + leadWs;
+                    const fToRel = i;
+                    const fName = text.slice(fFromRel, fToRel);
+                    const aFrom = from + fFromRel;
+                    const aTo = from + fToRel;
+                    let coveredByExact = false;
+                    for (let k = matches.length - 1; k >= 0; k--) {
+                      const prev = matches[k];
+                      if (prev.isFuzzy)
+                        continue;
+                      if (prev.to <= aFrom)
+                        break;
+                      if (prev.from < aTo) {
+                        coveredByExact = true;
+                        break;
+                      }
                     }
-                    matches.push(virtualMatch);
-                    handled = true;
-                    break;
+                    if (coveredByExact)
+                      break emitWinner;
+                    const filteredFiles = mergedFiles.filter((file) => {
+                      return !hasExcludedExtension(file.path, this.settings.excludedExtensions);
+                    });
+                    if (filteredFiles.length > 0) {
+                      const topFr = fuzzyResults[0];
+                      let fuzzyMatchType = 0 /* Note */;
+                      if (topFr.headerId) {
+                        fuzzyMatchType = 2 /* Header */;
+                      } else if (topFr.canonical) {
+                        const hasNoteMatch = filteredFiles.some((f) => f.basename.toLowerCase() === topFr.canonical.toLowerCase());
+                        if (!hasNoteMatch)
+                          fuzzyMatchType = 1 /* Alias */;
+                      }
+                      const virtualMatch = new VirtualMatch(id++, fName, aFrom, aTo, filteredFiles, fuzzyMatchType, false, this.settings, this.plugin, topFr.headerId);
+                      virtualMatch.isFuzzy = true;
+                      if (filteredFiles.length > 1) {
+                        filteredFiles.forEach((file, index) => {
+                          if (index === 0)
+                            return;
+                          const ownHeaderId = fuzzyFileHeaderIds.get(file.path);
+                          if (ownHeaderId) {
+                            virtualMatch.setFileHeaderId(file, ownHeaderId);
+                            return;
+                          }
+                          const fileNodes = this.linkerCache.cache.getCurrentMatchNodes(i, null, file, null);
+                          if (fileNodes && fileNodes.length > 0 && fileNodes[0].headerId) {
+                            virtualMatch.setFileHeaderId(file, fileNodes[0].headerId);
+                          }
+                        });
+                      }
+                      matches.push(virtualMatch);
+                      break emitWinner;
+                    }
                   }
                 }
               }
@@ -4737,7 +4966,7 @@ var AutoLinkerPlugin = class {
           const type = node.type.name;
           const types = type.split("_");
           for (const excludedType of excludedTypes) {
-            if (type.contains(excludedType)) {
+            if (type.includes(excludedType)) {
               excludedIntervalTree.insert([node.from, node.to]);
               const isLinkIfHavingTypes = [["string", "url"], "hmd-internal-link", "internal-link"];
               isLinkIfHavingTypes.forEach((t2) => {
@@ -4795,9 +5024,6 @@ var AutoLinkerPlugin = class {
       if (this.settings.excludeLinksToRealLinkedFiles) {
         matches = VirtualMatch.filterAlreadyLinked(matches, explicitlyLinkedFiles);
       }
-      if (this.settings.onlyLinkOnce) {
-        matches = VirtualMatch.filterAlreadyLinked(matches, alreadyLinkedFiles);
-      }
       matches = VirtualMatch.filterOverlapping(matches, this.settings.onlyLinkOnce, excludedIntervalTree);
       if (internalMatches.length > 0) {
         matches = matches.concat(internalMatches);
@@ -4811,10 +5037,9 @@ var AutoLinkerPlugin = class {
       const excludeLine = viewIsActive && this.settings.excludeLinksInCurrentLine;
       const fixIMEProblem = viewIsActive && this.settings.fixIMEProblem;
       let needImeFix = false;
-      let lineStart, lineEnd;
       const line = view.state.doc.lineAt(cursorPos);
-      lineStart = line.from;
-      lineEnd = line.to;
+      const lineStart = line.from;
+      const lineEnd = line.to;
       matches = matches.filter((addition) => {
         if (addition.from > addition.to)
           return false;
@@ -4826,7 +5051,7 @@ var AutoLinkerPlugin = class {
         if (isHeaderLine) {
           if (!this.settings.allowLinksInHeaders)
             return false;
-          const currentFile = mappedFile != null ? mappedFile : this.app.workspace.getActiveFile();
+          const currentFile = mappedFile;
           if (currentFile && addition.files.some((f) => f.path === currentFile.path)) {
             return false;
           }
@@ -4914,19 +5139,22 @@ function basename2(filePath) {
   return lastSlash === -1 ? normalized : normalized.slice(lastSlash + 1);
 }
 function scanVirtualLinks(app, settings, plugin, text, sourcePath, rangeFrom, rangeTo) {
+  var _a2, _b2;
   const cache = LinkerCache.getInstance(app, settings);
   const cacheTree = cache.cache;
   const excludedExtensions = settings.excludedExtensions;
-  const ownNote = settings.excludeLinksToOwnNote ? app.vault.getAbstractFileByPath(sourcePath) : null;
+  const sourceNote = app.vault.getAbstractFileByPath(sourcePath);
+  const ownNote = settings.excludeLinksToOwnNote ? sourceNote : null;
   cache.reset();
+  const excludedIntervals = buildExcludedIntervals(text);
   const matches = [];
   let id = 0;
   let wordStart = 0;
   for (let i = 0; i <= text.length; i++) {
     const char = i < text.length ? text[i] : "\n";
     const isWordBoundary = PrefixTree.checkWordBoundary(char);
-    if (settings.matchAnyPartsOfWords || settings.matchBeginningOfWords || isWordBoundary) {
-      const currentNodes = cacheTree.getCurrentMatchNodes(i, ownNote);
+    if (settings.matchAnyPartsOfWords || settings.matchBeginningOfWords || isWordBoundary || cacheTree.hasWordEnd()) {
+      const currentNodes = cacheTree.getCurrentMatchNodes(i, ownNote, void 0, sourceNote);
       for (const node of currentNodes) {
         if (!settings.matchAnyPartsOfWords) {
           if (settings.matchBeginningOfWords && !node.startsAtWordBoundary && (settings.matchEndOfWords && !isWordBoundary)) {
@@ -4949,7 +5177,7 @@ function scanVirtualLinks(app, settings, plugin, text, sourcePath, rangeFrom, ra
             nTo = e;
           }
         }
-        if (isInsideExistingLink(text, nFrom))
+        if (excludedIntervals.search([nFrom, nTo]).length > 0)
           continue;
         if (isInTableRow(text, nFrom))
           continue;
@@ -4958,13 +5186,13 @@ function scanVirtualLinks(app, settings, plugin, text, sourcePath, rangeFrom, ra
             continue;
         }
         const filteredFiles = Array.from(node.files).filter((file) => {
-          return !excludedExtensions.some((ext) => file.path.toLowerCase().endsWith(ext.toLowerCase()));
+          return !hasExcludedExtension(file.path, excludedExtensions);
         });
         if (filteredFiles.length === 0)
           continue;
         const vm = new VirtualMatch(id++, name, nFrom, nTo, filteredFiles, node.type, !isWordBoundary, settings, plugin, node.headerId);
         filteredFiles.forEach((file) => {
-          const fileNodes = cacheTree.getCurrentMatchNodes(i, null, file);
+          const fileNodes = cacheTree.getCurrentMatchNodes(i, null, file, null);
           if (fileNodes && fileNodes.length > 0 && fileNodes[0].headerId) {
             vm.setFileHeaderId(file, fileNodes[0].headerId);
           } else {
@@ -4974,40 +5202,104 @@ function scanVirtualLinks(app, settings, plugin, text, sourcePath, rangeFrom, ra
         matches.push(vm);
       }
       if (currentNodes.length === 0 && settings.enableStemming) {
-        const rawWord = text.slice(wordStart, i).trim();
-        if (rawWord.length > 0) {
-          const normWord = cacheTree.fuzzyNormalize(rawWord, settings.stemmingLanguage);
-          if (normWord) {
-            const fuzzyResults = cacheTree.findFuzzyMatches(normWord, settings.fuzzyMatchThreshold, ownNote);
-            for (const fr of fuzzyResults) {
-              let fFrom = wordStart;
-              const fTo = i;
-              while (fFrom < fTo && /\s/.test(text[fFrom]))
-                fFrom++;
-              const fName = text.slice(fFrom, fTo);
-              if (isInsideExistingLink(text, fFrom))
-                continue;
-              if (isInTableRow(text, fFrom))
-                continue;
+        let baseFrom = wordStart;
+        while (baseFrom < i && /\s/.test(text[baseFrom]))
+          baseFrom++;
+        const rawWord = text.slice(baseFrom, i);
+        if (rawWord.trim().length > 0) {
+          const maxOffset = settings.fuzzySlidingWindow ? Math.min(rawWord.length - 1, settings.fuzzySlidingWindowMaxOffset) : 0;
+          const scored = scoreFuzzyWindow({
+            cache: cacheTree,
+            settings,
+            text,
+            baseFrom,
+            endPos: i,
+            rawWord,
+            maxOffset,
+            isWordBoundary,
+            excludeFile: ownNote,
+            renderedFile: sourceNote,
+            isCovered: (checkFrom, checkTo) => {
+              if (excludedIntervals.search([checkFrom, checkTo]).length > 0)
+                return true;
+              if (isInTableRow(text, checkFrom))
+                return true;
               if (rangeFrom !== void 0 && rangeTo !== void 0) {
-                if (fTo <= rangeFrom || fFrom >= rangeTo)
-                  continue;
+                if (checkTo <= rangeFrom || checkFrom >= rangeTo)
+                  return true;
               }
-              const filteredFiles = Array.from(fr.files).filter((file) => {
-                return !excludedExtensions.some((ext) => file.path.toLowerCase().endsWith(ext.toLowerCase()));
-              });
-              if (filteredFiles.length === 0)
-                continue;
-              const vm = new VirtualMatch(id++, fName, fFrom, fTo, filteredFiles, 0 /* Note */, false, settings, plugin, fr.headerId);
-              filteredFiles.forEach((file) => {
-                const fileNodes = cacheTree.getCurrentMatchNodes(i, null, file);
-                if (fileNodes && fileNodes.length > 0 && fileNodes[0].headerId) {
-                  vm.setFileHeaderId(file, fileNodes[0].headerId);
-                } else {
-                  vm.setFileHeaderId(file, "");
+              return false;
+            }
+          });
+          const bestOffset = (_a2 = scored == null ? void 0 : scored.bestOffset) != null ? _a2 : -1;
+          const bestResults = (_b2 = scored == null ? void 0 : scored.bestResults) != null ? _b2 : null;
+          if (bestOffset >= 0) {
+            emitWinner: {
+              const offset = bestOffset;
+              const rawCandidate = rawWord.slice(offset);
+              const leadWs = rawCandidate.length - rawCandidate.replace(/^\s+/, "").length;
+              const candidate = rawCandidate.trim();
+              if (!candidate)
+                break emitWinner;
+              if (candidate.length < cacheTree.minFuzzyKeywordLen - 2)
+                break emitWinner;
+              if (candidate.length > cacheTree.maxFuzzyKeywordLen * 2 + 4)
+                break emitWinner;
+              const fuzzyResults = bestResults != null ? bestResults : [];
+              if (fuzzyResults.length > 0) {
+                const topSim = fuzzyResults[0].similarity;
+                const mergedFiles = [];
+                const seenPaths = /* @__PURE__ */ new Set();
+                const fuzzyFileHeaderIds = /* @__PURE__ */ new Map();
+                for (const fr of fuzzyResults) {
+                  if (fr.similarity < topSim)
+                    break;
+                  for (const f of fr.files) {
+                    if (seenPaths.has(f.path))
+                      continue;
+                    seenPaths.add(f.path);
+                    mergedFiles.push(f);
+                    if (fr.headerId)
+                      fuzzyFileHeaderIds.set(f.path, fr.headerId);
+                  }
                 }
-              });
-              matches.push(vm);
+                const fFrom = baseFrom + offset + leadWs;
+                const fTo = i;
+                const fName = text.slice(fFrom, fTo);
+                const filteredFiles = mergedFiles.filter((file) => {
+                  return !hasExcludedExtension(file.path, excludedExtensions);
+                });
+                if (filteredFiles.length > 0) {
+                  const topFr = fuzzyResults[0];
+                  let fuzzyMatchType = 0 /* Note */;
+                  if (topFr.headerId) {
+                    fuzzyMatchType = 2 /* Header */;
+                  } else if (topFr.canonical) {
+                    const hasNoteMatch = filteredFiles.some((f) => f.basename.toLowerCase() === topFr.canonical.toLowerCase());
+                    if (!hasNoteMatch)
+                      fuzzyMatchType = 1 /* Alias */;
+                  }
+                  const vm = new VirtualMatch(id++, fName, fFrom, fTo, filteredFiles, fuzzyMatchType, false, settings, plugin, topFr.headerId);
+                  vm.isFuzzy = true;
+                  filteredFiles.forEach((file, index) => {
+                    if (index === 0)
+                      return;
+                    const ownHeaderId = fuzzyFileHeaderIds.get(file.path);
+                    if (ownHeaderId) {
+                      vm.setFileHeaderId(file, ownHeaderId);
+                      return;
+                    }
+                    const fileNodes = cacheTree.getCurrentMatchNodes(i, null, file, null);
+                    if (fileNodes && fileNodes.length > 0 && fileNodes[0].headerId) {
+                      vm.setFileHeaderId(file, fileNodes[0].headerId);
+                    } else {
+                      vm.setFileHeaderId(file, "");
+                    }
+                  });
+                  matches.push(vm);
+                  break emitWinner;
+                }
+              }
             }
           }
         }
@@ -5034,19 +5326,20 @@ function scanVirtualLinks(app, settings, plugin, text, sourcePath, rangeFrom, ra
   return items;
 }
 function buildReplacement(app, settings, match, sourcePath) {
-  var _a2, _b2;
-  const targetFile = match.files[0];
+  var _a2, _b2, _c;
+  const targetFile = (_a2 = match.sortedFiles()[0]) != null ? _a2 : match.files[0];
   if (!targetFile)
     return match.originText;
   const text = match.originText;
-  const headerId = (_a2 = match.getFileHeaderId(targetFile)) != null ? _a2 : "";
+  const headerId = (_b2 = match.getFileHeaderId(targetFile)) != null ? _b2 : "";
   const useMarkdownLinks = settings.useDefaultLinkStyleForConversion ? settings.defaultUseMarkdownLinks : settings.useMarkdownLinks;
   const linkFormat = settings.useDefaultLinkStyleForConversion ? settings.defaultLinkFormat : settings.linkFormat;
   let absolutePath = targetFile.path;
-  let relativePath = dirname2(sourcePath) + "/" + basename2(targetFile.path);
+  const relDir = relative(dirname2(sourcePath), dirname2(targetFile.path));
+  let relativePath = (relDir ? relDir + "/" : "") + basename2(targetFile.path);
   relativePath = relativePath.replace(/\\/g, "/");
   const replacementPath = app.metadataCache.fileToLinktext(targetFile, sourcePath);
-  const lastPart = (_b2 = replacementPath.split("/").pop()) != null ? _b2 : "";
+  const lastPart = (_c = replacementPath.split("/").pop()) != null ? _c : "";
   const shortestFile = app.metadataCache.getFirstLinkpathDest(lastPart, "");
   let shortestPath = (shortestFile == null ? void 0 : shortestFile.path) === targetFile.path ? lastPart : absolutePath;
   const pathSuffix = headerId ? `#${headerId}` : "";
@@ -5057,10 +5350,10 @@ function buildReplacement(app, settings, match, sourcePath) {
       shortestPath = shortestPath.slice(0, -3);
     if (relativePath.endsWith(".md"))
       relativePath = relativePath.slice(0, -3);
-    absolutePath += pathSuffix;
-    shortestPath += pathSuffix;
-    relativePath += pathSuffix;
   }
+  absolutePath += pathSuffix;
+  shortestPath += pathSuffix;
+  relativePath += pathSuffix;
   const createLink = (replacementTarget, linkText, markdownStyle) => {
     if (markdownStyle) {
       return `[${linkText}](${replacementTarget})`;
@@ -5073,7 +5366,8 @@ function buildReplacement(app, settings, match, sourcePath) {
     return `[[${replacementTarget}|${linkText}]]`;
   };
   if (replacementPath === text && linkFormat === "shortest") {
-    return `[[${replacementPath}]]`;
+    const target = replacementPath + pathSuffix;
+    return useMarkdownLinks ? `[${text}](${target})` : `[[${target}]]`;
   }
   if (linkFormat === "shortest") {
     return createLink(shortestPath || absolutePath, text, useMarkdownLinks);
@@ -5093,12 +5387,129 @@ function getLineRange(text, index) {
     lineEnd = text.length;
   return [lineStart, lineEnd];
 }
-function isInsideExistingLink(text, from) {
-  const open = text.lastIndexOf("[[", from - 1);
-  if (open === -1)
-    return false;
-  const close = text.indexOf("]]", open + 2);
-  return close !== -1 && close >= from;
+function buildExcludedIntervals(text) {
+  const tree = new IntervalTree();
+  const n = text.length;
+  const add = (from, to) => {
+    if (to > from)
+      tree.insert([from, to]);
+  };
+  if (text.startsWith("---")) {
+    const endDashes = text.indexOf("\n---", 3);
+    const endDots = text.indexOf("\n...", 3);
+    let end = -1;
+    if (endDashes !== -1 && (endDots === -1 || endDashes < endDots)) {
+      end = endDashes;
+    } else if (endDots !== -1) {
+      end = endDots;
+    }
+    if (end !== -1) {
+      const lineEnd = text.indexOf("\n", end + 1);
+      add(0, lineEnd === -1 ? n : lineEnd + 1);
+    }
+  }
+  for (let i = 0; i < n; ) {
+    const ch = text[i];
+    if (ch === "`" || ch === "~") {
+      let j = i;
+      while (j < n && text[j] === ch)
+        j++;
+      const fenceLen = j - i;
+      const lineStart = text.lastIndexOf("\n", i - 1) + 1;
+      const atLineStart = !/\S/.test(text.slice(lineStart, i));
+      if (fenceLen >= 3 && atLineStart) {
+        const close = findClosingFence(text, j, ch, fenceLen);
+        if (close !== -1) {
+          const lineEnd = text.indexOf("\n", close);
+          add(i, lineEnd === -1 ? n : lineEnd + 1);
+          i = lineEnd === -1 ? n : lineEnd + 1;
+          continue;
+        }
+        add(i, n);
+        break;
+      }
+    }
+    if (ch === "`") {
+      let j = i;
+      while (j < n && text[j] === "`")
+        j++;
+      const openLen = j - i;
+      let p = j;
+      let closed = false;
+      while (p < n && !closed) {
+        const idx = text.indexOf("`", p);
+        if (idx === -1)
+          break;
+        let q = idx;
+        while (q < n && text[q] === "`")
+          q++;
+        if (q - idx === openLen) {
+          add(i, q);
+          i = q;
+          closed = true;
+        } else {
+          p = q;
+        }
+      }
+      if (closed)
+        continue;
+    }
+    if (ch === "$") {
+      if (text[i + 1] === "$") {
+        const close = text.indexOf("$$", i + 2);
+        if (close !== -1) {
+          add(i, close + 2);
+          i = close + 2;
+          continue;
+        }
+      } else {
+        const close = text.indexOf("$", i + 1);
+        if (close !== -1 && close > i + 1) {
+          add(i, close + 1);
+          i = close + 1;
+          continue;
+        }
+      }
+    }
+    if (text.startsWith("[[", i) || text.startsWith("![[", i)) {
+      const open = i + (text[i] === "!" ? 3 : 2);
+      const close = text.indexOf("]]", open);
+      if (close !== -1) {
+        add(i, close + 2);
+        i = close + 2;
+        continue;
+      }
+    }
+    if (ch === "[") {
+      const closeBracket = text.indexOf("]", i + 1);
+      if (closeBracket !== -1 && text[closeBracket + 1] === "(") {
+        const closeParen = text.indexOf(")", closeBracket + 2);
+        if (closeParen !== -1) {
+          add(i, closeParen + 1);
+          i = closeParen + 1;
+          continue;
+        }
+      }
+    }
+    i++;
+  }
+  return tree;
+}
+function findClosingFence(text, from, ch, minLen) {
+  let i = from;
+  while (i < text.length) {
+    const lineStart = text.lastIndexOf("\n", i - 1) + 1;
+    let j = lineStart;
+    while (j < text.length && text[j] === ch)
+      j++;
+    if (j - lineStart >= minLen)
+      return lineStart;
+    const next = text.indexOf("\n", i);
+    if (next === -1)
+      return -1;
+    i = next + 1;
+  }
+  return -1;
 }
 function isInTableRow(text, index) {
   const [lineStart, lineEnd] = getLineRange(text, index);
@@ -5108,14 +5519,20 @@ function isInTableRow(text, index) {
   return /(?<!\\)\|/.test(line);
 }
 function applyReplacementsToString(text, items) {
-  let result = text;
-  for (const item of items) {
-    result = result.slice(0, item.from) + item.replacement + result.slice(item.to);
+  const sorted = [...items].sort((a, b) => a.from - b.from);
+  let result = "";
+  let pos = 0;
+  for (const item of sorted) {
+    if (item.from < pos)
+      continue;
+    result += text.slice(pos, item.from) + item.replacement;
+    pos = item.to;
   }
+  result += text.slice(pos);
   return result;
 }
 var BatchConvertModal = class extends import_obsidian8.Modal {
-  constructor(app, settings, plugin, range) {
+  constructor(app, settings, plugin, range, view) {
     super(app);
     this.items = [];
     this.enabled = [];
@@ -5125,12 +5542,13 @@ var BatchConvertModal = class extends import_obsidian8.Modal {
     this.settings = settings;
     this.plugin = plugin != null ? plugin : null;
     this.range = range != null ? range : null;
+    this.view = view != null ? view : null;
   }
   onOpen() {
-    var _a2, _b2, _c;
+    var _a2, _b2, _c, _d;
     const { contentEl } = this;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
-    const editor = (_a2 = view == null ? void 0 : view.editor) != null ? _a2 : null;
+    const view = (_a2 = this.view) != null ? _a2 : this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
+    const editor = (_b2 = view == null ? void 0 : view.editor) != null ? _b2 : null;
     if (!editor) {
       contentEl.createEl("p", { text: t("Open a Markdown note first, then run this command.") });
       return;
@@ -5140,7 +5558,7 @@ var BatchConvertModal = class extends import_obsidian8.Modal {
       return;
     }
     this.text = editor.getValue();
-    this.sourcePath = (_c = (_b2 = this.app.workspace.getActiveFile()) == null ? void 0 : _b2.path) != null ? _c : "";
+    this.sourcePath = (_d = (_c = view == null ? void 0 : view.file) == null ? void 0 : _c.path) != null ? _d : "";
     if (this.range) {
       const [from, to] = this.range;
       if (from >= to) {
@@ -5189,11 +5607,15 @@ var BatchConvertModal = class extends import_obsidian8.Modal {
     cancelBtn.onclick = () => this.close();
   }
   convert() {
-    var _a2;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
-    const editor = (_a2 = view == null ? void 0 : view.editor) != null ? _a2 : null;
+    var _a2, _b2;
+    const view = (_a2 = this.view) != null ? _a2 : this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
+    const editor = (_b2 = view == null ? void 0 : view.editor) != null ? _b2 : null;
     if (!editor)
       return;
+    if ((view == null ? void 0 : view.file) && this.sourcePath && view.file.path !== this.sourcePath) {
+      new import_obsidian8.Notice(t("The note changed while the dialog was open. Please run the command again."));
+      return;
+    }
     let applied = 0;
     for (let idx = 0; idx < this.items.length; idx++) {
       if (!this.enabled[idx])
@@ -5432,6 +5854,11 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
         await this.plugin.updateSettings({ autoToggleByMode: value });
         void this.plugin.handleLayoutChange();
         break;
+      case "jumpEnabled":
+        await this.plugin.updateSettings({ jumpEnabled: value });
+        if (value)
+          this.plugin.registerAdvUriProtocol();
+        break;
       case "colorOnlyDisplay":
         await this.plugin.updateSettings({ colorOnlyDisplay: value });
         this.applyBodyClass("virtual-link-color-only", value);
@@ -5537,6 +5964,9 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
     const adv = () => s.advancedSettings;
     return [
       groupDef(t("General"), [
+        toggleDef(t("Show advanced settings"), "advancedSettings", {
+          desc: t("When enabled, advanced options are shown throughout the settings tab. Turn it off for a simpler view.")
+        }),
         toggleDef(t("Activate virtual linker"), "linkerActivated", {
           desc: t("To show/hide virtual links in the body of regular notes (paragraphs, lists, etc.), please turn on/off this toggle. Note: This toggle cannot control virtual links inside tables and Canvas (due to different rendering mechanisms). If virtual links in tables or Canvas are not displayed or show rendering glitches, do not toggle this switch \u2014 simply restart the plugin (via QuickAdd or other means).")
         }),
@@ -5631,9 +6061,9 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
           desc: t('When enabled, keywords are normalized before matching so related forms link to the same note or heading. English: each word is reduced to its stem and irregular verbs are aligned (e.g. "He ran to the store" matches "he runs to the store"). Chinese: common function words are stripped (e.g. "\u6211\u7684\u9879\u76EE\u8BA1\u5212" matches "\u9879\u76EE\u8BA1\u5212"). Off by default.')
         }),
         dropdownDef(t("Fuzzy matching language"), "stemmingLanguage", {
-          "auto": "Auto (by script)",
-          "en": "English",
-          "zh": "Chinese"
+          "auto": t("Auto (by script)"),
+          "en": t("English"),
+          "zh": t("Chinese")
         }, {
           desc: t(`Language used for fuzzy matching. "en" = English stemming + irregular verbs; "zh" = Chinese function-word stripping. Choose "auto" to apply both based on each keyword's script.`),
           disabled: () => !s.enableStemming
@@ -5689,17 +6119,17 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
         }),
         textAreaDef(t("Glossary linker directories"), "linkerDirectories", {
           desc: t("Directories to include for the virtual linker (separated by new lines)."),
-          placeholder: "List of directory names (separated by new line)",
+          placeholder: t("List of directory names (separated by new line)"),
           visible: () => !s.includeAllFiles
         }),
         textAreaDef(t("Excluded directories"), "excludedDirectories", {
           desc: t("Directories from which files are to be excluded for the virtual linker (separated by new lines). Files in these directories will not create any virtual links in other files."),
-          placeholder: "List of directory names (separated by new line)",
+          placeholder: t("List of directory names (separated by new line)"),
           visible: () => s.advancedSettings && s.includeAllFiles
         }),
         textAreaDef(t("Excluded directories for generating virtual links"), "excludedDirectoriesForLinking", {
           desc: t("Directories in which the plugin will not create virtual links (separated by new lines)."),
-          placeholder: "List of directory names (separated by new line)",
+          placeholder: t("List of directory names (separated by new line)"),
           visible: adv
         }),
         dropdownDef(t("Single-note opt-out"), "linkIgnoreMode", {
@@ -5831,9 +6261,9 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
           visible: () => !s.useDefaultLinkStyleForConversion
         }),
         dropdownDef(t("Link format"), "linkFormat", {
-          "shortest": "Shortest",
-          "relative": "Relative",
-          "absolute": "Absolute"
+          "shortest": t("Shortest"),
+          "relative": t("Relative"),
+          "absolute": t("Absolute")
         }, {
           desc: t("The format of the generated links."),
           visible: () => !s.useDefaultLinkStyleForConversion
@@ -5908,9 +6338,10 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
 
 // src/whatsNew.ts
 var import_obsidian10 = require("obsidian");
-var WHATS_NEW_VERSION = "1.24.2";
+var WHATS_NEW_VERSION = "1.24.8";
 var WHATS_NEW = [
-  'Fix: exact matches against numbered headings (e.g. "1. Title") no longer show the fuzzy-match colour. Also: the batch-convert dialogs now follow the app language instead of hardcoded Chinese.'
+  "Fixed: timers now use window.setTimeout, so hover previews keep working in popout windows.",
+  "Fixed: the deprecated activeLeaf is replaced with getMostRecentLeaf(), and the file-exclusion check narrows the type with instanceof TFile instead of a cast."
 ];
 var WhatsNewModal = class extends import_obsidian10.Modal {
   constructor(app, version) {
@@ -6049,6 +6480,9 @@ async function jumpToLine(app, settings, filepath, line, anchor) {
   const view = leaf.view;
   if (!(view instanceof import_obsidian11.MarkdownView))
     return;
+  if (view.getMode() !== "source") {
+    await leaf.setViewState({ type: "markdown", state: { file: file.path, mode: "source" } });
+  }
   const targetLine = await resolveLineByAnchor(app, settings, file, line, anchor);
   await waitForEditor(view, targetLine, settings.lineJumpWaitSeconds * 1e3);
   if (!wasAlreadyOpen) {
@@ -6064,6 +6498,14 @@ async function jumpToLine(app, settings, filepath, line, anchor) {
 
 // src/contextMenu.ts
 var import_obsidian12 = require("obsidian");
+var lastContextMenuEvent = null;
+var lastContextMenuAt = 0;
+function registerContextMenuEventCapture(plugin) {
+  plugin.registerDomEvent(document, "contextmenu", (event) => {
+    lastContextMenuEvent = event;
+    lastContextMenuAt = Date.now();
+  }, true);
+}
 function addContextMenuItem(plugin, menu, file, _source) {
   if (!file) {
     return;
@@ -6074,41 +6516,36 @@ function addContextMenuItem(plugin, menu, file, _source) {
   const fetcher = new LinkerMetaInfoFetcher(app, settings);
   const isDirectory = app.vault.getAbstractFileByPath(file.path) instanceof import_obsidian12.TFolder;
   if (!isDirectory) {
-    const metaInfo = fetcher.getMetaInfo(file);
-    const contextMenuHandler = (event) => {
-      const targetElement = event.target;
+    const applyContextLock = (event) => {
+      var _a2;
+      const targetElement = (_a2 = event == null ? void 0 : event.target) != null ? _a2 : null;
       if (!targetElement || !(targetElement instanceof HTMLElement)) {
         return;
       }
       const isMultipleReferences = targetElement.classList.contains("multiple-files-references") || targetElement.closest(".multiple-files-references") !== null;
-      if (isMultipleReferences) {
-        const virtualLinkSpan = targetElement.closest(".virtual-link-span") || targetElement.closest(".virtual-link");
-        if (virtualLinkSpan) {
-          virtualLinkSpan.classList.add("virtual-link-hover-lock");
+      const virtualLinkSpan = targetElement.closest(".virtual-link-span") || targetElement.closest(".virtual-link");
+      if (isMultipleReferences && virtualLinkSpan) {
+        const spanEl = virtualLinkSpan;
+        virtualLinkSpan.classList.add("virtual-link-hover-lock");
+        spanEl.dataset.fkContextLock = "1";
+      }
+      if (virtualLinkSpan) {
+        menu.onHide(() => {
+          var _a3;
           const spanEl = virtualLinkSpan;
-          spanEl.dataset.fkContextLock = "1";
-          menu.onHide(() => {
-            var _a2;
-            virtualLinkSpan.classList.remove("virtual-link-hover-lock");
-            delete spanEl.dataset.fkContextLock;
-            const key = ((_a2 = virtualLinkSpan.querySelector(".virtual-link-a")) == null ? void 0 : _a2.getAttribute("origin-text")) || "";
-            if (key)
-              clearContextLock(key);
-          });
-        }
+          virtualLinkSpan.classList.remove("virtual-link-hover-lock");
+          delete spanEl.dataset.fkContextLock;
+          const key = ((_a3 = virtualLinkSpan.querySelector(".virtual-link-a")) == null ? void 0 : _a3.getAttribute("origin-text")) || "";
+          if (key)
+            clearContextLock(key);
+        });
       }
       const virtualLinkElement = targetElement.closest(".virtual-link-a");
       const isVirtualLink = virtualLinkElement !== null;
       const linkElement = virtualLinkElement || targetElement;
-      const from = parseInt(linkElement.getAttribute("from") || "-1");
-      const to = parseInt(linkElement.getAttribute("to") || "-1");
-      if (from === -1 || to === -1) {
+      if (isVirtualLink) {
         menu.addItem((item) => {
-          item.setTitle("Converting link is not here").setIcon("link");
-        });
-      } else if (isVirtualLink) {
-        menu.addItem((item) => {
-          item.setTitle("Add to excluded keywords").setIcon("ban").onClick(async () => {
+          item.setTitle(t("Add to excluded keywords")).setIcon("ban").onClick(async () => {
             const text = linkElement.getAttribute("origin-text") || "";
             if (text) {
               const newExcludedKeywords = [.../* @__PURE__ */ new Set([...settings.excludedKeywords, text])];
@@ -6118,16 +6555,20 @@ function addContextMenuItem(plugin, menu, file, _source) {
           });
         });
         menu.addItem((item) => {
-          item.setTitle("Convert to real link").setIcon("link").onClick(() => {
-            convertVirtualLinkToReal(linkElement, file, app, settings);
+          item.setTitle(t("Convert to real link")).setIcon("link").onClick(() => {
+            var _a3, _b2;
+            const anchor = ((_a3 = linkElement.matches) == null ? void 0 : _a3.call(linkElement, ".virtual-link-a")) ? linkElement : linkElement.querySelector(".virtual-link-a");
+            const rawHref = getVirtualLinkRawPath(anchor);
+            const target = rawHref ? (_b2 = app.vault.getAbstractFileByPath(rawHref.split("#")[0])) != null ? _b2 : file : file;
+            convertVirtualLinkToReal(linkElement, target, app, settings);
           });
         });
       }
-      activeDocument.removeEventListener("contextmenu", contextMenuHandler);
     };
-    if (!metaInfo.excludeFile && (metaInfo.includeAllFiles || metaInfo.includeFile || metaInfo.isInIncludedDir)) {
+    const excludedByIndex = file instanceof import_obsidian12.TFile ? LinkerCache.getInstance(app, settings).cache.isFileExcluded(file) : true;
+    if (!excludedByIndex) {
       menu.addItem((item) => {
-        item.setTitle("Exclude this file").setIcon("trash").onClick(async () => {
+        item.setTitle(t("Exclude this file")).setIcon("trash").onClick(async () => {
           var _a2;
           const target = file;
           const targetFile = app.vault.getFileByPath(target.path);
@@ -6161,9 +6602,9 @@ function addContextMenuItem(plugin, menu, file, _source) {
           }
         });
       });
-    } else if (!metaInfo.includeFile && (!metaInfo.includeAllFiles || metaInfo.excludeFile || metaInfo.isInExcludedDir)) {
+    } else {
       menu.addItem((item) => {
-        item.setTitle("Include this file").setIcon("plus").onClick(async () => {
+        item.setTitle(t("Include this file")).setIcon("plus").onClick(async () => {
           var _a2;
           const target = file;
           const targetFile = app.vault.getFileByPath(target.path);
@@ -6198,14 +6639,15 @@ function addContextMenuItem(plugin, menu, file, _source) {
         });
       });
     }
-    activeDocument.addEventListener("contextmenu", contextMenuHandler, { once: true });
+    const freshEvent = Date.now() - lastContextMenuAt < 1500 ? lastContextMenuEvent : null;
+    applyContextLock(freshEvent);
   } else {
     const path = file.path + "/";
     const isInIncludedDir = fetcher.includeDirPattern.test(path);
     const isInExcludedDir = fetcher.excludeDirPattern.test(path);
     if (fetcher.includeAllFiles && !isInExcludedDir || isInIncludedDir) {
       menu.addItem((item) => {
-        item.setTitle("Exclude this directory").setIcon("trash").onClick(async () => {
+        item.setTitle(t("Exclude this directory")).setIcon("trash").onClick(async () => {
           const target = file;
           const targetFolder = app.vault.getAbstractFileByPath(target.path);
           if (!targetFolder || !(targetFolder instanceof import_obsidian12.TFolder)) {
@@ -6220,7 +6662,7 @@ function addContextMenuItem(plugin, menu, file, _source) {
       });
     } else if (!fetcher.includeAllFiles && !isInIncludedDir || isInExcludedDir) {
       menu.addItem((item) => {
-        item.setTitle("Include this directory").setIcon("plus").onClick(async () => {
+        item.setTitle(t("Include this directory")).setIcon("plus").onClick(async () => {
           const target = file;
           const targetFolder = app.vault.getAbstractFileByPath(target.path);
           if (!targetFolder || !(targetFolder instanceof import_obsidian12.TFolder)) {
@@ -6243,6 +6685,21 @@ function registerEmbedReservation(plugin) {
   const CACHE_KEY = "__fakelinkSizeCache2";
   const SIZE_CACHE_LIMIT = 1500;
   let sizeCacheSaveTimer = null;
+  plugin.register(() => {
+    if (sizeCacheSaveTimer !== null)
+      window.clearTimeout(sizeCacheSaveTimer);
+    sizeCacheSaveTimer = null;
+  });
+  const activeResizeObservers = /* @__PURE__ */ new Set();
+  const releaseTimers = /* @__PURE__ */ new Set();
+  plugin.register(() => {
+    for (const o of activeResizeObservers)
+      o.disconnect();
+    activeResizeObservers.clear();
+    for (const t2 of releaseTimers)
+      window.clearTimeout(t2);
+    releaseTimers.clear();
+  });
   const persistSizeCache = () => {
     if (sizeCacheSaveTimer !== null)
       window.clearTimeout(sizeCacheSaveTimer);
@@ -6250,8 +6707,7 @@ function registerEmbedReservation(plugin) {
       sizeCacheSaveTimer = null;
       void (async () => {
         try {
-          const loaded = await plugin.loadData();
-          const stored = loaded != null ? loaded : {};
+          const stored = { ...plugin.settings };
           const capMap = (m, n) => {
             const out = {};
             for (const [k, v] of Array.from(m.entries()).slice(-n))
@@ -6271,6 +6727,19 @@ function registerEmbedReservation(plugin) {
             widths: tailMap(plugin.pdfWidthHeights, 50),
             scales: tailMap(plugin.pdfScaleSamples, 50)
           };
+          const trimLiveMap = (m, n) => {
+            let excess = m.size - n;
+            for (const k of m.keys()) {
+              if (excess-- <= 0)
+                break;
+              m.delete(k);
+            }
+          };
+          trimLiveMap(plugin.imageSizes, SIZE_CACHE_LIMIT);
+          trimLiveMap(plugin.pdfHeights, 300);
+          trimLiveMap(plugin.embedHeights, 300);
+          trimLiveMap(plugin.pdfWidthHeights, 50);
+          trimLiveMap(plugin.pdfScaleSamples, 50);
           await plugin.saveData(stored);
         } catch (e) {
         }
@@ -6451,13 +6920,17 @@ function registerEmbedReservation(plugin) {
       }, 700);
     });
     ro.observe(el);
-    window.setTimeout(release, 6e3);
+    activeResizeObservers.add(ro);
+    releaseTimers.add(window.setTimeout(release, 6e3));
   };
   const onInsert = [];
+  const PRECHECK_SEL = "img, .internal-embed, .hover-popover";
   const insertObserver = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       for (const node of Array.from(mutation.addedNodes)) {
         if (!node.instanceOf(HTMLElement))
+          continue;
+        if (!node.matches(PRECHECK_SEL) && !node.querySelector(PRECHECK_SEL))
           continue;
         for (const handler of onInsert)
           handler(node);
@@ -6586,9 +7059,13 @@ function registerEmbedReservation(plugin) {
       return;
     img.dataset.fkSized = "1";
     img.setCssStyles({ aspectRatio: dim.w + " / " + dim.h });
-    img.addEventListener("load", () => {
-      img.setCssStyles({ aspectRatio: "" });
-    }, { once: true });
+    const clear = () => img.setCssStyles({ aspectRatio: "" });
+    if (img.complete) {
+      clear();
+      return;
+    }
+    img.addEventListener("load", clear, { once: true });
+    img.addEventListener("error", clear, { once: true });
   };
   const reserveImage = (img) => {
     var _a2, _b2;
@@ -6728,6 +7205,7 @@ function registerEmbedReservation(plugin) {
       timer = window.setTimeout(measure, 400);
     });
     ro.observe(el);
+    activeResizeObservers.add(ro);
   };
   onInsert.push((node) => {
     if (node.matches(EMBED_SEL))
@@ -6781,15 +7259,13 @@ function registerEmbedReservation(plugin) {
     const scope = el.closest(".hover-popover, .workspace-leaf");
     if (!plugin.settings.alignHeadingAfterJump)
       return;
-    let domTarget;
-    window.setTimeout(() => keepScrolledHeadingAligned(scope, "dom-click", alignWindow(), (el2, h) => scrollEditor(el2, h, domTarget), void 0, (o) => {
-      domTarget = o;
-    }, "centre"), 60);
+    window.setTimeout(() => keepScrolledHeadingAligned(scope, "dom-click", alignWindow(), scrollEditor, void 0, void 0, "centre"), 60);
   }, true);
 }
 
 // main.ts
 var activeCenterLoops = /* @__PURE__ */ new WeakMap();
+var activeCenterControllers = /* @__PURE__ */ new Set();
 var HEADING_EPSILON_PX = 24;
 var DEFAULT_SETTINGS = {
   autoToggleByMode: false,
@@ -6885,27 +7361,27 @@ var DEFAULT_SETTINGS = {
   autoExcludeContainedCopies: false,
   filenameAffixExclusions: []
 };
-var LinkerPlugin = class extends import_obsidian14.Plugin {
+var _LinkerPlugin = class extends import_obsidian14.Plugin {
   constructor() {
     super(...arguments);
     this.updateManager = new ExternalUpdateManager();
-    this.pdfReserveObserver = null;
-    this.imageReserveObserver = null;
+    this.advUriRegistered = false;
     this.imageSizes = /* @__PURE__ */ new Map();
     this.imageSizeInflight = /* @__PURE__ */ new Map();
     this.pdfHeights = /* @__PURE__ */ new Map();
     this.pdfWidthHeights = /* @__PURE__ */ new Map();
     this.pdfScaleSamples = /* @__PURE__ */ new Map();
-    this.embedReserveObserver = null;
     this.embedHeights = /* @__PURE__ */ new Map();
+    this.indexRefreshTimer = null;
+    this.protocolRegisterTimer = null;
+    this.whatsNewTimer = null;
+    this.saveTimer = null;
+    this.previewRerenderTimer = null;
     this.bgSyncTimer = null;
   }
   isInCanvas() {
-    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian14.MarkdownView);
-    if (activeView && activeView.getViewType() === "canvas") {
-      return true;
-    }
-    return false;
+    var _a2, _b2, _c;
+    return ((_c = (_b2 = (_a2 = this.app.workspace.getMostRecentLeaf()) == null ? void 0 : _a2.view) == null ? void 0 : _b2.getViewType) == null ? void 0 : _c.call(_b2)) === "canvas";
   }
   async handleLayoutChange() {
     if (!this.settings.autoToggleByMode)
@@ -6936,12 +7412,23 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
   async openFileOnly(file) {
     return openFileOnly(this.app, this.settings, file);
   }
-  startCentring(cm) {
+  startCentring(cm, maxMs) {
     var _a2;
     (_a2 = activeCenterLoops.get(cm)) == null ? void 0 : _a2.abort();
     const controller = new AbortController();
     activeCenterLoops.set(cm, controller);
-    const stop = () => controller.abort();
+    activeCenterControllers.add(controller);
+    window.setTimeout(() => {
+      if (activeCenterLoops.get(cm) === controller) {
+        activeCenterLoops.delete(cm);
+        activeCenterControllers.delete(controller);
+        controller.abort();
+      }
+    }, maxMs + 1e3);
+    const stop = () => {
+      activeCenterControllers.delete(controller);
+      controller.abort();
+    };
     window.addEventListener("wheel", stop, { capture: true, passive: true, signal: controller.signal });
     window.addEventListener("mousedown", stop, { capture: true, signal: controller.signal });
     window.addEventListener("keydown", stop, { capture: true, signal: controller.signal });
@@ -6959,7 +7446,7 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
     if (!cm)
       return false;
     const scroller = cm.scrollDOM;
-    const controller = this.startCentring(cm);
+    const controller = this.startCentring(cm, maxMs);
     const startedAt = Date.now();
     let passes = 0;
     let lastTop = Number.NaN;
@@ -7032,7 +7519,7 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
   }
   centerCmLine(cm, line, maxMs, targetViewport) {
     patchDispatchClamp(cm);
-    const controller = this.startCentring(cm);
+    const controller = this.startCentring(cm, maxMs);
     const scroller = cm.scrollDOM;
     const startedAt = Date.now();
     let deadline = startedAt + maxMs;
@@ -7158,10 +7645,21 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
   }
   async onload() {
     await this.loadSettings();
+    LinkerCache.instance = new LinkerCache(this.app, this.settings);
     this.applyStartupAppearance();
     this.registerWorkspaceEvents();
     this.registerIndexWatchers();
     this.registerLinkers();
+    const linkerCache = LinkerCache.getInstance(this.app, this.settings);
+    void linkerCache.cache.readyPromise.then(() => {
+      this.refreshOpenMarkdownViews();
+    });
+    this.app.workspace.onLayoutReady(() => {
+      const lc = LinkerCache.getInstance(this.app, this.settings);
+      if (!lc.cache.isReady) {
+        lc.updateCache(true);
+      }
+    });
     this.registerIndentBackground();
     this.registerCommentSpaceTrim();
     this.addSettingTab(new LinkerSettingTab(this.app, this));
@@ -7237,17 +7735,7 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
         }
       }
       if (changes.length > 0) {
-        if (changes.length === 1) {
-          const ch = changes[0];
-          const anchor = ch.from + 2;
-          const head = ch.from + ch.insert.length - 2;
-          update.view.dispatch({
-            changes,
-            selection: import_state2.EditorSelection.single(anchor, head)
-          });
-        } else {
-          update.view.dispatch({ changes });
-        }
+        update.view.dispatch({ changes });
       }
     }));
     this.registerEditorExtension(import_view4.EditorView.updateListener.of((update) => {
@@ -7321,7 +7809,7 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
     this.applyBackgroundStyles();
     const currentVersion = this.manifest.version;
     if (this.settings.lastSeenVersion && this.settings.lastSeenVersion !== currentVersion && WHATS_NEW_VERSION === currentVersion) {
-      window.setTimeout(() => new WhatsNewModal(this.app, currentVersion).open(), 1500);
+      this.whatsNewTimer = window.setTimeout(() => new WhatsNewModal(this.app, currentVersion).open(), 1500);
     }
     if (this.settings.lastSeenVersion !== currentVersion) {
       this.settings.lastSeenVersion = currentVersion;
@@ -7342,16 +7830,20 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
     }));
   }
   registerIndexWatchers() {
-    this.updateManager.registerCallback(() => {
-      LinkerCache.getInstance(this.app, this.settings).clearCache();
+    this.updateManager.registerCallback((rebuildIndex) => {
+      if (!rebuildIndex) {
+        return;
+      }
+      const linkerCache = LinkerCache.getInstance(this.app, this.settings);
+      linkerCache.clearCache();
+      linkerCache.updateCache(true);
     });
     LinkerCache.getInstance(this.app, this.settings).onIndexChanged = () => this.updateManager.update();
-    let indexRefreshTimer = null;
     const scheduleIndexRefresh = () => {
-      if (indexRefreshTimer !== null)
-        window.clearTimeout(indexRefreshTimer);
-      indexRefreshTimer = window.setTimeout(() => {
-        indexRefreshTimer = null;
+      if (this.indexRefreshTimer !== null)
+        window.clearTimeout(this.indexRefreshTimer);
+      this.indexRefreshTimer = window.setTimeout(() => {
+        this.indexRefreshTimer = null;
         this.updateManager.update();
       }, 800);
     };
@@ -7368,6 +7860,18 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
       if (isNote(file))
         scheduleIndexRefresh();
     }));
+    this.registerEvent(this.app.metadataCache.on("changed", (file) => {
+      if (!(file instanceof import_obsidian14.TFile) || file.extension !== "md")
+        return;
+      const linkerCache = LinkerCache.getInstance(this.app, this.settings);
+      void linkerCache.cache.updateTree([file.path]).then(() => {
+        void linkerCache.cache.computeAutoExclude().then((changed) => {
+          var _a2;
+          if (changed)
+            (_a2 = linkerCache.onIndexChanged) == null ? void 0 : _a2.call(linkerCache);
+        });
+      });
+    }));
   }
   registerLinkers() {
     this.registerMarkdownPostProcessor((element, context) => {
@@ -7376,8 +7880,12 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
     this.registerEditorExtension(liveLinkerPlugin(this.app, this.settings, this.updateManager, this));
   }
   registerAdvUriProtocol() {
-    window.setTimeout(() => {
+    if (this.advUriRegistered)
+      return;
+    this.advUriRegistered = true;
+    this.protocolRegisterTimer = window.setTimeout(() => {
       var _a2, _b2;
+      this.protocolRegisterTimer = null;
       const advancedUriLoaded = ((_b2 = (_a2 = this.app.plugins) == null ? void 0 : _a2.plugins) == null ? void 0 : _b2["obsidian-advanced-uri"]) != null;
       if (advancedUriLoaded) {
         console.warn("[fakelink] Advanced URI is enabled - not registering adv-uri protocol to avoid conflict. Disable Advanced URI to let FakeLink handle line jumping.");
@@ -7411,12 +7919,13 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
         return;
       menu.addItem((item) => item.setTitle(t("Copy line link (adv-uri)")).setIcon("link").onClick(() => this.copyLineUri(file, editor.getCursor().line)));
     }));
+    registerContextMenuEventCapture(this);
     this.registerEvent(this.app.workspace.on("file-menu", (menu, file, source) => this.addContextMenuItem(menu, file, source)));
   }
   registerCommands() {
     this.addCommand({
       id: "toggle-virtual-linker",
-      name: "Toggle virtual linker",
+      name: t("Toggle virtual linker"),
       callback: () => {
         void this.updateSettings({ linkerActivated: !this.settings.linkerActivated });
         this.updateManager.update();
@@ -7424,14 +7933,14 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
     });
     this.addCommand({
       id: "toggle-header-marker",
-      name: "Toggle header marker symbol",
+      name: t("Toggle header marker symbol"),
       callback: () => {
         void this.updateSettings({ headerAutoAppendSuffix: !this.settings.headerAutoAppendSuffix });
       }
     });
     this.addCommand({
       id: "convert-selected-virtual-links",
-      name: "Convert all virtual links in selection to real links",
+      name: t("Convert all virtual links in selection to real links"),
       editorCallback: (editor, view) => {
         if (!editor.somethingSelected()) {
           new import_obsidian14.Notice(t("Select some text first, then run this command."));
@@ -7445,21 +7954,21 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
         const toPos = editor.getCursor("to");
         const rangeFrom = editor.posToOffset(fromPos);
         const rangeTo = editor.posToOffset(toPos);
-        const modal = new BatchConvertModal(this.app, this.settings, this, [rangeFrom, rangeTo]);
+        const modal = new BatchConvertModal(this.app, this.settings, this, [rangeFrom, rangeTo], view);
         modal.open();
       }
     });
     this.addCommand({
       id: "convert-all-virtual-links-preview",
-      name: "Convert all virtual links in note to real links (preview)",
+      name: t("Convert all virtual links in note to real links (preview)"),
       editorCallback: (editor, view) => {
-        const modal = new BatchConvertModal(this.app, this.settings, this);
+        const modal = new BatchConvertModal(this.app, this.settings, this, null, view);
         modal.open();
       }
     });
     this.addCommand({
       id: "convert-multiple-files-virtual-links",
-      name: "Convert all virtual links in multiple notes to real links",
+      name: t("Convert all virtual links in multiple notes to real links"),
       callback: () => {
         const modal = new BatchConvertFilesModal(this.app, this.settings, this);
         modal.open();
@@ -7485,11 +7994,38 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
     multipleRefs.forEach((ref) => ref.remove());
   }
   onunload() {
-    var _a2, _b2, _c;
-    (_a2 = this.pdfReserveObserver) == null ? void 0 : _a2.disconnect();
-    (_b2 = this.imageReserveObserver) == null ? void 0 : _b2.disconnect();
-    (_c = this.embedReserveObserver) == null ? void 0 : _c.disconnect();
     this.cleanupVirtualLinks();
+    if (this.indexRefreshTimer !== null) {
+      window.clearTimeout(this.indexRefreshTimer);
+      this.indexRefreshTimer = null;
+    }
+    if (this.protocolRegisterTimer !== null) {
+      window.clearTimeout(this.protocolRegisterTimer);
+      this.protocolRegisterTimer = null;
+    }
+    if (this.bgSyncTimer !== null) {
+      window.clearTimeout(this.bgSyncTimer);
+      this.bgSyncTimer = null;
+    }
+    if (this.previewRerenderTimer !== null) {
+      window.clearTimeout(this.previewRerenderTimer);
+      this.previewRerenderTimer = null;
+    }
+    if (this.whatsNewTimer !== null) {
+      window.clearTimeout(this.whatsNewTimer);
+      this.whatsNewTimer = null;
+    }
+    if (this.saveTimer !== null) {
+      window.clearTimeout(this.saveTimer);
+      this.saveTimer = null;
+      void this.persistSettings();
+    }
+    this.clearAppearanceStyles();
+    this.updateManager.dispose();
+    for (const controller of activeCenterControllers)
+      controller.abort();
+    activeCenterControllers.clear();
+    LinkerCache.getInstance(this.app, this.settings).onIndexChanged = void 0;
   }
   async loadSettings() {
     var _a2, _b2, _c;
@@ -7527,6 +8063,23 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
   }
   async updateSettings(settings = {}) {
     Object.assign(this.settings, settings);
+    this.scheduleSave();
+    this.updateManager.update(Object.keys(settings).some((key) => _LinkerPlugin.INDEX_RELEVANT_SETTINGS.has(key)));
+    this.applyBackgroundStyles();
+    if (!this.settings.linkerActivated) {
+      this.cleanupVirtualLinks();
+    }
+    this.schedulePreviewRerender();
+  }
+  scheduleSave() {
+    if (this.saveTimer !== null)
+      window.clearTimeout(this.saveTimer);
+    this.saveTimer = window.setTimeout(() => {
+      this.saveTimer = null;
+      void this.persistSettings();
+    }, 300);
+  }
+  async persistSettings() {
     const settingsToSave = { ...this.settings };
     delete settingsToSave.app;
     try {
@@ -7538,17 +8091,30 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
         new import_obsidian14.Notice(t("Failed to save settings. The change may be lost when Obsidian reloads."));
       }
     }
-    this.updateManager.update();
-    this.applyBackgroundStyles();
-    if (!this.settings.linkerActivated) {
-      this.cleanupVirtualLinks();
-    }
-    this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
+  }
+  schedulePreviewRerender() {
+    if (this.previewRerenderTimer !== null)
+      window.clearTimeout(this.previewRerenderTimer);
+    this.previewRerenderTimer = window.setTimeout(() => {
+      this.previewRerenderTimer = null;
+      this.app.workspace.getLeavesOfType("markdown").forEach((leaf) => {
+        const view = leaf.view;
+        if (view instanceof import_obsidian14.MarkdownView && view.previewMode) {
+          view.previewMode.rerender(true);
+        }
+      });
+    }, 150);
+  }
+  refreshOpenMarkdownViews() {
+    this.app.workspace.iterateAllLeaves((leaf) => {
       const view = leaf.view;
-      if (view instanceof import_obsidian14.MarkdownView && view.previewMode) {
+      if (!(view instanceof import_obsidian14.MarkdownView))
+        return;
+      if (view.getMode() === "preview" && view.previewMode) {
         view.previewMode.rerender(true);
       }
     });
+    this.app.workspace.updateOptions();
   }
   applyBackgroundStyles() {
     const s = this.settings;
@@ -7566,13 +8132,19 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
       if (s.backgroundUnfocusedMask)
         wanted.push("virtual-link-bg-unfocused-mask");
     }
+    if (s.alternativeDisplayStyle)
+      wanted.push("virtual-linker-alt-style");
+    if (s.colorOnlyDisplay)
+      wanted.push("virtual-link-color-only");
     const known = [
       "virtual-link-bg",
       "virtual-link-bg-tint",
       "virtual-link-bg-lines",
       "virtual-link-bg-cursor",
       "virtual-link-bg-tab-accent",
-      "virtual-link-bg-unfocused-mask"
+      "virtual-link-bg-unfocused-mask",
+      "virtual-linker-alt-style",
+      "virtual-link-color-only"
     ];
     const vars = [
       ["--fakelink-line-alpha", String(s.backgroundLineOpacity / 100)],
@@ -7599,6 +8171,47 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
         visit(el.ownerDocument);
     });
   }
+  clearAppearanceStyles() {
+    const known = [
+      "virtual-link-bg",
+      "virtual-link-bg-tint",
+      "virtual-link-bg-lines",
+      "virtual-link-bg-cursor",
+      "virtual-link-bg-tab-accent",
+      "virtual-link-bg-unfocused-mask",
+      "virtual-linker-alt-style",
+      "virtual-link-color-only"
+    ];
+    const vars = [
+      "--fakelink-line-alpha",
+      "--fakelink-cursor-line-alpha",
+      "--virtual-link-color",
+      "--virtual-link-header-color",
+      "--virtual-link-note-color",
+      "--virtual-link-fuzzy-header-color",
+      "--virtual-link-fuzzy-note-color"
+    ];
+    const seen = /* @__PURE__ */ new Set();
+    const visit = (ownerDoc) => {
+      if (seen.has(ownerDoc))
+        return;
+      seen.add(ownerDoc);
+      const body = ownerDoc.body;
+      if (!body)
+        return;
+      for (const cls of known)
+        body.classList.remove(cls);
+      for (const name of vars)
+        body.style.removeProperty(name);
+    };
+    visit(activeWindow.document);
+    this.app.workspace.iterateAllLeaves((leaf) => {
+      var _a2;
+      const el = (_a2 = leaf.view) == null ? void 0 : _a2.containerEl;
+      if (el)
+        visit(el.ownerDocument);
+    });
+  }
   scheduleBackgroundSync() {
     if (this.bgSyncTimer !== null)
       return;
@@ -7608,5 +8221,40 @@ var LinkerPlugin = class extends import_obsidian14.Plugin {
     }, 200);
   }
 };
+var LinkerPlugin = _LinkerPlugin;
+LinkerPlugin.INDEX_RELEVANT_SETTINGS = /* @__PURE__ */ new Set([
+  "linkerActivated",
+  "includeAllFiles",
+  "linkerDirectories",
+  "excludedDirectories",
+  "excludedDirectoriesForLinking",
+  "excludedExtensions",
+  "matchAnyPartsOfWords",
+  "matchEndOfWords",
+  "matchBeginningOfWords",
+  "includeHeaders",
+  "headerMatchSymbols",
+  "headerMatchOnlyBetweenSymbols",
+  "headerMatchStartSymbol",
+  "headerMatchEndSymbol",
+  "matchCaseSensitive",
+  "capitalLetterProportionForAutomaticMatchCase",
+  "tagToIgnoreCase",
+  "tagToMatchCase",
+  "propertyNameToMatchCase",
+  "propertyNameToIgnoreCase",
+  "tagToExcludeFile",
+  "tagToIncludeFile",
+  "includeAliases",
+  "headingSymbolWhitelist",
+  "enableStemming",
+  "stemmingLanguage",
+  "fuzzyMatchThreshold",
+  "fuzzyMinLength",
+  "autoExcludeContainedCopies",
+  "filenameAffixExclusions",
+  "excludedKeywords",
+  "perNoteExcludeKeywords"
+]);
 
 /* nosourcemap */

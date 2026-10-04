@@ -29,16 +29,16 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/plugin/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => DragNDropPlugin2
+  default: () => DragNDropPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian4 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 
 // src/platform/codemirror/obsidian-dragger.ts
 var import_state6 = require("@codemirror/state");
 var import_view7 = require("@codemirror/view");
 
-// node_modules/.pnpm/md-dragger@2.0.1_@codemirror+state@6.7.1_@codemirror+view@6.43.7/node_modules/md-dragger/dist/npm/adapter/codemirror.mjs
+// node_modules/.pnpm/md-dragger@2.2.0_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/adapter/codemirror.mjs
 var import_view = require("@codemirror/view");
 var import_state = require("@codemirror/state");
 var import_view2 = require("@codemirror/view");
@@ -59,9 +59,9 @@ function resolveConfig(config) {
   }
   return raw;
 }
-function resolveLocateOptions(locate, view) {
-  if (!locate) return void 0;
-  return typeof locate === "function" ? locate(view) : locate;
+function resolvePerView(option, view) {
+  if (option === void 0) return void 0;
+  return typeof option === "function" ? option(view) : option;
 }
 function isDraggerEnabled(options, view) {
   return options.enabled ? options.enabled(view) : true;
@@ -486,19 +486,6 @@ function listLineAtOrAbove(lineMap, lineNumber) {
   const prevListLine = lineMap.prevListLine[clamped];
   return prevListLine > 0 ? prevListLine : null;
 }
-var BlockType = /* @__PURE__ */ ((BlockType22) => {
-  BlockType22["Paragraph"] = "paragraph";
-  BlockType22["Heading"] = "heading";
-  BlockType22["ListItem"] = "list-item";
-  BlockType22["CodeBlock"] = "code-block";
-  BlockType22["Blockquote"] = "blockquote";
-  BlockType22["Table"] = "table";
-  BlockType22["MathBlock"] = "math-block";
-  BlockType22["Callout"] = "callout";
-  BlockType22["HorizontalRule"] = "hr";
-  BlockType22["Unknown"] = "unknown";
-  return BlockType22;
-})(BlockType || {});
 function detectBlockType(lineText, tabSize) {
   var _a, _b, _c, _d, _e, _f;
   const p = parseLine(lineText, tabSize);
@@ -703,178 +690,26 @@ function detectBlock(doc, lineNumber, options) {
   }
   return block;
 }
-function normalizeLineRange(docLines, startLine, endLine) {
-  if (docLines <= 0) {
-    return { startLine: 1, endLine: 1 };
-  }
-  const safeStart = Math.max(1, Math.min(docLines, Math.min(startLine, endLine)));
-  const safeEnd = Math.max(1, Math.min(docLines, Math.max(startLine, endLine)));
-  return { startLine: safeStart, endLine: safeEnd };
-}
-function mergeLineRanges(docLines, ranges) {
-  const normalized = ranges.map((range) => normalizeLineRange(docLines, range.startLine, range.endLine)).sort((a, b) => a.startLine - b.startLine || a.endLine - b.endLine);
-  const merged = [];
-  for (const range of normalized) {
-    const last = merged[merged.length - 1];
-    if (!last || range.startLine > last.endLine + 1) {
-      merged.push({ ...range });
-      continue;
-    }
-    if (range.endLine > last.endLine) {
-      last.endLine = range.endLine;
-    }
-  }
-  return merged;
-}
-function isLineNumberInRanges(line, ranges) {
-  for (const range of ranges) {
-    if (line >= range.startLine && line <= range.endLine) return true;
-  }
-  return false;
-}
-function blockKey(block) {
-  return `${block.lines.startLine}:${block.lines.endLine}`;
-}
-function selectOne(block) {
-  return { blocks: [block] };
-}
-function selectBlocks(blocks) {
-  const sorted = [...blocks].sort(
-    (a, b) => a.lines.startLine - b.lines.startLine || a.lines.endLine - b.lines.endLine
-  );
-  return { blocks: sorted };
-}
-function addBlocks(selection, blocks) {
-  const map = new Map(selection.blocks.map((b) => [blockKey(b), b]));
-  for (const block of blocks) {
-    map.set(blockKey(block), block);
-  }
-  return selectBlocks([...map.values()]);
-}
-function removeBlocks(selection, blocks) {
-  const remove = new Set(blocks.map(blockKey));
-  return selectBlocks(selection.blocks.filter((b) => !remove.has(blockKey(b))));
-}
-function hasBlock(selection, block) {
-  const key = blockKey(block);
-  return selection.blocks.some((b) => blockKey(b) === key);
-}
-function selectionLineRanges(docLines, selection) {
-  return mergeLineRanges(
-    docLines,
-    selection.blocks.map((block) => block.lines)
-  );
-}
-function locateDropPosition(input) {
-  var _a, _b;
-  const { doc, selection, hitLine, belowMid: belowMid2, sourceIndentWidth, targetIndentWidth, tabSize, indentUnit } = input;
-  const line = Math.max(1, Math.min(doc.lines + 1, belowMid2 ? hitLine + 1 : hitLine));
-  if (indentUnit <= 0 || line <= 1) {
-    return { doc, line, parent: null };
-  }
-  const want = Math.max(
-    quantizeIndent(targetIndentWidth, indentUnit),
-    quantizeIndent(sourceIndentWidth, indentUnit) - indentUnit
-  );
-  if (want <= 0) {
-    return { doc, line, parent: null };
-  }
-  const lineMap = getLineMap(doc, { tabSize });
-  const above = line - 1;
-  let parentLine = listLineAtOrAbove(lineMap, above);
-  if (parentLine === null || lineMap.listSubtreeEndLine[parentLine] < above) {
-    return { doc, line, parent: null };
-  }
-  const desiredParentIndent = want - indentUnit;
-  const sourceLines = selectionLineRanges(doc.lines, selection);
-  while (parentLine > 0) {
-    const meta = getLineMetaAt(lineMap, parentLine);
-    if (!(meta == null ? void 0 : meta.isList)) {
-      parentLine = 0;
-      break;
-    }
-    if (isLineNumberInRanges(parentLine, sourceLines)) {
-      parentLine = (_a = lineMap.listParentLine[parentLine]) != null ? _a : 0;
-      continue;
-    }
-    if (meta.indentWidth > desiredParentIndent) {
-      parentLine = (_b = lineMap.listParentLine[parentLine]) != null ? _b : 0;
-      continue;
-    }
-    break;
-  }
-  if (parentLine <= 0) {
-    return { doc, line, parent: null };
-  }
-  const parent = listItemAt(doc, parentLine, tabSize);
-  return { doc, line, parent };
-}
-function quantizeIndent(width, indentUnit) {
-  if (!(width > 0) || !(indentUnit > 0)) return 0;
-  return Math.max(0, Math.round(width / indentUnit) * indentUnit);
-}
-function listItemAt(doc, listHeadLine, tabSize) {
-  const block = detectBlock(doc, listHeadLine, { tabSize });
-  if (!block || block.type !== "list-item") return null;
-  return block;
-}
-function dropIndentWidth(position, options) {
-  var _a, _b;
-  if (((_a = position.parent) == null ? void 0 : _a.type) === "list-item") {
-    const lineMap = getLineMap(position.doc, { tabSize: options.tabSize });
-    const meta = getLineMetaAt(lineMap, position.parent.lines.startLine);
-    const base = (_b = meta == null ? void 0 : meta.indentWidth) != null ? _b : 0;
-    return base + options.indentUnit;
-  }
-  return 0;
-}
-var ALL_TYPES = Object.values(BlockType);
-function rejectEntries(types, slot, reason) {
-  return types.map((t2) => [`${t2}|${slot}`, reason]);
-}
-var REJECT_RULES = new Map([
-  ...rejectEntries(ALL_TYPES, "inside_code_block", "inside_code_block"),
-  ...rejectEntries(ALL_TYPES, "inside_math_block", "inside_math_block"),
-  ...rejectEntries(
-    ALL_TYPES.filter(
-      (t2) => t2 !== "list-item"
-      /* ListItem */
-    ),
-    "inside_list",
-    "inside_list"
-  ),
-  ...rejectEntries(
-    ALL_TYPES.filter(
-      (t2) => t2 !== "blockquote"
-      /* Blockquote */
-    ),
-    "inside_quote_run",
-    "inside_quote_run"
-  ),
-  ...rejectEntries([
-    "callout"
-    /* Callout */
-  ], "quote_before", "quote_boundary"),
-  ...rejectEntries(
-    ALL_TYPES.filter(
-      (t2) => t2 !== "blockquote"
-      /* Blockquote */
-    ),
-    "quote_after",
-    "quote_boundary"
-  ),
-  ...rejectEntries(ALL_TYPES, "callout_after", "callout_after"),
-  ...rejectEntries(ALL_TYPES, "table_before", "table_before"),
-  ...rejectEntries(ALL_TYPES, "hr_before", "hr_before")
-]);
 function resolveInsertionRule(input) {
-  var _a;
-  const key = `${input.sourceType}|${input.slotContext}`;
-  const rejectReason = (_a = REJECT_RULES.get(key)) != null ? _a : null;
-  return {
-    allowDrop: rejectReason === null,
-    rejectReason
-  };
+  const { sourceType, slotContext } = input;
+  switch (slotContext) {
+    case "inside_code_block":
+    case "inside_math_block":
+    case "callout_after":
+    case "table_before":
+    case "hr_before":
+      return { allowDrop: false, rejectReason: slotContext };
+    case "inside_list":
+      return sourceType === "list-item" ? { allowDrop: true, rejectReason: null } : { allowDrop: false, rejectReason: "inside_list" };
+    case "inside_quote_run":
+      return sourceType === "blockquote" ? { allowDrop: true, rejectReason: null } : { allowDrop: false, rejectReason: "inside_quote_run" };
+    case "quote_before":
+      return sourceType === "callout" ? { allowDrop: false, rejectReason: "quote_boundary" } : { allowDrop: true, rejectReason: null };
+    case "quote_after":
+      return sourceType === "blockquote" ? { allowDrop: true, rejectReason: null } : { allowDrop: false, rejectReason: "quote_boundary" };
+    default:
+      return { allowDrop: true, rejectReason: null };
+  }
 }
 function getImmediateLineText(doc, lineNumber) {
   if (lineNumber < 1 || lineNumber > doc.lines) return null;
@@ -1013,11 +848,72 @@ function canDropAt(doc, sourceBlock, targetLineNumber, options) {
   var _a;
   const lineMap = (_a = options.lineMap) != null ? _a : getLineMap(doc, { tabSize: options.tabSize });
   const slotContext = slotAt(doc, targetLineNumber, { lineMap, tabSize: options.tabSize });
-  const decision = resolveInsertionRule({
+  return resolveInsertionRule({
     sourceType: sourceBlock.type,
     slotContext
   });
-  return { slotContext, decision };
+}
+function normalizeLineRange(docLines, startLine, endLine) {
+  if (docLines <= 0) {
+    return { startLine: 1, endLine: 1 };
+  }
+  const safeStart = Math.max(1, Math.min(docLines, Math.min(startLine, endLine)));
+  const safeEnd = Math.max(1, Math.min(docLines, Math.max(startLine, endLine)));
+  return { startLine: safeStart, endLine: safeEnd };
+}
+function mergeLineRanges(docLines, ranges) {
+  const normalized = ranges.map((range) => normalizeLineRange(docLines, range.startLine, range.endLine)).sort((a, b) => a.startLine - b.startLine || a.endLine - b.endLine);
+  const merged = [];
+  for (const range of normalized) {
+    const last = merged[merged.length - 1];
+    if (!last || range.startLine > last.endLine + 1) {
+      merged.push({ ...range });
+      continue;
+    }
+    if (range.endLine > last.endLine) {
+      last.endLine = range.endLine;
+    }
+  }
+  return merged;
+}
+function isLineNumberInRanges(line, ranges) {
+  for (const range of ranges) {
+    if (line >= range.startLine && line <= range.endLine) return true;
+  }
+  return false;
+}
+function blockKey(block) {
+  return `${block.lines.startLine}:${block.lines.endLine}`;
+}
+function selectOne(block) {
+  return { blocks: [block] };
+}
+function selectBlocks(blocks) {
+  const sorted = [...blocks].sort(
+    (a, b) => a.lines.startLine - b.lines.startLine || a.lines.endLine - b.lines.endLine
+  );
+  return { blocks: sorted };
+}
+function addBlocks(selection, blocks) {
+  const map = new Map(selection.blocks.map((b) => [blockKey(b), b]));
+  for (const block of blocks) {
+    map.set(blockKey(block), block);
+  }
+  return selectBlocks([...map.values()]);
+}
+function removeBlocks(selection, blocks) {
+  const remove = new Set(blocks.map(blockKey));
+  return selectBlocks(selection.blocks.filter((b) => !remove.has(blockKey(b))));
+}
+function hasBlock(selection, block) {
+  const key = blockKey(block);
+  return selection.blocks.some((b) => blockKey(b) === key);
+}
+function selectionLineRanges(docLines, selection) {
+  return mergeLineRanges(
+    docLines,
+    selection.blocks.map((block) => block.lines)
+  );
 }
 function isListSelection(params) {
   var _a;
@@ -1598,14 +1494,14 @@ function planMove(input) {
     parent: input.position.parent
   };
   const lineMap = getLineMap(targetDoc, { tabSize: input.tabSize });
-  const slot = canDropAt(targetDoc, captured.block, line, {
+  const decision = canDropAt(targetDoc, captured.block, line, {
     lineMap,
     tabSize: input.tabSize
   });
-  if (!slot.decision.allowDrop) {
+  if (!decision.allowDrop) {
     return {
       type: "reject",
-      reason: (_b = slot.decision.rejectReason) != null ? _b : "container_policy"
+      reason: (_b = decision.rejectReason) != null ? _b : "container_policy"
     };
   }
   let allowIndent = false;
@@ -1639,6 +1535,141 @@ function planMove(input) {
       indentUnit: input.indentUnit
     }
   };
+}
+function locateDropPosition(input) {
+  var _a, _b;
+  const { doc, selection, hitLine, belowMid: belowMid2, sourceIndentWidth, targetIndentWidth, tabSize, indentUnit } = input;
+  const line = Math.max(1, Math.min(doc.lines + 1, belowMid2 ? hitLine + 1 : hitLine));
+  if (indentUnit <= 0 || line <= 1) {
+    return { doc, line, parent: null };
+  }
+  const want = Math.max(
+    quantizeIndent(targetIndentWidth, indentUnit),
+    quantizeIndent(sourceIndentWidth, indentUnit) - indentUnit
+  );
+  if (want <= 0) {
+    return { doc, line, parent: null };
+  }
+  const lineMap = getLineMap(doc, { tabSize });
+  const above = line - 1;
+  let parentLine = listLineAtOrAbove(lineMap, above);
+  if (parentLine === null || lineMap.listSubtreeEndLine[parentLine] < above) {
+    return { doc, line, parent: null };
+  }
+  const desiredParentIndent = want - indentUnit;
+  const sameDoc = input.sourceDoc === void 0 || input.sourceDoc === doc;
+  const sourceLines = sameDoc ? selectionLineRanges(doc.lines, selection) : [];
+  while (parentLine > 0) {
+    const meta = getLineMetaAt(lineMap, parentLine);
+    if (!(meta == null ? void 0 : meta.isList)) {
+      parentLine = 0;
+      break;
+    }
+    if (sameDoc && isLineNumberInRanges(parentLine, sourceLines)) {
+      parentLine = (_a = lineMap.listParentLine[parentLine]) != null ? _a : 0;
+      continue;
+    }
+    if (meta.indentWidth > desiredParentIndent) {
+      parentLine = (_b = lineMap.listParentLine[parentLine]) != null ? _b : 0;
+      continue;
+    }
+    break;
+  }
+  if (parentLine <= 0) {
+    return { doc, line, parent: null };
+  }
+  const parent = listItemAt(doc, parentLine, tabSize);
+  return { doc, line, parent };
+}
+function quantizeIndent(width, indentUnit) {
+  if (!(width > 0) || !(indentUnit > 0)) return 0;
+  return Math.max(0, Math.round(width / indentUnit) * indentUnit);
+}
+function listItemAt(doc, listHeadLine, tabSize) {
+  const block = detectBlock(doc, listHeadLine, { tabSize });
+  if (!block || block.type !== "list-item") return null;
+  return block;
+}
+function dropIndentWidth(position, options) {
+  var _a, _b;
+  if (((_a = position.parent) == null ? void 0 : _a.type) === "list-item") {
+    const lineMap = getLineMap(position.doc, { tabSize: options.tabSize });
+    const meta = getLineMetaAt(lineMap, position.parent.lines.startLine);
+    const base = (_b = meta == null ? void 0 : meta.indentWidth) != null ? _b : 0;
+    return base + options.indentUnit;
+  }
+  return 0;
+}
+function listLevel(lineText, tabSize, indentUnit) {
+  var _a;
+  if (!Number.isFinite(indentUnit) || indentUnit <= 0) {
+    throw new RangeError("md-dragger: indentUnit must be finite and greater than zero");
+  }
+  const parsed = parseLine(lineText, tabSize);
+  if (((_a = parsed.marker) == null ? void 0 : _a.kind) !== "list" || parsed.quote.prefix.length > 0) return 0;
+  const level = Math.round(parsed.indent.width / indentUnit);
+  if (!Number.isFinite(level)) throw new RangeError("md-dragger: list level must be finite");
+  return level;
+}
+var NO_SNAP_REASONS = /* @__PURE__ */ new Set(["self_range_blocked", "self_embedding"]);
+var SNAP_RADIUS = 4;
+function snapDrop(input) {
+  const { raw, sourceDoc, selection, sourceIndentWidth, targetIndentWidth, tabSize, indentUnit } = input;
+  const doc = raw.doc;
+  const seam = raw.line;
+  const maxLine = doc.lines + 1;
+  const plan = (position) => planMove({ sourceDoc, selection, position, tabSize, indentUnit });
+  const rawPlan = plan(raw);
+  if (rawPlan.type === "ok" || NO_SNAP_REASONS.has(rawPlan.reason)) return raw;
+  const candidates = [];
+  const push = (line) => {
+    if (line < 1 || line > maxLine || candidates.includes(line)) return;
+    candidates.push(line);
+  };
+  for (const probe of [seam, seam - 1]) {
+    const block = detectBlock(doc, probe, { tabSize });
+    if (!block) continue;
+    push(block.lines.startLine);
+    push(block.lines.endLine + 1);
+  }
+  for (let d = 1; d <= SNAP_RADIUS; d++) {
+    push(seam - d);
+    push(seam + d);
+  }
+  const byDistance = [...candidates].sort((a, b) => Math.abs(a - seam) - Math.abs(b - seam) || b - a);
+  for (const line of byDistance) {
+    const position = locateDropPosition({
+      doc,
+      sourceDoc,
+      selection,
+      hitLine: line,
+      belowMid: false,
+      sourceIndentWidth,
+      targetIndentWidth,
+      tabSize,
+      indentUnit
+    });
+    const planned = plan(position);
+    if (planned.type === "ok" || NO_SNAP_REASONS.has(planned.reason)) return position;
+  }
+  return raw;
+}
+function contains(x, y, width, height) {
+  return x >= 0 && y >= 0 && x <= width && y <= height;
+}
+function pointInViewport(origin, clientX, clientY, screenX, screenY, viewports) {
+  if (origin && contains(clientX, clientY, origin.width, origin.height)) {
+    return { viewport: origin, x: clientX, y: clientY };
+  }
+  for (const viewport of viewports) {
+    if (origin && viewport.id === origin.id) continue;
+    const x = screenX - viewport.left;
+    const y = screenY - viewport.top;
+    if (!contains(x, y, viewport.width, viewport.height)) continue;
+    return { viewport, x, y };
+  }
+  if (!origin) return null;
+  return { viewport: origin, x: clientX, y: clientY };
 }
 function selectionFromOutputs(outputs) {
   let selection = null;
@@ -1681,6 +1712,9 @@ function dragSelectionDoc(outputs) {
 function samePointer(a, b) {
   return a.id === b.id;
 }
+function isPromiseLike(value) {
+  return value !== void 0 && typeof value.then === "function";
+}
 var DEFAULT_GESTURE_CONFIG = {
   dragArmMs: 0,
   multiSelectMs: 500,
@@ -1705,6 +1739,7 @@ var DefaultUx = class {
     this.deps = deps;
     this.disposables = [];
     this.pressSession = null;
+    this.destroyed = false;
     var _a;
     this.modules = (_a = deps.modules) != null ? _a : [];
   }
@@ -1722,6 +1757,7 @@ var DefaultUx = class {
   }
   destroy() {
     var _a, _b, _c;
+    this.destroyed = true;
     this.clearTimers();
     (_b = (_a = this.pressSession) == null ? void 0 : _a.releaseCapture) == null ? void 0 : _b.call(_a);
     this.pressSession = null;
@@ -1736,8 +1772,9 @@ var DefaultUx = class {
     return this.deps.gestureConfig();
   }
   handlePress(input) {
-    var _a;
+    var _a, _b, _c;
     if (input.button !== void 0 && input.button !== 0) return;
+    if (this.runtime().isCommitPending()) return;
     const lineNumber = this.deps.sourceLineFromInput(input);
     if (lineNumber === null) {
       this.runtime().clearSelectionOrCancel();
@@ -1745,7 +1782,6 @@ var DefaultUx = class {
     }
     const block = detectBlock(this.deps.getDoc(), lineNumber, { tabSize: this.deps.tabSize });
     if (!block) return;
-    (_a = input.capture) == null ? void 0 : _a.call(input);
     if (this.runtime().isGestureActive()) {
       this.cancelPress("session_interrupted", input.pointer.type);
     } else {
@@ -1753,9 +1789,11 @@ var DefaultUx = class {
     }
     const cfg = this.cfg();
     const sessionId = this.runtime().createSessionId();
-    const selection = selectOne(block);
+    const suppliedSelection = (_c = (_b = (_a = this.deps).selectionFromInput) == null ? void 0 : _b.call(_a, input, block)) != null ? _c : null;
+    const usesSuppliedSelection = suppliedSelection !== null && suppliedSelection.blocks.length > 0;
+    const selection = usesSuppliedSelection ? suppliedSelection : selectOne(block);
     const existing = this.currentSelection();
-    const inSelecting = cfg.multiSelectEnabled && this.runtime().state.type === "selecting";
+    const inSelecting = !usesSuppliedSelection && cfg.multiSelectEnabled && this.runtime().state.type === "selecting";
     const selectedDragCandidate = inSelecting && existing !== null && hasBlock(existing, block);
     if (inSelecting) {
       const groupArmMs = Math.max(cfg.dragArmMs, cfg.multiSelectMs);
@@ -1798,7 +1836,7 @@ var DefaultUx = class {
       return;
     }
     this.runtime().beginHold(sessionId, selection, input.pointer.type);
-    if (cfg.multiSelectEnabled) {
+    if (cfg.multiSelectEnabled && !usesSuppliedSelection) {
       const multiMs = Math.max(0, cfg.multiSelectMs);
       const armMs2 = Math.max(0, cfg.dragArmMs);
       const multiSelectTimer = multiMs > 0 ? this.deps.scheduler.setTimer(
@@ -1846,6 +1884,10 @@ var DefaultUx = class {
     var _a, _b;
     const session = this.pressSession;
     if (!session || !samePointer(session.pointer, input.pointer)) return;
+    if (input.buttons === 0) {
+      this.handleCancel(input.pointer);
+      return;
+    }
     if (this.runtime().isGestureActive()) {
       this.runtime().moveDrag(session.sessionId, input.point, input.pointer, input.pointer.type);
       this.emitModule("onDragMove", session, input.point, input.pointer);
@@ -1892,7 +1934,14 @@ var DefaultUx = class {
     const session = this.pressSession;
     if (this.runtime().isGestureActive() && session && samePointer(session.pointer, input.pointer)) {
       const result = this.runtime().commitDrop(session.sessionId, input.point, input.pointer, input.pointer.type);
-      this.emitModule("onDragEnd", session, input.point, input.pointer, result != null ? result : { kind: "rejected" });
+      if (isPromiseLike(result)) {
+        void result.then((resolved) => {
+          if (this.destroyed) return;
+          this.emitModule("onDragEnd", session, input.point, input.pointer, resolved);
+        });
+      } else {
+        this.emitModule("onDragEnd", session, input.point, input.pointer, result != null ? result : { kind: "rejected" });
+      }
       this.pressSession = null;
       return;
     }
@@ -2384,6 +2433,7 @@ var DraggerRuntime = class {
     this.mounted = false;
     this.nextSessionNumber = 1;
     this.ux = null;
+    this.pendingCommitSessionId = null;
     this.pipeline = new DragPipeline({
       onChange: (result) => {
         var _a, _b;
@@ -2404,6 +2454,7 @@ var DraggerRuntime = class {
     var _a;
     (_a = this.ux) == null ? void 0 : _a.destroy();
     this.ux = null;
+    this.pendingCommitSessionId = null;
     this.endDragSession();
     this.pipeline.clear();
     this.mounted = false;
@@ -2411,12 +2462,16 @@ var DraggerRuntime = class {
   isGestureActive() {
     return this.pipeline.state.type === "dragging";
   }
+  isCommitPending() {
+    return this.pendingCommitSessionId !== null;
+  }
   createSessionId() {
     const sessionId = `runtime-${this.nextSessionNumber}`;
     this.nextSessionNumber += 1;
     return sessionId;
   }
   beginHold(sessionId, selection, pointerType) {
+    if (this.isCommitPending()) return;
     this.pipeline.enter({ type: "hold_start", sessionId, selection, pointerType });
   }
   markHoldReady(sessionId, pointerType) {
@@ -2425,6 +2480,7 @@ var DraggerRuntime = class {
     this.pipeline.enter({ type: "hold_ready", sessionId, pointerType });
   }
   beginDrag(sessionId, selection, point, pointer, pointerType, releaseCapture) {
+    if (this.isCommitPending()) return;
     this.endDragSession();
     const position = this.resolvePosition(point, selection);
     this.activeDragSession = { sessionId, pointer, selection, position, releaseCapture };
@@ -2448,7 +2504,8 @@ var DraggerRuntime = class {
     });
   }
   commitDrop(sessionId, point, pointer, pointerType) {
-    var _a, _b;
+    var _a, _b, _c;
+    if (this.isCommitPending()) return;
     const drag = this.activeDragSession;
     if (!drag || drag.sessionId !== sessionId || !samePointer(drag.pointer, pointer)) return;
     drag.position = this.resolvePosition(point, drag.selection);
@@ -2475,15 +2532,25 @@ var DraggerRuntime = class {
       this.endDragSession();
       return { kind: "rejected" };
     }
-    this.pipeline.enter({
-      type: "drop",
-      sessionId: drag.sessionId,
-      resolution: { type: "platform_commit", drop: dropSnapshot },
-      pointerType
-    });
-    this.endDragSession();
-    (_b = (_a = this.options.commit).apply) == null ? void 0 : _b.call(_a, edits);
-    return { kind: "applied", edits };
+    const plannedEdits = edits;
+    try {
+      const application = (_b = (_a = this.options.commit).apply) == null ? void 0 : _b.call(_a, plannedEdits);
+      if (isPromiseLike(application)) {
+        this.pendingCommitSessionId = drag.sessionId;
+        (_c = drag.releaseCapture) == null ? void 0 : _c.call(drag);
+        drag.releaseCapture = void 0;
+        return application.then(
+          () => this.finishDrop(drag.sessionId, dropSnapshot, pointerType, {
+            kind: "applied",
+            edits: plannedEdits
+          }),
+          () => this.finishDrop(drag.sessionId, dropSnapshot, pointerType, { kind: "rejected" })
+        );
+      }
+      return this.finishDrop(drag.sessionId, dropSnapshot, pointerType, { kind: "applied", edits: plannedEdits });
+    } catch (e) {
+      return this.finishDrop(drag.sessionId, dropSnapshot, pointerType, { kind: "rejected" });
+    }
   }
   setSelection(selection) {
     this.pipeline.enter({ type: "selection_set", selection });
@@ -2492,10 +2559,12 @@ var DraggerRuntime = class {
     this.pipeline.enter({ type: "selection_clear" });
   }
   cancel(reason = "press_cancelled", pointerType = null) {
+    if (this.isCommitPending()) return;
     this.endDragSession();
     this.pipeline.enter({ type: "cancel", reason, pointerType });
   }
   clearSelectionOrCancel(reason = "press_cancelled") {
+    if (this.isCommitPending()) return true;
     if (!this.isGestureActive() && this.pipeline.state.type === "selecting") {
       this.clearSelection();
       return true;
@@ -2523,9 +2592,23 @@ var DraggerRuntime = class {
       },
       tabSize: this.config().tabSize,
       gestureConfig: () => this.resolveGestureConfig(uxConfig),
+      selectionFromInput: uxConfig.selectionFromInput,
       scheduler,
       modules: (_c = uxConfig.modules) != null ? _c : []
     });
+  }
+  finishDrop(sessionId, drop2, pointerType, result) {
+    var _a;
+    if (((_a = this.activeDragSession) == null ? void 0 : _a.sessionId) !== sessionId) return { kind: "rejected" };
+    this.pendingCommitSessionId = null;
+    this.pipeline.enter({
+      type: "drop",
+      sessionId,
+      resolution: result.kind === "applied" ? { type: "platform_commit", drop: drop2 } : this.cancelDrop(drop2, "commit_failed"),
+      pointerType
+    });
+    this.endDragSession();
+    return result;
   }
   resolveGestureConfig(uxConfig) {
     const raw = typeof uxConfig.gesture === "function" ? uxConfig.gesture() : uxConfig.gesture;
@@ -2567,13 +2650,13 @@ var DraggerRuntime = class {
   dropRejectReason(selection, position) {
     const planned = this.plan(selection, position);
     if (planned.type === "ok") return null;
-    return isDragCancelReason(planned.reason) ? planned.reason : "selection_invalid";
+    return planned.reason;
   }
   cancelDrop(drop2, reason) {
     return {
       type: "cancel",
       drop: drop2,
-      reason: isDragCancelReason(reason) ? reason : "selection_invalid"
+      reason
     };
   }
   config() {
@@ -2592,9 +2675,6 @@ var DraggerRuntime = class {
     return raw;
   }
 };
-function isDragCancelReason(reason) {
-  return reason !== "empty_selection";
-}
 function lineBand(view, line, options) {
   var _a;
   const doc = view.state.doc;
@@ -2648,12 +2728,6 @@ var SOURCE_LEVEL_STYLE_VAR = "--d-source-level";
 var listIndentUnitFacet = import_state.Facet.define({
   combine: (values) => values[values.length - 1]
 });
-function sourceListLevel(lineText, tabSize, indentUnit) {
-  var _a;
-  const parsed = parseLine(lineText, tabSize);
-  if (((_a = parsed.marker) == null ? void 0 : _a.kind) !== "list" || parsed.quote.prefix.length > 0) return 0;
-  return Math.round(parsed.indent.width / indentUnit);
-}
 function sourceHighlightDecoration(outputs, state) {
   const selection = selectionFromOutputs(outputs);
   if (selection === null) return import_view2.Decoration.none;
@@ -2674,7 +2748,7 @@ function sourceHighlightDecoration(outputs, state) {
         import_view2.Decoration.line({
           class: DRAG_SOURCE_LINE_CLASS,
           attributes: {
-            style: `${SOURCE_LEVEL_STYLE_VAR}: ${sourceListLevel(state.doc.line(line).text, tabSize, indentUnit)}`
+            style: `${SOURCE_LEVEL_STYLE_VAR}: ${listLevel(state.doc.line(line).text, tabSize, indentUnit)}`
           }
         }).range(state.doc.line(line).from)
       );
@@ -2702,8 +2776,8 @@ function seamOffset(view, position, options) {
     width: Math.max(0, seam.right - seam.left)
   };
 }
-function createDefaultHandle() {
-  const handle = document.createElement("button");
+function createDefaultHandle(doc) {
+  const handle = doc.createElement("button");
   handle.type = "button";
   handle.className = HANDLE_CLASS;
   handle.setAttribute("aria-label", "Drag markdown block");
@@ -2719,9 +2793,10 @@ var BlockHandleMarker = class _BlockHandleMarker extends import_view3.GutterMark
   eq(other) {
     return other instanceof _BlockHandleMarker && other.startLine === this.startLine && other.render === this.render;
   }
-  toDOM() {
+  toDOM(view) {
     var _a, _b;
-    const handle = (_b = (_a = this.render) == null ? void 0 : _a.call(this)) != null ? _b : createDefaultHandle();
+    const doc = view.dom.ownerDocument;
+    const handle = (_b = (_a = this.render) == null ? void 0 : _a.call(this, doc)) != null ? _b : createDefaultHandle(doc);
     handle.setAttribute("data-block-start", String(this.startLine));
     return handle;
   }
@@ -2765,21 +2840,92 @@ function viewForDoc(doc) {
   }
   return null;
 }
-function viewAtPoint(x, y) {
-  if (liveViews.size === 0) return null;
-  const hit = typeof document !== "undefined" ? document.elementFromPoint(x, y) : null;
+function liveViewWindows() {
+  const wins = /* @__PURE__ */ new Set();
+  for (const view of liveViews) {
+    const win = view.dom.ownerDocument.defaultView;
+    if (win) wins.add(win);
+  }
+  return [...wins];
+}
+var pointerDoc = null;
+function withPointerDocument(doc, run) {
+  const prev = pointerDoc;
+  pointerDoc = doc;
+  try {
+    return run();
+  } finally {
+    pointerDoc = prev;
+  }
+}
+function pointerDocument() {
+  return pointerDoc;
+}
+function frameScale(frame) {
+  const rect = frame.getBoundingClientRect();
+  return {
+    rect,
+    sx: frame.offsetWidth > 0 && rect.width > 0 ? rect.width / frame.offsetWidth : 1,
+    sy: frame.offsetHeight > 0 && rect.height > 0 ? rect.height / frame.offsetHeight : 1
+  };
+}
+function pointInChildFrame(frame, x, y) {
+  const doc = frame.contentDocument;
+  if (!doc) return null;
+  const { rect, sx, sy } = frameScale(frame);
+  return {
+    doc,
+    x: (x - rect.left) / sx - frame.clientLeft,
+    y: (y - rect.top) / sy - frame.clientTop
+  };
+}
+function pointInParentFrame(frame, x, y) {
+  const { rect, sx, sy } = frameScale(frame);
+  return {
+    doc: frame.ownerDocument,
+    x: rect.left + (frame.clientLeft + x) * sx,
+    y: rect.top + (frame.clientTop + y) * sy
+  };
+}
+function pointInTopDocument(doc, x, y) {
+  var _a, _b;
+  let frame = (_a = doc.defaultView) == null ? void 0 : _a.frameElement;
+  while (frame) {
+    const next = pointInParentFrame(frame, x, y);
+    doc = next.doc;
+    x = next.x;
+    y = next.y;
+    frame = (_b = doc.defaultView) == null ? void 0 : _b.frameElement;
+  }
+  return { doc, x, y };
+}
+function locateEditor(x, y, doc, depth = 0) {
+  var _a;
+  if (liveViews.size === 0 || depth > 4) return null;
+  const hit = doc.elementFromPoint(x, y);
   if (hit) {
     for (const view of liveViews) {
-      if (view.dom.contains(hit)) return view;
+      if (view.dom.contains(hit)) return { view, x, y };
+    }
+    const frame2 = hit.tagName === "IFRAME" ? hit : null;
+    const inner = frame2 ? pointInChildFrame(frame2, x, y) : null;
+    if (inner) {
+      const found = locateEditor(inner.x, inner.y, inner.doc, depth + 1);
+      if (found) return found;
     }
   }
   for (const view of liveViews) {
+    if (view.dom.ownerDocument !== doc) continue;
     const rect = view.dom.getBoundingClientRect();
     if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-      return view;
+      return { view, x, y };
     }
   }
-  return null;
+  if (hit) return null;
+  const frame = (_a = doc.defaultView) == null ? void 0 : _a.frameElement;
+  if (!frame) return null;
+  const parent = pointInParentFrame(frame, x, y);
+  return locateEditor(parent.x, parent.y, parent.doc, depth + 1);
 }
 function applyCommit(edits) {
   for (const edit of edits) {
@@ -2792,56 +2938,140 @@ function dispatchChanges(view, changes) {
   if (changes.length === 0) return;
   view.dispatch({ changes });
 }
+var theWindow = (win) => win;
+var itsDocument = (win) => win.document;
 function pointerInput(view) {
+  const bindings = /* @__PURE__ */ new Set();
+  let pointerDown = false;
+  const ownerWindow = () => {
+    const win = view.dom.ownerDocument.defaultView;
+    if (!win) throw new Error("md-dragger: editor document has no window");
+    return win;
+  };
+  const capture = (options) => ({
+    capture: typeof options === "boolean" ? options : options.capture === true
+  });
+  const syncWindows = () => {
+    const next = /* @__PURE__ */ new Set([ownerWindow(), ...liveViewWindows()]);
+    for (const binding of bindings) {
+      for (const win of binding.windows) {
+        if (next.has(win)) continue;
+        binding.on(win).removeEventListener(binding.type, binding.listener, capture(binding.options));
+        binding.windows.delete(win);
+      }
+      for (const win of next) {
+        if (binding.windows.has(win)) continue;
+        binding.on(win).addEventListener(binding.type, binding.listener, binding.options);
+        binding.windows.add(win);
+      }
+    }
+  };
+  const listen = (on, type, handler, options) => {
+    const binding = {
+      on,
+      type,
+      listener: handler,
+      options,
+      windows: /* @__PURE__ */ new Set()
+    };
+    bindings.add(binding);
+    syncWindows();
+    return () => {
+      bindings.delete(binding);
+      for (const win of binding.windows) {
+        binding.on(win).removeEventListener(binding.type, binding.listener, capture(binding.options));
+      }
+      binding.windows.clear();
+    };
+  };
+  const deliver = (event, run) => {
+    var _a;
+    const win = event.view;
+    withPointerDocument((_a = win == null ? void 0 : win.document) != null ? _a : null, run);
+  };
+  const measure = (win) => ({
+    id: win,
+    left: win.screenX,
+    top: win.screenY,
+    width: win.innerWidth,
+    height: win.innerHeight
+  });
+  const deliverPointer = (event, run) => {
+    var _a, _b, _c, _d;
+    const originWin = (_a = event.view) != null ? _a : null;
+    const viewports = liveViewWindows().map(measure);
+    const origin = originWin ? (_b = viewports.find((viewport) => viewport.id === originWin)) != null ? _b : measure(originWin) : null;
+    const space = pointInViewport(origin, event.clientX, event.clientY, event.screenX, event.screenY, viewports);
+    const doc = (_d = (_c = space == null ? void 0 : space.viewport.id.document) != null ? _c : originWin == null ? void 0 : originWin.document) != null ? _d : null;
+    const point = space ? { x: space.x, y: space.y } : { x: event.clientX, y: event.clientY };
+    withPointerDocument(doc, () => run(point));
+  };
   return {
     onPress: (handler) => {
       const listener = (event) => {
-        handler({
-          point: { x: event.clientX, y: event.clientY },
-          pointer: { id: event.pointerId, type: event.pointerType },
-          button: event.button,
-          modifiers: {
-            altKey: event.altKey,
-            ctrlKey: event.ctrlKey,
-            metaKey: event.metaKey,
-            shiftKey: event.shiftKey
-          },
-          native: event,
-          claim: () => claimPointerEvent(event),
-          capture: () => capturePointer(view.dom, event.pointerId),
-          releaseCapture: () => releasePointerCapture(view.dom, event.pointerId)
-        });
+        pointerDown = true;
+        syncWindows();
+        deliver(
+          event,
+          () => handler({
+            point: { x: event.clientX, y: event.clientY },
+            pointer: { id: event.pointerId, type: event.pointerType },
+            button: event.button,
+            modifiers: {
+              altKey: event.altKey,
+              ctrlKey: event.ctrlKey,
+              metaKey: event.metaKey,
+              shiftKey: event.shiftKey
+            },
+            native: event,
+            claim: () => claimPointerEvent(event),
+            capture: () => capturePointer(view.dom, event.pointerId),
+            releaseCapture: () => releasePointerCapture(view.dom, event.pointerId)
+          })
+        );
       };
       view.dom.addEventListener("pointerdown", listener, true);
       return () => view.dom.removeEventListener("pointerdown", listener, true);
     },
     onMove: (handler) => {
       const listener = (event) => {
-        handler({
-          point: { x: event.clientX, y: event.clientY },
-          pointer: { id: event.pointerId, type: event.pointerType },
-          native: event,
-          claim: () => claimPointerEvent(event)
-        });
+        if (event.buttons === 0) pointerDown = false;
+        deliverPointer(
+          event,
+          (point) => handler({
+            point,
+            pointer: { id: event.pointerId, type: event.pointerType },
+            buttons: event.buttons,
+            native: event,
+            claim: () => claimPointerEvent(event)
+          })
+        );
       };
-      window.addEventListener("pointermove", listener, { capture: true, passive: false });
-      return () => window.removeEventListener("pointermove", listener, true);
+      return listen(theWindow, "pointermove", listener, { capture: true, passive: false });
     },
     onRelease: (handler) => {
       const listener = (event) => {
-        handler({
-          point: { x: event.clientX, y: event.clientY },
-          pointer: { id: event.pointerId, type: event.pointerType },
-          native: event,
-          claim: () => claimPointerEvent(event),
-          releaseCapture: () => releasePointerCapture(view.dom, event.pointerId)
-        });
+        pointerDown = false;
+        deliverPointer(
+          event,
+          (point) => handler({
+            point,
+            pointer: { id: event.pointerId, type: event.pointerType },
+            native: event,
+            claim: () => claimPointerEvent(event),
+            releaseCapture: () => releasePointerCapture(view.dom, event.pointerId)
+          })
+        );
       };
-      window.addEventListener("pointerup", listener, { capture: true, passive: false });
-      return () => window.removeEventListener("pointerup", listener, true);
+      return listen(theWindow, "pointerup", listener, { capture: true, passive: false });
     },
     onCancel: (handler) => {
       const pointerCancelListener = (event) => {
+        releasePointerCapture(view.dom, event.pointerId);
+        const win = event.view;
+        const retarget = pointerDown && (!!(win == null ? void 0 : win.frameElement) || liveViewWindows().some((other) => other !== win));
+        if (retarget) return;
+        pointerDown = false;
         handler({
           pointer: { id: event.pointerId, type: event.pointerType },
           reason: "pointer_cancelled",
@@ -2849,21 +3079,27 @@ function pointerInput(view) {
           releaseCapture: () => releasePointerCapture(view.dom, event.pointerId)
         });
       };
-      window.addEventListener("pointercancel", pointerCancelListener, { capture: true, passive: false });
-      const cancelFallback = () => handler({
-        pointer: { id: -1, type: null },
-        reason: "pointer_cancelled"
-      });
-      const onWindowBlur = () => cancelFallback();
-      const onVisibilityChange = () => {
-        if (document.visibilityState === "hidden") cancelFallback();
+      const cancelFallback = () => {
+        pointerDown = false;
+        handler({
+          pointer: { id: -1, type: null },
+          reason: "pointer_cancelled"
+        });
       };
-      window.addEventListener("blur", onWindowBlur);
-      document.addEventListener("visibilitychange", onVisibilityChange);
+      const onWindowBlur = () => {
+        if (pointerDown) return;
+        cancelFallback();
+      };
+      const onVisibilityChange = () => {
+        if (view.dom.ownerDocument.visibilityState === "hidden") cancelFallback();
+      };
+      const unlisten = [
+        listen(theWindow, "pointercancel", pointerCancelListener, { capture: true, passive: false }),
+        listen(theWindow, "blur", onWindowBlur, false),
+        listen(itsDocument, "visibilitychange", onVisibilityChange, false)
+      ];
       return () => {
-        window.removeEventListener("pointercancel", pointerCancelListener, true);
-        window.removeEventListener("blur", onWindowBlur);
-        document.removeEventListener("visibilitychange", onVisibilityChange);
+        for (const off of unlisten) off();
       };
     },
     onEscape: (handler) => {
@@ -2874,13 +3110,17 @@ function pointerInput(view) {
           event.stopPropagation();
         }
       };
-      window.addEventListener("keydown", listener, true);
-      return () => window.removeEventListener("keydown", listener, true);
+      return listen(theWindow, "keydown", listener, true);
     }
   };
 }
 function nativePointerEvent(value) {
-  return value instanceof PointerEvent ? value : null;
+  return typeof value === "object" && value !== null && typeof value.pointerId === "number" ? value : null;
+}
+function elementTarget(event) {
+  if (typeof event !== "object" || event === null || !("target" in event)) return null;
+  const target = event.target;
+  return typeof target === "object" && target !== null && target.nodeType === 1 ? target : null;
 }
 function claimPointerEvent(event) {
   event.preventDefault();
@@ -2900,8 +3140,7 @@ function releasePointerCapture(target, pointerId) {
 }
 function sourceLineFromInput(view, input) {
   var _a;
-  const event = nativePointerEvent(input.native);
-  const target = (event == null ? void 0 : event.target) instanceof Element ? event.target : null;
+  const target = elementTarget(nativePointerEvent(input.native));
   const handle = (_a = target == null ? void 0 : target.closest(`.${HANDLE_CLASS}`)) != null ? _a : null;
   if (!handle || !view.dom.contains(handle)) return null;
   const fromAttr = Number(handle.getAttribute("data-block-start"));
@@ -2918,7 +3157,7 @@ function lineAtPoint(view, point) {
   if (typeof pos !== "number") return null;
   return view.state.doc.lineAt(pos).number;
 }
-function resolveDropPosition(view, point, selection, sourceIndentWidth, targetIndentWidth, options) {
+function resolveDropPosition(view, point, selection, sourceIndentWidth, targetIndentWidth, options, sourceDoc) {
   const hitLine = lineAtPoint(view, point);
   if (hitLine === null) return null;
   const doc = view.state.doc;
@@ -2927,6 +3166,7 @@ function resolveDropPosition(view, point, selection, sourceIndentWidth, targetIn
   const inDoc = hitLine >= 1 && hitLine <= doc.lines;
   return locateDropPosition({
     doc,
+    sourceDoc,
     selection,
     hitLine,
     belowMid: inDoc ? belowMid(view, hitLine, point.y) : hitLine > doc.lines,
@@ -2936,80 +3176,52 @@ function resolveDropPosition(view, point, selection, sourceIndentWidth, targetIn
     indentUnit
   });
 }
-var NO_SNAP_REASONS = /* @__PURE__ */ new Set(["self_range_blocked", "self_embedding"]);
-var SNAP_RADIUS = 4;
-function snapDropPosition(input) {
-  const { raw, sourceDoc, selection, sourceIndentWidth, targetIndentWidth, tabSize, indentUnit } = input;
-  const doc = raw.doc;
-  const seam = raw.line;
-  const maxLine = doc.lines + 1;
-  const plan = (position) => planMove({ sourceDoc, selection, position, tabSize, indentUnit });
-  const rawPlan = plan(raw);
-  if (rawPlan.type === "ok" || NO_SNAP_REASONS.has(rawPlan.reason)) return raw;
-  const candidates = [];
-  const push = (line) => {
-    if (line < 1 || line > maxLine || candidates.includes(line)) return;
-    candidates.push(line);
-  };
-  for (const probe of [seam, seam - 1]) {
-    const block = detectBlock(doc, probe, { tabSize });
-    if (!block) continue;
-    push(block.lines.startLine);
-    push(block.lines.endLine + 1);
-  }
-  for (let d = 1; d <= SNAP_RADIUS; d++) {
-    push(seam - d);
-    push(seam + d);
-  }
-  const byDistance = [...candidates].sort((a, b) => Math.abs(a - seam) - Math.abs(b - seam) || b - a);
-  for (const line of byDistance) {
-    const position = locateDropPosition({
-      doc,
-      selection,
-      hitLine: line,
-      belowMid: false,
-      sourceIndentWidth,
-      targetIndentWidth,
-      tabSize,
-      indentUnit
-    });
-    const planned = plan(position);
-    if (planned.type === "ok" || NO_SNAP_REASONS.has(planned.reason)) return position;
-  }
-  return raw;
-}
 function resolveDropPositionAtPoint(sourceView, point, selection, options) {
+  var _a;
   const source = selection.blocks[0];
   if (!source) return null;
   const sourceDoc = sourceView.state.doc;
   if (source.lines.startLine < 1 || source.lines.startLine > sourceDoc.lines) return null;
-  const originBand = lineBand(sourceView, source.lines.startLine, options);
-  if (!originBand) return null;
   const indentUnit = resolveListIndentUnit(options);
   const sourceIndentWidth = source.type === "list-item" ? parseLine(sourceDoc.line(source.lines.startLine).text, sourceView.state.facet(import_state4.EditorState.tabSize)).indent.width : 0;
+  const space = (_a = pointerDocument()) != null ? _a : sourceView.dom.ownerDocument;
+  const targetHit = locateEditor(point.x, point.y, space);
+  if (!targetHit) return null;
+  const targetPoint = { x: targetHit.x, y: targetHit.y };
   let targetIndentWidth = sourceIndentWidth;
   if (source.type === "list-item") {
-    const horizontalSteps = Math.round((point.x - originBand.left) / resolveListIndentWidthPx(options, sourceView));
-    targetIndentWidth += horizontalSteps * indentUnit;
+    const stepPx = resolveListIndentWidthPx(options, targetHit.view);
+    if (stepPx > 0) {
+      const contentLeft = targetHit.view.contentDOM.getBoundingClientRect().left;
+      const horizontalSteps = Math.max(0, Math.round((targetPoint.x - contentLeft) / stepPx));
+      targetIndentWidth = horizontalSteps * indentUnit;
+    }
   }
-  const target = viewAtPoint(point.x, point.y);
-  if (!target) return null;
-  const position = resolveDropPosition(target, point, selection, sourceIndentWidth, targetIndentWidth, options);
+  const position = resolveDropPosition(
+    targetHit.view,
+    targetPoint,
+    selection,
+    sourceIndentWidth,
+    targetIndentWidth,
+    options,
+    sourceDoc
+  );
   if (position === null) return null;
-  return snapDropPosition({
+  return snapDrop({
     raw: position,
     sourceDoc,
     selection,
     sourceIndentWidth,
     targetIndentWidth,
-    tabSize: target.state.facet(import_state4.EditorState.tabSize),
+    tabSize: targetHit.view.state.facet(import_state4.EditorState.tabSize),
     indentUnit
   });
 }
-function lineAtScreenPoint(point) {
-  const target = viewAtPoint(point.x, point.y);
-  if (!target) return null;
-  return lineAtPoint(target, point);
+function lineAtScreenPoint(point, doc) {
+  var _a;
+  const hit = locateEditor(point.x, point.y, (_a = pointerDocument()) != null ? _a : doc);
+  if (!hit) return null;
+  return lineAtPoint(hit.view, { x: hit.x, y: hit.y });
 }
 function belowMid(view, line, y) {
   const from = view.state.doc.line(line).from;
@@ -3030,9 +3242,13 @@ function dragRuntime(options) {
         this.view = view;
         this.runtime = null;
         this.unregisterView = null;
+        var _a;
         if (!isDraggerEnabled(options, view)) return;
         this.unregisterView = registerView(view);
-        const locateOverride = resolveLocateOptions(options.locate, view);
+        const locateOverride = resolvePerView(options.locate, view);
+        const externalTarget = resolvePerView(options.externalTarget, view);
+        const ux = resolvePerView(options.ux, view);
+        const commit = (_a = resolvePerView(options.commit, view)) != null ? _a : { apply: applyCommit };
         const rawInput = pointerInput(view);
         const input = {
           ...rawInput,
@@ -3047,23 +3263,26 @@ function dragRuntime(options) {
           },
           locate: {
             sourceLineFromInput: (input2) => {
-              var _a, _b;
-              return (_b = (_a = locateOverride == null ? void 0 : locateOverride.sourceLineFromInput) == null ? void 0 : _a.call(locateOverride, input2)) != null ? _b : sourceLineFromInput(view, input2);
+              var _a2, _b;
+              return (_b = (_a2 = locateOverride == null ? void 0 : locateOverride.sourceLineFromInput) == null ? void 0 : _a2.call(locateOverride, input2)) != null ? _b : sourceLineFromInput(view, input2);
             },
-            resolveDropPosition: (point, context) => {
-              var _a, _b;
-              return (_b = (_a = locateOverride == null ? void 0 : locateOverride.resolveDropPosition) == null ? void 0 : _a.call(locateOverride, point, context)) != null ? _b : resolveDropPositionAtPoint(view, point, context.selection, options);
-            },
+            resolveDropPosition: (point, context) => resolveDropPositionWithExternalTarget(
+              externalTarget == null ? void 0 : externalTarget.resolveDropPosition,
+              (fallbackPoint, fallbackContext) => {
+                var _a2, _b;
+                return (_b = (_a2 = locateOverride == null ? void 0 : locateOverride.resolveDropPosition) == null ? void 0 : _a2.call(locateOverride, fallbackPoint, fallbackContext)) != null ? _b : resolveDropPositionAtPoint(view, fallbackPoint, fallbackContext.selection, options);
+              },
+              point,
+              context
+            ),
             lineFromPoint: (point) => {
-              var _a, _b, _c;
-              return (_c = (_b = (_a = locateOverride == null ? void 0 : locateOverride.lineFromPoint) == null ? void 0 : _a.call(locateOverride, point)) != null ? _b : lineAtScreenPoint(point)) != null ? _c : lineAtPoint(view, point);
+              var _a2, _b, _c;
+              return (_c = (_b = (_a2 = locateOverride == null ? void 0 : locateOverride.lineFromPoint) == null ? void 0 : _a2.call(locateOverride, point)) != null ? _b : lineAtScreenPoint(point, view.dom.ownerDocument)) != null ? _c : lineAtPoint(view, point);
             }
           },
-          commit: {
-            apply: (edits) => applyCommit(edits)
-          },
+          commit,
           onChange: (output) => {
-            var _a;
+            var _a2;
             const hasDragOutput = output.outputs.some(
               (o) => o.type === "drag_source_changed" || o.type === "drag_over" || o.type === "dropped" || o.type === "cancelled" || o.type === "terminal"
             );
@@ -3072,7 +3291,7 @@ function dragRuntime(options) {
             } else {
               view.dispatch({ effects: dragTransitionEffect.of(output) });
             }
-            (_a = options.onChange) == null ? void 0 : _a.call(options, output);
+            (_a2 = options.onChange) == null ? void 0 : _a2.call(options, output);
           },
           config: () => {
             const raw = typeof options.config === "function" ? options.config() : options.config;
@@ -3081,7 +3300,7 @@ function dragRuntime(options) {
               listIndentUnit: raw.listIndentUnit
             });
           },
-          ux: options.ux
+          ux
         });
         this.runtime.mount();
       }
@@ -3092,6 +3311,10 @@ function dragRuntime(options) {
       }
     }
   );
+}
+function resolveDropPositionWithExternalTarget(resolveExternal, resolveFallback, point, context) {
+  const external = resolveExternal == null ? void 0 : resolveExternal(point, context);
+  return external === void 0 ? resolveFallback(point, context) : external;
 }
 function scrollPort(getDoc = () => document) {
   return {
@@ -3122,7 +3345,7 @@ function mdDragger(options) {
   ];
 }
 
-// node_modules/.pnpm/md-dragger@2.0.1_@codemirror+state@6.7.1_@codemirror+view@6.43.7/node_modules/md-dragger/dist/npm/domain.mjs
+// node_modules/.pnpm/md-dragger@2.2.0_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/domain.mjs
 function isHorizontalRuleLine2(text) {
   if (!text) return false;
   const trimmed = text.trim();
@@ -3500,19 +3723,19 @@ function getLineMetaAt2(lineMap, lineNumber) {
   if (lineNumber < 1 || lineNumber >= lineMap.lineMeta.length) return null;
   return (_a = lineMap.lineMeta[lineNumber]) != null ? _a : null;
 }
-var BlockType2 = /* @__PURE__ */ ((BlockType22) => {
-  BlockType22["Paragraph"] = "paragraph";
-  BlockType22["Heading"] = "heading";
-  BlockType22["ListItem"] = "list-item";
-  BlockType22["CodeBlock"] = "code-block";
-  BlockType22["Blockquote"] = "blockquote";
-  BlockType22["Table"] = "table";
-  BlockType22["MathBlock"] = "math-block";
-  BlockType22["Callout"] = "callout";
-  BlockType22["HorizontalRule"] = "hr";
-  BlockType22["Unknown"] = "unknown";
-  return BlockType22;
-})(BlockType2 || {});
+var BlockType = /* @__PURE__ */ ((BlockType2) => {
+  BlockType2["Paragraph"] = "paragraph";
+  BlockType2["Heading"] = "heading";
+  BlockType2["ListItem"] = "list-item";
+  BlockType2["CodeBlock"] = "code-block";
+  BlockType2["Blockquote"] = "blockquote";
+  BlockType2["Table"] = "table";
+  BlockType2["MathBlock"] = "math-block";
+  BlockType2["Callout"] = "callout";
+  BlockType2["HorizontalRule"] = "hr";
+  BlockType2["Unknown"] = "unknown";
+  return BlockType2;
+})(BlockType || {});
 function detectBlockType2(lineText, tabSize) {
   var _a, _b, _c, _d, _e, _f;
   const p = parseLine2(lineText, tabSize);
@@ -3723,28 +3946,55 @@ function planConvert(params) {
   if (!span) return [];
   return planConvertLines(params.doc, span.startLine, span.endLine, params.to);
 }
-function planConvertLines(doc, startLine, endLine, to) {
-  var _a;
-  const fenced = readFencedContent(doc, startLine, endLine);
-  if (isFenceTarget(to)) {
-    if ((fenced == null ? void 0 : fenced.type) === to.type) return [];
-    return wrapAsFence(doc, startLine, endLine, to, (_a = fenced == null ? void 0 : fenced.contentLines) != null ? _a : null);
+function resolveBlockTemplate(to) {
+  if ("template" in to) return to;
+  switch (to.type) {
+    case "paragraph":
+      return { template: "${content}" };
+    case "heading":
+      return { template: `${"#".repeat(to.level)} \${content}` };
+    case "list-item":
+      return {
+        template: "${content}",
+        linePrefix: to.markerType === "ordered" ? "${ordinal}. " : to.markerType === "task" ? "- [ ] " : "- "
+      };
+    case "blockquote":
+      return { template: "${content}", linePrefix: "> " };
+    case "code-block":
+      return { template: "```\n${content}\n```" };
+    case "math-block":
+      return { template: "$$\n${content}\n$$" };
   }
-  if (fenced) {
-    return unwrapFence(doc, startLine, endLine, fenced.contentLines, to);
-  }
-  const changes = [];
-  for (let n = startLine; n <= endLine; n++) {
-    const line = doc.line(n);
-    const next = convertLine(line.text, to, n - startLine + 1);
-    if (next !== line.text) {
-      changes.push({ from: line.from, to: line.to, insert: next });
-    }
-  }
-  return changes;
 }
-function isFenceTarget(to) {
-  return to.type === "code-block" || to.type === "math-block";
+function planConvertLines(doc, startLine, endLine, to) {
+  const fenced = readFencedContent(doc, startLine, endLine);
+  if (!("template" in to)) {
+    if (to.type === "code-block" && (fenced == null ? void 0 : fenced.type) === "code-block") return [];
+    if (to.type === "math-block" && (fenced == null ? void 0 : fenced.type) === "math-block") return [];
+  }
+  const contentLines = fenced ? fenced.contentLines.map(splitIndent) : Array.from({ length: endLine - startLine + 1 }, (_, i) => stripPrefix(doc.line(startLine + i).text));
+  const target = resolveBlockTemplate(to);
+  const from = doc.line(startLine).from;
+  const toPos = doc.line(endLine).to;
+  const formatted = formatBlockContent(contentLines, target);
+  if (formatted === doc.sliceString(from, toPos)) return [];
+  return [{ from, to: toPos, insert: formatted }];
+}
+function formatBlockContent(contentLines, target) {
+  var _a;
+  const formattedLines = contentLines.map((line, index) => {
+    if (!target.linePrefix) return `${line.indentRaw}${line.body}`;
+    const prefix = target.linePrefix.replace("${ordinal}", String(index + 1));
+    return `${line.indentRaw}${prefix}${line.body}`;
+  });
+  const content = formattedLines.join("\n");
+  const vars = (_a = target.variables) != null ? _a : {};
+  let result = target.template.replace("${content}", content);
+  result = result.replace(/\$\{([a-zA-Z0-9_-]+)\}/g, (_, key) => {
+    var _a2;
+    return (_a2 = vars[key]) != null ? _a2 : "";
+  });
+  return result;
 }
 function readFencedContent(doc, startLine, endLine) {
   const startText = doc.line(startLine).text;
@@ -3775,59 +4025,14 @@ function singleLineMathBody(text) {
   if (!trimmed.startsWith("$$") || !trimmed.endsWith("$$") || trimmed.length < 4) return null;
   return trimmed.slice(2, -2).trim();
 }
-function unwrapFence(doc, startLine, endLine, contentLines, to) {
-  const from = doc.line(startLine).from;
-  const toPos = doc.line(endLine).to;
-  const insert = contentLines.map((line, i) => {
-    const { indentRaw, body } = splitIndent(line);
-    return formatBody(indentRaw, body, to, i + 1);
-  }).join("\n");
-  return [{ from, to: toPos, insert }];
-}
-function wrapAsFence(doc, startLine, endLine, to, existingContent) {
-  const from = doc.line(startLine).from;
-  const toPos = doc.line(endLine).to;
-  const content = existingContent ? existingContent.join("\n") : Array.from(
-    { length: endLine - startLine + 1 },
-    (_, i) => stripPrefix(doc.line(startLine + i).text).body
-  ).join("\n");
-  const fence = to.type === "code-block" ? "```" : "$$";
-  return [{ from, to: toPos, insert: `${fence}
-${content}
-${fence}` }];
-}
-function convertLine(text, to, ordinal) {
-  const { indentRaw, body } = stripPrefix(text);
-  return formatBody(indentRaw, body, to, ordinal);
-}
-function formatBody(indentRaw, body, to, ordinal) {
-  switch (to.type) {
-    case "paragraph":
-      return `${indentRaw}${body}`;
-    case "heading":
-      return `${indentRaw}${"#".repeat(to.level)} ${body}`;
-    case "list-item":
-      return `${indentRaw}${listMarker(to.markerType, ordinal)}${body}`;
-    case "blockquote":
-      return `> ${indentRaw}${body}`;
-  }
-}
-function listMarker(markerType, ordinal) {
-  switch (markerType) {
-    case "ordered":
-      return `${ordinal}. `;
-    case "task":
-      return "- [ ] ";
-    case "unordered":
-      return "- ";
-  }
-}
 function stripPrefix(text) {
   var _a;
   const quoteMatch = text.match(/^(\s*>\s?)*/);
   const withoutQuote = text.slice((_a = quoteMatch == null ? void 0 : quoteMatch[0].length) != null ? _a : 0);
   const { indentRaw, body } = splitIndent(withoutQuote);
   let rest = body.replace(/^#{1,6}\s+/, "");
+  const calloutMatch = rest.match(/^\[![^\]]+\]\s*/);
+  if (calloutMatch) rest = rest.slice(calloutMatch[0].length);
   const listMatch = rest.match(/^((?:[-*+]\s\[[ xX]\]\s+)|(?:[-*+]\s+)|(?:\d+[.)]\s+))/);
   if (listMatch) rest = rest.slice(listMatch[0].length);
   return { indentRaw, body: rest };
@@ -3876,50 +4081,26 @@ function selectionLineRanges2(docLines, selection) {
     selection.blocks.map((block) => block.lines)
   );
 }
-var ALL_TYPES2 = Object.values(BlockType2);
-function rejectEntries2(types, slot, reason) {
-  return types.map((t2) => [`${t2}|${slot}`, reason]);
+function resolveDeleteRange2(doc, sourceFrom, sourceTo) {
+  if (sourceTo < doc.length) {
+    return {
+      from: sourceFrom,
+      to: Math.min(sourceTo + 1, doc.length)
+    };
+  }
+  if (sourceFrom > 0) {
+    return {
+      from: sourceFrom - 1,
+      to: sourceTo
+    };
+  }
+  return {
+    from: sourceFrom,
+    to: sourceTo
+  };
 }
-var REJECT_RULES2 = new Map([
-  ...rejectEntries2(ALL_TYPES2, "inside_code_block", "inside_code_block"),
-  ...rejectEntries2(ALL_TYPES2, "inside_math_block", "inside_math_block"),
-  ...rejectEntries2(
-    ALL_TYPES2.filter(
-      (t2) => t2 !== "list-item"
-      /* ListItem */
-    ),
-    "inside_list",
-    "inside_list"
-  ),
-  ...rejectEntries2(
-    ALL_TYPES2.filter(
-      (t2) => t2 !== "blockquote"
-      /* Blockquote */
-    ),
-    "inside_quote_run",
-    "inside_quote_run"
-  ),
-  ...rejectEntries2([
-    "callout"
-    /* Callout */
-  ], "quote_before", "quote_boundary"),
-  ...rejectEntries2(
-    ALL_TYPES2.filter(
-      (t2) => t2 !== "blockquote"
-      /* Blockquote */
-    ),
-    "quote_after",
-    "quote_boundary"
-  ),
-  ...rejectEntries2(ALL_TYPES2, "callout_after", "callout_after"),
-  ...rejectEntries2(ALL_TYPES2, "table_before", "table_before"),
-  ...rejectEntries2(ALL_TYPES2, "hr_before", "hr_before")
-]);
 function reject2(reason) {
   return { type: "reject", reason };
-}
-function isReject(value) {
-  return typeof value === "object" && value !== null && value.type === "reject";
 }
 function planDelete(params) {
   const { doc, selection } = params;
@@ -3928,18 +4109,14 @@ function planDelete(params) {
   const changes = ranges.map((range) => {
     const startLine = doc.line(range.startLine);
     const endLine = doc.line(range.endLine);
-    const deletesOnlyFinalLine = range.startLine === range.endLine && range.endLine === doc.lines && range.startLine > 1;
-    return {
-      from: deletesOnlyFinalLine ? startLine.from - 1 : startLine.from,
-      to: range.endLine === doc.lines ? doc.length : Math.min(doc.length, endLine.to + 1),
-      insert: ""
-    };
+    const { from, to } = resolveDeleteRange2(doc, startLine.from, endLine.to);
+    return { from, to, insert: "" };
   }).filter((change) => change.to > change.from).sort((a, b) => b.from - a.from);
   if (changes.length === 0) return reject2("empty_selection");
   return { doc, changes };
 }
 
-// node_modules/.pnpm/md-dragger@2.0.1_@codemirror+state@6.7.1_@codemirror+view@6.43.7/node_modules/md-dragger/dist/npm/runtime.mjs
+// node_modules/.pnpm/md-dragger@2.2.0_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/runtime.mjs
 function selectionFromOutputs2(outputs) {
   let selection = null;
   for (const output of outputs) {
@@ -3978,60 +4155,8 @@ function dragSelectionDoc2(outputs) {
   }
   return doc;
 }
-var BlockType3 = /* @__PURE__ */ ((BlockType22) => {
-  BlockType22["Paragraph"] = "paragraph";
-  BlockType22["Heading"] = "heading";
-  BlockType22["ListItem"] = "list-item";
-  BlockType22["CodeBlock"] = "code-block";
-  BlockType22["Blockquote"] = "blockquote";
-  BlockType22["Table"] = "table";
-  BlockType22["MathBlock"] = "math-block";
-  BlockType22["Callout"] = "callout";
-  BlockType22["HorizontalRule"] = "hr";
-  BlockType22["Unknown"] = "unknown";
-  return BlockType22;
-})(BlockType3 || {});
-var ALL_TYPES3 = Object.values(BlockType3);
-function rejectEntries3(types, slot, reason) {
-  return types.map((t2) => [`${t2}|${slot}`, reason]);
-}
-var REJECT_RULES3 = new Map([
-  ...rejectEntries3(ALL_TYPES3, "inside_code_block", "inside_code_block"),
-  ...rejectEntries3(ALL_TYPES3, "inside_math_block", "inside_math_block"),
-  ...rejectEntries3(
-    ALL_TYPES3.filter(
-      (t2) => t2 !== "list-item"
-      /* ListItem */
-    ),
-    "inside_list",
-    "inside_list"
-  ),
-  ...rejectEntries3(
-    ALL_TYPES3.filter(
-      (t2) => t2 !== "blockquote"
-      /* Blockquote */
-    ),
-    "inside_quote_run",
-    "inside_quote_run"
-  ),
-  ...rejectEntries3([
-    "callout"
-    /* Callout */
-  ], "quote_before", "quote_boundary"),
-  ...rejectEntries3(
-    ALL_TYPES3.filter(
-      (t2) => t2 !== "blockquote"
-      /* Blockquote */
-    ),
-    "quote_after",
-    "quote_boundary"
-  ),
-  ...rejectEntries3(ALL_TYPES3, "callout_after", "callout_after"),
-  ...rejectEntries3(ALL_TYPES3, "table_before", "table_before"),
-  ...rejectEntries3(ALL_TYPES3, "hr_before", "hr_before")
-]);
 
-// node_modules/.pnpm/md-dragger@2.0.1_@codemirror+state@6.7.1_@codemirror+view@6.43.7/node_modules/md-dragger/dist/npm/runtime/modules.mjs
+// node_modules/.pnpm/md-dragger@2.2.0_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/runtime/modules.mjs
 var TICK_MS = 16;
 function autoScroll(port, config) {
   const cfg = () => typeof config === "function" ? config() : config;
@@ -4074,32 +4199,459 @@ function autoScroll(port, config) {
 var import_obsidian = require("obsidian");
 var import_view6 = require("@codemirror/view");
 
+// src/plugin/i18n/index.ts
+var obsidian = __toESM(require("obsidian"));
+
+// src/plugin/i18n/en.ts
+var en = {
+  // Block menu
+  blockMenuParagraph: "Paragraph",
+  blockMenuHeading: "Heading",
+  blockMenuList: "List",
+  blockMenuBulletList: "Bullet list",
+  blockMenuNumberedList: "Numbered list",
+  blockMenuTaskList: "Task list",
+  blockMenuQuote: "Quote",
+  blockMenuCallout: "Callout",
+  blockMenuCalloutNote: "Note",
+  blockMenuCalloutTip: "Tip",
+  blockMenuCalloutWarning: "Warning",
+  blockMenuCustom: "Custom",
+  blockMenuCodeBlock: "Code block",
+  blockMenuMathBlock: "Math block",
+  blockMenuCopy: "Copy block",
+  blockMenuCut: "Cut block",
+  blockMenuDelete: "Delete block",
+  blockMenuBack: "Back",
+  blockMenuConversionFailed: "Unable to change block type.",
+  blockMenuCopyFailed: "Unable to copy block.",
+  blockMenuCutFailed: "Unable to cut block.",
+  blockMenuDeleteFailed: "Unable to delete block.",
+  headingAppearance: "Appearance",
+  headingBehavior: "Behavior",
+  headingBlockMenu: "Popup menu",
+  customBlockStylesAdd: "Add custom style",
+  customStyleLabel: "Label",
+  customStyleLabelDesc: "Display name in the handle popup menu",
+  customStyleIcon: "Icon",
+  customStyleIconDesc: "Click the icon button to choose or type an icon identifier",
+  customStyleTemplate: "Template",
+  customStyleTemplateDesc: "Markdown template containing ${content} and optional ${var} tokens",
+  customStyleTemplateRequired: "The template must contain ${content}.",
+  customStyleVariables: "Variables",
+  customStyleVariableName: "Name",
+  customStyleVariableValue: "Value",
+  customStyleAddVariable: "Add variable",
+  customStyleRemoveVariable: "Remove variable",
+  customStyleInvalidVariables: "Use unique variable names with letters, numbers, underscores or hyphens. The name content is reserved.",
+  customStyleLinePrefix: "Line prefix",
+  customStyleLinePrefixDesc: 'Optional prefix applied to each line of content (e.g. "> " for callouts)',
+  customStyleModalTitleNew: "New custom block style",
+  customStyleModalTitleEdit: "Edit custom block style",
+  customStyleSave: "Save",
+  customStyleCancel: "Cancel",
+  handleColor: "Handle color",
+  handleColorDesc: "Follow theme accent or pick a custom color",
+  optionTheme: "Theme",
+  optionCustom: "Custom",
+  handleVisibility: "Handle visibility",
+  handleVisibilityDesc: "Control how drag handles are displayed",
+  optionHover: "Hover",
+  optionAlways: "Always",
+  optionHidden: "Hidden",
+  selectionVisualStyle: "Block selection visual style",
+  selectionVisualStyleDesc: "Shared highlight style",
+  optionBlockSelectionVisualOutline: "Outline only",
+  optionBlockSelectionVisualSubtle: "Subtle highlight",
+  optionBlockSelectionVisualFilled: "Filled highlight",
+  enableBlockSelectionHighlight: "Block selection highlight",
+  enableBlockSelectionHighlightDesc: "Highlight the block being dragged",
+  handleIcon: "Handle icon",
+  handleIconDesc: "Choose the icon style for drag handles",
+  customHandleIcon: "Custom handle icon",
+  customHandleIconSearch: "Search icons\u2026",
+  iconDot: "\u25CF dot",
+  iconGripDots: "\u283F grip dots",
+  iconGripLines: "\u2630 grip lines",
+  iconSquare: "\u25A0 square",
+  handleSize: "Handle size",
+  handleSizeDesc: "Adjust the size of drag handles (px)",
+  handleOffset: "Handle horizontal offset",
+  handleOffsetDesc: "Negative = left, positive = right",
+  handleGutterPosition: "Handle gutter side",
+  handleGutterPositionDesc: "Show the handle gutter on the left or right side of the editor",
+  optionLeft: "Left",
+  optionRight: "Right",
+  indicatorColor: "Indicator color",
+  indicatorColorDesc: "Follow theme accent or pick a custom color",
+  multiLineSelection: "Multi-line selection",
+  multiLineSelectionDesc: "Disable to keep single-block drag only",
+  mobileDragLongPressMs: "Mobile drag arm duration",
+  mobileDragLongPressMsDesc: "On mobile (drag mode on), hold this long before a press can start a drag (ms)",
+  mouseRangeSelectLongPressMs: "Multi-select long-press duration",
+  mouseRangeSelectLongPressMsDesc: "Hold a handle (or a row in mobile drag mode) this long to enter multi-block selection (ms)",
+  autoScrollEdgeZonePx: "Auto-scroll edge zone",
+  autoScrollEdgeZonePxDesc: "Distance from viewport edge to trigger auto-scroll while dragging (px)",
+  autoScrollMaxSpeedPx: "Auto-scroll max speed",
+  autoScrollMaxSpeedPxDesc: "Maximum pixels scrolled per frame during auto-scroll",
+  disableMobileDragModeAfterDrop: "Disable drag mode after move",
+  disableMobileDragModeAfterDropDesc: "On mobile, automatically exit drag mode after a block is moved successfully",
+  mobileTextLongPressDrag: "Mobile text long-press drag",
+  mobileTextLongPressDragDesc: "On mobile, long-press a text line or rendered block content to drag the current block directly without using the left handle",
+  optionMobileDragModeToggleViewAction: "View actions"
+};
+
+// src/plugin/i18n/zh-cn.ts
+var zhCn = {
+  // Block menu
+  blockMenuParagraph: "\u6BB5\u843D",
+  blockMenuHeading: "\u6807\u9898",
+  blockMenuList: "\u5217\u8868",
+  blockMenuBulletList: "\u65E0\u5E8F\u5217\u8868",
+  blockMenuNumberedList: "\u6709\u5E8F\u5217\u8868",
+  blockMenuTaskList: "\u4EFB\u52A1\u5217\u8868",
+  blockMenuQuote: "\u5F15\u7528",
+  blockMenuCallout: "Callout",
+  blockMenuCalloutNote: "\u7B14\u8BB0",
+  blockMenuCalloutTip: "\u63D0\u793A",
+  blockMenuCalloutWarning: "\u8B66\u544A",
+  blockMenuCustom: "\u81EA\u5B9A\u4E49",
+  blockMenuCodeBlock: "\u4EE3\u7801\u5757",
+  blockMenuMathBlock: "\u516C\u5F0F\u5757",
+  blockMenuCopy: "\u590D\u5236\u5757",
+  blockMenuCut: "\u526A\u5207\u5757",
+  blockMenuDelete: "\u5220\u9664\u5757",
+  blockMenuBack: "\u8FD4\u56DE",
+  blockMenuConversionFailed: "\u65E0\u6CD5\u66F4\u6539\u5757\u7C7B\u578B\u3002",
+  blockMenuCopyFailed: "\u65E0\u6CD5\u590D\u5236\u5757\u3002",
+  blockMenuCutFailed: "\u65E0\u6CD5\u526A\u5207\u5757\u3002",
+  blockMenuDeleteFailed: "\u65E0\u6CD5\u5220\u9664\u5757\u3002",
+  // Headings
+  headingAppearance: "\u5916\u89C2",
+  headingBehavior: "\u884C\u4E3A",
+  headingBlockMenu: "\u5F39\u51FA\u83DC\u5355",
+  customBlockStylesAdd: "\u6DFB\u52A0\u81EA\u5B9A\u4E49\u6837\u5F0F",
+  customStyleLabel: "\u6837\u5F0F\u540D\u79F0",
+  customStyleLabelDesc: "\u5728\u624B\u67C4\u5F39\u51FA\u83DC\u5355\u4E2D\u663E\u793A\u7684\u540D\u79F0",
+  customStyleIcon: "\u56FE\u6807",
+  customStyleIconDesc: "\u70B9\u51FB\u56FE\u6807\u6309\u94AE\u9009\u62E9\u6216\u8F93\u5165\u56FE\u6807\u6807\u8BC6\u7B26",
+  customStyleTemplate: "\u6A21\u677F",
+  customStyleTemplateDesc: "Markdown \u6A21\u677F\uFF0C\u9700\u5305\u542B ${content}\uFF0C\u53EF\u9009 ${var} \u53D8\u91CF",
+  customStyleTemplateRequired: "\u6A21\u677F\u5FC5\u987B\u5305\u542B ${content}\u3002",
+  customStyleVariables: "\u53D8\u91CF",
+  customStyleVariableName: "\u540D\u79F0",
+  customStyleVariableValue: "\u503C",
+  customStyleAddVariable: "\u6DFB\u52A0\u53D8\u91CF",
+  customStyleRemoveVariable: "\u5220\u9664\u53D8\u91CF",
+  customStyleInvalidVariables: "\u53D8\u91CF\u540D\u79F0\u4E0D\u80FD\u91CD\u590D\uFF0C\u53EA\u80FD\u4F7F\u7528\u82F1\u6587\u5B57\u6BCD\u3001\u6570\u5B57\u3001\u4E0B\u5212\u7EBF\u6216\u8FDE\u5B57\u7B26\uFF1Bcontent \u4E3A\u4FDD\u7559\u540D\u79F0\u3002",
+  customStyleLinePrefix: "\u9010\u884C\u524D\u7F00",
+  customStyleLinePrefixDesc: "\u53EF\u9009\uFF0C\u4E3A\u6BCF\u884C\u6B63\u6587\u9644\u52A0\u7684\u524D\u7F00\uFF08\u5982\u5F15\u7528\u6216 Callout \u7684 > \uFF09",
+  customStyleModalTitleNew: "\u65B0\u5EFA\u81EA\u5B9A\u4E49\u5757\u6837\u5F0F",
+  customStyleModalTitleEdit: "\u7F16\u8F91\u81EA\u5B9A\u4E49\u5757\u6837\u5F0F",
+  customStyleSave: "\u4FDD\u5B58",
+  customStyleCancel: "\u53D6\u6D88",
+  // Handle color
+  handleColor: "\u624B\u67C4\u989C\u8272",
+  handleColorDesc: "\u8DDF\u968F\u4E3B\u9898\u5F3A\u8C03\u8272\u6216\u81EA\u5B9A\u4E49\u989C\u8272",
+  optionTheme: "\u8DDF\u968F\u4E3B\u9898\u8272",
+  optionCustom: "\u81EA\u5B9A\u4E49",
+  // Handle visibility
+  handleVisibility: "\u624B\u67C4\u663E\u793A\u6A21\u5F0F",
+  handleVisibilityDesc: "\u63A7\u5236\u62D6\u62FD\u624B\u67C4\u7684\u663E\u793A\u65B9\u5F0F",
+  optionHover: "\u60AC\u505C\u663E\u793A",
+  optionAlways: "\u59CB\u7EC8\u663E\u793A",
+  optionHidden: "\u9690\u85CF",
+  selectionVisualStyle: "\u62D6\u62FD\u6E90\u89C6\u89C9\u6837\u5F0F",
+  selectionVisualStyleDesc: "\u7EDF\u4E00\u9AD8\u4EAE\u6837\u5F0F",
+  optionBlockSelectionVisualOutline: "\u7EAF\u8FB9\u6846",
+  optionBlockSelectionVisualSubtle: "\u7B80\u7EA6\u9AD8\u4EAE",
+  optionBlockSelectionVisualFilled: "\u80CC\u666F\u589E\u5F3A",
+  enableBlockSelectionHighlight: "\u62D6\u62FD\u6E90\u9AD8\u4EAE",
+  enableBlockSelectionHighlightDesc: "\u9AD8\u4EAE\u88AB\u62D6\u52A8\u7684\u6E90\u5757",
+  // Handle icon
+  handleIcon: "\u624B\u67C4\u56FE\u6807",
+  handleIconDesc: "\u9009\u62E9\u62D6\u62FD\u624B\u67C4\u7684\u56FE\u6807\u6837\u5F0F",
+  customHandleIcon: "\u81EA\u5B9A\u4E49\u624B\u67C4\u56FE\u6807",
+  customHandleIconSearch: "\u641C\u7D22\u56FE\u6807\u2026",
+  iconDot: "\u25CF \u5706\u70B9",
+  iconGripDots: "\u283F \u516D\u70B9\u6293\u624B",
+  iconGripLines: "\u2630 \u4E09\u6A2A\u7EBF",
+  iconSquare: "\u25A0 \u65B9\u5757",
+  // Handle size
+  handleSize: "\u624B\u67C4\u5927\u5C0F",
+  handleSizeDesc: "\u8C03\u6574\u62D6\u62FD\u624B\u67C4\u7684\u5927\u5C0F\uFF08\u50CF\u7D20\uFF09",
+  // Handle offset
+  handleOffset: "\u624B\u67C4\u6A2A\u5411\u4F4D\u7F6E",
+  handleOffsetDesc: "\u5411\u5DE6\u4E3A\u8D1F\u503C\uFF0C\u5411\u53F3\u4E3A\u6B63\u503C",
+  handleGutterPosition: "\u624B\u67C4\u6240\u5728\u4FA7",
+  handleGutterPositionDesc: "\u63A7\u5236\u624B\u67C4 gutter \u663E\u793A\u5728\u7F16\u8F91\u5668\u5DE6\u4FA7\u8FD8\u662F\u53F3\u4FA7",
+  optionLeft: "\u5DE6\u4FA7",
+  optionRight: "\u53F3\u4FA7",
+  // Indicator color
+  indicatorColor: "\u6307\u793A\u5668\u989C\u8272",
+  indicatorColorDesc: "\u8DDF\u968F\u4E3B\u9898\u5F3A\u8C03\u8272\u6216\u81EA\u5B9A\u4E49\u989C\u8272",
+  // Multi-line selection
+  multiLineSelection: "\u591A\u884C\u9009\u53D6",
+  multiLineSelectionDesc: "\u5173\u95ED\u540E\u4EC5\u4FDD\u7559\u5355\u5757\u62D6\u62FD\uFF0C\u4E0D\u8FDB\u5165\u591A\u884C\u9009\u53D6\u6D41\u7A0B",
+  mobileDragLongPressMs: "\u79FB\u52A8\u7AEF\u62D6\u62FD\u5C31\u7EEA\u65F6\u957F",
+  mobileDragLongPressMsDesc: "\u79FB\u52A8\u7AEF\uFF08\u62D6\u62FD\u6A21\u5F0F\u5F00\u542F\u65F6\uFF09\u6309\u4F4F\u591A\u4E45\u540E\u53EF\u4EE5\u5F00\u59CB\u62D6\u62FD\uFF08\u6BEB\u79D2\uFF09",
+  mouseRangeSelectLongPressMs: "\u591A\u9009\u957F\u6309\u65F6\u957F",
+  mouseRangeSelectLongPressMsDesc: "\u6309\u4F4F\u624B\u67C4\uFF08\u6216\u79FB\u52A8\u7AEF\u62D6\u62FD\u6A21\u5F0F\u4E0B\u7684\u884C\uFF09\u591A\u4E45\u540E\u8FDB\u5165\u591A\u5757\u9009\u62E9\uFF08\u6BEB\u79D2\uFF09",
+  autoScrollEdgeZonePx: "\u81EA\u52A8\u6EDA\u52A8\u89E6\u53D1\u8DDD\u79BB",
+  autoScrollEdgeZonePxDesc: "\u62D6\u62FD\u65F6\u6307\u9488\u8DDD\u79BB\u89C6\u53E3\u8FB9\u7F18\u591A\u5C11\u50CF\u7D20\u5F00\u59CB\u81EA\u52A8\u6EDA\u52A8",
+  autoScrollMaxSpeedPx: "\u81EA\u52A8\u6EDA\u52A8\u6700\u5927\u901F\u5EA6",
+  autoScrollMaxSpeedPxDesc: "\u81EA\u52A8\u6EDA\u52A8\u6BCF\u5E27\u6700\u5927\u6EDA\u52A8\u50CF\u7D20\u6570",
+  disableMobileDragModeAfterDrop: "\u79FB\u52A8\u540E\u5173\u95ED\u62D6\u62FD\u6A21\u5F0F",
+  disableMobileDragModeAfterDropDesc: "\u5F00\u542F\u540E\uFF0C\u79FB\u52A8\u7AEF\u6BCF\u6B21\u6210\u529F\u79FB\u52A8\u6587\u672C\u5757\u540E\u4F1A\u81EA\u52A8\u9000\u51FA\u62D6\u62FD\u6A21\u5F0F",
+  mobileTextLongPressDrag: "\u79FB\u52A8\u7AEF\u6587\u672C\u957F\u6309\u62D6\u62FD",
+  mobileTextLongPressDragDesc: "\u79FB\u52A8\u7AEF\u5728\u6587\u672C\u6574\u884C\u6216\u5757\u5185\u5BB9\u533A\u57DF\u957F\u6309\u53EF\u76F4\u63A5\u62D6\u62FD\u5F53\u524D\u5757\uFF0C\u65E0\u9700\u5DE6\u4FA7\u624B\u67C4",
+  optionMobileDragModeToggleViewAction: "\u89C6\u56FE\u64CD\u4F5C\u680F"
+};
+
+// src/plugin/i18n/ru.ts
+var ru = {
+  // Block menu
+  blockMenuParagraph: "\u0410\u0431\u0437\u0430\u0446",
+  blockMenuHeading: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+  blockMenuList: "\u0421\u043F\u0438\u0441\u043E\u043A",
+  blockMenuBulletList: "\u041C\u0430\u0440\u043A\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u044B\u0439 \u0441\u043F\u0438\u0441\u043E\u043A",
+  blockMenuNumberedList: "\u041D\u0443\u043C\u0435\u0440\u043E\u0432\u0430\u043D\u043D\u044B\u0439 \u0441\u043F\u0438\u0441\u043E\u043A",
+  blockMenuTaskList: "\u0421\u043F\u0438\u0441\u043E\u043A \u0437\u0430\u0434\u0430\u0447",
+  blockMenuQuote: "\u0426\u0438\u0442\u0430\u0442\u0430",
+  blockMenuCallout: "\u0412\u044B\u043D\u043E\u0441\u043A\u0430",
+  blockMenuCalloutNote: "\u0417\u0430\u043C\u0435\u0442\u043A\u0430",
+  blockMenuCalloutTip: "\u0421\u043E\u0432\u0435\u0442",
+  blockMenuCalloutWarning: "\u041F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u0435",
+  blockMenuCustom: "\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C\u0441\u043A\u0438\u0435",
+  blockMenuCodeBlock: "\u0411\u043B\u043E\u043A \u043A\u043E\u0434\u0430",
+  blockMenuMathBlock: "\u0411\u043B\u043E\u043A \u0444\u043E\u0440\u043C\u0443\u043B\u044B",
+  blockMenuCopy: "\u041A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0431\u043B\u043E\u043A",
+  blockMenuCut: "\u0412\u044B\u0440\u0435\u0437\u0430\u0442\u044C \u0431\u043B\u043E\u043A",
+  blockMenuDelete: "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0431\u043B\u043E\u043A",
+  blockMenuBack: "\u041D\u0430\u0437\u0430\u0434",
+  blockMenuConversionFailed: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0438\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u0442\u0438\u043F \u0431\u043B\u043E\u043A\u0430.",
+  blockMenuCopyFailed: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0431\u043B\u043E\u043A.",
+  blockMenuCutFailed: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0432\u044B\u0440\u0435\u0437\u0430\u0442\u044C \u0431\u043B\u043E\u043A.",
+  blockMenuDeleteFailed: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u0431\u043B\u043E\u043A.",
+  headingAppearance: "\u0412\u043D\u0435\u0448\u043D\u0438\u0439 \u0432\u0438\u0434",
+  headingBehavior: "\u041F\u043E\u0432\u0435\u0434\u0435\u043D\u0438\u0435",
+  headingBlockMenu: "\u0412\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0435\u0435 \u043C\u0435\u043D\u044E",
+  customBlockStylesAdd: "\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0441\u0442\u0438\u043B\u044C",
+  customStyleLabel: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435",
+  customStyleLabelDesc: "\u041E\u0442\u043E\u0431\u0440\u0430\u0436\u0430\u0435\u043C\u043E\u0435 \u0438\u043C\u044F \u0432 \u043C\u0435\u043D\u044E \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  customStyleIcon: "\u0418\u043A\u043E\u043D\u043A\u0430",
+  customStyleIconDesc: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u043A\u043D\u043E\u043F\u043A\u0443 \u0438\u043A\u043E\u043D\u043A\u0438, \u0447\u0442\u043E\u0431\u044B \u0432\u044B\u0431\u0440\u0430\u0442\u044C, \u0438\u043B\u0438 \u0432\u0432\u0435\u0434\u0438\u0442\u0435 \u0438\u0434\u0435\u043D\u0442\u0438\u0444\u0438\u043A\u0430\u0442\u043E\u0440",
+  customStyleTemplate: "\u0428\u0430\u0431\u043B\u043E\u043D",
+  customStyleTemplateDesc: "\u0428\u0430\u0431\u043B\u043E\u043D Markdown \u0441 ${content} \u0438 \u043F\u0435\u0440\u0435\u043C\u0435\u043D\u043D\u044B\u043C\u0438 ${var}",
+  customStyleTemplateRequired: "\u0428\u0430\u0431\u043B\u043E\u043D \u0434\u043E\u043B\u0436\u0435\u043D \u0441\u043E\u0434\u0435\u0440\u0436\u0430\u0442\u044C ${content}.",
+  customStyleVariables: "\u041F\u0435\u0440\u0435\u043C\u0435\u043D\u043D\u044B\u0435",
+  customStyleVariableName: "\u0418\u043C\u044F",
+  customStyleVariableValue: "\u0417\u043D\u0430\u0447\u0435\u043D\u0438\u0435",
+  customStyleAddVariable: "\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043F\u0435\u0440\u0435\u043C\u0435\u043D\u043D\u0443\u044E",
+  customStyleRemoveVariable: "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u043F\u0435\u0440\u0435\u043C\u0435\u043D\u043D\u0443\u044E",
+  customStyleInvalidVariables: "\u0418\u043C\u0435\u043D\u0430 \u043F\u0435\u0440\u0435\u043C\u0435\u043D\u043D\u044B\u0445 \u0434\u043E\u043B\u0436\u043D\u044B \u0431\u044B\u0442\u044C \u0443\u043D\u0438\u043A\u0430\u043B\u044C\u043D\u044B\u043C\u0438 \u0438 \u0441\u043E\u0434\u0435\u0440\u0436\u0430\u0442\u044C \u0442\u043E\u043B\u044C\u043A\u043E \u043B\u0430\u0442\u0438\u043D\u0441\u043A\u0438\u0435 \u0431\u0443\u043A\u0432\u044B, \u0446\u0438\u0444\u0440\u044B, \u043F\u043E\u0434\u0447\u0451\u0440\u043A\u0438\u0432\u0430\u043D\u0438\u044F \u0438\u043B\u0438 \u0434\u0435\u0444\u0438\u0441\u044B. \u0418\u043C\u044F content \u0437\u0430\u0440\u0435\u0437\u0435\u0440\u0432\u0438\u0440\u043E\u0432\u0430\u043D\u043E.",
+  customStyleLinePrefix: "\u041F\u0440\u0435\u0444\u0438\u043A\u0441 \u0441\u0442\u0440\u043E\u043A",
+  customStyleLinePrefixDesc: '\u041D\u0435\u043E\u0431\u044F\u0437\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0439 \u043F\u0440\u0435\u0444\u0438\u043A\u0441 \u0434\u043B\u044F \u043A\u0430\u0436\u0434\u043E\u0439 \u0441\u0442\u0440\u043E\u043A\u0438 (\u043D\u0430\u043F\u0440\u0438\u043C\u0435\u0440, "> " \u0434\u043B\u044F callout)',
+  customStyleModalTitleNew: "\u041D\u043E\u0432\u044B\u0439 \u0441\u0442\u0438\u043B\u044C \u0431\u043B\u043E\u043A\u0430",
+  customStyleModalTitleEdit: "\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0442\u0438\u043B\u044C \u0431\u043B\u043E\u043A\u0430",
+  customStyleSave: "\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C",
+  customStyleCancel: "\u041E\u0442\u043C\u0435\u043D\u0430",
+  handleColor: "\u0426\u0432\u0435\u0442 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  handleColorDesc: "\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0446\u0432\u0435\u0442 \u0430\u043A\u0446\u0435\u043D\u0442\u0430 \u0442\u0435\u043C\u044B \u0438\u043B\u0438 \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0441\u0432\u043E\u0439",
+  optionTheme: "\u0422\u0435\u043C\u0430",
+  optionCustom: "\u0421\u0432\u043E\u0439",
+  handleVisibility: "\u0412\u0438\u0434\u0438\u043C\u043E\u0441\u0442\u044C \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  handleVisibilityDesc: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435\u043C \u043C\u0430\u0440\u043A\u0435\u0440\u043E\u0432 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F",
+  optionHover: "\u041F\u0440\u0438 \u043D\u0430\u0432\u0435\u0434\u0435\u043D\u0438\u0438",
+  optionAlways: "\u0412\u0441\u0435\u0433\u0434\u0430",
+  optionHidden: "\u0421\u043A\u0440\u044B\u0442",
+  selectionVisualStyle: "\u0421\u0442\u0438\u043B\u044C \u0432\u044B\u0434\u0435\u043B\u0435\u043D\u0438\u044F \u0431\u043B\u043E\u043A\u0430",
+  selectionVisualStyleDesc: "\u041E\u0431\u0449\u0438\u0439 \u0441\u0442\u0438\u043B\u044C \u043F\u043E\u0434\u0441\u0432\u0435\u0442\u043A\u0438 \u043F\u0440\u0438 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u0438",
+  optionBlockSelectionVisualOutline: "\u0422\u043E\u043B\u044C\u043A\u043E \u043A\u043E\u043D\u0442\u0443\u0440",
+  optionBlockSelectionVisualSubtle: "\u041B\u0451\u0433\u043A\u0430\u044F \u043F\u043E\u0434\u0441\u0432\u0435\u0442\u043A\u0430",
+  optionBlockSelectionVisualFilled: "\u0417\u0430\u043B\u0438\u0432\u043A\u0430",
+  enableBlockSelectionHighlight: "\u041F\u043E\u0434\u0441\u0432\u0435\u0442\u043A\u0430 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u0435\u043C\u043E\u0433\u043E \u0431\u043B\u043E\u043A\u0430",
+  enableBlockSelectionHighlightDesc: "\u041F\u043E\u0434\u0441\u0432\u0435\u0447\u0438\u0432\u0430\u0442\u044C \u0431\u043B\u043E\u043A \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F",
+  handleIcon: "\u0418\u043A\u043E\u043D\u043A\u0430 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  handleIconDesc: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0442\u0438\u043B\u044C \u0438\u043A\u043E\u043D\u043A\u0438 \u0434\u043B\u044F \u043C\u0430\u0440\u043A\u0435\u0440\u043E\u0432 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F",
+  customHandleIcon: "\u0421\u0432\u043E\u044F \u0438\u043A\u043E\u043D\u043A\u0430 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  customHandleIconSearch: "\u041F\u043E\u0438\u0441\u043A \u0438\u043A\u043E\u043D\u043E\u043A\u2026",
+  iconDot: "\u25CF \u0442\u043E\u0447\u043A\u0430",
+  iconGripDots: "\u283F \u0442\u043E\u0447\u043A\u0438 \u0437\u0430\u0445\u0432\u0430\u0442\u0430",
+  iconGripLines: "\u2630 \u043B\u0438\u043D\u0438\u0438 \u0437\u0430\u0445\u0432\u0430\u0442\u0430",
+  iconSquare: "\u25A0 \u043A\u0432\u0430\u0434\u0440\u0430\u0442",
+  handleSize: "\u0420\u0430\u0437\u043C\u0435\u0440 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  handleSizeDesc: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u0440\u0430\u0437\u043C\u0435\u0440\u0430 \u043C\u0430\u0440\u043A\u0435\u0440\u043E\u0432 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F (px)",
+  handleOffset: "\u0413\u043E\u0440\u0438\u0437\u043E\u043D\u0442\u0430\u043B\u044C\u043D\u043E\u0435 \u0441\u043C\u0435\u0449\u0435\u043D\u0438\u0435 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  handleOffsetDesc: "\u041E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u043E\u0435 = \u0432\u043B\u0435\u0432\u043E, \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0435 = \u0432\u043F\u0440\u0430\u0432\u043E",
+  handleGutterPosition: "\u0421\u0442\u043E\u0440\u043E\u043D\u0430 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  handleGutterPositionDesc: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043C\u0430\u0440\u043A\u0435\u0440 \u0441\u043B\u0435\u0432\u0430 \u0438\u043B\u0438 \u0441\u043F\u0440\u0430\u0432\u0430 \u043E\u0442 \u0440\u0435\u0434\u0430\u043A\u0442\u043E\u0440\u0430",
+  optionLeft: "\u0421\u043B\u0435\u0432\u0430",
+  optionRight: "\u0421\u043F\u0440\u0430\u0432\u0430",
+  indicatorColor: "\u0426\u0432\u0435\u0442 \u0438\u043D\u0434\u0438\u043A\u0430\u0442\u043E\u0440\u0430",
+  indicatorColorDesc: "\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0446\u0432\u0435\u0442 \u0430\u043A\u0446\u0435\u043D\u0442\u0430 \u0442\u0435\u043C\u044B \u0438\u043B\u0438 \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0441\u0432\u043E\u0439",
+  multiLineSelection: "\u0412\u044B\u0431\u043E\u0440 \u043D\u0435\u0441\u043A\u043E\u043B\u044C\u043A\u0438\u0445 \u0431\u043B\u043E\u043A\u043E\u0432",
+  multiLineSelectionDesc: "\u041E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u0435, \u0447\u0442\u043E\u0431\u044B \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u0442\u044C \u0442\u043E\u043B\u044C\u043A\u043E \u043E\u0434\u0438\u043D \u0431\u043B\u043E\u043A \u0437\u0430 \u0440\u0430\u0437",
+  mobileDragLongPressMs: "\u0414\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u0433\u043E\u0442\u043E\u0432\u043D\u043E\u0441\u0442\u0438 \u043A \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044E (\u043C\u043E\u0431.)",
+  mobileDragLongPressMsDesc: "\u041D\u0430 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C (\u0440\u0435\u0436\u0438\u043C \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F \u0432\u043A\u043B\u044E\u0447\u0451\u043D) \u0441\u043A\u043E\u043B\u044C\u043A\u043E \u0443\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0442\u044C \u043F\u0435\u0440\u0435\u0434 \u043D\u0430\u0447\u0430\u043B\u043E\u043C \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F (\u043C\u0441)",
+  mouseRangeSelectLongPressMs: "\u0414\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u0434\u043E\u043B\u0433\u043E\u0433\u043E \u043D\u0430\u0436\u0430\u0442\u0438\u044F \u0434\u043B\u044F \u043C\u0443\u043B\u044C\u0442\u0438\u0432\u044B\u0431\u043E\u0440\u0430",
+  mouseRangeSelectLongPressMsDesc: "\u0421\u043A\u043E\u043B\u044C\u043A\u043E \u0443\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0442\u044C \u043C\u0430\u0440\u043A\u0435\u0440 (\u0438\u043B\u0438 \u0441\u0442\u0440\u043E\u043A\u0443 \u0432 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435) \u043F\u0435\u0440\u0435\u0434 \u0432\u0445\u043E\u0434\u043E\u043C \u0432 \u0432\u044B\u0431\u043E\u0440 \u043D\u0435\u0441\u043A\u043E\u043B\u044C\u043A\u0438\u0445 \u0431\u043B\u043E\u043A\u043E\u0432 (\u043C\u0441)",
+  autoScrollEdgeZonePx: "\u0417\u043E\u043D\u0430 \u0430\u0432\u0442\u043E\u043F\u0440\u043E\u043A\u0440\u0443\u0442\u043A\u0438",
+  autoScrollEdgeZonePxDesc: "\u0420\u0430\u0441\u0441\u0442\u043E\u044F\u043D\u0438\u0435 \u043E\u0442 \u043A\u0440\u0430\u044F \u043E\u043A\u043D\u0430 \u0434\u043B\u044F \u0437\u0430\u043F\u0443\u0441\u043A\u0430 \u0430\u0432\u0442\u043E\u043F\u0440\u043E\u043A\u0440\u0443\u0442\u043A\u0438 \u043F\u0440\u0438 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u0438 (\u043F\u0438\u043A\u0441)",
+  autoScrollMaxSpeedPx: "\u041C\u0430\u043A\u0441. \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0430\u0432\u0442\u043E\u043F\u0440\u043E\u043A\u0440\u0443\u0442\u043A\u0438",
+  autoScrollMaxSpeedPxDesc: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043F\u0438\u043A\u0441\u0435\u043B\u0435\u0439 \u043F\u0440\u043E\u043A\u0440\u0443\u0442\u043A\u0438 \u0437\u0430 \u043A\u0430\u0434\u0440",
+  disableMobileDragModeAfterDrop: "\u041E\u0442\u043A\u043B\u044E\u0447\u0430\u0442\u044C \u0440\u0435\u0436\u0438\u043C \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F \u043F\u043E\u0441\u043B\u0435 \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0435\u043D\u0438\u044F",
+  disableMobileDragModeAfterDropDesc: "\u041D\u0430 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u0432\u044B\u0445\u043E\u0434\u0438\u0442\u044C \u0438\u0437 \u0440\u0435\u0436\u0438\u043C\u0430 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F \u043F\u043E\u0441\u043B\u0435 \u0443\u0441\u043F\u0435\u0448\u043D\u043E\u0433\u043E \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0435\u043D\u0438\u044F \u0431\u043B\u043E\u043A\u0430",
+  mobileTextLongPressDrag: "\u041F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u0435 \u0434\u043E\u043B\u0433\u0438\u043C \u043D\u0430\u0436\u0430\u0442\u0438\u0435\u043C \u043D\u0430 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C",
+  mobileTextLongPressDragDesc: "\u041D\u0430 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C \u0443\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0439\u0442\u0435 \u0441\u0442\u0440\u043E\u043A\u0443 \u0442\u0435\u043A\u0441\u0442\u0430 \u0438\u043B\u0438 \u0431\u043B\u043E\u043A, \u0447\u0442\u043E\u0431\u044B \u043F\u0435\u0440\u0435\u0442\u0430\u0449\u0438\u0442\u044C \u0435\u0433\u043E \u043D\u0430\u043F\u0440\u044F\u043C\u0443\u044E \u0431\u0435\u0437 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u044F \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
+  optionMobileDragModeToggleViewAction: "\u041F\u0430\u043D\u0435\u043B\u044C \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439"
+};
+
+// src/plugin/i18n/index.ts
+var translationsByLocale = {
+  en,
+  ru,
+  zh: zhCn,
+  "zh-cn": zhCn,
+  "zh-hk": zhCn,
+  "zh-tw": zhCn
+};
+function detectLanguage(api) {
+  const language = typeof api.getLanguage === "function" ? api.getLanguage() : api.moment.locale();
+  return language.trim().toLowerCase();
+}
+function selectTranslations(language) {
+  var _a, _b;
+  const normalizedLanguage = language.trim().toLowerCase();
+  return (_b = (_a = translationsByLocale[normalizedLanguage]) != null ? _a : translationsByLocale[normalizedLanguage.split("-")[0]]) != null ? _b : en;
+}
+function t() {
+  return selectTranslations(detectLanguage(obsidian));
+}
+
+// src/plugin/block-menu-items.ts
+var HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
+var BUILTIN_OPTIONS = {
+  heading: HEADING_LEVELS.map((level) => ({
+    id: `heading-${level}`,
+    target: { type: BlockType.Heading, level },
+    icon: `heading-${level}`,
+    labelKey: "blockMenuHeading",
+    level
+  })),
+  list: [
+    {
+      id: "list-unordered",
+      target: { type: BlockType.ListItem, markerType: "unordered" },
+      labelKey: "blockMenuBulletList",
+      icon: "list"
+    },
+    {
+      id: "list-ordered",
+      target: { type: BlockType.ListItem, markerType: "ordered" },
+      labelKey: "blockMenuNumberedList",
+      icon: "list-ordered"
+    },
+    {
+      id: "list-task",
+      target: { type: BlockType.ListItem, markerType: "task" },
+      labelKey: "blockMenuTaskList",
+      icon: "list-checks"
+    }
+  ],
+  callout: [
+    {
+      id: "callout-note",
+      target: { template: "> [!note]\n${content}", linePrefix: "> " },
+      labelKey: "blockMenuCalloutNote",
+      icon: "pencil"
+    },
+    {
+      id: "callout-tip",
+      target: { template: "> [!tip]\n${content}", linePrefix: "> " },
+      labelKey: "blockMenuCalloutTip",
+      icon: "lightbulb"
+    },
+    {
+      id: "callout-warning",
+      target: { template: "> [!warning]\n${content}", linePrefix: "> " },
+      labelKey: "blockMenuCalloutWarning",
+      icon: "alert-triangle"
+    }
+  ]
+};
+var DEFAULT_BLOCK_MENU_ORDERS = {
+  root: ["paragraph", "heading", "list", "quote", "callout", "code-block", "math-block", "custom"],
+  heading: BUILTIN_OPTIONS.heading.map((option) => option.id),
+  list: BUILTIN_OPTIONS.list.map((option) => option.id),
+  callout: BUILTIN_OPTIONS.callout.map((option) => option.id),
+  custom: []
+};
+function getBlockMenuEntries(settings) {
+  const i = t();
+  const builtinOptions = (group) => BUILTIN_OPTIONS[group].map((option) => ({
+    id: option.id,
+    target: option.target,
+    icon: option.icon,
+    label: option.level === void 0 ? i[option.labelKey] : `${i[option.labelKey]} ${option.level}`
+  }));
+  const items = {
+    paragraph: {
+      id: "paragraph",
+      target: { type: BlockType.Paragraph },
+      label: i.blockMenuParagraph,
+      icon: "pilcrow"
+    },
+    heading: { id: "heading", label: i.blockMenuHeading, icon: "heading", options: builtinOptions("heading") },
+    list: { id: "list", label: i.blockMenuList, icon: "list", options: builtinOptions("list") },
+    quote: { id: "quote", target: { type: BlockType.Blockquote }, label: i.blockMenuQuote, icon: "quote" },
+    callout: {
+      id: "callout",
+      label: i.blockMenuCallout,
+      icon: "message-square",
+      options: builtinOptions("callout")
+    },
+    "code-block": {
+      id: "code-block",
+      target: { type: BlockType.CodeBlock },
+      label: i.blockMenuCodeBlock,
+      icon: "code"
+    },
+    "math-block": {
+      id: "math-block",
+      target: { type: BlockType.MathBlock },
+      label: i.blockMenuMathBlock,
+      icon: "sigma"
+    },
+    custom: {
+      id: "custom",
+      label: i.blockMenuCustom,
+      icon: "sparkles",
+      options: settings.customBlockStyles.map((style) => ({
+        id: style.id,
+        target: style,
+        label: style.label,
+        icon: style.icon,
+        style
+      }))
+    }
+  };
+  for (const entry of Object.values(items)) {
+    if ("options" in entry) {
+      const options = new Map(entry.options.map((option) => [option.id, option]));
+      entry.options = settings.blockMenuOrders[entry.id].map((id) => {
+        const option = options.get(id);
+        if (!option) throw new Error(`Dragger: unknown ${entry.id} menu item "${id}"`);
+        return option;
+      });
+    }
+  }
+  return settings.blockMenuOrders.root.map((id) => items[id]);
+}
+
 // src/plugin/block-type-commands.ts
 var import_state5 = require("@codemirror/state");
 var import_view5 = require("@codemirror/view");
-var PARAGRAPH_BLOCK_TYPE_OPTION = {
-  target: { type: BlockType2.Paragraph },
-  label: "Paragraph",
-  icon: "pilcrow"
-};
-var HEADING_BLOCK_TYPE_OPTIONS = [
-  { target: { type: BlockType2.Heading, level: 1 }, label: "Heading 1", icon: "heading-1" },
-  { target: { type: BlockType2.Heading, level: 2 }, label: "Heading 2", icon: "heading-2" },
-  { target: { type: BlockType2.Heading, level: 3 }, label: "Heading 3", icon: "heading-3" },
-  { target: { type: BlockType2.Heading, level: 4 }, label: "Heading 4", icon: "heading-4" },
-  { target: { type: BlockType2.Heading, level: 5 }, label: "Heading 5", icon: "heading-5" },
-  { target: { type: BlockType2.Heading, level: 6 }, label: "Heading 6", icon: "heading-6" }
-];
-var LIST_BLOCK_TYPE_OPTIONS = [
-  { target: { type: BlockType2.ListItem, markerType: "unordered" }, label: "Bullet list", icon: "list" },
-  { target: { type: BlockType2.ListItem, markerType: "ordered" }, label: "Numbered list", icon: "list-ordered" },
-  { target: { type: BlockType2.ListItem, markerType: "task" }, label: "Task list", icon: "list-checks" }
-];
-var SIMPLE_BLOCK_TYPE_OPTIONS = [
-  { target: { type: BlockType2.Blockquote }, label: "Quote", icon: "quote" },
-  { target: { type: BlockType2.CodeBlock }, label: "Code block", icon: "code" },
-  { target: { type: BlockType2.MathBlock }, label: "Math block", icon: "sigma" }
-];
 function convertCurrentBlockType(view, conversion, lineNumber) {
   const block = getBlockAt(view, lineNumber);
   if (!block) return false;
@@ -4122,7 +4674,7 @@ function deleteCurrentBlock(view, lineNumber) {
     doc: view.state.doc,
     selection: selectOne2(block)
   });
-  if (isReject(result)) return false;
+  if ("type" in result) return false;
   view.dispatch({
     changes: result.changes,
     scrollIntoView: false
@@ -4156,10 +4708,6 @@ function getBlockAt(view, lineNumber) {
 }
 
 // src/plugin/block-type-menu.ts
-var NESTED_GROUPS = [
-  { label: "Heading", icon: "heading", options: HEADING_BLOCK_TYPE_OPTIONS },
-  { label: "List", icon: "list", options: LIST_BLOCK_TYPE_OPTIONS }
-];
 var FLYOUT_CLASS = "d-block-type-flyout";
 var FLYOUT_ITEM_CLASS = "d-block-type-flyout-item";
 var menuBlockLine = 0;
@@ -4167,12 +4715,12 @@ var flyoutEl = null;
 var flyoutTrigger = null;
 var flyoutCloseTimer = null;
 var rootMenu = null;
-function openBlockTypeMenu(view, event, lineNumber) {
+function openBlockTypeMenu(view, event, settings, lineNumber) {
   disposeFlyout();
   menuBlockLine = lineNumber != null ? lineNumber : view.state.doc.lineAt(view.state.selection.main.head).number;
-  showRootMenu(view, event);
+  showRootMenu(view, event, settings);
 }
-function showRootMenu(view, event) {
+function showRootMenu(view, event, settings) {
   const menu = new import_obsidian.Menu();
   menu.setUseNativeMenu(false);
   rootMenu = menu;
@@ -4183,51 +4731,51 @@ function showRootMenu(view, event) {
       disposeFlyout();
     });
   });
-  addConversionItem(menu, view, PARAGRAPH_BLOCK_TYPE_OPTION, line, () => menu.hide());
-  for (const group of NESTED_GROUPS) {
-    menu.addItem((item) => {
-      item.setTitle(createGroupTitle(group.label)).setIcon(group.icon);
-      if (import_obsidian.Platform.isMobile) {
-        item.onClick(() => {
-          showMobileGroupPage(view, group, line);
-        });
-      }
-    });
+  const groups = [];
+  for (const entry of getBlockMenuEntries(settings)) {
+    if ("options" in entry) {
+      if (entry.options.length === 0) continue;
+      groups.push(entry);
+      menu.addItem((item) => {
+        item.setTitle(createGroupTitle(entry.label)).setIcon(entry.icon).onClick(() => showGroupPage(view, entry, line, settings));
+      });
+    } else {
+      addConversionItem(menu, view, entry, line, () => menu.hide());
+    }
   }
-  for (const option of SIMPLE_BLOCK_TYPE_OPTIONS) {
-    addConversionItem(menu, view, option, line, () => menu.hide());
-  }
+  const i = t();
   menu.addSeparator();
   addActionItem(menu, {
-    label: "Copy block",
+    label: i.blockMenuCopy,
     icon: "copy",
     run: () => copyCurrentBlock(view, line),
-    failureNotice: "Unable to copy block."
+    failureNotice: i.blockMenuCopyFailed
   });
   addActionItem(menu, {
-    label: "Cut block",
+    label: i.blockMenuCut,
     icon: "scissors",
     run: () => cutCurrentBlock(view, line),
-    failureNotice: "Unable to cut block."
+    failureNotice: i.blockMenuCutFailed
   });
   addActionItem(menu, {
-    label: "Delete block",
+    label: i.blockMenuDelete,
     icon: "trash-2",
     warning: true,
     run: () => deleteCurrentBlock(view, line),
-    failureNotice: "Unable to delete block."
+    failureNotice: i.blockMenuDeleteFailed
   });
-  showMenuAt(menu, view, event);
+  const doc = showMenuAt(menu, view, event);
   if (import_obsidian.Platform.isDesktop) {
-    window.queueMicrotask(() => bindDesktopGroupHover(view, line));
+    window.queueMicrotask(() => bindDesktopGroupHover(view, line, doc, groups));
   }
 }
-function showMobileGroupPage(view, group, line) {
+function showGroupPage(view, group, line, settings) {
+  disposeFlyout();
   const menu = new import_obsidian.Menu();
   menu.setUseNativeMenu(false);
   menu.addItem(
-    (item) => item.setTitle("Back").setIcon("chevron-left").onClick(() => {
-      showRootMenu(view, null);
+    (item) => item.setTitle(t().blockMenuBack).setIcon("chevron-left").onClick(() => {
+      showRootMenu(view, null, settings);
     })
   );
   for (const option of group.options) {
@@ -4235,14 +4783,15 @@ function showMobileGroupPage(view, group, line) {
   }
   showMenuAt(menu, view, null);
 }
-function bindDesktopGroupHover(view, line) {
-  var _a, _b;
-  const menuEl = latestMenuElement();
+function bindDesktopGroupHover(view, line, doc, groups) {
+  var _a, _b, _c;
+  const menus = Array.from(doc.querySelectorAll(".menu"));
+  const menuEl = (_a = menus[menus.length - 1]) != null ? _a : null;
   if (!menuEl) return;
   for (const item of Array.from(menuEl.querySelectorAll(".menu-item"))) {
     if (item.dataset.dGroupHoverBound === "true") continue;
-    const title = (_b = (_a = item.querySelector(".d-block-type-submenu-title-label")) == null ? void 0 : _a.textContent) == null ? void 0 : _b.trim();
-    const group = NESTED_GROUPS.find((candidate) => candidate.label === title);
+    const title = (_c = (_b = item.querySelector(".d-block-type-submenu-title-label")) == null ? void 0 : _b.textContent) == null ? void 0 : _c.trim();
+    const group = groups.find((candidate) => candidate.label === title);
     if (!group) continue;
     item.dataset.dGroupHoverBound = "true";
     item.addEventListener("pointerenter", () => {
@@ -4250,7 +4799,7 @@ function bindDesktopGroupHover(view, line) {
     });
     item.addEventListener("pointerleave", (event) => {
       const related = event.relatedTarget;
-      if (related instanceof Node && (flyoutEl == null ? void 0 : flyoutEl.contains(related))) {
+      if (isNode(related) && (flyoutEl == null ? void 0 : flyoutEl.contains(related))) {
         cancelFlyoutClose();
         return;
       }
@@ -4262,38 +4811,39 @@ function openFlyout(view, group, trigger, line) {
   cancelFlyoutClose();
   if (flyoutEl && flyoutTrigger === trigger) return;
   disposeFlyout();
-  const panel = activeWindow.createDiv();
+  const doc = trigger.doc;
+  const panel = doc.win.createDiv();
   panel.className = `menu ${FLYOUT_CLASS}`;
   panel.setAttribute("role", "menu");
   for (const option of group.options) {
-    panel.appendChild(createFlyoutItem(view, option, line));
+    panel.appendChild(createFlyoutItem(doc, view, option, line));
   }
   panel.addEventListener("pointerenter", () => {
     cancelFlyoutClose();
   });
   panel.addEventListener("pointerleave", (event) => {
     const related = event.relatedTarget;
-    if (related instanceof Node && (flyoutTrigger == null ? void 0 : flyoutTrigger.contains(related))) {
+    if (isNode(related) && (flyoutTrigger == null ? void 0 : flyoutTrigger.contains(related))) {
       cancelFlyoutClose();
       return;
     }
     scheduleFlyoutClose();
   });
-  activeDocument.body.appendChild(panel);
+  doc.body.appendChild(panel);
   positionFlyout(panel, trigger);
   flyoutEl = panel;
   flyoutTrigger = trigger;
 }
-function createFlyoutItem(view, option, line) {
+function createFlyoutItem(doc, view, option, line) {
   const target = option.target;
-  const row = activeWindow.createDiv();
+  const row = doc.win.createDiv();
   row.className = `menu-item ${FLYOUT_ITEM_CLASS}`;
   row.setAttribute("role", "menuitem");
   row.tabIndex = 0;
-  const icon = activeWindow.createDiv();
+  const icon = doc.win.createDiv();
   icon.className = "menu-item-icon";
   (0, import_obsidian.setIcon)(icon, option.icon);
-  const title = activeWindow.createDiv();
+  const title = doc.win.createDiv();
   title.className = "menu-item-title";
   title.textContent = option.label;
   row.append(icon, title);
@@ -4301,7 +4851,7 @@ function createFlyoutItem(view, option, line) {
     event.preventDefault();
     event.stopPropagation();
     if (!convertCurrentBlockType(view, target, line)) {
-      new import_obsidian.Notice("Unable to change block type.");
+      new import_obsidian.Notice(t().blockMenuConversionFailed);
       return;
     }
     disposeFlyout();
@@ -4315,16 +4865,17 @@ function createFlyoutItem(view, option, line) {
   return row;
 }
 function positionFlyout(panel, trigger) {
+  const win = trigger.win;
   const rect = trigger.getBoundingClientRect();
   const width = panel.offsetWidth || 160;
   const height = panel.offsetHeight || 0;
   let x = rect.right + 4;
   let y = rect.top;
-  if (x + width > activeWindow.innerWidth - 8) {
+  if (x + width > win.innerWidth - 8) {
     x = Math.max(8, rect.left - width - 4);
   }
-  if (y + height > activeWindow.innerHeight - 8) {
-    y = Math.max(8, activeWindow.innerHeight - height - 8);
+  if (y + height > win.innerHeight - 8) {
+    y = Math.max(8, win.innerHeight - height - 8);
   }
   panel.setCssStyles({
     position: "fixed",
@@ -4350,17 +4901,12 @@ function disposeFlyout() {
   flyoutEl = null;
   flyoutTrigger = null;
 }
-function latestMenuElement() {
-  var _a;
-  const menus = Array.from(activeDocument.querySelectorAll(".menu"));
-  return (_a = menus[menus.length - 1]) != null ? _a : null;
-}
 function addConversionItem(menu, view, option, line, afterApply) {
   const target = option.target;
   menu.addItem(
     (item) => item.setTitle(option.label).setIcon(option.icon).onClick(() => {
       if (!convertCurrentBlockType(view, target, line)) {
-        new import_obsidian.Notice("Unable to change block type.");
+        new import_obsidian.Notice(t().blockMenuConversionFailed);
         return;
       }
       afterApply();
@@ -4398,6 +4944,7 @@ function createGroupTitle(labelText) {
   return fragment;
 }
 function showMenuAt(menu, view, event) {
+  const editorDoc = view.dom.ownerDocument;
   let x = null;
   let y = null;
   if (event && typeof event.clientX === "number" && typeof event.clientY === "number") {
@@ -4411,14 +4958,22 @@ function showMenuAt(menu, view, event) {
     }
   }
   if (x === null || y === null) {
-    x = activeWindow.innerWidth / 2;
-    y = activeWindow.innerHeight / 2;
+    const win = editorDoc.defaultView;
+    if (!win) throw new Error("Dragger: editor document has no window");
+    x = win.innerWidth / 2;
+    y = win.innerHeight / 2;
   }
-  menu.showAtPosition({ x, y });
+  const at = pointInTopDocument(editorDoc, x, y);
+  menu.showAtPosition({ x: at.x, y: at.y }, at.doc);
+  return at.doc;
+}
+function isNode(value) {
+  return typeof value === "object" && value !== null && typeof value.nodeType === "number";
 }
 
 // src/shared/dom-selectors.ts
 var ROOT_EDITOR_CLASS = "d-root-editor";
+var CARD_EDITOR_ATTR = "data-d-card-editor";
 var DRAGGING_BODY_CLASS = "d-dragging";
 var MOBILE_GESTURE_LOCK_CLASS = "d-mobile-gesture-lock";
 var DRAG_SOURCE_STYLE_ATTR = "data-d-drag-source-style";
@@ -4436,7 +4991,7 @@ function dragHandleExtension(plugin) {
     },
     listIndentWidthPx: (view) => listIndentStepPx(view),
     handle: {
-      render: () => createObsidianHandle(),
+      render: (doc) => createObsidianHandle(doc),
       side: plugin.settings.handleGutterPosition === "right" ? "after" : "before"
     },
     // Obsidian's Live Preview renders tables as HTML widgets; clicking a
@@ -4454,26 +5009,25 @@ function dragHandleExtension(plugin) {
         }
         const fromHandle = sourceLineFromInput(view, input);
         if (fromHandle !== null) return fromHandle;
-        const event = input.native instanceof PointerEvent ? input.native : null;
-        const target = (event == null ? void 0 : event.target) instanceof Element ? event.target : null;
+        const target = elementTarget(input.native);
         if (target && !view.dom.contains(target)) return null;
         return lineAtPoint(view, input.point);
       }
     }),
-    ux: {
+    // Per view: the port reads this editor's document at scroll time, including
+    // after Obsidian moves the editor into a card iframe or a pop-out window.
+    ux: (view) => ({
       gesture: () => gestureConfig(plugin),
       modules: [
         autoScroll(
-          // Adapter port scrolls the .cm-scroller under the pointer;
-          // activeDocument keeps pop-out windows working.
-          scrollPort(() => activeDocument),
+          scrollPort(() => view.dom.ownerDocument),
           () => ({
             edgeZonePx: plugin.settings.autoScrollEdgeZonePx,
             maxSpeedPx: plugin.settings.autoScrollMaxSpeedPx
           })
         )
       ]
-    },
+    }),
     onChange: (result) => {
       for (const item of result.outputs) {
         if (item.type === "dropped") plugin.notifyDragDrop();
@@ -4482,6 +5036,8 @@ function dragHandleExtension(plugin) {
   };
   return [
     import_view7.EditorView.editorAttributes.of({ class: ROOT_EDITOR_CLASS }),
+    presentSettingsInEditorDocument(plugin),
+    keepCardHandlesInside(),
     ...mdDragger(options),
     dropIndicatorPaint(options),
     selectionPaint(),
@@ -4489,15 +5045,72 @@ function dragHandleExtension(plugin) {
     gestureShell(plugin)
   ];
 }
+function presentSettingsInEditorDocument(host) {
+  return import_view7.ViewPlugin.fromClass(
+    class {
+      constructor(view) {
+        this.view = view;
+        this.present = () => host.settingsPresenter.presentIn(this.view.dom.ownerDocument);
+        this.present();
+        view.dom.addEventListener("pointerover", this.present, true);
+        view.dom.addEventListener("pointerdown", this.present, true);
+      }
+      update() {
+        this.present();
+      }
+      destroy() {
+        this.view.dom.removeEventListener("pointerover", this.present, true);
+        this.view.dom.removeEventListener("pointerdown", this.present, true);
+      }
+    }
+  );
+}
+function keepCardHandlesInside() {
+  return import_view7.ViewPlugin.fromClass(
+    class {
+      constructor(view) {
+        this.view = view;
+        this.measure = () => this.view.requestMeasure({
+          key: this,
+          read: (view) => {
+            var _a;
+            const gutter2 = view.dom.querySelector(".md-dragger-gutter");
+            if (!gutter2 || ((_a = view.dom.ownerDocument.defaultView) == null ? void 0 : _a.frameElement) == null) return null;
+            return gutter2.getBoundingClientRect().left - view.scrollDOM.getBoundingClientRect().left;
+          },
+          write: (gutterLeft, view) => {
+            if (gutterLeft === null) {
+              view.dom.removeAttribute(CARD_EDITOR_ATTR);
+              view.dom.style.removeProperty("--d-gutter-left");
+            } else {
+              view.dom.setAttribute(CARD_EDITOR_ATTR, "");
+              view.dom.style.setProperty("--d-gutter-left", `${gutterLeft}px`);
+            }
+          }
+        });
+        this.measure();
+        view.dom.addEventListener("pointerover", this.measure, true);
+      }
+      update() {
+        this.measure();
+      }
+      destroy() {
+        this.view.dom.removeEventListener("pointerover", this.measure, true);
+      }
+    }
+  );
+}
 function listIndentStepPx(view) {
-  const cs = getComputedStyle(view.contentDOM);
+  const win = view.dom.ownerDocument.defaultView;
+  if (!win) throw new Error("Dragger: editor document has no window");
+  const cs = win.getComputedStyle(view.contentDOM);
   const em = parseFloat(cs.getPropertyValue("--indent-unit")) * parseFloat(cs.getPropertyValue("--indent-size"));
   return em * parseFloat(cs.fontSize);
 }
-function createObsidianHandle() {
-  const handle = activeWindow.createDiv();
+function createObsidianHandle(doc) {
+  const handle = doc.win.createDiv();
   handle.className = HANDLE_CLASS;
-  const core = activeWindow.createSpan();
+  const core = doc.win.createSpan();
   core.className = "d-handle-core";
   core.setAttribute("aria-hidden", "true");
   handle.appendChild(core);
@@ -4644,7 +5257,7 @@ function handleHover() {
             this.setVisible(null);
             return;
           }
-          if (activeDocument.body.classList.contains(DRAGGING_BODY_CLASS)) {
+          if (this.view.dom.ownerDocument.body.classList.contains(DRAGGING_BODY_CLASS)) {
             this.setVisible(null);
             return;
           }
@@ -4690,12 +5303,13 @@ function gestureShell(plugin) {
       constructor(view) {
         this.view = view;
         this.lastPress = null;
-        this.locked = false;
+        this.lockedDocument = null;
         this.onPointerDown = (e) => {
+          var _a;
           if (!isDraggerView(this.view)) return;
           this.lastPress = {
             event: e,
-            onHandle: e.target instanceof Element && e.target.closest(`.${HANDLE_CLASS}`) !== null
+            onHandle: ((_a = elementTarget(e)) == null ? void 0 : _a.closest(`.${HANDLE_CLASS}`)) != null
           };
           if (plugin.isMobilePlatform() && plugin.isMobileDragModeEnabled()) {
             e.preventDefault();
@@ -4721,7 +5335,7 @@ function gestureShell(plugin) {
       }
       destroy() {
         this.setLock(false);
-        activeDocument.body.classList.remove(DRAGGING_BODY_CLASS);
+        this.view.dom.ownerDocument.body.classList.remove(DRAGGING_BODY_CLASS);
         this.view.dom.removeEventListener("pointerdown", this.onPointerDown, true);
         this.view.dom.removeEventListener("contextmenu", this.onContextMenu, true);
       }
@@ -4731,7 +5345,7 @@ function gestureShell(plugin) {
           if (output.type === "state_changed") {
             const t2 = output.state.type;
             this.setLock(t2 !== "idle");
-            activeDocument.body.classList.toggle(DRAGGING_BODY_CLASS, t2 === "dragging");
+            this.view.dom.ownerDocument.body.classList.toggle(DRAGGING_BODY_CLASS, t2 === "dragging");
           }
           if (output.type === "cancelled" && output.reason === "press_cancelled") {
             const press = this.lastPress;
@@ -4740,7 +5354,12 @@ function gestureShell(plugin) {
             if (press && press.onHandle && typeof startLine === "number") {
               const { clientX, clientY } = press.event;
               window.requestAnimationFrame(() => {
-                openBlockTypeMenu(this.view, { clientX, clientY }, startLine);
+                openBlockTypeMenu(
+                  this.view,
+                  { clientX, clientY },
+                  plugin.settings,
+                  startLine
+                );
               });
             }
           }
@@ -4750,18 +5369,24 @@ function gestureShell(plugin) {
         }
       }
       setLock(locked) {
-        if (this.locked === locked) return;
-        this.locked = locked;
-        activeDocument.body.classList.toggle(MOBILE_GESTURE_LOCK_CLASS, locked);
+        if (locked === (this.lockedDocument !== null)) return;
         if (locked) {
-          activeDocument.addEventListener("touchmove", this.onTouchMove, { capture: true, passive: false });
-        } else {
-          activeDocument.removeEventListener("touchmove", this.onTouchMove, true);
+          const doc = this.view.dom.ownerDocument;
+          doc.body.classList.add(MOBILE_GESTURE_LOCK_CLASS);
+          doc.addEventListener("touchmove", this.onTouchMove, { capture: true, passive: false });
+          this.lockedDocument = doc;
+        } else if (this.lockedDocument !== null) {
+          this.lockedDocument.body.classList.remove(MOBILE_GESTURE_LOCK_CLASS);
+          this.lockedDocument.removeEventListener("touchmove", this.onTouchMove, true);
+          this.lockedDocument = null;
         }
       }
     }
   );
 }
+
+// src/plugin/settings.ts
+var import_obsidian2 = require("obsidian");
 
 // src/shared/constants.ts
 var DEFAULT_HANDLE_SIZE_PX = 20;
@@ -4769,201 +5394,6 @@ var MIN_HANDLE_SIZE_PX = 10;
 var MAX_HANDLE_SIZE_PX = 40;
 var HANDLE_CORE_SIZE_RATIO = 0.5;
 var GRIP_DOTS_CORE_SIZE_RATIO = 0.8;
-
-// src/plugin/settings.ts
-var import_obsidian2 = require("obsidian");
-
-// src/plugin/i18n/index.ts
-var obsidian = __toESM(require("obsidian"));
-
-// src/plugin/i18n/en.ts
-var en = {
-  headingAppearance: "Appearance",
-  headingBehavior: "Behavior",
-  handleColor: "Handle color",
-  handleColorDesc: "Follow theme accent or pick a custom color",
-  optionTheme: "Theme",
-  optionCustom: "Custom",
-  handleVisibility: "Handle visibility",
-  handleVisibilityDesc: "Control how drag handles are displayed",
-  optionHover: "Hover",
-  optionAlways: "Always",
-  optionHidden: "Hidden",
-  selectionVisualStyle: "Block selection visual style",
-  selectionVisualStyleDesc: "Shared highlight style",
-  optionBlockSelectionVisualOutline: "Outline only",
-  optionBlockSelectionVisualSubtle: "Subtle highlight",
-  optionBlockSelectionVisualFilled: "Filled highlight",
-  enableBlockSelectionHighlight: "Block selection highlight",
-  enableBlockSelectionHighlightDesc: "Highlight the block being dragged",
-  handleIcon: "Handle icon",
-  handleIconDesc: "Choose the icon style for drag handles",
-  iconDot: "\u25CF dot",
-  iconGripDots: "\u283F grip dots",
-  iconGripLines: "\u2630 grip lines",
-  iconSquare: "\u25A0 square",
-  handleSize: "Handle size",
-  handleSizeDesc: "Adjust the size of drag handles (px)",
-  handleOffset: "Handle horizontal offset",
-  handleOffsetDesc: "Negative = left, positive = right",
-  handleGutterPosition: "Handle gutter side",
-  handleGutterPositionDesc: "Show the handle gutter on the left or right side of the editor",
-  optionLeft: "Left",
-  optionRight: "Right",
-  indicatorColor: "Indicator color",
-  indicatorColorDesc: "Follow theme accent or pick a custom color",
-  multiLineSelection: "Multi-line selection",
-  multiLineSelectionDesc: "Disable to keep single-block drag only",
-  mobileDragLongPressMs: "Mobile drag arm duration",
-  mobileDragLongPressMsDesc: "On mobile (drag mode on), hold this long before a press can start a drag (ms)",
-  mouseRangeSelectLongPressMs: "Multi-select long-press duration",
-  mouseRangeSelectLongPressMsDesc: "Hold a handle (or a row in mobile drag mode) this long to enter multi-block selection (ms)",
-  autoScrollEdgeZonePx: "Auto-scroll edge zone",
-  autoScrollEdgeZonePxDesc: "Distance from viewport edge to trigger auto-scroll while dragging (px)",
-  autoScrollMaxSpeedPx: "Auto-scroll max speed",
-  autoScrollMaxSpeedPxDesc: "Maximum pixels scrolled per frame during auto-scroll",
-  disableMobileDragModeAfterDrop: "Disable drag mode after move",
-  disableMobileDragModeAfterDropDesc: "On mobile, automatically exit drag mode after a block is moved successfully",
-  mobileTextLongPressDrag: "Mobile text long-press drag",
-  mobileTextLongPressDragDesc: "On mobile, long-press a text line or rendered block content to drag the current block directly without using the left handle",
-  optionMobileDragModeToggleViewAction: "View actions"
-};
-
-// src/plugin/i18n/zh-cn.ts
-var zhCn = {
-  // Headings
-  headingAppearance: "\u5916\u89C2",
-  headingBehavior: "\u884C\u4E3A",
-  // Handle color
-  handleColor: "\u624B\u67C4\u989C\u8272",
-  handleColorDesc: "\u8DDF\u968F\u4E3B\u9898\u5F3A\u8C03\u8272\u6216\u81EA\u5B9A\u4E49\u989C\u8272",
-  optionTheme: "\u8DDF\u968F\u4E3B\u9898\u8272",
-  optionCustom: "\u81EA\u5B9A\u4E49",
-  // Handle visibility
-  handleVisibility: "\u624B\u67C4\u663E\u793A\u6A21\u5F0F",
-  handleVisibilityDesc: "\u63A7\u5236\u62D6\u62FD\u624B\u67C4\u7684\u663E\u793A\u65B9\u5F0F",
-  optionHover: "\u60AC\u505C\u663E\u793A",
-  optionAlways: "\u59CB\u7EC8\u663E\u793A",
-  optionHidden: "\u9690\u85CF",
-  selectionVisualStyle: "\u62D6\u62FD\u6E90\u89C6\u89C9\u6837\u5F0F",
-  selectionVisualStyleDesc: "\u7EDF\u4E00\u9AD8\u4EAE\u6837\u5F0F",
-  optionBlockSelectionVisualOutline: "\u7EAF\u8FB9\u6846",
-  optionBlockSelectionVisualSubtle: "\u7B80\u7EA6\u9AD8\u4EAE",
-  optionBlockSelectionVisualFilled: "\u80CC\u666F\u589E\u5F3A",
-  enableBlockSelectionHighlight: "\u62D6\u62FD\u6E90\u9AD8\u4EAE",
-  enableBlockSelectionHighlightDesc: "\u9AD8\u4EAE\u88AB\u62D6\u52A8\u7684\u6E90\u5757",
-  // Handle icon
-  handleIcon: "\u624B\u67C4\u56FE\u6807",
-  handleIconDesc: "\u9009\u62E9\u62D6\u62FD\u624B\u67C4\u7684\u56FE\u6807\u6837\u5F0F",
-  iconDot: "\u25CF \u5706\u70B9",
-  iconGripDots: "\u283F \u516D\u70B9\u6293\u624B",
-  iconGripLines: "\u2630 \u4E09\u6A2A\u7EBF",
-  iconSquare: "\u25A0 \u65B9\u5757",
-  // Handle size
-  handleSize: "\u624B\u67C4\u5927\u5C0F",
-  handleSizeDesc: "\u8C03\u6574\u62D6\u62FD\u624B\u67C4\u7684\u5927\u5C0F\uFF08\u50CF\u7D20\uFF09",
-  // Handle offset
-  handleOffset: "\u624B\u67C4\u6A2A\u5411\u4F4D\u7F6E",
-  handleOffsetDesc: "\u5411\u5DE6\u4E3A\u8D1F\u503C\uFF0C\u5411\u53F3\u4E3A\u6B63\u503C",
-  handleGutterPosition: "\u624B\u67C4\u6240\u5728\u4FA7",
-  handleGutterPositionDesc: "\u63A7\u5236\u624B\u67C4 gutter \u663E\u793A\u5728\u7F16\u8F91\u5668\u5DE6\u4FA7\u8FD8\u662F\u53F3\u4FA7",
-  optionLeft: "\u5DE6\u4FA7",
-  optionRight: "\u53F3\u4FA7",
-  // Indicator color
-  indicatorColor: "\u6307\u793A\u5668\u989C\u8272",
-  indicatorColorDesc: "\u8DDF\u968F\u4E3B\u9898\u5F3A\u8C03\u8272\u6216\u81EA\u5B9A\u4E49\u989C\u8272",
-  // Multi-line selection
-  multiLineSelection: "\u591A\u884C\u9009\u53D6",
-  multiLineSelectionDesc: "\u5173\u95ED\u540E\u4EC5\u4FDD\u7559\u5355\u5757\u62D6\u62FD\uFF0C\u4E0D\u8FDB\u5165\u591A\u884C\u9009\u53D6\u6D41\u7A0B",
-  mobileDragLongPressMs: "\u79FB\u52A8\u7AEF\u62D6\u62FD\u5C31\u7EEA\u65F6\u957F",
-  mobileDragLongPressMsDesc: "\u79FB\u52A8\u7AEF\uFF08\u62D6\u62FD\u6A21\u5F0F\u5F00\u542F\u65F6\uFF09\u6309\u4F4F\u591A\u4E45\u540E\u53EF\u4EE5\u5F00\u59CB\u62D6\u62FD\uFF08\u6BEB\u79D2\uFF09",
-  mouseRangeSelectLongPressMs: "\u591A\u9009\u957F\u6309\u65F6\u957F",
-  mouseRangeSelectLongPressMsDesc: "\u6309\u4F4F\u624B\u67C4\uFF08\u6216\u79FB\u52A8\u7AEF\u62D6\u62FD\u6A21\u5F0F\u4E0B\u7684\u884C\uFF09\u591A\u4E45\u540E\u8FDB\u5165\u591A\u5757\u9009\u62E9\uFF08\u6BEB\u79D2\uFF09",
-  autoScrollEdgeZonePx: "\u81EA\u52A8\u6EDA\u52A8\u89E6\u53D1\u8DDD\u79BB",
-  autoScrollEdgeZonePxDesc: "\u62D6\u62FD\u65F6\u6307\u9488\u8DDD\u79BB\u89C6\u53E3\u8FB9\u7F18\u591A\u5C11\u50CF\u7D20\u5F00\u59CB\u81EA\u52A8\u6EDA\u52A8",
-  autoScrollMaxSpeedPx: "\u81EA\u52A8\u6EDA\u52A8\u6700\u5927\u901F\u5EA6",
-  autoScrollMaxSpeedPxDesc: "\u81EA\u52A8\u6EDA\u52A8\u6BCF\u5E27\u6700\u5927\u6EDA\u52A8\u50CF\u7D20\u6570",
-  disableMobileDragModeAfterDrop: "\u79FB\u52A8\u540E\u5173\u95ED\u62D6\u62FD\u6A21\u5F0F",
-  disableMobileDragModeAfterDropDesc: "\u5F00\u542F\u540E\uFF0C\u79FB\u52A8\u7AEF\u6BCF\u6B21\u6210\u529F\u79FB\u52A8\u6587\u672C\u5757\u540E\u4F1A\u81EA\u52A8\u9000\u51FA\u62D6\u62FD\u6A21\u5F0F",
-  mobileTextLongPressDrag: "\u79FB\u52A8\u7AEF\u6587\u672C\u957F\u6309\u62D6\u62FD",
-  mobileTextLongPressDragDesc: "\u79FB\u52A8\u7AEF\u5728\u6587\u672C\u6574\u884C\u6216\u5757\u5185\u5BB9\u533A\u57DF\u957F\u6309\u53EF\u76F4\u63A5\u62D6\u62FD\u5F53\u524D\u5757\uFF0C\u65E0\u9700\u5DE6\u4FA7\u624B\u67C4",
-  optionMobileDragModeToggleViewAction: "\u89C6\u56FE\u64CD\u4F5C\u680F"
-};
-
-// src/plugin/i18n/ru.ts
-var ru = {
-  headingAppearance: "\u0412\u043D\u0435\u0448\u043D\u0438\u0439 \u0432\u0438\u0434",
-  headingBehavior: "\u041F\u043E\u0432\u0435\u0434\u0435\u043D\u0438\u0435",
-  handleColor: "\u0426\u0432\u0435\u0442 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
-  handleColorDesc: "\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0446\u0432\u0435\u0442 \u0430\u043A\u0446\u0435\u043D\u0442\u0430 \u0442\u0435\u043C\u044B \u0438\u043B\u0438 \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0441\u0432\u043E\u0439",
-  optionTheme: "\u0422\u0435\u043C\u0430",
-  optionCustom: "\u0421\u0432\u043E\u0439",
-  handleVisibility: "\u0412\u0438\u0434\u0438\u043C\u043E\u0441\u0442\u044C \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
-  handleVisibilityDesc: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435\u043C \u043C\u0430\u0440\u043A\u0435\u0440\u043E\u0432 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F",
-  optionHover: "\u041F\u0440\u0438 \u043D\u0430\u0432\u0435\u0434\u0435\u043D\u0438\u0438",
-  optionAlways: "\u0412\u0441\u0435\u0433\u0434\u0430",
-  optionHidden: "\u0421\u043A\u0440\u044B\u0442",
-  selectionVisualStyle: "\u0421\u0442\u0438\u043B\u044C \u0432\u044B\u0434\u0435\u043B\u0435\u043D\u0438\u044F \u0431\u043B\u043E\u043A\u0430",
-  selectionVisualStyleDesc: "\u041E\u0431\u0449\u0438\u0439 \u0441\u0442\u0438\u043B\u044C \u043F\u043E\u0434\u0441\u0432\u0435\u0442\u043A\u0438 \u043F\u0440\u0438 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u0438",
-  optionBlockSelectionVisualOutline: "\u0422\u043E\u043B\u044C\u043A\u043E \u043A\u043E\u043D\u0442\u0443\u0440",
-  optionBlockSelectionVisualSubtle: "\u041B\u0451\u0433\u043A\u0430\u044F \u043F\u043E\u0434\u0441\u0432\u0435\u0442\u043A\u0430",
-  optionBlockSelectionVisualFilled: "\u0417\u0430\u043B\u0438\u0432\u043A\u0430",
-  enableBlockSelectionHighlight: "\u041F\u043E\u0434\u0441\u0432\u0435\u0442\u043A\u0430 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u0435\u043C\u043E\u0433\u043E \u0431\u043B\u043E\u043A\u0430",
-  enableBlockSelectionHighlightDesc: "\u041F\u043E\u0434\u0441\u0432\u0435\u0447\u0438\u0432\u0430\u0442\u044C \u0431\u043B\u043E\u043A \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F",
-  handleIcon: "\u0418\u043A\u043E\u043D\u043A\u0430 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
-  handleIconDesc: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0442\u0438\u043B\u044C \u0438\u043A\u043E\u043D\u043A\u0438 \u0434\u043B\u044F \u043C\u0430\u0440\u043A\u0435\u0440\u043E\u0432 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F",
-  iconDot: "\u25CF \u0442\u043E\u0447\u043A\u0430",
-  iconGripDots: "\u283F \u0442\u043E\u0447\u043A\u0438 \u0437\u0430\u0445\u0432\u0430\u0442\u0430",
-  iconGripLines: "\u2630 \u043B\u0438\u043D\u0438\u0438 \u0437\u0430\u0445\u0432\u0430\u0442\u0430",
-  iconSquare: "\u25A0 \u043A\u0432\u0430\u0434\u0440\u0430\u0442",
-  handleSize: "\u0420\u0430\u0437\u043C\u0435\u0440 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
-  handleSizeDesc: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u0440\u0430\u0437\u043C\u0435\u0440\u0430 \u043C\u0430\u0440\u043A\u0435\u0440\u043E\u0432 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F (px)",
-  handleOffset: "\u0413\u043E\u0440\u0438\u0437\u043E\u043D\u0442\u0430\u043B\u044C\u043D\u043E\u0435 \u0441\u043C\u0435\u0449\u0435\u043D\u0438\u0435 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
-  handleOffsetDesc: "\u041E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u043E\u0435 = \u0432\u043B\u0435\u0432\u043E, \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0435 = \u0432\u043F\u0440\u0430\u0432\u043E",
-  handleGutterPosition: "\u0421\u0442\u043E\u0440\u043E\u043D\u0430 \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
-  handleGutterPositionDesc: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043C\u0430\u0440\u043A\u0435\u0440 \u0441\u043B\u0435\u0432\u0430 \u0438\u043B\u0438 \u0441\u043F\u0440\u0430\u0432\u0430 \u043E\u0442 \u0440\u0435\u0434\u0430\u043A\u0442\u043E\u0440\u0430",
-  optionLeft: "\u0421\u043B\u0435\u0432\u0430",
-  optionRight: "\u0421\u043F\u0440\u0430\u0432\u0430",
-  indicatorColor: "\u0426\u0432\u0435\u0442 \u0438\u043D\u0434\u0438\u043A\u0430\u0442\u043E\u0440\u0430",
-  indicatorColorDesc: "\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0446\u0432\u0435\u0442 \u0430\u043A\u0446\u0435\u043D\u0442\u0430 \u0442\u0435\u043C\u044B \u0438\u043B\u0438 \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0441\u0432\u043E\u0439",
-  multiLineSelection: "\u0412\u044B\u0431\u043E\u0440 \u043D\u0435\u0441\u043A\u043E\u043B\u044C\u043A\u0438\u0445 \u0431\u043B\u043E\u043A\u043E\u0432",
-  multiLineSelectionDesc: "\u041E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u0435, \u0447\u0442\u043E\u0431\u044B \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u0442\u044C \u0442\u043E\u043B\u044C\u043A\u043E \u043E\u0434\u0438\u043D \u0431\u043B\u043E\u043A \u0437\u0430 \u0440\u0430\u0437",
-  mobileDragLongPressMs: "\u0414\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u0433\u043E\u0442\u043E\u0432\u043D\u043E\u0441\u0442\u0438 \u043A \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044E (\u043C\u043E\u0431.)",
-  mobileDragLongPressMsDesc: "\u041D\u0430 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C (\u0440\u0435\u0436\u0438\u043C \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F \u0432\u043A\u043B\u044E\u0447\u0451\u043D) \u0441\u043A\u043E\u043B\u044C\u043A\u043E \u0443\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0442\u044C \u043F\u0435\u0440\u0435\u0434 \u043D\u0430\u0447\u0430\u043B\u043E\u043C \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F (\u043C\u0441)",
-  mouseRangeSelectLongPressMs: "\u0414\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u0434\u043E\u043B\u0433\u043E\u0433\u043E \u043D\u0430\u0436\u0430\u0442\u0438\u044F \u0434\u043B\u044F \u043C\u0443\u043B\u044C\u0442\u0438\u0432\u044B\u0431\u043E\u0440\u0430",
-  mouseRangeSelectLongPressMsDesc: "\u0421\u043A\u043E\u043B\u044C\u043A\u043E \u0443\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0442\u044C \u043C\u0430\u0440\u043A\u0435\u0440 (\u0438\u043B\u0438 \u0441\u0442\u0440\u043E\u043A\u0443 \u0432 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435) \u043F\u0435\u0440\u0435\u0434 \u0432\u0445\u043E\u0434\u043E\u043C \u0432 \u0432\u044B\u0431\u043E\u0440 \u043D\u0435\u0441\u043A\u043E\u043B\u044C\u043A\u0438\u0445 \u0431\u043B\u043E\u043A\u043E\u0432 (\u043C\u0441)",
-  autoScrollEdgeZonePx: "\u0417\u043E\u043D\u0430 \u0430\u0432\u0442\u043E\u043F\u0440\u043E\u043A\u0440\u0443\u0442\u043A\u0438",
-  autoScrollEdgeZonePxDesc: "\u0420\u0430\u0441\u0441\u0442\u043E\u044F\u043D\u0438\u0435 \u043E\u0442 \u043A\u0440\u0430\u044F \u043E\u043A\u043D\u0430 \u0434\u043B\u044F \u0437\u0430\u043F\u0443\u0441\u043A\u0430 \u0430\u0432\u0442\u043E\u043F\u0440\u043E\u043A\u0440\u0443\u0442\u043A\u0438 \u043F\u0440\u0438 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u0438 (\u043F\u0438\u043A\u0441)",
-  autoScrollMaxSpeedPx: "\u041C\u0430\u043A\u0441. \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0430\u0432\u0442\u043E\u043F\u0440\u043E\u043A\u0440\u0443\u0442\u043A\u0438",
-  autoScrollMaxSpeedPxDesc: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043F\u0438\u043A\u0441\u0435\u043B\u0435\u0439 \u043F\u0440\u043E\u043A\u0440\u0443\u0442\u043A\u0438 \u0437\u0430 \u043A\u0430\u0434\u0440",
-  disableMobileDragModeAfterDrop: "\u041E\u0442\u043A\u043B\u044E\u0447\u0430\u0442\u044C \u0440\u0435\u0436\u0438\u043C \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F \u043F\u043E\u0441\u043B\u0435 \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0435\u043D\u0438\u044F",
-  disableMobileDragModeAfterDropDesc: "\u041D\u0430 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u0432\u044B\u0445\u043E\u0434\u0438\u0442\u044C \u0438\u0437 \u0440\u0435\u0436\u0438\u043C\u0430 \u043F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u044F \u043F\u043E\u0441\u043B\u0435 \u0443\u0441\u043F\u0435\u0448\u043D\u043E\u0433\u043E \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0435\u043D\u0438\u044F \u0431\u043B\u043E\u043A\u0430",
-  mobileTextLongPressDrag: "\u041F\u0435\u0440\u0435\u0442\u0430\u0441\u043A\u0438\u0432\u0430\u043D\u0438\u0435 \u0434\u043E\u043B\u0433\u0438\u043C \u043D\u0430\u0436\u0430\u0442\u0438\u0435\u043C \u043D\u0430 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C",
-  mobileTextLongPressDragDesc: "\u041D\u0430 \u043C\u043E\u0431\u0438\u043B\u044C\u043D\u043E\u043C \u0443\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0439\u0442\u0435 \u0441\u0442\u0440\u043E\u043A\u0443 \u0442\u0435\u043A\u0441\u0442\u0430 \u0438\u043B\u0438 \u0431\u043B\u043E\u043A, \u0447\u0442\u043E\u0431\u044B \u043F\u0435\u0440\u0435\u0442\u0430\u0449\u0438\u0442\u044C \u0435\u0433\u043E \u043D\u0430\u043F\u0440\u044F\u043C\u0443\u044E \u0431\u0435\u0437 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u044F \u043C\u0430\u0440\u043A\u0435\u0440\u0430",
-  optionMobileDragModeToggleViewAction: "\u041F\u0430\u043D\u0435\u043B\u044C \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439"
-};
-
-// src/plugin/i18n/index.ts
-var translationsByLocale = {
-  en,
-  ru,
-  zh: zhCn,
-  "zh-cn": zhCn,
-  "zh-hk": zhCn,
-  "zh-tw": zhCn
-};
-function detectLanguage(api) {
-  const language = typeof api.getLanguage === "function" ? api.getLanguage() : api.moment.locale();
-  return language.trim().toLowerCase();
-}
-function selectTranslations(language) {
-  var _a, _b;
-  const normalizedLanguage = language.trim().toLowerCase();
-  return (_b = (_a = translationsByLocale[normalizedLanguage]) != null ? _a : translationsByLocale[normalizedLanguage.split("-")[0]]) != null ? _b : en;
-}
-function t() {
-  return selectTranslations(detectLanguage(obsidian));
-}
 
 // src/plugin/settings-types.ts
 var NUMERIC_SETTING_RANGES = {
@@ -4979,6 +5409,7 @@ var DEFAULT_SETTINGS = {
   handleColor: "#8a8a8a",
   handleVisibility: "hover",
   handleIcon: "grip-dots",
+  customHandleIcon: "grip-vertical",
   handleSize: DEFAULT_HANDLE_SIZE_PX,
   indicatorColorMode: "theme",
   indicatorColor: "#7a7a7a",
@@ -4994,14 +5425,189 @@ var DEFAULT_SETTINGS = {
   enableBlockSelectionHighlight: true,
   selectionVisualStyle: "subtle",
   handleHorizontalOffsetPx: -8,
-  handleGutterPosition: "left"
+  handleGutterPosition: "left",
+  customBlockStyles: [],
+  blockMenuOrders: {
+    root: [...DEFAULT_BLOCK_MENU_ORDERS.root],
+    heading: [...DEFAULT_BLOCK_MENU_ORDERS.heading],
+    list: [...DEFAULT_BLOCK_MENU_ORDERS.list],
+    callout: [...DEFAULT_BLOCK_MENU_ORDERS.callout],
+    custom: []
+  }
 };
 
 // src/plugin/settings.ts
+function setMenuItemIcon(row, icon) {
+  let iconSlot = row.querySelector(":scope > .setting-item-icon");
+  if (!iconSlot) {
+    iconSlot = row.ownerDocument.win.createDiv();
+    iconSlot.className = "setting-item-icon";
+    row.insertBefore(iconSlot, row.firstChild);
+  }
+  (0, import_obsidian2.setIcon)(iconSlot, icon);
+}
+function renderMenuPageIcons(container, pages) {
+  if (!container.isConnected) return;
+  const rows = Array.from(container.querySelectorAll(".setting-item.mod-navigable"));
+  if (rows.length === 0) return;
+  for (const page of pages) {
+    const row = rows.find((item) => {
+      var _a;
+      return ((_a = item.querySelector(".setting-item-name")) == null ? void 0 : _a.textContent) === page.name;
+    });
+    if (!row) throw new Error(`Dragger: settings page "${page.name}" is missing`);
+    setMenuItemIcon(row, page.icon);
+  }
+}
+function menuRow(option, editStyle) {
+  const { style } = option;
+  return {
+    name: option.label,
+    icon: option.icon,
+    ...style ? { action: () => editStyle(style) } : {}
+  };
+}
+var IconSuggestModal = class extends import_obsidian2.FuzzySuggestModal {
+  constructor(app, onChoose) {
+    super(app);
+    this.onChoose = onChoose;
+    this.setPlaceholder(t().customHandleIconSearch);
+  }
+  getItems() {
+    return Array.from(new Set((0, import_obsidian2.getIconIds)().map((id) => id.startsWith("lucide-") ? id.slice(7) : id))).sort();
+  }
+  getItemText(item) {
+    return item;
+  }
+  renderSuggestion(match, el) {
+    el.addClass("d-handle-icon-suggestion");
+    (0, import_obsidian2.setIcon)(el.createSpan(), match.item);
+    super.renderSuggestion(match, el.createSpan());
+  }
+  onChooseItem(item) {
+    this.onChoose(item);
+  }
+};
+var CustomBlockStyleModal = class extends import_obsidian2.Modal {
+  constructor(app, style, isNew, onSave) {
+    var _a;
+    super(app);
+    this.style = { ...style, linePrefix: (_a = style.linePrefix) != null ? _a : "" };
+    this.isNew = isNew;
+    this.onSave = onSave;
+  }
+  onOpen() {
+    var _a;
+    const i = t();
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.createEl("h2", { text: this.isNew ? i.customStyleModalTitleNew : i.customStyleModalTitleEdit });
+    new import_obsidian2.Setting(contentEl).setName(i.customStyleLabel).setDesc(i.customStyleLabelDesc).addText(
+      (text) => text.setValue(this.style.label).onChange((val) => {
+        this.style.label = val;
+      })
+    );
+    let iconInput = null;
+    const iconSetting = new import_obsidian2.Setting(contentEl).setName(i.customStyleIcon).setDesc(i.customStyleIconDesc);
+    iconSetting.addExtraButton((btn) => {
+      btn.setIcon(this.style.icon).setTooltip("Choose icon").onClick(() => {
+        new IconSuggestModal(this.app, (chosenIcon) => {
+          this.style.icon = chosenIcon;
+          btn.setIcon(chosenIcon);
+          iconInput == null ? void 0 : iconInput.setValue(chosenIcon);
+        }).open();
+      });
+    });
+    iconSetting.addText((text) => {
+      iconInput = text;
+      text.setValue(this.style.icon).onChange((val) => {
+        this.style.icon = val.trim();
+      });
+    });
+    new import_obsidian2.Setting(contentEl).setName(i.customStyleTemplate).setDesc(i.customStyleTemplateDesc).addTextArea(
+      (text) => text.setValue(this.style.template).onChange((val) => {
+        this.style.template = val;
+      })
+    );
+    const variables = Object.entries((_a = this.style.variables) != null ? _a : {}).map(([name, value]) => ({ name, value }));
+    const variableHeading = new import_obsidian2.Setting(contentEl).setName(i.customStyleVariables).setHeading();
+    const variableList = contentEl.createDiv();
+    const renderVariables = () => {
+      variableList.empty();
+      for (const variable of variables) {
+        new import_obsidian2.Setting(variableList).addText(
+          (text) => text.setPlaceholder(i.customStyleVariableName).setValue(variable.name).onChange((value) => {
+            variable.name = value;
+          })
+        ).addText(
+          (text) => text.setPlaceholder(i.customStyleVariableValue).setValue(variable.value).onChange((value) => {
+            variable.value = value;
+          })
+        ).addExtraButton(
+          (button) => button.setIcon("trash-2").setTooltip(i.customStyleRemoveVariable).onClick(() => {
+            variables.splice(variables.indexOf(variable), 1);
+            renderVariables();
+          })
+        );
+      }
+    };
+    variableHeading.addExtraButton(
+      (button) => button.setIcon("plus").setTooltip(i.customStyleAddVariable).onClick(() => {
+        variables.push({ name: "", value: "" });
+        renderVariables();
+      })
+    );
+    renderVariables();
+    new import_obsidian2.Setting(contentEl).setName(i.customStyleLinePrefix).setDesc(i.customStyleLinePrefixDesc).addText(
+      (text) => {
+        var _a2;
+        return text.setPlaceholder('(Optional, e.g. "> " for callouts)').setValue((_a2 = this.style.linePrefix) != null ? _a2 : "").onChange((val) => {
+          this.style.linePrefix = val.length > 0 ? val : void 0;
+        });
+      }
+    );
+    new import_obsidian2.Setting(contentEl).addButton(
+      (btn) => btn.setButtonText(i.customStyleSave).setCta().onClick(() => {
+        const label = this.style.label.trim();
+        if (!label) return;
+        if (!this.style.template.includes("${content}")) {
+          new import_obsidian2.Notice(i.customStyleTemplateRequired);
+          return;
+        }
+        const names = variables.map((variable) => variable.name.trim());
+        if (names.some((name) => !/^[a-zA-Z0-9_-]+$/.test(name) || name === "content") || new Set(names).size !== names.length) {
+          new import_obsidian2.Notice(i.customStyleInvalidVariables);
+          return;
+        }
+        if (variables.length > 0) {
+          this.style.variables = Object.fromEntries(
+            variables.map((variable, index) => [names[index], variable.value])
+          );
+        } else {
+          delete this.style.variables;
+        }
+        this.style.label = label;
+        this.onSave(this.style);
+        this.close();
+      })
+    ).addButton(
+      (btn) => btn.setButtonText(i.customStyleCancel).onClick(() => {
+        this.close();
+      })
+    );
+  }
+  onClose() {
+    this.contentEl.empty();
+  }
+};
 var DragNDropSettingTab = class extends import_obsidian2.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
+  }
+  update() {
+    super.update();
+    renderMenuPageIcons(this.containerEl, [{ name: t().headingBlockMenu, icon: "menu" }]);
   }
   getSettingDefinitions() {
     const i = t();
@@ -5017,6 +5623,88 @@ var DragNDropSettingTab = class extends import_obsidian2.PluginSettingTab {
       }
     });
     const mobileOnly = () => import_obsidian2.Platform.isMobile && this.plugin.settings.enableMobileTextLongPressDrag;
+    const menuList = (listId, items) => ({
+      type: "list",
+      items,
+      onReorder: (oldIndex, newIndex) => {
+        const order = this.plugin.settings.blockMenuOrders[listId];
+        const moved = order[oldIndex];
+        if (!moved || !Number.isInteger(oldIndex) || !Number.isInteger(newIndex) || newIndex < 0 || newIndex >= order.length) {
+          throw new Error("Dragger: invalid menu reorder indices");
+        }
+        order.splice(oldIndex, 1);
+        order.splice(newIndex, 0, moved);
+        this.saveAndRefresh();
+      }
+    });
+    const entries = getBlockMenuEntries(this.plugin.settings);
+    const groupIcons = entries.flatMap(
+      (entry) => "options" in entry ? [{ name: entry.label, icon: entry.icon }] : []
+    );
+    const groupLists = /* @__PURE__ */ new Map();
+    const editStyle = (style) => {
+      new CustomBlockStyleModal(this.app, style, false, (updated) => {
+        const styles = this.plugin.settings.customBlockStyles;
+        const index = styles.findIndex((candidate) => candidate.id === updated.id);
+        if (index < 0) throw new Error("Dragger: custom style is missing");
+        styles[index] = updated;
+        this.saveAndRefresh();
+      }).open();
+    };
+    for (const entry of entries) {
+      if ("options" in entry) {
+        const rows = entry.options.map((option) => menuRow(option, editStyle));
+        groupLists.set(entry.id, menuList(entry.id, rows));
+      }
+    }
+    const customList = groupLists.get("custom");
+    customList.onDelete = (index) => {
+      const settings = this.plugin.settings;
+      const id = settings.blockMenuOrders.custom[index];
+      const styleIndex = settings.customBlockStyles.findIndex((style) => style.id === id);
+      if (styleIndex < 0) throw new Error("Dragger: custom style is missing");
+      settings.blockMenuOrders.custom.splice(index, 1);
+      settings.customBlockStyles.splice(styleIndex, 1);
+      this.saveAndRefresh();
+    };
+    customList.addItem = {
+      name: i.customBlockStylesAdd,
+      action: () => {
+        new CustomBlockStyleModal(
+          this.app,
+          { id: crypto.randomUUID(), label: "", icon: "box", category: "custom", template: "${content}" },
+          true,
+          (created) => {
+            this.plugin.settings.customBlockStyles.push(created);
+            this.plugin.settings.blockMenuOrders.custom.push(created.id);
+            this.saveAndRefresh();
+          }
+        ).open();
+      }
+    };
+    const menuRows = entries.map(
+      (entry) => "options" in entry ? { type: "page", name: entry.label, items: [groupLists.get(entry.id)] } : menuRow(entry, editStyle)
+    );
+    const handleHookIndex = entries.findIndex((entry) => "target" in entry);
+    if (handleHookIndex < 0) throw new Error("Dragger: block menu has no conversion items");
+    const handleHook = menuRows[handleHookIndex];
+    handleHook.render = (setting, group) => {
+      setMenuItemIcon(setting.settingEl, entries[handleHookIndex].icon);
+      group.listEl.win.queueMicrotask(() => {
+        if (!group.listEl.isConnected) return;
+        renderMenuPageIcons(group.listEl, groupIcons);
+        const sourceHandle = group.listEl.querySelector(".mod-drag-handle");
+        if (!sourceHandle) throw new Error("Dragger: native menu reorder handle is missing");
+        for (const row of Array.from(group.listEl.querySelectorAll(":scope > .setting-item"))) {
+          if (row.querySelector(".mod-drag-handle")) continue;
+          const control = row.querySelector(".setting-item-control");
+          if (!control) throw new Error("Dragger: native menu row control is missing");
+          const handle = sourceHandle.cloneNode(true);
+          handle.addEventListener("click", (event) => event.stopPropagation());
+          control.appendChild(handle);
+        }
+      });
+    };
     return [
       {
         type: "page",
@@ -5029,11 +5717,24 @@ var DragNDropSettingTab = class extends import_obsidian2.PluginSettingTab {
               type: "dropdown",
               key: "handleIcon",
               options: {
-                dot: i.iconDot,
                 "grip-dots": i.iconGripDots,
+                dot: i.iconDot,
                 "grip-lines": i.iconGripLines,
-                square: i.iconSquare
+                square: i.iconSquare,
+                custom: i.optionCustom
               }
+            }
+          },
+          {
+            name: i.customHandleIcon,
+            desc: this.plugin.settings.customHandleIcon,
+            visible: () => this.plugin.settings.handleIcon === "custom",
+            action: () => {
+              new IconSuggestModal(this.app, (iconId) => {
+                void this.setControlValue("customHandleIcon", iconId).then(() => this.update()).catch((error) => {
+                  console.error("Dragger: failed to save custom handle icon", error);
+                });
+              }).open();
             }
           },
           {
@@ -5097,16 +5798,6 @@ var DragNDropSettingTab = class extends import_obsidian2.PluginSettingTab {
           {
             name: i.indicatorColor,
             desc: i.indicatorColorDesc,
-            control: {
-              type: "dropdown",
-              key: "indicatorColorMode",
-              options: { theme: i.optionTheme, custom: i.optionCustom }
-            }
-          },
-          {
-            name: i.indicatorColor,
-            desc: i.indicatorColorDesc,
-            visible: () => this.plugin.settings.indicatorColorMode === "custom",
             control: { type: "color", key: "indicatorColor" }
           }
         ]
@@ -5165,8 +5856,14 @@ var DragNDropSettingTab = class extends import_obsidian2.PluginSettingTab {
             control: { type: "toggle", key: "mobileDragModeToggleEnabled" }
           }
         ]
-      }
+      },
+      { type: "page", name: i.headingBlockMenu, items: [menuList("root", menuRows)] }
     ];
+  }
+  saveAndRefresh() {
+    void this.plugin.saveSettings().then(() => this.update()).catch((error) => {
+      console.error("Dragger: failed to save settings", error);
+    });
   }
   getControlValue(key) {
     return this.plugin.settings[key];
@@ -5177,9 +5874,97 @@ var DragNDropSettingTab = class extends import_obsidian2.PluginSettingTab {
   }
 };
 
+// src/plugin/settings-presentation.ts
+var import_obsidian3 = require("obsidian");
+function settingsPresentation(settings, state) {
+  const visibility = settings.handleVisibility;
+  const offset = settings.handleGutterPosition === "right" ? -settings.handleHorizontalOffsetPx : settings.handleHorizontalOffsetPx;
+  const handleColor = settings.handleColorMode === "theme" ? "var(--interactive-accent)" : settings.handleColor;
+  const size = settings.handleSize;
+  let customIcon = "";
+  if (settings.handleIcon === "custom") {
+    const icon = (0, import_obsidian3.getIcon)(settings.customHandleIcon);
+    if (!icon) throw new Error(`Dragger: custom handle icon "${settings.customHandleIcon}" is not registered`);
+    icon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    customIcon = `url("data:image/svg+xml,${encodeURIComponent(icon.outerHTML)}")`;
+  }
+  return {
+    classes: {
+      "d-handles-always": visibility === "always",
+      "d-handles-hidden": visibility === "hidden",
+      "d-mobile-handles-hidden": state.isMobile && !settings.enableMobileTextLongPressDrag,
+      "d-mobile-drag-mode-enabled": state.mobileDragModeEnabled
+    },
+    attributes: {
+      [DRAG_SOURCE_STYLE_ATTR]: settings.selectionVisualStyle,
+      [DRAG_SOURCE_HIGHLIGHT_ATTR]: settings.enableBlockSelectionHighlight ? "on" : "off",
+      [HANDLE_ICON_ATTR]: settings.handleIcon
+    },
+    cssProps: {
+      "--d-handle-horizontal-offset-px": `${offset}px`,
+      "--d-handle-color": handleColor,
+      "--d-handle-color-hover": handleColor,
+      // Theme mode: leave the variable unset so the drop indicator falls
+      // back to the same accent-derived color as the source highlight
+      // edge (--d-drag-source-border) in the stylesheet.
+      "--d-drop-indicator-color": settings.indicatorColorMode === "custom" ? settings.indicatorColor : "",
+      "--d-handle-size": `${size}px`,
+      "--d-handle-core-size": `${Math.round(size * HANDLE_CORE_SIZE_RATIO)}px`,
+      "--d-grip-dots-core-size": `${Math.round(size * GRIP_DOTS_CORE_SIZE_RATIO)}px`,
+      "--d-custom-handle-icon": customIcon
+    }
+  };
+}
+var SettingsPresenter = class {
+  constructor() {
+    this.documents = /* @__PURE__ */ new Set();
+    this.presentation = null;
+  }
+  /** Presents the settings in a document hosting a Dragger editor. Cheap to repeat. */
+  presentIn(doc) {
+    if (this.documents.has(doc)) return;
+    this.forgetClosedDocuments();
+    this.documents.add(doc);
+    if (this.presentation !== null) show(doc.body, this.presentation);
+  }
+  update(presentation) {
+    this.presentation = presentation;
+    this.forgetClosedDocuments();
+    for (const doc of this.documents) show(doc.body, presentation);
+  }
+  /** Removes the presentation from every document, and presents nothing until the next update. */
+  clear() {
+    const presentation = this.presentation;
+    if (presentation !== null) {
+      for (const doc of this.documents) {
+        const body = doc.body;
+        for (const name of Object.keys(presentation.classes)) body.classList.remove(name);
+        for (const name of Object.keys(presentation.attributes)) body.removeAttribute(name);
+        for (const name of Object.keys(presentation.cssProps)) body.style.removeProperty(name);
+      }
+    }
+    this.documents.clear();
+    this.presentation = null;
+  }
+  // A closed pop-out window, or a card that stopped editing.
+  forgetClosedDocuments() {
+    for (const doc of this.documents) {
+      if (doc.defaultView === null) this.documents.delete(doc);
+    }
+  }
+};
+function show(body, presentation) {
+  for (const [name, on] of Object.entries(presentation.classes)) body.classList.toggle(name, on);
+  for (const [name, value] of Object.entries(presentation.attributes)) body.setAttribute(name, value);
+  for (const [name, value] of Object.entries(presentation.cssProps)) {
+    if (value === "") body.style.removeProperty(name);
+    else body.style.setProperty(name, value);
+  }
+}
+
 // src/plugin/settings-migrations.ts
 var SCHEMA_VERSION_KEY = "schemaVersion";
-var CURRENT_SCHEMA_VERSION = 7;
+var CURRENT_SCHEMA_VERSION = 12;
 var MIGRATIONS = [
   // v0 -> v1: consolidate legacy field shapes from versions before the
   // migration system existed.
@@ -5255,10 +6040,76 @@ var MIGRATIONS = [
       delete next.mobileDragModeToggleLocations;
     }
     return next;
+  },
+  // v7 -> v8: add customBlockStyles if missing.
+  (data) => {
+    const next = { ...data };
+    if (!("customBlockStyles" in next) || !Array.isArray(next.customBlockStyles)) {
+      next.customBlockStyles = [...DEFAULT_SETTINGS.customBlockStyles];
+    }
+    return next;
+  },
+  // v8 -> v9: Callouts are built-in menu entries. Remove only unchanged
+  // seeded styles; keep user edits and user-created Callout templates.
+  (data) => {
+    const next = { ...data };
+    const legacyCallouts = [
+      { type: "note", label: "Note", icon: "pencil" },
+      { type: "tip", label: "Tip", icon: "lightbulb" },
+      { type: "warning", label: "Warning", icon: "alert-triangle" }
+    ].map(({ type, label, icon }) => ({
+      id: `callout-${type}`,
+      label,
+      icon,
+      category: "callout",
+      template: `> [!${type}]
+\${content}`,
+      linePrefix: "> "
+    }));
+    if (Array.isArray(next.customBlockStyles)) {
+      next.customBlockStyles = next.customBlockStyles.filter(
+        (style) => !isRecord(style) || !legacyCallouts.some(
+          (legacy) => Object.keys(style).length === Object.keys(legacy).length && Object.entries(legacy).every(([key, value]) => style[key] === value)
+        )
+      );
+    }
+    return next;
+  },
+  // v9 -> v10: persist the root menu order without changing custom styles.
+  (data) => ({ ...data, blockMenuOrder: [...DEFAULT_BLOCK_MENU_ORDERS.root] }),
+  // v10 -> v11: only block types can be reordered. Actions stay fixed.
+  (data) => ({
+    ...data,
+    blockMenuOrder: Array.isArray(data.blockMenuOrder) ? data.blockMenuOrder.filter(
+      (id) => id !== "separator" && id !== "copy" && id !== "cut" && id !== "delete"
+    ) : data.blockMenuOrder
+  }),
+  // v11 -> v12: one order map for root and child lists; custom styles are
+  // identified by their persisted IDs instead of their array positions.
+  (data) => {
+    const next = { ...data };
+    if (!("customBlockStyles" in next)) next.customBlockStyles = [];
+    const orders = structuredClone(DEFAULT_SETTINGS.blockMenuOrders);
+    if ("blockMenuOrder" in next) orders.root = next.blockMenuOrder;
+    orders.custom = customStyleIds(next.customBlockStyles);
+    next.blockMenuOrders = orders;
+    delete next.blockMenuOrder;
+    return next;
   }
 ];
 function isRecord(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+function customStyleIds(styles) {
+  if (!Array.isArray(styles)) throw new Error("Dragger: custom block styles must be an array");
+  const ids = styles.map((style) => {
+    if (!isRecord(style) || typeof style.id !== "string" || !style.id) {
+      throw new Error("Dragger: custom block styles must have non-empty IDs");
+    }
+    return style.id;
+  });
+  if (new Set(ids).size !== ids.length) throw new Error("Dragger: custom block style IDs must be unique");
+  return ids;
 }
 function clampNumericSettings(settings) {
   for (const key of Object.keys(NUMERIC_SETTING_RANGES)) {
@@ -5277,31 +6128,29 @@ function migrateSettings(saved) {
   }
   const merged = {
     ...DEFAULT_SETTINGS,
+    customBlockStyles: [...DEFAULT_SETTINGS.customBlockStyles],
+    blockMenuOrders: structuredClone(DEFAULT_SETTINGS.blockMenuOrders),
     ...data,
     [SCHEMA_VERSION_KEY]: CURRENT_SCHEMA_VERSION
   };
+  const expectedOrders = { ...DEFAULT_BLOCK_MENU_ORDERS, custom: customStyleIds(merged.customBlockStyles) };
+  const orders = merged.blockMenuOrders;
+  if (!isRecord(orders) || Object.keys(orders).length !== Object.keys(expectedOrders).length) {
+    throw new Error("Dragger: menu orders must contain exactly the configured lists");
+  }
+  for (const [listId, expected] of Object.entries(expectedOrders)) {
+    const order = orders[listId];
+    const expectedIds = new Set(expected);
+    if (!Array.isArray(order) || order.length !== expected.length || new Set(order).size !== expected.length || order.some((id) => typeof id !== "string" || !expectedIds.has(id))) {
+      throw new Error(`Dragger: ${listId} menu order must contain each item exactly once`);
+    }
+  }
   clampNumericSettings(merged);
   return merged;
 }
 
 // src/plugin/mobile-toolbar-commands.ts
-var import_obsidian3 = require("obsidian");
-
-// src/platform/obsidian/views.ts
-function getActiveMarkdownView(app) {
-  var _a, _b;
-  const leaf = (_a = app.workspace.getMostRecentLeaf()) != null ? _a : null;
-  if (!leaf) return null;
-  const view = leaf.view;
-  return ((_b = view.getViewType) == null ? void 0 : _b.call(view)) === "markdown" ? view : null;
-}
-function getCodeMirrorView(markdownView) {
-  var _a;
-  const maybeView = (_a = markdownView.editor) == null ? void 0 : _a.cm;
-  return maybeView != null ? maybeView : null;
-}
-
-// src/plugin/mobile-toolbar-commands.ts
+var import_obsidian4 = require("obsidian");
 function registerMobileToolbarCommands(plugin) {
   plugin.addCommand({
     id: "open-current-block-type-menu",
@@ -5309,13 +6158,14 @@ function registerMobileToolbarCommands(plugin) {
     icon: "replace",
     mobileOnly: true,
     checkCallback: (checking) => {
-      if (!import_obsidian3.Platform.isMobile) return false;
-      const markdownView = getActiveMarkdownView(plugin.app);
-      if (!markdownView) return false;
-      const view = getCodeMirrorView(markdownView);
+      var _a, _b;
+      if (!import_obsidian4.Platform.isMobile) return false;
+      const markdownView = (_a = plugin.app.workspace.getMostRecentLeaf()) == null ? void 0 : _a.view;
+      if ((markdownView == null ? void 0 : markdownView.getViewType()) !== "markdown") return false;
+      const view = (_b = markdownView.editor) == null ? void 0 : _b.cm;
       if (!view) return false;
       if (!checking) {
-        openBlockTypeMenu(view, null);
+        openBlockTypeMenu(view, null, plugin.settings);
       }
       return true;
     }
@@ -5326,7 +6176,7 @@ function registerMobileToolbarCommands(plugin) {
     icon: "hand",
     mobileOnly: true,
     checkCallback: (checking) => {
-      if (!import_obsidian3.Platform.isMobile) return false;
+      if (!import_obsidian4.Platform.isMobile) return false;
       if (!checking) {
         plugin.toggleMobileDragMode();
       }
@@ -5336,9 +6186,11 @@ function registerMobileToolbarCommands(plugin) {
 }
 
 // src/plugin/main.ts
-var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
+var DragNDropPlugin = class extends import_obsidian5.Plugin {
   constructor() {
     super(...arguments);
+    // The editor extension hands it each document that hosts an editor.
+    this.settingsPresenter = new SettingsPresenter();
     this.mobileDragModeActionByView = /* @__PURE__ */ new WeakMap();
     this.mobileDragModeActionEls = /* @__PURE__ */ new Set();
     this.mobileDragModeEnabled = false;
@@ -5366,6 +6218,7 @@ var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
   }
   onunload() {
     this.setMobileDragModeEnabled(false);
+    this.settingsPresenter.clear();
     for (const actionEl of this.mobileDragModeActionEls) {
       actionEl.remove();
     }
@@ -5381,66 +6234,20 @@ var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
     await this.saveData(this.settings);
   }
   applySettings() {
-    const body = activeDocument.body;
     if (!this.settings.enableMobileTextLongPressDrag) {
       this.mobileDragModeEnabled = false;
     }
-    const visibility = this.settings.handleVisibility;
-    body.classList.toggle("d-handles-always", visibility === "always");
-    body.classList.toggle("d-handles-hidden", visibility === "hidden");
-    body.classList.toggle(
-      "d-mobile-handles-hidden",
-      import_obsidian4.Platform.isMobile && !this.settings.enableMobileTextLongPressDrag
+    this.settingsPresenter.update(
+      settingsPresentation(this.settings, {
+        isMobile: import_obsidian5.Platform.isMobile,
+        mobileDragModeEnabled: this.mobileDragModeEnabled
+      })
     );
-    body.classList.toggle("d-mobile-drag-mode-enabled", this.mobileDragModeEnabled);
-    const selectionVisualStyle = this.settings.selectionVisualStyle;
-    body.setAttribute(DRAG_SOURCE_STYLE_ATTR, selectionVisualStyle);
-    body.setAttribute(DRAG_SOURCE_HIGHLIGHT_ATTR, this.settings.enableBlockSelectionHighlight ? "on" : "off");
-    const handleOffset = this.settings.handleHorizontalOffsetPx;
-    const effectiveOffset = this.settings.handleGutterPosition === "right" ? -handleOffset : handleOffset;
-    body.setCssProps({
-      "--d-handle-horizontal-offset-px": `${effectiveOffset}px`
-    });
-    let colorValue = "";
-    if (this.settings.handleColorMode === "theme") {
-      colorValue = "var(--interactive-accent)";
-    } else if (this.settings.handleColor) {
-      colorValue = this.settings.handleColor;
-    }
-    if (colorValue) {
-      body.setCssProps({
-        "--d-handle-color": colorValue,
-        "--d-handle-color-hover": colorValue
-      });
-    } else {
-      body.setCssProps({
-        "--d-handle-color": "",
-        "--d-handle-color-hover": ""
-      });
-    }
-    let indicatorColorValue = "";
-    if (this.settings.indicatorColorMode === "custom" && this.settings.indicatorColor) {
-      indicatorColorValue = this.settings.indicatorColor;
-    }
-    if (indicatorColorValue) {
-      body.setCssProps({
-        "--d-drop-indicator-color": indicatorColorValue
-      });
-    } else {
-      body.style.removeProperty("--d-drop-indicator-color");
-    }
-    const handleSize = this.settings.handleSize;
-    body.setCssProps({
-      "--d-handle-size": `${handleSize}px`,
-      "--d-handle-core-size": `${Math.round(handleSize * HANDLE_CORE_SIZE_RATIO)}px`,
-      "--d-grip-dots-core-size": `${Math.round(handleSize * GRIP_DOTS_CORE_SIZE_RATIO)}px`
-    });
-    body.setAttribute(HANDLE_ICON_ATTR, this.settings.handleIcon);
     this.syncMobileDragModeActionVisibility();
   }
   // Called when a drop commits. Drives mobile-mode auto-disable.
   notifyDragDrop() {
-    if (!import_obsidian4.Platform.isMobile) return;
+    if (!import_obsidian5.Platform.isMobile) return;
     if (this.settings.disableMobileDragModeAfterDrop === false) return;
     this.setMobileDragModeEnabled(false);
   }
@@ -5448,7 +6255,7 @@ var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
     return this.mobileDragModeEnabled;
   }
   isMobilePlatform() {
-    return import_obsidian4.Platform.isMobile;
+    return import_obsidian5.Platform.isMobile;
   }
   toggleMobileDragMode() {
     if (!this.settings.enableMobileTextLongPressDrag) {
@@ -5471,7 +6278,7 @@ var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
     this.syncMobileDragModeActionIcons();
   }
   installMobileSelectionLock() {
-    if (!import_obsidian4.Platform.isMobile) return;
+    if (!import_obsidian5.Platform.isMobile) return;
     activeDocument.addEventListener("selectstart", this.onSelectStartWhileDragMode, true);
     activeDocument.addEventListener("selectionchange", this.onSelectionChangeWhileDragMode, true);
     this.clearNativeSelection();
@@ -5489,7 +6296,7 @@ var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
     }
   }
   dismissActiveMobileInput() {
-    if (!import_obsidian4.Platform.isMobile) return;
+    if (!import_obsidian5.Platform.isMobile) return;
     const win = activeWindow;
     const active = activeDocument.activeElement;
     if (!(active instanceof win.HTMLElement)) return;
@@ -5499,14 +6306,14 @@ var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
     this.clearNativeSelection();
   }
   registerMobileDragModeActions() {
-    if (!import_obsidian4.Platform.isMobile) return;
+    if (!import_obsidian5.Platform.isMobile) return;
     if (!this.isMobileDragModeToggleEnabled()) {
       this.removeMobileDragModeActions();
       return;
     }
     for (const leaf of this.app.workspace.getLeavesOfType("markdown")) {
       const view = leaf.view;
-      if (!(view instanceof import_obsidian4.MarkdownView)) continue;
+      if (!(view instanceof import_obsidian5.MarkdownView)) continue;
       const existingActionEl = this.mobileDragModeActionByView.get(view);
       if (existingActionEl == null ? void 0 : existingActionEl.isConnected) continue;
       if (existingActionEl) {
@@ -5527,7 +6334,7 @@ var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
     }
   }
   syncMobileDragModeActionVisibility() {
-    if (!import_obsidian4.Platform.isMobile) return;
+    if (!import_obsidian5.Platform.isMobile) return;
     if (!this.isMobileDragModeToggleEnabled()) {
       this.removeMobileDragModeActions();
       return;
@@ -5552,7 +6359,7 @@ var DragNDropPlugin2 = class extends import_obsidian4.Plugin {
   }
   syncMobileDragModeActionEl(actionEl) {
     const title = this.getMobileDragModeActionTitle();
-    (0, import_obsidian4.setIcon)(actionEl, this.getMobileDragModeActionIcon());
+    (0, import_obsidian5.setIcon)(actionEl, this.getMobileDragModeActionIcon());
     actionEl.setAttribute("aria-label", title);
     actionEl.setAttribute("aria-pressed", String(this.mobileDragModeEnabled));
     actionEl.setAttribute("title", title);
