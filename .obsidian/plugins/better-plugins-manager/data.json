@@ -745,18 +745,6 @@
       "note": ""
     },
     {
-      "id": "obsidian-markmind",
-      "name": "Markmind",
-      "desc": "This is a mindmap , outline tool for obsidian.",
-      "group": "ext",
-      "tags": [
-        "recommended"
-      ],
-      "enabled": false,
-      "delay": "10",
-      "note": ""
-    },
-    {
       "id": "dragger",
       "name": "Dragger",
       "desc": "Drag and drop any block (paragraphs, headings, lists, etc.) to rearrange content like Notion.",
@@ -931,6 +919,18 @@
       "enabled": false,
       "delay": "",
       "note": ""
+    },
+    {
+      "id": "simple-mind-map",
+      "name": "Simple mind map",
+      "desc": "A relatively powerful mind map.",
+      "group": "render",
+      "tags": [
+        "recommended"
+      ],
+      "enabled": true,
+      "delay": "15",
+      "note": ""
     }
   ],
   "HIDES": [],
@@ -1041,10 +1041,6 @@
     },
     {
       "id": "obsidian-linter",
-      "type": "plugin"
-    },
-    {
-      "id": "obsidian-markmind",
       "type": "plugin"
     },
     {
@@ -1177,6 +1173,10 @@
     },
     {
       "id": "vertical-tabs",
+      "type": "plugin"
+    },
+    {
+      "id": "simple-mind-map",
       "type": "plugin"
     }
   ],
