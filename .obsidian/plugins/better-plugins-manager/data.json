@@ -310,30 +310,6 @@
       "delay": "5"
     },
     {
-      "id": "image-converter",
-      "name": "Image Converter",
-      "desc": "Convert, compress, resize, annotate, markup, draw, crop, rotate, flip, align images directly in Obsidian. Drag-resize, rename with variables, batch process. WEBP, JPG, PNG, HEIC, TIF.",
-      "group": "aux",
-      "tags": [
-        "recommended",
-        "config",
-        "favorite"
-      ],
-      "enabled": false,
-      "delay": "10"
-    },
-    {
-      "id": "janitor",
-      "name": "Janitor",
-      "desc": "Performs cleanup tasks on the Obsidian vault",
-      "group": "aux",
-      "tags": [
-        "optional"
-      ],
-      "enabled": false,
-      "delay": "10"
-    },
-    {
       "id": "keyboard-analyzer",
       "name": "Keyboard Analyzer",
       "desc": "See and analyse your keyboard hotkeys and shortcuts",
@@ -671,18 +647,6 @@
       "note": ""
     },
     {
-      "id": "multi-properties",
-      "name": "Multi Properties",
-      "desc": "Adds Properties to multiple notes at once.  Either right-click a folder, or select multiple notes and right-click the selection.",
-      "group": "edit",
-      "tags": [
-        "optional"
-      ],
-      "enabled": false,
-      "delay": "",
-      "note": ""
-    },
-    {
       "id": "better-plugins-manager",
       "name": "Better Plugins Manager",
       "desc": "Plugin Manager: Simplify, Enhance, Personalize | 插件管理器：简化操作、增强功能、个性化设置",
@@ -757,19 +721,6 @@
       "note": ""
     },
     {
-      "id": "flexplorer",
-      "name": "Flexplorer",
-      "desc": "Enhance the file explorer with custom sorting, pinning, and hiding.",
-      "group": "main",
-      "tags": [
-        "recommended",
-        "bug"
-      ],
-      "enabled": false,
-      "delay": "10",
-      "note": ""
-    },
-    {
       "id": "fakelink",
       "name": "fakelink",
       "desc": "Automatically creates virtual links for text within your notes that match the titles or aliases of other notes in your vault. Create a glossary-like functionality, show unlinked mentions and transform them to real links.",
@@ -804,30 +755,10 @@
       "note": ""
     },
     {
-      "id": "pretty-properties",
-      "name": "Pretty Properties",
-      "desc": "Makes note properties look more fun: adds side image, banners, list property colors and allows to hide specific properties.",
-      "group": "ui",
-      "tags": [],
-      "enabled": false,
-      "delay": "",
-      "note": ""
-    },
-    {
       "id": "datacore",
       "name": "Datacore",
       "desc": "Reactive query engine backed by Javascript or a custom query language.",
       "group": "render",
-      "tags": [],
-      "enabled": false,
-      "delay": "",
-      "note": ""
-    },
-    {
-      "id": "obsidian-advanced-uri",
-      "name": "Advanced URI",
-      "desc": "Control various aspects through URIs, including opening files, creating new files, and executing commands.",
-      "group": "main",
       "tags": [],
       "enabled": false,
       "delay": "",
@@ -928,7 +859,7 @@
       "tags": [
         "recommended"
       ],
-      "enabled": true,
+      "enabled": false,
       "delay": "15",
       "note": ""
     }
@@ -1024,14 +955,6 @@
       "type": "plugin"
     },
     {
-      "id": "image-converter",
-      "type": "plugin"
-    },
-    {
-      "id": "janitor",
-      "type": "plugin"
-    },
-    {
       "id": "keyboard-analyzer",
       "type": "plugin"
     },
@@ -1041,10 +964,6 @@
     },
     {
       "id": "obsidian-linter",
-      "type": "plugin"
-    },
-    {
-      "id": "multi-properties",
       "type": "plugin"
     },
     {
@@ -1124,15 +1043,7 @@
       "type": "plugin"
     },
     {
-      "id": "flexplorer",
-      "type": "plugin"
-    },
-    {
       "id": "css-editor",
-      "type": "plugin"
-    },
-    {
-      "id": "obsidian-advanced-uri",
       "type": "plugin"
     },
     {
@@ -1145,10 +1056,6 @@
     },
     {
       "id": "obsidian-importer",
-      "type": "plugin"
-    },
-    {
-      "id": "pretty-properties",
       "type": "plugin"
     },
     {
