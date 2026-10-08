@@ -15,6 +15,7 @@
   "delayMilliSeconds": 0,
   "disableSuggestionsDuringImeOn": true,
   "disableSuggestionsInMathBlock": false,
+  "disableSuggestionsInCodeBlock": false,
   "insertSpaceAfterCompletion": false,
   "firstCharactersDisableSuggestions": ":/^",
   "patternsToSuppressTrigger": [
@@ -36,6 +37,8 @@
       }
     ],
     "select with custom alias": [],
+    "select with custom alias and add to aliases": [],
+    "select with query alias": [],
     "up": [
       {
         "modifiers": [],
@@ -63,13 +66,14 @@
   },
   "propagateEsc": false,
   "enableCurrentFileComplement": true,
-  "currentFileMinNumberOfCharacters": 0,
+  "currentFileMinNumberOfCharacters": 2,
   "onlyComplementEnglishOnCurrentFileComplement": false,
   "excludeCurrentFileWordPatterns": [],
   "enableCurrentVaultComplement": false,
   "currentVaultMinNumberOfCharacters": 3,
   "includeCurrentVaultPathPrefixPatterns": "",
   "excludeCurrentVaultPathPrefixPatterns": "",
+  "excludeCurrentVaultPathGlobPatterns": [],
   "includeCurrentVaultOnlyFilesUnderCurrentDirectory": false,
   "excludeCurrentVaultWordPatterns": [],
   "enableCustomDictionaryComplement": false,
@@ -82,9 +86,13 @@
   "displayedTextSuffix": " => ...",
   "enableInternalLinkComplement": true,
   "suggestInternalLinkWithAlias": true,
+  "preserveFirstLetterCaseOnInternalLink": false,
   "excludeInternalLinkPathPrefixPatterns": "",
+  "excludeInternalLinkPathGlobPatterns": [],
   "excludeSelfInternalLink": false,
   "excludeExistingInActiveFileInternalLinks": false,
+  "excludeUnresolvedInternalLinks": false,
+  "excludeInternalLinksInCode": false,
   "updateInternalLinksOnSave": true,
   "insertAliasTransformedFromDisplayedInternalLink": {
     "enabled": false,
@@ -96,9 +104,14 @@
   "enableFrontMatterComplement": true,
   "frontMatterComplementMatchStrategy": "inherit",
   "insertCommaAfterFrontMatterCompletion": false,
+  "currentFileMinNumberOfCharactersForTrigger": 2,
+  "currentVaultMinNumberOfCharactersForTrigger": 0,
+  "customDictionaryMinNumberOfCharactersForTrigger": 0,
+  "internalLinkMinNumberOfCharactersForTrigger": 0,
   "intelligentSuggestionPrioritization": {
     "enabled": true,
     "historyFilePath": "",
+    "prettyPrintHistoryFile": false,
     "maxDaysToKeepHistory": 30,
     "maxNumberOfHistoryToKeep": 0
   },
