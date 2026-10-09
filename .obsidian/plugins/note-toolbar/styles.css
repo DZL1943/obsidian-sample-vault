@@ -1515,6 +1515,7 @@ body {
      */
      --cg-nt-settings-link-focus-box-shadow: 0 0 0 2px;
 
+     --ntb-callout-card-border: solid 1px var(--cg-nt-tbar-border-color);
      --ntb-callout-card-max-width: none;
      --ntb-callout-card-max-width-mobile: none;
      --ntb-callout-card-width: 150px;
@@ -1919,7 +1920,7 @@ body .workspace .callout[data-callout="note-toolbar"] {
             & li {
                 align-items: start;
                 background-blend-mode: overlay;
-                box-shadow: var(--input-shadow);
+                border: var(--ntb-callout-card-border);
                 border-radius: var(--radius-m);
                 cursor: pointer;
                 display: flex;
@@ -4201,7 +4202,7 @@ input[type="text"].note-toolbar-setting-error,
     & button.copy-code-button {
         display: none;
     }
-    & p {
+    & p, pre {
         margin-block-start: 0;
         margin-block-end: 0;
     }

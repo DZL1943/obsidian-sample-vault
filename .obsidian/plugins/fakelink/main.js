@@ -118,7 +118,7 @@ var zhCN = {
   "Skip links with multiple targets (batch convert)": "\u6279\u91CF\u8F6C\u6362\u65F6\u8DF3\u8FC7\u591A\u6307\u5411\u7684\u94FE\u63A5",
   'When using "Convert all virtual links to real links (preview)", virtual links that point to more than one note are skipped so you can convert them one by one manually. When off, they are included but unchecked by default and only the first target is converted.': "\u4F7F\u7528\u300C\u5C06\u7B14\u8BB0\u4E2D\u6240\u6709\u865A\u62DF\u94FE\u63A5\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5\uFF08\u9884\u89C8\uFF09\u300D\u65F6\uFF0C\u6307\u5411\u591A\u4E2A\u7B14\u8BB0\u7684\u865A\u62DF\u94FE\u63A5\u4F1A\u88AB\u8DF3\u8FC7\uFF0C\u65B9\u4FBF\u4F60\u624B\u52A8\u9010\u4E00\u8F6C\u6362\u3002\u5173\u95ED\u540E\u5B83\u4EEC\u4F1A\u5305\u542B\u5728\u5217\u8868\u4E2D\uFF0C\u4F46\u9ED8\u8BA4\u4E0D\u52FE\u9009\uFF0C\u8F6C\u6362\u65F6\u4EC5\u53D6\u7B2C\u4E00\u4E2A\u76EE\u6807\u3002",
   "Match any part of a word": "\u5339\u914D\u5355\u8BCD\u7684\u4EFB\u610F\u90E8\u5206",
-  "When disabled, only complete word matches are linked. When enabled, any substring match will be linked.": "\u5173\u95ED\u65F6\u4EC5\u5339\u914D\u5B8C\u6574\u5355\u8BCD\u3002\u542F\u7528\u65F6\u4EFB\u4F55\u5B50\u4E32\u5339\u914D\u90FD\u4F1A\u4EA7\u751F\u94FE\u63A5\u3002",
+  "When disabled, only complete word matches are linked. When enabled, any substring match will be linked. These matching options only affect space-separated scripts such as English; Chinese, Japanese and Korean always match as substrings.": "\u5173\u95ED\u65F6\u4EC5\u5339\u914D\u5B8C\u6574\u5355\u8BCD\uFF0C\u542F\u7528\u65F6\u4EFB\u4F55\u5B50\u4E32\u5339\u914D\u90FD\u4F1A\u4EA7\u751F\u94FE\u63A5\u3002\u8FD9\u4E9B\u5339\u914D\u9009\u9879\u4EC5\u5BF9\u7A7A\u683C\u5206\u9694\u7684\u6587\u5B57\uFF08\u5982\u82F1\u6587\uFF09\u751F\u6548\uFF1B\u4E2D\u6587\u3001\u65E5\u6587\u3001\u97E9\u6587\u59CB\u7EC8\u6309\u5B50\u4E32\u5339\u914D\u3002",
   "Match the beginning of words": "\u5339\u914D\u5355\u8BCD\u5F00\u5934",
   "When enabled, word prefixes will be linked even without complete word matches.": "\u542F\u7528\u540E\uFF0C\u5355\u8BCD\u524D\u7F00\u5373\u4F7F\u4E0D\u662F\u5B8C\u6574\u5339\u914D\u4E5F\u4F1A\u88AB\u94FE\u63A5\u3002",
   "Match the end of words": "\u5339\u914D\u5355\u8BCD\u7ED3\u5C3E",
@@ -253,6 +253,11 @@ var zhCN = {
   "Faster and stricter: per-note exclusion lists and file metadata are cached, saving a note no longer rebuilds the whole vault index, and fuzzy matching now respects the word-boundary settings and the fuzzy minimum length without a reload.": "\u66F4\u5FEB\u66F4\u4E25\u683C\uFF1A\u6309\u7B14\u8BB0\u6392\u9664\u5217\u8868\u4E0E\u6587\u4EF6\u5143\u6570\u636E\u5DF2\u7F13\u5B58\uFF0C\u4FDD\u5B58\u7B14\u8BB0\u4E0D\u518D\u91CD\u5EFA\u6574\u4E2A\u5E93\u7D22\u5F15\uFF0C\u6A21\u7CCA\u5339\u914D\u73B0\u5728\u5373\u65F6\u9075\u5FAA\u8BCD\u8FB9\u754C\u8BBE\u7F6E\u4E0E\u6A21\u7CCA\u6700\u5C0F\u957F\u5EA6\uFF0C\u65E0\u9700\u91CD\u8F7D\u3002",
   "Fixed: timers now use window.setTimeout, so hover previews keep working in popout windows.": "\u4FEE\u590D\uFF1A\u5B9A\u65F6\u5668\u6539\u7528 window.setTimeout\uFF0C\u5F39\u51FA\u7A97\u53E3\uFF08popout\uFF09\u4E2D\u7684\u60AC\u505C\u9884\u89C8\u53EF\u6B63\u5E38\u5DE5\u4F5C\u3002",
   "Fixed: the deprecated activeLeaf is replaced with getMostRecentLeaf(), and the file-exclusion check narrows the type with instanceof TFile instead of a cast.": "\u4FEE\u590D\uFF1A\u5F03\u7528\u7684 activeLeaf \u5DF2\u66FF\u6362\u4E3A getMostRecentLeaf()\uFF0C\u6587\u4EF6\u6392\u9664\u68C0\u67E5\u6539\u7528 instanceof TFile \u7C7B\u578B\u7A84\u5316\uFF0C\u66FF\u4EE3\u7C7B\u578B\u5F3A\u8F6C\u3002",
+  "Apology: I rarely write English notes, so the English word-matching features inherited from virtual-linker had gone largely untested. This release fixes them (issue #20); apologies to English users.": "\u81F4\u6B49\uFF1A\u4F5C\u8005\u5F88\u5C11\u4F7F\u7528\u82F1\u6587\u7B14\u8BB0\uFF0C\u6E90\u81EA virtual-linker \u7684\u82F1\u6587\u5339\u914D\u529F\u80FD\u957F\u671F\u672A\u7ECF\u5145\u5206\u9A8C\u8BC1\uFF1B\u672C\u6B21\u4FEE\u590D\u4E86\u8FD9\u4E9B\u95EE\u9898\uFF08issue #20\uFF09\uFF0C\u5BF9\u82F1\u6587\u7528\u6237\u8868\u793A\u62B1\u6B49\u3002",
+  'Fixed: the "Match the beginning / end of words" toggles now work for English.': "\u4FEE\u590D\uFF1A\u300C\u5339\u914D\u5355\u8BCD\u5F00\u5934 / \u7ED3\u5C3E\u300D\u5F00\u5173\u73B0\u5728\u5BF9\u82F1\u6587\u751F\u6548\u3002",
+  "Improved: Chinese, kana and Hangul always match as substrings, unaffected by the English word-boundary toggles.": "\u6539\u8FDB\uFF1A\u4E2D\u6587\u3001\u5047\u540D\u3001\u8C1A\u6587\u59CB\u7EC8\u6309\u5B50\u4E32\u5339\u914D\uFF0C\u4E0D\u53D7\u82F1\u6587\u8BCD\u8FB9\u754C\u5F00\u5173\u5F71\u54CD\u3002",
+  "Fixed: open Live Preview notes render links right after a reload, without needing a click.": "\u4FEE\u590D\uFF1A\u91CD\u8F7D\u63D2\u4EF6\u540E\uFF0C\u5DF2\u6253\u5F00\u7684\u5B9E\u65F6\u9884\u89C8\u7B14\u8BB0\u65E0\u9700\u70B9\u51FB\u5373\u53EF\u663E\u793A\u94FE\u63A5\u3002",
+  "Fixed: links no longer render then vanish after a reload.": "\u4FEE\u590D\uFF1A\u91CD\u8F7D\u540E\u94FE\u63A5\u4E0D\u518D\u300C\u6E32\u67D3\u540E\u53C8\u6D88\u5931\u300D\u3002",
   "Open a Markdown note first, then run this command.": "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A Markdown \u7B14\u8BB0\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002",
   "Add to excluded keywords": "\u52A0\u5165\u6392\u9664\u5173\u952E\u8BCD",
   "Convert to real link": "\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5",
@@ -623,6 +628,7 @@ function stem(word, language) {
 }
 
 // linker/linkerCache.ts
+var UNSPACED_SCRIPT_RE = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u;
 var FUZZY_IRREGULAR_VERBS = {
   am: "be",
   is: "be",
@@ -1017,7 +1023,9 @@ var _PrefixTree = class {
     if (!this.isReady) {
       this.isReady = true;
       (_a2 = this.readyResolve) == null ? void 0 : _a2.call(this);
+      return true;
     }
+    return false;
   }
   resetReady() {
     this.isReady = false;
@@ -1814,7 +1822,7 @@ var _PrefixTree = class {
     return changed;
   }
   resetSearch() {
-    this._currentNodes = [new VisitedPrefixNode(this.root)];
+    this._currentNodes = [new VisitedPrefixNode(this.root, true, true)];
   }
   pushChar(char) {
     const newNodes = [];
@@ -1822,7 +1830,7 @@ var _PrefixTree = class {
     const chars = [char, char.toLowerCase()];
     chars.forEach((c) => {
       const isBoundary = _PrefixTree.checkWordBoundary(c);
-      if ((this.settings.matchAnyPartsOfWords || isBoundary || this.settings.matchEndOfWords) && !queued.has(this.root)) {
+      if ((this.settings.matchAnyPartsOfWords || isBoundary || this.settings.matchEndOfWords || UNSPACED_SCRIPT_RE.test(c)) && !queued.has(this.root)) {
         newNodes.push(new VisitedPrefixNode(this.root, true, isBoundary));
         queued.add(this.root);
       }
@@ -1849,6 +1857,19 @@ var _PrefixTree = class {
   static checkWordBoundary(char) {
     const pattern = /[^\p{L}\p{N}]/u;
     return pattern.test(char);
+  }
+  static shouldAcceptWordMatch(settings, matchedText, startsAtWordBoundary, endsAtWordBoundary) {
+    if (UNSPACED_SCRIPT_RE.test(matchedText))
+      return true;
+    if (settings.matchAnyPartsOfWords)
+      return true;
+    if (startsAtWordBoundary && endsAtWordBoundary)
+      return true;
+    if (startsAtWordBoundary && !endsAtWordBoundary)
+      return settings.matchBeginningOfWords;
+    if (!startsAtWordBoundary && endsAtWordBoundary)
+      return settings.matchEndOfWords;
+    return false;
   }
   static stripHeadingNumber(heading) {
     if (typeof heading !== "string" || heading.length === 0)
@@ -1993,8 +2014,11 @@ var LinkerCache = class {
     }
     const full = force || !activeFile;
     void this.cache.updateTree(full ? void 0 : [activeFile, this.activeFilePath]).then(() => {
+      var _a3;
       if (full && this.cache.setIndexedFilePaths.size > 0) {
-        this.cache.markReady();
+        if (this.cache.markReady()) {
+          (_a3 = this.onReady) == null ? void 0 : _a3.call(this);
+        }
       }
     }).catch(() => {
     });
@@ -4203,10 +4227,8 @@ var _GlossaryLinker = class extends import_obsidian6.MarkdownRenderChild {
                 const currentNodes = this.linkerCache.cache.getCurrentMatchNodes(i, currentFile, void 0, sourceFile instanceof import_obsidian6.TFile ? sourceFile : null);
                 if (currentNodes.length > 0) {
                   currentNodes.forEach((node) => {
-                    if (!this.settings.matchAnyPartsOfWords) {
-                      if (this.settings.matchBeginningOfWords && !node.startsAtWordBoundary && this.settings.matchEndOfWords && !isWordBoundary) {
-                        return;
-                      }
+                    if (!PrefixTree.shouldAcceptWordMatch(this.settings, node.value, node.startsAtWordBoundary, isWordBoundary)) {
+                      return;
                     }
                     const nFrom = node.start;
                     const nTo = node.end;
@@ -4552,6 +4574,7 @@ var AutoLinkerPlugin = class {
     this.app = app;
     this.plugin = plugin;
     this.settings = settings;
+    this.view = view;
     const { vault } = this.app;
     this.vault = vault;
     this.linkerCache = LinkerCache.getInstance(app, this.settings);
@@ -4577,6 +4600,8 @@ var AutoLinkerPlugin = class {
     this.unsubscribeUpdate = updateManager.registerCallback(() => {
       if (this.lastViewUpdate) {
         this.update(this.lastViewUpdate, true);
+      } else {
+        this.rebuildFromView();
       }
     });
   }
@@ -4613,6 +4638,10 @@ var AutoLinkerPlugin = class {
     const fileChanged = activeFile != this.lastActiveFile;
     const treeChanged = (0, import_language.syntaxTree)(update.startState) !== (0, import_language.syntaxTree)(update.state);
     if (force || cursorMoved && cursorMatters || update.docChanged || fileChanged || update.viewportChanged || treeChanged) {
+      if (!this.linkerCache.cache.isReady) {
+        this.lastViewUpdate = update;
+        return;
+      }
       const isPureScroll = update.viewportChanged && !update.docChanged && !fileChanged && !force && !cursorMoved;
       if (isPureScroll) {
         this.pendingScrollBuild = { view: update.view, viewIsActive: updateIsOnActiveView };
@@ -4642,6 +4671,12 @@ var AutoLinkerPlugin = class {
       this.lastActiveFile = activeFile != null ? activeFile : "";
     }
     this.lastViewUpdate = update;
+  }
+  rebuildFromView() {
+    if (!this.linkerCache.cache.isReady)
+      return;
+    this.decorations = this.buildDecorations(this.view, true);
+    this.view.dispatch({});
   }
   destroy() {
     var _a2;
@@ -4748,7 +4783,8 @@ var AutoLinkerPlugin = class {
       return builder.finish();
     const explicitlyLinkedFiles = /* @__PURE__ */ new Set();
     const alreadyLinkedFiles = /* @__PURE__ */ new Set();
-    for (const { from, to } of view.visibleRanges) {
+    const scanRanges = view.visibleRanges.length > 0 ? view.visibleRanges : [{ from: 0, to: Math.min(view.state.doc.length, 5e3) }];
+    for (const { from, to } of scanRanges) {
       this.linkerCache.reset();
       const text = view.state.doc.sliceString(from, to);
       let matches = [];
@@ -4763,10 +4799,8 @@ var AutoLinkerPlugin = class {
           currentNodes = this.linkerCache.cache.getCurrentMatchNodes(i, this.settings.excludeLinksToOwnNote ? mappedFile : null, void 0, mappedFile != null ? mappedFile : null);
           if (currentNodes.length > 0) {
             for (const node of currentNodes) {
-              if (!this.settings.matchAnyPartsOfWords) {
-                if (this.settings.matchBeginningOfWords && !node.startsAtWordBoundary && (this.settings.matchEndOfWords && !isWordBoundary)) {
-                  continue;
-                }
+              if (!PrefixTree.shouldAcceptWordMatch(this.settings, node.value, node.startsAtWordBoundary, isWordBoundary)) {
+                continue;
               }
               const nFrom = node.start;
               const nTo = node.end;
@@ -5156,10 +5190,8 @@ function scanVirtualLinks(app, settings, plugin, text, sourcePath, rangeFrom, ra
     if (settings.matchAnyPartsOfWords || settings.matchBeginningOfWords || isWordBoundary || cacheTree.hasWordEnd()) {
       const currentNodes = cacheTree.getCurrentMatchNodes(i, ownNote, void 0, sourceNote);
       for (const node of currentNodes) {
-        if (!settings.matchAnyPartsOfWords) {
-          if (settings.matchBeginningOfWords && !node.startsAtWordBoundary && (settings.matchEndOfWords && !isWordBoundary)) {
-            continue;
-          }
+        if (!PrefixTree.shouldAcceptWordMatch(settings, node.value, node.startsAtWordBoundary, isWordBoundary)) {
+          continue;
         }
         let nFrom = node.start;
         let nTo = node.end;
@@ -5979,7 +6011,7 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
           desc: t("If enabled, the virtual linker will also match file aliases.")
         }),
         toggleDef(t("Match any part of a word"), "matchAnyPartsOfWords", {
-          desc: t("When disabled, only complete word matches are linked. When enabled, any substring match will be linked.")
+          desc: t("When disabled, only complete word matches are linked. When enabled, any substring match will be linked. These matching options only affect space-separated scripts such as English; Chinese, Japanese and Korean always match as substrings.")
         }),
         toggleDef(t("Match the beginning of words"), "matchBeginningOfWords", {
           desc: t("When enabled, word prefixes will be linked even without complete word matches."),
@@ -6338,10 +6370,13 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
 
 // src/whatsNew.ts
 var import_obsidian10 = require("obsidian");
-var WHATS_NEW_VERSION = "1.24.8";
+var WHATS_NEW_VERSION = "1.24.10";
 var WHATS_NEW = [
-  "Fixed: timers now use window.setTimeout, so hover previews keep working in popout windows.",
-  "Fixed: the deprecated activeLeaf is replaced with getMostRecentLeaf(), and the file-exclusion check narrows the type with instanceof TFile instead of a cast."
+  "Apology: I rarely write English notes, so the English word-matching features inherited from virtual-linker had gone largely untested. This release fixes them (issue #20); apologies to English users.",
+  'Fixed: the "Match the beginning / end of words" toggles now work for English.',
+  "Improved: Chinese, kana and Hangul always match as substrings, unaffected by the English word-boundary toggles.",
+  "Fixed: open Live Preview notes render links right after a reload, without needing a click.",
+  "Fixed: links no longer render then vanish after a reload."
 ];
 var WhatsNewModal = class extends import_obsidian10.Modal {
   constructor(app, version) {
@@ -7651,6 +7686,9 @@ var _LinkerPlugin = class extends import_obsidian14.Plugin {
     this.registerIndexWatchers();
     this.registerLinkers();
     const linkerCache = LinkerCache.getInstance(this.app, this.settings);
+    linkerCache.onReady = () => {
+      this.refreshOpenMarkdownViews();
+    };
     void linkerCache.cache.readyPromise.then(() => {
       this.refreshOpenMarkdownViews();
     });
@@ -7865,6 +7903,7 @@ var _LinkerPlugin = class extends import_obsidian14.Plugin {
         return;
       const linkerCache = LinkerCache.getInstance(this.app, this.settings);
       void linkerCache.cache.updateTree([file.path]).then(() => {
+        this.updateManager.update(false);
         void linkerCache.cache.computeAutoExclude().then((changed) => {
           var _a2;
           if (changed)
@@ -8115,6 +8154,7 @@ var _LinkerPlugin = class extends import_obsidian14.Plugin {
       }
     });
     this.app.workspace.updateOptions();
+    this.updateManager.update(false);
   }
   applyBackgroundStyles() {
     const s = this.settings;
