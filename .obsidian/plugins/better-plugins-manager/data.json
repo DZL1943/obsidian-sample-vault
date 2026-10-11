@@ -855,12 +855,22 @@
       "id": "simple-mind-map",
       "name": "Simple mind map",
       "desc": "A relatively powerful mind map.",
-      "group": "render",
+      "group": "ext",
       "tags": [
         "recommended"
       ],
       "enabled": false,
       "delay": "15",
+      "note": ""
+    },
+    {
+      "id": "kanban-plus-xzhi",
+      "name": "Kanban Plus++",
+      "desc": "EN: Enhanced Kanban fork with automatic complete-list movement, source tracking, unarchive support, card time records, time sorting, custom list colors,Flow/back and more. | 中文: Kanban 增强版，支持完成列自动流转、来源追踪、取消归档、卡片时间记录、时间排序与自定义列背景色、流转回退等功能.",
+      "group": "ext",
+      "tags": [],
+      "enabled": true,
+      "delay": "10",
       "note": ""
     }
   ],
@@ -1084,6 +1094,10 @@
     },
     {
       "id": "simple-mind-map",
+      "type": "plugin"
+    },
+    {
+      "id": "kanban-plus-xzhi",
       "type": "plugin"
     }
   ],
