@@ -505,7 +505,7 @@
   "folderBackgroundColors": {},
   "folderSortOverrides": {
     "Pages": "created-desc",
-    "Thoughts": "created-desc"
+    "Pages/思想认知": "created-desc"
   },
   "folderTreeSortOverrides": {},
   "folderAppearances": {},
@@ -551,9 +551,10 @@
     "Inbox",
     "Memos",
     "Journals",
-    "Thoughts",
     "Pages",
-    "References",
+    "Projects",
+    "Areas",
+    "Resources",
     "Archives",
     "Attachments",
     "Scripts",
