@@ -22,6 +22,12 @@
     overflow: visible;
 }
 
+/* A lone overlay handle gutter should preserve the original text edge.
+   Keep Obsidian's native spacing when line numbers or other gutters exist. */
+.markdown-source-view.mod-cm6 .cm-editor.d-root-editor .cm-gutters:has(> .md-dragger-gutter:only-child) {
+    margin-inline-end: 0;
+}
+
 /* Obsidian turns a card iframe's scroller into a column and inserts spacers,
    which stacks the gutter above the lines. Cards use the same row as the
    main editor. !important wins over app.css copied into the iframe later. */
@@ -72,8 +78,19 @@
     align-items: center;
     justify-content: center;
     height: 1lh;
-    transform: translateX(calc(var(--d-handle-horizontal-offset-px, 0px) - 50%));
+    transform: translateX(
+        calc(var(--d-handle-horizontal-offset-px, 0px) + var(--d-handle-text-offset, 0px) + var(--d-handle-edge-shift, -100%))
+    );
     pointer-events: auto;
+}
+
+.markdown-source-view.mod-cm6 .cm-editor.d-root-editor .cm-gutters-before .md-dragger-gutter {
+    --d-handle-edge-shift: calc(-100% - var(--d-collapse-indicator-offset, 0px));
+}
+
+.markdown-source-view.mod-cm6 .cm-editor.d-root-editor .cm-gutters-after .md-dragger-gutter {
+    --d-handle-edge-shift: 0%;
+    --d-handle-text-offset: 0px;
 }
 
 /* Obsidian opens a nested CM6 editor inside a focused table cell (Live
@@ -324,7 +341,7 @@ body.d-mobile-gesture-lock .markdown-source-view.mod-cm6 .cm-editor.d-root-edito
     position: absolute;
     z-index: 2;
     left: var(--d-seam-left, 0px);
-    width: var(--d-seam-width, auto);
+    right: 0;
     height: 2px;
     border-radius: 2px;
     background: var(--d-drop-indicator-color, var(--d-drag-source-border, var(--interactive-accent)));
@@ -437,5 +454,10 @@ body.d-mobile-gesture-lock .markdown-source-view.mod-cm6 .cm-editor.d-root-edito
    left edge); the handle's left edge stays inside, shifted only as far as
    needed. The text doesn't move. */
 .markdown-source-view.mod-cm6 .cm-editor.d-root-editor[data-d-card-editor] .cm-gutter.md-dragger-gutter .cm-gutterElement > .md-dragger-handle {
-    transform: translateX(max(calc(var(--d-handle-horizontal-offset-px, 0px) - 50%), calc(-1 * var(--d-gutter-left))));
+    transform: translateX(
+        max(
+            calc(var(--d-handle-horizontal-offset-px, 0px) + var(--d-handle-text-offset, 0px) + var(--d-handle-edge-shift, -100%)),
+            calc(-1 * var(--d-gutter-left))
+        )
+    );
 }

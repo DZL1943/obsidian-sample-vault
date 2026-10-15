@@ -258,6 +258,14 @@ var zhCN = {
   "Improved: Chinese, kana and Hangul always match as substrings, unaffected by the English word-boundary toggles.": "\u6539\u8FDB\uFF1A\u4E2D\u6587\u3001\u5047\u540D\u3001\u8C1A\u6587\u59CB\u7EC8\u6309\u5B50\u4E32\u5339\u914D\uFF0C\u4E0D\u53D7\u82F1\u6587\u8BCD\u8FB9\u754C\u5F00\u5173\u5F71\u54CD\u3002",
   "Fixed: open Live Preview notes render links right after a reload, without needing a click.": "\u4FEE\u590D\uFF1A\u91CD\u8F7D\u63D2\u4EF6\u540E\uFF0C\u5DF2\u6253\u5F00\u7684\u5B9E\u65F6\u9884\u89C8\u7B14\u8BB0\u65E0\u9700\u70B9\u51FB\u5373\u53EF\u663E\u793A\u94FE\u63A5\u3002",
   "Fixed: links no longer render then vanish after a reload.": "\u4FEE\u590D\uFF1A\u91CD\u8F7D\u540E\u94FE\u63A5\u4E0D\u518D\u300C\u6E32\u67D3\u540E\u53C8\u6D88\u5931\u300D\u3002",
+  "Fixed: the active tab label colour now always applies (it used to depend on the theme).": "\u4FEE\u590D\uFF1A\u6FC0\u6D3B\u6807\u7B7E\u9875\u7684\u5B57\u4F53\u989C\u8272\u73B0\u5728\u59CB\u7EC8\u751F\u6548\uFF08\u6B64\u524D\u662F\u5426\u751F\u6548\u53D6\u51B3\u4E8E\u4E3B\u9898\uFF09\u3002",
+  "Fixed: in a split view only the focused pane's active tab is accented, so there is a single active tab.": "\u4FEE\u590D\uFF1A\u5206\u680F\u65F6\u53EA\u6709\u805A\u7126\u7A97\u683C\u7684\u6FC0\u6D3B\u6807\u7B7E\u663E\u793A\u5F3A\u8C03\u6837\u5F0F\uFF0C\u56E0\u6B64\u59CB\u7EC8\u53EA\u6709\u4E00\u4E2A\u6FC0\u6D3B\u9875\u3002",
+  "Improved: inactive tabs dim further, making the active one easier to spot.": "\u6539\u8FDB\uFF1A\u672A\u6FC0\u6D3B\u6807\u7B7E\u6DE1\u5316\u66F4\u660E\u663E\uFF0C\u6FC0\u6D3B\u9875\u66F4\u6613\u5206\u8FA8\u3002",
+  "Improved: the active tab is marked by accent bars on both the top and bottom, making it easier to spot.": "\u6539\u8FDB\uFF1A\u6FC0\u6D3B\u6807\u7B7E\u9875\u6539\u7528\u9876\u90E8 + \u5E95\u90E8\u53CC\u5F3A\u8C03\u6761\u6807\u8BB0\uFF0C\u66F4\u5BB9\u6613\u4E00\u773C\u5B9A\u4F4D\u3002",
+  "Improved: inactive tabs are no longer dimmed, so every label stays easy to read.": "\u6539\u8FDB\uFF1A\u672A\u6FC0\u6D3B\u6807\u7B7E\u4E0D\u518D\u6DE1\u5316\uFF0C\u6240\u6709\u6807\u7B7E\u6587\u5B57\u4FDD\u6301\u6E05\u6670\u53EF\u8BFB\u3002",
+  "Fixed: strikethrough no longer turns into underline on a fresh install (alternative display style is off by default).": "\u4FEE\u590D\uFF1A\u5168\u65B0\u5B89\u88C5\u65F6\u5220\u9664\u7EBF\u4E0D\u518D\u53D8\u6210\u4E0B\u5212\u7EBF\uFF08\u66FF\u4EE3\u663E\u793A\u6837\u5F0F\u9ED8\u8BA4\u5173\u95ED\uFF09\u3002",
+  "Changed: advanced settings are hidden by default, so new users see a cleaner settings tab.": "\u8C03\u6574\uFF1A\u9AD8\u7EA7\u8BBE\u7F6E\u9ED8\u8BA4\u9690\u85CF\uFF0C\u65B0\u7528\u6237\u770B\u5230\u7684\u8BBE\u7F6E\u9762\u677F\u66F4\u7B80\u6D01\u3002",
+  "Changed: a few non-core options now default to off (header symbol keywords, current-line linking, line jumping).": "\u8C03\u6574\uFF1A\u90E8\u5206\u975E\u6838\u5FC3\u9009\u9879\u6539\u4E3A\u9ED8\u8BA4\u5173\u95ED\uFF08\u6807\u9898\u7B26\u53F7\u5173\u952E\u8BCD\u3001\u5F53\u524D\u884C\u4E0D\u663E\u793A\u94FE\u63A5\u3001\u884C\u8DF3\u8F6C\uFF09\u3002",
   "Open a Markdown note first, then run this command.": "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A Markdown \u7B14\u8BB0\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002",
   "Add to excluded keywords": "\u52A0\u5165\u6392\u9664\u5173\u952E\u8BCD",
   "Convert to real link": "\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5",
@@ -6054,19 +6062,20 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
           desc: t("When enabled, virtual links will be displayed inside Markdown headings. Tip: use with Quick Switcher++ for header navigation.")
         }),
         toggleDef(t("Enable header symbol keywords"), "headerMatchSymbols", {
-          desc: t("When enabled, text between start and end symbols in headers will be used as virtual link keywords. Tip: use EasyTyping to select text and add symbols.")
+          desc: t("When enabled, text between start and end symbols in headers will be used as virtual link keywords. Tip: use EasyTyping to select text and add symbols."),
+          visible: adv
         }),
         textDef(t("Start symbol"), "headerMatchStartSymbol", {
           desc: t("Symbol marking the start of the keyword in headers. Must be different from end symbol."),
-          visible: () => s.headerMatchSymbols
+          visible: () => s.advancedSettings && s.headerMatchSymbols
         }),
         textDef(t("End symbol"), "headerMatchEndSymbol", {
           desc: t("Symbol marking the end of the keyword in headers. Must be different from start symbol."),
-          visible: () => s.headerMatchSymbols
+          visible: () => s.advancedSettings && s.headerMatchSymbols
         }),
         toggleDef(t("Only match headers between symbols"), "headerMatchOnlyBetweenSymbols", {
           desc: t("When enabled, only headers containing start and end symbols will produce virtual links. Unmarked headers will not produce virtual links."),
-          visible: () => s.headerMatchSymbols
+          visible: () => s.advancedSettings && s.headerMatchSymbols
         }),
         toggleDef(t("Auto-insert heading lock symbol"), "headerAutoAppendSuffix", {
           desc: t("When enabled, a unique symbol is automatically placed at the front of new or modified header text, preventing accidental matching by regular body text.")
@@ -6249,21 +6258,22 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
       ]),
       groupDef(t("Line jumping"), [
         toggleDef(t("Jump to line on adv-uri click"), "jumpEnabled", {
-          desc: t('When enabled, FakeLink registers the obsidian://adv-uri protocol and handles line jumping itself, including links fired from external apps (e.g. a browser or a custom obsidianjump:// handler). Obsidian allows only ONE plugin to handle this protocol, so you must NOT enable the Advanced URI plugin at the same time \u2014 keep it disabled, otherwise one of the two plugins will fail to load. Generate line links via the right-click menu "Copy line link (adv-uri)".')
+          desc: t('When enabled, FakeLink registers the obsidian://adv-uri protocol and handles line jumping itself, including links fired from external apps (e.g. a browser or a custom obsidianjump:// handler). Obsidian allows only ONE plugin to handle this protocol, so you must NOT enable the Advanced URI plugin at the same time \u2014 keep it disabled, otherwise one of the two plugins will fail to load. Generate line links via the right-click menu "Copy line link (adv-uri)".'),
+          visible: adv
         }),
         toggleDef(t("Self-heal line links"), "lineLinkSelfHeal", {
           desc: t("When enabled, copied line links also store the text of the target line. If the note is edited and line numbers drift, the jump re-finds the line by its text instead of landing on the wrong line. Works for both plain and aliased line links. Line links copied before enabling this have no anchor and keep the old behavior."),
-          visible: () => s.jumpEnabled
+          visible: () => s.advancedSettings && s.jumpEnabled
         }),
         numberDef(t("Line jump wait limit (seconds)"), "lineJumpWaitSeconds", {
           desc: t("The maximum time (in SECONDS) to wait for the target file to render before positioning the cursor. Small files jump almost immediately; large files wait up to this limit. The number you type is the number of seconds (8 = 8 seconds); 0 means do not wait."),
           min: 0,
           max: 60,
-          visible: () => s.jumpEnabled
+          visible: () => s.advancedSettings && s.jumpEnabled
         }),
         toggleDef(t("Open in new tab"), "jumpOpenInNewTab", {
           desc: t("When the target file is not already open, open it in a new tab. When off, the current tab is reused."),
-          visible: () => s.jumpEnabled
+          visible: () => s.advancedSettings && s.jumpEnabled
         })
       ]),
       groupDef(t("References"), [
@@ -6352,7 +6362,8 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
           desc: t("How much of the fuzzy base color is mixed in. 0% = fuzzy links use the normal colors (feature off); 100% = fuzzy links use the base color only; 50% = an even blend, keeping the header/note hue while tinting it.")
         }),
         toggleDef(t("Alternative display style"), "alternativeDisplayStyle", {
-          desc: t("When enabled, strikethrough is replaced with underline, and %%comments%% are collapsed into small dots that expand on the active line.")
+          desc: t("When enabled, strikethrough is replaced with underline, and %%comments%% are collapsed into small dots that expand on the active line."),
+          visible: adv
         }),
         toggleDef(t("Apply default link styling"), "applyDefaultLinkStyling", {
           desc: t("If toggled, the default link styling will be applied to virtual links. Furthermore, you can style the links yourself with a CSS-snippet affecting the class `virtual-link`. (Find the CSS snippet directory at Appearance -> CSS Snippets -> Open snippets folder)")
@@ -6370,13 +6381,11 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
 
 // src/whatsNew.ts
 var import_obsidian10 = require("obsidian");
-var WHATS_NEW_VERSION = "1.24.10";
+var WHATS_NEW_VERSION = "1.24.13";
 var WHATS_NEW = [
-  "Apology: I rarely write English notes, so the English word-matching features inherited from virtual-linker had gone largely untested. This release fixes them (issue #20); apologies to English users.",
-  'Fixed: the "Match the beginning / end of words" toggles now work for English.',
-  "Improved: Chinese, kana and Hangul always match as substrings, unaffected by the English word-boundary toggles.",
-  "Fixed: open Live Preview notes render links right after a reload, without needing a click.",
-  "Fixed: links no longer render then vanish after a reload."
+  "Fixed: strikethrough no longer turns into underline on a fresh install (alternative display style is off by default).",
+  "Changed: advanced settings are hidden by default, so new users see a cleaner settings tab.",
+  "Changed: a few non-core options now default to off (header symbol keywords, current-line linking, line jumping)."
 ];
 var WhatsNewModal = class extends import_obsidian10.Modal {
   constructor(app, version) {
@@ -7304,7 +7313,7 @@ var activeCenterControllers = /* @__PURE__ */ new Set();
 var HEADING_EPSILON_PX = 24;
 var DEFAULT_SETTINGS = {
   autoToggleByMode: false,
-  advancedSettings: true,
+  advancedSettings: false,
   linkerActivated: true,
   matchAnyPartsOfWords: true,
   matchEndOfWords: true,
@@ -7323,9 +7332,9 @@ var DEFAULT_SETTINGS = {
   defaultLinkFormat: "shortest",
   useDefaultLinkStyleForConversion: true,
   applyDefaultLinkStyling: true,
-  alternativeDisplayStyle: true,
+  alternativeDisplayStyle: false,
   includeHeaders: true,
-  headerMatchSymbols: true,
+  headerMatchSymbols: false,
   headerMatchOnlyBetweenSymbols: false,
   headerMatchStartSymbol: "\u27E6",
   headerMatchEndSymbol: "\u27E7",
@@ -7339,7 +7348,7 @@ var DEFAULT_SETTINGS = {
   tagToIncludeFile: "linker-include",
   excludeLinksToOwnNote: false,
   fixIMEProblem: true,
-  excludeLinksInCurrentLine: true,
+  excludeLinksInCurrentLine: false,
   tableLinkSuppression: true,
   lastSeenVersion: "",
   onlyLinkOnce: false,
@@ -7389,9 +7398,9 @@ var DEFAULT_SETTINGS = {
   excludeSymbolEnd: "}",
   enableInternalLinkSyntax: false,
   enableContextDisambiguation: false,
-  jumpEnabled: true,
+  jumpEnabled: false,
   lineJumpWaitSeconds: 8,
-  jumpOpenInNewTab: true,
+  jumpOpenInNewTab: false,
   lineLinkSelfHeal: false,
   autoExcludeContainedCopies: false,
   filenameAffixExclusions: []

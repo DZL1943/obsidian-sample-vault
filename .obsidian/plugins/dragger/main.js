@@ -38,7 +38,7 @@ var import_obsidian5 = require("obsidian");
 var import_state6 = require("@codemirror/state");
 var import_view7 = require("@codemirror/view");
 
-// node_modules/.pnpm/md-dragger@2.2.0_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/adapter/codemirror.mjs
+// node_modules/.pnpm/md-dragger@2.2.1_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/adapter/codemirror.mjs
 var import_view = require("@codemirror/view");
 var import_state = require("@codemirror/state");
 var import_view2 = require("@codemirror/view");
@@ -78,6 +78,16 @@ function resolveListIndentWidthPx(options, view) {
     throw new Error(`mdDragger: listIndentWidthPx must be a finite non-negative number, got ${String(raw)}`);
   }
   return raw;
+}
+function contentLeft(options, view) {
+  if (options.contentLeft !== void 0) {
+    const raw = typeof options.contentLeft === "function" ? options.contentLeft(view) : options.contentLeft;
+    if (!Number.isFinite(raw)) {
+      throw new Error(`mdDragger: contentLeft must be a finite number, got ${String(raw)}`);
+    }
+    return raw;
+  }
+  return view.contentDOM.getBoundingClientRect().left;
 }
 function isHorizontalRuleLine(text) {
   if (!text) return false;
@@ -677,17 +687,7 @@ function detectBlock(doc, lineNumber, options) {
     return (_a = perDocCache.get(lineNumber)) != null ? _a : null;
   }
   const block = detectBlockUncached(doc, lineNumber, tabSize);
-  if (block) {
-    perDocCache.set(block.lines.startLine, block);
-    for (let n = block.lines.startLine + 1; n <= block.lines.endLine; n++) {
-      if (isListLine(parseLine(doc.line(n).text, tabSize))) {
-        continue;
-      }
-      perDocCache.set(n, block);
-    }
-  } else {
-    perDocCache.set(lineNumber, null);
-  }
+  perDocCache.set(lineNumber, block);
   return block;
 }
 function resolveInsertionRule(input) {
@@ -2685,7 +2685,7 @@ function lineBand(view, line, options) {
   let left;
   if (((_a = parsed.marker) == null ? void 0 : _a.kind) === "list" && parsed.quote.prefix.length === 0) {
     const level = parsed.indent.width / resolveListIndentUnit(options);
-    left = view.contentDOM.getBoundingClientRect().left + level * resolveListIndentWidthPx(options, view);
+    left = contentLeft(options, view) + level * resolveListIndentWidthPx(options, view);
   } else {
     const content = view.coordsAtPos(bandFrom, 1);
     if (!content) return null;
@@ -2710,7 +2710,7 @@ function dropSeam(view, position, options) {
     if (!anchor) return null;
     left = anchor.left + resolveListIndentWidthPx(options, view);
   } else {
-    left = view.contentDOM.getBoundingClientRect().left;
+    left = contentLeft(options, view);
   }
   const block = view.lineBlockAt(doc.line(bandLine).from);
   return {
@@ -2770,9 +2770,9 @@ function dropSeamDecoration(outputs, state) {
 function seamOffset(view, position, options) {
   const seam = dropSeam(view, position, options);
   if (!seam) return null;
-  const contentLeft = view.contentDOM.getBoundingClientRect().left;
+  const left = contentLeft(options, view);
   return {
-    left: Math.max(0, seam.left - contentLeft),
+    left: Math.max(0, seam.left - left),
     width: Math.max(0, seam.right - seam.left)
   };
 }
@@ -3192,8 +3192,8 @@ function resolveDropPositionAtPoint(sourceView, point, selection, options) {
   if (source.type === "list-item") {
     const stepPx = resolveListIndentWidthPx(options, targetHit.view);
     if (stepPx > 0) {
-      const contentLeft = targetHit.view.contentDOM.getBoundingClientRect().left;
-      const horizontalSteps = Math.max(0, Math.round((targetPoint.x - contentLeft) / stepPx));
+      const left = contentLeft(options, targetHit.view);
+      const horizontalSteps = Math.max(0, Math.round((targetPoint.x - left) / stepPx));
       targetIndentWidth = horizontalSteps * indentUnit;
     }
   }
@@ -3345,7 +3345,7 @@ function mdDragger(options) {
   ];
 }
 
-// node_modules/.pnpm/md-dragger@2.2.0_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/domain.mjs
+// node_modules/.pnpm/md-dragger@2.2.1_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/domain.mjs
 function isHorizontalRuleLine2(text) {
   if (!text) return false;
   const trimmed = text.trim();
@@ -3927,17 +3927,7 @@ function detectBlock2(doc, lineNumber, options) {
     return (_a = perDocCache.get(lineNumber)) != null ? _a : null;
   }
   const block = detectBlockUncached2(doc, lineNumber, tabSize);
-  if (block) {
-    perDocCache.set(block.lines.startLine, block);
-    for (let n = block.lines.startLine + 1; n <= block.lines.endLine; n++) {
-      if (isListLine2(parseLine2(doc.line(n).text, tabSize))) {
-        continue;
-      }
-      perDocCache.set(n, block);
-    }
-  } else {
-    perDocCache.set(lineNumber, null);
-  }
+  perDocCache.set(lineNumber, block);
   return block;
 }
 function planConvert(params) {
@@ -3989,12 +3979,13 @@ function formatBlockContent(contentLines, target) {
   });
   const content = formattedLines.join("\n");
   const vars = (_a = target.variables) != null ? _a : {};
-  let result = target.template.replace("${content}", content);
-  result = result.replace(/\$\{([a-zA-Z0-9_-]+)\}/g, (_, key) => {
-    var _a2;
-    return (_a2 = vars[key]) != null ? _a2 : "";
-  });
-  return result;
+  return target.template.replace(
+    /\$\{([a-zA-Z0-9_-]+)\}/g,
+    (_, key) => {
+      var _a2;
+      return key === "content" ? content : (_a2 = vars[key]) != null ? _a2 : "";
+    }
+  );
 }
 function readFencedContent(doc, startLine, endLine) {
   const startText = doc.line(startLine).text;
@@ -4116,7 +4107,7 @@ function planDelete(params) {
   return { doc, changes };
 }
 
-// node_modules/.pnpm/md-dragger@2.2.0_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/runtime.mjs
+// node_modules/.pnpm/md-dragger@2.2.1_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/runtime.mjs
 function selectionFromOutputs2(outputs) {
   let selection = null;
   for (const output of outputs) {
@@ -4156,7 +4147,7 @@ function dragSelectionDoc2(outputs) {
   return doc;
 }
 
-// node_modules/.pnpm/md-dragger@2.2.0_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/runtime/modules.mjs
+// node_modules/.pnpm/md-dragger@2.2.1_@codemirror+state@6.7.6_@codemirror+view@6.43.13/node_modules/md-dragger/dist/npm/runtime/modules.mjs
 var TICK_MS = 16;
 function autoScroll(port, config) {
   const cfg = () => typeof config === "function" ? config() : config;
@@ -4311,7 +4302,7 @@ var zhCn = {
   blockMenuNumberedList: "\u6709\u5E8F\u5217\u8868",
   blockMenuTaskList: "\u4EFB\u52A1\u5217\u8868",
   blockMenuQuote: "\u5F15\u7528",
-  blockMenuCallout: "Callout",
+  blockMenuCallout: "\u6807\u6CE8",
   blockMenuCalloutNote: "\u7B14\u8BB0",
   blockMenuCalloutTip: "\u63D0\u793A",
   blockMenuCalloutWarning: "\u8B66\u544A",
@@ -4990,6 +4981,7 @@ function dragHandleExtension(plugin) {
       listIndentUnit: LIST_INDENT_UNIT
     },
     listIndentWidthPx: (view) => listIndentStepPx(view),
+    contentLeft: (view) => view.dom.querySelector(".cm-line").getBoundingClientRect().left,
     handle: {
       render: (doc) => createObsidianHandle(doc),
       side: plugin.settings.handleGutterPosition === "right" ? "after" : "before"
@@ -5037,7 +5029,7 @@ function dragHandleExtension(plugin) {
   return [
     import_view7.EditorView.editorAttributes.of({ class: ROOT_EDITOR_CLASS }),
     presentSettingsInEditorDocument(plugin),
-    keepCardHandlesInside(),
+    syncHandleGeometry(),
     ...mdDragger(options),
     dropIndicatorPaint(options),
     selectionPaint(),
@@ -5065,7 +5057,7 @@ function presentSettingsInEditorDocument(host) {
     }
   );
 }
-function keepCardHandlesInside() {
+function syncHandleGeometry() {
   return import_view7.ViewPlugin.fromClass(
     class {
       constructor(view) {
@@ -5074,21 +5066,38 @@ function keepCardHandlesInside() {
           key: this,
           read: (view) => {
             var _a;
+            const lineLeft = view.dom.querySelector(".cm-line").getBoundingClientRect().left;
             const gutter2 = view.dom.querySelector(".md-dragger-gutter");
-            if (!gutter2 || ((_a = view.dom.ownerDocument.defaultView) == null ? void 0 : _a.frameElement) == null) return null;
-            return gutter2.getBoundingClientRect().left - view.scrollDOM.getBoundingClientRect().left;
+            const gutterLeft = gutter2 ? gutter2.getBoundingClientRect().left : lineLeft;
+            const textOffset = Math.max(0, lineLeft - gutterLeft);
+            const collapseIndicator = view.dom.querySelector(
+              ".cm-fold-indicator .collapse-indicator"
+            );
+            const collapseLeft = collapseIndicator == null ? void 0 : collapseIndicator.getBoundingClientRect().left;
+            const collapseDistance = collapseLeft !== void 0 ? lineLeft - collapseLeft : 0;
+            const collapseIndicatorOffset = collapseDistance > 0 && collapseDistance <= 36 ? collapseDistance : 0;
+            const cardGutterLeft = gutter2 && ((_a = view.dom.ownerDocument.defaultView) == null ? void 0 : _a.frameElement) != null ? gutter2.getBoundingClientRect().left - view.scrollDOM.getBoundingClientRect().left : null;
+            return {
+              textOffset,
+              collapseIndicatorOffset,
+              cardGutterLeft
+            };
           },
-          write: (gutterLeft, view) => {
-            if (gutterLeft === null) {
+          write: ({ textOffset, collapseIndicatorOffset, cardGutterLeft }, view) => {
+            view.dom.style.setProperty("--d-handle-text-offset", `${textOffset}px`);
+            view.dom.style.setProperty("--d-collapse-indicator-offset", `${collapseIndicatorOffset}px`);
+            if (cardGutterLeft === null) {
               view.dom.removeAttribute(CARD_EDITOR_ATTR);
               view.dom.style.removeProperty("--d-gutter-left");
             } else {
               view.dom.setAttribute(CARD_EDITOR_ATTR, "");
-              view.dom.style.setProperty("--d-gutter-left", `${gutterLeft}px`);
+              view.dom.style.setProperty("--d-gutter-left", `${cardGutterLeft}px`);
             }
           }
         });
+        var _a;
         this.measure();
+        (_a = view.dom.ownerDocument.defaultView) == null ? void 0 : _a.requestAnimationFrame(() => this.measure());
         view.dom.addEventListener("pointerover", this.measure, true);
       }
       update() {
@@ -5424,7 +5433,7 @@ var DEFAULT_SETTINGS = {
   mobileDragModeToggleEnabled: true,
   enableBlockSelectionHighlight: true,
   selectionVisualStyle: "subtle",
-  handleHorizontalOffsetPx: -8,
+  handleHorizontalOffsetPx: 0,
   handleGutterPosition: "left",
   customBlockStyles: [],
   blockMenuOrders: {
@@ -5798,6 +5807,16 @@ var DragNDropSettingTab = class extends import_obsidian2.PluginSettingTab {
           {
             name: i.indicatorColor,
             desc: i.indicatorColorDesc,
+            control: {
+              type: "dropdown",
+              key: "indicatorColorMode",
+              options: { theme: i.optionTheme, custom: i.optionCustom }
+            }
+          },
+          {
+            name: i.indicatorColor,
+            desc: i.indicatorColorDesc,
+            visible: () => this.plugin.settings.indicatorColorMode === "custom",
             control: { type: "color", key: "indicatorColor" }
           }
         ]
@@ -5964,7 +5983,7 @@ function show(body, presentation) {
 
 // src/plugin/settings-migrations.ts
 var SCHEMA_VERSION_KEY = "schemaVersion";
-var CURRENT_SCHEMA_VERSION = 12;
+var CURRENT_SCHEMA_VERSION = 13;
 var MIGRATIONS = [
   // v0 -> v1: consolidate legacy field shapes from versions before the
   // migration system existed.
@@ -6095,6 +6114,15 @@ var MIGRATIONS = [
     next.blockMenuOrders = orders;
     delete next.blockMenuOrder;
     return next;
+  },
+  // v12 -> v13: runtime collapse alignment replaces the old default offset.
+  // Preserve an explicitly customized offset while migrating the old default.
+  (data) => {
+    const next = { ...data };
+    if (next.handleHorizontalOffsetPx === -8) {
+      next.handleHorizontalOffsetPx = DEFAULT_SETTINGS.handleHorizontalOffsetPx;
+    }
+    return next;
   }
 ];
 function isRecord(value) {
@@ -6191,6 +6219,7 @@ var DragNDropPlugin = class extends import_obsidian5.Plugin {
     super(...arguments);
     // The editor extension hands it each document that hosts an editor.
     this.settingsPresenter = new SettingsPresenter();
+    this.editorExtensions = [];
     this.mobileDragModeActionByView = /* @__PURE__ */ new WeakMap();
     this.mobileDragModeActionEls = /* @__PURE__ */ new Set();
     this.mobileDragModeEnabled = false;
@@ -6208,7 +6237,9 @@ var DragNDropPlugin = class extends import_obsidian5.Plugin {
   }
   async onload() {
     await this.loadSettings();
-    this.registerEditorExtension(dragHandleExtension(this));
+    this.editorExtensions[0] = dragHandleExtension(this);
+    this.registerEditorExtension(this.editorExtensions);
+    this.appliedGutterPosition = this.settings.handleGutterPosition;
     registerMobileToolbarCommands(this);
     this.app.workspace.onLayoutReady(() => this.registerMobileDragModeActions());
     this.registerEvent(this.app.workspace.on("layout-change", () => this.registerMobileDragModeActions()));
@@ -6243,6 +6274,11 @@ var DragNDropPlugin = class extends import_obsidian5.Plugin {
         mobileDragModeEnabled: this.mobileDragModeEnabled
       })
     );
+    if (this.appliedGutterPosition !== void 0 && this.appliedGutterPosition !== this.settings.handleGutterPosition) {
+      this.editorExtensions[0] = dragHandleExtension(this);
+      this.app.workspace.updateOptions();
+      this.appliedGutterPosition = this.settings.handleGutterPosition;
+    }
     this.syncMobileDragModeActionVisibility();
   }
   // Called when a drop commits. Drives mobile-mode auto-disable.
