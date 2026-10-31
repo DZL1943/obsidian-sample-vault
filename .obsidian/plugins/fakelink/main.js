@@ -53,14 +53,22 @@ var zhCN = {
   "Background tint strength": "\u80CC\u666F\u7740\u8272\u5F3A\u5EA6",
   "Opacity of the light blue tint on list / indented / table / callout lines. 10 is the default.": "\u5217\u8868 / \u7F29\u8FDB / \u8868\u683C / \u8C03\u7528\u5757\u884C\u7684\u6DE1\u84DD\u5E95\u8272\u7684\u4E0D\u900F\u660E\u5EA6\u3002\u9ED8\u8BA4 10\u3002",
   "Cursor line strength": "\u5149\u6807\u884C\u5F3A\u5EA6",
-  "Opacity of the warm orange highlight on the line the cursor is on. 35 is the default.": "\u5149\u6807\u6240\u5728\u884C\u6696\u6A59\u9AD8\u4EAE\u7684\u4E0D\u900F\u660E\u5EA6\u3002\u9ED8\u8BA4 35\u3002",
+  "Strength of the cursor-line marks (line number chip and the pseudo-3D band). 35 is the default.": "\u5149\u6807\u884C\u6807\u8BB0\u7684\u5F3A\u5EA6\uFF08\u884C\u53F7\u8272\u5757\u4E0E\u4F2A 3D \u8272\u5E26\uFF09\u3002\u9ED8\u8BA4 35\u3002",
   "Master switch for the look below. Each part of it can then be switched off separately with the toggles under it, so you keep only what you want instead of getting everything at once. Off by default; every colour is a CSS variable (--fakelink-...).": "\u4E0B\u65B9\u6574\u5957\u5916\u89C2\u7684\u603B\u5F00\u5173\u3002\u5176\u4E2D\u6BCF\u4E00\u90E8\u5206\u90FD\u53EF\u4EE5\u7528\u4E0B\u9762\u7684\u5F00\u5173\u5355\u72EC\u5173\u6389\uFF0C\u53EA\u4FDD\u7559\u60F3\u8981\u7684\u6548\u679C\uFF0C\u4E0D\u4F1A\u88AB\u5F3A\u5236\u5957\u7528\u5168\u5957\u3002\u9ED8\u8BA4\u5173\u95ED\u3002\u6240\u6709\u989C\u8272\u90FD\u662F CSS \u53D8\u91CF\uFF08--fakelink-...\uFF09\uFF0C\u53EF\u81EA\u884C\u8C03\u6574\u3002",
   "Overall tint": "\u6574\u4F53\u5E95\u8272",
   "The very faint background colour of the app surfaces (aliceblue in light themes, dark grey in dark ones). Also feeds Obsidian own --background-* variables, so themes that read them follow along.": "\u5E94\u7528\u5404\u5C42\u754C\u9762\u6781\u6DE1\u7684\u5E95\u8272\uFF08\u6D45\u8272\u4E3B\u9898\u4E3A aliceblue\uFF0C\u6DF1\u8272\u4E3B\u9898\u4E3A\u6DF1\u7070\uFF09\u3002\u540C\u65F6\u6539\u5199 Obsidian \u81EA\u8EAB\u7684 --background-* \u53D8\u91CF\uFF0C\u8BFB\u53D6\u8FD9\u4E9B\u53D8\u91CF\u7684\u4E3B\u9898\u4E5F\u4F1A\u968F\u4E4B\u53D8\u5316\u3002",
   "Line and block tint": "\u884C\u4E0E\u5757\u5E95\u8272",
   'Light blue background on list lines, on tab-indented lines (and the line above them), on tables and on callouts. All four use one colour - set its opacity with the strength slider below. Every callout type gets it, not just "note".': "\u5217\u8868\u884C\u3001Tab \u7F29\u8FDB\u884C\uFF08\u8FDE\u540C\u5B83\u4E0A\u9762\u7684\u4E00\u884C\uFF09\u3001\u8868\u683C\u4E0E\u8C03\u7528\u5757\u7684\u6DE1\u84DD\u80CC\u666F\u3002\u56DB\u8005\u5171\u7528\u540C\u4E00\u4E2A\u989C\u8272\uFF0C\u900F\u660E\u5EA6\u7531\u4E0B\u65B9\u7684\u5F3A\u5EA6\u6ED1\u5757\u63A7\u5236\u3002\u6240\u6709\u7C7B\u578B\u7684\u8C03\u7528\u5757\u90FD\u4F1A\u751F\u6548\uFF0C\u4E0D\u9650\u4E8E note\u3002",
   "Cursor line": "\u5149\u6807\u884C",
-  "Warm orange highlight on the line the cursor is on, together with the caret colour.": "\u5149\u6807\u6240\u5728\u884C\u7684\u6696\u6A59\u9AD8\u4EAE\uFF0C\u4EE5\u53CA\u5149\u6807\u672C\u8EAB\u7684\u989C\u8272\u3002",
+  "Marks the cursor line: its line number gets a colour chip and, when the pseudo-3D band is on, the line gets a subtle raised band. Also colours the caret.": "\u6807\u8BB0\u5149\u6807\u6240\u5728\u884C\uFF1A\u884C\u53F7\u663E\u793A\u4E3A\u8272\u5757\uFF0C\u5F00\u542F\u4F2A 3D \u65F6\u884C\u5185\u518D\u53E0\u52A0\u4E00\u6761\u7EC6\u5FAE\u7684\u6D6E\u8D77\u8272\u5E26\uFF1B\u5149\u6807\u672C\u8EAB\u4E5F\u4F7F\u7528\u8BE5\u989C\u8272\u3002",
+  "Pseudo-3D band": "\u4F2A 3D \u8272\u5E26",
+  "Adds a subtle raised band across the cursor line (a light top edge and a dark bottom edge). Turn it off if the band moving with the caret feels tiring.": "\u5728\u5149\u6807\u884C\u4E0A\u53E0\u52A0\u4E00\u6761\u7EC6\u5FAE\u7684\u6D6E\u8D77\u8272\u5E26\uFF08\u9876\u90E8\u4EAE\u8FB9 + \u5E95\u90E8\u6697\u8FB9\uFF09\u3002\u5982\u679C\u8272\u5E26\u8DDF\u968F\u5149\u6807\u79FB\u52A8\u8BA9\u4F60\u89C9\u5F97\u7D2F\uFF0C\u53EF\u4EE5\u5173\u6389\u3002",
+  "Cursor line colour": "\u5149\u6807\u884C\u989C\u8272",
+  "Colour for the cursor-line line number chip and the pseudo-3D band. Leave empty to use the caret colour.": "\u5149\u6807\u884C\u7684\u884C\u53F7\u8272\u5757\u4E0E\u4F2A 3D \u8272\u5E26\u4F7F\u7528\u7684\u989C\u8272\u3002\u7559\u7A7A\u5219\u4F7F\u7528\u5149\u6807\u989C\u8272\u3002",
+  "Improved: the cursor line now marks its line number with a colour chip, so the current line stays identifiable even with the in-text band off.": "\u6539\u8FDB\uFF1A\u5149\u6807\u884C\u73B0\u5728\u4F1A\u7528\u8272\u5757\u6807\u8BB0\u884C\u53F7\uFF0C\u5373\u4F7F\u5173\u95ED\u884C\u5185\u8272\u5E26\u4E5F\u80FD\u8FA8\u8BA4\u5F53\u524D\u884C\u3002",
+  'New: a "Pseudo-3D band" toggle and a "Cursor line colour" picker; the line number chip and the band both follow the chosen colour.': "\u65B0\u589E\uFF1A\u300C\u4F2A 3D \u8272\u5E26\u300D\u5F00\u5173\u4E0E\u300C\u5149\u6807\u884C\u989C\u8272\u300D\u9009\u62E9\u5668\uFF0C\u884C\u53F7\u8272\u5757\u548C\u8272\u5E26\u90FD\u8DDF\u968F\u6240\u9009\u989C\u8272\u3002",
+  "Improved: the pseudo-3D band is built from the cursor-line colour instead of a grey shadow, so it blends with the background.": "\u6539\u8FDB\uFF1A\u4F2A 3D \u8272\u5E26\u6539\u4E3A\u57FA\u4E8E\u5149\u6807\u884C\u989C\u8272\u751F\u6210\uFF08\u975E\u7070\u8272\u9634\u5F71\uFF09\uFF0C\u80FD\u4E0E\u80CC\u666F\u66F4\u597D\u5730\u878D\u5408\u3002",
+  "Changed: the cursor-line gutter styles no longer use !important, as requested by the Obsidian review. Appearance is unchanged.": "\u8C03\u6574\uFF1A\u5149\u6807\u884C\u884C\u53F7\u6837\u5F0F\u4E0D\u518D\u4F7F\u7528 !important\uFF08\u6309 Obsidian \u5BA1\u6838\u8981\u6C42\uFF09\uFF0C\u5916\u89C2\u4E0D\u53D8\u3002",
   "Tab accent": "\u6807\u7B7E\u9875\u5F3A\u8C03",
   "Makes the active tab header stand out: a raised background, an accent-coloured underline and label, a bolder label and a soft shadow.": "\u8BA9\u6FC0\u6D3B\u7684\u6807\u7B7E\u9875\u5934\u90E8\u66F4\u7A81\u51FA\uFF1A\u52A0\u9AD8\u7684\u80CC\u666F\u3001\u5F3A\u8C03\u8272\u7684\u4E0B\u5212\u7EBF\u4E0E\u6807\u9898\u3001\u66F4\u7C97\u7684\u6807\u9898\u5B57\u91CD\uFF0C\u4EE5\u53CA\u67D4\u548C\u6295\u5F71\u3002",
   "Unfocused mask": "\u5931\u7126\u8499\u7248",
@@ -5935,6 +5943,14 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
         await this.plugin.updateSettings({ cursorLineOpacity: value });
         this.applyCssVar("--fakelink-cursor-line-alpha", String(value / 100));
         break;
+      case "cursorLinePseudo3d":
+        await this.plugin.updateSettings({ cursorLinePseudo3d: value });
+        this.applyBackgroundClasses();
+        break;
+      case "cursorLineColor":
+        await this.plugin.updateSettings({ cursorLineColor: value });
+        this.applyCssVar("--fakelink-cursor-line-color", value || "var(--fakelink-caret)");
+        break;
       case "alternativeDisplayStyle":
         await this.plugin.updateSettings({ alternativeDisplayStyle: value });
         this.applyBodyClass("virtual-linker-alt-style", value);
@@ -6328,11 +6344,19 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
           visible: () => s.backgroundHighlight && s.backgroundLines
         }),
         toggleDef(t("Cursor line"), "backgroundCursorLine", {
-          desc: t("Warm orange highlight on the line the cursor is on, together with the caret colour."),
+          desc: t("Marks the cursor line: its line number gets a colour chip and, when the pseudo-3D band is on, the line gets a subtle raised band. Also colours the caret."),
           visible: () => s.backgroundHighlight
         }),
+        toggleDef(t("Pseudo-3D band"), "cursorLinePseudo3d", {
+          desc: t("Adds a subtle raised band across the cursor line (a light top edge and a dark bottom edge). Turn it off if the band moving with the caret feels tiring."),
+          visible: () => s.backgroundHighlight && s.backgroundCursorLine
+        }),
+        colorDef(t("Cursor line colour"), "cursorLineColor", {
+          desc: t("Colour for the cursor-line line number chip and the pseudo-3D band. Leave empty to use the caret colour."),
+          visible: () => s.backgroundHighlight && s.backgroundCursorLine
+        }),
         sliderDef(t("Cursor line strength"), "cursorLineOpacity", 0, 100, 1, {
-          desc: t("Opacity of the warm orange highlight on the line the cursor is on. 35 is the default."),
+          desc: t("Strength of the cursor-line marks (line number chip and the pseudo-3D band). 35 is the default."),
           visible: () => s.backgroundHighlight && s.backgroundCursorLine
         }),
         toggleDef(t("Tab accent"), "backgroundTabAccent", {
@@ -6381,11 +6405,9 @@ var LinkerSettingTab = class extends import_obsidian9.PluginSettingTab {
 
 // src/whatsNew.ts
 var import_obsidian10 = require("obsidian");
-var WHATS_NEW_VERSION = "1.24.13";
+var WHATS_NEW_VERSION = "1.24.15";
 var WHATS_NEW = [
-  "Fixed: strikethrough no longer turns into underline on a fresh install (alternative display style is off by default).",
-  "Changed: advanced settings are hidden by default, so new users see a cleaner settings tab.",
-  "Changed: a few non-core options now default to off (header symbol keywords, current-line linking, line jumping)."
+  "Changed: the cursor-line gutter styles no longer use !important, as requested by the Obsidian review. Appearance is unchanged."
 ];
 var WhatsNewModal = class extends import_obsidian10.Modal {
   constructor(app, version) {
@@ -7373,6 +7395,8 @@ var DEFAULT_SETTINGS = {
   backgroundTabs: true,
   backgroundLineOpacity: 10,
   cursorLineOpacity: 35,
+  cursorLinePseudo3d: true,
+  cursorLineColor: "",
   frontmatterExcludeProperty: "fakelink-exclude",
   perNoteExcludeKeywords: false,
   enableFrontmatterExcludeList: false,
@@ -7926,6 +7950,7 @@ var _LinkerPlugin = class extends import_obsidian14.Plugin {
       context.addChild(new GlossaryLinker(this.app, this.settings, context, element, this));
     });
     this.registerEditorExtension(liveLinkerPlugin(this.app, this.settings, this.updateManager, this));
+    this.registerEditorExtension((0, import_view4.highlightActiveLineGutter)());
   }
   registerAdvUriProtocol() {
     if (this.advUriRegistered)
@@ -8174,8 +8199,11 @@ var _LinkerPlugin = class extends import_obsidian14.Plugin {
         wanted.push("virtual-link-bg-tint");
       if (s.backgroundLines)
         wanted.push("virtual-link-bg-lines");
-      if (s.backgroundCursorLine)
+      if (s.backgroundCursorLine) {
         wanted.push("virtual-link-bg-cursor");
+        if (s.cursorLinePseudo3d)
+          wanted.push("virtual-link-bg-cursor-3d");
+      }
       if (s.backgroundTabAccent)
         wanted.push("virtual-link-bg-tab-accent");
       if (s.backgroundUnfocusedMask)
@@ -8190,6 +8218,7 @@ var _LinkerPlugin = class extends import_obsidian14.Plugin {
       "virtual-link-bg-tint",
       "virtual-link-bg-lines",
       "virtual-link-bg-cursor",
+      "virtual-link-bg-cursor-3d",
       "virtual-link-bg-tab-accent",
       "virtual-link-bg-unfocused-mask",
       "virtual-linker-alt-style",
@@ -8197,7 +8226,8 @@ var _LinkerPlugin = class extends import_obsidian14.Plugin {
     ];
     const vars = [
       ["--fakelink-line-alpha", String(s.backgroundLineOpacity / 100)],
-      ["--fakelink-cursor-line-alpha", String(s.cursorLineOpacity / 100)]
+      ["--fakelink-cursor-line-alpha", String(s.cursorLineOpacity / 100)],
+      ["--fakelink-cursor-line-color", s.cursorLineColor || "var(--fakelink-caret)"]
     ];
     const seen = /* @__PURE__ */ new Set();
     const visit = (ownerDoc) => {

@@ -119,9 +119,14 @@ body.theme-dark {
     border: 2px solid #f97316;
 }
 
+.manager-container {
+    scrollbar-width: var(--scrollbar-native-width);
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-bg);
+}
+
 .manager-container::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-height);
 }
 
 .manager-container::-webkit-scrollbar-track {
@@ -129,17 +134,13 @@ body.theme-dark {
 }
 
 .manager-container::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--text-muted) 35%, transparent);
-    border-radius: 10px;
-    border: 3px solid transparent;
+    background: var(--scrollbar-thumb-bg);
+    border-radius: var(--scrollbar-radius);
+    border: var(--scrollbar-border-width) solid transparent;
     background-clip: padding-box;
 }
 
-.manager-container::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--text-muted) 55%, transparent);
-    border: 3px solid transparent;
-    background-clip: padding-box;
-}
+.manager-container::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-active-thumb-bg); background-clip: padding-box; }
 
 .manager-container__top {
     position: absolute;
@@ -163,8 +164,8 @@ body.theme-dark {
     padding: 12px 14px;
     margin-bottom: 8px;
     background: var(--background-secondary);
-    content-visibility: auto;
-    contain-intrinsic-size: auto 96px;
+    /* content-visibility:auto 会让卡片内容仍被绘制却不参与命中测试，
+       导致淡化的禁用卡片无法点击（#83）；不要恢复这两行。 */
 }
 
 .manager-bar__action {
@@ -279,6 +280,19 @@ body.theme-dark {
     gap: 6px;
 }
 
+/* 平板宽度足够：普通设置行恢复左右排布（插件卡片仍保持纵向堆叠） */
+body.is-tablet .manager-container--mobile .setting-item:not(.manager-item) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+body.is-tablet .manager-container--mobile .setting-item:not(.manager-item) > .setting-item-control {
+    width: auto;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+}
+
 .manager-container--mobile .manager-item {
     flex-direction: column;
     align-items: flex-start;
@@ -327,6 +341,11 @@ body.theme-dark {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* 移动端卡片：标题行与桌面端一致靠左，避免图标、名称和徽标被摊到两端 */
+.manager-container--mobile .manager-item__name-container {
+    justify-content: flex-start;
 }
 
 .manager-container--mobile .manager-item__description-container {
@@ -632,9 +651,48 @@ body.theme-dark {
     color: var(--text-accent);
 }
 
+/* 正方形包裹的过滤图标 + 右侧 chevron */
+.manager-container--mobile .bpm-mobile-header__filters-icon {
+    display: inline-flex;
+    flex: 0 0 28px;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 7px;
+    background: var(--background-secondary);
+    color: var(--text-muted);
+}
+
+.manager-container--mobile .bpm-mobile-header__filters-icon svg {
+    width: 15px;
+    height: 15px;
+}
+
+.manager-container--mobile .bpm-mobile-header__filters-label {
+    flex: 1 1 auto;
+}
+
+.manager-container--mobile .bpm-mobile-header__filters-toggle.is-open .bpm-mobile-header__filters-icon {
+    border-color: color-mix(in srgb, var(--text-accent) 45%, var(--background-modifier-border));
+    color: var(--text-accent);
+}
+
 .manager-container--mobile .bpm-mobile-header__filters-arrow {
-    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-muted);
     line-height: 1;
+}
+
+.manager-container--mobile .bpm-mobile-header__filters-toggle.is-open .bpm-mobile-header__filters-arrow {
+    color: var(--text-accent);
+}
+
+.manager-container--mobile .bpm-mobile-header__filters-arrow svg {
+    width: 16px;
+    height: 16px;
 }
 
 .manager-container--mobile .bpm-mobile-header__filters {
@@ -660,11 +718,13 @@ body.theme-dark {
 .manager-item-container {
     overflow: auto;
     padding: 8px;
+    scrollbar-width: var(--scrollbar-native-width);
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-bg);
 }
 
 .manager-item-container::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-height);
 }
 
 .manager-item-container::-webkit-scrollbar-track {
@@ -672,17 +732,13 @@ body.theme-dark {
 }
 
 .manager-item-container::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--text-muted) 35%, transparent);
-    border-radius: 10px;
-    border: 3px solid transparent;
+    background: var(--scrollbar-thumb-bg);
+    border-radius: var(--scrollbar-radius);
+    border: var(--scrollbar-border-width) solid transparent;
     background-clip: padding-box;
 }
 
-.manager-item-container::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--text-muted) 55%, transparent);
-    border: 3px solid transparent;
-    background-clip: padding-box;
-}
+.manager-item-container::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-active-thumb-bg); background-clip: padding-box; }
 
 /* 目录项 */
 .manager-item {
@@ -2004,6 +2060,57 @@ body.theme-dark {
     min-width: 0;
 }
 
+/* 移动端字段式过滤器：与桌面端共用 .manager-filter-field 结构，纵向排列 */
+.manager-container--mobile .bpm-mobile-header__filters .bpm-mobile-filter-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.manager-container--mobile .bpm-mobile-filter-fields .manager-filter-field {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 44px;
+    min-width: 0;
+}
+
+.manager-container--mobile .bpm-mobile-filter-fields .manager-filter-field__control {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+    justify-content: flex-end;
+}
+
+/* 平板与桌面端统一：筛选字段横向排列、自动换行，而不是每行一个 */
+body.is-tablet .manager-container--mobile .bpm-mobile-header__filters .bpm-mobile-filter-fields {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+body.is-tablet .manager-container--mobile .bpm-mobile-filter-fields .manager-filter-field {
+    flex: 1 1 200px;
+    width: auto;
+    max-width: 100%;
+}
+
+/* 设备选择器保持紧凑，不铺满整行 */
+.manager-container--mobile .manager-plugin-scope .manager-search-line {
+    max-width: 420px;
+}
+
+.manager-container--mobile .bpm-mobile-header__filters .manager-multiselect-filter {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.manager-container--mobile .bpm-mobile-header__filters .manager-multiselect-filter__trigger {
+    width: 100%;
+    min-width: 0;
+    min-height: 34px;
+}
+
 .manager-container--mobile .bpm-mobile-header__filters .dropdown {
     width: 100%;
     max-width: 280px;
@@ -2068,10 +2175,22 @@ body.theme-dark {
 }
 
 .manager-container--mobile .bpm-mobile-header__search .search-input-container input {
-    padding: 10px 12px;
+    /* 左侧让出 Obsidian 的搜索放大镜，右侧让出清除按钮 */
+    padding: 10px 36px;
     font-size: 15px;
     border-radius: 10px;
     background: transparent;
+}
+
+/* 放大镜与清除按钮都按输入框高度垂直居中 */
+.manager-container--mobile .bpm-mobile-header__search .search-input-container::before {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.manager-container--mobile .bpm-mobile-header__search .search-input-clear-button {
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 /* 列表项描述优化 */
@@ -6968,13 +7087,53 @@ body.theme-dark {
     margin-left: 4px;
 }
 
-.manager-container--editing .manager-plugin-card--layout-editing {
-    align-items: stretch;
+/* Editing controls need their own row in both list and two-column layouts. */
+.manager-container.manager-container--main.manager-container--editing .manager-plugin-card {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    align-items: start;
 }
 
-.manager-container--editing .manager-plugin-card__layout-drag {
-    align-self: center;
-    order: -1;
+.manager-container.manager-container--main.manager-container--editing .manager-plugin-card > .setting-item-info {
+    grid-column: 1 / -1;
+    min-width: 0;
+    width: 100%;
+    margin-right: 0;
+}
+
+.manager-container.manager-container--main.manager-container--editing .manager-plugin-card--layout-editing > .setting-item-info {
+    grid-column: 2;
+}
+
+.manager-container.manager-container--main.manager-container--editing .manager-plugin-card__layout-drag {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    order: 0;
+}
+
+.manager-container.manager-container--main.manager-container--editing .manager-plugin-card > .manager-plugin-card__actions.setting-item-control {
+    grid-column: 1 / -1;
+    align-self: stretch;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    padding: 10px 0 0;
+    border-left: 0;
+    border-top: 1px solid color-mix(in srgb, var(--bpm-border) 78%, transparent);
+}
+
+.manager-container.manager-container--main.manager-container--editing .manager-plugin-card__actions > select {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.manager-container.manager-container--main.manager-container--editing .manager-plugin-card .manager-item__name-desc[contenteditable="true"] {
+    display: block;
+    overflow: visible;
+    overflow-wrap: anywhere;
 }
 
 .manager-container .manager-plugin-card__layout-order {
@@ -8391,14 +8550,173 @@ body.theme-dark {
     font-size: 13px;
 }
 
+/* Ribbon 过滤按钮组 */
+.ribbon-manager-filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+}
+
+.ribbon-manager-filter-group {
+    display: inline-flex;
+    gap: 8px;
+    padding: 4px;
+    background: var(--background-modifier-form-field);
+    border-radius: var(--radius-m);
+}
+
+.ribbon-filter-btn {
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px !important;
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-muted) !important;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius-s);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.ribbon-filter-btn-icon {
+    display: flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+}
+
+.ribbon-filter-btn-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ribbon-filter-btn-text {
+    white-space: nowrap;
+}
+
+.ribbon-filter-btn:hover {
+    background: var(--background-modifier-hover) !important;
+    color: var(--text-normal) !important;
+}
+
+.ribbon-filter-btn.is-active {
+    background: var(--interactive-accent) !important;
+    color: var(--text-on-accent) !important;
+}
+
+.ribbon-filter-btn.is-active .ribbon-filter-btn-icon {
+    color: var(--text-on-accent) !important;
+}
+
+/* Ribbon 搜索框 */
+.ribbon-manager-search-container {
+    flex: 0 0 auto;
+}
+
+.ribbon-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ribbon-search-icon {
+    position: absolute;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.ribbon-search-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.ribbon-search-input {
+    width: 200px;
+    padding: 6px 12px 6px 32px !important;
+    font-size: 13px;
+    border-radius: var(--radius-s);
+    border: 1px solid var(--background-modifier-border);
+    background: var(--background-primary);
+    transition: border-color 0.2s ease;
+}
+
+.ribbon-search-input:focus {
+    border-color: var(--interactive-accent);
+    outline: none;
+}
+
+/* 说明：边栏编排弹窗自带一份 --bpm-* 变量，而不是直接继承 .manager-container / .manager-version-picker
+   原因：后两者已经声明过同名 --bpm-*，直接继承会互相覆盖
+   Note: the ribbon modal declares its own --bpm-* tokens instead of inheriting them from
+   .manager-container / .manager-version-picker, which already define the same names. */
+.ribbon-manager-modal {
+    --bpm-radius: var(--bpm-ui-radius);
+    --bpm-radius-sm: var(--bpm-ui-radius-sm);
+    --bpm-border: var(--bpm-ui-border);
+    --bpm-surface: var(--bpm-ui-surface);
+    --bpm-card: var(--bpm-ui-card);
+    --bpm-card-muted: var(--bpm-ui-card-muted);
+    --bpm-card-hover: var(--bpm-ui-card-hover);
+    --bpm-muted: var(--bpm-ui-muted);
+    --bpm-muted-strong: var(--bpm-ui-muted-strong);
+    --bpm-accent-soft: var(--bpm-ui-accent-soft);
+    --bpm-ring: var(--bpm-ui-ring);
+    --bpm-shadow: var(--bpm-ui-shadow);
+    --bpm-shadow-hover: var(--bpm-ui-shadow-hover);
+    --bpm-content-padding: var(--bpm-ui-content-padding);
+    --bpm-content-padding-mobile: var(--bpm-ui-content-padding-mobile);
+    --bpm-item-gap: var(--bpm-ui-card-gap);
+    --bpm-item-padding: var(--bpm-ui-item-padding);
+    --bpm-row-gap: var(--bpm-ui-row-gap);
+    --bpm-control-size: var(--bpm-ui-control-size);
+    --bpm-action-size: var(--bpm-ui-action-size);
+    --bpm-touch-size: var(--bpm-ui-touch-size);
+    --bpm-icon-tile: var(--bpm-ui-icon-tile);
+    --bpm-icon-size: var(--bpm-ui-icon-size);
+    --bpm-chip-height: var(--bpm-ui-chip-height);
+    --bpm-chip-padding: var(--bpm-ui-chip-padding);
+}
+
 .ribbon-manager-modal .draggable-list-container {
     display: flex;
     flex-direction: column;
     gap: var(--bpm-item-gap);
     padding: 0;
+    overflow: auto;
+    scrollbar-width: var(--scrollbar-native-width);
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-bg);
 }
 
-.ribbon-manager-modal .draggable-item {
+.ribbon-manager-modal {
+    scrollbar-width: var(--scrollbar-native-width);
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-bg);
+}
+
+.ribbon-manager-modal::-webkit-scrollbar,
+.ribbon-manager-modal .draggable-list-container::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-height);
+}
+
+.ribbon-manager-modal::-webkit-scrollbar-thumb,
+.ribbon-manager-modal .draggable-list-container::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg);
+    border-radius: var(--scrollbar-radius);
+}
+
+/* 说明：Obsidian 原生 .modal:not(.mod-settings) .setting-item:not(.setting-item-heading):where(...)
+   以 (0,4,0) 的优先级强制 background-color: transparent / padding / border-radius: 0；
+   这里必须用 (0,5,0) 的选择器链 :not(.drag-ghost) 才能压过它，且不受 body 上的样式影响
+   Note: Obsidian's native rule above wins at (0,4,0); this chain needs (0,5,0) to override it. */
+.ribbon-manager-modal .draggable-list-container .setting-item.draggable-item:not(.drag-ghost) {
     position: relative;
     display: flex;
     align-items: center;
@@ -8415,12 +8733,12 @@ body.theme-dark {
     transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.ribbon-manager-modal .draggable-item:hover {
+.ribbon-manager-modal .draggable-list-container .setting-item.draggable-item:not(.drag-ghost):hover {
     border-color: color-mix(in srgb, var(--text-muted) 38%, var(--bpm-border));
     background: color-mix(in srgb, var(--bpm-muted) 44%, var(--bpm-card));
 }
 
-.ribbon-manager-modal .draggable-item.is-hidden {
+.ribbon-manager-modal .draggable-list-container .setting-item.draggable-item:not(.drag-ghost).is-hidden {
     background: color-mix(in srgb, var(--bpm-muted) 58%, var(--bpm-card));
 }
 
@@ -8482,6 +8800,13 @@ body.theme-dark {
     width: 16px;
     height: 16px;
     stroke-width: 2.2;
+}
+
+/* 已隐藏项：图标改用弱化配色而非 accent / Hidden item: muted icon palette instead of accent */
+.ribbon-manager-modal .draggable-item.is-hidden .setting-item-icon {
+    border-color: color-mix(in srgb, var(--text-muted) 34%, var(--bpm-border));
+    background: var(--bpm-muted);
+    color: var(--text-muted);
 }
 
 .ribbon-manager-item-text {
@@ -8600,7 +8925,9 @@ body.theme-dark {
     transform: translateY(1px);
 }
 
-.ribbon-manager-control-visibility button {
+/* 平板的 app.css 给 button:not(.clickable-icon) 加了内边距，图标按钮会被挤成 0 宽，需压过它 */
+.ribbon-manager-control-visibility button,
+body.is-tablet .ribbon-manager-control-visibility button {
     appearance: none;
     background: none;
     border: none;
@@ -8617,13 +8944,46 @@ body.theme-dark {
 
 .ribbon-manager-control-visibility svg,
 .ribbon-manager-control-drag svg {
+    flex: 0 0 auto;
     width: 17px;
     height: 17px;
     stroke-width: 2.2;
 }
 
 @media (max-width: 760px) {
-    .ribbon-manager-modal .draggable-item {
+    .ribbon-manager-modal {
+        width: calc(100vw - 16px);
+        max-width: calc(100vw - 16px);
+        max-height: calc(100vh - 24px);
+        margin: 12px 8px;
+    }
+
+    .ribbon-manager-modal .modal-content {
+        min-width: 0;
+        max-height: calc(100vh - 24px);
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-groups,
+    .ribbon-manager-modal .ribbon-manager-filter-bar {
+        min-width: 0;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-filter-right {
+        align-items: stretch;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-grouped-toggle,
+    .ribbon-manager-modal .ribbon-manager-search-container {
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* 需压过桌面端 .ribbon-manager-modal .draggable-list-container .setting-item.draggable-item 的 align-items:center */
+    .ribbon-manager-modal .draggable-list-container .setting-item.draggable-item:not(.drag-ghost) {
         align-items: stretch;
         flex-direction: column;
         gap: 12px;
@@ -8637,7 +8997,8 @@ body.theme-dark {
     .ribbon-manager-modal .ribbon-manager-item-control-root,
     .ribbon-manager-modal .ribbon-manager-control-bar {
         width: 100%;
-        justify-content: flex-end;
+        /* 与标题行同一起始边，避免上排左对齐、下排右对齐 */
+        justify-content: flex-start;
     }
 
     .ribbon-manager-modal .ribbon-manager-control-visibility,
@@ -8646,6 +9007,20 @@ body.theme-dark {
         height: 44px;
         min-width: 44px;
         min-height: 44px;
+    }
+
+    .ribbon-manager-modal .draggable-item-content {
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-item-title-line {
+        align-items: flex-start;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-item-id {
+        overflow-wrap: anywhere;
+        white-space: normal;
     }
 }
 
@@ -9854,7 +10229,7 @@ body.theme-dark {
 .manager-hidden-card,
 .manager-transfer-card,
 .manager-transfer-result,
-.ribbon-manager-modal .draggable-item,
+.ribbon-manager-modal .draggable-list-container .setting-item.draggable-item:not(.drag-ghost),
 .manager-install__history,
 .manager-install__release,
 .manager-troubleshoot__header,
@@ -12146,7 +12521,7 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
 .manager-hidden-card,
 .manager-transfer-card,
 .manager-transfer-result,
-.ribbon-manager-modal .draggable-item,
+.ribbon-manager-modal .draggable-list-container .setting-item.draggable-item:not(.drag-ghost),
 .manager-install__history,
 .manager-install__release,
 .manager-troubleshoot__header,
@@ -12395,13 +12770,19 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
 .manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-bulk-bar-host,
 .manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-plugin-separator,
 .manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-plugin-separator-editor,
+.manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-plugin-scope,
 .manager-container.manager-container--main .manager-modal-page.manager-item-container.manager-plugin-overview--two-column > .manager-plugin-page__empty {
     grid-column: 1 / -1;
 }
 
-.manager-container.manager-container--main.manager-container--mobile .manager-modal-page.manager-item-container.manager-plugin-overview--two-column {
+/* 双列样式仅在手机退化为单列列表；平板宽度足够，保留两列网格 */
+body.is-phone .manager-container.manager-container--main.manager-container--mobile .manager-modal-page.manager-item-container.manager-plugin-overview--two-column {
     display: flex;
     flex-direction: column;
+    /* 单列时卡片需铺满宽度，否则按内容收缩、右侧留白 */
+    grid-template-columns: none;
+    align-content: normal;
+    align-items: stretch;
 }
 
 .manager-container .manager-plugin-card__body.manager-display-block:not(.manager-plugin-card__body--empty) {
@@ -13676,6 +14057,21 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
 
 .manager-container .manager-theme-overview .manager-appearance-tabs {
     flex: 0 0 auto;
+    /* 从左起始排列；内容超出时可横向滚动，且露出细滚动条 */
+    align-self: flex-start;
+    max-width: 100%;
+    justify-content: flex-start !important;
+    scrollbar-width: thin;
+}
+
+.manager-container .manager-theme-overview .manager-appearance-tabs::-webkit-scrollbar {
+    display: block;
+    height: 4px;
+}
+
+.manager-container .manager-theme-overview .manager-appearance-tabs::-webkit-scrollbar-thumb {
+    background: var(--background-modifier-border);
+    border-radius: 2px;
 }
 
 .manager-container .manager-theme-overview .manager-appearance-section__list {
@@ -13862,4 +14258,629 @@ body.theme-dark .manager-transfer-segment[data-state="active"]:hover {
         justify-content: flex-start;
         padding-top: 2px;
     }
+}
+
+/* ── 设备作用域下拉与窄宽度工具栏 ───────────────────────────────
+   复用筛选栏的自定义下拉；工具栏在窄宽度下整行可滚动，避免标签与按钮互相挤压。 */
+.manager-device-scope .manager-multiselect-filter__menu {
+    right: auto;
+    min-width: 220px;
+}
+
+.manager-device-scope__group {
+    display: block;
+    padding: 6px 8px 2px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.manager-container .manager-toolbar {
+    height: auto;
+    min-height: 34px;
+    overflow: auto;
+    scrollbar-width: var(--scrollbar-native-width);
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-bg);
+    padding-bottom: 2px;
+}
+
+.manager-container .manager-toolbar__tabs {
+    flex: 0 0 auto;
+}
+
+.manager-container .manager-toolbar__tools {
+    flex: 0 0 auto;
+    margin-left: auto;
+    overflow: visible;
+    justify-content: flex-start;
+}
+
+.manager-container .manager-toolbar::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-height);
+}
+
+.manager-container .manager-toolbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.manager-container .manager-toolbar::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg);
+    border-radius: var(--scrollbar-radius);
+    border: var(--scrollbar-border-width) solid transparent;
+    background-clip: padding-box;
+}
+
+.manager-container .manager-toolbar::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-active-thumb-bg); background-clip: padding-box; }
+
+.manager-device-scope .manager-multiselect-filter__menu.is-fixed {
+    position: fixed;
+    right: auto;
+    max-height: min(280px, 48vh);
+    z-index: 1200;
+}
+
+/* 插件页：设备预设选择器并入搜索行，搜索框随宽度收缩。 */
+.manager-search-line .manager-device-scope--inline {
+    flex: 0 1 230px;
+    min-width: 170px;
+    max-width: 230px;
+    min-height: 34px;
+}
+
+.manager-device-scope .manager-filter-field__control {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.manager-device-scope .manager-filter-select-group {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.manager-device-scope__quick-apply {
+    display: inline-flex;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: var(--radius-s);
+    background: var(--background-primary);
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.manager-device-scope__quick-apply:hover:not(:disabled) {
+    color: var(--text-accent);
+    border-color: var(--interactive-accent);
+}
+
+.manager-device-scope__quick-apply:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 平板的 app.css 给 button:not(.clickable-icon) 加内边距，会把图标挤成 0 宽 */
+body.is-tablet button.manager-device-scope__quick-apply {
+    padding: 0;
+}
+
+.manager-device-scope__quick-apply svg {
+    flex: 0 0 auto;
+    width: 17px;
+    height: 17px;
+}
+
+.manager-device-scope--inline .manager-filter-field {
+    width: 100%;
+    height: 100%;
+}
+
+/* ===== 备注 Tooltip（悬停 Ribbon 图标展示插件备注） ===== */
+.bpm-notetip {
+    position: fixed;
+    z-index: 10000;
+    max-width: 340px;
+    max-height: 70vh;
+    overflow: auto;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    padding: 10px 12px;
+    font-size: 12px;
+    pointer-events: none;
+}
+.bpm-notetip-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-normal);
+}
+.bpm-notetip-row {
+    display: flex;
+    gap: 8px;
+    margin: 3px 0;
+    line-height: 1.5;
+}
+.bpm-notetip-name {
+    flex-shrink: 0;
+    font-weight: 600;
+    color: var(--text-accent);
+    max-width: 45%;
+}
+.bpm-notetip-note {
+    color: var(--text-muted);
+    word-break: break-all;
+}
+.bpm-notetip-more {
+    color: var(--text-faint);
+    margin-top: 4px;
+}
+.bpm-notetip-foot {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid var(--background-modifier-border);
+    color: var(--text-faint);
+    font-size: 11px;
+}
+
+/* 右键配置面板 */
+.bpm-notetip-cfg {
+    position: fixed;
+    z-index: 10001;
+    width: 260px;
+    background: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    padding: 12px;
+    font-size: 12px;
+}
+.bpm-notetip-cfg-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-normal);
+}
+.bpm-notetip-cfg-row {
+    margin: 6px 0;
+}
+.bpm-notetip-cfg-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+.bpm-notetip-cfg-label {
+    color: var(--text-muted);
+    margin: 8px 0 4px;
+}
+.bpm-notetip-cfg-input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 4px;
+}
+.bpm-notetip-cfg-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* 设备页卡头操作按钮：图标 + 文字，靠右放置。 */
+.manager-vault-card__header .manager-vault-card__action {
+    margin-left: auto;
+}
+
+/* 统一确认弹窗：无标题分隔线，左侧问号图标，右侧警示/取消按钮。 */
+.manager-confirm-modal .modal-header {
+    border-bottom: none;
+    padding: 0;
+    min-height: 0;
+}
+
+.manager-confirm-modal__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 4px;
+}
+
+.manager-confirm-modal__message {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.manager-confirm-modal__icon {
+    display: inline-flex;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    color: var(--color-orange);
+}
+
+.manager-confirm-modal__icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.manager-confirm-modal__text {
+    min-width: 0;
+}
+
+.manager-confirm-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    border: 0;
+    padding: 0;
+}
+
+/* Ribbon 分组编辑区：嵌入式 Ribbon 页也显示。 */
+.ribbon-manager-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+    padding: 8px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    background: var(--background-secondary);
+}
+
+.manager-container.manager-container--main .ribbon-manager-groups > .setting-item,
+.manager-container.manager-container--main .ribbon-manager-groups > .setting-item:first-child:not(.setting-item-heading) {
+    padding: 8px 10px;
+    border: 0;
+}
+
+/* 分组标题行的图标按钮：手机端 app.css 会把按钮拉满整行，这里固定为图标尺寸。 */
+.ribbon-manager-modal .ribbon-manager-groups .ribbon-group-add,
+.ribbon-manager-modal .ribbon-manager-groups .ribbon-group-toggle {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 0;
+}
+
+@media (max-width: 760px) {
+    /* app.css 在窄屏把 .setting-item-control button 拉成 100%，这里必须压过它 */
+    .ribbon-manager-modal .ribbon-manager-groups .setting-item-control .ribbon-group-add,
+    .ribbon-manager-modal .ribbon-manager-groups .setting-item-control .ribbon-group-toggle {
+        flex: 0 0 44px;
+        width: 44px !important;
+        max-width: 44px !important;
+        min-width: 44px;
+        height: 44px;
+        padding: 0;
+    }
+}
+
+/* Ribbon 分组：筛选分组横向滚动，右侧工具与列表不被挤出可视区。 */
+.ribbon-manager-filter-group {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: var(--scrollbar-native-width);
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-bg);
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 760px) {
+    .ribbon-manager-modal .ribbon-manager-filter-bar {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-filter-group {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        touch-action: pan-x pan-y;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-filter-right {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-search-container,
+    .ribbon-manager-modal .ribbon-search-wrapper,
+    .ribbon-manager-modal .ribbon-search-input {
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .ribbon-manager-modal .ribbon-manager-filter-group > .ribbon-filter-btn {
+        min-height: 40px;
+        touch-action: manipulation;
+    }
+}
+
+.ribbon-manager-filter-group > .ribbon-filter-btn,
+.ribbon-manager-filter-group > .ribbon-filter-divider {
+    flex: 0 0 auto;
+}
+
+.ribbon-filter-divider {
+    width: 1px;
+    align-self: stretch;
+    margin: 4px 2px;
+    background: var(--background-modifier-border);
+}
+
+.ribbon-manager-groups__body {
+    display: flex;
+    flex-direction: column;
+}
+
+.ribbon-group-icon-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ribbon-group-icon-option__icon {
+    display: inline-flex;
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.ribbon-group-icon-option__icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ribbon-group-icon-option__label {
+    min-width: 0;
+}
+
+/* 分组编辑：紧凑网格，每项约 1/4 行；图标在名称输入框左侧。 */
+.ribbon-group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 6px;
+    width: 100%;
+}
+
+.ribbon-group-card {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 2px 4px 2px 2px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    background: var(--background-primary);
+}
+
+.ribbon-group-card .extra-setting-button {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+}
+
+.ribbon-group-card__name {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    height: 28px;
+}
+
+/* 分组网格固定四列（约 1/4 行），窄宽度降为两列。 */
+.ribbon-group-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 720px) {
+    .ribbon-group-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.ribbon-manager-groups__empty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* 移动端 Ribbon 弹窗高度有限：收起说明文字、压缩分组区，把高度让给列表 */
+.ribbon-manager-modal--compact .manager-hidden-toolbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 8px 10px;
+}
+
+.ribbon-manager-modal--compact .manager-hidden-toolbar__desc,
+.ribbon-manager-modal--compact .ribbon-manager-groups > .setting-item .setting-item-description {
+    display: none;
+}
+
+.ribbon-manager-modal--compact .manager-hidden-toolbar__title {
+    font-size: 15px;
+}
+
+.ribbon-manager-modal--compact .ribbon-manager-groups {
+    gap: 2px;
+    margin-bottom: 6px;
+    padding: 6px 8px;
+}
+
+.ribbon-manager-modal--compact .ribbon-manager-groups > .setting-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 2px;
+}
+
+.ribbon-manager-modal--compact .ribbon-manager-groups > .setting-item .setting-item-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.ribbon-manager-modal--compact .ribbon-manager-groups > .setting-item .setting-item-control {
+    flex: 0 0 auto;
+    width: auto;
+    flex-wrap: nowrap;
+}
+
+.ribbon-manager-modal--compact .ribbon-manager-groups__empty {
+    padding: 4px 6px;
+}
+
+.ribbon-manager-modal--compact .draggable-item {
+    gap: 8px;
+    padding: 8px;
+}
+
+/* 手机端：边栏编排 / Ribbon 分组改为窗口，主面板只留入口按钮 */
+.ribbon-manager-mobile-sections {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.ribbon-manager-mobile-sections button {
+    flex: 1 1 0;
+    min-height: 44px;
+    justify-content: center;
+}
+
+.ribbon-layout-window__desc {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.ribbon-layout-window__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.ribbon-groups-window .ribbon-manager-groups {
+    margin: 0;
+}
+
+.ribbon-manager-groups__empty-icon {
+    display: inline-flex;
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.ribbon-manager-groups__empty-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* 显示已分组开关、分组项样式与提示。 */
+.ribbon-manager-filter-right {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.ribbon-manager-grouped-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.ribbon-manager-grouped-hint {
+    margin: -8px 0 10px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.draggable-item.is-grouped-item {
+    border-left: 3px dashed color-mix(in srgb, var(--interactive-accent) 55%, transparent);
+    background: color-mix(in srgb, var(--interactive-accent) 4%, var(--background-secondary));
+}
+
+.ribbon-manager-grouped-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 1px 7px;
+    border: 1px dashed color-mix(in srgb, var(--interactive-accent) 45%, var(--background-modifier-border));
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.ribbon-manager-grouped-chip__icon {
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+}
+
+.ribbon-manager-grouped-chip__icon svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* 分组菜单头部：强调色并与图标垂直居中。 */
+.menu-item:has(.bpm-group-menu-title) {
+    align-items: center;
+}
+
+.menu-item:has(.bpm-group-menu-title) .menu-item-icon {
+    color: var(--text-accent);
+}
+
+.bpm-group-menu-title {
+    color: var(--text-accent);
+    font-weight: 650;
+    line-height: 1.2;
+}
+
+/* 窄宽度下筛选栏与右侧工具换行，避免搜索框被挤压。 */
+.ribbon-manager-filter-bar {
+    flex-wrap: wrap;
+    row-gap: 8px;
+}
+
+.ribbon-manager-filter-right {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    row-gap: 6px;
+}
+
+/* 分组项样式需覆盖既有 draggable-item 边框规则。 */
+.ribbon-manager-modal .draggable-list-container .setting-item.draggable-item.is-grouped-item:not(.drag-ghost) {
+    border-left: 3px dashed color-mix(in srgb, var(--interactive-accent) 60%, transparent);
+    background: color-mix(in srgb, var(--interactive-accent) 4%, var(--background-secondary));
 }

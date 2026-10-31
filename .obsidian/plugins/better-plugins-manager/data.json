@@ -1,11 +1,14 @@
 {
   "LANGUAGE": "zh-cn",
   "LANGUAGE_INITIALIZED": true,
-  "MIGRATION_VERSION": "1.0.14",
+  "MIGRATION_VERSION": "1.1.11",
   "DEBUG": false,
   "PERSISTENCE": true,
   "CENTER": true,
   "DELAY": true,
+  "DELAY_WAIT_MESSAGE": false,
+  "DELAY_WAIT_MESSAGE_TEXT": "",
+  "DELAY_WAIT_MESSAGE_EXTRA_SECONDS": 0,
   "HIDE_BPM_TAG": false,
   "RIBBON_MANAGER_ENABLED": false,
   "MAIN_PAGE_ACTION_PLACEMENT": {
@@ -1263,8 +1266,807 @@
       "order": 22
     }
   ],
+  "RIBBON_GROUPS": [],
   "SHARED_VAULT_MAIN_PATH": "",
   "SHARED_VAULTS": [],
   "EXPORT_DIR": "",
-  "USE_NATIVE_RIBBON_CONFIG": true
+  "USE_NATIVE_RIBBON_CONFIG": true,
+  "DEVICE_MANAGEMENT": {
+    "enabled": false,
+    "presets": {
+      "computer": [
+        {
+          "id": "preset-computer",
+          "name": "Computer",
+          "configured": false,
+          "plugins": {
+            "advanced-canvas": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "any-block": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "better-markdown-links": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "cmdr": {
+              "enabled": true,
+              "delay": ""
+            },
+            "dataview": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "easy-typing-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "float-search": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "floating-toc": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "fuzzy-chinese-pinyin": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "keyboard-analyzer": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "nldates-redux": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-admonition": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-excalidraw-plugin": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "obsidian-front-matter-title-plugin": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-heading-shifter": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-hover-editor": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-latex-suite": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "obsidian-linter": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "obsidian-outliner": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "obsidian-style-settings": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-tasks-plugin": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-zoom": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "quick-explorer": {
+              "enabled": false,
+              "delay": "default"
+            },
+            "quickadd": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "refresh-preview": {
+              "enabled": false,
+              "delay": "default"
+            },
+            "solve": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "statusbar-organizer": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "table-editor-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "templater-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "various-complements": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "codeblock-customizer": {
+              "enabled": true,
+              "delay": ""
+            },
+            "heading-decorator": {
+              "enabled": true,
+              "delay": ""
+            },
+            "note-toolbar": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "show-whitespace-cm6": {
+              "enabled": true,
+              "delay": "0"
+            },
+            "custom-sort": {
+              "enabled": true,
+              "delay": ""
+            },
+            "notebook-navigator": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "better-plugins-manager": {
+              "enabled": true,
+              "delay": ""
+            },
+            "quick-peek-sidebar": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-auto-hide": {
+              "enabled": true,
+              "delay": ""
+            },
+            "obsidian-git": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-quiet-outline": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "dragger": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "fakelink": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "css-editor": {
+              "enabled": false,
+              "delay": ""
+            },
+            "block-link-plus": {
+              "enabled": false,
+              "delay": ""
+            },
+            "datacore": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-importer": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-memos": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-task-progress-bar": {
+              "enabled": false,
+              "delay": ""
+            },
+            "editing-toolbar": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "omnisearch": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "image-captions": {
+              "enabled": true,
+              "delay": ""
+            },
+            "continuous-mode": {
+              "enabled": false,
+              "delay": ""
+            },
+            "vertical-tabs": {
+              "enabled": false,
+              "delay": ""
+            },
+            "simple-mind-map": {
+              "enabled": false,
+              "delay": "15"
+            }
+          },
+          "filters": {
+            "search": "",
+            "status": [
+              "all"
+            ],
+            "statusOperator": "contains",
+            "group": [],
+            "groupOperator": "contains",
+            "tag": [],
+            "tagOperator": "contains",
+            "delay": [],
+            "delayOperator": "contains"
+          },
+          "ribbon": [],
+          "ribbonGroups": [],
+          "ribbonEnabled": false,
+          "appearance": {
+            "theme": "",
+            "snippets": {
+              "font": true,
+              "S - Embed Adjustments": true,
+              "S - Images Adjustments": true,
+              "S - Checkboxes": true,
+              "guideline": true,
+              "basic": true,
+              "code": true,
+              "list": true,
+              "ribbon": true,
+              "table": true,
+              "ui": true,
+              "hide": true,
+              "hide-nav": true,
+              "hidefile": true
+            }
+          }
+        }
+      ],
+      "tablet": [
+        {
+          "id": "preset-tablet",
+          "name": "Tablet",
+          "configured": false,
+          "plugins": {
+            "advanced-canvas": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "any-block": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "better-markdown-links": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "cmdr": {
+              "enabled": true,
+              "delay": ""
+            },
+            "dataview": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "easy-typing-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "float-search": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "floating-toc": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "fuzzy-chinese-pinyin": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "keyboard-analyzer": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "nldates-redux": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-admonition": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-excalidraw-plugin": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "obsidian-front-matter-title-plugin": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-heading-shifter": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-hover-editor": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-latex-suite": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "obsidian-linter": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "obsidian-outliner": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "obsidian-style-settings": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-tasks-plugin": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-zoom": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "quick-explorer": {
+              "enabled": false,
+              "delay": "default"
+            },
+            "quickadd": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "refresh-preview": {
+              "enabled": false,
+              "delay": "default"
+            },
+            "solve": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "statusbar-organizer": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "table-editor-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "templater-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "various-complements": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "codeblock-customizer": {
+              "enabled": true,
+              "delay": ""
+            },
+            "heading-decorator": {
+              "enabled": true,
+              "delay": ""
+            },
+            "note-toolbar": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "show-whitespace-cm6": {
+              "enabled": true,
+              "delay": "0"
+            },
+            "custom-sort": {
+              "enabled": true,
+              "delay": ""
+            },
+            "notebook-navigator": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "better-plugins-manager": {
+              "enabled": true,
+              "delay": ""
+            },
+            "quick-peek-sidebar": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-auto-hide": {
+              "enabled": true,
+              "delay": ""
+            },
+            "obsidian-git": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-quiet-outline": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "dragger": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "fakelink": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "css-editor": {
+              "enabled": false,
+              "delay": ""
+            },
+            "block-link-plus": {
+              "enabled": false,
+              "delay": ""
+            },
+            "datacore": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-importer": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-memos": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-task-progress-bar": {
+              "enabled": false,
+              "delay": ""
+            },
+            "editing-toolbar": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "omnisearch": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "image-captions": {
+              "enabled": true,
+              "delay": ""
+            },
+            "continuous-mode": {
+              "enabled": false,
+              "delay": ""
+            },
+            "vertical-tabs": {
+              "enabled": false,
+              "delay": ""
+            },
+            "simple-mind-map": {
+              "enabled": false,
+              "delay": "15"
+            }
+          },
+          "filters": {
+            "search": "",
+            "status": [
+              "all"
+            ],
+            "statusOperator": "contains",
+            "group": [],
+            "groupOperator": "contains",
+            "tag": [],
+            "tagOperator": "contains",
+            "delay": [],
+            "delayOperator": "contains"
+          },
+          "ribbon": [],
+          "ribbonGroups": [],
+          "ribbonEnabled": false,
+          "appearance": {
+            "theme": "",
+            "snippets": {
+              "font": true,
+              "S - Embed Adjustments": true,
+              "S - Images Adjustments": true,
+              "S - Checkboxes": true,
+              "guideline": true,
+              "basic": true,
+              "code": true,
+              "list": true,
+              "ribbon": true,
+              "table": true,
+              "ui": true,
+              "hide": true,
+              "hide-nav": true,
+              "hidefile": true
+            }
+          }
+        }
+      ],
+      "phone": [
+        {
+          "id": "preset-phone",
+          "name": "Phone",
+          "configured": false,
+          "plugins": {
+            "advanced-canvas": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "any-block": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "better-markdown-links": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "cmdr": {
+              "enabled": true,
+              "delay": ""
+            },
+            "dataview": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "easy-typing-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "float-search": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "floating-toc": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "fuzzy-chinese-pinyin": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "keyboard-analyzer": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "nldates-redux": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-admonition": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-excalidraw-plugin": {
+              "enabled": true,
+              "delay": "15"
+            },
+            "obsidian-front-matter-title-plugin": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-heading-shifter": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-hover-editor": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-latex-suite": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "obsidian-linter": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "obsidian-outliner": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "obsidian-style-settings": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "obsidian-tasks-plugin": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-zoom": {
+              "enabled": true,
+              "delay": "default"
+            },
+            "quick-explorer": {
+              "enabled": false,
+              "delay": "default"
+            },
+            "quickadd": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "refresh-preview": {
+              "enabled": false,
+              "delay": "default"
+            },
+            "solve": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "statusbar-organizer": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "table-editor-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "templater-obsidian": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "various-complements": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "codeblock-customizer": {
+              "enabled": true,
+              "delay": ""
+            },
+            "heading-decorator": {
+              "enabled": true,
+              "delay": ""
+            },
+            "note-toolbar": {
+              "enabled": false,
+              "delay": "10"
+            },
+            "show-whitespace-cm6": {
+              "enabled": true,
+              "delay": "0"
+            },
+            "custom-sort": {
+              "enabled": true,
+              "delay": ""
+            },
+            "notebook-navigator": {
+              "enabled": true,
+              "delay": "10"
+            },
+            "better-plugins-manager": {
+              "enabled": true,
+              "delay": ""
+            },
+            "quick-peek-sidebar": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-auto-hide": {
+              "enabled": true,
+              "delay": ""
+            },
+            "obsidian-git": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "obsidian-quiet-outline": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "dragger": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "fakelink": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "css-editor": {
+              "enabled": false,
+              "delay": ""
+            },
+            "block-link-plus": {
+              "enabled": false,
+              "delay": ""
+            },
+            "datacore": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-importer": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-memos": {
+              "enabled": false,
+              "delay": ""
+            },
+            "obsidian-task-progress-bar": {
+              "enabled": false,
+              "delay": ""
+            },
+            "editing-toolbar": {
+              "enabled": true,
+              "delay": "5"
+            },
+            "omnisearch": {
+              "enabled": false,
+              "delay": "5"
+            },
+            "image-captions": {
+              "enabled": true,
+              "delay": ""
+            },
+            "continuous-mode": {
+              "enabled": false,
+              "delay": ""
+            },
+            "vertical-tabs": {
+              "enabled": false,
+              "delay": ""
+            },
+            "simple-mind-map": {
+              "enabled": false,
+              "delay": "15"
+            }
+          },
+          "filters": {
+            "search": "",
+            "status": [
+              "all"
+            ],
+            "statusOperator": "contains",
+            "group": [],
+            "groupOperator": "contains",
+            "tag": [],
+            "tagOperator": "contains",
+            "delay": [],
+            "delayOperator": "contains"
+          },
+          "ribbon": [],
+          "ribbonGroups": [],
+          "ribbonEnabled": false,
+          "appearance": {
+            "theme": "",
+            "snippets": {
+              "font": true,
+              "S - Embed Adjustments": true,
+              "S - Images Adjustments": true,
+              "S - Checkboxes": true,
+              "guideline": true,
+              "basic": true,
+              "code": true,
+              "list": true,
+              "ribbon": true,
+              "table": true,
+              "ui": true,
+              "hide": true,
+              "hide-nav": true,
+              "hidefile": true
+            }
+          }
+        }
+      ]
+    },
+    "devices": []
+  }
 }
