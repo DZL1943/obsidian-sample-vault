@@ -57,6 +57,8 @@ __pycache__/
 .obsidian*/plugins/image-converter/image-converter-image-alignments.json
 .obsidian*/plugins/better-plugins-manager/community-plugins-cache.json
 .obsidian*/plugins/obsidian-local-rest-api/data.json
+.obsidian/better-plugins-manager-device-*.json
+
 
 cedict_ts.u8
 jieba_rs_wasm_bg.wasm
