@@ -1,5 +1,5 @@
 {
-  "version": "4.1.1",
+  "version": "4.3.0",
   "templates": {
     "common": {
       "main": "title",
@@ -79,6 +79,7 @@
     },
     "suggest": {
       "enabled": false,
+      "insertAlias": true,
       "templates": {
         "main": "",
         "fallback": ""

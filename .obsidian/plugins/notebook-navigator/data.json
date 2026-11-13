@@ -231,6 +231,7 @@
   "frontmatterColorField": "color",
   "frontmatterBackgroundField": "background",
   "frontmatterNameField": "title",
+  "frontmatterNameFormat": "{{name}}",
   "frontmatterCreatedField": "created",
   "frontmatterModifiedField": "modified",
   "frontmatterDateFormat": "YYYY-MM-DD[T]HH:mm",
@@ -565,7 +566,7 @@
     "#404040",
     "#404040"
   ],
-  "lastShownVersion": "3.5.0",
+  "lastShownVersion": "3.5.1",
   "rootTagOrder": [],
   "rootPropertyOrder": [],
   "iconizeFormat": false,
