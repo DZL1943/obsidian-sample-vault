@@ -16062,6 +16062,24 @@ body.is-mobile .modal.mod-settings .vertical-tab-content.manager-setting__root {
 .modal.manager-container.manager-workflow-modal .modal-content .manager-workflow-modal__actions .setting-item-control {
     flex: 1 1 auto;
 }
+/* 配置文件处理窗口：文件列表独立滚动，操作按钮固定在底部。 */
+.modal.manager-container.manager-bundle-modal .modal-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+.manager-bundle-modal__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+.modal.manager-container.manager-bundle-modal .manager-bundle-modal__actions {
+    flex: 0 0 auto;
+    margin-top: var(--size-4-3);
+    padding-top: var(--size-4-3);
+    border-top: 1px solid var(--background-modifier-border);
+}
 .modal.manager-workflow-modal :is(pre, table) {
     max-width: 100%;
     overflow-x: auto;
@@ -16387,3 +16405,17 @@ body.is-mobile .modal.manager-catalog .manager-catalog-card__actions > button.cl
 .modal.manager-container.manager-catalog .manager-catalog__detail .manager-catalog__detail-actions {
     padding: 0;
 }
+
+/* Scoped sync setup guide. */
+.modal.manager-sync-warning-modal { width: min(680px, 92vw); max-height: 90vh; display: flex; flex-direction: column; }
+.modal.manager-sync-warning-modal .modal-content.manager-sync-warning { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.manager-sync-warning__body { min-height: 0; overflow-y: auto; flex: 1 1 auto; padding-inline-end: var(--size-4-2); }
+.manager-sync-warning__footer { flex: 0 0 auto; padding-block-start: var(--size-4-2); border-top: 1px solid var(--background-modifier-border); }
+.manager-sync-warning__footer .modal-button-container { flex-wrap: wrap; }
+.manager-sync-warning details { border: 1px solid var(--background-modifier-border); border-radius: var(--radius-m); padding: 12px; }
+.manager-sync-warning summary { display: flex; align-items: center; gap: 8px; cursor: pointer; list-style: none; }
+.manager-sync-warning summary::-webkit-details-marker { display: none; }
+.manager-sync-warning details[open] summary svg { transform: rotate(90deg); }
+.manager-sync-warning pre { overflow-x: auto; white-space: pre; padding: 12px; background: var(--background-secondary); }
+.manager-sync-warning button { min-height: 32px; min-width: 24px; }
+.manager-sync-warning__provider { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-block: 12px; }
