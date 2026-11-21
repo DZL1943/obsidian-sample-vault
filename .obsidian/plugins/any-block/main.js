@@ -21023,7 +21023,10 @@ var DirProcess = class {
         td.appendChild(td_cell);
         td_cell.classList.add("ab-list-table-witharrow");
         if (cell_item.tableColumn == 0 && is_folder) {
-          td_cell.innerHTML = cell_item.content;
+          let content = cell_item.content.trimEnd();
+          if (content.startsWith("`") && content.endsWith("`"))
+            content = content.slice(1, -1);
+          td_cell.innerHTML = content;
         } else {
           ABConvertManager.getInstance().m_renderMarkdownFn(cell_item.content, td_cell);
         }
@@ -55769,13 +55772,13 @@ var ABSettingTab = class extends import_obsidian3.PluginSettingTab {
 var ABProcessorModal = class extends import_obsidian3.Modal {
   constructor(app2, onSubmit) {
     super(app2);
+    this.onSubmit = onSubmit;
     this.args = {
       id: "",
       name: "",
       match: "",
       process_alias: ""
     };
-    this.onSubmit = onSubmit;
   }
   onOpen() {
     let { contentEl } = this;
@@ -55805,7 +55808,7 @@ var ABProcessorModal = class extends import_obsidian3.Modal {
       btn.setButtonText(t("Submit")).setCta().onClick(() => {
         if (this.args.id && this.args.name && this.args.match && this.args.process_alias) {
           this.close();
-          this.onSubmit(this.args);
+          void this.onSubmit(this.args);
         }
       });
     });
@@ -55818,11 +55821,11 @@ var ABProcessorModal = class extends import_obsidian3.Modal {
 var ABModal_alias = class extends import_obsidian3.Modal {
   constructor(app2, onSubmit) {
     super(app2);
+    this.onSubmit = onSubmit;
     this.args = {
       regex: "",
       replacement: ""
     };
-    this.onSubmit = onSubmit;
   }
   onOpen() {
     let { contentEl } = this;
@@ -55842,7 +55845,7 @@ var ABModal_alias = class extends import_obsidian3.Modal {
       btn.setButtonText(t("Submit")).setCta().onClick(() => {
         if (this.args.regex && this.args.replacement) {
           this.close();
-          this.onSubmit(this.args);
+          void this.onSubmit(this.args);
         }
       });
     });
@@ -56255,12 +56258,19 @@ var ABSelector_PostHtml = class {
     if (!mdSrc) {
       if (false)
         console.log(" -- ABPosthtmlManager.processor, called by 'ReRender'");
-      if (!el.classList.contains("markdown-rendered") && !((_c = (_b = (_a3 = el.parentElement) == null ? void 0 : _a3.parentElement) == null ? void 0 : _b.classList) == null ? void 0 : _c.contains("block-language-dataviewjs")) && !((_f = (_e = (_d = el.parentElement) == null ? void 0 : _d.parentElement) == null ? void 0 : _e.classList) == null ? void 0 : _f.contains("block-language-dataview")))
+      if (((_c = (_b = (_a3 = el.parentElement) == null ? void 0 : _a3.parentElement) == null ? void 0 : _b.classList) == null ? void 0 : _c.contains("block-language-dataviewjs")) || ((_f = (_e = (_d = el.parentElement) == null ? void 0 : _d.parentElement) == null ? void 0 : _e.classList) == null ? void 0 : _f.contains("block-language-dataview"))) {
+        findABBlock_recurve(el);
         return;
+      }
+      if (!el.classList.contains("markdown-rendered")) {
+        return;
+      }
       const calloutEl = el.querySelector(":scope>div>div.callout-content");
       if (calloutEl) {
         el = calloutEl;
         el.classList.add("ab-note");
+        findABBlock_recurve(el);
+        return;
       }
       findABBlock_recurve(el);
       return;
@@ -56798,6 +56808,12 @@ var AnyBlockPlugin = class extends import_obsidian8.Plugin {
       );
       this.registerEvent(
         this.app.workspace.on("layout-change", () => {
+          abm == null ? void 0 : abm.destructor();
+          abm = new ABStateManager(this);
+        })
+      );
+      this.registerEvent(
+        this.app.workspace.on("active-leaf-change", () => {
           abm == null ? void 0 : abm.destructor();
           abm = new ABStateManager(this);
         })

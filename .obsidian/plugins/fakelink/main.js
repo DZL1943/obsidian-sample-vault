@@ -274,6 +274,12 @@ var zhCN = {
   "Fixed: strikethrough no longer turns into underline on a fresh install (alternative display style is off by default).": "\u4FEE\u590D\uFF1A\u5168\u65B0\u5B89\u88C5\u65F6\u5220\u9664\u7EBF\u4E0D\u518D\u53D8\u6210\u4E0B\u5212\u7EBF\uFF08\u66FF\u4EE3\u663E\u793A\u6837\u5F0F\u9ED8\u8BA4\u5173\u95ED\uFF09\u3002",
   "Changed: advanced settings are hidden by default, so new users see a cleaner settings tab.": "\u8C03\u6574\uFF1A\u9AD8\u7EA7\u8BBE\u7F6E\u9ED8\u8BA4\u9690\u85CF\uFF0C\u65B0\u7528\u6237\u770B\u5230\u7684\u8BBE\u7F6E\u9762\u677F\u66F4\u7B80\u6D01\u3002",
   "Changed: a few non-core options now default to off (header symbol keywords, current-line linking, line jumping).": "\u8C03\u6574\uFF1A\u90E8\u5206\u975E\u6838\u5FC3\u9009\u9879\u6539\u4E3A\u9ED8\u8BA4\u5173\u95ED\uFF08\u6807\u9898\u7B26\u53F7\u5173\u952E\u8BCD\u3001\u5F53\u524D\u884C\u4E0D\u663E\u793A\u94FE\u63A5\u3001\u884C\u8DF3\u8F6C\uFF09\u3002",
+  "Maintenance release with no visible change: the interface elements are now built with Obsidian's createDiv / createSpan helpers instead of createEl with a tag, which is the form the community review asks for.": "\u7EF4\u62A4\u7248\u672C\uFF0C\u754C\u9762\u65E0\u53D8\u5316\uFF1A\u754C\u9762\u5143\u7D20\u6539\u7528 Obsidian \u7684 createDiv / createSpan \u52A9\u624B\u521B\u5EFA\uFF0C\u4E0D\u518D\u7528\u5E26\u6807\u7B7E\u7684 createEl\uFF0C\u8FD9\u4E5F\u662F\u793E\u533A\u5BA1\u6838\u8981\u6C42\u7684\u5199\u6CD5\u3002",
+  "The virtual-link spans stay detached and belong to the active document by design - CodeMirror receives them already built, and a hover preview can live in a second window - so those call sites now explain themselves instead of being rewritten.": "\u865A\u62DF\u94FE\u63A5\u7684 span \u4ECD\u6309\u8BBE\u8BA1\u4FDD\u6301\u300C\u6E38\u79BB\u300D\u5E76\u5F52\u5C5E\u4E8E activeDocument\u2014\u2014CodeMirror \u6536\u5230\u7684\u662F\u5DF2\u7ECF\u5EFA\u597D\u7684\u5143\u7D20\uFF0C\u60AC\u6D6E\u9884\u89C8\u4E5F\u53EF\u80FD\u4F4D\u4E8E\u7B2C\u4E8C\u4E2A\u7A97\u53E3\u2014\u2014\u56E0\u6B64\u8FD9\u4E9B\u8C03\u7528\u70B9\u6539\u4E3A\u5C31\u5730\u8BF4\u660E\u539F\u56E0\uFF0C\u800C\u4E0D\u662F\u6539\u5199\u5B9E\u73B0\u3002",
+  "Element creation no longer calls createElement: the ten detached virtual-link elements pass a throwaway DocumentFragment as the receiver of createEl, so they stay detached and are still forged on the active document.": "\u5143\u7D20\u521B\u5EFA\u4E0D\u518D\u8C03\u7528 createElement\uFF1A10 \u5904\u6E38\u79BB\u7684\u865A\u62DF\u94FE\u63A5\u5143\u7D20\u6539\u4E3A\u628A\u4E00\u4E2A\u7528\u5B8C\u5373\u5F03\u7684 DocumentFragment \u4F5C\u4E3A createEl \u7684\u63A5\u6536\u8005\uFF0C\u5143\u7D20\u4F9D\u65E7\u4FDD\u6301\u6E38\u79BB\uFF0C\u5E76\u4E14\u4ECD\u5EFA\u5728 activeDocument \u4E0A\u3002",
+  "The eslint-disable comments from the previous release are gone, because the review rejects disabling that rule, and the visible behaviour is unchanged.": "\u4E0A\u4E00\u7248\u6DFB\u52A0\u7684 eslint-disable \u6CE8\u91CA\u5DF2\u79FB\u9664\uFF08\u5BA1\u6838\u4E0D\u5141\u8BB8\u7981\u7528\u8BE5\u89C4\u5219\uFF09\uFF0C\u53EF\u89C1\u884C\u4E3A\u6CA1\u6709\u53D8\u5316\u3002",
+  "Element creation no longer touches the document: the detached virtual-link elements take their throwaway DocumentFragment from Obsidian's createFragment helper, which clears the last prefer-create-el warning.": "\u5143\u7D20\u521B\u5EFA\u4E0D\u518D\u89E6\u78B0 document\uFF1A\u6E38\u79BB\u7684\u865A\u62DF\u94FE\u63A5\u5143\u7D20\u6539\u4E3A\u7528 Obsidian \u7684 createFragment \u52A9\u624B\u53D6\u5F97\u90A3\u4E2A\u7528\u5B8C\u5373\u5F03\u7684 DocumentFragment\uFF0C\u6700\u540E\u4E00\u6761 prefer-create-el \u8B66\u544A\u968F\u4E4B\u6D88\u9664\u3002",
+  "Nothing changes on screen - the elements stay detached, no createElement call remains and no lint rule is disabled.": "\u754C\u9762\u6CA1\u6709\u53D8\u5316\uFF1A\u5143\u7D20\u4F9D\u65E7\u6E38\u79BB\uFF0C\u6E90\u7801\u91CC\u4E0D\u518D\u6709 createElement \u8C03\u7528\uFF0C\u4E5F\u6CA1\u6709\u7981\u7528\u4EFB\u4F55 lint \u89C4\u5219\u3002",
   "Open a Markdown note first, then run this command.": "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A Markdown \u7B14\u8BB0\uFF0C\u518D\u8FD0\u884C\u6B64\u547D\u4EE4\u3002",
   "Add to excluded keywords": "\u52A0\u5165\u6392\u9664\u5173\u952E\u8BCD",
   "Convert to real link": "\u8F6C\u6362\u4E3A\u771F\u5B9E\u94FE\u63A5",
@@ -2391,6 +2397,10 @@ function convertVirtualLinkToReal(linkElement, target, app, settings) {
 
 // linker/virtualLinkMatch.ts
 var import_obsidian4 = require("obsidian");
+function createDetached(tag) {
+  const host = createFragment();
+  return host.createEl(tag);
+}
 function parseInternalLinkSyntax(app, text, currentFile) {
   var _a2, _b2;
   const tokens = [];
@@ -2584,7 +2594,7 @@ var VirtualMatch = class {
   }
   getCompleteLinkElement(inTableCellEditor = false) {
     if (this.settings.maxReferencesToHideLink > 0 && this.files.length > this.settings.maxReferencesToHideLink) {
-      const emptySpan = activeDocument.createElement("span");
+      const emptySpan = createDetached("span");
       emptySpan.textContent = this.originText;
       const tip = t("Matched {count} notes, over the hide limit ({limit}) \u2014 no virtual link is shown");
       emptySpan.setAttribute("title", tip.replace("{count}", String(this.files.length)).replace("{limit}", String(this.settings.maxReferencesToHideLink)));
@@ -2643,7 +2653,7 @@ var VirtualMatch = class {
     return 2;
   }
   getLinkAnchorElement(linkText, href, file) {
-    const link = activeDocument.createElement("a");
+    const link = createDetached("a");
     let headerIdToUse;
     if (file) {
       headerIdToUse = this.getFileHeaderId(file);
@@ -2791,7 +2801,7 @@ var VirtualMatch = class {
     return classes;
   }
   getLinkRootSpan(inTableCellEditor = false) {
-    const span = activeDocument.createElement("span");
+    const span = createDetached("span");
     span.classList.add(...this.getRootSpanClasses());
     if (contextLockedLinks.has(this.getLockKey())) {
       span.classList.add("virtual-link-hover-lock");
@@ -2842,7 +2852,7 @@ var VirtualMatch = class {
     return span;
   }
   getMultipleReferencesSpan(files, overflowCount = 0) {
-    const spanReferences = activeDocument.createElement("span");
+    const spanReferences = createDetached("span");
     if (!this.settings.alwaysShowMultipleReferences) {
       spanReferences.classList.add("multiple-files-references");
     }
@@ -2852,7 +2862,7 @@ var VirtualMatch = class {
     }
     fileList.forEach((file, index) => {
       if (index === 0) {
-        const bracket = activeDocument.createElement("span");
+        const bracket = createDetached("span");
         bracket.textContent = "[";
         spanReferences.appendChild(bracket);
       }
@@ -2865,12 +2875,12 @@ var VirtualMatch = class {
       spanReferences.appendChild(link);
       if (index === fileList.length - 1) {
         if (overflowCount > 0) {
-          const overflow = activeDocument.createElement("span");
+          const overflow = createDetached("span");
           overflow.textContent = "|...";
           overflow.setAttribute("title", t("{count} more reference(s)").replace("{count}", String(overflowCount)));
           spanReferences.appendChild(overflow);
         }
-        const bracket = activeDocument.createElement("span");
+        const bracket = createDetached("span");
         bracket.textContent = "]";
         spanReferences.appendChild(bracket);
       }
@@ -2878,13 +2888,13 @@ var VirtualMatch = class {
     return spanReferences;
   }
   getMultipleReferencesIndicatorSpan() {
-    const spanIndicator = activeDocument.createElement("span");
+    const spanIndicator = createDetached("span");
     spanIndicator.textContent = " [...]";
     spanIndicator.classList.add("multiple-files-indicator");
     return spanIndicator;
   }
   getOverflowIndicatorSpan(hiddenCount) {
-    const spanIndicator = activeDocument.createElement("span");
+    const spanIndicator = createDetached("span");
     spanIndicator.textContent = " [...]";
     if (!this.settings.alwaysShowMultipleReferences) {
       spanIndicator.classList.add("multiple-files-references");
@@ -2896,7 +2906,7 @@ var VirtualMatch = class {
     var _a2;
     const suffix = this.isAlias ? this.settings.virtualLinkAliasSuffix : this.settings.virtualLinkSuffix;
     if (((_a2 = suffix == null ? void 0 : suffix.length) != null ? _a2 : 0) > 0) {
-      const icon = activeDocument.createElement("sup");
+      const icon = createDetached("sup");
       icon.textContent = suffix;
       icon.classList.add("linker-suffix-icon");
       return icon;
@@ -4719,7 +4729,7 @@ var VirtualLinkWidget = class extends import_view2.WidgetType {
     for (const [from, to, current] of merged) {
       if (from > last)
         target.appendText(text.slice(last, from));
-      const mark = target.createEl("span", { text: text.slice(from, to) });
+      const mark = target.createSpan({ text: text.slice(from, to) });
       mark.className = current ? "obsidian-search-match-highlight" : "fakelink-search-hit";
       last = to;
     }
@@ -5971,9 +5981,9 @@ var BatchConvertModal = class extends import_obsidian9.Modal {
       contentEl.createEl("p", { text: t("No convertible virtual links found.") });
       return;
     }
-    const listEl = contentEl.createEl("div", { cls: "batch-convert-list" });
+    const listEl = contentEl.createDiv({ cls: "batch-convert-list" });
     this.items.forEach((item, idx) => {
-      const row = listEl.createEl("div", { cls: "batch-convert-row" });
+      const row = listEl.createDiv({ cls: "batch-convert-row" });
       const toggle = new import_obsidian9.Setting(row).setName(item.displayText).setDesc(item.multipleTargets ? t("Multiple targets - will convert to the first target") : item.replacement);
       const defaultOn = !(item.multipleTargets && this.settings.skipMultipleTargets);
       toggle.addToggle((tc) => tc.setValue(defaultOn).onChange((v) => {
@@ -5981,7 +5991,7 @@ var BatchConvertModal = class extends import_obsidian9.Modal {
       }));
       this.enabled[idx] = defaultOn;
     });
-    const buttonBar = contentEl.createEl("div", { cls: "batch-convert-buttons" });
+    const buttonBar = contentEl.createDiv({ cls: "batch-convert-buttons" });
     const convertBtn = buttonBar.createEl("button", { text: t("Convert"), cls: "mod-cta" });
     convertBtn.onclick = () => this.convert();
     const cancelBtn = buttonBar.createEl("button", { text: t("Cancel") });
@@ -6026,7 +6036,7 @@ var BatchConvertFilesModal = class extends import_obsidian9.Modal {
     contentEl.createEl("p", {
       text: t('Steps: 1) click "Choose notes..."; 2) click each note to process in the search box (you can pick several - the chosen ones are listed below); 3) click "Scan and convert" to convert every virtual link in each note (links inside tables are not processed).')
     });
-    const pickerBar = contentEl.createEl("div", { cls: "batch-convert-buttons" });
+    const pickerBar = contentEl.createDiv({ cls: "batch-convert-buttons" });
     const pickBtn = pickerBar.createEl("button", { text: t("Choose notes..."), cls: "mod-cta" });
     pickBtn.onclick = () => {
       const picker = new FileMultiSuggestModal(this.app);
@@ -6043,7 +6053,7 @@ var BatchConvertFilesModal = class extends import_obsidian9.Modal {
     const existing = contentEl.querySelector(".batch-selected-files");
     if (existing)
       existing.remove();
-    const box = contentEl.createEl("div", { cls: "batch-selected-files" });
+    const box = contentEl.createDiv({ cls: "batch-selected-files" });
     box.createEl("p", { text: t("Selected {n} notes:").replace("{n}", String(this.selectedFiles.length)) });
     const list = box.createEl("ul");
     for (const f of this.selectedFiles) {
@@ -6754,10 +6764,10 @@ var LinkerSettingTab = class extends import_obsidian10.PluginSettingTab {
 
 // src/whatsNew.ts
 var import_obsidian11 = require("obsidian");
-var WHATS_NEW_VERSION = "1.24.26";
+var WHATS_NEW_VERSION = "1.24.29";
 var WHATS_NEW = [
-  "Faster edits and mode switches: the folder-range check no longer walks the vault tree on every rebuild, and the link targets of a note are cached until the note changes.",
-  "If you noticed cursor or typing delays after updating Obsidian, reinstall Obsidian 1.15.0 once - that rules out problems coming from the Obsidian update itself."
+  "Element creation no longer touches the document: the detached virtual-link elements take their throwaway DocumentFragment from Obsidian's createFragment helper, which clears the last prefer-create-el warning.",
+  "Nothing changes on screen - the elements stay detached, no createElement call remains and no lint rule is disabled."
 ];
 var WhatsNewModal = class extends import_obsidian11.Modal {
   constructor(app, version) {
